@@ -12,7 +12,7 @@ var watchify = require('watchify');
 var es6ify = require('es6ify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
-
+var exorcist = require('exorcist');
 
 /** Config variables */
 var serverPort = 8888;
@@ -20,28 +20,25 @@ var lrPort = 35731;
 
 
 /** File paths */
-var dist = 'dist';
+var build = 'build';
 
 var htmlFiles = 'app/**/*.html';
-var htmlBuild = dist;
-
 var jsxFiles = 'app/jsx/**/*.jsx';
 
-var vendorFiles = [
-  'bower_components/react/react-with-addons.js'
-];
-
-var vendorBuild = dist + '/vendor';
-
 gulp.task('vendor', function () {
-  return gulp.src(vendorFiles).
-    pipe(gulp.dest(vendorBuild));
+  return browserify()
+    .require('react')
+    .require('traceur-runtime')
+    .bundle()
+    .pipe(source('app/js/vendor/**/*.js'))
+    .pipe(rename('vendor.js'))
+    .pipe(gulp.dest(build + '/js'));
 });
 
 
 gulp.task('html', function () {
   return gulp.src(htmlFiles).
-    pipe(gulp.dest(htmlBuild));
+    pipe(gulp.dest(build));
 });
 
 function compileScripts(watch) {
@@ -66,17 +63,22 @@ function compileScripts(watch) {
     bundler = b;
   }
 
-  bundler.transform(reactify);
-  bundler.transform(es6ify.configure(/.jsx/));
+  bundler
+    .external('react')
+    .external('traceur-runtime')
+    .transform(reactify)
+    .transform(es6ify.configure(/.jsx/));
 
   var rebundle = function () {
     var stream = bundler.bundle();
 
     stream.on('error', function (err) { console.error(err) });
-    stream = stream.pipe(source(entryFile));
-    stream.pipe(rename('app.js'));
 
-    stream.pipe(gulp.dest('dist/bundle'));
+    stream
+      .pipe(exorcist(build + '/js/app.js.map'))
+      .pipe(source(entryFile))
+      .pipe(rename('app.js'))
+      .pipe(gulp.dest(build + '/js' ));
   }
 
   bundler.on('update', rebundle);
@@ -110,5 +112,5 @@ gulp.task('default', ['vendor'], function () {
   compileScripts(true);
   initWatch(htmlFiles, 'html');
 
-  gulp.watch([dist + '/**/*'], reloadPage);
+  gulp.watch([build + '/**/*'], reloadPage);
 });
