@@ -14,6 +14,7 @@ var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var exorcist = require('exorcist');
 var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
 
 /** Config variables */
 var serverPort = 8888;
@@ -33,10 +34,8 @@ gulp.task('vendor', function () {
     .bundle()
     .pipe(source('app/js/vendor/**/*.js'))
     .pipe(rename('vendor.js'))
-    .pipe(gulp.dest(buildjs));
-
-  gulp.src(buildjs + '/vendor.js')
-    .pipe(uglify())
+    .pipe(gulp.dest(buildjs))
+    .pipe(streamify(uglify()))
     .pipe(rename('vendor.min.js'))
     .pipe(gulp.dest(buildjs));
 });
@@ -83,10 +82,8 @@ function compileScripts(watch) {
       .pipe(exorcist(buildjs + '/app.js.map'))
       .pipe(source(entryFile))
       .pipe(rename('app.js'))
-      .pipe(gulp.dest(buildjs));
-
-    gulp.src(buildjs + '/app.js')
-      .pipe(uglify())
+      .pipe(gulp.dest(buildjs))
+      .pipe(streamify(uglify()))
       .pipe(rename('app.min.js'))
       .pipe(gulp.dest(buildjs));
   }
