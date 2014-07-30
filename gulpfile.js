@@ -13,28 +13,33 @@ var es6ify = require('es6ify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var exorcist = require('exorcist');
+var uglify = require('gulp-uglify');
 
 /** Config variables */
 var serverPort = 8888;
 var lrPort = 35731;
 
-
 /** File paths */
 var build = 'build';
+var buildjs = 'build/js';
 
 var htmlFiles = 'app/**/*.html';
 var jsxFiles = 'app/jsx/**/*.jsx';
 
 gulp.task('vendor', function () {
-  return browserify()
+  browserify()
     .require('react')
     .require('traceur-runtime')
     .bundle()
     .pipe(source('app/js/vendor/**/*.js'))
     .pipe(rename('vendor.js'))
-    .pipe(gulp.dest(build + '/js'));
-});
+    .pipe(gulp.dest(buildjs));
 
+  gulp.src(buildjs + '/vendor.js')
+    .pipe(uglify())
+    .pipe(rename('vendor.min.js'))
+    .pipe(gulp.dest(buildjs));
+});
 
 gulp.task('html', function () {
   return gulp.src(htmlFiles).
@@ -75,10 +80,15 @@ function compileScripts(watch) {
     stream.on('error', function (err) { console.error(err) });
 
     stream
-      .pipe(exorcist(build + '/js/app.js.map'))
+      .pipe(exorcist(buildjs + '/app.js.map'))
       .pipe(source(entryFile))
       .pipe(rename('app.js'))
-      .pipe(gulp.dest(build + '/js' ));
+      .pipe(gulp.dest(buildjs));
+
+    gulp.src(buildjs + '/app.js')
+      .pipe(uglify())
+      .pipe(rename('app.min.js'))
+      .pipe(gulp.dest(buildjs));
   }
 
   bundler.on('update', rebundle);

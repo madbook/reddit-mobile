@@ -21,17 +21,17 @@
   },
   "homepage": "https://github.com/ajacksified/persephone",
   "dependencies": {
-    "mocha": "~1.21.3",
-    "sinon": "~1.10.3",
-    "mocha-traceur": "~1.0.0",
-    "gulp": "~3.8.6",
-    "browserify": "~5.9.1",
     "connect": "~3.1.0",
     "react": "~0.11.1",
     "traceur-runtime": "0.0.43",
     "express": "~4.7.2"
   },
   "devDependencies": {
+    "mocha": "~1.21.3",
+    "sinon": "~1.10.3",
+    "mocha-traceur": "~1.0.0",
+    "gulp": "~3.8.6",
+    "browserify": "~5.9.1",
     "es6ify": "~1.2.0",
     "gulp-rename": "~1.2.0",
     "envify": "~2.0.1",
@@ -40,6 +40,7 @@
     "reactify": "~0.14.0",
     "gulp-util": "~3.0.0",
     "gulp-livereload": "~2.1.0",
-    "exorcist": "~0.1.6"
+    "exorcist": "~0.1.6",
+    "gulp-uglify": "~0.3.1"
   }
 }
