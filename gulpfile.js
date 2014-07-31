@@ -24,7 +24,6 @@ var lrPort = 35731;
 var build = 'build';
 var buildjs = 'build/js';
 
-var htmlFiles = 'app/**/*.html';
 var jsxFiles = 'app/jsx/**/*.jsx';
 
 gulp.task('vendor', function () {
@@ -38,11 +37,6 @@ gulp.task('vendor', function () {
     .pipe(streamify(uglify()))
     .pipe(rename('vendor.min.js'))
     .pipe(gulp.dest(buildjs));
-});
-
-gulp.task('html', function () {
-  return gulp.src(htmlFiles).
-    pipe(gulp.dest(build));
 });
 
 function compileScripts(watch) {
@@ -117,7 +111,6 @@ gulp.task('default', ['vendor'], function () {
   }
 
   compileScripts(true);
-  initWatch(htmlFiles, 'html');
 
   gulp.watch([build + '/**/*'], reloadPage);
 });
