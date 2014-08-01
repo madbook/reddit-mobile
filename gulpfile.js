@@ -29,7 +29,7 @@ gulp.task('vendor', function () {
   browserify()
     .require('react')
     .bundle()
-    .pipe(source('app/js/vendor/**/*.js'))
+    .pipe(source('app/client/js/vendor/**/*.js'))
     .pipe(rename('vendor.js'))
     .pipe(gulp.dest(buildjs))
     .pipe(streamify(uglify()))
