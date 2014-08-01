@@ -9,7 +9,6 @@ var connect = require('connect');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 var watchify = require('watchify');
-var es6ify = require('es6ify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
 var exorcist = require('exorcist');
@@ -29,7 +28,6 @@ var jsxFiles = 'app/jsx/**/*.jsx';
 gulp.task('vendor', function () {
   browserify()
     .require('react')
-    .require('traceur-runtime')
     .bundle()
     .pipe(source('app/js/vendor/**/*.js'))
     .pipe(rename('vendor.js'))
@@ -43,29 +41,23 @@ function compileScripts(watch) {
   gutil.log('Starting browserify');
 
   var entryFile = './app/jsx/app.jsx';
-  es6ify.traceurOverrides = { experimental: true };
 
-  var bundler;
-  var b = browserify({
+  var bundler = browserify({
     cache: {},
     packageCache: {},
     fullPaths: true,
     debug: true
   });
 
-  b.add(entryFile);
+  bundler.add(entryFile);
 
   if (watch) {
-    bundler = watchify(b);
-  } else {
-    bundler = b;
+    bundler = watchify(bundler);
   }
 
   bundler
     .external('react')
-    .external('traceur-runtime')
-    .transform(reactify)
-    .transform(es6ify.configure(/.jsx/));
+    .transform(reactify);
 
   var rebundle = function () {
     var stream = bundler.bundle();

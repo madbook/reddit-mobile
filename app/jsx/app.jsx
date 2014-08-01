@@ -1,11 +1,12 @@
-module $traceurRuntime from 'traceur-runtime';
-module React from 'react';
+var React = require('react');
 
-import { MainSection } from './components/MainSection.react.jsx';
+var MainSection = require('./components/MainSection.react.jsx');
 
-const render = () => React.renderComponent(
-  <MainSection />,
-  document.getElementById('content')
-);
+var render = function(){
+  React.renderComponent(
+    <MainSection />,
+    document.getElementById('content')
+  );
+};
 
 render();

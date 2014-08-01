@@ -2,9 +2,10 @@
   "name": "persephone",
   "version": "0.0.0",
   "description": "A reddit frontend.",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
-    "test": "mocha --recursive --compilers js:mocha-traceur ./test/",
+    "start": "node ./app/index.js",
+    "test": "mocha --recursive ./test/",
     "build": "./node_modules/gulp/bin/gulp.js"
   },
   "repository": {
@@ -21,18 +22,18 @@
   },
   "homepage": "https://github.com/ajacksified/persephone",
   "dependencies": {
+    "body-parser": "^1.5.2",
+    "compression": "^1.0.9",
     "connect": "~3.1.0",
-    "react": "~0.11.1",
-    "traceur-runtime": "0.0.43",
-    "express": "~4.7.2"
+    "express": "~4.7.2",
+    "lodash": "~2.4.1",
+    "react": "~0.11.1"
   },
   "devDependencies": {
     "mocha": "~1.21.3",
     "sinon": "~1.10.3",
-    "mocha-traceur": "~1.0.0",
     "gulp": "~3.8.6",
     "browserify": "~5.9.1",
-    "es6ify": "~1.2.0",
     "gulp-rename": "~1.2.0",
     "envify": "~2.0.1",
     "vinyl-source-stream": "~0.1.1",

@@ -1,8 +1,8 @@
-module React from 'react';
-import {Body} from './Body.react.jsx';
+var React = require('react');
+var Body = require('./Body.react.jsx');
 
-class _MainSection {
-  render() {
+var MainSection = React.createClass({
+  render: function() {
     return (
       <div>
         <h1>Example of React with es6 and browserify</h1>
@@ -10,6 +10,7 @@ class _MainSection {
       </div>
     );
   }
-}
+});
 
-export const MainSection = React.createClass(_MainSection.prototype);
+module.exports =  MainSection;
+
