@@ -1,6 +1,5 @@
-module _ from 'lodash';
-import { config as defaultConfig } from './config.js';
+var _ = require('lodash');
+var defaultConfig = require('./config.js');
 
-export var config = _.defaults({
+module.exports = _.defaults({
 }, defaultConfig);
-

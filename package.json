@@ -2,9 +2,9 @@
   "name": "persephone",
   "version": "0.0.0",
   "description": "A reddit frontend.",
-  "main": "app/index.js",
+  "main": "app/server.js",
   "scripts": {
-    "start": "node ./app/index.js",
+    "start": "node ./app/server.js",
     "test": "mocha --recursive ./test/",
     "build": "./node_modules/gulp/bin/gulp.js"
   },

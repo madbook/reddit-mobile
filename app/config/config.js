@@ -1,6 +1,6 @@
-module _ from 'lodash';
+var _ = require('lodash');
 
-export var config = {
+module.exports = {
   // web server config
   port: process.env.PORT || 4444,
   environment: process.env.NODE_ENV || "development",

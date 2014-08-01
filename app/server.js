@@ -4,7 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 
-var pages = require('./routes/pages');
+var pageRoutes = require('./routes/pages');
 var config = {};
 
 if (process.env.persephone_env === 'production') {
@@ -12,7 +12,6 @@ if (process.env.persephone_env === 'production') {
 } else {
   config = require('./config/prod');
 }
-
 
 // Start up a new Express instance, and set the config
 var app = express();
@@ -22,7 +21,12 @@ app.config = config;
 app.set('port', app.config.port);
 
 // Configure the webserver, and set up middleware
-app.use(bodyParser());
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 app.use(compression());
 
 // Set up static directories; if a file isn't found in one directory, it will
@@ -30,13 +34,13 @@ app.use(compression());
 app.use(express.static(__dirname + '../build'));
 app.use(express.static(__dirname + '/public'));
 
-// ./routes.js contains all of the routes that the webserver should parse
-pages(app);
+// Set up the routes
+pageRoutes(app);
 
-// Require in error handler
+// Set up the error handler
 app.err = require('./error');
 
-// Create a server using http,
+// Create a server using http
 var server = http.createServer(app);
 
 // Start listening on the configured port
