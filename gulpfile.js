@@ -10,25 +10,42 @@ var rename = require('gulp-rename');
 var buffer = require('gulp-buffer');
 var clean = require('gulp-clean');
 var source = require('vinyl-source-stream');
+var less = require('gulp-less');
+var path = require('path');
+var minifyCSS = require('gulp-minify-css');
 
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
 var exorcist = require('exorcist');
 
-/** Config variables */
-var serverPort = 8888;
-var lrPort = 35731;
-
 /** File paths */
-var build = 'build';
-var buildjs = 'build/js';
+var build = './build';
+var buildjs = build + '/js';
+var buildcss = build + '/css';
+
+gulp.task('less', function() {
+  gulp.src(buildcss + '/app*.css')
+    .pipe(clean({force: true}));
+
+  gulp.src('./app/client/less/app.less')
+    .pipe(less())
+    .pipe(gulp.dest(buildcss))
+    .pipe(minifyCSS())
+    .pipe(buffer())
+    .pipe(rev())
+    .pipe(gulp.dest(buildcss))
+    .pipe(rev.manifest())
+    .pipe(rename('css-manifest.json'))
+    .pipe(gulp.dest(buildcss));
+});
 
 gulp.task('vendor', function () {
   gulp.src(buildjs + '/vendor*.js')
     .pipe(clean({force: true}));
 
   browserify()
+    .require('./lib/snooboots/dist/js/bootstrap.js')
     .require('react')
     .bundle()
     .pipe(source('app/client/js/vendor/**/*.js'))
@@ -38,10 +55,10 @@ gulp.task('vendor', function () {
     .pipe(rename('vendor.min.js'))
     .pipe(buffer())
     .pipe(rev())
-    .pipe(gulp.dest('build/js'))
+    .pipe(gulp.dest(buildjs))
     .pipe(rev.manifest())
     .pipe(rename('vendor-manifest.json'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest(buildjs));
 });
 
 function compileScripts(watch) {
@@ -83,41 +100,27 @@ function compileScripts(watch) {
       .pipe(rename('app.min.js'))
       .pipe(buffer())
       .pipe(rev())
-      .pipe(gulp.dest('build/js'))
+      .pipe(gulp.dest(buildjs))
       .pipe(rev.manifest())
       .pipe(rename('app-manifest.json'))
-      .pipe(gulp.dest('build/js'));
+      .pipe(gulp.dest(buildjs));
   }
 
   bundler.on('update', rebundle);
   return rebundle();
 }
 
-function initWatch(files, task) {
-  if (typeof task === "string") {
-    gulp.start(task);
-    gulp.watch(files, [task]);
-  } else {
-    task.map(function (t) { gulp.start(t) });
-    gulp.watch(files, task);
-  }
-}
-
 /**
  * Run default task
  */
-gulp.task('default', ['vendor'], function () {
-  var lrServer = livereload(lrPort);
+gulp.task('default', ['less', 'vendor'], function () {
+  var lrServer = livereload();
   var reloadPage = function (evt) {
     lrServer.changed(evt.path);
   };
 
-  function initWatch(files, task) {
-    gulp.start(task);
-    gulp.watch(files, [task]);
-  }
-
   compileScripts(true);
 
   gulp.watch([build + '/**/*'], reloadPage);
+  gulp.watch(['app/client/less/**/*'], ['less']);
 });
