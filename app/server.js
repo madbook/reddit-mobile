@@ -1,8 +1,11 @@
 var http = require('http');
-var connect = require('connect');
 var express = require('express');
+
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var compression = require('compression');
+var session = require('express-session')
+var csurf = require('csurf');
 
 var pageRoutes = require('./routes/pages');
 var config = {};
@@ -22,12 +25,18 @@ app.set('port', app.config.port);
 
 // Configure the webserver, and set up middleware
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
 app.use(compression());
+app.use(cookieParser());
+app.use(session({
+  secret: config.cookieSecret
+  //cookie: { secure: true }
+}));
+
+app.use(csurf());
 
 // Set up static directories; if a file isn't found in one directory, it will
 // fall back to the next

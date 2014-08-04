@@ -1,12 +1,15 @@
+/** @jsx React.DOM */
+
 var React = require('react');
 
 var MainSection = require('./components/MainSection.react.jsx');
 
-var render = function(){
-  React.renderComponent(
-    <MainSection />,
-    document.getElementById('content')
-  );
-};
+var App = React.createClass({
+  render: function() {
+    return (
+      <MainSection />
+    );
+  }
+});
 
-render();
+module.exports = App;

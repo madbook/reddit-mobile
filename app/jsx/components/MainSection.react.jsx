@@ -1,3 +1,5 @@
+/** @jsx React.DOM */
+
 var React = require('react');
 var Body = require('./Body.react.jsx');
 
@@ -12,5 +14,4 @@ var MainSection = React.createClass({
   }
 });
 
-module.exports =  MainSection;
-
+module.exports = MainSection;
