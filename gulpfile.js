@@ -23,8 +23,6 @@ var lrPort = 35731;
 var build = 'build';
 var buildjs = 'build/js';
 
-var jsxFiles = 'app/jsx/**/*.jsx';
-
 gulp.task('vendor', function () {
   browserify()
     .require('react')
@@ -40,7 +38,7 @@ gulp.task('vendor', function () {
 function compileScripts(watch) {
   gutil.log('Starting browserify');
 
-  var entryFile = './app/jsx/app.jsx';
+  var entryFile = './app/client/js/app.js';
 
   var bundler = browserify({
     cache: {},
@@ -62,7 +60,7 @@ function compileScripts(watch) {
   var rebundle = function () {
     var stream = bundler.bundle();
 
-    stream.on('error', function (err) { console.error(err) });
+    stream.on('error', function (err) { console.error(err.toString()) });
 
     stream
       .pipe(exorcist(buildjs + '/app.js.map'))

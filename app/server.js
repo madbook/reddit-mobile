@@ -43,6 +43,10 @@ app.use(csurf());
 app.use(express.static(__dirname + '../build'));
 app.use(express.static(__dirname + '/public'));
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+
 // Set up the routes
 pageRoutes(app);
 
