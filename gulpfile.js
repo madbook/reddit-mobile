@@ -2,18 +2,19 @@
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-
 var livereload = require('gulp-livereload');
-var connect = require('connect');
-
+var uglify = require('gulp-uglify');
+var streamify = require('gulp-streamify');
+var rev = require('gulp-rev');
 var rename = require('gulp-rename');
+var buffer = require('gulp-buffer');
+var clean = require('gulp-clean');
+var source = require('vinyl-source-stream');
+
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-var source = require('vinyl-source-stream');
 var exorcist = require('exorcist');
-var uglify = require('gulp-uglify');
-var streamify = require('gulp-streamify');
 
 /** Config variables */
 var serverPort = 8888;
@@ -24,6 +25,9 @@ var build = 'build';
 var buildjs = 'build/js';
 
 gulp.task('vendor', function () {
+  gulp.src(buildjs + '/vendor*.js')
+    .pipe(clean({force: true}));
+
   browserify()
     .require('react')
     .bundle()
@@ -32,7 +36,12 @@ gulp.task('vendor', function () {
     .pipe(gulp.dest(buildjs))
     .pipe(streamify(uglify()))
     .pipe(rename('vendor.min.js'))
-    .pipe(gulp.dest(buildjs));
+    .pipe(buffer())
+    .pipe(rev())
+    .pipe(gulp.dest('build/js'))
+    .pipe(rev.manifest())
+    .pipe(rename('vendor-manifest.json'))
+    .pipe(gulp.dest('build/js'));
 });
 
 function compileScripts(watch) {
@@ -62,6 +71,9 @@ function compileScripts(watch) {
 
     stream.on('error', function (err) { console.error(err.toString()) });
 
+    gulp.src(buildjs + '/app*.js')
+      .pipe(clean({force: true}));
+
     stream
       .pipe(exorcist(buildjs + '/app.js.map'))
       .pipe(source(entryFile))
@@ -69,7 +81,12 @@ function compileScripts(watch) {
       .pipe(gulp.dest(buildjs))
       .pipe(streamify(uglify()))
       .pipe(rename('app.min.js'))
-      .pipe(gulp.dest(buildjs));
+      .pipe(buffer())
+      .pipe(rev())
+      .pipe(gulp.dest('build/js'))
+      .pipe(rev.manifest())
+      .pipe(rename('app-manifest.json'))
+      .pipe(gulp.dest('build/js'));
   }
 
   bundler.on('update', rebundle);

@@ -4,7 +4,8 @@ var _ = require('lodash');
 module.exports = function(app) {
   function buildProps(req, props) {
     var defaultProps = {
-      csrf: req.csrfToken()
+      csrf: req.csrfToken(),
+      title: 'reddit: the front page of the internet'
     };
 
     props = props || {};
