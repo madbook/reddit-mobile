@@ -11,9 +11,9 @@ var pageRoutes = require('./routes/pages');
 var config = {};
 
 if (process.env.persephone_env === 'production') {
-  config = require('./config/dev');
-} else {
   config = require('./config/prod');
+} else {
+  config = require('./config/dev');
 }
 
 // Start up a new Express instance, and set the config
@@ -40,7 +40,7 @@ app.use(csurf());
 
 // Set up static directories; if a file isn't found in one directory, it will
 // fall back to the next
-app.use(express.static(__dirname + '../build'));
+app.use(express.static(__dirname + '../../build'));
 app.use(express.static(__dirname + '/public'));
 
 app.set('views', __dirname + '/views');
@@ -63,7 +63,7 @@ server.listen(app.get('port'));
 console.info('Welcome to reddit mobile web.');
 
 console.info('Running on port ' + app.get('port') + ' using the '
-              + app.config.environment + ' environment settings.');
+              + app.config.env + ' environment settings.');
 
 if (app.config.environment === 'development') {
   console.info('Open: http://localhost:' + app.get('port'));

@@ -5,7 +5,9 @@ module.exports = function(app) {
   function buildProps(req, props) {
     var defaultProps = {
       csrf: req.csrfToken(),
-      title: 'reddit: the front page of the internet'
+      title: 'reddit: the front page of the internet',
+      liveReload: app.config.liveReload,
+      env: app.config.env
     };
 
     props = props || {};
@@ -14,7 +16,8 @@ module.exports = function(app) {
   }
 
   app.get('/', function(req, res) {
-    res.render('pages/index', buildProps(req, {}));
+    var props = buildProps(req, { });
+    res.render('pages/index', props);
   });
 }
 
