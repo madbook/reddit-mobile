@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var concat = require('gulp-concat');
 var livereload = require('gulp-livereload');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
@@ -25,10 +26,10 @@ var buildjs = build + '/js';
 var buildcss = build + '/css';
 
 gulp.task('less', function() {
-  gulp.src(buildcss + '/app*.css')
+  gulp.src(buildcss + '/*.css')
     .pipe(clean({force: true}));
 
-  gulp.src('./app/client/less/app.less')
+  gulp.src('./app/client/less/*.less')
     .pipe(less())
     .pipe(gulp.dest(buildcss))
     .pipe(minifyCSS())
@@ -45,15 +46,22 @@ gulp.task('vendor', function () {
     .pipe(clean({force: true}));
 
   browserify()
-    .require('./lib/snooboots/dist/js/bootstrap.js')
+    .require('jQuery')
     .require('react')
+    .require('./lib/snooboots/dist/js/bootstrap.min.js', {
+      exports: 'bootstrap',
+      depends: {
+        'jquery': '$'
+      }
+    })
     .bundle()
-    .pipe(source('app/client/js/vendor/**/*.js'))
-    .pipe(rename('vendor.js'))
-    .pipe(gulp.dest(buildjs))
-    .pipe(streamify(uglify()))
-    .pipe(rename('vendor.min.js'))
+    .pipe(source('vendor.js'))
     .pipe(buffer())
+    .pipe(concat('vendor.js'))
+    .pipe(gulp.dest(buildjs))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(rename('vendor.min.js'))
     .pipe(rev())
     .pipe(gulp.dest(buildjs))
     .pipe(rev.manifest())
@@ -81,6 +89,7 @@ function compileScripts(watch) {
 
   bundler
     .external('react')
+    .external('jQuery')
     .transform(reactify);
 
   var rebundle = function () {

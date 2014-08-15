@@ -8,6 +8,7 @@ var session = require('express-session')
 var csurf = require('csurf');
 
 var pageRoutes = require('./routes/pages');
+var apiRoutes = require('./routes/api');
 var config = {};
 
 if (process.env.persephone_env === 'production') {
@@ -49,6 +50,7 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 // Set up the routes
 pageRoutes(app);
+apiRoutes(app);
 
 // Set up the error handler
 app.err = require('./error');

@@ -9,7 +9,8 @@ var LiveReload = require('../components/LiveReload');
 
 var vendorjs = "/js/vendor.js";
 var appjs = "/js/app.js";
-var appcss = "/css/app.css";
+var basecss = "/css/base.css";
+var fancycss = "/css/fancy.css";
 
 var DefaultLayout = React.createClass({
   render: function() {
@@ -22,14 +23,16 @@ var DefaultLayout = React.createClass({
     if (this.props.env !== "dev") {
       appjs = appManifest["app.min.js"];
       vendorjs = vendorManifest["vendor.min.js"];
-      appcss = cssManifest["app.min.css"];
+      basecss = cssManifest["base.css"];
+      fancycss = cssManifest["fancy.css"];
     }
 
     return (
       <html>
         <head>
           <title>{this.props.title}</title>
-          <link href={appcss} rel="stylesheet" />
+          <link href={basecss} rel="stylesheet" />
+          <link href={fancycss} rel="stylesheet" media="screen" />
         </head>
         <body>
           {this.props.children}

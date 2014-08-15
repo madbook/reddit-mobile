@@ -1,7 +1,11 @@
 var React = require('react');
 var _ = require('lodash');
 
+var Snoocore = require('snoocore');
+
 module.exports = function(app) {
+  var reddit = new Snoocore({ userAgent: 'persephone v0.0.1' });
+
   function buildProps(req, props) {
     var defaultProps = {
       csrf: req.csrfToken(),
@@ -17,7 +21,14 @@ module.exports = function(app) {
 
   app.get('/', function(req, res) {
     var props = buildProps(req, { });
-    res.render('pages/index', props);
+
+    reddit('/hot').get().done(function(data){
+      props.listings = data.data.children.map(function(c){
+        return c.data;
+      });
+
+      res.render('pages/index', props);
+    });
   });
 }
 
