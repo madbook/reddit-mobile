@@ -1,0 +1,107 @@
+
+//
+// Load core variables and mixins
+// --------------------------------------------------
+
+@import "../variables.less";
+@import "../mixins.less";
+
+@import "./theme-variables.less";
+@import "./mixins.less";
+
+
+//
+// Buttons
+// --------------------------------------------------
+
+
+// Primary button gradient
+.btn-gradient(@start-color, @end-color, @border-color) {
+  #gradient > .vertical(@start-color: @start-color; @end-color: @end-color);
+  .reset-filter(); // Disable gradients for IE9 because filter bleeds through rounded corners
+
+  background-repeat: repeat-x;
+  border-color: @border-color;
+
+  &:hover,
+  &:focus  {
+    #gradient > .vertical(@start-color: @end-color; @end-color: @end-color);
+  }
+
+  &:active,
+  &.active {
+    background-color: darken(@end-color, 12%);
+    border-color: darken(@border-color, 14%);
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: darken(@end-color, 12%);
+    background-image: none;
+  }
+}
+
+// Common styles
+.btn {
+  // Remove the gradient for the pressed/active state
+  &:active,
+  &.active {
+    background-image: none;
+  }
+}
+
+// Apply the mixin to the buttons
+.btn-primary { .btn-gradient(#FFF, @btn-primary-bg, @btn-primary-border); }
+.btn-success { .btn-gradient(#FFF, @btn-success-bg, @btn-success-border); }
+.btn-info { .btn-gradient(#FFF, @btn-info-bg, @btn-info-border); }
+.btn-warning { .btn-gradient(#FFA, @btn-warning-bg, @btn-warning-border); }
+.btn-danger {
+  .btn-gradient(#FAA, @btn-danger-bg, @btn-danger-border);
+  text-shadow: 0 0 1px rgba(0,0,0,0.65);
+}
+
+
+//
+// Labels
+// --------------------------------------------------
+
+.label-border(@border-color) {
+  border: 1px solid @border-color;
+}
+
+.label {
+  font-weight: normal;
+  .label-border(darken(@label-default-bg, 8%));
+}
+
+.lanel-default {
+  color: @label-default-color;
+  .label-border(@label-default-border-color)
+}
+
+.label-primary {
+  .label-border(darken(@label-primary-bg, 8%));
+}
+
+.label-success {
+  .label-border(darken(@label-success-bg, 8%));
+}
+
+.label-info {
+  .label-border(darken(@label-info-bg, 8%));
+}
+
+.label-warning {
+  .label-border(darken(@label-warning-bg, 8%));
+}
+
+.label-danger {
+  .label-border(darken(@label-danger-bg, 8%));
+}
+
+
+//
+// Forms
+// --------------------------------------------------
+
+// Todo: Change outline style on inputs? Feels very bootstrappy and kinda overkill.
