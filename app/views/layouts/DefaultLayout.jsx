@@ -6,6 +6,7 @@ var vendorManifest = require('../../../build/js/vendor-manifest.json');
 var cssManifest = require('../../../build/css/css-manifest.json');
 
 var LiveReload = require('../components/LiveReload');
+var NavBar = require('../components/NavBar');
 
 var vendorjs = "/js/vendor.js";
 var appjs = "/js/app.js";
@@ -35,6 +36,7 @@ var DefaultLayout = React.createClass({
           <link href={fancycss} rel="stylesheet" media="screen" />
         </head>
         <body>
+          <NavBar />
           {this.props.children}
           <script src={vendorjs}></script>
           <script src={appjs}></script>
