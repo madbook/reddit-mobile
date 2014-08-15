@@ -4,7 +4,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-/* These are theme-change specific variables. Most variables are handled in the root less directory. */
 .btn:active,
 .btn.active {
   background-image: none;
