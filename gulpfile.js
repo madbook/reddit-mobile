@@ -49,15 +49,13 @@ gulp.task('vendor', function () {
     .require('jQuery')
     .require('react')
     .require('./lib/snooboots/dist/js/bootstrap.min.js', {
-      exports: 'bootstrap',
+      expose: 'bootstrap',
       depends: {
         'jquery': '$'
       }
     })
     .bundle()
     .pipe(source('vendor.js'))
-    .pipe(buffer())
-    .pipe(concat('vendor.js'))
     .pipe(gulp.dest(buildjs))
     .pipe(buffer())
     .pipe(uglify())
@@ -90,6 +88,7 @@ function compileScripts(watch) {
   bundler
     .external('react')
     .external('jQuery')
+    .external('bootstrap')
     .transform(reactify);
 
   var rebundle = function () {
