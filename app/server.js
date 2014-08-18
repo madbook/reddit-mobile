@@ -11,7 +11,7 @@ var pageRoutes = require('./routes/pages');
 var apiRoutes = require('./routes/api');
 var config = {};
 
-if (process.env.persephone_env === 'production') {
+if (process.env.switcharoo_env === 'production') {
   config = require('./config/prod');
 } else {
   config = require('./config/dev');

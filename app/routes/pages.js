@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Snoocore = require('snoocore');
 
 module.exports = function(app) {
-  var reddit = new Snoocore({ userAgent: 'persephone v0.0.1' });
+  var reddit = new Snoocore({ userAgent: 'switcharoo v0.0.1' });
 
   function buildProps(req, props) {
     var defaultProps = {

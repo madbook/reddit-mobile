@@ -58,7 +58,7 @@ var Listing = React.createClass({
             &nbsp;
             <a href={ '/domains/' + this.props.listing.domain }>
               <small>
-                  ({ this.props.listing.domain })
+                ({ this.props.listing.domain })
               </small>
             </a>
           </h1>

@@ -1,4 +1,4 @@
-persephone
+switcharoo
 ==========
 
 A reddit web client.
