@@ -36,6 +36,7 @@
     "node-jsx": "^0.11.0",
     "react": "~0.11.1",
     "react-tools": "^0.11.1",
+    "showdown": "^0.3.1",
     "snoocore": "^1.4.0"
   },
   "devDependencies": {

@@ -30,5 +30,57 @@ module.exports = function(app) {
       res.render('pages/index', props);
     });
   });
+
+  app.get('/r/:subreddit', function(req, res) {
+    var props = buildProps(req, { });
+
+    reddit.r.$subreddit.get({
+      $subreddit: req.params.subreddit
+    }).done(function(data){
+      props.listings = data.data.children.map(function(c){
+        return c.data;
+      });
+
+      res.render('pages/index', props);
+    });
+  });
+
+  app.get('/r/:subreddit/comments/:listingId/:listingTitle', function(req, res) {
+    var props = buildProps(req, { });
+
+    function decodeHtmlEntities(html){
+      return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<');
+    }
+
+    function mapComment(comment) {
+      var data = comment.data;
+
+      if (!data.body) {
+        props.listing.more = data;
+      } else {
+        data.body_html = decodeHtmlEntities(data.body_html);
+
+        if (data.replies){
+          data.replies = data.replies.data.children.map(mapComment) || [];
+        } else {
+          data.replies = [];
+        }
+
+        return data;
+      }
+    }
+
+    reddit.comments.$article.get({
+      $article: req.params.listingId
+    }).done(function(data){
+      props.listing = data[0].data.children[0].data;
+
+      props.comments = data[1].data.children.map(function(comment){
+        return mapComment(comment, 0);
+      });
+
+      res.render('pages/listing', props);
+    });
+  });
 }
 
