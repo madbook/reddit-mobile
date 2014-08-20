@@ -9,8 +9,8 @@ var ListingPage = React.createClass({
   render: function() {
     return (
       <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env}>
-        <main className='container-fluid'>
-          <Listing listing={this.props.listing} />
+        <main className='container'>
+          <Listing listing={this.props.listing} expanded={ true } />
           {
             this.props.comments.map(function(comment, i) {
               if (comment) {

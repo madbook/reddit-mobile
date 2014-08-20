@@ -8,7 +8,7 @@ var converter = new Showdown.converter();
 var Comment = React.createClass({
   render: function() {
     var authorFlair;
-    var level = this.props.nestingLevel % 12;
+    var level = this.props.nestingLevel;
 
     var submitted = moment(this.props.comment.created_utc * 1000);
     var edited = this.props.edited ? '*' : '';
@@ -20,37 +20,35 @@ var Comment = React.createClass({
       </span>;
     }
 
-    var columnClass = 'col-sm-12';
+    var offsetClass = '';
 
     if (level > 0) {
-      columnClass += ' comment-offset-' + level;
+      offsetClass = ' comment-offset'
     }
 
     return (
-      <div className='comment'>
-        <div className='row'>
-          <article className={columnClass}>
-            <header>
-              <h1 className='comment-title'>
-                <strong>
-                  <a href={ '/u/' + this.props.comment.author }>{ this.props.comment.author }</a>
-                </strong>
-                { authorFlair }
-                &nbsp; { submitted.fromNow() } { edited }
-              </h1>
-            </header>
+      <div className={ 'comment ' + offsetClass }>
+        <article>
+          <header>
+            <h1 className='comment-title'>
+              <strong>
+                <a href={ '/u/' + this.props.comment.author }>{ this.props.comment.author }</a>
+              </strong>
+              { authorFlair }
+              &nbsp; { submitted.fromNow() } { edited }
+            </h1>
+          </header>
 
-            <div className='comment-content' dangerouslySetInnerHTML={{
-              __html: converter.makeHtml(this.props.comment.body)
-            }} />
+          <div className='comment-content' dangerouslySetInnerHTML={{
+            __html: converter.makeHtml(this.props.comment.body)
+          }} />
 
-            <footer className='comment-footer'>
-              <p className='comment-tools'>
-                share save hide report
-              </p>
-            </footer>
-          </article>
-        </div>
+          <footer className='comment-footer'>
+            <p className='comment-tools'>
+              share save hide report
+            </p>
+          </footer>
+        </article>
 
         {
           this.props.comment.replies.map(function(comment, i) {
