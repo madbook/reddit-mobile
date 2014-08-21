@@ -121,7 +121,7 @@ function compileScripts(watch) {
 /**
  * Run default task
  */
-gulp.task('default', ['less', 'vendor'], function () {
+gulp.task('default', ['less', 'vendor'], function() {
   var lrServer = livereload();
   var reloadPage = function (evt) {
     lrServer.changed(evt.path);
@@ -131,4 +131,8 @@ gulp.task('default', ['less', 'vendor'], function () {
 
   gulp.watch([build + '/**/*'], reloadPage);
   gulp.watch(['app/client/less/**/*'], ['less']);
+});
+
+gulp.task('build', ['less', 'vendor'], function() {
+  compileScripts(false);
 });
