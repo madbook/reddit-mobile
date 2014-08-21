@@ -1,5 +1,8 @@
 .listing {
   margin-bottom: @row-spacing-base;
+  padding-bottom: @row-spacing-base;
+  border-bottom: solid 1px @gray-lighter;
+  position: relative;
 }
 
 .listing-index {
@@ -8,14 +11,33 @@
 }
 
 .listing-title {
-  font-size: @font-size-h4;
-  margin: 0;
+  margin-bottom: @row-spacing-base / 2;
+
+  h1 {
+    font-size: @font-size-h5;
+    display: inline-block;
+    margin: 0;
+  }
 }
 
-.listing-submitted, .listing-tools {
-  margin: 0;
+.listing-thumbnail {
+  width: 100%;
+  margin-bottom: @row-spacing-base / 2;
+}
+
+.listing-submitted {
   color: @gray;
-  font-size: @font-size-small;
+  margin-bottom: @row-spacing-base / 2;
+  font-size: @font-size-smallest;
+}
+
+.listing-comments {
+  font-size: @font-size-smallest;
+  color: @gray;
+}
+
+.listing-link-flair {
+  font-weight: normal;
 }
 
 .selftext {

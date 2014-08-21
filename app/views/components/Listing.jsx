@@ -4,31 +4,33 @@ var React = require('react');
 var moment = require('moment');
 var Showdown = require('showdown');
 var converter = new Showdown.converter();
+var difference = require('../../client/js/lib/formatDifference').short;
 
 var Listing = React.createClass({
   render: function() {
     var thumbnail;
     var linkFlair;
     var authorFlair;
-    var index;
-    var thumbnail;
-    var thumbnailCols = 1;
     var selftext;
     var selftextExpando;
+    var thumbnailSrc = '/img/default.gif';
 
-    var submitted = moment(this.props.listing.created_utc * 1000);
+    var submitted = difference(this.props.listing.created_utc * 1000);
     var edited = this.props.edited ? '*' : '';
     var comment = 'comments';
 
+    var linkFlairClass = (this.props.listing.link_flair_css_class);
+    var authorFlairClass = (this.props.listing.author_flair_css_class);
+
     if (this.props.listing.link_flair_text) {
-      linkFlair = <span className={ 'label label-default ' + this.props.listing.link_flair_css_class }>
+      linkFlair = <p className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
         { this.props.listing.link_flair_text }
-      </span>;
+      </p>;
     }
 
     if (this.props.listing.author_flair_text) {
       authorFlair = (
-        <span className={ 'label label-default ' + this.props.listing.author_flair_css_class }>
+        <span className={ 'listing-author-flair label label-primary ' + authorFlairClass }>
           { this.props.listing.author_flair_text }
         </span>
       );
@@ -39,29 +41,13 @@ var Listing = React.createClass({
     }
 
     if (this.props.listing.thumbnail) {
-      if (this.props.index !== undefined) {
-        index = (
-          <div className='col-sm-3'>
-            <strong className='listing-index'>{ this.props.index + 1 }</strong>
-          </div>
-        );
-
-        thumbnailCols = 2;
+      if (this.props.listing.thumbnail === 'default' || this.props.listing.thumbnail === 'self') {
+        thumbnailSrc = '/img/' + this.props.listing.thumbnail + '.gif';
+      } else {
+        thumbnailSrc = this.props.listing.thumbnail;
       }
-
-      thumbnail = (
-        <div className={ 'col-sm-' + thumbnailCols }>
-          <div className='row'>
-            {index}
-
-            <div className='col-sm-9'>
-              <img src={ this.props.listing.thumbnail } />
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      thumbnailCols = 0;
+    } else if (this.props.selftext) {
+      thumbnailSrc = '/img/self.gif';
     }
 
     if (this.props.listing.selftext && this.props.expanded) {
@@ -75,43 +61,67 @@ var Listing = React.createClass({
     }
 
     return (
-      <div className='row listing'>
-        { thumbnail }
-
-        <article className={ 'col-sm-' + (12 - thumbnailCols) }>
-          <header>
-            <h1 className='listing-title'>
+      <article className='listing row'>
+          <div className='col-xs-3'>
+            <div className='listing-comments media-object'>
               <a href={ this.props.listing.url }>
-                { this.props.listing.title }
+                <img src={ thumbnailSrc } className='listing-thumbnail' />
               </a>
-              { linkFlair }
-              &nbsp;
-              <a href={ '/domains/' + this.props.listing.domain }>
-                <small>
-                  ({ this.props.listing.domain })
-                </small>
-              </a>
-            </h1>
-          </header>
 
-          <div className='listing-footer'>
-            <footer>
-              <p className='listing-submitted'>
-                submitted { submitted.fromNow() } { edited }
-                by <a href={ '/u/' + this.props.listing.author }>{ this.props.listing.author }</a> { authorFlair }
-                to <a href={ '/r/' + this.props.listing.subreddit }>/r/{ this.props.listing.subreddit }</a>
-              </p>
-            </footer>
+              <div className="listing-actions">
+                <button className="btn btn-xs btn-block btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                  <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Share</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Save</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Hide</a></li>
+                  <li role="presentation" className="divider"></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Report</a></li>
+                </ul>
+              </div>
+            </div>
 
-            { selftext }
-
-            <p className='listing-tools'>
-              <a href={ this.props.listing.permalink }>{ this.props.listing.num_comments } { comment }</a>
-              &nbsp; share save hide report
-            </p>
           </div>
-        </article>
-      </div>
+
+          <div className='col-xs-9'>
+            <header>
+              <div className='listing-submitted'>
+                <a href={ '/r/' + this.props.listing.subreddit }>
+                  /r/{ this.props.listing.subreddit }
+                </a> &middot;&nbsp;
+
+                { submitted } &middot;&nbsp;
+
+                <a href={ this.props.listing.permalink }>
+                  <span className='glyphicon glyphicon-comment'></span>
+                  &nbsp;{ this.props.listing.num_comments }
+                </a>
+              </div>
+
+              <div className='listing-title'>
+                <a href={ this.props.listing.url }>
+                  <h1>
+                    { this.props.listing.title } { edited }
+                  </h1>
+                </a>
+
+                { linkFlair }
+              </div>
+            </header>
+
+            <div className='listing-footer'>
+              <footer>
+                <p className='listing-submitted'>
+                  <span className='glyphicon glyphicon-user'></span>
+                  &nbsp; { this.props.listing.author } { authorFlair }
+                </p>
+              </footer>
+
+              { selftext }
+            </div>
+          </div>
+      </article>
     );
   }
 });

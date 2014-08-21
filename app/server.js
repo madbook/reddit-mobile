@@ -42,7 +42,8 @@ app.use(csurf());
 // Set up static directories; if a file isn't found in one directory, it will
 // fall back to the next
 app.use(express.static(__dirname + '../../build'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '../../public'));
+app.use(express.static(__dirname + '../../lib/snooboots/dist'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
