@@ -34,7 +34,7 @@ module.exports = function(app) {
   app.get('/r/:subreddit', function(req, res) {
     var props = buildProps(req, { });
 
-    reddit.r.$subreddit.get({
+    reddit.r.$subreddit.hot.get({
       $subreddit: req.params.subreddit
     }).done(function(data){
       props.listings = data.data.children.map(function(c){
