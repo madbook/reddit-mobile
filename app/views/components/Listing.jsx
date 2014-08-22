@@ -12,7 +12,8 @@ var Listing = React.createClass({
     var linkFlair;
     var authorFlair;
     var selftext;
-    var selftextExpando;
+    var selftextExpandButton;
+    var selftextCollapseClass = this.props.expanded ? 'in' : 'out';
     var thumbnailSrc = '/img/default.gif';
 
     var submitted = difference(this.props.listing.created_utc * 1000);
@@ -56,12 +57,27 @@ var Listing = React.createClass({
       thumbnailSrc = '/img/self.gif';
     }
 
-    if (this.props.listing.selftext && this.props.expanded) {
+    if (this.props.listing.selftext) {
+      if (!this.props.expanded) {
+        selftextExpandButton = (
+          <p className='listing-submitted'>
+            <a href='javascript:void(0);' className='btn btn-primary btn-xs' data-toggle='collapse' 
+                data-target={ '#selftext-' + this.props.listing.id }>
+              <span className='glyphicon glyphicon-eye-open'></span> Preview
+            </a>
+          </p>
+        );
+      }
+
       selftext = (
-        <div className='panel panel-default selftext'>
-          <div className='panel-body' dangerouslySetInnerHTML={{
-            __html: converter.makeHtml(this.props.listing.selftext)
-          }} />
+        <div className='row'>
+          <div className='col-xs-12'>
+            <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
+              <div className='panel-body' dangerouslySetInnerHTML={{
+                __html: converter.makeHtml(this.props.listing.selftext)
+              }} />
+            </div>
+          </div>
         </div>
       );
     }
@@ -74,16 +90,16 @@ var Listing = React.createClass({
               <img src={ thumbnailSrc } className='listing-thumbnail' />
             </a>
 
-            <div className="listing-actions">
-              <button className="btn btn-xs btn-block btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                <span className="caret"></span>
+            <div className='listing-actions'>
+              <button className='btn btn-xs btn-block btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown'>
+                <span className='caret'></span>
               </button>
-              <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Share</a></li>
-                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Save</a></li>
-                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Hide</a></li>
-                <li role="presentation" className="divider"></li>
-                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Report</a></li>
+              <ul className='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>
+                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Share</a></li>
+                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Save</a></li>
+                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Hide</a></li>
+                <li role='presentation' className='divider'></li>
+                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Report</a></li>
               </ul>
             </div>
           </div>
@@ -92,12 +108,6 @@ var Listing = React.createClass({
 
         <div className='col-xs-9'>
           <header>
-            <div className='listing-submitted'>
-              <a href={ '/r/' + this.props.listing.subreddit }>
-                /r/{ this.props.listing.subreddit }
-              </a>
-            </div>
-
             <div className='listing-title'>
               <a href={ this.props.listing.url }>
                 <h1>
@@ -111,27 +121,44 @@ var Listing = React.createClass({
 
           <div className='listing-footer'>
             <footer>
+              <div className='vertical-spacing-sm'>
+                <span className='label label-subreddit'>
+                  <a href={ '/r/' + this.props.listing.subreddit } className='text-subreddit'>
+                    /r/{ this.props.listing.subreddit }
+                  </a>
+                </span>
+              </div>
+
               <p className='listing-submitted'>
                 <span className={ 'text-' + scoreClass + 'vote' }>
                   <span className={ 'glyphicon glyphicon-arrow-' + scoreClass }></span>
                   { this.props.listing.score }
                 </span>&nbsp;&middot;&nbsp;
 
-                <span className='glyphicon glyphicon-user'></span>
-                &nbsp; { this.props.listing.author }{ authorFlair }&nbsp;&middot;&nbsp;
+                <a href={ '/u/' + this.props.listing.author } className='text-muted'>
+                  <span className='glyphicon glyphicon-user'></span>
+                  &nbsp;{ this.props.listing.author }
+                </a>
 
-                { submitted }&nbsp;&middot;
+                { authorFlair }&nbsp;&middot;&nbsp;
+
+                <span className='text-muted'>
+                  { submitted }
+                </span>&nbsp;&middot;&nbsp;
 
                 <a href={ this.props.listing.permalink }>
                   <span className='glyphicon glyphicon-comment'></span>
                   &nbsp;{ this.props.listing.num_comments }
                 </a>
-              </p>
-            </footer>
 
-            { selftext }
+              </p>
+
+              { selftextExpandButton }
+            </footer>
           </div>
         </div>
+
+        { selftext }
       </article>
     );
   }
