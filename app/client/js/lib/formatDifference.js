@@ -6,14 +6,18 @@ function short(date) {
   date = moment(date);
 
   var days = now.diff(date, 'days');
-  var hours = now.diff(date, 'hours');
-  var minutes = now.diff(date, 'minutes');
+  var hours = now.diff(date, 'hours') - (days * 24);
+  var minutes = now.diff(date, 'minutes') - (hours * 24);
 
   if (days > 0) {
     shortString += days + 'd';
   }
 
   if (hours > 0) {
+    if (shortString) {
+      shortString += ', ';
+    }
+
     shortString += hours + 'h';
   }
 
