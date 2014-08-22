@@ -129,7 +129,7 @@ var Listing = React.createClass({
                 </span>
               </div>
 
-              <p className='listing-submitted'>
+              <p className='listing-submitted vertical-spacing'>
                 <span className={ 'text-' + scoreClass + 'vote' }>
                   <span className={ 'glyphicon glyphicon-arrow-' + scoreClass }></span>
                   { this.props.listing.score }
