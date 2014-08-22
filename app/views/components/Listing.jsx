@@ -84,8 +84,8 @@ var Listing = React.createClass({
 
     return (
       <article className='listing row'>
-        <div className='col-xs-3'>
-          <div className='listing-comments media-object'>
+        <div className='col-xs-2 col-sm-1'>
+          <div className='listing-comments'>
             <a href={ this.props.listing.url }>
               <img src={ thumbnailSrc } className='listing-thumbnail' />
             </a>
@@ -106,7 +106,7 @@ var Listing = React.createClass({
 
         </div>
 
-        <div className='col-xs-9'>
+        <div className='col-xs-10 col-sm-11'>
           <header>
             <div className='listing-title'>
               <a href={ this.props.listing.url }>
