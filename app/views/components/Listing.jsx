@@ -22,6 +22,12 @@ var Listing = React.createClass({
     var linkFlairClass = (this.props.listing.link_flair_css_class);
     var authorFlairClass = (this.props.listing.author_flair_css_class);
 
+    var scoreClass = 'up';
+
+    if (this.props.listing.score < 0) {
+      scoreClass = 'down';
+    }
+
     if (this.props.listing.link_flair_text) {
       linkFlair = <p className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
         { this.props.listing.link_flair_text }
@@ -62,65 +68,70 @@ var Listing = React.createClass({
 
     return (
       <article className='listing row'>
-          <div className='col-xs-3'>
-            <div className='listing-comments media-object'>
-              <a href={ this.props.listing.url }>
-                <img src={ thumbnailSrc } className='listing-thumbnail' />
-              </a>
+        <div className='col-xs-3'>
+          <div className='listing-comments media-object'>
+            <a href={ this.props.listing.url }>
+              <img src={ thumbnailSrc } className='listing-thumbnail' />
+            </a>
 
-              <div className="listing-actions">
-                <button className="btn btn-xs btn-block btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                  <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Share</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Save</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Hide</a></li>
-                  <li role="presentation" className="divider"></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Report</a></li>
-                </ul>
-              </div>
+            <div className="listing-actions">
+              <button className="btn btn-xs btn-block btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                <span className="caret"></span>
+              </button>
+              <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Share</a></li>
+                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Save</a></li>
+                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Hide</a></li>
+                <li role="presentation" className="divider"></li>
+                <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">Report</a></li>
+              </ul>
             </div>
-
           </div>
 
-          <div className='col-xs-9'>
-            <header>
-              <div className='listing-submitted'>
-                <a href={ '/r/' + this.props.listing.subreddit }>
-                  /r/{ this.props.listing.subreddit }
-                </a> &middot;&nbsp;
+        </div>
 
-                { submitted } &middot;&nbsp;
+        <div className='col-xs-9'>
+          <header>
+            <div className='listing-submitted'>
+              <a href={ '/r/' + this.props.listing.subreddit }>
+                /r/{ this.props.listing.subreddit }
+              </a>
+            </div>
+
+            <div className='listing-title'>
+              <a href={ this.props.listing.url }>
+                <h1>
+                  { this.props.listing.title } { edited }
+                </h1>
+              </a>
+
+              { linkFlair }
+            </div>
+          </header>
+
+          <div className='listing-footer'>
+            <footer>
+              <p className='listing-submitted'>
+                <span className={ 'text-' + scoreClass + 'vote' }>
+                  <span className={ 'glyphicon glyphicon-arrow-' + scoreClass }></span>
+                  { this.props.listing.score }
+                </span>&nbsp;&middot;&nbsp;
+
+                <span className='glyphicon glyphicon-user'></span>
+                &nbsp; { this.props.listing.author }{ authorFlair }&nbsp;&middot;&nbsp;
+
+                { submitted }&nbsp;&middot;
 
                 <a href={ this.props.listing.permalink }>
                   <span className='glyphicon glyphicon-comment'></span>
                   &nbsp;{ this.props.listing.num_comments }
                 </a>
-              </div>
+              </p>
+            </footer>
 
-              <div className='listing-title'>
-                <a href={ this.props.listing.url }>
-                  <h1>
-                    { this.props.listing.title } { edited }
-                  </h1>
-                </a>
-
-                { linkFlair }
-              </div>
-            </header>
-
-            <div className='listing-footer'>
-              <footer>
-                <p className='listing-submitted'>
-                  <span className='glyphicon glyphicon-user'></span>
-                  &nbsp; { this.props.listing.author } { authorFlair }
-                </p>
-              </footer>
-
-              { selftext }
-            </div>
+            { selftext }
           </div>
+        </div>
       </article>
     );
   }
