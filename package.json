@@ -12,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ajacksified/switcharoo.git"
+    "url": "https://github.com/reddit/switcharoo.git"
   },
   "keywords": [
     "reddit"
   ],
-  "author": "Jack Lawson <ajacksified@gmail.com>",
+  "author": "reddit <jack@reddit.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ajacksified/switcharoo/issues"
+    "url": "https://github.com/reddit/switcharoo/issues"
   },
-  "homepage": "https://github.com/ajacksified/switcharoo",
+  "homepage": "https://github.com/reddit/switcharoo",
   "dependencies": {
     "body-parser": "^1.5.2",
     "browserify": "~5.9.1",
