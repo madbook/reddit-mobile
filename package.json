@@ -7,8 +7,7 @@
     "start": "node ./app/server.js",
     "test": "mocha --recursive ./test/",
     "build": "./node_modules/gulp/bin/gulp.js",
-    "watch": "./node_modules/gulp/bin/gulp.js watch",
-    "postinstall": "./node_modules/gulp/bin/gulp.js"
+    "watch": "./node_modules/gulp/bin/gulp.js watch"
   },
   "repository": {
     "type": "git",
@@ -35,6 +34,12 @@
     "express": "~4.7.2",
     "express-react-views": "^0.4.0",
     "express-session": "^1.7.2",
+    "reddit-text-js": "0.0.5",
+    "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
+    "snoocore": "^1.4.0",
+    "moment": "^2.8.1"
+  },
+  "devDependencies": {
     "gulp": "~3.8.6",
     "gulp-buffer": "0.0.2",
     "gulp-concat": "^2.3.4",
@@ -50,15 +55,11 @@
     "jquery": "^2.1.1",
     "lodash": "~2.4.1",
     "mocha": "~1.21.3",
-    "moment": "^2.8.1",
     "node-jsx": "^0.11.0",
-    "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "react": "~0.11.1",
     "react-tools": "^0.11.1",
     "reactify": "~0.14.0",
-    "showdown": "^0.3.1",
     "sinon": "~1.10.3",
-    "snoocore": "^1.4.0",
     "vinyl-source-stream": "~0.1.1",
     "watchify": "~1.0.1"
   },

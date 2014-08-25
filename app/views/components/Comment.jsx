@@ -2,10 +2,9 @@
 
 var React = require('react');
 var moment = require('moment');
-var Showdown = require('showdown');
-var converter = new Showdown.converter();
 var difference = require('../../client/js/lib/formatDifference').short;
 var please = require('pleasejs');
+var process = require('reddit-text-js');
 
 var orangereds = please.make_scheme({ h: 16, s: .5, v: 1 }, {
   scheme_type: 'mono'
@@ -81,7 +80,7 @@ var Comment = React.createClass({
           </div>
 
           <div className='comment-content' dangerouslySetInnerHTML={{
-            __html: converter.makeHtml(this.props.comment.body)
+            __html: process(this.props.comment.body).html
           }} />
         </article>
 

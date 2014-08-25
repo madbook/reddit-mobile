@@ -2,8 +2,7 @@
 
 var React = require('react');
 var moment = require('moment');
-var Showdown = require('showdown');
-var converter = new Showdown.converter();
+var process = require('reddit-text-js');
 var difference = require('../../client/js/lib/formatDifference').short;
 
 var Listing = React.createClass({
@@ -73,7 +72,7 @@ var Listing = React.createClass({
         <div className='col-xs-12'>
           <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
             <div className='panel-body' dangerouslySetInnerHTML={{
-              __html: converter.makeHtml(this.props.listing.selftext)
+              __html: process(this.props.listing.selftext).html
             }} />
           </div>
         </div>
@@ -106,15 +105,13 @@ var Listing = React.createClass({
 
         <div className='col-xs-10 col-sm-11'>
           <header>
-            <div className='listing-title'>
-              <a href={ this.props.listing.url }>
-                <h1>
-                  { this.props.listing.title } { edited }
-                </h1>
-              </a>
+            <a href={ this.props.listing.url }>
+              <h1 className='listing-title'>
+                { this.props.listing.title } { edited }
+              </h1>
+            </a>
 
-              { linkFlair }
-            </div>
+            { linkFlair }
           </header>
 
           <div className='listing-footer'>
