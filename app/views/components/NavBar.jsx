@@ -18,44 +18,100 @@ var NavBar = React.createClass({
           </div>
 
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav">
-              <li className="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+            <ul className="nav navbar-nav navbar-right">
+              <li><a href="#">login / register</a></li>
+              <li><a href="#">english</a></li>
+
               <li className="dropdown">
-                <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown">about <span className="caret"></span></a>
                 <ul className="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li className="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                  <li className="divider"></li>
-                  <li><a href="#">One more separated link</a></li>
+                  <li>
+                    <a href="https://www.reddit.com/blog/">blog</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/about/">about</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/about/team/">team</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/code/">source code</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/advertising/">advertise</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/r/redditjobs/">jobs</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown">help <span className="caret"></span></a>
+                <ul className="dropdown-menu" role="menu">
+                  <li>
+                    <a href="https://www.reddit.com/wiki/">wiki</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/wiki/faq">FAQ</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/wiki/reddiquette">reddiquette</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/rules/">rules</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/contact/">contact us</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown">tools <span className="caret"></span></a>
+                <ul className="dropdown-menu" role="menu">
+                  <li>
+                    <a href="https://i.reddit.com">mobile</a>
+                  </li>
+                  <li>
+                    <a href="https://addons.mozilla.org/firefox/addon/socialite/">firefox extension</a>
+                  </li>
+                  <li>
+                    <a href="https://chrome.google.com/webstore/detail/algjnflpgoopkdijmkalfcifomdhmcbe">chrome extension</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/buttons/">buttons</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/widget/">widget</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown">&lt;3 <span className="caret"></span></a>
+                <ul className="dropdown-menu" role="menu">
+                  <li>
+                    <a href="https://www.reddit.com/gold/about/" className="buygold choice">reddit gold</a>
+                  </li>
+                  <li>
+                    <a href="https://www.reddit.com/store/">store</a>
+                  </li>
+                  <li>
+                    <a href="https://redditgifts.com">redditgifts</a>
+                  </li>
+                  <li>
+                    <a href="https://reddit.tv">reddit.tv</a>
+                  </li>
+                  <li>
+                    <a href="https://radioreddit.com">radio reddit</a>
+                  </li>
                 </ul>
               </li>
             </ul>
-            <form className="navbar-form navbar-left" role="search">
-              <div className="form-group">
-                <input type="text" className="form-control" placeholder="Search" />
-                </div>
-                <button type="submit" className="btn btn-default">Submit</button>
-              </form>
-              <ul className="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
-                <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
-                  <ul className="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li className="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
           </div>
-        </nav>
+        </div>
+      </nav>
     );
   }
 });

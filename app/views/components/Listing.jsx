@@ -70,13 +70,11 @@ var Listing = React.createClass({
       }
 
       selftext = (
-        <div className='row'>
-          <div className='col-xs-12'>
-            <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
-              <div className='panel-body' dangerouslySetInnerHTML={{
-                __html: converter.makeHtml(this.props.listing.selftext)
-              }} />
-            </div>
+        <div className='col-xs-12'>
+          <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
+            <div className='panel-body' dangerouslySetInnerHTML={{
+              __html: converter.makeHtml(this.props.listing.selftext)
+            }} />
           </div>
         </div>
       );
@@ -130,17 +128,20 @@ var Listing = React.createClass({
               </div>
 
               <p className='listing-submitted vertical-spacing'>
+                <a href='#'><span className='glyphicon glyphicon-circle-arrow-up'></span></a>&nbsp;
                 <span className={ 'text-' + scoreClass + 'vote' }>
-                  <span className={ 'glyphicon glyphicon-arrow-' + scoreClass }></span>
-                  { this.props.listing.score }
-                </span>&nbsp;&middot;&nbsp;
+                  { this.props.listing.score }&nbsp;
+                </span>
+                <a href='#'><span className='glyphicon glyphicon-circle-arrow-down'></span></a>
+
+                &nbsp;&middot;
 
                 <a href={ '/u/' + this.props.listing.author } className='text-muted'>
                   <span className='glyphicon glyphicon-user'></span>
                   &nbsp;{ this.props.listing.author }
                 </a>
 
-                { authorFlair }&nbsp;&middot;&nbsp;
+                &nbsp;{ authorFlair }&nbsp;&middot;&nbsp;
 
                 <span className='text-muted'>
                   { submitted }

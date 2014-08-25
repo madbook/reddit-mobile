@@ -7,6 +7,7 @@ var cssManifest = require('../../../build/css/css-manifest.json');
 
 var LiveReload = require('../components/LiveReload');
 var NavBar = require('../components/NavBar');
+var Footer = require('../components/Footer');
 
 var vendorjs = "/js/vendor.js";
 var appjs = "/js/app.js";
@@ -38,7 +39,10 @@ var DefaultLayout = React.createClass({
         </head>
         <body>
           <NavBar />
-          {this.props.children}
+          <main className='container'>
+            {this.props.children}
+            <Footer />
+          </main>
           <script src={vendorjs}></script>
           <script src={appjs}></script>
           {liveReload}

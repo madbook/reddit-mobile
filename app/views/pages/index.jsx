@@ -8,13 +8,11 @@ var Index = React.createClass({
   render: function() {
     return (
       <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env}>
-        <main className='container'>
-          {
-            this.props.listings.map(function(listing, i) {
-              return <Listing listing={listing} index={i} key={'page-listing-' + i} />;
-            })
-          }
-        </main>
+        {
+          this.props.listings.map(function(listing, i) {
+            return <Listing listing={listing} index={i} key={'page-listing-' + i} />;
+          })
+        }
       </Layout>
     );
   }
