@@ -7,7 +7,8 @@
     "start": "node ./app/server.js",
     "test": "mocha --recursive ./test/",
     "build": "./node_modules/gulp/bin/gulp.js",
-    "watch": "./node_modules/gulp/bin/gulp.js watch"
+    "watch": "./node_modules/gulp/bin/gulp.js watch",
+    "postinstall": "./node_modules/gulp/bin/gulp.js watch"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,7 @@
     "reddit-text-js": "0.0.5",
     "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "snoocore": "^1.4.0",
-    "moment": "^2.8.1"
-  },
-  "devDependencies": {
+    "moment": "^2.8.1",
     "gulp": "~3.8.6",
     "gulp-buffer": "0.0.2",
     "gulp-concat": "^2.3.4",
