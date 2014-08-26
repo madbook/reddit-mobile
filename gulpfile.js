@@ -54,6 +54,12 @@ gulp.task('vendor', function () {
         'jquery': '$'
       }
     })
+    .require('./app/client/js/vendor/jquery.embedly.js', {
+      expose: 'embedly',
+      depends: {
+        'jquery': '$'
+      }
+    })
     .bundle()
     .pipe(source('vendor.js'))
     .pipe(gulp.dest(buildjs))

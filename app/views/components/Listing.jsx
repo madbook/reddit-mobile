@@ -5,12 +5,27 @@ var moment = require('moment');
 var process = require('reddit-text-js');
 var difference = require('../../client/js/lib/formatDifference').short;
 
+var imgRegex = /\.(?:gif|jpe?g|png)(?:\?.*)?$/;
+var videoRegex = /^https?:\/\/.*youtube|vimeo|ustream|qik\..+\/.*./;
+
+function richContent(listing) {
+  if (listing.media && listing.media.oembed) {
+    return listing.media.oembed.url;
+  }
+
+  if (imgRegex.test(listing.url)) {
+    return listing.url;
+  }
+}
+
 var Listing = React.createClass({
   render: function() {
     var thumbnail;
     var linkFlair;
     var authorFlair;
     var selftext;
+    var selftextContents;
+    var embed;
     var selftextExpandButton;
     var selftextCollapseClass = this.props.expanded ? 'in' : 'out';
     var thumbnailSrc = '/img/default.gif';
@@ -56,7 +71,9 @@ var Listing = React.createClass({
       thumbnailSrc = '/img/self.gif';
     }
 
-    if (this.props.listing.selftext) {
+    embed = richContent(this.props.listing);
+
+    if (this.props.listing.selftext || embed) {
       if (!this.props.expanded) {
         selftextExpandButton = (
           <p className='listing-submitted'>
@@ -68,12 +85,24 @@ var Listing = React.createClass({
         );
       }
 
+      if (this.props.listing.selftext) {
+        selftextContents = (
+          <div className='panel-body' dangerouslySetInnerHTML={{
+            __html: process(this.props.listing.selftext).html
+          }} />
+        );
+      } else {
+        selftextContents = (
+          <div className='panel-body panel-embed'>
+            <a href={ embed } data-embed={ embed } />
+          </div>
+        );
+      }
+
       selftext = (
         <div className='col-xs-12'>
           <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
-            <div className='panel-body' dangerouslySetInnerHTML={{
-              __html: process(this.props.listing.selftext).html
-            }} />
+            { selftextContents }
           </div>
         </div>
       );
