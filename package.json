@@ -34,7 +34,7 @@
     "express": "~4.7.2",
     "express-react-views": "^0.4.0",
     "express-session": "^1.7.2",
-    "reddit-text-js": "0.0.5",
+    "reddit-text-js": "0.0.7",
     "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "snoocore": "^1.4.0",
     "moment": "^2.8.1"

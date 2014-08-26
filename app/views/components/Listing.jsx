@@ -131,7 +131,12 @@ var Listing = React.createClass({
                 </span>
                 <a href='#'><span className='glyphicon glyphicon-circle-arrow-down'></span></a>
 
-                &nbsp;&middot;
+                &nbsp;&middot;&nbsp;
+
+
+                <span className='text-muted'>
+                  { submitted }
+                </span>&nbsp;&middot;
 
                 <a href={ '/u/' + this.props.listing.author } className='text-muted'>
                   <span className='glyphicon glyphicon-user'></span>
@@ -139,10 +144,6 @@ var Listing = React.createClass({
                 </a>
 
                 &nbsp;{ authorFlair }&nbsp;&middot;&nbsp;
-
-                <span className='text-muted'>
-                  { submitted }
-                </span>&nbsp;&middot;&nbsp;
 
                 <a href={ this.props.listing.permalink }>
                   <span className='glyphicon glyphicon-comment'></span>
