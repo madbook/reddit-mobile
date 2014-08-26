@@ -39,10 +39,13 @@ var DefaultLayout = React.createClass({
         </head>
         <body>
           <NavBar />
+
           <main className='container'>
             {this.props.children}
-            <Footer />
           </main>
+
+          <Footer />
+
           <script src={vendorjs}></script>
           <script src={appjs}></script>
           {liveReload}

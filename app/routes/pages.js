@@ -21,8 +21,17 @@ module.exports = function(app) {
 
   app.get('/', function(req, res) {
     var props = buildProps(req, { });
+    var options = {}
 
-    reddit('/hot').get().done(function(data){
+    if (req.query.count && req.query.count <= 25) {
+      options.count = req.query.count;
+    }
+
+    if (req.query.after) {
+      options.after = req.query.after;
+    }
+
+    reddit('/hot').get(options).done(function(data){
       props.listings = data.data.children.map(function(c){
         return c.data;
       });
