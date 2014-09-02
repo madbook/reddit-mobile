@@ -22,6 +22,7 @@ var Listing = React.createClass({
   render: function() {
     var thumbnail;
     var linkFlair;
+    var nsfwFlair;
     var authorFlair;
     var selftext;
     var selftextContents;
@@ -44,9 +45,19 @@ var Listing = React.createClass({
     }
 
     if (this.props.listing.link_flair_text) {
-      linkFlair = <p className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
-        { this.props.listing.link_flair_text }
-      </p>;
+      linkFlair = (
+        <span className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
+          { this.props.listing.link_flair_text }
+        </span>
+      );
+    }
+
+    if (this.props.listing.title.match(/nsf[wl]/gi) || this.props.listing.over_18) {
+      nsfwFlair = (
+        <span className='listing-link-flair label label-danger'>
+          NSFW
+        </span>
+      );
     }
 
     if (this.props.listing.author_flair_text) {
@@ -140,6 +151,7 @@ var Listing = React.createClass({
               </h1>
             </a>
 
+            { nsfwFlair }
             { linkFlair }
           </header>
 
