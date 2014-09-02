@@ -1,7 +1,7 @@
 switcharoo
 ==========
 
-A reddit web client.
+A reddit web client. [Discuss on Reddit](https://www.reddit.com/r/theredditswitcharoo)
 
 Technologies
 ------------
