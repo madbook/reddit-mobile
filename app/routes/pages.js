@@ -31,6 +31,8 @@ module.exports = function(app) {
       options.after = req.query.after;
     }
 
+    props.page = req.query.page || 0;
+
     reddit('/hot').get(options).done(function(data){
       props.listings = data.data.children.map(function(c){
         return c.data;
@@ -42,10 +44,21 @@ module.exports = function(app) {
 
   app.get('/r/:subreddit', function(req, res) {
     var props = buildProps(req, { });
-
-    reddit.r.$subreddit.hot.get({
+    var options = {
       $subreddit: req.params.subreddit
-    }).done(function(data){
+    }
+
+    if (req.query.count && req.query.count <= 25) {
+      options.count = req.query.count;
+    }
+
+    if (req.query.after) {
+      options.after = req.query.after;
+    }
+
+    props.page = req.query.page || 0;
+
+    reddit.r.$subreddit.hot.get(options).done(function(data){
       props.listings = data.data.children.map(function(c){
         return c.data;
       });
