@@ -9,10 +9,10 @@ var LiveReload = require('../components/LiveReload');
 var NavBar = require('../components/NavBar');
 var Footer = require('../components/Footer');
 
-var vendorjs = "/js/vendor.js";
-var appjs = "/js/app.js";
-var basecss = "/css/base.css";
-var fancycss = "/css/fancy.css";
+var vendorjs = '/js/vendor.js';
+var appjs = '/js/app.js';
+var basecss = '/css/base.css';
+var fancycss = '/css/fancy.css';
 
 var DefaultLayout = React.createClass({
   render: function() {
@@ -22,20 +22,20 @@ var DefaultLayout = React.createClass({
       liveReload = <LiveReload />
     }
 
-    if (this.props.env !== "dev") {
-      appjs = appManifest["app.min.js"];
-      vendorjs = vendorManifest["vendor.min.js"];
-      basecss = cssManifest["base.css"];
-      fancycss = cssManifest["fancy.css"];
+    if (this.props.env !== 'dev') {
+      appjs = appManifest['app.min.js'];
+      vendorjs = vendorManifest['vendor.min.js'];
+      basecss = cssManifest['base.css'];
+      fancycss = cssManifest['fancy.css'];
     }
 
     return (
       <html>
         <head>
           <title>{this.props.title}</title>
-          <link href={basecss} rel="stylesheet" />
-          <link href={fancycss} rel="stylesheet" media="screen" />
-          <meta name="viewport" content="width=device-width, user-scalable=no" />
+          <link href={basecss} rel='stylesheet' />
+          <link href={fancycss} rel='stylesheet' media='screen' />
+          <meta name='viewport' content='width=device-width, user-scalable=no' />
         </head>
         <body>
           <NavBar />

@@ -53,9 +53,6 @@ app.engine('jsx', require('express-react-views').createEngine());
 pageRoutes(app);
 apiRoutes(app);
 
-// Set up the error handler
-app.err = require('./error');
-
 // Create a server using http
 var server = http.createServer(app);
 
