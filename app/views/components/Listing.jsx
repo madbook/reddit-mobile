@@ -24,11 +24,23 @@ var Listing = React.createClass({
     var linkFlair;
     var nsfwFlair;
     var authorFlair;
-    var selftext;
-    var selftextContents;
-    var embed;
-    var selftextExpandButton;
-    var selftextCollapseClass = this.props.expanded ? 'in' : 'out';
+    var embedContainer;
+    var embedContent;
+    var embedContents;
+    var embedFooter;
+
+    var titleLink = (
+      <a href={ this.props.listing.url }>
+        <h1 className='listing-title'>
+          { this.props.listing.title } { edited }
+        </h1>
+
+        <small className='glyphicon glyphicon-new-window text-muted'></small>
+      </a>
+    );
+
+    var embedURL = richContent(this.props.listing);
+    var embedCollapseClass = this.props.expanded ? 'in' : 'out';
     var thumbnailSrc = '/img/default.gif';
 
     var submitted = difference(this.props.listing.created_utc * 1000);
@@ -78,42 +90,61 @@ var Listing = React.createClass({
       } else {
         thumbnailSrc = this.props.listing.thumbnail;
       }
-    } else if (this.props.selftext) {
+    } else if (this.props.embed) {
       thumbnailSrc = '/img/self.gif';
     }
 
-    embed = richContent(this.props.listing);
-
-    if (this.props.listing.selftext || embed) {
+    if (this.props.listing.embed || embedURL) {
       if (!this.props.expanded) {
-        selftextExpandButton = (
-          <p className='listing-submitted'>
-            <a href='javascript:void(0);' className='btn btn-primary btn-xs' data-toggle='collapse' 
-                data-target={ '#selftext-' + this.props.listing.id }>
-              <span className='glyphicon glyphicon-eye-open'></span> Preview
-            </a>
-          </p>
+        titleLink = (
+          <a href={ this.props.listing.url }
+             data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
+            <h1 className='listing-title'>
+              { this.props.listing.title } { edited }
+            </h1>
+          </a>
         );
       }
 
-      if (this.props.listing.selftext) {
-        selftextContents = (
+      embedFooter = (
+        <div className='panel-footer'>
+          <a href={ this.props.listing.url } className='btn btn-xs btn-default'>
+            Open&nbsp;
+            <small className='glyphicon glyphicon-new-window'></small>
+          </a>&nbsp;
+
+          <a href={ this.props.listing.url } className='btn btn-xs btn-default' target='_blank'>
+            View Comments ({ this.props.listing.num_comments }) &nbsp;
+            <small className='glyphicon glyphicon-comment'></small>
+          </a>
+
+          <a href='javascript:void(0);' data-toggle='collapse' 
+            data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
+            <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
+          </a>
+        </div>
+      );
+
+      if (this.props.listing.embed) {
+        embedContents = (
           <div className='panel-body' dangerouslySetInnerHTML={{
-            __html: process(this.props.listing.selftext).html
+            __html: process(this.props.listing.embed).html
           }} />
         );
       } else {
-        selftextContents = (
+
+        embedContents = (
           <div className='panel-body panel-embed'>
-            <a href={ embed } data-embed={ embed } />
+            <a href={ embedURL } data-embed={ embedURL } />
           </div>
         );
       }
 
-      selftext = (
+      embedContainer = (
         <div className='col-xs-12'>
-          <div className={ 'panel panel-default selftext collapse ' + selftextCollapseClass } id={ 'selftext-' + this.props.listing.id }>
-            { selftextContents }
+          <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
+            { embedContents }
+            { embedFooter }
           </div>
         </div>
       );
@@ -145,12 +176,7 @@ var Listing = React.createClass({
 
         <div className='col-xs-10 col-sm-11'>
           <header>
-            <a href={ this.props.listing.url }>
-              <h1 className='listing-title'>
-                { this.props.listing.title } { edited }
-              </h1>
-            </a>
-
+            { titleLink }
             { nsfwFlair }
             { linkFlair }
           </header>
@@ -192,13 +218,11 @@ var Listing = React.createClass({
                 </a>
 
               </p>
-
-              { selftextExpandButton }
             </footer>
           </div>
         </div>
 
-        { selftext }
+        { embedContainer }
       </article>
     );
   }
