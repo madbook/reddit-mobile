@@ -107,15 +107,18 @@ var Listing = React.createClass({
       }
 
       embedFooter = (
-        <div className='panel-footer'>
-          <a href={ this.props.listing.url } className='btn btn-xs btn-default'>
+        <div className='panel-footer listing-submitted'>
+          <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+            { this.props.listing.domain }
+          </a>&nbsp;&middot;&nbsp;
+
+          <a href={ this.props.listing.url }>
             Open&nbsp;
             <small className='glyphicon glyphicon-new-window'></small>
-          </a>&nbsp;
+          </a>&nbsp;&middot;&nbsp;
 
-          <a href={ this.props.listing.url } className='btn btn-xs btn-default' target='_blank'>
-            View Comments ({ this.props.listing.num_comments }) &nbsp;
-            <small className='glyphicon glyphicon-comment'></small>
+          <a href={ this.props.listing.url } target='_blank'>
+            View Comments ({ this.props.listing.num_comments })
           </a>
 
           <a href='javascript:void(0);' data-toggle='collapse' 
