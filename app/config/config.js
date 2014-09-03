@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 module.exports = {
   // web server config
-  origin: 'http://localhost:4444',
+  origin: process.env.ORIGIN || 'http://localhost:4444',
   port: process.env.PORT || 4444,
   environment: process.env.NODE_ENV || 'development',
   cookieSecret: process.env.PERSEPHONE_COOKIE_SECRET || 'snoo',
