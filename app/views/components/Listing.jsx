@@ -18,6 +18,10 @@ function richContent(listing) {
   }
 }
 
+function mobilify(url) {
+  return url.replace(/^https?:\/\/(?:www\.)reddit.com?/, '');
+}
+
 var Listing = React.createClass({
   render: function() {
     var thumbnail;
@@ -30,6 +34,8 @@ var Listing = React.createClass({
     var embedFooter;
     var subredditLabel;
     var domain;
+    var permalink = mobilify(this.props.listing.permalink);
+    var url = mobilify(this.props.listing.url);
 
     var external;
     var gilded;
@@ -38,7 +44,7 @@ var Listing = React.createClass({
 
     var titleLink = (
       <h1 className='listing-title'>
-        <a href={ this.props.listing.url } className={ distinguished }>
+        <a href={ url } className={ distinguished }>
           { this.props.listing.title } { edited }
         </a>
       </h1>
@@ -125,10 +131,10 @@ var Listing = React.createClass({
       thumbnailSrc = '/img/self.gif';
     }
 
-    if (this.props.listing.embed || embedURL) {
+    if (this.props.listing.embed || this.props.listing.selftext || embedURL) {
       if (!this.props.expanded) {
         titleLink = (
-          <a href={ this.props.listing.url }
+          <a href={ url }
              data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
             <h1 className={ 'listing-title' + distinguished }>
               { this.props.listing.title } { edited }
@@ -143,12 +149,12 @@ var Listing = React.createClass({
             { this.props.listing.domain }
           </a>&nbsp;&middot;&nbsp;
 
-          <a href={ this.props.listing.url }>
+          <a href={ url }>
             Open&nbsp;
             <small className='glyphicon glyphicon-new-window'></small>
           </a>&nbsp;&middot;&nbsp;
 
-          <a href={ this.props.listing.permalink } target='_blank'>
+          <a href={ permalink } target='_blank'>
             View Comments ({ this.props.listing.num_comments })
           </a>
 
@@ -165,11 +171,17 @@ var Listing = React.createClass({
             __html: process(this.props.listing.embed).html
           }} />
         );
-      } else {
+      } else if (embedURL) {
         embedContents = (
           <div className='panel-body panel-embed'>
             <a href={ embedURL } data-embed={ embedURL } />
           </div>
+        );
+      } else if (this.props.listing.selftext) {
+        embedContents = (
+          <div className='panel-body' dangerouslySetInnerHTML={{
+            __html: process(this.props.listing.selftext).html
+          }} />
         );
       }
 
@@ -181,7 +193,7 @@ var Listing = React.createClass({
           </div>
         </div>
       );
-    } else {
+    } else if (url.indexOf('/') != 0) {
       external = (
         <small className='glyphicon glyphicon-new-window text-muted listing-external' />
       );
@@ -191,7 +203,7 @@ var Listing = React.createClass({
       <article className='listing row'>
         <div className='col-xs-2 col-sm-1'>
           <div className='listing-comments'>
-            <a href={ this.props.listing.url }>
+            <a href={ url }>
               <img src={ thumbnailSrc } className='listing-thumbnail' />
             </a>
 
@@ -249,7 +261,7 @@ var Listing = React.createClass({
 
                 &nbsp;{ authorFlair }&nbsp;&middot;&nbsp;
 
-                <a href={ this.props.listing.permalink }>
+                <a href={ permalink }>
                   <span className='glyphicon glyphicon-comment'></span>
                   &nbsp;{ this.props.listing.num_comments }
                 </a>
