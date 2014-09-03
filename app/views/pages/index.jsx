@@ -15,6 +15,7 @@ var Index = React.createClass({
     if (this.props.listings.length) {
       firstId = this.props.listings[0].name;
       lastId = this.props.listings[this.props.listings.length - 1].name;
+      hideSubredditLabel = this.props.hideSubredditLabel;
 
       if (page > 0) {
         prevButton = (
@@ -38,7 +39,7 @@ var Index = React.createClass({
         {
           this.props.listings.map(function(listing, i) {
             var index = (page * 25) + i;
-            return <Listing listing={listing} index={index} key={'page-listing-' + index} page={ page } />;
+            return <Listing listing={listing} index={index} key={'page-listing-' + index} page={ page } hideSubredditLabel={ hideSubredditLabel } />;
           })
         }
         <div className='row pageNav'>

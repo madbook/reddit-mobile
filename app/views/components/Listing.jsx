@@ -28,15 +28,20 @@ var Listing = React.createClass({
     var embedContent;
     var embedContents;
     var embedFooter;
+    var subredditLabel;
+    var domain;
+
+    var external;
+    var gilded;
+
+    var distinguished = this.props.listing.distinguished ? ' text-distinguished' : '';
 
     var titleLink = (
-      <a href={ this.props.listing.url }>
-        <h1 className='listing-title'>
+      <h1 className='listing-title'>
+        <a href={ this.props.listing.url } className={ distinguished }>
           { this.props.listing.title } { edited }
-        </h1>
-
-        <small className='glyphicon glyphicon-new-window text-muted'></small>
-      </a>
+        </a>
+      </h1>
     );
 
     var embedURL = richContent(this.props.listing);
@@ -51,6 +56,32 @@ var Listing = React.createClass({
     var authorFlairClass = (this.props.listing.author_flair_css_class);
 
     var scoreClass = 'up';
+
+    if (!this.props.hideSubredditLabel) {
+      subredditLabel = (
+        <span className='label label-default listing-subreddit'>
+          <a href={ '/r/' + this.props.listing.subreddit } className='text-subreddit'>
+            /r/{ this.props.listing.subreddit }
+          </a>
+        </span>
+      )
+    }
+
+    if (this.props.listing.domain.indexOf('self.') != 0) {
+      domain = (
+        <small className='text-muted listing-submitted listing-domain'>
+          <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+            { this.props.listing.domain }
+          </a>
+        </small>
+      );
+    }
+
+    if (this.props.listing.gilded) {
+      gilded = (
+        <span className='glyphicons glyphicons-gilded' />
+      );
+    }
 
     if (this.props.listing.score < 0) {
       scoreClass = 'down';
@@ -99,7 +130,7 @@ var Listing = React.createClass({
         titleLink = (
           <a href={ this.props.listing.url }
              data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
-            <h1 className='listing-title'>
+            <h1 className={ 'listing-title' + distinguished }>
               { this.props.listing.title } { edited }
             </h1>
           </a>
@@ -117,7 +148,7 @@ var Listing = React.createClass({
             <small className='glyphicon glyphicon-new-window'></small>
           </a>&nbsp;&middot;&nbsp;
 
-          <a href={ this.props.listing.url } target='_blank'>
+          <a href={ this.props.listing.permalink } target='_blank'>
             View Comments ({ this.props.listing.num_comments })
           </a>
 
@@ -135,7 +166,6 @@ var Listing = React.createClass({
           }} />
         );
       } else {
-
         embedContents = (
           <div className='panel-body panel-embed'>
             <a href={ embedURL } data-embed={ embedURL } />
@@ -150,6 +180,10 @@ var Listing = React.createClass({
             { embedFooter }
           </div>
         </div>
+      );
+    } else {
+      external = (
+        <small className='glyphicon glyphicon-new-window text-muted listing-external' />
       );
     }
 
@@ -174,24 +208,25 @@ var Listing = React.createClass({
               </ul>
             </div>
           </div>
-
         </div>
 
         <div className='col-xs-10 col-sm-11'>
           <header>
+            <div className='link-flair-container'>
+              { nsfwFlair }
+              { linkFlair }
+            </div>
+
             { titleLink }
-            { nsfwFlair }
-            { linkFlair }
           </header>
 
           <div className='listing-footer'>
             <footer>
               <div className='vertical-spacing-sm'>
-                <span className='label label-subreddit'>
-                  <a href={ '/r/' + this.props.listing.subreddit } className='text-subreddit'>
-                    /r/{ this.props.listing.subreddit }
-                  </a>
-                </span>
+                { subredditLabel }
+                { domain }
+                { external }
+                { gilded }
               </div>
 
               <p className='listing-submitted vertical-spacing'>
@@ -203,12 +238,11 @@ var Listing = React.createClass({
 
                 &nbsp;&middot;&nbsp;
 
-
                 <span className='text-muted'>
                   { submitted }
                 </span>&nbsp;&middot;
 
-                <a href={ '/u/' + this.props.listing.author } className='text-muted'>
+                <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
                   <span className='glyphicon glyphicon-user'></span>
                   &nbsp;{ this.props.listing.author }
                 </a>
@@ -219,7 +253,6 @@ var Listing = React.createClass({
                   <span className='glyphicon glyphicon-comment'></span>
                   &nbsp;{ this.props.listing.num_comments }
                 </a>
-
               </p>
             </footer>
           </div>

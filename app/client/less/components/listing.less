@@ -12,8 +12,8 @@
 
 .listing-title {
   font-size: @font-size-h5;
-  display: inline;
-  margin: 0;
+  display: inline-block;
+  margin: 0 0 (@row-spacing-base / 2) 0;
 
   word-break: break-all;
   word-break: break-word;
@@ -41,7 +41,6 @@
 .label.listing-link-flair {
   font-weight: normal;
   display: inline-block;
-  margin-bottom: @row-spacing-base / 2;
 }
 
 .listing-actions {
@@ -61,10 +60,26 @@
   padding: 0;
 }
 
-.listing-link-flair {
-  margin-left: 1em;
-}
-
 .label.label-danger {
   color: #fff;
+}
+
+.link-flair-container .label {
+  margin-bottom: @row-spacing-base / 2;
+}
+
+.listing-subreddit {
+  margin-right: .5em;
+}
+
+.listing-external {
+  margin-left: .25em;
+}
+
+.glyphicons-gilded {
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background: url('/img/gilded.gif');
+  margin-left: .25em;
 }

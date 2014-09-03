@@ -30,6 +30,8 @@ var Comment = React.createClass({
     var edited = this.props.edited ? '* ' : '';
     var comment = 'comments';
 
+    var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
+
     borderColor = getColorForScore(this.props.comment.score, level);
 
     var scoreClass = 'up';
@@ -57,7 +59,9 @@ var Comment = React.createClass({
         }}>
           <div className='comment-submitted'>
             <strong>
-              <a href={ '/u/' + this.props.comment.author }>{ this.props.comment.author }</a>
+              <a href={ '/u/' + this.props.comment.author } className={ distinguished }>
+                { this.props.comment.author }
+              </a>
             </strong>
             { authorFlair }&nbsp;&middot;&nbsp;
 

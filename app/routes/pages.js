@@ -63,6 +63,8 @@ module.exports = function(app) {
         return c.data;
       });
 
+      props.hideSubredditLabel = true;
+
       res.render('pages/index', props);
     });
   });
