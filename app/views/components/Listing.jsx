@@ -38,16 +38,18 @@ var Listing = React.createClass({
     var url = mobilify(this.props.listing.url);
 
     var external;
+    var isExternal = url.indexOf('/') != 0;
+
     var gilded;
 
     var distinguished = this.props.listing.distinguished ? ' text-distinguished' : '';
 
     var titleLink = (
-      <h1 className='listing-title'>
-        <a href={ url } className={ distinguished }>
-          { this.props.listing.title } { edited }
-        </a>
-      </h1>
+      <a href={ url } className={ distinguished }>
+        <h1 className='listing-title'>
+            { this.props.listing.title } { edited }
+        </h1>
+      </a>
     );
 
     var embedURL = richContent(this.props.listing);
@@ -133,6 +135,28 @@ var Listing = React.createClass({
 
     if (this.props.listing.embed || this.props.listing.selftext || embedURL) {
       if (!this.props.expanded) {
+        embedFooter = (
+          <div className='panel-footer listing-submitted'>
+            <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+              { this.props.listing.domain }
+            </a>&nbsp;&middot;&nbsp;
+
+            <a href={ url }>
+              Open&nbsp;
+              <small className='glyphicon glyphicon-new-window'></small>
+            </a>&nbsp;&middot;&nbsp;
+
+            <a href={ permalink }>
+              View Comments ({ this.props.listing.num_comments })
+            </a>
+
+            <a href='javascript:void(0);' data-toggle='collapse' 
+              data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
+              <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
+            </a>
+          </div>
+        );
+
         titleLink = (
           <a href={ url }
              data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
@@ -143,57 +167,43 @@ var Listing = React.createClass({
         );
       }
 
-      embedFooter = (
-        <div className='panel-footer listing-submitted'>
-          <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-            { this.props.listing.domain }
-          </a>&nbsp;&middot;&nbsp;
+      if (this.props.listing.selftext) {
+        embedContainer = (
+          <div className='col-xs-12'>
+            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
+              <div className='panel-body' dangerouslySetInnerHTML={{
+                __html: process(this.props.listing.selftext).html
+              }} />
 
-          <a href={ url }>
-            Open&nbsp;
-            <small className='glyphicon glyphicon-new-window'></small>
-          </a>&nbsp;&middot;&nbsp;
-
-          <a href={ permalink } target='_blank'>
-            View Comments ({ this.props.listing.num_comments })
-          </a>
-
-          <a href='javascript:void(0);' data-toggle='collapse' 
-            data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
-            <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
-          </a>
-        </div>
-      );
-
-      if (this.props.listing.embed) {
-        embedContents = (
-          <div className='panel-body' dangerouslySetInnerHTML={{
-            __html: process(this.props.listing.embed).html
-          }} />
-        );
-      } else if (embedURL) {
-        embedContents = (
-          <div className='panel-body panel-embed'>
-            <a href={ embedURL } data-embed={ embedURL } />
+              { embedFooter }
+            </div>
           </div>
         );
-      } else if (this.props.listing.selftext) {
-        embedContents = (
-          <div className='panel-body' dangerouslySetInnerHTML={{
-            __html: process(this.props.listing.selftext).html
-          }} />
+      } else {
+        if (this.props.listing.embed) {
+          embedContents = (
+            <div className='panel-body' dangerouslySetInnerHTML={{
+              __html: process(this.props.listing.embed).html
+            }} />
+          );
+        } else if (embedURL) {
+          embedContents = (
+            <div className='panel-body panel-embed'>
+              <a href={ embedURL } data-embed={ embedURL } />
+            </div>
+          );
+        }
+
+        embedContainer = (
+          <div className='col-xs-12'>
+            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
+              { embedContents }
+              { embedFooter }
+            </div>
+          </div>
         );
       }
-
-      embedContainer = (
-        <div className='col-xs-12'>
-          <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
-            { embedContents }
-            { embedFooter }
-          </div>
-        </div>
-      );
-    } else if (url.indexOf('/') != 0) {
+    } else if (isExternal) {
       external = (
         <small className='glyphicon glyphicon-new-window text-muted listing-external' />
       );
@@ -242,17 +252,23 @@ var Listing = React.createClass({
               </div>
 
               <p className='listing-submitted vertical-spacing'>
-                <a href='#'><span className='glyphicon glyphicon-circle-arrow-up'></span></a>&nbsp;
+                <a href='javascript:void(0);' className='vote'>
+                  <span className='glyphicon glyphicon-circle-arrow-up'></span>
+                </a>&nbsp;
+
                 <span className={ 'text-' + scoreClass + 'vote' }>
                   { this.props.listing.score }&nbsp;
                 </span>
-                <a href='#'><span className='glyphicon glyphicon-circle-arrow-down'></span></a>
 
-                &nbsp;&middot;&nbsp;
+                <a href='javascript:void(0);' className='vote'>
+                  <span className='glyphicon glyphicon-circle-arrow-down'></span>
+                </a>
+
+                &nbsp;&middot;
 
                 <span className='text-muted'>
                   { submitted }
-                </span>&nbsp;&middot;
+                </span>&nbsp;&middot;&nbsp;
 
                 <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
                   <span className='glyphicon glyphicon-user'></span>

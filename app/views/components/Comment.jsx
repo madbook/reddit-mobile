@@ -55,7 +55,7 @@ var Comment = React.createClass({
     return (
       <div className='comment'>
         <article className={ offsetClass } style={{
-         borderColor: borderColor
+          borderColor: borderColor
         }}>
           <div className='comment-submitted'>
             <strong>
@@ -63,6 +63,7 @@ var Comment = React.createClass({
                 { this.props.comment.author }
               </a>
             </strong>
+
             { authorFlair }&nbsp;&middot;&nbsp;
 
             { submitted } { edited }&middot;&nbsp;
@@ -71,7 +72,7 @@ var Comment = React.createClass({
             { this.props.comment.score }&nbsp;
             <a href='#'><span className='glyphicon glyphicon-circle-arrow-down'></span></a>
 
-            &nbsp;&middot;&nbsp;
+            &nbsp;&middot;
             <div className='dropdown dropdown-inline'>
               <a data-toggle='dropdown' href='#'>Actions <span className='caret'></span></a>
               <ul className='dropdown-menu' role='menu'>
