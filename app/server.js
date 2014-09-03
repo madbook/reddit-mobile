@@ -33,8 +33,15 @@ app.use(bodyParser.urlencoded({
 app.use(compression());
 app.use(cookieParser());
 app.use(session({
-  secret: config.cookieSecret
-  //cookie: { secure: true }
+  secret: config.cookieSecret,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 60000
+  },
+  rolling: true,
+  resave: true,
+  saveUninitialized: true
 }));
 
 app.use(csurf());

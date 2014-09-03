@@ -35,7 +35,7 @@ var Index = React.createClass({
     }
 
     return (
-      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env}>
+      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session}>
         {
           this.props.listings.map(function(listing, i) {
             var index = (page * 25) + i;

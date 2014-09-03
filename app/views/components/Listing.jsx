@@ -19,7 +19,7 @@ function richContent(listing) {
 }
 
 function mobilify(url) {
-  return url.replace(/^https?:\/\/(?:www\.)reddit.com?/, '');
+  return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
 }
 
 var Listing = React.createClass({

@@ -8,7 +8,7 @@ var Comment = require('../components/Comment');
 var ListingPage = React.createClass({
   render: function() {
     return (
-      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env}>
+      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session}>
         <Listing listing={this.props.listing} expanded={ true } />
         {
           this.props.comments.map(function(comment, i) {

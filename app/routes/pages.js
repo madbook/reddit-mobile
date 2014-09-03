@@ -4,14 +4,27 @@ var _ = require('lodash');
 var Snoocore = require('snoocore');
 
 module.exports = function(app) {
-  var reddit = new Snoocore({ userAgent: 'switcharoo v0.0.1' });
+  var reddit = new Snoocore({
+    userAgent: 'switcharoo v0.0.1',
+    oauth: {
+      type: 'web',
+      mobile: true,
+      duration: 'permanent',
+      consumerKey: app.config.oauth.clientId,
+      consumerSecret: app.config.oauth.secret,
+      redirectUri: app.config.origin + '/oauth2/token',
+      // load ALL the scopes
+      scope: [ 'modposts', 'identity', 'edit', 'flair', 'history', 'modconfig', 'modflair', 'modlog', 'modposts', 'modwiki', 'mysubreddits', 'privatemessages', 'read', 'report', 'save', 'submit', 'subscribe', 'vote', 'wikiedit', 'wikiread']
+    }
+  });
 
   function buildProps(req, props) {
     var defaultProps = {
       csrf: req.csrfToken(),
       title: 'reddit: the front page of the internet',
       liveReload: app.config.liveReload,
-      env: app.config.env
+      env: app.config.env,
+      session: req.session
     };
 
     props = props || {};
@@ -105,6 +118,24 @@ module.exports = function(app) {
 
       res.render('pages/listing', props);
     });
+  });
+
+  app.get('/login', function(req, res) {
+    res.redirect(reddit.getAuthUrl(req.csrfToken()));
+  });
+
+  app.get('/oauth2/token', function(req, res) {
+    var code = req.query.code;
+    var state = req.query.state;
+
+    reddit.auth(code).then(function(refreshToken) {
+      req.session.token = refreshToken;
+
+      reddit.api.v1.me.get().then(function(user) {
+        req.session.user = user;
+        res.redirect('/');
+      });
+    })
   });
 }
 
