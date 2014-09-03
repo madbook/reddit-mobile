@@ -1,4 +1,4 @@
-global.$ = global.jQuery = require('jQuery');
+global.$ = global.jQuery = require('jquery');
 
 require('bootstrap');
 require('embedly');

@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var Layout = require('../layouts/defaultlayout');
+var Layout = require('../layouts/DefaultLayout');
 var Listing = require('../components/Listing');
 
 var Index = React.createClass({

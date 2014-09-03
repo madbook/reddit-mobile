@@ -46,7 +46,7 @@ gulp.task('vendor', function () {
     .pipe(clean({force: true}));
 
   browserify()
-    .require('jQuery')
+    .require('jquery')
     .require('react')
     .require('./lib/snooboots/dist/js/bootstrap.min.js', {
       expose: 'bootstrap',
@@ -93,7 +93,7 @@ function compileScripts(watch) {
 
   bundler
     .external('react')
-    .external('jQuery')
+    .external('jquery')
     .external('bootstrap')
     .transform(reactify);
 
