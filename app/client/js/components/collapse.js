@@ -7,6 +7,8 @@ function Collapse(trigger, target) {
     this.toggleCollapse();
     this.showEmbed();
   }).bind(this));
+
+  this.$trigger.data('collapse', this);
 }
 
 Collapse.prototype.toggleCollapse = function() {

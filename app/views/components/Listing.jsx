@@ -137,18 +137,26 @@ var Listing = React.createClass({
       if (!this.props.expanded) {
         embedFooter = (
           <div className='panel-footer listing-submitted'>
-            <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-              { this.props.listing.domain }
-            </a>&nbsp;&middot;&nbsp;
+            <ul className='linkbar listing-submitted'>
+              <li>
+                <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+                  { this.props.listing.domain }
+                </a>
+              </li>
 
-            <a href={ url }>
-              Open&nbsp;
-              <small className='glyphicon glyphicon-new-window'></small>
-            </a>&nbsp;&middot;&nbsp;
+              <li>
+                <a href={ url }>
+                  Open&nbsp;
+                  <small className='glyphicon glyphicon-new-window'></small>
+                </a>
+              </li>
 
-            <a href={ permalink }>
-              View Comments ({ this.props.listing.num_comments })
-            </a>
+              <li>
+                <a href={ permalink }>
+                  View Comments ({ this.props.listing.num_comments })
+                </a>
+              </li>
+            </ul>
 
             <a href='javascript:void(0);' data-toggle='collapse' 
               data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
@@ -251,37 +259,45 @@ var Listing = React.createClass({
                 { gilded }
               </div>
 
-              <p className='listing-submitted vertical-spacing'>
-                <a href='javascript:void(0);' className='vote'>
-                  <span className='glyphicon glyphicon-circle-arrow-up'></span>
-                </a>&nbsp;
+              <ul className='linkbar vertical-spacing listing-submitted'>
+                <li>
+                  <a href={ '/vote/' + this.props.listing.id + '?direction=up' } 
+                    className='vote' data-vote='up' data-thingid={ this.props.listing.id }>
+                    <span className='glyphicon glyphicon-circle-arrow-up'></span>
+                  </a>&nbsp;
 
-                <span className={ 'text-' + scoreClass + 'vote' }>
-                  { this.props.listing.score }&nbsp;
-                </span>
+                  <span className={ 'text-' + scoreClass + 'vote' }>
+                    { this.props.listing.score }&nbsp;
+                  </span>
 
-                <a href='javascript:void(0);' className='vote'>
-                  <span className='glyphicon glyphicon-circle-arrow-down'></span>
-                </a>
+                  <a href={ '/vote/' + this.props.listing.id + '?direction=down' } 
+                    className='vote' data-vote='down' data-thingid={ this.props.listing.id }>
+                    <span className='glyphicon glyphicon-circle-arrow-down'></span>
+                  </a>
+                </li>
 
-                &nbsp;&middot;
+                <li>
+                  <span className='text-muted'>
+                    { submitted }
+                  </span>
+                </li>
 
-                <span className='text-muted'>
-                  { submitted }
-                </span>&nbsp;&middot;&nbsp;
+                <li>
+                  <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
+                    <span className='glyphicon glyphicon-user'></span>
+                    &nbsp;{ this.props.listing.author }
+                  </a>
 
-                <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
-                  <span className='glyphicon glyphicon-user'></span>
-                  &nbsp;{ this.props.listing.author }
-                </a>
+                  { authorFlair }
+                </li>
 
-                &nbsp;{ authorFlair }&nbsp;&middot;&nbsp;
-
-                <a href={ permalink }>
-                  <span className='glyphicon glyphicon-comment'></span>
-                  &nbsp;{ this.props.listing.num_comments }
-                </a>
-              </p>
+                <li>
+                  <a href={ permalink }>
+                    <span className='glyphicon glyphicon-comment'></span>
+                    &nbsp;{ this.props.listing.num_comments }
+                  </a>
+                </li>
+              </ul>
             </footer>
           </div>
         </div>

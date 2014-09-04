@@ -58,30 +58,46 @@ var Comment = React.createClass({
           borderColor: borderColor
         }}>
           <div className='comment-submitted'>
-            <strong>
-              <a href={ '/u/' + this.props.comment.author } className={ distinguished }>
-                { this.props.comment.author }
-              </a>
-            </strong>
+            <ul className='linkbar'>
+              <li>
+                <strong>
+                  <a href={ '/u/' + this.props.comment.author } className={ distinguished }>
+                    { this.props.comment.author }
+                  </a>
+                </strong>
 
-            { authorFlair }&nbsp;&middot;&nbsp;
+                { authorFlair }
+              </li>
 
-            { submitted } { edited }&middot;&nbsp;
 
-            <a href='#'><span className='glyphicon glyphicon-circle-arrow-up'></span></a>&nbsp;
-            { this.props.comment.score }&nbsp;
-            <a href='#'><span className='glyphicon glyphicon-circle-arrow-down'></span></a>
+              <li>
+                { submitted }{ edited }
+              </li>
 
-            &nbsp;&middot;
-            <div className='dropdown dropdown-inline'>
-              <a data-toggle='dropdown' href='#'>Actions <span className='caret'></span></a>
-              <ul className='dropdown-menu' role='menu'>
-                <li><a href='#'>share</a></li>
-                <li><a href='#'>save</a></li>
-                <li><a href='#'>hide</a></li>
-                <li><a href='#'>report</a></li>
-              </ul>
-            </div>
+              <li>
+                <a href={ '/vote/' + this.props.comment.id + '?direction=up' } 
+                  className='vote' data-vote='up' data-thingid={ this.props.comment.id }>
+                  <span className='glyphicon glyphicon-circle-arrow-up'></span>
+                </a>&nbsp;
+                { this.props.comment.score }&nbsp;
+                <a href={ '/vote/' + this.props.comment.id + '?direction=down' } 
+                  className='vote' data-vote='down' data-thingid={ this.props.comment.id }>
+                  <span className='glyphicon glyphicon-circle-arrow-down'></span>
+                </a>
+              </li>
+
+              <li>
+                <div className='dropdown dropdown-inline'>
+                  <a data-toggle='dropdown' href='#'>Actions <span className='caret'></span></a>
+                  <ul className='dropdown-menu' role='menu'>
+                    <li><a href='#'>share</a></li>
+                    <li><a href='#'>save</a></li>
+                    <li><a href='#'>hide</a></li>
+                    <li><a href='#'>report</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
           </div>
 
           <div className='comment-content' dangerouslySetInnerHTML={{

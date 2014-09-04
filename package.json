@@ -37,7 +37,7 @@
     "moment": "^2.8.2",
     "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "reddit-text-js": "0.0.8",
-    "snoocore": "^1.7.0"
+    "snoocore": "git+https://github.com/ajacksified/snoocore.git#master"
   },
   "devDependencies": {
     "gulp": "~3.8.6",

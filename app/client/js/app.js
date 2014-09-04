@@ -8,3 +8,5 @@ $(document).off('.collapse.data-api')
 var Collapse = require('./components/collapse');
 Collapse.bind('[data-toggle=collapse]');
 
+var Vote = require('./components/vote');
+Vote.bind('[data-vote]');
