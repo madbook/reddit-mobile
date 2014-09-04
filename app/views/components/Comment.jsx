@@ -90,10 +90,16 @@ var Comment = React.createClass({
                 <div className='dropdown dropdown-inline'>
                   <a data-toggle='dropdown' href='#'>Actions <span className='caret'></span></a>
                   <ul className='dropdown-menu' role='menu'>
-                    <li><a href='#'>share</a></li>
-                    <li><a href='#'>save</a></li>
-                    <li><a href='#'>hide</a></li>
-                    <li><a href='#'>report</a></li>
+                    <li>
+                      <a href='#' role='menuitem' tabIndex='-1'>
+                        <span className='glyphicons glyphicons-gilded' />
+                        gild
+                      </a>
+                    </li>
+                    <li><a href='#' role='menuitem' tabIndex='-1'>share</a></li>
+                    <li><a href='#' role='menuitem' tabIndex='-1'>save</a></li>
+                    <li><a href='#' role='menuitem' tabIndex='-1'>hide</a></li>
+                    <li><a href='#' role='menuitem' tabIndex='-1'>report</a></li>
                   </ul>
                 </div>
               </li>

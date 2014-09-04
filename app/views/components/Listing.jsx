@@ -230,6 +230,12 @@ var Listing = React.createClass({
                 <span className='caret'></span>
               </button>
               <ul className='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>
+                <li>
+                  <a href='#' role='menuitem' tabIndex='-1'>
+                    <span className='glyphicons glyphicons-gilded' />
+                    gild
+                  </a>
+                </li>
                 <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Share</a></li>
                 <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Save</a></li>
                 <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Hide</a></li>
@@ -255,7 +261,7 @@ var Listing = React.createClass({
               <div className='vertical-spacing-sm'>
                 { subredditLabel }
                 { domain }
-                { external }
+                { external }&nbsp;
                 { gilded }
               </div>
 
