@@ -2,40 +2,36 @@ var React = require('react');
 var _ = require('lodash');
 var q = require('q');
 var querystring = require('querystring');
-
 var V1Api = require('snoode').v1;
+var lru = require('lru-cache');
+
+var shortCache = lru({
+  max: 100,
+  maxAge: 1000 * 10
+});
+
+var mediumCache = lru({
+  max: 500,
+  maxAge: 1000 * 30
+});
 
 // TODO: NOTE: NOT PROD READY, MEMORY, WILL DIE
-var viewCache = {};
-
-function cache(template, seconds, app, req, res, fn) {
-  var defer = q.defer();
-
+function cache(template, cache, app, req, res, fn) {
   var cacheKey = req.url;
+  var page = cache.get(cacheKey);
 
-  res.setHeader('Cache-Control', 'public, max-age=' + seconds);
-  var now = new Date();
-
-  if (viewCache[cacheKey]) {
-    if(now < viewCache[cacheKey].nextRender) {
-      defer.resolve({ res: res, page: viewCache[cacheKey].renderedPage});
-    }
+  if (page) {
+    res.setHeader('Cache-Control', 'public, max-age=' + cache._maxAge / 1000);
+    res.send(page);
   } else {
-    viewCache[cacheKey] = {};
-    viewCache[cacheKey] = viewCache[cacheKey];
-  }
-
-  fn(req).done(function(props) {
-    app.render(template, props, function(err, str) {
-      now = Date(now.setSeconds(now.getSeconds() + 10));
-      viewCache[cacheKey].nextRender = now;
-      viewCache[cacheKey].renderedPage = str;
-
-      res.send(str);
+    fn(req).done(function(props) {
+      app.render(template, props, function(err, str) {
+        res.setHeader('Cache-Control', 'public, max-age=' + cache._maxAge / 1000);
+        cache.set(cacheKey, str);
+        res.send(str);
+      });
     });
-  });
-
-  return defer.promise;
+  }
 }
 
 module.exports = function(app) {
@@ -58,7 +54,7 @@ module.exports = function(app) {
   }
 
   app.get('/', function(req, res) {
-    cache('pages/index', 30, app, req, res, function(req) {
+    cache('pages/index', mediumCache, app, req, res, function(req) {
       var defer = q.defer();
 
       var props = buildProps(req, { });
@@ -84,7 +80,7 @@ module.exports = function(app) {
   });
 
   app.get('/r/:subreddit', function(req, res) {
-    cache('pages/index', 30, app, req, res, function(req) {
+    cache('pages/index', mediumCache, app, req, res, function(req) {
       var defer = q.defer();
 
       var props = buildProps(req, { });
@@ -116,7 +112,7 @@ module.exports = function(app) {
   });
 
   app.get('/r/:subreddit/comments/:listingId/:listingTitle', function(req, res) {
-    cache('pages/listing', 5, app, req, res, function(req) {
+    cache('pages/listing', shortCache, app, req, res, function(req) {
       var defer = q.defer();
 
       var props = buildProps(req, { });
