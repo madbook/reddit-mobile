@@ -3,6 +3,16 @@ switcharoo
 
 A reddit web client. [Discuss on Reddit](https://www.reddit.com/r/theredditswitcharoo)
 
+## :warning: THIS IS A PROTOTYPE
+It is not production-ready, or even review-ready, and may be
+dangerous to run until this statement disappears. It is a
+prototype of how new technologies may build a new reddit web client.
+It is not meant to be a complete replacement, or even a good example
+of code, until this statement disappears.
+
+It is not documented well or stable. It *will be*. Just not right now.
+
+
 Technologies
 ------------
 
