@@ -107,7 +107,7 @@ var Comment = React.createClass({
           </div>
 
           <div className='comment-content' dangerouslySetInnerHTML={{
-            __html: process(this.props.comment.body).html
+            __html: process(this.props.comment.body)
           }} />
         </article>
 

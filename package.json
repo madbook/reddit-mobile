@@ -38,7 +38,7 @@
     "moment": "^2.8.2",
     "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "q": "^1.0.1",
-    "reddit-text-js": "0.0.8",
+    "reddit-text-js": "0.1.0",
     "snoode": "0.0.2"
   },
   "devDependencies": {
