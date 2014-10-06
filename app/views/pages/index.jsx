@@ -35,7 +35,7 @@ var Index = React.createClass({
     }
 
     return (
-      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session}>
+      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session} csrf={this.props.csrf}>
         {
           this.props.listings.map(function(listing, i) {
             if (listing.hidden) { 

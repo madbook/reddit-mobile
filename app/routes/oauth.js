@@ -33,7 +33,7 @@ module.exports = function(app){
   app.get('/login', function(req, res){
     var redirectURI = OAuth2.AuthCode.authorizeURL({
       redirect_uri: redirect,
-      scope: 'history,identity,mysubreddits,read,subscribe',
+      scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
       state: req.csrfToken(),
     });
 

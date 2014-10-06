@@ -4,6 +4,8 @@ var q = require('q');
 var querystring = require('querystring');
 var lru = require('lru-cache');
 
+var Vote = require('snoode').models.Vote;
+
 var shortCache = lru({
   max: 100,
   maxAge: 1000 * 10
@@ -19,13 +21,11 @@ function cache(template, cache, app, req, res, fn) {
   var cacheKey = buildCacheKey(req);
   var page = cache.get(cacheKey);
 
-  if (page) {
-    res.setHeader('Cache-Control', 'public, max-age=' + cache._maxAge / 1000);
+  if (page && !req.session.token) {
     res.send(page);
   } else {
     fn(req).done(function(props) {
       app.render(template, props, function(err, str) {
-        res.setHeader('Cache-Control', 'public, max-age=' + cache._maxAge / 1000);
         cache.set(cacheKey, str);
         res.send(str);
       });
@@ -171,5 +171,40 @@ module.exports = function(app) {
       return defer.promise;
     });
   });
+
+  app.route('/vote/:id')
+    .all(function(req, res, next) {
+      var endpoints = {
+        '1': 'comment',
+        '3': 'listing',
+      }
+
+      var id = req.params.id;
+      var endpoint = endpoints[id[1]];
+
+      var vote = new Vote({
+        direction: parseInt(req.query.direction),
+        id: id,
+      });
+
+
+      if (vote.direction !== undefined && vote.id) {
+        var options = buildOptions(req, {
+          model: vote,
+        });
+
+        app.V1Api(req).votes(endpoint).post(options).done(function() {
+          next();
+        });
+      } else {
+        next();
+      }
+    })
+    .get(function(req, res) {
+      res.redirect('back');
+    })
+    .post(function(req, res) {
+      res.status(204).send();
+    })
 }
 

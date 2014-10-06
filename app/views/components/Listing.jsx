@@ -35,8 +35,10 @@ var Listing = React.createClass({
     var subredditLabel;
     var domain;
 
-    var upVotedClass = '';
-    var downVotedClass = '';
+    var upvotedClass = '';
+    var downvotedClass = '';
+    var upvoteDirection = 1;
+    var downvoteDirection = -1;
 
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
@@ -70,9 +72,11 @@ var Listing = React.createClass({
     var scoreClass = 'up';
 
     if (this.props.listing.likes === true) {
-      upVotedClass = ' voted text-upvote';
+      upvotedClass = ' voted text-upvote';
+      upvoteDirection = 0;
     } else if (this.props.listing.likes === false) {
-      downVotedClass = ' voted text-downvote';
+      downvotedClass = ' voted text-downvote';
+      downvoteDirection = 0;
     }
 
     if (!this.props.hideSubredditLabel) {
@@ -214,7 +218,7 @@ var Listing = React.createClass({
 
         embedContainer = (
           <div className='col-xs-12'>
-            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
+            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.name }>
               { embedContents }
               { embedFooter }
             </div>
@@ -277,8 +281,8 @@ var Listing = React.createClass({
 
               <ul className='linkbar vertical-spacing listing-submitted'>
                 <li>
-                  <a href={ '/vote/' + this.props.listing.id + '?direction=up' } 
-                    className={'vote' + upVotedClass } data-vote='up' data-thingid={ this.props.listing.id }>
+                  <a href={ '/vote/' + this.props.listing.name + '?direction=' + upvoteDirection } 
+                    className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.listing.name }>
                     <span className='glyphicon glyphicon-circle-arrow-up'></span>
                   </a>&nbsp;
 
@@ -286,8 +290,8 @@ var Listing = React.createClass({
                     { this.props.listing.score }&nbsp;
                   </span>
 
-                  <a href={ '/vote/' + this.props.listing.id + '?direction=down' } 
-                    className={'vote' + downVotedClass } data-vote='down' data-thingid={ this.props.listing.id }>
+                  <a href={ '/vote/' + this.props.listing.name + '?direction=' + downvoteDirection } 
+                    className={'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.listing.name }>
                     <span className='glyphicon glyphicon-circle-arrow-down'></span>
                   </a>
                 </li>

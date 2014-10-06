@@ -1,3 +1,5 @@
+var csrf = $('#csrf-token-meta-tag').attr('content');
+
 function Vote(trigger, direction, thingId, siblings) {
   this.$trigger = $(trigger);
   this.direction = this.$trigger.data('vote');
@@ -30,6 +32,8 @@ Vote.prototype.vote = function() {
     this.$trigger.addClass('text-' + this.direction + 'vote');
     // add vote
   }
+
+  $.post(this.$trigger.attr('href'), { _csrf: csrf } );
 }
 
 Vote.bind = function(triggerSelector) {
