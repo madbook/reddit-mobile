@@ -281,19 +281,25 @@ var Listing = React.createClass({
 
               <ul className='linkbar vertical-spacing listing-submitted'>
                 <li>
-                  <a href={ '/vote/' + this.props.listing.name + '?direction=' + upvoteDirection } 
-                    className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.listing.name }>
-                    <span className='glyphicon glyphicon-circle-arrow-up'></span>
-                  </a>&nbsp;
-
-                  <span className={ 'text-' + scoreClass + 'vote' }>
-                    { this.props.listing.score }&nbsp;
-                  </span>
-
-                  <a href={ '/vote/' + this.props.listing.name + '?direction=' + downvoteDirection } 
-                    className={'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.listing.name }>
-                    <span className='glyphicon glyphicon-circle-arrow-down'></span>
-                  </a>
+                  <ul className='list-compact-horizontal'>
+                    <li>
+                      <a href={ '/vote/' + this.props.listing.name + '?direction=' + upvoteDirection } 
+                        className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.listing.name }>
+                        <span className='glyphicon glyphicon-circle-arrow-up'></span>
+                      </a>
+                    </li>
+                    <li>
+                      <span className='vote-score' data-vote-score={this.props.listing.score }>
+                        { this.props.listing.score }
+                      </span>
+                    </li>
+                    <li>
+                      <a href={ '/vote/' + this.props.listing.name + '?direction=' + downvoteDirection } 
+                        className={'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.listing.name }>
+                        <span className='glyphicon glyphicon-circle-arrow-down'></span>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
 
                 <li>

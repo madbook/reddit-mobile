@@ -30,6 +30,19 @@ var Comment = React.createClass({
     var edited = this.props.edited ? '* ' : '';
     var comment = 'comments';
 
+    var upvoteDirection = 1;
+    var downvoteDirection = 1;
+    var upvotedClass = '';
+    var downvotedClass = '';
+
+    if (this.props.comment.likes === true) {
+      upvoteDirection = 0;
+      upvotedClass = ' voted text-upvote';
+    } else if (this.props.comment.likes === false) {
+      downvoteDirection = 0;
+      downvotedClass = ' voted text-downvote';
+    }
+
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
     borderColor = getColorForScore(this.props.comment.score, level);
@@ -75,15 +88,25 @@ var Comment = React.createClass({
               </li>
 
               <li>
-                <a href={ '/vote/' + this.props.comment.id + '?direction=up' } 
-                  className='vote' data-vote='up' data-thingid={ this.props.comment.id }>
-                  <span className='glyphicon glyphicon-circle-arrow-up'></span>
-                </a>&nbsp;
-                { this.props.comment.score }&nbsp;
-                <a href={ '/vote/' + this.props.comment.id + '?direction=down' } 
-                  className='vote' data-vote='down' data-thingid={ this.props.comment.id }>
-                  <span className='glyphicon glyphicon-circle-arrow-down'></span>
-                </a>
+                <ul className='list-compact-horizontal'>
+                  <li>
+                    <a href={ '/vote/' + this.props.comment.name + '?direction=' + upvoteDirection  } 
+                      className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.comment.name }>
+                      <span className='glyphicon glyphicon-circle-arrow-up'></span>
+                    </a>
+                  <li>
+                  </li>
+                    <span className='vote-score' data-vote-score={this.props.comment.score }>
+                      { this.props.comment.score }
+                    </span>
+                  <li>
+                  </li>
+                    <a href={ '/vote/' + this.props.comment.name + '?direction=' + downvoteDirection } 
+                      className={ 'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.comment.name }>
+                      <span className='glyphicon glyphicon-circle-arrow-down'></span>
+                    </a>
+                  </li>
+                </ul>
               </li>
 
               <li>

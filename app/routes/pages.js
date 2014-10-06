@@ -156,9 +156,9 @@ module.exports = function(app) {
         }
       }
 
-      app.V1Api(req).comments().get({
-        linkId: req.params.listingId
-      }).done(function(data){
+      options.linkId = req.params.listingId
+
+      app.V1Api(req).comments().get(options).done(function(data){
         props.listing = data.listing;
 
         props.comments = data.comments.map(function(comment){

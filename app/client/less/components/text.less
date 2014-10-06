@@ -32,10 +32,10 @@ a.voted.text-downvote:focus,
   padding: (@row-spacing-base / 2) 0;
 
   > li {
+    padding: 0;
     display: inline-block;
     margin-right: .5em;
     padding-right: .5em;
-    padding: 0;
 
     &:not(:first-child):before {
       content: '\b7\a0';
@@ -43,3 +43,14 @@ a.voted.text-downvote:focus,
   }
 }
 
+.list-compact-horizontal {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+    margin: 0;
+    padding: 0  0 0 .25em;
+  }
+}
