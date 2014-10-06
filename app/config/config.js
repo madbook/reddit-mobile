@@ -8,6 +8,10 @@ module.exports = {
   cookieSecret: process.env.PERSEPHONE_COOKIE_SECRET || 'snoo',
   env: 'dev',
 
+  nonAuthAPIOrigin: 'https://ssl.reddit.com',
+  authAPIOrigin: 'https://oauth.reddit.com',
+  userAgent: process.env.API_USER_AGENT,
+
   oauth: {
     clientId: process.env.OAUTH_CLIENT_ID || '',
     secret: process.env.OAUTH_SECRET || '',

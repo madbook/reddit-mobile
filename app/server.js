@@ -8,6 +8,7 @@ var session = require('express-session')
 var csurf = require('csurf');
 
 var pageRoutes = require('./routes/pages');
+var oauthRoutes = require('./routes/oauth');
 var apiRoutes = require('./routes/api');
 var config = {};
 
@@ -56,8 +57,29 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
+// Set up api access
+var V1Api = require('snoode').v1;
+var nonAuthAPI = new V1Api({
+  userAgent: config.userAgent,
+  origin: config.nonAuthAPIOrigin,
+});
+
+var oauthAPI = new V1Api({
+  userAgent: config.userAgent,
+  origin: config.authAPIOrigin,
+});
+
+app.V1Api = function(req){
+  if(req.session.token){
+    return oauthAPI;
+  }
+
+  return nonAuthAPI;
+}
+
 // Set up the routes
 pageRoutes(app);
+oauthRoutes(app);
 apiRoutes(app);
 
 // Create a server using http

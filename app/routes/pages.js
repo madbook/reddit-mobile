@@ -2,7 +2,6 @@ var React = require('react');
 var _ = require('lodash');
 var q = require('q');
 var querystring = require('querystring');
-var V1Api = require('snoode').v1;
 var lru = require('lru-cache');
 
 var shortCache = lru({
@@ -17,7 +16,7 @@ var mediumCache = lru({
 
 // TODO: NOTE: NOT PROD READY, MEMORY, WILL DIE
 function cache(template, cache, app, req, res, fn) {
-  var cacheKey = req.url;
+  var cacheKey = buildCacheKey(req);
   var page = cache.get(cacheKey);
 
   if (page) {
@@ -34,11 +33,17 @@ function cache(template, cache, app, req, res, fn) {
   }
 }
 
-module.exports = function(app) {
-  var reddit = new V1Api({
-    userAgent: 'switcharoo v0.0.1'
-  });
+function buildCacheKey(req) {
+  var key = req.url; //includes querystring
 
+  if(req.session.token) {
+    key += '&token=' + req.session.token;
+  }
+
+  return key;
+}
+
+module.exports = function(app) {
   function buildProps(req, props) {
     var defaultProps = {
       csrf: req.csrfToken(),
@@ -53,24 +58,35 @@ module.exports = function(app) {
     return _.defaults(props, defaultProps);
   }
 
+  function buildOptions(req, options) {
+    options.query = options.query || {};
+    options.headers = options.headers || {};
+
+    if(req.session.token) {
+      options.headers.Authorization = 'bearer ' + req.session.token.access_token
+    }
+
+    return options;
+  }
+
   app.get('/', function(req, res) {
     cache('pages/index', mediumCache, app, req, res, function(req) {
       var defer = q.defer();
 
       var props = buildProps(req, { });
-      var options = {}
+      var options = buildOptions(req, {});
 
       if (req.query.count && req.query.count <= 25) {
-        options.count = req.query.count;
+        options.query.count = req.query.count;
       }
 
       if (req.query.after) {
-        options.after = req.query.after;
+        options.query.after = req.query.after;
       }
 
       props.page = req.query.page || 0;
 
-      reddit.links().get(options).done(function(data){
+      app.V1Api(req).links().get(options).done(function(data){
         props.listings = data;
         defer.resolve(props);
       });
@@ -85,21 +101,23 @@ module.exports = function(app) {
 
       var props = buildProps(req, { });
 
-      var options = {
-        subredditName: req.params.subreddit
-      }
+      var options = buildOptions(req, {
+        query: {
+          subredditName: req.params.subreddit
+        }
+      });
 
       if (req.query.count && req.query.count <= 25) {
-        options.count = req.query.count;
+        options.query.count = req.query.count;
       }
 
       if (req.query.after) {
-        options.after = req.query.after;
+        options.query.after = req.query.after;
       }
 
       props.page = req.query.page || 0;
 
-      reddit.links().get(options).done(function(data){
+      app.V1Api(req).links().get(options).done(function(data){
         props.listings = data;
 
         props.hideSubredditLabel = true;
@@ -116,6 +134,7 @@ module.exports = function(app) {
       var defer = q.defer();
 
       var props = buildProps(req, { });
+      var options = buildOptions(req, {});
 
       function decodeHtmlEntities(html){
         return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<');
@@ -137,7 +156,7 @@ module.exports = function(app) {
         }
       }
 
-      reddit.comments().get({
+      app.V1Api(req).comments().get({
         linkId: req.params.listingId
       }).done(function(data){
         props.listing = data.listing;

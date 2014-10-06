@@ -39,7 +39,8 @@
     "pleasejs": "git+https://github.com/ajacksified/PleaseJS.git#master",
     "q": "^1.0.1",
     "reddit-text-js": "0.1.0",
-    "snoode": "0.0.2"
+    "simple-oauth2": "^0.2.0",
+    "snoode": "0.0.5"
   },
   "devDependencies": {
     "gulp": "~3.8.6",
