@@ -34,6 +34,10 @@ var Listing = React.createClass({
     var embedFooter;
     var subredditLabel;
     var domain;
+
+    var upVotedClass = '';
+    var downVotedClass = '';
+
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
 
@@ -64,6 +68,12 @@ var Listing = React.createClass({
     var authorFlairClass = (this.props.listing.author_flair_css_class);
 
     var scoreClass = 'up';
+
+    if (this.props.listing.likes === true) {
+      upVotedClass = ' voted text-upvote';
+    } else if (this.props.listing.likes === false) {
+      downVotedClass = ' voted text-downvote';
+    }
 
     if (!this.props.hideSubredditLabel) {
       subredditLabel = (
@@ -180,7 +190,7 @@ var Listing = React.createClass({
           <div className='col-xs-12'>
             <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
               <div className='panel-body' dangerouslySetInnerHTML={{
-                __html: process(this.props.listing.selftext).html
+                __html: process(this.props.listing.selftext)
               }} />
 
               { embedFooter }
@@ -268,7 +278,7 @@ var Listing = React.createClass({
               <ul className='linkbar vertical-spacing listing-submitted'>
                 <li>
                   <a href={ '/vote/' + this.props.listing.id + '?direction=up' } 
-                    className='vote' data-vote='up' data-thingid={ this.props.listing.id }>
+                    className={'vote' + upVotedClass } data-vote='up' data-thingid={ this.props.listing.id }>
                     <span className='glyphicon glyphicon-circle-arrow-up'></span>
                   </a>&nbsp;
 
@@ -277,7 +287,7 @@ var Listing = React.createClass({
                   </span>
 
                   <a href={ '/vote/' + this.props.listing.id + '?direction=down' } 
-                    className='vote' data-vote='down' data-thingid={ this.props.listing.id }>
+                    className={'vote' + downVotedClass } data-vote='down' data-thingid={ this.props.listing.id }>
                     <span className='glyphicon glyphicon-circle-arrow-down'></span>
                   </a>
                 </li>

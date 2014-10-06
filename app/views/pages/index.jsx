@@ -38,6 +38,10 @@ var Index = React.createClass({
       <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session}>
         {
           this.props.listings.map(function(listing, i) {
+            if (listing.hidden) { 
+              return;
+            }
+
             var index = (page * 25) + i;
             return <Listing listing={listing} index={index} key={'page-listing-' + index} page={ page } hideSubredditLabel={ hideSubredditLabel } />;
           })
