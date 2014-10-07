@@ -3,7 +3,7 @@ module.exports = function(app){
     clientID: app.config.oauth.clientId,
     clientSecret: app.config.oauth.secret,
     site: app.config.nonAuthAPIOrigin,
-    authorizationPath: '/api/v1/authorize',
+    authorizationPath: '/api/v1/authorize.compact',
     tokenPath: '/api/v1/access_token'
   });
 
