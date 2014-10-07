@@ -4,6 +4,7 @@ var React = require('react');
 var moment = require('moment');
 var process = require('reddit-text-js');
 var difference = require('../../client/js/lib/formatDifference').short;
+var Vote = require('../components/Vote');
 
 var imgRegex = /\.(?:gif|jpe?g|png)(?:\?.*)?$/;
 var videoRegex = /^https?:\/\/.*youtube|vimeo|ustream|qik\..+\/.*./;
@@ -35,11 +36,6 @@ var Listing = React.createClass({
     var subredditLabel;
     var domain;
 
-    var upvotedClass = '';
-    var downvotedClass = '';
-    var upvoteDirection = 1;
-    var downvoteDirection = -1;
-
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
 
@@ -59,7 +55,6 @@ var Listing = React.createClass({
     );
 
     var embedURL = richContent(this.props.listing);
-    var embedCollapseClass = this.props.expanded ? 'in' : 'out';
     var thumbnailSrc = '/img/default.gif';
 
     var submitted = difference(this.props.listing.created_utc * 1000);
@@ -71,13 +66,7 @@ var Listing = React.createClass({
 
     var scoreClass = 'up';
 
-    if (this.props.listing.likes === true) {
-      upvotedClass = ' voted text-upvote';
-      upvoteDirection = 0;
-    } else if (this.props.listing.likes === false) {
-      downvotedClass = ' voted text-downvote';
-      downvoteDirection = 0;
-    }
+    var opClass = this.props.single ? 'label label-primary' : 'text-muted';
 
     if (!this.props.hideSubredditLabel) {
       subredditLabel = (
@@ -148,56 +137,56 @@ var Listing = React.createClass({
     }
 
     if (this.props.listing.embed || this.props.listing.selftext || embedURL) {
-      if (!this.props.expanded) {
-        embedFooter = (
-          <div className='panel-footer listing-submitted'>
-            <ul className='linkbar listing-submitted'>
-              <li>
-                <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-                  { this.props.listing.domain }
-                </a>
-              </li>
+      embedFooter = (
+        <div className='panel-footer listing-submitted'>
+          <ul className='linkbar listing-submitted'>
+            <li>
+              <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+                { this.props.listing.domain }
+              </a>
+            </li>
 
-              <li>
-                <a href={ url }>
-                  Open&nbsp;
-                  <small className='glyphicon glyphicon-new-window'></small>
-                </a>
-              </li>
+            <li>
+              <a href={ url }>
+                Open&nbsp;
+                <small className='glyphicon glyphicon-new-window'></small>
+              </a>
+            </li>
 
-              <li>
-                <a href={ permalink }>
-                  View Comments ({ this.props.listing.num_comments })
-                </a>
-              </li>
-            </ul>
+            <li>
+              <a href={ permalink }>
+                View Comments ({ this.props.listing.num_comments })
+              </a>
+            </li>
+          </ul>
 
-            <a href='javascript:void(0);' data-toggle='collapse' 
-              data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
-              <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
-            </a>
-          </div>
-        );
-
-        titleLink = (
-          <a href={ url }
-             data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
-            <h1 className={ 'listing-title' + distinguished }>
-              { this.props.listing.title } { edited }
-            </h1>
+          <a href='javascript:void(0);' data-toggle='collapse' 
+            data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
+            <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
           </a>
-        );
-      }
+        </div>
+      );
+
+      titleLink = (
+        <a href={ url }
+           data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
+          <h1 className={ 'listing-title' + distinguished }>
+            { this.props.listing.title } { edited }
+          </h1>
+        </a>
+      );
 
       if (this.props.listing.selftext) {
         embedContainer = (
-          <div className='col-xs-12'>
-            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
-              <div className='panel-body' dangerouslySetInnerHTML={{
-                __html: process(this.props.listing.selftext)
-              }} />
+          <div className='row'>
+            <div className='col-xs-12'>
+              <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
+                <div className='panel-body' dangerouslySetInnerHTML={{
+                  __html: process(this.props.listing.selftext)
+                }} />
 
-              { embedFooter }
+                { embedFooter }
+              </div>
             </div>
           </div>
         );
@@ -217,10 +206,12 @@ var Listing = React.createClass({
         }
 
         embedContainer = (
-          <div className='col-xs-12'>
-            <div className={ 'panel panel-default embed collapse ' + embedCollapseClass } id={ 'embed-' + this.props.listing.id }>
-              { embedContents }
-              { embedFooter }
+          <div className='row'>
+            <div className='col-xs-12'>
+              <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
+                { embedContents }
+                { embedFooter }
+              </div>
             </div>
           </div>
         );
@@ -232,100 +223,86 @@ var Listing = React.createClass({
     }
 
     return (
-      <article className='listing row'>
-        <div className='col-xs-3 col-sm-2'>
-          <div className='listing-comments'>
-            <a href={ url }>
-              <img src={ thumbnailSrc } className='listing-thumbnail' />
-            </a>
+      <article className='listing'>
+        <div className='row vertical-spacing'>
+          <div className='col-xs-3 col-sm-2'>
+            <div className='listing-comments'>
+              <a href={ url }>
+                <img src={ thumbnailSrc } className='listing-thumbnail' />
+              </a>
 
-            <div className='listing-actions'>
-              <button className='btn btn-xs btn-block btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown'>
-                <span className='caret'></span>
-              </button>
-              <ul className='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>
-                <li>
-                  <a href='#' role='menuitem' tabIndex='-1'>
-                    <span className='glyphicons glyphicons-gilded' />
-                    gild
-                  </a>
-                </li>
-                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Share</a></li>
-                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Save</a></li>
-                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Hide</a></li>
-                <li role='presentation' className='divider'></li>
-                <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Report</a></li>
-              </ul>
+              <div className='listing-actions'>
+                <button className='btn btn-xs btn-block btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown'>
+                  <span className='caret'></span>
+                </button>
+                <ul className='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>
+                  <li>
+                    <a href='#' role='menuitem' tabIndex='-1'>
+                      <span className='glyphicons glyphicons-gilded' />
+                      gild
+                    </a>
+                  </li>
+                  <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Share</a></li>
+                  <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Save</a></li>
+                  <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Hide</a></li>
+                  <li role='presentation' className='divider'></li>
+                  <li role='presentation'><a role='menuitem' tabIndex='-1' href='#'>Report</a></li>
+                </ul>
+              </div>
             </div>
+
           </div>
 
-        </div>
-
-        <div className='col-xs-9 col-sm-10'>
-          <header>
-            <div className='link-flair-container'>
-              { nsfwFlair }
-              { linkFlair }
-            </div>
-
-            { titleLink }
-          </header>
-
-          <div className='listing-footer'>
-            <footer>
-              <div>
-                { subredditLabel }
-                { domain }
-                { external }&nbsp;
-                { gilded }
+          <div className='col-xs-9 col-sm-10'>
+            <header>
+              <div className='link-flair-container'>
+                { nsfwFlair }
+                { linkFlair }
               </div>
 
-              <ul className='linkbar listing-submitted'>
-                <li>
-                  <ul className='list-compact-horizontal'>
-                    <li>
-                      <a href={ '/vote/' + this.props.listing.name + '?direction=' + upvoteDirection } 
-                        className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.listing.name }>
-                        <span className='glyphicon glyphicon-circle-arrow-up'></span>
-                      </a>
-                    </li>
-                    <li>
-                      <span className='vote-score' data-vote-score={this.props.listing.score } data-thingid={ this.props.listing.name }>
-                        { this.props.listing.score }
-                      </span>
-                    </li>
-                    <li>
-                      <a href={ '/vote/' + this.props.listing.name + '?direction=' + downvoteDirection } 
-                        className={'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.listing.name }>
-                        <span className='glyphicon glyphicon-circle-arrow-down'></span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+              { titleLink }
+            </header>
 
-                <li>
-                  <span className='text-muted'>
-                    { submitted }
+            <div className='listing-footer'>
+              <footer>
+                <div>
+                  { subredditLabel }
+                  { domain }
+                  { external }&nbsp;
+                  { gilded }
+                </div>
+
+                <ul className='linkbar listing-submitted'>
+                  <li>
+                    <Vote thing={ this.props.listing } />
+                  </li>
+
+                  <li>
+                    <span className='text-muted'>
+                      { submitted }
+                    </span>
+                  </li>
+
+                  <li>
+                    <a href={ permalink }>
+                      <span className='glyphicon glyphicon-comment'></span>
+                      &nbsp;{ this.props.listing.num_comments }
+                    </a>
+                  </li>
+                </ul>
+
+                <div className='listing-submitted'>
+                  <span className={ opClass + distinguished }>
+                    <a href={ '/u/' + this.props.listing.author }>
+                      <span className='glyphicon glyphicon-user'></span>
+                      &nbsp;{ this.props.listing.author }
+                    </a>
                   </span>
-                </li>
 
-                <li>
-                  <a href={ permalink }>
-                    <span className='glyphicon glyphicon-comment'></span>
-                    &nbsp;{ this.props.listing.num_comments }
-                  </a>
-                </li>
-              </ul>
-
-              <div className='listing-submitted'>
-                <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
-                  <span className='glyphicon glyphicon-user'></span>
-                  &nbsp;{ this.props.listing.author }
-                </a>
-
-                { authorFlair }
-              </div>
-            </footer>
+                  { authorFlair }
+                </div>
+              </footer>
+            </div>
           </div>
         </div>
 

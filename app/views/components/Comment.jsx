@@ -5,6 +5,7 @@ var moment = require('moment');
 var difference = require('../../client/js/lib/formatDifference').short;
 var please = require('pleasejs');
 var process = require('reddit-text-js');
+var Vote = require('../components/Vote');
 
 var orangereds = please.make_scheme({ h: 16, s: .5, v: 1 }, {
   scheme_type: 'mono'
@@ -26,22 +27,11 @@ var Comment = React.createClass({
     var authorFlair;
     var level = this.props.nestingLevel;
     var submitted = difference(this.props.comment.created_utc * 1000);
+    var op = this.props.op;
 
     var edited = this.props.edited ? '* ' : '';
     var comment = 'comments';
-
-    var upvoteDirection = 1;
-    var downvoteDirection = 1;
-    var upvotedClass = '';
-    var downvotedClass = '';
-
-    if (this.props.comment.likes === true) {
-      upvoteDirection = 0;
-      upvotedClass = ' voted text-upvote';
-    } else if (this.props.comment.likes === false) {
-      downvoteDirection = 0;
-      downvotedClass = ' voted text-downvote';
-    }
+    var opClass = '';
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
@@ -61,6 +51,10 @@ var Comment = React.createClass({
 
     var offsetClass = '';
 
+    if (op == this.props.comment.author) {
+      opClass = 'label label-primary';
+    }
+
     if (level > 0) {
       offsetClass = ' comment-offset comment-offset-' + level
     }
@@ -73,7 +67,7 @@ var Comment = React.createClass({
           <div className='comment-submitted'>
             <ul className='linkbar'>
               <li>
-                <strong>
+                <strong className={ opClass }>
                   <a href={ '/u/' + this.props.comment.author } className={ distinguished }>
                     { this.props.comment.author }
                   </a>
@@ -88,25 +82,7 @@ var Comment = React.createClass({
               </li>
 
               <li>
-                <ul className='list-compact-horizontal'>
-                  <li>
-                    <a href={ '/vote/' + this.props.comment.name + '?direction=' + upvoteDirection  } 
-                      className={'vote' + upvotedClass } data-vote='up' data-thingid={ this.props.comment.name }>
-                      <span className='glyphicon glyphicon-circle-arrow-up'></span>
-                    </a>
-                  <li>
-                  </li>
-                    <span className='vote-score' data-vote-score={this.props.comment.score }>
-                      { this.props.comment.score }
-                    </span>
-                  <li>
-                  </li>
-                    <a href={ '/vote/' + this.props.comment.name + '?direction=' + downvoteDirection } 
-                      className={ 'vote' + downvotedClass } data-vote='down' data-thingid={ this.props.comment.name }>
-                      <span className='glyphicon glyphicon-circle-arrow-down'></span>
-                    </a>
-                  </li>
-                </ul>
+                <Vote thing={ this.props.comment } />
               </li>
 
               <li>
@@ -137,7 +113,7 @@ var Comment = React.createClass({
         {
           this.props.comment.replies.map(function(comment, i) {
             if (comment) {
-              return <Comment comment={comment} index={i} key={'page-comment-' + i + ':' + i} nestingLevel={level + 1} />;
+              return <Comment comment={comment} index={i} key={'page-comment-' + i + ':' + i} nestingLevel={level + 1} op={op} />;
             }
           })
         }
