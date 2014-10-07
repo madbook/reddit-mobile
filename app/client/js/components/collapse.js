@@ -28,7 +28,7 @@ Collapse.prototype.showEmbed = function() {
     var $this = $(this);
     $this.data('embedded', true);
     $this.embedly({
-      key: 'f0b45a364e6849ff9aebf71fab6a6b68',
+      key: window.bootstrap.embedlyKey,
       display: function(obj) {
         if (obj.type === 'video' || obj.type === 'rich'){
           var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'

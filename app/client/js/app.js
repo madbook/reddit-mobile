@@ -1,4 +1,4 @@
-global.$ = global.jQuery = require('jquery');
+var $ = global.$ = global.jQuery = require('jquery');
 
 require('bootstrap');
 require('embedly');
@@ -10,3 +10,7 @@ Collapse.bind('[data-toggle=collapse]');
 
 var Vote = require('./components/vote');
 Vote.bind('[data-vote]');
+
+$.getJSON('/vars', function(data) {
+  window.bootstrap = data;
+});

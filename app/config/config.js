@@ -12,6 +12,8 @@ module.exports = {
   authAPIOrigin: 'https://oauth.reddit.com',
   userAgent: process.env.API_USER_AGENT,
 
+  embedlyKey: process.env.EMBEDLY_KEY,
+
   oauth: {
     clientId: process.env.OAUTH_CLIENT_ID || '',
     secret: process.env.OAUTH_SECRET || '',

@@ -206,5 +206,13 @@ module.exports = function(app) {
     .post(function(req, res) {
       res.status(204).send();
     })
+
+  app.get('/vars', function(req, res) {
+    var vars = {
+      embedlyKey: app.config.embedlyKey,
+    };
+
+    res.send(JSON.stringify(vars));
+  });
 }
 
