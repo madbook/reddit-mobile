@@ -29,16 +29,12 @@ a.voted.text-downvote:focus,
 .linkbar {
   display: inline-block;
   margin: 0;
-  padding: (@row-spacing-base / 2) 0;
+  padding: 0 0 (@row-spacing-base / 2) 0;
 
   > li {
     padding: 0;
     display: inline-block;
     margin-right: .5em;
-
-    &:not(:first-child):before {
-      content: '\b7\a0';
-    }
   }
 }
 

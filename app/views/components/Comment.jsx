@@ -32,6 +32,8 @@ var Comment = React.createClass({
     var edited = this.props.edited ? '* ' : '';
     var comment = 'comments';
     var opClass = '';
+    var commentCollapseClass = '';
+    var moreCommentsLink;
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
@@ -59,9 +61,26 @@ var Comment = React.createClass({
       offsetClass = ' comment-offset comment-offset-' + level
     }
 
+    if (this.props.comment.hidden) {
+      commentCollapseClass = 'hidden';
+    }
+
+    if(this.props.comment.firstHidden) {
+      moreCommentsLink = (
+        <a href='#' data-action='moreComments' className={ 'small ' + offsetClass } style={{
+          borderColor: borderColor
+        }}>
+          <span className='glyphicon glyphicon-plus'></span>&nbsp;
+          view more comments
+        </a>
+      );
+    }
+
     return (
       <div className='comment'>
-        <article className={ offsetClass } style={{
+        { moreCommentsLink }
+
+        <article className={ commentCollapseClass + offsetClass } style={{
           borderColor: borderColor
         }}>
           <div className='comment-submitted'>
@@ -113,7 +132,7 @@ var Comment = React.createClass({
         {
           this.props.comment.replies.map(function(comment, i) {
             if (comment) {
-              return <Comment comment={comment} index={i} key={'page-comment-' + i + ':' + i} nestingLevel={level + 1} op={op} />;
+              return <Comment comment={comment} index={i} key={'page-comment-' + i + ':' + i} nestingLevel={level + 1} op={op}  />;
             }
           })
         }

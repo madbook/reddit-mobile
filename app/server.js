@@ -36,13 +36,9 @@ app.use(cookieParser());
 app.use(session({
   secret: config.cookieSecret,
   cookie: {
-    path: '/',
-    httpOnly: true,
     maxAge: 60000
   },
-  rolling: true,
-  resave: true,
-  saveUninitialized: true
+  rolling: true
 }));
 
 app.use(csurf());

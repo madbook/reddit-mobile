@@ -11,6 +11,9 @@ Collapse.bind('[data-toggle=collapse]');
 var Vote = require('./components/vote');
 Vote.bind('[data-vote]');
 
+var CommentTree = require('./components/commentTree');
+CommentTree.bind('[data-action=moreComments]');
+
 $.getJSON('/vars', function(data) {
   window.bootstrap = data;
 });

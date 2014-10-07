@@ -9,9 +9,14 @@
   hyphens: auto;
 }
 
-.comment > article {
+.comment > article,
+.comment > a {
   padding: (@row-spacing-base / 2) 0;
   padding-left: 1em;
+}
+
+.comment > a {
+  display: inline-block;
 }
 
 .comment-offset, .row.comment-offset {

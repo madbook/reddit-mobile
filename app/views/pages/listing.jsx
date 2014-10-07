@@ -4,6 +4,7 @@ var React = require('react');
 var Layout = require('../layouts/DefaultLayout');
 var Listing = require('../components/Listing');
 var Comment = require('../components/Comment');
+var commentsMap = require('../../client/js/lib/commentsMap');
 
 var ListingPage = React.createClass({
   render: function() {
@@ -15,6 +16,7 @@ var ListingPage = React.createClass({
         {
           this.props.comments.map(function(comment, i) {
             if (comment) {
+              comment = commentsMap(comment, null, listing.author, 4, 0);
               return <Comment comment={comment} index={i} key={'page-comment-' + i} nestingLevel={0} op={listing.author} />;
             }
           })
