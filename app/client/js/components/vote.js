@@ -6,12 +6,11 @@ var scoreModifiers = {
   cancel: 0,
 };
 
-function Vote(trigger, direction, thingId, siblings) {
+function Vote(trigger, direction, thingId, siblings, score) {
   this.$trigger = $(trigger);
-  this.$score = this.$trigger.siblings('.vote-score');
   this.direction = this.$trigger.data('vote');
   this.thingId = this.$trigger.data('thingid');
-  this.score = this.$score.data('vote-score');
+  this.$score = score || $('[data-thingid=' + this.thingId + '][data-vote-score]');
 
   this.$siblings = siblings ||
        $('[data-thingid=' + this.thingId + ']').not(this.$trigger);
@@ -26,6 +25,7 @@ function Vote(trigger, direction, thingId, siblings) {
 
 Vote.prototype.vote = function() {
   $.post(this.$trigger.attr('href'), { _csrf: csrf } );
+  var score = this.$score.data('vote-score');
 
   var scoreModifier = scoreModifiers[this.direction];
 
@@ -39,20 +39,16 @@ Vote.prototype.vote = function() {
     this.$trigger.removeClass('voted')
         .removeClass('text-upvote')
         .removeClass('text-downvote');
-
-    scoreModifier *= -1;
-
   } else {
     this.$trigger
       .addClass('voted')
       .addClass('text-' + this.direction + 'vote');
+    score += scoreModifier;
   }
 
-  this.score += scoreModifier;
 
   this.$score
-    .text(this.score)
-    .data('vote-score', this.score);
+    .text(score);
 }
 
 Vote.bind = function(triggerSelector) {

@@ -233,7 +233,7 @@ var Listing = React.createClass({
 
     return (
       <article className='listing row'>
-        <div className='col-xs-2 col-sm-1'>
+        <div className='col-xs-3 col-sm-2'>
           <div className='listing-comments'>
             <a href={ url }>
               <img src={ thumbnailSrc } className='listing-thumbnail' />
@@ -258,9 +258,10 @@ var Listing = React.createClass({
               </ul>
             </div>
           </div>
+
         </div>
 
-        <div className='col-xs-10 col-sm-11'>
+        <div className='col-xs-9 col-sm-10'>
           <header>
             <div className='link-flair-container'>
               { nsfwFlair }
@@ -272,14 +273,14 @@ var Listing = React.createClass({
 
           <div className='listing-footer'>
             <footer>
-              <div className='vertical-spacing-sm'>
+              <div>
                 { subredditLabel }
                 { domain }
                 { external }&nbsp;
                 { gilded }
               </div>
 
-              <ul className='linkbar vertical-spacing listing-submitted'>
+              <ul className='linkbar listing-submitted'>
                 <li>
                   <ul className='list-compact-horizontal'>
                     <li>
@@ -289,7 +290,7 @@ var Listing = React.createClass({
                       </a>
                     </li>
                     <li>
-                      <span className='vote-score' data-vote-score={this.props.listing.score }>
+                      <span className='vote-score' data-vote-score={this.props.listing.score } data-thingid={ this.props.listing.name }>
                         { this.props.listing.score }
                       </span>
                     </li>
@@ -309,21 +310,21 @@ var Listing = React.createClass({
                 </li>
 
                 <li>
-                  <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
-                    <span className='glyphicon glyphicon-user'></span>
-                    &nbsp;{ this.props.listing.author }
-                  </a>
-
-                  { authorFlair }
-                </li>
-
-                <li>
                   <a href={ permalink }>
                     <span className='glyphicon glyphicon-comment'></span>
                     &nbsp;{ this.props.listing.num_comments }
                   </a>
                 </li>
               </ul>
+
+              <div className='listing-submitted'>
+                <a href={ '/u/' + this.props.listing.author } className={ 'text-muted' + distinguished }>
+                  <span className='glyphicon glyphicon-user'></span>
+                  &nbsp;{ this.props.listing.author }
+                </a>
+
+                { authorFlair }
+              </div>
             </footer>
           </div>
         </div>
