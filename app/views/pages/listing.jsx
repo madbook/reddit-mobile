@@ -11,7 +11,7 @@ var ListingPage = React.createClass({
     var listing = this.props.listing;
 
     return (
-      <Layout title={this.props.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session} csrf={this.props.csrf}>
+      <Layout title={this.props.listing.title} liveReload={this.props.liveReload} env={this.props.env} session={this.props.session} csrf={this.props.csrf}>
         <Listing listing={this.props.listing} single={ true } />
         {
           this.props.comments.map(function(comment, i) {
