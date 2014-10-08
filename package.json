@@ -46,6 +46,7 @@
     "react": "^0.11.2",
     "react-tools": "^0.11.2",
     "reddit-text-js": "^0.1.0",
+    "serve-favicon": "^2.1.5",
     "simple-oauth2": "^0.2.0",
     "snoode": "0.0.8",
     "vinyl-source-stream": "^0.1.1",

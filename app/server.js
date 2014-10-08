@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var compression = require('compression');
 var session = require('express-session')
 var csurf = require('csurf');
+var favicon = require('serve-favicon');
 
 var pageRoutes = require('./routes/pages');
 var oauthRoutes = require('./routes/oauth');
@@ -48,6 +49,7 @@ app.use(csurf());
 app.use(express.static(__dirname + '../../build'));
 app.use(express.static(__dirname + '../../public'));
 app.use(express.static(__dirname + '../../lib/snooboots/dist'));
+app.use(favicon(__dirname + '../../public/favicon.ico'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
