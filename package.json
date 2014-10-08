@@ -48,7 +48,7 @@
     "reddit-text-js": "^0.1.0",
     "serve-favicon": "^2.1.5",
     "simple-oauth2": "^0.2.0",
-    "snoode": "0.0.8",
+    "snoode": "0.0.9",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^1.0.6"
   },
