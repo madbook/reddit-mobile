@@ -37,6 +37,7 @@ var DefaultLayout = React.createClass({
           <link href={'/css/' + fancycss} rel='stylesheet' media='screen' />
           <meta name='viewport' content='width=device-width, user-scalable=no' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={this.props.csrf} />
+          <link rel="shortcut icon" href='./favicon.ico' />
         </head>
         <body>
           <NavBar session={this.props.session} />

@@ -54,3 +54,19 @@ a.voted.text-downvote:focus,
 .text-muted a:hover {
   &:extend(.text-muted);
 }
+
+.logo-reddit.navbar-brand {
+  background: url('/img/logo.png') center right no-repeat;
+  width: 107px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (-moz-min-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2) {
+
+  .logo-reddit.navbar-brand {
+    background: url('/img/logo-2x.png') center right no-repeat;
+    background-size: 97px;
+  }
+}
