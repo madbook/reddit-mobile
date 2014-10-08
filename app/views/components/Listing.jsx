@@ -35,6 +35,7 @@ var Listing = React.createClass({
     var embedFooter;
     var subredditLabel;
     var domain;
+    var thumbnail;
 
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
@@ -136,6 +137,12 @@ var Listing = React.createClass({
       thumbnailSrc = '/img/self.gif';
     }
 
+    thumbnail = (
+      <a href={ url }>
+        <img src={ thumbnailSrc } className='listing-thumbnail' />
+      </a>
+    );
+
     if (this.props.listing.embed || this.props.listing.selftext || embedURL) {
       embedFooter = (
         <div className='panel-footer listing-submitted'>
@@ -173,6 +180,14 @@ var Listing = React.createClass({
           <h1 className={ 'listing-title' + distinguished }>
             { this.props.listing.title } { edited }
           </h1>
+        </a>
+      );
+
+      thumbnail = (
+        <a href={ url }
+           data-toggle='collapse' data-target={ '#embed-' + this.props.listing.id }>
+
+          <img src={ thumbnailSrc } className='listing-thumbnail' />
         </a>
       );
 
@@ -227,9 +242,7 @@ var Listing = React.createClass({
         <div className='row vertical-spacing'>
           <div className='col-xs-3 col-sm-2'>
             <div className='listing-comments'>
-              <a href={ url }>
-                <img src={ thumbnailSrc } className='listing-thumbnail' />
-              </a>
+              { thumbnail }
 
               <div className='listing-actions'>
                 <button className='btn btn-xs btn-block btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown'>
