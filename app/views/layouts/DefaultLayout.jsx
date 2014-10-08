@@ -9,10 +9,10 @@ var LiveReload = require('../components/LiveReload');
 var NavBar = require('../components/NavBar');
 var Footer = require('../components/Footer');
 
-var vendorjs = '/js/vendor.js';
-var appjs = '/js/app.js';
-var basecss = '/css/base.css';
-var fancycss = '/css/fancy.css';
+var vendorjs = 'vendor.js';
+var appjs = 'app.js';
+var basecss = 'base.css';
+var fancycss = 'fancy.css';
 
 var DefaultLayout = React.createClass({
   render: function() {
@@ -22,7 +22,7 @@ var DefaultLayout = React.createClass({
       liveReload = <LiveReload />
     }
 
-    if (this.props.env !== 'dev') {
+    if (this.props.env !== 'development') {
       appjs = appManifest['app.min.js'];
       vendorjs = vendorManifest['vendor.min.js'];
       basecss = cssManifest['base.css'];
@@ -33,8 +33,8 @@ var DefaultLayout = React.createClass({
       <html>
         <head>
           <title>{this.props.title}</title>
-          <link href={basecss} rel='stylesheet' />
-          <link href={fancycss} rel='stylesheet' media='screen' />
+          <link href={'/css/' + basecss} rel='stylesheet' />
+          <link href={'/css/' + fancycss} rel='stylesheet' media='screen' />
           <meta name='viewport' content='width=device-width, user-scalable=no' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={this.props.csrf} />
         </head>
@@ -47,8 +47,8 @@ var DefaultLayout = React.createClass({
 
           <Footer />
 
-          <script src={vendorjs}></script>
-          <script src={appjs}></script>
+          <script src={'/js/' + vendorjs}></script>
+          <script src={'/js/' + appjs}></script>
           {liveReload}
         </body>
       </html>

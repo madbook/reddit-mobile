@@ -11,13 +11,7 @@ var favicon = require('serve-favicon');
 var pageRoutes = require('./routes/pages');
 var oauthRoutes = require('./routes/oauth');
 var apiRoutes = require('./routes/api');
-var config = {};
-
-if (process.env.switcharoo_env === 'production') {
-  config = require('./config/prod');
-} else {
-  config = require('./config/dev');
-}
+var config = require('./config');
 
 // Start up a new Express instance, and set the config
 var app = express();
@@ -92,6 +86,6 @@ console.info('Welcome to reddit mobile web.');
 console.info('Running on port ' + app.get('port') + ' using the '
               + app.config.env + ' environment settings.');
 
-if (app.config.environment === 'development') {
+if (app.config.env === 'development') {
   console.info('Open: http://localhost:' + app.get('port'));
 }
