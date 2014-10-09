@@ -35,8 +35,9 @@ Collapse.prototype.toggleCollapse = function() {
 
 Collapse.prototype.showEmbed = function() {
   var self = this;
+  var embeds = this.$target.find('a[data-embed-type]:not([data-embedded])');
 
-  this.$target.find('a[data-embed-type]:not([data-embedded])').each(function(i){
+  embeds.each(function(i){
     var $this = $(this);
     $this.data('embedded', true);
 
@@ -44,6 +45,8 @@ Collapse.prototype.showEmbed = function() {
       $this.embedly({
         key: window.bootstrap.embedlyKey,
         display: function(obj) {
+          var $this = $(this);
+
           if (obj.type === 'video' || obj.type === 'rich'){
             var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'
 
@@ -53,10 +56,12 @@ Collapse.prototype.showEmbed = function() {
 
             div.html(obj.html);
 
-            $(this).replaceWith(div);
+            $this.replaceWith(div);
           } else if (obj.type === 'photo')  {
-            $(this).replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
+            $this.replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
           }
+
+          $this.siblings('[data-embed-loading]').remove();
         }
       });
     } else if (self.embedType == 'card') {

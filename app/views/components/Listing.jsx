@@ -6,17 +6,12 @@ var process = require('reddit-text-js');
 var difference = require('../../client/js/lib/formatDifference').short;
 var Vote = require('../components/Vote');
 
-var imgRegex = /\.(?:gif|jpe?g|png)(?:\?.*)?$/;
-var videoRegex = /^https?:\/\/.*youtube|vimeo|ustream|qik\..+\/.*./;
-
 function richContent(listing) {
   if (listing.media && listing.media.oembed) {
     return listing.media.oembed.url;
   }
 
-  if (imgRegex.test(listing.url)) {
-    return listing.url;
-  }
+  return listing.url;
 }
 
 function mobilify(url) {
@@ -54,11 +49,10 @@ var Listing = React.createClass({
     );
 
     var embedURL = richContent(this.props.listing);
-    var embedCardData;
 
-    // If it's not selftext or a normal embed, and it isn't a link to another
-    // thing on reddit, embed it as a card.
-    if (!this.props.listing.selftext && !embedURL && url == this.props.listing.url) {
+    // If it's not selftext, and it isn't a link to another thing on reddit,
+    // embed it as a card.
+    if (!this.props.listing.selftext && url == this.props.listing.url) {
       embedType = 'card';
       embedURL = this.props.listing.url;
     }
