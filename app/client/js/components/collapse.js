@@ -3,6 +3,8 @@ function Collapse(trigger, target) {
   this.$target = $(target || this.$trigger.data('target'));
   this.$targetParent = this.$target.parent();
 
+  this.embedType = this.$target.find('[data-embed-type]').data('embed-type');
+
   this.$trigger.on('click', (function(e) {
     e.preventDefault();
     this.toggleCollapse();
@@ -16,39 +18,50 @@ Collapse.prototype.toggleCollapse = function() {
   if (this.$target.hasClass('in')) {
     this.$target
         .removeClass('in')
-        .addClass('out')
-        .detach();
+        .addClass('out');
+
+    if(!(this.embedType == 'card')) {
+      this.$target.detach();
+    }
   } else {
     this.$target
-        .appendTo(this.$targetParent)
         .removeClass('out').addClass('in');
+
+    if(!(this.embedType == 'card')) {
+      this.$target.appendTo(this.$targetParent)
+    }
   }
 }
 
 Collapse.prototype.showEmbed = function() {
   var self = this;
 
-  this.$target.find('a[data-embed]:not([data-embedded])').each(function(i){
+  this.$target.find('a[data-embed-type]:not([data-embedded])').each(function(i){
     var $this = $(this);
     $this.data('embedded', true);
-    $this.embedly({
-      key: window.bootstrap.embedlyKey,
-      display: function(obj) {
-        if (obj.type === 'video' || obj.type === 'rich'){
-          var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'
 
-          var div = $('<div class="embed-responsive embed-responsive-4by3">').css({
-            paddingBottom: ratio
-          });
+    if (self.embedType == 'normal') {
+      $this.embedly({
+        key: window.bootstrap.embedlyKey,
+        display: function(obj) {
+          if (obj.type === 'video' || obj.type === 'rich'){
+            var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'
 
-          div.html(obj.html);
+            var div = $('<div class="embed-responsive embed-responsive-4by3">').css({
+              paddingBottom: ratio
+            });
 
-          $(this).replaceWith(div);
-        } else if (obj.type === 'photo')  {
-          $(this).replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
+            div.html(obj.html);
+
+            $(this).replaceWith(div);
+          } else if (obj.type === 'photo')  {
+            $(this).replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
+          }
         }
-      }
-    });
+      });
+    } else if (self.embedType == 'card') {
+      embedly('card', '#' + $this.attr('id'));
+    }
   });
 }
 

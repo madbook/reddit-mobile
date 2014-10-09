@@ -36,12 +36,10 @@ var Listing = React.createClass({
     var subredditLabel;
     var domain;
     var thumbnail;
+    var embedType = 'normal';
 
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
-
-    var external;
-    var isExternal = url.indexOf('/') != 0;
 
     var gilded;
 
@@ -56,6 +54,15 @@ var Listing = React.createClass({
     );
 
     var embedURL = richContent(this.props.listing);
+    var embedCardData;
+
+    // If it's not selftext or a normal embed, and it isn't a link to another
+    // thing on reddit, embed it as a card.
+    if (!this.props.listing.selftext && !embedURL && url == this.props.listing.url) {
+      embedType = 'card';
+      embedURL = this.props.listing.url;
+    }
+
     var thumbnailSrc = '/img/default.gif';
 
     var submitted = difference(this.props.listing.created_utc * 1000);
@@ -143,7 +150,7 @@ var Listing = React.createClass({
       </a>
     );
 
-    if (this.props.listing.embed || this.props.listing.selftext || embedURL) {
+    if(embedURL || this.props.listing.selftext) {
       embedFooter = (
         <div className='panel-footer listing-submitted'>
           <ul className='linkbar listing-submitted'>
@@ -192,49 +199,21 @@ var Listing = React.createClass({
       );
 
       if (this.props.listing.selftext) {
-        embedContainer = (
-          <div className='row'>
-            <div className='col-xs-12'>
-              <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
-                <div className='panel-body' dangerouslySetInnerHTML={{
-                  __html: process(this.props.listing.selftext)
-                }} />
-
-                { embedFooter }
-              </div>
-            </div>
-          </div>
+        embedContents = (
+          <div className='panel-body' dangerouslySetInnerHTML={{
+            __html: process(this.props.listing.selftext)
+          }} />
         );
-      } else {
-        if (this.props.listing.embed) {
-          embedContents = (
-            <div className='panel-body' dangerouslySetInnerHTML={{
-              __html: process(this.props.listing.embed).html
-            }} />
-          );
-        } else if (embedURL) {
-          embedContents = (
-            <div className='panel-body panel-embed'>
-              <a href={ embedURL } data-embed={ embedURL } />
-            </div>
-          );
-        }
-
-        embedContainer = (
-          <div className='row'>
-            <div className='col-xs-12'>
-              <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
-                { embedContents }
-                { embedFooter }
-              </div>
-            </div>
+      } else if (embedURL) {
+        embedContents = (
+          <div className='panel-body panel-embed'>
+            <a href={ embedURL }
+               data-embed-type={ embedType }
+               id={ 'embed-' + this.props.listing.id }
+            />
           </div>
         );
       }
-    } else if (isExternal) {
-      external = (
-        <small className='glyphicon glyphicon-new-window text-muted listing-external' />
-      );
     }
 
     return (
@@ -281,7 +260,6 @@ var Listing = React.createClass({
                 <div>
                   { subredditLabel }
                   { domain }
-                  { external }&nbsp;
                   { gilded }
                 </div>
 
@@ -319,7 +297,14 @@ var Listing = React.createClass({
           </div>
         </div>
 
-        { embedContainer }
+        <div className='row'>
+          <div className='col-xs-12'>
+            <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
+              { embedContents }
+              { embedFooter }
+            </div>
+          </div>
+        </div>
       </article>
     );
   }
