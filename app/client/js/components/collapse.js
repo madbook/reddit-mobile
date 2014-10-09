@@ -1,3 +1,5 @@
+var $window = $(window);
+
 function Collapse(trigger, target) {
   this.$trigger = $(trigger);
   this.$target = $(target || this.$trigger.data('target'));
@@ -23,9 +25,22 @@ Collapse.prototype.toggleCollapse = function() {
     if(!(this.embedType == 'card')) {
       this.$target.detach();
     }
+
+    var currentLocation = $window.scrollTop();
+    var lastLocation = this.$target.data('originalScrollTop');
+    var speed = ((currentLocation - lastLocation) / 2) + 50;
+
+    console.log(lastLocation, speed);
+    $('html,body').animate({
+      scrollTop: lastLocation
+    }, speed);
   } else {
+    this.originalScrollTop = $window.scrollTop();
+    this.$target.data('originalScrollTop', $window.scrollTop());
+
     this.$target
         .removeClass('out').addClass('in');
+
 
     if(!(this.embedType == 'card')) {
       this.$target.appendTo(this.$targetParent)
