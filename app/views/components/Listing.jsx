@@ -285,7 +285,7 @@ var Listing = React.createClass({
 
         <div className='row'>
           <div className='col-xs-12'>
-            <div className='panel panel-default embed collapse out' id={ 'embed-' + this.props.listing.id }>
+            <div className='panel panel-default embed collapse out pull-left' id={ 'embed-' + this.props.listing.id }>
               { embedContents }
               { embedFooter }
             </div>
