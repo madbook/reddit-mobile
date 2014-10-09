@@ -50,13 +50,6 @@ var Listing = React.createClass({
 
     var embedURL = richContent(this.props.listing);
 
-    // If it's not selftext, and it isn't a link to another thing on reddit,
-    // embed it as a card.
-    if (!this.props.listing.selftext && url == this.props.listing.url) {
-      embedType = 'card';
-      embedURL = this.props.listing.url;
-    }
-
     var thumbnailSrc = '/img/default.gif';
 
     var submitted = difference(this.props.listing.created_utc * 1000);
@@ -70,6 +63,8 @@ var Listing = React.createClass({
 
     var opClass = this.props.single ? 'label label-primary' : 'text-muted';
 
+    var isSelf = this.props.listing.domain.indexOf('self.') == 0;
+
     if (!this.props.hideSubredditLabel) {
       subredditLabel = (
         <span className='label label-default listing-subreddit'>
@@ -80,7 +75,7 @@ var Listing = React.createClass({
       )
     }
 
-    if (this.props.listing.domain.indexOf('self.') != 0) {
+    if (!isSelf) {
       domain = (
         <small className='text-muted listing-submitted listing-domain'>
           <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
@@ -144,7 +139,7 @@ var Listing = React.createClass({
       </a>
     );
 
-    if(embedURL || this.props.listing.selftext) {
+    if(!(isSelf && !this.props.listing.selftext)) {
       embedFooter = (
         <div className='panel-footer listing-submitted'>
           <ul className='linkbar listing-submitted'>

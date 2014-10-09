@@ -30,7 +30,6 @@ Collapse.prototype.toggleCollapse = function() {
     var lastLocation = this.$target.data('originalScrollTop');
     var speed = ((currentLocation - lastLocation) / 2) + 50;
 
-    console.log(lastLocation, speed);
     $('html,body').animate({
       scrollTop: lastLocation
     }, speed);
@@ -61,8 +60,9 @@ Collapse.prototype.showEmbed = function() {
         key: window.bootstrap.embedlyKey,
         display: function(obj) {
           var $this = $(this);
+          var $loading = $this.siblings('[data-embed-loading]');
 
-          if (obj.type === 'video' || obj.type === 'rich'){
+          if (obj.type === 'video' || obj.type === 'rich') {
             var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'
 
             var div = $('<div class="embed-responsive embed-responsive-4by3">').css({
@@ -72,11 +72,20 @@ Collapse.prototype.showEmbed = function() {
             div.html(obj.html);
 
             $this.replaceWith(div);
-          } else if (obj.type === 'photo')  {
+          } else if (obj.type === 'photo') {
             $this.replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
+          } else if (obj.type === 'link') {
+            var template = '<div>' +
+              '<h5><a href="' + obj.provider_url + '" class="label label-info">' + obj.provider_name + '</a></h5>' +
+              '<h4 class="media-heading"><a href="' + obj.url + '">' + obj.title + '</a></h4>' +
+              '<p>' + obj.description + '</p>' +
+              '<p><a href="' + obj.url + '">Open link <span class="glyphicon glyphicon-new-window"></span></a></p>'
+            '</div>';
+
+            $this.replaceWith($(template));
           }
 
-          $this.siblings('[data-embed-loading]').remove();
+          $loading.remove();
         }
       });
     } else if (self.embedType == 'card') {
