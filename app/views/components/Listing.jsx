@@ -67,27 +67,31 @@ var Listing = React.createClass({
 
     if (!this.props.hideSubredditLabel) {
       subredditLabel = (
-        <span className='label label-default listing-subreddit'>
-          <a href={ '/r/' + this.props.listing.subreddit } className='text-subreddit'>
-            /r/{ this.props.listing.subreddit }
-          </a>
-        </span>
+        <li>
+          <span className='label label-default listing-subreddit'>
+            <a href={ '/r/' + this.props.listing.subreddit } className='text-subreddit'>
+              /r/{ this.props.listing.subreddit }
+            </a>
+          </span>
+        </li>
       )
     }
 
     if (!isSelf) {
       domain = (
-        <small className='text-muted listing-submitted listing-domain'>
-          <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-            { this.props.listing.domain }
-          </a>
-        </small>
+        <li>
+          <small className='text-muted listing-domain'>
+            <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+              { this.props.listing.domain }
+            </a>
+          </small>
+        </li>
       );
     }
 
     if (this.props.listing.gilded) {
       gilded = (
-        <span className='glyphicon glyphicon-gilded' />
+        <li><span className='glyphicon glyphicon-gilded' /></li>
       );
     }
 
@@ -244,12 +248,14 @@ var Listing = React.createClass({
             <div className='listing-footer'>
               <footer>
                 <div>
-                  { subredditLabel }
-                  { domain }
-                  { gilded }
+                  <ul className='linkbar'>
+                    { subredditLabel }
+                    { domain }
+                    { gilded }
+                  </ul>
                 </div>
 
-                <ul className='linkbar listing-submitted'>
+                <ul className='linkbar vertical-spacing-sm'>
                   <li>
                     <Vote thing={ this.props.listing } />
                   </li>
@@ -268,7 +274,7 @@ var Listing = React.createClass({
                   </li>
                 </ul>
 
-                <div className='listing-submitted'>
+                <div>
                   <span className={ opClass + distinguished }>
                     <a href={ '/u/' + this.props.listing.author }>
                       <span className='glyphicon glyphicon-user'></span>
