@@ -53,6 +53,7 @@ Collapse.prototype.showEmbed = function() {
 
   embeds.each(function(i){
     var $this = $(this);
+    var $loading = $this.parent().find('[data-embed-loading]').parent();
     $this.data('embedded', true);
 
     if (self.embedType == 'normal') {
@@ -60,7 +61,6 @@ Collapse.prototype.showEmbed = function() {
         key: window.bootstrap.embedlyKey,
         display: function(obj) {
           var $this = $(this);
-          var $loading = $this.siblings('[data-embed-loading]');
 
           if (obj.type === 'video' || obj.type === 'rich') {
             var ratio = ((obj.height/obj.width)*100).toPrecision(4) + '%'
@@ -92,7 +92,7 @@ Collapse.prototype.showEmbed = function() {
 
       embedly('on', 'card.rendered', function(iframe){
         $card = $(iframe);
-        $card.siblings('[data-embed-loading]').remove();
+        $loading.remove();
       });
     }
   });

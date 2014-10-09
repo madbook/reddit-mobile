@@ -202,8 +202,10 @@ var Listing = React.createClass({
         embedContents = (
           <div className='panel-body panel-embed'>
 
-            <span className='glyphicon glyphicon-refresh loading'
-                data-embed-loading={ 'embed-' + this.props.listing.id } />
+            <div className='text-center'>
+              <span className='glyphicon glyphicon-refresh loading'
+                  data-embed-loading={ 'embed-' + this.props.listing.id } />
+            </div>
 
             <a href={ embedURL }
                data-embed-type={ embedType }
