@@ -6,7 +6,10 @@ function Collapse(trigger, target) {
   this.embedType = this.$target.find('[data-embed-type]').data('embed-type');
 
   this.$trigger.on('click', (function(e) {
-    e.preventDefault();
+    if (!this.$trigger.hasClass('close')) {
+      e.preventDefault();
+    }
+
     this.toggleCollapse();
     this.showEmbed();
   }).bind(this));
