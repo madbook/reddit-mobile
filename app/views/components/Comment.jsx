@@ -110,7 +110,7 @@ var Comment = React.createClass({
                   <ul className='dropdown-menu' role='menu'>
                     <li>
                       <a href='#' role='menuitem' tabIndex='-1'>
-                        <span className='glyphicons glyphicons-gilded' />
+                        <span className='glyphicon glyphicons-gilded' />
                         gild
                       </a>
                     </li>

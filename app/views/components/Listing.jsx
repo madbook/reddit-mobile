@@ -30,6 +30,7 @@ var Listing = React.createClass({
     var embedFooter;
     var subredditLabel;
     var domain;
+    var external;
     var thumbnail;
     var embedType = 'normal';
 
@@ -39,14 +40,6 @@ var Listing = React.createClass({
     var gilded;
 
     var distinguished = this.props.listing.distinguished ? ' text-distinguished' : '';
-
-    var titleLink = (
-      <a href={ url } className={ distinguished }>
-        <h1 className='listing-title'>
-            { this.props.listing.title } { edited }
-        </h1>
-      </a>
-    );
 
     var embedURL = richContent(this.props.listing);
 
@@ -80,13 +73,19 @@ var Listing = React.createClass({
     if (!isSelf) {
       domain = (
         <li>
-          <small className='text-muted listing-domain'>
-            <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-              { this.props.listing.domain }
-            </a>
-          </small>
+          <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
+            { this.props.listing.domain }
+          </a>
         </li>
       );
+
+      external = (
+        <li>
+          <a className='text-muted' href={ this.props.listing.url }>
+            <span className='glyphicon glyphicon-new-window'></span>
+          </a>
+        </li>
+      )
     }
 
     if (this.props.listing.gilded) {
@@ -142,6 +141,15 @@ var Listing = React.createClass({
         <img src={ thumbnailSrc } className='listing-thumbnail' />
       </a>
     );
+
+    var titleLink = (
+      <a href={ url } className={ distinguished }>
+        <h1 className='listing-title'>
+            { this.props.listing.title } { edited }
+        </h1>
+      </a>
+    );
+
 
     if(!(isSelf && !this.props.listing.selftext)) {
       embedFooter = (
@@ -251,7 +259,6 @@ var Listing = React.createClass({
                   <ul className='linkbar'>
                     { subredditLabel }
                     { domain }
-                    { gilded }
                   </ul>
                 </div>
 
@@ -272,6 +279,9 @@ var Listing = React.createClass({
                       &nbsp;{ this.props.listing.num_comments }
                     </a>
                   </li>
+
+                  { gilded }
+                  { external }
                 </ul>
 
                 <div>
