@@ -98,7 +98,7 @@ var Listing = React.createClass({
 
     if (this.props.listing.gilded) {
       gilded = (
-        <span className='glyphicons glyphicons-gilded' />
+        <span className='glyphicon glyphicon-gilded' />
       );
     }
 
@@ -207,6 +207,10 @@ var Listing = React.createClass({
       } else if (embedURL) {
         embedContents = (
           <div className='panel-body panel-embed'>
+
+            <span className='glyphicon glyphicon-refresh loading'
+                data-embed-loading={ 'embed-' + this.props.listing.id } />
+
             <a href={ embedURL }
                data-embed-type={ embedType }
                id={ 'embed-' + this.props.listing.id }
@@ -230,7 +234,7 @@ var Listing = React.createClass({
                 <ul className='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>
                   <li>
                     <a href='#' role='menuitem' tabIndex='-1'>
-                      <span className='glyphicons glyphicons-gilded' />
+                      <span className='glyphicon glyphicon-gilded' />
                       gild
                     </a>
                   </li>

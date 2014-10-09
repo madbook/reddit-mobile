@@ -61,6 +61,11 @@ Collapse.prototype.showEmbed = function() {
       });
     } else if (self.embedType == 'card') {
       embedly('card', '#' + $this.attr('id'));
+
+      embedly('on', 'card.rendered', function(iframe){
+        $card = $(iframe);
+        $card.siblings('[data-embed-loading]').remove();
+      });
     }
   });
 }
