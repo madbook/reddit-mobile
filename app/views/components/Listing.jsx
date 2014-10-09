@@ -168,7 +168,7 @@ var Listing = React.createClass({
             </li>
           </ul>
 
-          <a href={ '#listing-' + this.props.listing.id } data-toggle='collapse'
+          <a href='javascript:void(0);' data-toggle='collapse' 
             data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
             <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
           </a>
@@ -215,7 +215,7 @@ var Listing = React.createClass({
     }
 
     return (
-      <article className='listing' id={ 'listing-' + this.props.listing.id }>
+      <article className='listing'>
         <div className='row vertical-spacing'>
           <div className='col-xs-3 col-sm-2'>
             <div className='listing-comments'>
