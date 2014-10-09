@@ -75,11 +75,10 @@ Collapse.prototype.showEmbed = function() {
           } else if (obj.type === 'photo') {
             $this.replaceWith('<img src="' + obj.url + '" class="img-responsive" />');
           } else if (obj.type === 'link') {
-            var template = '<div>' +
+            var template = '<div class="panel-padding">' +
               '<h5><a href="' + obj.provider_url + '" class="label label-info">' + obj.provider_name + '</a></h5>' +
               '<h4 class="media-heading"><a href="' + obj.url + '">' + obj.title + '</a></h4>' +
               '<p>' + obj.description + '</p>' +
-              '<p><a href="' + obj.url + '">Open link <span class="glyphicon glyphicon-new-window"></span></a></p>'
             '</div>';
 
             $this.replaceWith($(template));

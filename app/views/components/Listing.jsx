@@ -141,24 +141,17 @@ var Listing = React.createClass({
 
     if(!(isSelf && !this.props.listing.selftext)) {
       embedFooter = (
-        <div className='panel-footer listing-submitted'>
-          <ul className='linkbar listing-submitted'>
+        <div className='panel-footer'>
+          <ul className='linkbar'>
             <li>
-              <a className='text-muted' href={ '/domain/' + this.props.listing.domain }>
-                { this.props.listing.domain }
+              <a href={ url } className='btn btn-xs btn-link'>
+                <span className='glyphicon glyphicon-new-window'></span> Open Link
               </a>
             </li>
 
             <li>
-              <a href={ url }>
-                Open&nbsp;
-                <small className='glyphicon glyphicon-new-window'></small>
-              </a>
-            </li>
-
-            <li>
-              <a href={ permalink }>
-                View Comments ({ this.props.listing.num_comments })
+              <a href={ permalink } className='btn btn-xs btn-link'>
+                <span className='glyphicon glyphicon-comment'></span> Comments ({ this.props.listing.num_comments })
               </a>
             </li>
           </ul>
