@@ -1,6 +1,7 @@
 function Collapse(trigger, target) {
   this.$trigger = $(trigger);
   this.$target = $(target || this.$trigger.data('target'));
+  this.$targetParent = this.$target.parent();
 
   this.$trigger.on('click', (function(e) {
     e.preventDefault();
@@ -13,11 +14,14 @@ function Collapse(trigger, target) {
 
 Collapse.prototype.toggleCollapse = function() {
   if (this.$target.hasClass('in')) {
-    this.$target.removeClass('in');
-    this.$target.addClass('out');
+    this.$target
+        .removeClass('in')
+        .addClass('out')
+        .detach();
   } else {
-    this.$target.removeClass('out');
-    this.$target.addClass('in');
+    this.$target
+        .appendTo(this.$targetParent)
+        .removeClass('out').addClass('in');
   }
 }
 
