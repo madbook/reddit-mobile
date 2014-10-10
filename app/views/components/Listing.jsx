@@ -34,7 +34,7 @@ var Listing = React.createClass({
     var thumbnail;
     var embedType = 'normal';
     var embedStateClass = 'out';
-    var opClass = 'label label-primary';
+    var opClass = 'text-muted';
 
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
@@ -57,7 +57,7 @@ var Listing = React.createClass({
     var scoreClass = 'up';
 
     if (this.props.single) {
-      opClass = 'text-muted';
+      opClass = 'label label-primary';
 
       if (this.props.listing.selftext) {
         embedStateClass = 'in';
