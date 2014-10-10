@@ -158,6 +158,8 @@ var Listing = React.createClass({
       </a>
     );
 
+    // If this is a link to reddit and doesn't have selftext, it should
+    // behave as a link instead of a card.
     if (!(isSelf && !this.props.listing.selftext)) {
       // Don't bother with an 'open' or 'comments' link for expanded selftext
       if (!(this.props.single && this.props.listing.selftext)) {
@@ -207,7 +209,7 @@ var Listing = React.createClass({
             __html: process(this.props.listing.selftext)
           }} />
         );
-      } else if (embedURL) {
+      } else {
         embedContents = (
           <div className='panel-body panel-embed'>
 
@@ -216,7 +218,7 @@ var Listing = React.createClass({
                   data-embed-loading={ 'embed-' + this.props.listing.id } />
             </div>
 
-            <a href={ embedURL }
+            <a href={ embedURL || this.props.listing.url }
                data-embed-type={ embedType }
                id={ 'embed-' + this.props.listing.id }
             />
