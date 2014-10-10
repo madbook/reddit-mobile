@@ -40,7 +40,7 @@ var Comment = React.createClass({
     var moreCommentsLink;
     var gilded;
 
-    var permalink = '/comments/' + this.props.comment.id + '?context=3';
+    var permalink = '/comment/' + this.props.comment.id + '?context=3';
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
@@ -127,7 +127,7 @@ var Comment = React.createClass({
           <footer>
             <ul className='linkbar'>
               <li>
-                <a href={ '/comment/' + this.props.comment.id }>Reply</a>
+                <a href={ permalink }>Reply</a>
               </li>
               <li>
                 <div className='dropdown dropdown-inline'>
