@@ -22,6 +22,10 @@ function getColorForScore(score, level) {
   return color;
 }
 
+function mobilify(url) {
+  return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
+}
+
 var Comment = React.createClass({
   render: function() {
     var authorFlair;
@@ -35,6 +39,8 @@ var Comment = React.createClass({
     var commentCollapseClass = '';
     var moreCommentsLink;
     var gilded;
+
+    var permalink = '/comments/' + this.props.comment.id + '?context=3';
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
@@ -105,7 +111,7 @@ var Comment = React.createClass({
 
 
               <li>
-                { submitted }{ edited }
+                <a href={ permalink } className='text-muted'>{ submitted }</a>
               </li>
 
               <li>

@@ -282,7 +282,7 @@ var Listing = React.createClass({
 
                   <li>
                     <span className='text-muted'>
-                      { submitted }
+                      <a href={ permalink }>{ submitted }</a>
                     </span>
                   </li>
 
