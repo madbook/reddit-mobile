@@ -33,6 +33,8 @@ var Listing = React.createClass({
     var external;
     var thumbnail;
     var embedType = 'normal';
+    var embedStateClass = 'out';
+    var opClass = 'label label-primary';
 
     var permalink = mobilify(this.props.listing.permalink);
     var url = mobilify(this.props.listing.url);
@@ -54,7 +56,13 @@ var Listing = React.createClass({
 
     var scoreClass = 'up';
 
-    var opClass = this.props.single ? 'label label-primary' : 'text-muted';
+    if (this.props.single) {
+      opClass = 'text-muted';
+
+      if (this.props.listing.selftext) {
+        embedStateClass = 'in';
+      }
+    }
 
     var isSelf = this.props.listing.domain.indexOf('self.') == 0;
 
@@ -150,30 +158,31 @@ var Listing = React.createClass({
       </a>
     );
 
+    if (!(isSelf && !this.props.listing.selftext)) {
+      // Don't bother with an 'open' or 'comments' link for expanded selftext
+      if (!(this.props.single && this.props.listing.selftext)) {
+        embedFooter = (
+          <div className='panel-footer'>
+            <ul className='linkbar'>
+              <li>
+                <a href={ url } className='btn btn-xs btn-link'>
+                  <span className='glyphicon glyphicon-new-window'></span> Open Link
+                </a>
+              </li>
+              <li>
+                <a href={ permalink } className='btn btn-xs btn-link'>
+                  <span className='glyphicon glyphicon-comment'></span> Comments ({ this.props.listing.num_comments })
+                </a>
+              </li>
+            </ul>
 
-    if(!(isSelf && !this.props.listing.selftext)) {
-      embedFooter = (
-        <div className='panel-footer'>
-          <ul className='linkbar'>
-            <li>
-              <a href={ url } className='btn btn-xs btn-link'>
-                <span className='glyphicon glyphicon-new-window'></span> Open Link
-              </a>
-            </li>
-
-            <li>
-              <a href={ permalink } className='btn btn-xs btn-link'>
-                <span className='glyphicon glyphicon-comment'></span> Comments ({ this.props.listing.num_comments })
-              </a>
-            </li>
-          </ul>
-
-          <a href='javascript:void(0);' data-toggle='collapse' 
-            data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
-            <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
-          </a>
-        </div>
-      );
+            <a href='javascript:void(0);' data-toggle='collapse' 
+              data-target={ '#embed-' + this.props.listing.id } className='pull-right close'>
+              <span aria-hidden="true">&times;</span><span className="sr-only">Close</span>
+            </a>
+          </div>
+        );
+      }
 
       titleLink = (
         <a href={ url }
@@ -303,7 +312,7 @@ var Listing = React.createClass({
 
         <div className='row'>
           <div className='col-xs-12'>
-            <div className='panel panel-default panel-embed collapse out' id={ 'embed-' + this.props.listing.id }>
+            <div className={ 'panel panel-default panel-embed collapse ' + embedStateClass } id={ 'embed-' + this.props.listing.id }>
               { embedContents }
               { embedFooter }
             </div>

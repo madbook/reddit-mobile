@@ -34,6 +34,7 @@ var Comment = React.createClass({
     var opClass = '';
     var commentCollapseClass = '';
     var moreCommentsLink;
+    var gilded;
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
@@ -54,7 +55,7 @@ var Comment = React.createClass({
     var offsetClass = '';
 
     if (op == this.props.comment.author) {
-      opClass = 'label label-primary';
+      opClass = 'label label-primary label-large';
     }
 
     if (level > 0) {
@@ -76,6 +77,12 @@ var Comment = React.createClass({
       );
     }
 
+    if (this.props.comment.gilded) {
+      gilded = (
+        <li><span className='glyphicon glyphicon-gilded' /></li>
+      );
+    }
+
     return (
       <div className='comment'>
         { moreCommentsLink }
@@ -93,6 +100,7 @@ var Comment = React.createClass({
                 </strong>
 
                 { authorFlair }
+                { gilded }
               </li>
 
 
@@ -103,14 +111,25 @@ var Comment = React.createClass({
               <li>
                 <Vote thing={ this.props.comment } />
               </li>
+            </ul>
+          </div>
 
+          <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
+            __html: process(this.props.comment.body)
+          }} />
+
+          <footer>
+            <ul className='linkbar'>
+              <li>
+                <a href={ '/comment/' + this.props.comment.id }>Reply</a>
+              </li>
               <li>
                 <div className='dropdown dropdown-inline'>
                   <a data-toggle='dropdown' href='#'>Actions <span className='caret'></span></a>
                   <ul className='dropdown-menu' role='menu'>
                     <li>
                       <a href='#' role='menuitem' tabIndex='-1'>
-                        <span className='glyphicon glyphicons-gilded' />
+                        <span className='glyphicon glyphicon-gilded' />
                         gild
                       </a>
                     </li>
@@ -122,11 +141,7 @@ var Comment = React.createClass({
                 </div>
               </li>
             </ul>
-          </div>
-
-          <div className='comment-content' dangerouslySetInnerHTML={{
-            __html: process(this.props.comment.body)
-          }} />
+          </footer>
         </article>
 
         {
