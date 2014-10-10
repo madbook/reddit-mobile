@@ -30,6 +30,9 @@ app.use(compression());
 app.use(cookieParser());
 app.use(session({
   secret: config.cookieSecret,
+  resave: true,
+  saveUninitialized: true,
+  httpOnly: false,
   cookie: {
     maxAge: 60000
   },

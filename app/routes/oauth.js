@@ -25,7 +25,7 @@ module.exports = function(app){
 
       app.V1Api(req).users().get(options).done(function(data) {
         req.session.user = data.toJSON();
-        res.redirect('/');
+        res.redirect(req.session.redirect || '/');
       });
     }
   }
@@ -36,6 +36,8 @@ module.exports = function(app){
       scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
       state: req.csrfToken(),
     });
+
+    req.session.redirect = req.get('Referer') || '/';
 
     res.redirect(redirectURI);
   });
