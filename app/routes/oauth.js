@@ -23,7 +23,7 @@ module.exports = function(app){
         }
       }
 
-      app.V1Api(req).users().get(options).done(function(data) {
+      app.V1Api(req).users.get(options).done(function(data) {
         req.session.user = data.toJSON();
         res.redirect(req.session.redirect || '/');
       });

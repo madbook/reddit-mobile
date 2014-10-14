@@ -26,6 +26,10 @@ function cache(template, cache, app, req, res, fn) {
   } else {
     fn(req).done(function(props) {
       app.render(template, props, function(err, str) {
+        if (err) {
+          throw(err);
+        }
+
         cache.set(cacheKey, str);
         res.send(str);
       });
@@ -86,7 +90,7 @@ module.exports = function(app) {
 
       props.page = req.query.page || 0;
 
-      app.V1Api(req).links().get(options).done(function(data){
+      app.V1Api(req).links.get(options).done(function(data){
         props.listings = data;
         defer.resolve(props);
       });
@@ -158,7 +162,7 @@ module.exports = function(app) {
 
       options.linkId = req.params.listingId
 
-      app.V1Api(req).comments().get(options).done(function(data){
+      app.V1Api(req).comments.get(options).done(function(data){
         props.listing = data.listing;
 
         props.comments = data.comments.map(function(comment){
@@ -193,7 +197,7 @@ module.exports = function(app) {
           model: vote,
         });
 
-        app.V1Api(req).votes(endpoint).post(options).done(function() {
+        app.V1Api(req).votes.post(options).done(function() {
           next();
         });
       } else {
