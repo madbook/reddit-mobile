@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/reddit/switcharoo",
   "dependencies": {
-    "6to5": "^1.9.1",
+    "6to5": "git+https://github.com/ajacksified/6to5.git#9b4fb4f",
     "body-parser": "^1.9.0",
     "browserify": "^5.11.2",
     "compression": "^1.1.0",
@@ -49,7 +49,7 @@
     "reddit-text-js": "^0.2.1",
     "serve-favicon": "^2.1.5",
     "simple-oauth2": "^0.2.0",
-    "snoode": "0.0.10-es6",
+    "snoode": "0.0.12-es6",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^1.0.6"
   },
