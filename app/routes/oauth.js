@@ -23,8 +23,8 @@ module.exports = function(app){
         }
       }
 
-      app.V1Api(req).users.get(options).done(function(data) {
-        req.session.user = data.toJSON();
+      app.V1Api(req).users.get(options).done(function(user) {
+        req.session.user = user;
         res.redirect(req.session.redirect || '/');
       });
     }
