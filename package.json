@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/reddit/switcharoo",
   "dependencies": {
-    "6to5": "git+https://github.com/sebmck/6to5.git#5b08924c026ff21c2857ba5d0f2357eb424ec890",
+    "6to5": "^1.9.6",
     "body-parser": "^1.9.0",
     "browserify": "^5.13.1",
     "compression": "^1.1.0",
