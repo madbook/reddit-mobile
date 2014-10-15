@@ -18,6 +18,7 @@ var minifyCSS = require('gulp-minify-css');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
+var to5Browserify = require('6to5-browserify');
 var exorcist = require('exorcist');
 
 /** File paths */
@@ -46,6 +47,7 @@ gulp.task('vendor', function () {
     .pipe(clean({force: true}));
 
   browserify()
+    .require('snoode')
     .require('jquery')
     .require('react')
     .require('./lib/snooboots/dist/js/bootstrap.min.js', {
@@ -59,6 +61,12 @@ gulp.task('vendor', function () {
       depends: {
         'jquery': '$'
       }
+    })
+    .transform(to5Browserify.configure({
+      // Only transform .es6.js files
+      ignore: /^(?!.*es6\.js$).*\.js$/i
+    }), {
+      global: true
     })
     .bundle()
     .pipe(source('vendor.js'))
@@ -95,6 +103,7 @@ function compileScripts(watch) {
     .external('react')
     .external('jquery')
     .external('bootstrap')
+    .external('snoode')
     .transform(reactify);
 
   var rebundle = function () {

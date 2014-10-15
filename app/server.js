@@ -1,4 +1,4 @@
-require('6to5/register');
+require('6to5/register')(/^(?!.*es6\.js$).*\.js$/i);
 require('6to5/polyfill');
 
 var http = require('http');

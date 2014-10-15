@@ -1,5 +1,7 @@
 var $ = global.$ = global.jQuery = require('jquery');
 
+var snoode = global.snoode = require('snoode');
+
 require('bootstrap');
 require('embedly');
 
