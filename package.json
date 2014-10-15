@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/reddit/switcharoo",
   "dependencies": {
-    "6to5": "^1.9.5",
+    "6to5": "git+https://github.com/ajacksified/6to5.git#v1.9.5-ex",
     "body-parser": "^1.9.0",
     "browserify": "^5.13.1",
     "compression": "^1.1.0",
@@ -50,7 +50,7 @@
     "request": "^2.45.0",
     "serve-favicon": "^2.1.5",
     "simple-oauth2": "^0.2.0",
-    "snoode": "0.0.13-es6"
+    "snoode": "0.0.14-es6"
   },
   "devDependencies": {
     "6to5-browserify": "0.0.11",

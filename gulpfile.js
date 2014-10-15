@@ -104,6 +104,10 @@ function compileScripts(watch) {
     .external('jquery')
     .external('bootstrap')
     .external('snoode')
+    .transform(to5Browserify.configure({
+      // Only transform .es6.js files
+      ignore: /^(?!.*es6\.jsx?$).*\.jsx?$/i
+    }))
     .transform(reactify);
 
   var rebundle = function () {
