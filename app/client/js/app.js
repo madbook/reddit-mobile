@@ -1,6 +1,9 @@
 var $ = global.$ = global.jQuery = require('jquery');
 
 var snoode = global.snoode = require('snoode');
+var V1Api = global.V1Api = new snoode.v1({
+  origin: document.location.origin + '/api',
+});
 
 require('bootstrap');
 require('embedly');
