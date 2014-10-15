@@ -46,7 +46,9 @@ gulp.task('vendor', function () {
   gulp.src(buildjs + '/vendor*.js')
     .pipe(clean({force: true}));
 
-  browserify()
+    browserify({
+      extensions: ['.js', '.es6.js'],
+    })
     .require('snoode')
     .require('jquery')
     .require('react')
@@ -90,7 +92,8 @@ function compileScripts(watch) {
     cache: {},
     packageCache: {},
     fullPaths: true,
-    debug: true
+    debug: true,
+    extensions: ['.js', '.es6.js'],
   });
 
   bundler.add(entryFile);
