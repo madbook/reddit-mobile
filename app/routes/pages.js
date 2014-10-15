@@ -106,9 +106,7 @@ module.exports = function(app) {
       var props = buildProps(req, { });
 
       var options = buildOptions(req, {
-        query: {
-          subredditName: req.params.subreddit
-        }
+        subredditName: req.params.subreddit
       });
 
       if (req.query.count && req.query.count <= 25) {
