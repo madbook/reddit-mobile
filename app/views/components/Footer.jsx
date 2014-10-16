@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+import * as React from 'react';
+
 var d = new Date();
 var year = d.getFullYear();
 
@@ -26,4 +27,4 @@ var Footer = React.createClass({
   }
 });
 
-module.exports = Footer;
+export default Footer;

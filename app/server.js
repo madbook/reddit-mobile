@@ -1,8 +1,3 @@
-require('6to5/register')({
-  ignoreRegex: /^(?!.*es6\.js$).*\.js$/i,
-  extensions: ['.js', '.es6.js'],
-});
-
 var http = require('http');
 var express = require('express');
 
@@ -17,6 +12,15 @@ var pageRoutes = require('./routes/pages');
 var oauthRoutes = require('./routes/oauth');
 var apiRoutes = require('./routes/api');
 var config = require('./config');
+
+var es6transform = require('6to5').transform;
+var wrappedTransform = function(source) {
+  var src = es6transform(source, {
+    sourcemaps: true,
+  });
+
+  return src.code;
+}
 
 // Start up a new Express instance, and set the config
 var app = express();
@@ -55,7 +59,12 @@ app.use(favicon(__dirname + '../../public/favicon.ico'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
+app.engine('jsx', require('express-react-views').createEngine({
+  jsx: {
+    harmony: true,
+    additionalTransform: wrappedTransform,
+  },
+}));
 
 // Set up api access
 var V1Api = require('snoode').v1;

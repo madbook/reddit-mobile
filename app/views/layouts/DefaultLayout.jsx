@@ -7,7 +7,7 @@ var cssManifest = require('../../../build/css/css-manifest.json');
 
 var LiveReload = require('../components/LiveReload');
 var NavBar = require('../components/NavBar');
-var Footer = require('../components/Footer');
+var Footer = require('../components/Footer').default;
 
 var vendorjs = 'vendor.js';
 var appjs = 'app.js';
