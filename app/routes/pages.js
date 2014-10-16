@@ -119,7 +119,7 @@ module.exports = function(app) {
 
       props.page = req.query.page || 0;
 
-      app.V1Api(req).links().get(options).done(function(data){
+      app.V1Api(req).links.get(options).done(function(data){
         props.listings = data;
 
         props.hideSubredditLabel = true;

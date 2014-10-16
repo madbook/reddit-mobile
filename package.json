@@ -50,7 +50,7 @@
     "request": "^2.45.0",
     "serve-favicon": "^2.1.5",
     "simple-oauth2": "^0.2.0",
-    "snoode": "0.0.15-es6"
+    "snoode": "0.0.16-es6"
   },
   "devDependencies": {
     "6to5-browserify": "0.0.11",
