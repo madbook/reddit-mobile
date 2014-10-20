@@ -16,14 +16,15 @@ It is not documented well or stable. It *will be*. Just not right now.
 Technologies
 ------------
 
-* Node.js (0.10+)
+* Node.js (0.11+)
 * React, server- and client- side
+* ES6
 * LESS (a bootstrap fork)
 
 How to Run
 ----------
 
-* Dependencies: node 0.10+
+* Dependencies: node 0.11+
 * Find a nice home, and `git clone` it in
 * Go to the folder and run `npm install`
 * Run `npm run watch` to kick off a live-reloading build
