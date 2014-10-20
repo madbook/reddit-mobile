@@ -1,4 +1,4 @@
-module.exports = function(app){
+var oauthRoutes = function(app){
   var OAuth2 = require('simple-oauth2')({
     clientID: app.config.oauth.clientId,
     clientSecret: app.config.oauth.secret,
@@ -63,3 +63,4 @@ module.exports = function(app){
   });
 }
 
+export default oauthRoutes;

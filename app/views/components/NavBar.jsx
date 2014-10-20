@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+import * as React from 'react';
 
 var NavBar = React.createClass({
   render: function() {
@@ -129,5 +129,4 @@ var NavBar = React.createClass({
   }
 });
 
-module.exports = NavBar;
-
+export default NavBar;

@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
 
-var React = require('react');
-var Layout = require('../layouts/DefaultLayout');
-var Listing = require('../components/Listing');
-var Comment = require('../components/Comment');
-var commentsMap = require('../../client/js/lib/commentsMap');
+import * as React from 'react';
+
+import commentsMap from '../../client/js/lib/commentsMap';
+
+import Layout from '../layouts/DefaultLayout';
+import Listing from '../components/Listing';
+import Comment from '../components/Comment';
 
 var ListingPage = React.createClass({
   render: function() {
@@ -26,4 +28,4 @@ var ListingPage = React.createClass({
   }
 });
 
-module.exports = ListingPage;
+export default ListingPage;

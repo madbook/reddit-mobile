@@ -1,6 +1,4 @@
-var _ = require('lodash');
-
-module.exports = {
+var config = {
   // web server config
   origin: process.env.ORIGIN || 'http://localhost:4444',
   port: process.env.PORT || 4444,
@@ -22,3 +20,5 @@ module.exports = {
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
 };
+
+export default config;

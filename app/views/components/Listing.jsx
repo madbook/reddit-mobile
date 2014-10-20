@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
 
-var React = require('react');
-var moment = require('moment');
-var process = require('reddit-text-js');
-var difference = require('../../client/js/lib/formatDifference').short;
-var Vote = require('../components/Vote');
+import * as React from 'react';
+import * as moment from 'moment';
+import * as process from 'reddit-text-js';
+
+import Vote from '../components/Vote';
+
+import { short as difference } from '../../client/js/lib/formatDifference';
 
 function richContent(listing) {
   if (listing.media && listing.media.oembed) {
@@ -325,4 +327,4 @@ var Listing = React.createClass({
   }
 });
 
-module.exports = Listing;
+export default Listing;

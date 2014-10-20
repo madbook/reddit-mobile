@@ -1,11 +1,13 @@
 /** @jsx React.DOM */
 
-var React = require('react');
-var moment = require('moment');
-var difference = require('../../client/js/lib/formatDifference').short;
-var please = require('pleasejs');
-var process = require('reddit-text-js');
-var Vote = require('../components/Vote');
+import * as React from 'react';
+import * as moment from 'moment';
+import * as please from 'pleasejs';
+import * as process from 'reddit-text-js';
+
+import Vote from '../components/Vote';
+
+import { short as difference } from '../../client/js/lib/formatDifference';
 
 var orangereds = please.make_scheme({ h: 16, s: .5, v: 1 }, {
   scheme_type: 'mono'
@@ -162,4 +164,4 @@ var Comment = React.createClass({
   }
 });
 
-module.exports = Comment;
+export default Comment;

@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+import * as React from 'react';
+
 var d = new Date();
 var year = d.getFullYear();
 
@@ -43,4 +44,4 @@ var Vote = React.createClass({
   }
 });
 
-module.exports = Vote;
+export default Vote;

@@ -1,13 +1,13 @@
 /** @jsx React.DOM */
 
-var React = require('react');
-var appManifest = require('../../../build/js/app-manifest.json');
-var vendorManifest = require('../../../build/js/vendor-manifest.json');
-var cssManifest = require('../../../build/css/css-manifest.json');
+import * as React from 'react';
+import * as appManifest from '../../../build/js/app-manifest.json';
+import * as vendorManifest from '../../../build/js/vendor-manifest.json';
+import * as cssManifest from '../../../build/css/css-manifest.json';
 
-var LiveReload = require('../components/LiveReload');
-var NavBar = require('../components/NavBar');
-var Footer = require('../components/Footer').default;
+import LiveReload from '../components/LiveReload';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 
 var vendorjs = 'vendor.js';
 var appjs = 'app.js';
@@ -57,4 +57,4 @@ var DefaultLayout = React.createClass({
   }
 });
 
-module.exports = DefaultLayout;
+export default DefaultLayout;

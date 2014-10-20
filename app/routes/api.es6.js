@@ -1,4 +1,4 @@
-var request = require('request');
+import * as request from 'request';
 
 var passableHeaders = [
   'user-agent',
@@ -18,7 +18,7 @@ function buildHeaders (req) {
   return headers;
 }
 
-module.exports = function(app) {
+var apiRoutes = function(app) {
   app.route('/api/*')
     .get(function(req, res) {
       var query = req.query;
@@ -44,3 +44,4 @@ module.exports = function(app) {
     });
 }
 
+export default apiRoutes;

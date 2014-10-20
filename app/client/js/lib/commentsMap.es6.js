@@ -47,4 +47,4 @@ function commentsMap(comment, parent, op, score, nthSibling, siblingHidden) {
   return comment;
 }
 
-module.exports = commentsMap;
+export default commentsMap;

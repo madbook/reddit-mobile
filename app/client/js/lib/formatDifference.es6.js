@@ -1,4 +1,4 @@
-var moment = require('moment');
+import * as moment from 'moment';
 
 function short(date) {
   var shortString = '';
@@ -28,6 +28,7 @@ function short(date) {
   return shortString;
 }
 
+export { short };
 
 module.exports = {
   short: short

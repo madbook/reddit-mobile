@@ -1,20 +1,23 @@
-var http = require('http');
-var express = require('express');
+import * as http from 'http';
+import * as express from 'express';
 
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var compression = require('compression');
-var session = require('express-session')
-var csurf = require('csurf');
-var favicon = require('serve-favicon');
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
+import * as compression from 'compression';
+import * as session from 'express-session';
+import * as csurf from 'csurf';
+import * as favicon from 'serve-favicon';
 
-var pageRoutes = require('./routes/pages');
-var oauthRoutes = require('./routes/oauth');
-var apiRoutes = require('./routes/api');
-var config = require('./config');
+import { v1 as V1Api } from 'snoode';
 
-var es6transform = require('6to5').transform;
-var wrappedTransform = function(source) {
+import pageRoutes from './routes/pages';
+import oauthRoutes from './routes/oauth';
+import apiRoutes from './routes/api';
+import config from './config';
+
+import { transform as es6transform } from '6to5';
+
+var wrappedTransform = (source) => {
   var src = es6transform(source, {
     sourcemaps: true,
   });
@@ -67,7 +70,6 @@ app.engine('jsx', require('express-react-views').createEngine({
 }));
 
 // Set up api access
-var V1Api = require('snoode').v1;
 var nonAuthAPI = new V1Api({
   userAgent: config.userAgent,
   origin: config.nonAuthAPIOrigin,

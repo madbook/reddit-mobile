@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+import * as React from 'react';
 
 var LiveReload = React.createClass({
   render: function() {
@@ -10,5 +10,4 @@ var LiveReload = React.createClass({
   }
 });
 
-module.exports = LiveReload;
-
+export default LiveReload;

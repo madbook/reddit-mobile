@@ -6,7 +6,7 @@ var d = new Date();
 var year = d.getFullYear();
 
 var Footer = React.createClass({
-  render: function() {
+  render: () => {
     return (
       <footer className='footer'>
         <div className='row'>

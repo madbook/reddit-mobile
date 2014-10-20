@@ -1,8 +1,9 @@
 /** @jsx React.DOM */
 
-var React = require('react');
-var Layout = require('../layouts/DefaultLayout');
-var Listing = require('../components/Listing');
+import * as React from 'react';
+
+import Layout from '../layouts/DefaultLayout';
+import Listing from '../components/Listing';
 
 var Index = React.createClass({
   render: function() {
@@ -58,4 +59,4 @@ var Index = React.createClass({
   }
 });
 
-module.exports = Index;
+export default Index;

@@ -1,10 +1,10 @@
-var React = require('react');
-var _ = require('lodash');
-var q = require('q');
-var querystring = require('querystring');
-var lru = require('lru-cache');
+import * as React from 'react';
+import * as  _ from 'lodash';
+import * as q from 'q';
+import * as querystring from 'querystring';
+import * as lru from 'lru-cache';
 
-var Vote = require('snoode').models.Vote;
+import { models } from 'snoode';
 
 var shortCache = lru({
   max: 100,
@@ -47,7 +47,7 @@ function buildCacheKey(req) {
   return key;
 }
 
-module.exports = function(app) {
+var pageRoutes = function(app) {
   function buildProps(req, props) {
     var defaultProps = {
       csrf: req.csrfToken(),
@@ -184,13 +184,13 @@ module.exports = function(app) {
       var id = req.params.id;
       var endpoint = endpoints[id[1]];
 
-      var vote = new Vote({
+      var vote = new models.Vote({
         direction: parseInt(req.query.direction),
         id: id,
       });
 
 
-      if (vote.direction !== undefined && vote.id) {
+      if (vote.get('direction') !== undefined && vote.get('id')) {
         var options = buildOptions(req, {
           model: vote,
         });
@@ -218,3 +218,4 @@ module.exports = function(app) {
   });
 }
 
+export default pageRoutes;
