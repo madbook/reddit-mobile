@@ -20,6 +20,7 @@ import { transform as es6transform } from '6to5';
 var wrappedTransform = (source) => {
   var src = es6transform(source, {
     sourcemaps: true,
+    blacklist: ['jsx', 'react']
   });
 
   return src.code;

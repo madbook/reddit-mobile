@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/reddit/switcharoo",
   "dependencies": {
-    "6to5": "^1.9.10",
+    "6to5": "1.9.10",
     "body-parser": "^1.9.0",
     "browserify": "^5.13.1",
     "compression": "^1.2.0",
@@ -51,7 +51,7 @@
     "request": "^2.45.0",
     "serve-favicon": "^2.1.6",
     "simple-oauth2": "^0.2.1",
-    "snoode": "0.0.17",
+    "snoode": "0.0.18",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^1.0.6"
   },

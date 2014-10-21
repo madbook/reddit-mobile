@@ -131,7 +131,7 @@ var pageRoutes = function(app) {
     });
   });
 
-  app.get('/r/:subreddit/comments/:listingId/:listingTitle', function(req, res) {
+  app.get('/r/:subreddit/comments/:listingId/:listingTitle/:commentId?', function(req, res) {
     cache('pages/listing', shortCache, app, req, res, function(req) {
       var defer = q.defer();
 

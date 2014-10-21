@@ -12,6 +12,7 @@ var Index = React.createClass({
     var prevButton;
     var nextButton;
     var page = this.props.page;
+    var hideSubredditLabel = false;
 
     if (this.props.listings.length) {
       firstId = this.props.listings[0].name;
