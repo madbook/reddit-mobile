@@ -46,7 +46,7 @@ var Comment = React.createClass({
 
     var distinguished = this.props.comment.distinguished ? ' text-distinguished' : '';
 
-    borderColor = getColorForScore(this.props.comment.score, level);
+    var borderColor = getColorForScore(this.props.comment.score, level);
 
     var scoreClass = 'up';
 
