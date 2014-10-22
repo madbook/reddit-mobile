@@ -4,8 +4,8 @@
   "description": "A reddit frontend.",
   "main": "app/server.js",
   "scripts": {
-    "start": "node ./app/server.js",
-    "test": "mocha --recursive ./test/",
+    "start": "node --harmony ./index.js",
+    "test": "mocha --recursive --harmony ./test/",
     "build": "./node_modules/gulp/bin/gulp.js",
     "watch": "./node_modules/gulp/bin/gulp.js watch"
   },
