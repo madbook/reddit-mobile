@@ -1,4 +1,4 @@
-import * as request from 'request';
+import * as superagent from 'superagent';
 
 var passableHeaders = [
   'user-agent',
@@ -21,26 +21,21 @@ function buildHeaders (req) {
 var apiRoutes = function(app) {
   app.route('/api/*')
     .get(function(req, res) {
-      var query = req.query;
+      var query = req.query || {};
       var headers = buildHeaders(req);
 
       var uri = app.V1Api(req).origin + '/' + req.params[0];
 
-      var requestOptions = {
-        uri: uri,
-        qs: query,
-        headers: headers,
-      }
+      superagent.get(uri)
+        .query(query)
+        .set(headers)
+        .end(function(response) {
+          if(!response.ok) {
+            return res.send(err);
+          }
 
-      request(requestOptions, function(err, response) {
-        if(err) {
-          return res.send(err);
-        }
-
-        var body = JSON.parse(response.body);
-
-        res.json(body);
-      })
+          res.json(response.body);
+        })
     });
 }
 
