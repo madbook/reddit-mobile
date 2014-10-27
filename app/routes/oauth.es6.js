@@ -10,10 +10,12 @@ var oauthRoutes = function(app){
   var redirect = app.config.origin + '/oauth2/token';
 
   function saveToken(err, result, req, res){
+    var token;
+
     if(err){
       res.redirect('/oauth2/error?message=' + err.message);
     }else{
-      token = OAuth2.AccessToken.create(result);
+      token = OAuth2.accessToken.create(result);
       req.session.token = token.token;
 
       var options = {
@@ -31,7 +33,7 @@ var oauthRoutes = function(app){
   }
 
   app.get('/login', function(req, res){
-    var redirectURI = OAuth2.AuthCode.authorizeURL({
+    var redirectURI = OAuth2.authCode.authorizeURL({
       redirect_uri: redirect,
       scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
       state: req.csrfToken(),
@@ -54,7 +56,7 @@ var oauthRoutes = function(app){
       return res.redirect('/oauth2/error?message=' + req.query.error);
     }
 
-    OAuth2.AuthCode.getToken({
+    OAuth2.authCode.getToken({
       code: code,
       redirect_uri: redirect,
     }, function(err, result) {
