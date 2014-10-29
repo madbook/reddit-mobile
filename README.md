@@ -26,7 +26,10 @@ How to Run
 
 * Dependencies: node 0.11+
 * Find a nice home, and `git clone` it in
-* Go to the folder and run `npm install`
+* `cd` to the new folder
+* `git submodule init`
+* `git submodule update`
+* `npm install`
 * Run `npm run watch` to kick off a live-reloading build
   (or just run `./node_modules/gulp/bin/gulp build` to build without watching)
 * Run `npm start` to kick off the web server
