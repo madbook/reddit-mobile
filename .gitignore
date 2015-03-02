@@ -30,3 +30,4 @@ node_modules
 start.sh
 
 workspace.json
+.DS_Store

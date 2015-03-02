@@ -13,6 +13,8 @@ import App from '../../src/app';
 import config from '../../src/config';
 import plugins from '../../src/plugins';
 
+import TweenLite from 'gsap';
+
 var $html = $('html');
 var $body = $('body');
 
@@ -95,6 +97,7 @@ function initialize(bindLinks) {
     var mountPoint = document.getElementById('app-container');
 
     function render(response) {
+      React.initializeTouchEvents(true);
       React.render(response.body, mountPoint);
     }
 

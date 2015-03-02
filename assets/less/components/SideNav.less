@@ -1,0 +1,55 @@
+.SideNav {
+  position: fixed;
+  z-index:10;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding-top: 55px;
+  display: inline-block;
+  background-color: @gray;
+  color: @white;
+  font-size: @font-size-base + 3px;
+  .translate(-100%, 0);
+  .transition(0.2s);
+
+  &.opened {
+    .translate(0, 0);
+  }
+
+  ul {
+    padding-left: 16px;
+  }
+
+  button, a {
+    padding: 8px 20px 8px 4px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown > ul:after {
+    content: "";
+    position: absolute;
+    top: 38px;
+    bottom: 0;
+    left: 7px;
+    border-left: 1px solid #676b6b;
+  }
+
+  .dropdown {
+    max-height: 38px;
+    .transition(0.2s);
+    overflow-y: hidden;
+
+    > button {
+      margin-left: 16px;
+    }
+
+    &.opened {
+      max-height: 300px;
+    }
+  }
+}

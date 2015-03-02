@@ -1,5 +1,6 @@
 // Core variables and mixins
 @import "variables.less";
+@import "mixins.less";
 
 @import "../../lib/snooboots/less/mixins.less";
 
@@ -12,6 +13,7 @@
 @import "../../lib/snooboots/less/type.less";
 @import "../../lib/snooboots/less/code.less";
 
+@import "reset.less";
 @import "components/panels.less";
 @import "components/buttons.less";
 @import "components/listing.less";
@@ -19,3 +21,65 @@
 @import "components/comment.less";
 
 @import "components/layout.less";
+
+.twirly {
+  &.before:before, &.after:after {
+    position: absolute;
+    content: "";
+    border: 4px solid transparent;
+    border-left-color: @white;
+    top: 13px;
+    .transition(0.2s);
+  }
+
+  &.before:before {
+    left: 5px;
+  }
+
+  &.after:after {
+    right: -7px;
+  }
+
+  &.opened {
+    &.before:before, &.after:after {
+      -webkit-transform: rotate(90deg) translate(2px, 2px);
+      transform: rotate(90deg) translate(2px, 2px);
+    }
+  }
+}
+
+.stalagmite, .stalactite {
+  width: 18px;
+  height: 10px;
+  position: absolute;
+  left: 5px;
+  overflow: hidden;
+
+  &:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background: @white;
+    .rotate(45deg);
+    left: 4px;
+  }
+}
+
+// teepee
+  .stalagmite {
+    bottom: 100%;
+
+    &:after {
+      bottom: -5px;
+    }
+  }
+
+// hangs
+  .stalactite {
+    top: 100%;
+
+    &:after {
+      top: -5px;
+    }
+  }
