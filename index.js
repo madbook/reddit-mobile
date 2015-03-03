@@ -13,6 +13,7 @@ var Server = require('./src/server');
 
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
+numCPUs = 1;
 
 // App config
 var config = require('./src/config');
@@ -21,6 +22,8 @@ var config = require('./src/config');
 var jsManifest = require('./build/js/client-manifest.json');
 var cssManifest = require('./build/css/css-manifest.json');
 var servers = [];
+
+var failedProcesses = 0;
 
 // Then merge them into a single object for ease of use later
 config.manifest = {};

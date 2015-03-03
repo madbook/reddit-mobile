@@ -3,20 +3,20 @@ global.jQuery = global.$ = $;
 
 import querystring from 'querystring';
 
-import React from 'react';
 import q from 'q';
 
 import 'bootstrap';
 import attachFastClick from 'fastclick';
 
-import App from '../../src/app';
+import {ClientReactApp} from 'horse-react';
+import mixin from '../../src/app-mixin';
+
+ClientReactApp = mixin(ClientReactApp);
+
 import config from '../../src/config';
 import plugins from '../../src/plugins';
 
 import TweenLite from 'gsap';
-
-var $html = $('html');
-var $body = $('body');
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
@@ -27,64 +27,22 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   initialize(true);
 }
 
+function fullPathName () {
+  return document.location.pathname + document.location.search;
+}
+
 function initialize(bindLinks) {
   // Null this out, or errors everywhere
   config.userAgent = undefined;
 
-  function fullPathName () {
-    return document.location.pathname + document.location.search;
-  }
-
-  // Server uses express sessions; on the client, we'll persist state in memory.
-  App.prototype.getState = function(prop) {
-    if (prop) {
-      return this.state[prop];
-    }
-
-    return this.state;
-  }
-
-  App.prototype.setState = function(prop, val) {
-    this.state[prop] = val;
-    return v;
-  }
-
-  App.prototype.resetState = function(state) {
-    this.state = state || {};
-  }
-
-  function buildRequest (url, app) {
-    var splitUrl = url.split('?');
-    var query = {};
-    var url = url || '/';
-
-    if(splitUrl.length > 1) {
-      url = splitUrl[0] || '/';
-      query = querystring.parse(splitUrl[1] || '');
-    }
-
-    var req = {
-      url: url,
-      method: 'GET',
-      renderSynchronous: false,
-      useCache: true,
-      query: query,
-      headers: {
-        referer: fullPathName(),
-      },
-      session: app.getState('session') || {},
-    }
-
-    return req;
-  }
-
   $(function() {
-    var plugin, p;
+    var plugin;
+    var p;
+    var $body = $('body');
 
-    var app = new App(config);
+    config.mountPoint = document.getElementById('app-container');
 
-    // Reset to window bootstrapping data
-    app.resetState(window.bootstrap);
+    var app = new ClientReactApp(config);
 
     if (plugins) {
       for (p in plugins) {
@@ -94,53 +52,6 @@ function initialize(bindLinks) {
     }
 
     var history = window.history || window.location.history;
-    var mountPoint = document.getElementById('app-container');
-
-    function render(response) {
-      React.initializeTouchEvents(true);
-      React.render(response.body, mountPoint);
-    }
-
-    function error (response, req, res, app) {
-      var status = response.status || 500;
-      var message = response.message || 'Unkown error';
-
-      var error = response.error;
-
-      var reroute = '/' + status;
-
-      if (req.url !== reroute) {
-        req.status = status;
-        req.url = '/' + status;
-
-        return app.route(req, res);
-      } else {
-        console.log(response);
-      }
-    }
-
-    function redirect(path) {
-      changeUrl(path);
-    }
-
-    var res = {
-      render: render,
-      error: error,
-      redirect: redirect,
-    };
-
-    function changeUrl(href, initial, referrer) {
-      initialUrl = fullPathName();
-
-      var req = buildRequest(href, app);
-      req.headers.referer = referrer || req.headers.referer;
-
-      if (initial) {
-        req.props = app.getState();
-      }
-
-      app.route(req, res);
-    }
 
     var initialUrl = fullPathName();
     attachFastClick(document.body);
@@ -150,11 +61,6 @@ function initialize(bindLinks) {
         var $link = $(this);
         var href = $link.attr('href');
         var currentUrl = fullPathName();
-
-        if (href.indexOf('#') === 0) {
-          e.preventDefault();
-          return;
-        }
 
         // If it has a target=_blank, or an 'external' data attribute, or it's
         // an absolute url, let the browser route rather than forcing a capture.
@@ -167,7 +73,7 @@ function initialize(bindLinks) {
 
         e.preventDefault();
 
-        if (href === currentUrl) {
+        if (href.indexOf('#') === 0) {
           return;
         }
 
@@ -175,23 +81,21 @@ function initialize(bindLinks) {
 
         history.pushState(null, null, href);
 
-        // Restore scroll position to 0 on click
-        $html.add($body).scrollTop(0);
-
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        changeUrl(fullPathName(), false, currentUrl);
+        app.render(fullPathName());
       });
 
       $(window).on('popstate', function(e) {
         // Work around some browsers firing popstate on initial load
         if (fullPathName() !== initialUrl) {
-          changeUrl(fullPathName(), false);
+          initialUrl = fullPathName();
+          app.render(fullPathName());
         }
       });
     }
 
-    changeUrl(fullPathName(), true);
+    app.render(fullPathName(), true);
   });
 }
 

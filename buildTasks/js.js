@@ -45,7 +45,7 @@ module.exports = function buildJS(gulp, buildjs) {
       .require('react')
       .require('jquery')
       .require('reddit-text-js')
-      .require('snoode')
+      //.require('snoode')
       .require('superagent')
       .require('./lib/snooboots/dist/js/bootstrap.js', {
         expose: 'bootstrap',
@@ -88,7 +88,7 @@ module.exports = function buildJS(gulp, buildjs) {
         .pipe(source(entryFile))
         .pipe(rename('client.js'))
         .pipe(gulp.dest(buildjs))
-        .pipe(streamify(uglify()))
+        //.pipe(streamify(uglify()))
         .pipe(rename('client.min.js'))
         .pipe(buffer())
         .pipe(rev())

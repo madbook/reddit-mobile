@@ -1,5 +1,7 @@
 // set up oauth routes
-var oauthRoutes = function(app, router) {
+var oauthRoutes = function(app) {
+  var router = app.router;
+
   var OAuth2 = require('simple-oauth2')({
     clientID: app.config.oauth.clientId,
     clientSecret: app.config.oauth.secret,
@@ -10,11 +12,11 @@ var oauthRoutes = function(app, router) {
 
   var redirect = app.config.origin + '/oauth2/token';
 
-  function saveToken(err, result, req, res) {
+  function saveToken(err, result, ctx) {
     var token;
 
     if (err) {
-      res.redirect('/oauth2/error?message=' + encodeURIComponent(err.message));
+      ctx.redirect('/oauth2/error?message=' + encodeURIComponent(err.message));
     } else {
       token = OAuth2.accessToken.create(result);
       req.session.token = token.token;
@@ -27,26 +29,25 @@ var oauthRoutes = function(app, router) {
       }
 
       app.V1Api(req).users.get(options).done(function(user) {
-        req.session.user = user;
-        res.redirect(req.session.redirect || '/');
+        ctx.session.user = user;
+        ctx.redirect(req.session.redirect || '/');
       });
     }
   }
 
-  router.get('/login', function(req, res) {
+  router.get('/login', function() {
     var redirectURI = OAuth2.authCode.authorizeURL({
       redirect_uri: redirect,
       scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
       state: req.csrfToken(),
     });
 
-    req.session.redirect = req.get('Referer') || '/';
-
-    res.redirect(redirectURI);
+    this.session.redirect = req.get('Referer') || '/';
+    this.redirect(redirectURI);
   });
 
-  router.get('/oauth2/error', function(req, res) {
-    res.send(req.query);
+  router.get('/oauth2/error', function() {
+    this.body = req.query;
   });
 
   router.get('/oauth2/token', function(req, res) {
@@ -54,14 +55,14 @@ var oauthRoutes = function(app, router) {
     var error = req.query.error;
 
     if (error) {
-      return res.redirect('/oauth2/error?message=' + req.query.error);
+      return this.redirect('/oauth2/error?message=' + req.query.error);
     }
 
     OAuth2.authCode.getToken({
       code: code,
       redirect_uri: redirect,
     }, function(err, result) {
-      saveToken(err, result, req, res);
+      saveToken(err, result, this);
     });
   });
 }
