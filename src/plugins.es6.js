@@ -2,8 +2,8 @@
 // statements directly so that browserify can find all of the plugins for
 // client-side compilation.
 
-import ads from 'switcharoo-plugin-ads';
-import metrics from 'switcharoo-plugin-metrics';
+import ads from 'reddit-mobile-plugin-ads';
+import metrics from 'reddit-mobile-plugin-metrics';
 
 var plugins = {
   ads: ads,
