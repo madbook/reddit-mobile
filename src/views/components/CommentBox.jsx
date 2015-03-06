@@ -1,0 +1,87 @@
+import React from 'react';
+import { models } from 'snoode';
+
+class CommentBox extends React.Component {
+  constructor(props) {
+    if (props) {
+      if (typeof props.index === 'undefined') {
+        props.index = 0;
+      }
+    }
+
+    props.id = props.thingId + '-' + props.index;
+
+    super(props);
+  }
+
+  shouldComponentUpdate () {
+    return false;
+  }
+
+  submit (e) {
+    e.preventDefault();
+    var textEl = this.refs.text.getDOMNode();
+    var text = textEl.value.trim();
+
+    this.submitComment(this.props.thingId, text);
+    textEl.value = '';
+  }
+
+  submitComment (thingId, text) {
+    var session = this.props.session;
+
+    if (!session || !session.token) {
+      // TODO: replace this with login form
+      console.warn('Must log in first.');
+      return;
+    }
+
+    var comment = new models.Comment({
+      thingId: thingId,
+      text: text
+    });
+
+    var options = this.props.api.buildOptions(session.token.access_token);
+
+    options = Object.assign(options, {
+      model: comment,
+    });
+
+    var onSubmit = this.props.onSubmit;
+
+    this.props.api.comments.post(options).done((function(comment) {
+      this.props.onSubmit(comment);
+    }).bind(this));
+  }
+
+  render () {
+    var csrf;
+
+    if(this.props.csrf) {
+      csrf = (<input type='hidden' name='_csrf' value={ this.props.csrf } />);
+    }
+
+    return (
+      <div className='row'>
+        <div className='col-xs-12'>
+          <form action={ '/comment' } method='POST' onSubmit={ this.submit }>
+            <div className='form-group'>
+              <label className='sr-only' htmlFor={ 'textarea-' + this.props.id }>Comment</label>
+              <textarea id={ 'textarea-' + this.props.id } rows='2' className='form-control' name='text'></textarea>
+              <input type='hidden' name='thingId' value={ this.props.thingId } />
+              { csrf }
+            </div>
+
+            <button type='submit' className='btn btn-primary btn-xs'>Comment</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
+
+function CommentBoxFactory(app) {
+  return app.mutate('core/components/commentBox', CommentBox);
+}
+
+export default CommentBoxFactory;
