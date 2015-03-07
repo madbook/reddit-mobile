@@ -59,7 +59,7 @@ module.exports = function buildJS(gulp, buildjs) {
     bundler
       .transform(babelify.configure({
         ignore: false,
-        only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
+        ///only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: true,
       }), {
@@ -88,7 +88,7 @@ module.exports = function buildJS(gulp, buildjs) {
         .pipe(source(entryFile))
         .pipe(rename('client.js'))
         .pipe(gulp.dest(buildjs))
-        //.pipe(streamify(uglify()))
+        .pipe(streamify(uglify()))
         .pipe(rename('client.min.js'))
         .pipe(buffer())
         .pipe(rev())
