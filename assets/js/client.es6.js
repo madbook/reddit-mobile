@@ -3,8 +3,6 @@ global.jQuery = global.$ = $;
 
 import querystring from 'querystring';
 
-import q from 'q';
-
 import 'bootstrap';
 import attachFastClick from 'fastclick';
 
