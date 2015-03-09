@@ -57,6 +57,7 @@ function routes(app) {
       env: app.getConfig('env'),
       minifyAssets: app.getConfig('minifyAssets'),
       manifest: app.getConfig('manifest'),
+      assetPath: app.getConfig('assetPath'),
       session: ctx.session,
       csrf: ctx.csrf,
       query: ctx.query,
