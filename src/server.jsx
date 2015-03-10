@@ -62,17 +62,33 @@ class Server {
   }
 
   * modifyRequest (next) {
+    var user = this.cookies.get('user');
+    var token = this.cookies.get('token');
+
+    if (user) {
+      user = JSON.parse(user);
+    }
+
+    this.user = user;
+    this.token = token;
+
     this.renderSynchronous = true;
     this.useCache = false;
     yield next;
-    //this.useCache = !(this.request.session && this.request.session.token);
     //req.csrf = req.csrfToken();
   }
 
   start () {
     // Listen to a port and shout it to the world.
     this.server.listen(this.app.config.port);
-    console.log('listening on ' + this.app.config.port);
+  }
+
+  static info (config) {
+    console.log(`listening on ${config.port} on ${config.processes} processes.`);
+
+    if (config.keys.length === 1 && config.keys[0] === 'lambeosaurus') {
+      console.warn('WARNING: Using default security keys.');
+    }
   }
 }
 

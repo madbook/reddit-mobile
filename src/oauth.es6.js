@@ -2,6 +2,16 @@
 var oauthRoutes = function(app) {
   var router = app.router;
 
+  var cookieOptions = {
+    signed: true,
+    secure: app.getConfig('https'),
+    httpOnly: true,
+  };
+
+  if (app.getConfig('cookieDomain')) {
+    cookieOptions.domain = app.getConfig('cookieDomain');
+  }
+
   var OAuth2 = require('simple-oauth2')({
     clientID: app.config.oauth.clientId,
     clientSecret: app.config.oauth.secret,
@@ -13,12 +23,18 @@ var oauthRoutes = function(app) {
   var redirect = app.config.origin + '/oauth2/token';
 
   function getToken (code, redirect) {
-    return new Promise(function(reject, resolve) {
+    var ctx = this;
+
+    return new Promise(function(resolve) {
       OAuth2.authCode.getToken({
         code: code,
         redirect_uri: redirect,
       }, function(err, result) {
-        resolve({ err: err, result: result });
+        if (err) {
+          return ctx.redirect('/oauth2/error?message=' + encodeURIComponent(err.message));
+        }
+
+        resolve(result);
       });
     });
   }
@@ -27,15 +43,16 @@ var oauthRoutes = function(app) {
     var redirectURI = OAuth2.authCode.authorizeURL({
       redirect_uri: redirect,
       scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
-      state: req.csrfToken(),
+      state: 'lambeosaurus',
     });
 
-    this.session.redirect = req.get('Referer') || '/';
+    this.cookies.set('redirect', this.get('Referer') || '/', cookieOptions);
+
     this.redirect(redirectURI);
   });
 
   router.get('/oauth2/error', function *() {
-    this.body = req.query;
+    this.body = this.query;
   });
 
   router.get('/oauth2/token', function * () {
@@ -47,26 +64,24 @@ var oauthRoutes = function(app) {
       return this.redirect('/oauth2/error?message=' + this.query.error);
     }
 
-    var { err, result } = yield getToken(code, redirect);
+    var result = yield getToken(code, redirect);
 
-    if (err) {
-      return this.redirect('/oauth2/error?message=' + encodeURIComponent(err.message));
-    } else {
-      token = OAuth2.accessToken.create(result);
-      req.session.token = token.token;
+    token = OAuth2.accessToken.create(result);
 
-      var options = {
-        user: 'me', //the current oauth api doesn't return userid. :(
-        headers: {
-          Authorization: 'bearer ' + token.token.access_token,
-        },
-      }
+    this.cookies.set('token', token.token.access_token, cookieOptions);
 
-      var user = yield app.V1Api(req).users.get(options);
-
-      this.session.user = user;
-      this.redirect(req.session.redirect || '/');
+    var options = {
+      user: 'me', //the current oauth api doesn't return userid. :(
+      headers: {
+        Authorization: 'bearer ' + token.token.access_token,
+      },
     }
+
+    var user = yield app.V1Api(token.token.access_token).users.get(options);
+
+    this.cookies.set('user', JSON.stringify(user), cookieOptions);
+
+    this.redirect(this.cookies.get('redirect') || '/');
   });
 }
 

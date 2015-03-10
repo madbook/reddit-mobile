@@ -13,8 +13,8 @@ class BodyLayout extends React.Component {
   render () {
     return (
       <div>
-        <SideNav session={ this.props.session } app={this.props.app}/>
-        <TopNav app={this.props.app}/>
+        <SideNav {...this.props} />
+        <TopNav {...this.props}/>
         { this.props.children }
       </div>
     );

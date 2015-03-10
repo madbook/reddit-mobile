@@ -28,9 +28,7 @@ class CommentBox extends React.Component {
   }
 
   submitComment (thingId, text) {
-    var session = this.props.session;
-
-    if (!session || !session.token) {
+    if (!this.props.token) {
       // TODO: replace this with login form
       console.warn('Must log in first.');
       return;
@@ -41,7 +39,7 @@ class CommentBox extends React.Component {
       text: text
     });
 
-    var options = this.props.api.buildOptions(session.token.access_token);
+    var options = this.props.api.buildOptions(this.props.token);
 
     options = Object.assign(options, {
       model: comment,

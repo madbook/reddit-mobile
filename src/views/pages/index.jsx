@@ -49,8 +49,9 @@ class IndexPage extends React.Component {
     var nextButton;
     var hideSubredditLabel = this.props.subredditName;
     var page = this.props.page || 0;
-    var session = this.props.session;
     var api = this.props.api;
+    var token = this.props.token;
+    var user = this.props.user;
 
     var listings = this.state.listings || [];
 
@@ -106,7 +107,16 @@ class IndexPage extends React.Component {
 
               if (!listing.hidden) {
                 return (
-                  <Listing listing={listing} index={index} key={'page-listing-' + index} page={ page } hideSubredditLabel={ hideSubredditLabel } session={ session } api={api} />
+                  <Listing
+                    listing={listing}
+                    index={index}
+                    key={'page-listing-' + index}
+                    page={ page }
+                    hideSubredditLabel={ hideSubredditLabel }
+                    user={user}
+                    token={token}
+                    api={api}
+                  />
                 );
               }
             })
@@ -126,11 +136,6 @@ class IndexPage extends React.Component {
 
   static populateData (api, props, synchronous) {
     var defer = q.defer();
-    var auth;
-
-    if (props && props.session && props.session.token) {
-      auth = props.session.token.access_token;
-    }
 
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
@@ -139,7 +144,7 @@ class IndexPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(auth);
+    var options = api.buildOptions(props.token);
 
     if (props.after) {
       options.query.after = props.after;

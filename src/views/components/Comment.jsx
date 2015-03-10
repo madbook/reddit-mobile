@@ -81,7 +81,7 @@ class Comment extends React.Component {
 
     if (this.state.showReplyBox) {
       commentBox = (
-        <CommentBox thingId={ comment.name } session={ this.props.session } api={ this.props.api } csrf={ this.props.csrf } onSubmit={ this.onNewComment }  />
+        <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment }  />
       );
     }
 
@@ -131,7 +131,7 @@ class Comment extends React.Component {
       }
 
       vote = (
-        <Vote thing={ comment } session={ props.session } api={ props.api } />
+        <Vote {...props} thing={ comment } />
       );
     } else {
       vote = (

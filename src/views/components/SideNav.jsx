@@ -20,7 +20,8 @@ class SideNav extends React.Component {
   }
 
   render() {
-    var user = this.props.session ? this.props.session.user : undefined;
+    var user = this.props.user;
+
     if (user) {
       var loginLink = (
         <li>

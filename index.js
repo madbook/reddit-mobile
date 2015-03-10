@@ -12,8 +12,7 @@ require('babel/register')({
 var Server = require('./src/server');
 
 var cluster = require('cluster');
-var numCPUs = require('os').cpus().length;
-numCPUs = 1;
+var numCPUs = process.env.PROCESSES || require('os').cpus().length;
 
 // App config
 var config = require('./src/config');
@@ -27,6 +26,8 @@ var failedProcesses = 0;
 
 // Then merge them into a single object for ease of use later
 config.manifest = {};
+config.processes = numCPUs;
+
 Object.assign(config.manifest, jsManifest, cssManifest);
 
 function start(config) {
@@ -47,6 +48,8 @@ if (cluster.isMaster) {
   for (var i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
+
+  Server.info(config);
 
   cluster.on('exit', function(worker, code, signal) {
     if (failedProcesses < 20) {

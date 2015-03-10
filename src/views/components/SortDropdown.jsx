@@ -63,7 +63,7 @@ class SortDropdown extends React.Component {
               });
 
               return (
-                <div className="line">
+                <div className="line" key={'div-' + url }>
                   <CheckmarkIcon checked={opened && map.text == sort}/>
                   <a key={url} href={ url }>{ _toTitleCase(map.text) }</a>
                 </div>

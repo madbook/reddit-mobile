@@ -59,8 +59,9 @@ class ListingPage extends React.Component {
 
     var listing = this.state.listing || {};
     var comments = this.state.comments || [];
-    var session = this.props.session;
     var api = this.props.api;
+    var user = this.props.user;
+    var token = this.props.token;
 
     var author = listing.author;
     var listingElement;
@@ -71,7 +72,7 @@ class ListingPage extends React.Component {
 
     if (!loading) {
       listingElement = (
-        <Listing listing={listing} single={ true } session={ session } api={api} expanded={ true } />
+        <Listing listing={ listing } single={ true } user={ user } token={ token } api={ api } expanded={ true } />
       );
 
       commentHeader = (
@@ -93,7 +94,14 @@ class ListingPage extends React.Component {
       );
 
       commentBoxElement = (
-        <CommentBox thingId={ listing.name } session={ session } api={ api } csrf={ this.props.csrf } onSubmit={ this.onNewComment }  />
+        <CommentBox
+          thingId={ listing.name }
+          user={ user }
+          token={ token }
+          api={ api }
+          csrf={ this.props.csrf }
+          onSubmit={ this.onNewComment }
+        />
       );
     }
 
@@ -110,7 +118,18 @@ class ListingPage extends React.Component {
             comments.map(function(comment, i) {
               if (comment) {
                 comment = commentsMap(comment, null, author, 4, 0);
-                return <Comment comment={comment} index={i} key={'page-comment-' + comment.name} nestingLevel={ 0 } op={ author } session={ session } api={api} />;
+                return (
+                  <Comment 
+                    comment={comment}
+                    index={i}
+                    key={`page-comment-${comment.name}`}
+                    nestingLevel={ 0 }
+                    op={ author }
+                    user={ user }
+                    token={ token }
+                    api={api}
+                  />
+                );
               }
             })
           }
@@ -121,11 +140,6 @@ class ListingPage extends React.Component {
 
   static populateData (api, props, synchronous) {
     var defer = q.defer();
-    var auth;
-
-    if (props && props.session && props.session.token) {
-      auth = props.session.token.access_token;
-    }
 
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
@@ -134,7 +148,7 @@ class ListingPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(auth);
+    var options = api.buildOptions(props.token);
 
     function decodeHtmlEntities(html){
       return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<');

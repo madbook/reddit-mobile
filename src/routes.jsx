@@ -30,8 +30,8 @@ var Layout;
 
 import BodyLayoutFactory from './views/layouts/BodyLayout';
 var BodyLayout;
-function wrap(fn, ctx, ...args) {
 
+function wrap(fn, ctx, ...args) {
   return new Promise(function(resolve) {
     fn.apply(ctx, args).then(resolve);
   });
@@ -58,12 +58,12 @@ function routes(app) {
       minifyAssets: app.getConfig('minifyAssets'),
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
-      session: ctx.session,
+      user: ctx.user,
+      token: ctx.token,
       csrf: ctx.csrf,
       query: ctx.query,
       params: ctx.params,
-      api: app.V1Api(ctx),
-      embedlyKey: app.getConfig('embedlyKey'),
+      api: app.V1Api(ctx.token),
       url: ctx.url,
     };
 
@@ -83,7 +83,7 @@ function routes(app) {
       sort: sort,
     });
 
-    var data = yield wrap(IndexPage.populateData, this, app.V1Api(this), props, this.renderSynchronous, this.useCache);
+    var data = yield wrap(IndexPage.populateData, this, props.api, props, this.renderSynchronous, this.useCache);
 
     props = Object.assign({}, data, props);
 
@@ -91,7 +91,7 @@ function routes(app) {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
         <BodyLayout app={app}>
-          <IndexPage {...props} api={ app.V1Api(this) } key={ key } app={app}/>
+          <IndexPage {...props} key={ key } app={app}/>
         </BodyLayout>
       );
     } catch (e) {
@@ -128,15 +128,17 @@ function routes(app) {
 
     props.listingId = this.params.listingId;
 
-    var data = yield ListingPage.populateData(app.V1Api(this), props, this.renderSynchronous, this.useCache);
+    var data = yield ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
     props = Object.assign({}, data, props);
     props.app = app;
 
+    var key = `listing-${props.listingId}-${stringify(this.query)}`;
+
     try {
       page = (
         <BodyLayout app={app}>
-          <ListingPage {...props} api={ app.V1Api(this) } key={ 'listing-' + props.listingId + '-' + stringify(this.query) } app={app} />
+          <ListingPage {...props} key={ key } app={app} />
         </BodyLayout>
       );
     } catch (e) {
@@ -227,7 +229,7 @@ function routes(app) {
       var id = this.params.id;
       var endpoint = endpoints[id[1]];
 
-      if (!(this.session & this.session.token && this.session.token.access_token)) {
+      if (!(this.access_token)) {
         res.redirect(this.headers.referer || '/');
       }
 
@@ -237,9 +239,9 @@ function routes(app) {
       });
 
       if (vote.get('direction') !== undefined && vote.get('id')) {
-        var api = app.V1Api(this);
+        var api = app.V1Api(props.token);
 
-        var options = api.buildOptions(this.session.token.access_token);
+        var options = api.buildOptions(this.token);
 
         options = Object.assign(options, {
           model: vote,
@@ -261,9 +263,9 @@ function routes(app) {
       text: ctx.body.text
     });
 
-    var api = app.V1Api(this);
+    var api = app.V1Api(props.token);
 
-    if (!(this.session && this.session.token && this.session.token.access_token)) {
+    if (!this.token) {
       return res.redirect(this.headers.referer || '/');
     }
 

@@ -2,12 +2,15 @@
 // belongs in ./server instead.
 
 var config = {
+  https: process.env.HTTPS === 'true',
+
   debug: process.env.SWITCHAROO_DEBUG === 'true',
   minifyAssets: process.env.MINIFY_ASSETS === 'true',
   liveReload: process.env.LIVERELOAD === 'true',
 
   assetPath: process.env.STATIC_BASE || '',
 
+  cookieDomain: process.env.COOKIE_DOMAIN || '',
   origin: process.env.ORIGIN || 'http://localhost:4444',
   port: process.env.PORT || 4444,
   env: process.env.NODE_ENV || 'development',
@@ -17,12 +20,10 @@ var config = {
 
   userAgent: process.env.API_USER_AGENT,
 
-  embedlyKey: process.env.EMBEDLY_KEY,
-
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
 
-  keys: ['lambeosaurus'],
+  keys: [ process.env.SERVER_SIGNED_COOKIE_KEY || 'lambeosaurus' ],
 };
 
 export default config;

@@ -195,7 +195,8 @@ class Listing extends React.Component {
   }
 
   render () {
-    var listing = this.props.listing;
+    var props = this.props;
+    var listing = props.listing;
 
     var permalink = listing.cleanPermalink;
     var url = listing.cleanUrl || '';
@@ -218,9 +219,9 @@ class Listing extends React.Component {
 
     var opClass = 'text-muted';
 
-    var listingClass = this.props.listingClass || '';
+    var listingClass = props.listingClass || '';
 
-    if (this.props.single) {
+    if (props.single) {
       opClass = 'label label-primary';
     }
 
@@ -230,7 +231,7 @@ class Listing extends React.Component {
       listing.domain.indexOf('self.') == 0;
     }
 
-    if (!this.props.hideSubredditLabel) {
+    if (!props.hideSubredditLabel) {
       subredditLabel = (
         <li>
           <span className='listing-subreddit'>
@@ -318,7 +319,7 @@ class Listing extends React.Component {
               { subredditLabel }
               { domain }
               <li className='linkbar-item-no-seperator'><span className='glyphicon glyphicon-comment'></span> { listing.num_comments }</li>
-              <li className='linkbar-item-no-seperator'><Vote thing={ listing }  session={ this.props.session } api={ this.props.api }/></li>
+              <li className='linkbar-item-no-seperator'><Vote {...props} thing={ listing } /></li>
             </ul>
             <div className='stalactite'/>
           </header>

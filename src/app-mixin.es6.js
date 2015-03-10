@@ -49,12 +49,21 @@ function mixin (App) {
     }
 
     // Return the proper API based on session information.
-    V1Api (session) {
-      if (session.token){
+    V1Api (token) {
+      if (token){
         return this.oauthAPI;
       }
 
       return this.nonAuthAPI;
+    }
+
+    buildContext(href) {
+      var ctx = super.buildContext(href);
+
+      ctx.user = this.getState('user');
+      ctx.token = this.getState('token');
+
+      return ctx;
     }
   }
 

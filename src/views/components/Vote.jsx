@@ -67,9 +67,7 @@ class Vote extends React.Component {
   }
 
   submitVote (direction) {
-    var session = this.props.session;
-
-    if (!session || !session.token) {
+    if (!this.props.token) {
       // TODO: replace this with login form
       console.warn('Must log in first.');
       return;
@@ -80,7 +78,7 @@ class Vote extends React.Component {
       id: this.props.thing.name,
     });
 
-    var options = this.props.api.buildOptions(session.token.access_token);
+    var options = this.props.api.buildOptions(this.props.token);
 
     options = Object.assign(options, {
       model: vote,
