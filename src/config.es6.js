@@ -22,8 +22,6 @@ var config = {
 
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
-
-  keys: [ process.env.SERVER_SIGNED_COOKIE_KEY || 'lambeosaurus' ],
 };
 
 export default config;

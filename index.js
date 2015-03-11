@@ -44,6 +44,8 @@ config.oauth = {
   secret: process.env.OAUTH_SECRET || '',
 };
 
+config.keys = [ process.env.SERVER_SIGNED_COOKIE_KEY || 'lambeosaurus' ];
+
 if (cluster.isMaster) {
   for (var i = 0; i < numCPUs; i++) {
     cluster.fork();
