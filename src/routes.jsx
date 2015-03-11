@@ -70,6 +70,10 @@ function routes(app) {
     return Object.assign({}, defaultProps, ctx.props, props);
   }
 
+  app.router.get('/health', function * () {
+    this.body = 'OK';
+  });
+
   function * indexPage (next) {
     var page;
     var sort = this.query.sort || 'hot';
