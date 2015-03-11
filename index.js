@@ -38,7 +38,6 @@ function start(config) {
 
 // Private, server-only config that we don't put in config.js, which is shared
 config.liveReload = process.env.LIVERELOAD || true;
-config.cookieSecret = process.env.SWITCHAROO_COOKIE_SECRET || 'snoo';
 config.oauth = {
   clientId: process.env.OAUTH_CLIENT_ID || '',
   secret: process.env.OAUTH_SECRET || '',
