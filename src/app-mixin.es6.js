@@ -57,13 +57,31 @@ function mixin (App) {
       return this.nonAuthAPI;
     }
 
-    buildContext(href) {
+    buildContext (href) {
       var ctx = super.buildContext(href);
 
       ctx.user = this.getState('user');
       ctx.token = this.getState('token');
 
       return ctx;
+    }
+
+    error (e, ctx, app) {
+      // API error
+      if (e.statusCode) {
+        if (ctx.token && e.statusCode === 401) {
+          // Improper token or does not have access.
+          // Should be a refresh token instead of a login redirect, but this
+          // will at least fix issues for currently logged-in users.
+          // TODO: change to refresh
+          ctx.redirect('/login');
+        } else if (e.statusCode === 403) {
+          // Missing authorization
+          ctx.redirect('/login');
+        }
+      } else {
+        super.error(e, ctx, app);
+      }
     }
   }
 

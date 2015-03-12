@@ -44,6 +44,10 @@ function initialize(bindLinks) {
 
     var app = new ClientReactApp(config);
 
+    app.router.get('/login', function * () {
+      window.location = '/login';
+    });
+
     if (plugins) {
       for (p in plugins) {
         plugin = plugins[p];

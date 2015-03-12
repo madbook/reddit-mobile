@@ -32,8 +32,8 @@ import BodyLayoutFactory from './views/layouts/BodyLayout';
 var BodyLayout;
 
 function wrap(fn, ctx, ...args) {
-  return new Promise(function(resolve) {
-    fn.apply(ctx, args).then(resolve);
+  return new Promise(function(resolve, reject) {
+    fn.apply(ctx, args).then(resolve, reject);
   });
 }
 
@@ -280,10 +280,6 @@ function routes(app) {
     api.comments.post(options).done(function() {
       this.redirect(this.headers.referer || '/');
     });
-  });
-
-  app.router.all('*', function * (next) {
-    this.redirect('/404');
   });
 }
 
