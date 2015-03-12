@@ -16,7 +16,7 @@ class SideNav extends React.Component {
     this._close = this._close.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.app.on(TopNav.HAMBURGER_CLICK, this._toggle);
     this.props.app.on('route:start', this._close);
   }

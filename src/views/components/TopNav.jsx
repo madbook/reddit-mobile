@@ -27,7 +27,7 @@ class TopNav extends React.Component {
 
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.app.on(TopNav.SUBREDDIT_NAME, this._changeSubredditName);
   }
 
