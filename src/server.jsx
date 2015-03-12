@@ -53,12 +53,27 @@ class Server {
 
     // Set up oauth routes
 
+    server.use(this.setHeaders(app));
     server.use(this.modifyRequest);
 
     server.use(App.serverRender(app));
 
     this.server = server;
     this.app = app;
+  }
+
+  setHeaders (app) {
+    return function * (next) {
+      this.set('X-Frame-Options', 'SAMEORIGIN');
+      this.set('X-Content-Type-Options', 'nosniff');
+      this.set('X-XSS-Protection', '1; mode=block');
+
+      if (app.config.https) {
+        this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+      }
+
+      yield next;
+    }
   }
 
   * modifyRequest (next) {
