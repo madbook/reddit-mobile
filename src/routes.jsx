@@ -283,6 +283,10 @@ function routes(app) {
       this.redirect(this.headers.referer || '/');
     });
   });
+
+  app.router.all('*', function * (next) {
+    this.redirect('/404');
+  });
 }
 
 export default routes;
