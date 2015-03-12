@@ -25,6 +25,9 @@ class TopNav extends React.Component {
     this._onHamburgerClick = this._onHamburgerClick.bind(this);
     this._changeSubredditName = this._changeSubredditName.bind(this);
 
+  }
+
+  componentWillMount () {
     this.props.app.on(TopNav.SUBREDDIT_NAME, this._changeSubredditName);
   }
 
