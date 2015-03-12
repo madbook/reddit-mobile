@@ -215,11 +215,9 @@ function routes(app) {
       return app.error(e, this, next);
     }
 
-    res.render({
-      body: page,
-      layout: Layout,
-      props: props,
-    });
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
   });
 
   // Server-side only!
@@ -234,7 +232,7 @@ function routes(app) {
       var endpoint = endpoints[id[1]];
 
       if (!(this.access_token)) {
-        res.redirect(this.headers.referer || '/');
+        this.redirect(this.headers.referer || '/');
       }
 
       var vote = new models.Vote({
@@ -270,7 +268,7 @@ function routes(app) {
     var api = app.V1Api(props.token);
 
     if (!this.token) {
-      return res.redirect(this.headers.referer || '/');
+      return this.redirect(this.headers.referer || '/');
     }
 
     var options = api.buildOptions(this.session.token.access_token);

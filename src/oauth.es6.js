@@ -6,6 +6,7 @@ var oauthRoutes = function(app) {
     signed: true,
     secure: app.getConfig('https'),
     httpOnly: true,
+    maxAge: 1000 * 3000,
   };
 
   if (app.getConfig('cookieDomain')) {
