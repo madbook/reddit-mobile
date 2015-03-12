@@ -8,7 +8,6 @@ var streamify = require('gulp-streamify');
 var rev = require('gulp-rev');
 var rename = require('gulp-rename');
 var buffer = require('gulp-buffer');
-var clean = require('gulp-rimraf');
 var concat = require('gulp-concat');
 var source = require('vinyl-source-stream');
 var streamqueue = require('streamqueue');
@@ -18,8 +17,8 @@ var watchify = require('watchify');
 var babelify = require('babelify');
 var exorcist = require('exorcist');
 
-module.exports = function buildJS(gulp, buildjs) {
-  function compile(watch) {
+module.exports = function buildJS(gulp, buildjs, watch) {
+  return function(cb) {
     gutil.log('Starting browserify');
 
     var entryFile = './assets/js/client.es6.js';
@@ -71,10 +70,6 @@ module.exports = function buildJS(gulp, buildjs) {
 
       stream.on('error', function (err) { console.error(err.toString()) });
 
-      gulp.src(buildjs + '/client*.js')
-        .pipe(clean({force: true}));
-
-
       var shims = streamqueue({ objectMode: true });
       shims.queue(gulp.src('public/js/es5-shims.js'));
       shims.queue(gulp.src('node_modules/babel/browser-polyfill.js'));
@@ -100,9 +95,7 @@ module.exports = function buildJS(gulp, buildjs) {
 
     bundler.on('update', rebundle);
     return rebundle();
-  }
 
-  return {
-    compile: compile,
-  };
+   cb();
+  }
 }

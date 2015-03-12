@@ -48,8 +48,6 @@ class Server {
 
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
-    server.use(koaStatic(__dirname + '/../public'));
-    server.use(koaStatic(__dirname + '/../lib/snooboots/dist'));
 
     // Set up oauth routes
 
