@@ -35,11 +35,11 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('assets', function (cb) {
-  gulp.src('./public/**')
+  gulp.src('./public/**/*')
     .pipe(gulp.dest('./build/'));
 
-  gulp.src('./lib/snooboots/dist/fonts')
-    .pipe(gulp.dest('./build/'));
+  gulp.src('./lib/snooboots/dist/fonts/*')
+    .pipe(gulp.dest('./build/fonts'));
 
   cb();
 });
