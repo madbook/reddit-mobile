@@ -1,3 +1,6 @@
+var crypto = require('crypto');
+var scmp = require('scmp');
+
 // set up oauth routes
 var oauthRoutes = function(app) {
   var router = app.router;
@@ -40,16 +43,40 @@ var oauthRoutes = function(app) {
     });
   }
 
+  function hmac (data) {
+    var key = app.getConfig('keys')[0];
+    var secret = new Buffer(key, 'base64').toString();
+    var algorithm = 'sha1';
+    var hash;
+    var hmac;
+
+    hmac = crypto.createHmac(algorithm, secret);
+    hmac.setEncoding('hex');
+    hmac.write(data);
+    hmac.end();
+
+    return hmac.read();
+  }
+
   router.get('/login', function * () {
-    var redirectURI = OAuth2.authCode.authorizeURL({
-      redirect_uri: redirect,
-      scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
-      state: 'lambeosaurus',
-    });
+    var origin = app.getConfig('origin') + '/';
 
-    this.cookies.set('redirect', this.get('Referer') || '/', cookieOptions);
+    // referer spelled wrong according to spec.
+    var referer = this.get('Referer') || '/';
+    var state = hmac(referer);
+    var redirectURI = referer;
 
-    this.redirect(redirectURI);
+    if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
+      redirectURI = OAuth2.authCode.authorizeURL({
+        redirect_uri: redirect,
+        scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
+        state: `${state}|${referer}`,
+      });
+
+      this.redirect(redirectURI);
+    } else {
+      this.redirect('/403');
+    }
   });
 
   router.get('/oauth2/error', function *() {
@@ -63,6 +90,12 @@ var oauthRoutes = function(app) {
 
     if (error) {
       return this.redirect('/oauth2/error?message=' + this.query.error);
+    }
+
+    var [state, referer] = this.query.state.split('|');
+
+    if (!scmp(state, hmac(referer))) {
+      return this.redirect('/403');
     }
 
     var result = yield getToken(code, redirect);
@@ -82,7 +115,7 @@ var oauthRoutes = function(app) {
 
     this.cookies.set('user', JSON.stringify(user), cookieOptions);
 
-    this.redirect(this.cookies.get('redirect') || '/');
+    this.redirect(referer || '/');
   });
 }
 

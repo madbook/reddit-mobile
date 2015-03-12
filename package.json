@@ -30,6 +30,7 @@
     "reddit-mobile-plugin-ads": "1.0.1",
     "reddit-mobile-plugin-metrics": "1.0.1",
     "reddit-text-js": "0.5.1",
+    "scmp": "^1.0.0",
     "simple-oauth2": "0.2.1",
     "snoode": "0.2.5",
     "superagent": "^0.21.0"
