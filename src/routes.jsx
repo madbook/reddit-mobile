@@ -94,7 +94,7 @@ function routes(app) {
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
-        <BodyLayout app={app}>
+        <BodyLayout {...props} app={app}>
           <IndexPage {...props} key={ key } app={app}/>
         </BodyLayout>
       );
@@ -141,7 +141,7 @@ function routes(app) {
 
     try {
       page = (
-        <BodyLayout app={app}>
+        <BodyLayout {...props} app={app}>
           <ListingPage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -162,7 +162,7 @@ function routes(app) {
     });
 
     var page = (
-      <BodyLayout app={app}>
+      <BodyLayout {...props} app={app}>
         <NotFoundPage {...props}/>
       </BodyLayout>
     );
@@ -181,7 +181,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout app={app}>
+        <BodyLayout {...props} app={app}>
           <ClientErrorPage {...props}/>
         </BodyLayout>
       );
@@ -207,7 +207,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout app={app}>
+        <BodyLayout {...props} app={app}>
           <ServerErrorPage {...props}/>
         </BodyLayout>
       );

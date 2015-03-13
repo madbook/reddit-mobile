@@ -79,6 +79,11 @@ var oauthRoutes = function(app) {
     }
   });
 
+  router.get('/logout', function * () {
+    this.cookies.set('token');
+    this.cookies.set('user');
+  });
+
   router.get('/oauth2/error', function *() {
     this.body = this.query;
   });
