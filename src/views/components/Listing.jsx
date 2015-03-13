@@ -52,7 +52,7 @@ class Listing extends React.Component {
   buildiFrame (url) {
     return (
       <div className='listing-frame'>
-        <iframe src={ url } frameBorder='0' height='80%' width='100%' allowFullScreen=''></iframe>
+        <iframe src={ url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
       </div>
     );
   }
@@ -64,7 +64,7 @@ class Listing extends React.Component {
       var height = embed ? embed.height : 300;
 
       if (html5.iframe) {
-        <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height }></iframe>
+        <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height } sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
       } else {
         return (
           <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true'>
