@@ -3,13 +3,24 @@
   display: inline-block;
 }
 
-.listing-container {
-  background: @body-bg;
+.container {
+  margin: 0 auto !important;
+  max-width: @max-width !important;
+  width: auto !important;
 }
 
 .listing {
+  background-color: @white;
+  margin-bottom: 18px;
+
   a:hover {
     text-decoration: none;
+  }
+
+  .panel {
+    .shadow;
+    margin-bottom: 0;
+    border: @gray-border;
   }
 
   .panel-title {
@@ -18,11 +29,25 @@
 
   .panel-heading {
     position: relative;
+
+    &.preview {
+      .bottomShadow;
+      border-bottom: @gray-border;
+    }
+
+    &.no-preview .panel-title {
+      font-size: 20px;
+    }
+
+    .stalactite:after {
+      .shadow;
+      border: @gray-border;
+    }
   }
 
   .img-preview {
     width: 100%;
-    max-height: 200px;
+    // max-height: 200px;
     object-fit: cover;
     object-position: center;
 
@@ -88,7 +113,7 @@
 }
 
 .well.listing-selftext {
-   background-color: @gray-lighter;
+   background-color: #fafafa;
    border: none;
    padding: 1em;
 }
@@ -106,7 +131,7 @@
      bottom: 0;
      left: 0;
      right: 0;
-     #gradient > .vertical(@start-color: rgba(255,255,255,0); @end-color: rgba(255,255,255,1));
+     #gradient > .vertical(@start-color: rgba(250,250,250,0); @end-color: rgba(250,250,250,1));
    }
 }
 
@@ -129,10 +154,25 @@
   background: url('/img/gilded.gif');
 }
 
+.vote-form {
+  margin: 0;
+}
+
 .vote {
   font-size: 150%;
   position: relative;
-  top: .2em;
+}
+
+.linkbar-compact {
+  vertical-align: middle;
+}
+
+.linkbar.linkbar-compact li:before {
+  display: none;
+}
+
+.linkbar > li {
+  vertical-align: bottom;
 }
 
 .listing-author-flair {

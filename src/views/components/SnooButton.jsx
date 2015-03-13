@@ -1,6 +1,10 @@
 import React from 'react';
 import MyMath from '../../lib/danehansen/MyMath';
 import Point from '../../lib/danehansen/Point';
+import MobileButtonFactory from '../components/MobileButton';
+import SVGFactory from '../components/SVG';
+var MobileButton;
+var SVG;
 
 const _MOUTH_STROKE = 1.0875;
 const _DINGLEBERRY_CENTER = {x:22.65625, y:6.71875};
@@ -30,8 +34,8 @@ class SnooButton extends React.Component {
 
   render() {
     return (
-      <a href='/' className='SnooButton' onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave} onMouseMove={this._onMouseMove} onTouchStart={this._onMouseEnter} onTouchMove={this._onMouseMove} onTouchEnd={this._onMouseLeave}>
-        <svg ref='svg' version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='29px' height='33px' viewBox='0 0 29 33'>
+      <MobileButton element='a' href='/' over={this._onMouseEnter} out={this._onMouseLeave} onMouseMove={this._onMouseMove} onTouchMove={this._onMouseMove}>
+        <SVG width={29} height={33}>
           <ellipse ref='head' fill='#fff' cx='14.5' cy='23.03125' rx='12.6875' ry='9.96875'/>
           <circle ref='leftEar' fill='#fff' cx='3.625' cy='18.5' r='3.625'/>
           <circle ref='rightEar' fill='#fff' cx='25.375' cy='18.5' r='3.625'/>
@@ -43,8 +47,8 @@ class SnooButton extends React.Component {
             <line ref='stemEnd' x1={_ELBOW.x} y1={_ELBOW.y} x2={_DINGLEBERRY_CENTER.x} y2={_DINGLEBERRY_CENTER.y}/>
           </g>
           <circle ref='dingleberry' fill='#fff' cx={_DINGLEBERRY_CENTER.x} cy={_DINGLEBERRY_CENTER.y} r='2.71875'/>
-        </svg>
-      </a>
+        </SVG>
+      </MobileButton>
     );
   }
 
@@ -118,7 +122,9 @@ class SnooButton extends React.Component {
 }
 
 function SnooButtonFactory(app) {
-  return app.mutate('core/components/snooButton', SnooButton);
+  SVG = SVGFactory(app);
+  MobileButton = MobileButtonFactory(app);
+  return app.mutate('core/components/SnooButton', SnooButton);
 }
 
 export default SnooButtonFactory;

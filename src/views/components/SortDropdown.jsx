@@ -1,6 +1,7 @@
 import React from 'react';
 import querystring from 'querystring';
 import CheckmarkIconFactory from '../components/CheckmarkIcon';
+import Utils from '../../lib/danehansen/Utils';
 
 var CheckmarkIcon;
 var _LISTS = {
@@ -20,7 +21,6 @@ var _LISTS = {
     { text: 'hot', param: 'hot' },
     { text: 'controversial', param: 'controversial' },
     { text: 'old', param: 'old' },
-    { text: 'random', param: 'random' },
   ],
 };
 
@@ -48,28 +48,31 @@ class SortDropdown extends React.Component {
     if (baseUrl[baseUrl.length - 1] !== '/') {
       baseUrl += '/';
     }
-    var touch=(typeof window!='undefined')?('ontouchstart' in window):false;
+    var touch=Utils.touch();
     var sort=this.props.sort;
     var opened=this.state.opened;
     return (
-      <div className='SortDropdown' onMouseEnter={touch?null:this._onMouseEnter} onMouseLeave={touch?null:this._onMouseLeave} onClick={touch?this._onClick:null}>
+      <div className={'SortDropdown dropdown'+(opened?" opened":"")} onMouseEnter={touch?null:this._onMouseEnter} onMouseLeave={touch?null:this._onMouseLeave} onClick={touch?this._onClick:null}>
         <button className={'twirly after' + (opened?' opened':'')} ref='twirly'>{_toTitleCase(sort)}</button>
-        <div className='tab shadow' ref='tab'>
+        <div className='dropdown-tab shadow tween' ref='tab'>
           <div className='stalagmite'></div>
-          {
-            list.map(function(map) {
-              var url = baseUrl + '?' + querystring.stringify({
-                sort: map.param.toLowerCase(),
-              });
-
-              return (
-                <div className="line" key={'div-' + url }>
-                  <CheckmarkIcon checked={opened && map.text == sort}/>
-                  <a key={url} href={ url }>{ _toTitleCase(map.text) }</a>
-                </div>
-              );
-            })
-          }
+          <ul className='dropdown-ul'>
+            {
+              list.map(function(map) {
+                var url = baseUrl + '?' + querystring.stringify({
+                  sort: map.param.toLowerCase(),
+                });
+                return (
+                  <li className='dropdown-li'>
+                    <a className='dropdown-button' key={url} href={ url }>
+                      <CheckmarkIcon opened={opened && map.text == sort}/>
+                      <span className='dropdown-text'>{ _toTitleCase(map.text) }</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
         </div>
       </div>
     );
@@ -91,19 +94,17 @@ class SortDropdown extends React.Component {
   }
 
   _open() {
-    TweenLite.to(this.refs.tab.getDOMNode(), 0.2, {autoAlpha:1, ease:Linear.easeNone});
     this.setState({opened:true});
   }
 
   _close() {
-    TweenLite.to(this.refs.tab.getDOMNode(), 0.2, {autoAlpha:0, ease:Linear.easeNone, clearProps:'all'});
     this.setState({opened:false});
   }
 }
 
 function SortDropdownFactory(app) {
   CheckmarkIcon = CheckmarkIconFactory(app);
-  return app.mutate('core/components/checkmarkIcon', SortDropdown);
+  return app.mutate('core/components/SortDropdown', SortDropdown);
 }
 
 export default SortDropdownFactory;

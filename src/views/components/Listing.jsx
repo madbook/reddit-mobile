@@ -7,6 +7,11 @@ var Vote;
 import ActionsFactory from '../components/Actions';
 var Actions;
 
+import ListingDropdownFactory from '../components/ListingDropdown';
+var ListingDropdown;
+import GoldIconFactory from '../components/GoldIcon';
+var GoldIcon;
+
 import short from '../../lib/formatDifference';
 
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
@@ -68,14 +73,14 @@ class Listing extends React.Component {
       } else {
         return (
           <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true'>
-            <source type="video/webm" src={ html5.webm } />
-            <source type="video/mp4" src={ html5.mp4 } />
+            <source type='video/webm' src={ html5.webm } />
+            <source type='video/mp4' src={ html5.mp4 } />
           </video>
         );
         }
     } else {
       return (
-        <img src={ url } className='img-responsive img-preview' height='200' width='100%' />
+        <img ref='img' src={ url } className='img-responsive img-preview' height='200' width='100%' />
       );
     }
   }
@@ -168,21 +173,10 @@ class Listing extends React.Component {
     } else if (listing.domain.indexOf('self.') === -1 && this.state.expanded) {
       return this.buildiFrame(listing.url);
     } else if (listing.domain.indexOf('self.') === 0) {
-      return (
-        <a href={ permalink }>
-          <span className='h1 img-responsive text-center vertical-padding'>
-            <img src='/img/snoo-128.png' height='128' width='128' />
-          </span>
-        </a>
-      );
+      return null;
     } else {
-      return (
-        <a href={ permalink }>
-          <span className='h1 img-responsive text-center vertical-padding text-super-large'>
-            <span className='glyphicon glyphicon-new-window text-inverted' />
-          </span>
-        </a>
-      );
+
+      return null;
     }
   }
 
@@ -251,7 +245,7 @@ class Listing extends React.Component {
 
     if (listing.gilded) {
       gilded = (
-        <li><span className='glyphicon glyphicon-gilded' /></li>
+        <li><GoldIcon/></li>
       );
     }
 
@@ -278,11 +272,14 @@ class Listing extends React.Component {
     if (listing.num_comments < 2) {
       comment = 'comment';
     }
-
+    var app=this.props.app;
+    var buildContent=this.buildContent();
+    if(buildContent)
+      var stalactite= <div className='stalactite'/>;
     return (
       <article className={'listing ' + listingClass }>
         <div className='panel'>
-          <header className='panel-heading'>
+          <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
                 <div className='link-flair-container'>
@@ -296,35 +293,20 @@ class Listing extends React.Component {
                   </h1>
                 </a>
               </div>
-
-              <div className='col-xs-1'>
-                <button type='button' className='btn btn-link dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>
-                  <span className='glyphicon glyphicon-option-horizontal'></span>
-                </button>
-                <ul className='dropdown-menu dropdown-menu-right' role='menu'>
-                  <li><a href='#'>Upvote</a></li>
-                  <li><a href='#'>Downvote</a></li>
-                  <li><a href='#'>Post Comment</a></li>
-                  <li><a href='#'>Save</a></li>
-                  <li><a href='#'>Report</a></li>
-                  <li><a href='#'>Share</a></li>
-                  <li><a href={ '/r/' + listing.subreddit } >More from { listing.subreddit }</a></li>
-                  <li><a href={ '/u/' + listing.author }>About { listing.author }</a></li>
-                </ul>
-              </div>
+              <ListingDropdown listing={listing} app={app}/>
             </div>
 
             <ul className='linkbar text-muted small'>
               { gilded }
+              <li className='linkbar-item-no-seperator'><Vote app={app} thing={ listing }  token={ this.props.token } api={ this.props.api }/></li>
+              <li className='linkbar-item-no-seperator'>{ listing.num_comments } comments</li>
               { subredditLabel }
               { domain }
-              <li className='linkbar-item-no-seperator'><span className='glyphicon glyphicon-comment'></span> { listing.num_comments }</li>
-              <li className='linkbar-item-no-seperator'><Vote {...props} thing={ listing } /></li>
             </ul>
-            <div className='stalactite'/>
+            { stalactite }
           </header>
 
-          { this.buildContent() }
+          { buildContent }
         </div>
       </article>
     );
@@ -334,6 +316,8 @@ class Listing extends React.Component {
 function ListingFactory(app) {
   Vote = VoteFactory(app);
   Actions = ActionsFactory(app);
+  ListingDropdown = ListingDropdownFactory(app);
+  GoldIcon = GoldIconFactory(app);
 
   return app.mutate('core/components/listing', Listing);
 }

@@ -69,10 +69,11 @@ class ListingPage extends React.Component {
     var commentHeader;
 
     var sort = this.props.sort || 'best';
+    var app=this.props.app;
 
     if (!loading) {
       listingElement = (
-        <Listing listing={ listing } single={ true } user={ user } token={ token } api={ api } expanded={ true } />
+        <Listing app={ app } listing={ listing } single={ true } user={ user } token={ token } api={ api } expanded={ true } />
       );
 
       commentHeader = (
@@ -107,9 +108,8 @@ class ListingPage extends React.Component {
 
     return (
       <main>
-
         { loading }
-        <TopSubnav sort={ sort } list='comments' baseUrl={ this.props.url }/>
+        <TopSubnav user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
         <div className='container' key='container'>
           { listingElement }
           { commentHeader }
@@ -119,7 +119,8 @@ class ListingPage extends React.Component {
               if (comment) {
                 comment = commentsMap(comment, null, author, 4, 0);
                 return (
-                  <Comment 
+                  <Comment
+                    app={app}
                     comment={comment}
                     index={i}
                     key={`page-comment-${comment.name}`}
