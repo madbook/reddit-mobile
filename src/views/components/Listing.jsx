@@ -50,14 +50,6 @@ class Listing extends React.Component {
     return (nextProps !== this.props || nextState !== this.state);
   }
 
-  buildiFrame (url) {
-    return (
-      <div className='listing-frame'>
-        <iframe src={ url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
-      </div>
-    );
-  }
-
   buildImage (url, embed) {
     var html5 = gifToHTML5(url);
 
@@ -111,7 +103,11 @@ class Listing extends React.Component {
 
       if (media.oembed.type === 'rich' || media.oembed.type === 'image') {
         if (this.state.expanded) {
-          return this.buildiFrame(listing.url);
+          return (
+            <div className='listing-frame'>
+              <iframe src={ url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+            </div>
+          );
         } else {
           return (
             <a href={ permalink }>
@@ -166,8 +162,6 @@ class Listing extends React.Component {
           }} onClick={ this.expand.bind(this) } />
         );
       }
-    } else if (listing.domain.indexOf('self.') === -1 && this.state.expanded) {
-      return this.buildiFrame(listing.url);
     } else if (listing.domain.indexOf('self.') === 0) {
       return (
         <a href={ permalink }>
