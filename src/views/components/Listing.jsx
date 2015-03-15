@@ -105,7 +105,7 @@ class Listing extends React.Component {
         if (this.state.expanded) {
           return (
             <div className='listing-frame'>
-              <iframe src={ url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+              <iframe src={ listing.url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
             </div>
           );
         } else {
