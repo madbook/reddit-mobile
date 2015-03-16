@@ -14,6 +14,7 @@ var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 
 function gifToHTML5 (url) {
+  if (!url) { return; }
   if (url.indexOf('.gif') < 1) { return; }
 
   // If it's imgur, make a gifv link
