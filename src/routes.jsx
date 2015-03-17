@@ -16,6 +16,15 @@ var IndexPage;
 import ListingPageFactory from './views/pages/listing';
 var ListingPage;
 
+import UserProfilePageFactory from './views/pages/userProfile';
+var UserProfilePage;
+
+import UserGildPageFactory from './views/pages/userGild';
+var UserGildPage;
+
+import UserActivityPageFactory from './views/pages/userActivity';
+var UserActivityPage;
+
 import NotFoundPageFactory from './views/pages/404';
 var NotFoundPage;
 
@@ -42,6 +51,9 @@ function wrap(fn, ctx, ...args) {
 function routes(app) {
   IndexPage = IndexPageFactory(app);
   ListingPage = ListingPageFactory(app);
+  UserProfilePage = UserProfilePageFactory(app);
+  UserGildPage = UserGildPageFactory(app);
+  UserActivityPage = UserActivityPageFactory(app);
   NotFoundPage = NotFoundPageFactory(app);
   ClientErrorPage = ClientErrorPageFactory(app);
   ServerErrorPage = ServerErrorPageFactory(app);
@@ -111,16 +123,6 @@ function routes(app) {
   app.router.get('/', indexPage);
   app.router.get('/r/:subreddit', indexPage);
 
-  // Instead of using routes for sorting, let's make it a query. Convert it
-  // from desktop web urls.
-  app.router.get(/^\/(hot|new|rising|controversial|top|gilded)\b/, function *(next) {
-    this.redirect('/?sort=' + this.params[0]);
-  });
-
-  app.router.get(/^\/r\/(\w+)\/(hot|new|rising|controversial|top|gilded)\b/, function *(next) {
-    this.redirect('/r/' + this.params[0] + '/?sort=' + this.params[1]);
-  });
-
   app.router.get('/r/:subreddit/comments/:listingId/:listingTitle/:commentId?', function *(next) {
     var page;
     var ctx = this;
@@ -143,6 +145,103 @@ function routes(app) {
       page = (
         <BodyLayout {...props} app={app}>
           <ListingPage {...props} key={ key } app={app} />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  app.router.get('/u/:user', function *(next) {
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      userName: ctx.params.user,
+    });
+
+    var data = yield UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+
+    props = Object.assign({}, data, props);
+    props.app = app;
+
+    var key = `user-profile-${ctx.params.user}`;
+
+    try {
+      page = (
+        <BodyLayout {...props} app={app}>
+          <UserProfilePage {...props} key={ key } app={app} />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  app.router.get('/u/:user/gild', function *(next) {
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      userName: ctx.params.user,
+    });
+
+    var data = yield UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+
+    props = Object.assign({}, data, props);
+    props.app = app;
+
+    var key = `user-gild-${ctx.params.user}`;
+
+    try {
+      page = (
+        <BodyLayout {...props} app={app}>
+          <UserGildPage {...props} key={ key } app={app} />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  app.router.get('/u/:user/activity', function *(next) {
+    var page;
+    var sort = this.query.sort || 'hot';
+    var activity = this.query.activity || 'comments';
+
+    var ctx = this;
+
+    var props = buildProps(ctx, {
+      activity: activity,
+      userName: ctx.params.user,
+      after: ctx.query.after,
+      before: ctx.query.before,
+      page: parseInt(ctx.query.page) || 0,
+      user: ctx.params.user,
+      sort: sort,
+    });
+
+    var data = yield wrap(UserActivityPage.populateData, this, props.api, props, this.renderSynchronous, this.useCache);
+
+    props = Object.assign({}, data, props);
+
+    try {
+      var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
+      page = (
+        <BodyLayout {...props} app={app}>
+          <UserActivityPage {...props} key={ key } app={app}/>
         </BodyLayout>
       );
     } catch (e) {

@@ -1,7 +1,11 @@
 import React from 'react';
 import querystring from 'querystring';
+
+import titleCase from '../../lib/titleCase';
+
 import CheckmarkIconFactory from '../components/CheckmarkIcon';
 var CheckmarkIcon;
+
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
 
@@ -23,19 +27,22 @@ var _LISTS = {
     { text: 'controversial', param: 'controversial' },
     { text: 'old', param: 'old' },
   ],
-};
 
-function _toTitleCase(str)
-{
-  return str.toLowerCase().replace(/\b[a-z]/g, function(letter) {return letter.toUpperCase();});
-}
+  both: [
+    { text: 'hot', param: 'hot' },
+    { text: 'top', param: 'top' },
+    { text: 'controversial', param: 'controversial' },
+  ]
+};
 
 class SortDropdown extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       opened:false,
     };
+
     this._onOpen=this._onOpen.bind(this);
     this._id = Math.random();
   }
@@ -50,24 +57,38 @@ class SortDropdown extends React.Component {
 
   render () {
     var list = _LISTS[this.props.list];
+
     var baseUrl = this.props.baseUrl || '/';
-    if (baseUrl[baseUrl.length - 1] !== '/') {
-      baseUrl += '/';
-    }
-    var sort = this.props.sort;
-    var button = <button className={'twirly after' + ( this.state.opened ? ' opened' : '' )}>{_toTitleCase( sort )}</button>;
+
+    var sort = list.find((l) => {
+      return l.param == this.props.sort;
+    }) || list[0];
+
+    var sortTitle = titleCase(sort.text);
+
+    var button = <button className={'twirly after' + ( this.state.opened ? ' opened' : '' )}>{sortTitle}</button>;
+
     return (
-      <Dropdown app={ this.props.app } id={ this._id } button={ button }>
+      <Dropdown app={ this.props.app } id={ this._id } button={ button } className={ this.props.className }>
         {
           list.map(function(map) {
-            var url = baseUrl + '?' + querystring.stringify({
-              sort: map.param.toLowerCase(),
-            });
+            var url = baseUrl;
+
+            if (baseUrl.indexOf('?') === -1) {
+              url += '?' + querystring.stringify({
+                sort: map.param.toLowerCase(),
+              });
+            } else {
+              url += '&' + querystring.stringify({
+                sort: map.param.toLowerCase(),
+              });
+            }
+
             return (
               <li className='Dropdown-li' key={ url }>
                 <a className='Dropdown-button' href={ url }>
-                  <CheckmarkIcon opened={map.text == sort}/>
-                  <span className='Dropdown-text'>{ _toTitleCase(map.text) }</span>
+                  <CheckmarkIcon opened={map.text == sortTitle.toLowerCase()}/>
+                  <span className='Dropdown-text'>{ titleCase(map.text) }</span>
                 </a>
               </li>
             );

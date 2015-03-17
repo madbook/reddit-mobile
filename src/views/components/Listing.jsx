@@ -210,6 +210,8 @@ class Listing extends React.Component {
 
     var listingClass = props.listingClass || '';
 
+    var aboutAuthor;
+
     if (props.single) {
       opClass = 'label label-primary';
     }
@@ -267,10 +269,18 @@ class Listing extends React.Component {
     if (listing.num_comments < 2) {
       comment = 'comment';
     }
+
     var app=this.props.app;
     var buildContent=this.buildContent();
     if(buildContent)
       var stalactite= <div className='stalactite'/>;
+
+    if (!props.hideAuthor) {
+      aboutAuthor = (
+        <li><a href={ '/u/' + listing.author }>About { listing.author }</a></li>
+      );
+    }
+
     return (
       <article className={'listing ' + listingClass }>
         <div className='panel'>
