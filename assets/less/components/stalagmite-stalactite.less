@@ -1,0 +1,41 @@
+.stalagmite, .stalactite {
+  width: 18px;
+  height: 10px;
+  position: absolute;
+  left: 5px;
+  overflow: hidden;
+  z-index: 1;
+
+  &.right {
+    left: auto;
+    right: 5px;
+  }
+
+  &:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background: @white;
+    .rotate(45deg);
+    left: 4px;
+  }
+}
+
+// teepee
+  .stalagmite {
+    bottom: 100%;
+
+    &:after {
+      bottom: -5px;
+    }
+  }
+
+// hangs
+  .stalactite {
+    top: 100%;
+
+    &:after {
+      top: -5px;
+    }
+  }

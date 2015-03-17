@@ -95,11 +95,11 @@ class IndexPage extends React.Component {
         </a>
       );
     }
-
+    var app=this.props.app;
     return (
       <main>
         { loading }
-        <TopSubnav sort={ sort } list='comments' baseUrl={ this.props.url }/>
+        <TopSubnav user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
         <div className='container listing-container'>
           {
             listings.map(function(listing, i) {
@@ -108,6 +108,7 @@ class IndexPage extends React.Component {
               if (!listing.hidden) {
                 return (
                   <Listing
+                    app={app}
                     listing={listing}
                     index={index}
                     key={'page-listing-' + index}

@@ -1,12 +1,24 @@
 .TopSubnav {
   color: @blue;
   line-height: 30px;
+  padding: 0 10px;
+  max-width: @max-width;
+  margin: 0 auto;
 
   .SortDropdown {
     float: left;
-    margin-left: 10px;
   }
 }
+
+  .TopSubnav-a {
+  	color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: inherit;
+    	text-decoration: none;
+    }
+  }
 
 .container {
   clear: both;

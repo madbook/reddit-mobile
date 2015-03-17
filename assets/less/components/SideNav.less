@@ -6,50 +6,50 @@
   overflow-y: auto;
   padding-top: 55px;
   display: inline-block;
-  background-color: @gray;
-  color: @white;
+  background-color: @white;
   font-size: @font-size-base + 3px;
-  .translate(-100%, 0);
-  .transition(0.2s);
+  .translate(calc(~"-100% - 12px"), 0);
+  border-right: @gray-border;
+  box-shadow: 2px 0 10px 0 rgba(0,0,0,0.42);
 
   &.opened {
     .translate(0, 0);
   }
+}
 
-  ul {
+  .SideNav-ul {
     padding-left: 16px;
   }
 
-  button, a {
-    padding: 8px 20px 8px 4px;
-  }
+    .SideNav-dropdown {
+      max-height: 38px;
+      overflow-y: hidden;
+      position: relative;
 
-  a {
-    color: inherit;
-    text-decoration: none;
-    display: block;
-  }
+      > .SideNav-button {
+        margin-left: 16px;
+      }
 
-  .dropdown > ul:after {
-    content: "";
-    position: absolute;
-    top: 38px;
-    bottom: 0;
-    left: 7px;
-    border-left: 1px solid #676b6b;
-  }
-
-  .dropdown {
-    max-height: 38px;
-    .transition(0.2s);
-    overflow-y: hidden;
-
-    > button {
-      margin-left: 16px;
+      &.opened {
+        max-height: 300px;
+      }
     }
 
-    &.opened {
-      max-height: 300px;
-    }
-  }
-}
+      .SideNav-dropdown > .SideNav-ul:after {
+        content: "";
+        position: absolute;
+        top: 38px;
+        bottom: 0;
+        left: 7px;
+        border-left: @gray-border;
+      }
+
+        .SideNav-button {
+          padding: 8px 20px 8px 4px;
+          display: block;
+        }
+
+        .SideNav-button, .SideNav-button:hover {
+          color: inherit;
+          text-decoration: none;
+        }

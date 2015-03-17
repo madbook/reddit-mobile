@@ -78,6 +78,7 @@ class Comment extends React.Component {
     var scoreClass = 'up';
 
     var commentBox;
+    var app = props.app;
 
     if (this.state.showReplyBox) {
       commentBox = (
@@ -131,7 +132,7 @@ class Comment extends React.Component {
       }
 
       vote = (
-        <Vote {...props} thing={ comment } />
+        <Vote {...props} thing={ comment }/>
       );
     } else {
       vote = (

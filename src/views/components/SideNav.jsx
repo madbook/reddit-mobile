@@ -1,6 +1,5 @@
 import React from 'react';
 import TopNavFactory from '../components/TopNav';
-
 var TopNav;
 
 class SideNav extends React.Component {
@@ -16,9 +15,14 @@ class SideNav extends React.Component {
     this._close = this._close.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.app.on(TopNav.HAMBURGER_CLICK, this._toggle);
     this.props.app.on('route:start', this._close);
+  }
+
+  componentWillUnount() {
+    this.props.app.off(TopNav.HAMBURGER_CLICK, this._toggle);
+    this.props.app.off('route:start', this._close);
   }
 
   render() {
@@ -27,67 +31,70 @@ class SideNav extends React.Component {
     if (user) {
       var loginLink = (
         <li>
-          <a href={ '/u/' + user.name }>{ user.name }</a>
+          <a className='SideNav-button' href={ '/u/' + user.name }>{ user.name }</a>
         </li>
       );
     } else {
       loginLink = (
         <li>
-          <a href='/login' data-no-route='true'>Login / Register</a>
+          <a className='SideNav-button' href='/login' data-no-route='true'>Login / Register</a>
         </li>
       );
     }
 
     return (
-      <nav className={'SideNav' + (this.state.opened?' opened':'')}>
-      <ul>
+      <nav className={'SideNav tween' + (this.state.opened?' opened':'')}>
+      <ul className='SideNav-ul'>
+        <li>
+          <a className='SideNav-button' href='/'>Home</a>
+        </li>
         { loginLink }
-        <li className={'dropdown'+(this.state.twirly=='about'?' opened':'')}>
-          <button className={'twirly before'+(this.state.twirly=='about'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
-          <ul>
+        <li className={'SideNav-dropdown tween'+(this.state.twirly=='about'?' opened':'')}>
+          <button className={'twirly before SideNav-button'+(this.state.twirly=='about'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
+          <ul className='SideNav-ul'>
             <li>
-              <a href='/blog/'>Blog</a>
+              <a className='SideNav-button' href='/blog/'>Blog</a>
             </li>
             <li>
-              <a href='/about/'>About</a>
+              <a className='SideNav-button' href='/about/'>About</a>
             </li>
             <li>
-              <a href='/about/team/'>Team</a>
+              <a className='SideNav-button' href='/about/team/'>Team</a>
             </li>
             <li>
-              <a href='/code/'>Source Code</a>
+              <a className='SideNav-button' href='/code/'>Source Code</a>
             </li>
             <li>
-              <a href='/advertising/'>Advertise</a>
+              <a className='SideNav-button' href='/advertising/'>Advertise</a>
             </li>
             <li>
-              <a href='/r/redditjobs/'>Jobs</a>
+              <a className='SideNav-button' href='/r/redditjobs/'>Jobs</a>
             </li>
           </ul>
         </li>
-        <li className={'dropdown'+(this.state.twirly=='help'?' opened':'')}>
-          <button className={'twirly before'+(this.state.twirly=='help'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
-          <ul>
+        <li className={'SideNav-dropdown tween'+(this.state.twirly=='help'?' opened':'')}>
+          <button className={'twirly before SideNav-button'+(this.state.twirly=='help'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
+          <ul className='SideNav-ul'>
             <li>
-              <a href='/wiki/'>Wiki</a>
+              <a className='SideNav-button' href='/wiki/'>Wiki</a>
             </li>
             <li>
-              <a href='/wiki/faq'>FAQ</a>
+              <a className='SideNav-button' href='/wiki/faq'>FAQ</a>
             </li>
             <li>
-              <a href='/wiki/reddiquette'>Reddiquette</a>
+              <a className='SideNav-button' href='/wiki/reddiquette'>Reddiquette</a>
             </li>
             <li>
-              <a href='/rules/'>Rules</a>
+              <a className='SideNav-button' href='/rules/'>Rules</a>
             </li>
             <li>
-              <a href='/help/useragreement'>User Agreement</a>
+              <a className='SideNav-button' href='/help/useragreement'>User Agreement</a>
             </li>
             <li>
-              <a href='/help/privacypolicy'>Privacy Policy</a>
+              <a className='SideNav-button' href='/help/privacypolicy'>Privacy Policy</a>
             </li>
             <li>
-              <a href='/contact/'>Contact Us</a>
+              <a className='SideNav-button' href='/contact/'>Contact Us</a>
             </li>
           </ul>
         </li>
@@ -97,12 +104,16 @@ class SideNav extends React.Component {
   }
 
   _toggle() {
+    this.props.app.emit(SideNav.TOGGLE, !this.state.opened);
     this.setState({opened:!this.state.opened});
   }
 
   _close() {
     if(this.state.opened)
+    {
+      this.props.app.emit(SideNav.TOGGLE, false);
       this.setState({opened:false});
+    }
   }
 
   _onTwirlyClick(str, evt) {
@@ -111,9 +122,11 @@ class SideNav extends React.Component {
   }
 }
 
+SideNav.TOGGLE = 'sideNavToggle';
+
 function SideNavFactory(app) {
   TopNav = TopNavFactory(app);
-  return app.mutate('core/components/topNav', SideNav);
+  return app.mutate('core/components/SideNav', SideNav);
 }
 
 export default SideNavFactory;
