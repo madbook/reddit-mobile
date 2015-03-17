@@ -19,7 +19,7 @@ class TopSubnav extends React.Component {
     }
     return (
       <div className='TopSubnav'>
-        <SortDropdown sort={ this.props.sort } list='comments' baseUrl={ this.props.url }/>
+        <SortDropdown app={ this.props.app } sort={ this.props.sort } list={ this.props.list } baseUrl={ this.props.url }/>
         <div className='pull-right'>{ loginLink }</div>
       </div>
     );

@@ -1,17 +1,17 @@
-.dropdown {
+.Dropdown {
   position: relative;
 
-  &.right .dropdown-tab {
-    right: 0;
+  &.right {
+    float: right;
   }
 
-  &.opened .dropdown-tab {
+  &.opened .Dropdown-tab {
     opacity: 1;
     visibility: visible;
   }
 }
 
-  .dropdown-tab {
+  .Dropdown-tab {
     padding: none;
     position: absolute;
     background: @white;
@@ -35,16 +35,20 @@
         }
   }
 
-    .dropdown-ul {
+  .Dropdown.right .Dropdown-tab {
+    right: -5px;
+  }
+
+    .Dropdown-ul {
       padding-left: 0;
       margin-bottom: 0;
     }
 
-      .dropdown-li {
+      .Dropdown-li {
         white-space: nowrap;
       }
 
-        .dropdown-button {
+        .Dropdown-button {
           padding: 0;
           vertical-align: middle;
           display: inline-block;
@@ -57,11 +61,10 @@
           }
         }
 
-          .dropdown-text {
+          .Dropdown-text {
             vertical-align: sub;
+          }
 
-            span {
-              padding: 0;
-              margin: 0;
-            }
+          .Dropdown-form {
+            margin: 0;
           }

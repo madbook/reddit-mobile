@@ -1,9 +1,10 @@
 import React from 'react';
 import querystring from 'querystring';
 import CheckmarkIconFactory from '../components/CheckmarkIcon';
-import Utils from '../../lib/danehansen/Utils';
-
 var CheckmarkIcon;
+import DropdownFactory from '../components/Dropdown';
+var Dropdown;
+
 var _LISTS = {
   listings: [
     { text: 'hot', param: 'hot' },
@@ -33,77 +34,57 @@ class SortDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened:false
+      opened:false,
     };
-    this._onMouseEnter=this._onMouseEnter.bind(this);
-    this._onMouseLeave=this._onMouseLeave.bind(this);
-    this._onClick=this._onClick.bind(this);
-    this._open=this._open.bind(this);
-    this._close=this._close.bind(this);
+    this._onOpen=this._onOpen.bind(this);
+    this._id = Math.random();
   }
 
-  render() {
+  componentDidMount () {
+    this.props.app.on(Dropdown.OPEN + ':' + this._id, this._onOpen);
+  }
+
+  componentWillUnmount () {
+    this.props.app.off(Dropdown.OPEN + ':' + this._id, this._onOpen);
+  }
+
+  render () {
     var list = _LISTS[this.props.list];
     var baseUrl = this.props.baseUrl || '/';
     if (baseUrl[baseUrl.length - 1] !== '/') {
       baseUrl += '/';
     }
-    var touch=Utils.touch();
-    var sort=this.props.sort;
-    var opened=this.state.opened;
+    var sort = this.props.sort;
+    var button = <button className={'twirly after' + ( this.state.opened ? ' opened' : '' )}>{_toTitleCase( sort )}</button>;
     return (
-      <div className={'SortDropdown dropdown'+(opened?" opened":"")} onMouseEnter={touch?null:this._onMouseEnter} onMouseLeave={touch?null:this._onMouseLeave} onClick={touch?this._onClick:null}>
-        <button className={'twirly after' + (opened?' opened':'')} ref='twirly'>{_toTitleCase(sort)}</button>
-        <div className='dropdown-tab shadow tween' ref='tab'>
-          <div className='stalagmite'></div>
-          <ul className='dropdown-ul'>
-            {
-              list.map(function(map) {
-                var url = baseUrl + '?' + querystring.stringify({
-                  sort: map.param.toLowerCase(),
-                });
-                return (
-                  <li className='dropdown-li'>
-                    <a className='dropdown-button' key={url} href={ url }>
-                      <CheckmarkIcon opened={opened && map.text == sort}/>
-                      <span className='dropdown-text'>{ _toTitleCase(map.text) }</span>
-                    </a>
-                  </li>
-                );
-              })
-            }
-          </ul>
-        </div>
-      </div>
+      <Dropdown app={ this.props.app } id={ this._id } button={ button }>
+        {
+          list.map(function(map) {
+            var url = baseUrl + '?' + querystring.stringify({
+              sort: map.param.toLowerCase(),
+            });
+            return (
+              <li className='Dropdown-li' key={ url }>
+                <a className='Dropdown-button' href={ url }>
+                  <CheckmarkIcon opened={map.text == sort}/>
+                  <span className='Dropdown-text'>{ _toTitleCase(map.text) }</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </Dropdown>
     );
   }
 
-  _onMouseEnter() {
-    this._open();
-  }
-
-  _onMouseLeave() {
-    this._close();
-  }
-
-  _onClick() {
-    if(this.state.opened)
-      this._close();
-    else
-      this._open();
-  }
-
-  _open() {
-    this.setState({opened:true});
-  }
-
-  _close() {
-    this.setState({opened:false});
+  _onOpen ( bool ) {
+    this.setState({opened:bool});
   }
 }
 
 function SortDropdownFactory(app) {
   CheckmarkIcon = CheckmarkIconFactory(app);
+  Dropdown = DropdownFactory(app);
   return app.mutate('core/components/SortDropdown', SortDropdown);
 }
 

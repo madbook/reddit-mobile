@@ -5,14 +5,14 @@ var SVG;
 const _SIZE = 20;
 
 class CheckmarkIcon extends React.Component {
-  constructor(props) {
+  constructor ( props ) {
     super(props);
     this.state = {};
     this._open = this._open.bind(this);
     this._maskID = 'mask' + Math.random();
   }
 
-  render() {
+  render () {
     return (
       <SVG width={_SIZE} height={_SIZE}>
         <defs>
@@ -25,15 +25,18 @@ class CheckmarkIcon extends React.Component {
     );
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.refs.line.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
+    if(this.props.opened) {
+      this._open(true);
+    }
   }
 
-  _open(opened) {
+  _open (opened) {
     TweenLite.to(this.refs.mask.getDOMNode(), 0.2, {attr: {width:opened?_SIZE:0}, ease:Linear.easeNone});
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps ( nextProps ) {
     var opened = nextProps.opened;
     if (typeof opened != 'undefined' && opened!=this.props.opened)
       this._open(opened);
@@ -44,7 +47,7 @@ CheckmarkIcon.defaultProps = {
   opened:false,
 };
 
-function CheckmarkIconFactory(app) {
+function CheckmarkIconFactory ( app ) {
   SVG = SVGFactory(app);
   return app.mutate('core/components/CheckmarkIcon', CheckmarkIcon);
 }

@@ -6,11 +6,6 @@
   overflow: hidden;
   z-index: 1;
 
-  &.right {
-    left: auto;
-    right: 5px;
-  }
-
   &:after {
     content: "";
     width: 10px;
@@ -19,6 +14,11 @@
     background: @white;
     .rotate(45deg);
     left: 4px;
+  }
+
+  &.right {
+    left: auto;
+    right: 5px;
   }
 }
 
