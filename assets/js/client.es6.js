@@ -16,6 +16,8 @@ ClientReactApp = mixin(ClientReactApp);
 import config from '../../src/config';
 import plugins from '../../src/plugins';
 
+import routes from '../../src/routes';
+
 import TweenLite from 'gsap';
 
 // A few es5 sanity checks
@@ -54,6 +56,8 @@ function initialize(bindLinks) {
         plugin.register(app);
       }
     }
+
+    routes(app);
 
     var history = window.history || window.location.history;
 

@@ -100,7 +100,7 @@ class IndexPage extends React.Component {
       <main>
         { loading }
         <TopSubnav user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
-        <div className='container listing-container'>
+        <div className='container listing-container' ref='listings'>
           {
             listings.map(function(listing, i) {
               var index = (page * 25) + i;

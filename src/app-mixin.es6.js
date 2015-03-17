@@ -1,9 +1,6 @@
 import { mutate } from 'react-mutator';
 import { EventEmitter } from 'events';
 
-// The base routes
-import routes from './routes';
-
 // Import the api instance; we're going to share an instance between the
 // plugins.
 import { v1 as V1Api } from 'snoode';
@@ -25,8 +22,6 @@ function mixin (App) {
         userAgent: config.userAgent,
         origin: config.authAPIOrigin,
       });
-
-      routes(this);
     }
 
     // Allow plugins to register mutators that change how React elements render.

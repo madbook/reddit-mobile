@@ -21,6 +21,7 @@ import plugins from './plugins';
 
 // The core
 import oauth from './oauth';
+import routes from './routes';
 
 class Server {
   constructor (config) {
@@ -37,6 +38,7 @@ class Server {
     }
 
     oauth(app);
+    routes(app);
 
     var server = koa();
     server.keys = config.keys;
