@@ -60,17 +60,17 @@ class CommentBox extends React.Component {
     }
 
     return (
-      <div className='row'>
+      <div className='row CommentBox'>
         <div className='col-xs-12'>
           <form action={ '/comment' } method='POST' onSubmit={ this.submit }>
             <div className='form-group'>
               <label className='sr-only' htmlFor={ 'textarea-' + this.props.id }>Comment</label>
-              <textarea id={ 'textarea-' + this.props.id } rows='2' className='form-control' name='text'></textarea>
+              <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.id } rows='2' className='form-control' name='text'></textarea>
               <input type='hidden' name='thingId' value={ this.props.thingId } />
               { csrf }
             </div>
 
-            <button type='submit' className='btn btn-primary btn-xs'>Comment</button>
+            <button type='submit' className='btn-post'>Post</button>
           </form>
         </div>
       </div>

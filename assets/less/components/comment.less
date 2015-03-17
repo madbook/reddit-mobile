@@ -1,5 +1,5 @@
 .comment {
-  margin: (@row-spacing-base / 2) 5px (@row-spacing-base / 2) 0;
+  margin: (@row-spacing-base / 2) 0;
 
   word-break: break-all;
   word-break: break-word;
@@ -8,32 +8,60 @@
   -moz-hyphens: auto;
   hyphens: auto;
 
-  padding-left: .5em;
+  border-left: dotted 1px #ccc;
+  margin-left: 1em;
 
-  /* Nested comments get borders */
-  .comment {
-    border-left: dotted 1px #ccc;
-    margin-left: 1em;
-
-    /* Cleverly move the hide icon in alignment with the dotted line */
-    .comment-content, footer {
-      margin-left: 1em;
-    }
-
-    .comment-submitted {
-      position: relative;
-      left: -1em;
-    }
+  article {
+    padding-left: .5em;
   }
+}
+
+.comment-content, footer {
+  margin-left: 1em;
+}
+
+.linkbar.comment-title-list {
+  width: 100%;
+}
+
+.comment-toolbar {
+  padding: 15px 0;
+}
+
+.comment-highlighted {
+  background-color: @brand-primary-bg-lightest;
+}
+
+.comment-title-score {
+  float: right;
+  color: @light-gray;
+}
+
+.comment-title-vote-icon.glyphicon {
+}
+
+.comment-title-list .comment-title-collapse-container {
+  background-color: @white;
+  width: 5px;
+  position: relative;
+  left: -1em;
+  margin-right: 1.5em;
+  padding-bottom: .4em;
 }
 
 .comment-content p:last-child {
   margin-bottom: 0;
 }
 
+.comment-title-username {
+  position: relative;
+  left: -.5em;
+}
+
 .comment-submitted {
   color: @gray;
   font-size: @font-size-small;
+  margin-bottom: 5px;
 }
 
 .comment-vote {
@@ -41,11 +69,38 @@
 }
 
 .comment-collapsed {
-  &.comment-header {
-    opacity: .4;
+  .comment-title-list {
+    color: @light-gray;  
   }
 
   &.comment-content {
     display: none;
   }
+}
+
+.comment-top-level {
+  position: relative;
+  left: 1em;
+}
+
+.CommentBox {
+  text-align: right;
+
+  .form-control {
+    .transition(height .2s ease);
+    height: 4em;
+    resize: none;
+    border: 1px solid @light-gray;
+    border-radius: 5px;
+
+    &:focus {
+      .box-shadow(none);
+      height: 10em;
+    }
+  }
+}
+
+.comment-timestamp {
+  color: @light-gray;
+  margin-left: 1em;
 }

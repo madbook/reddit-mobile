@@ -1,3 +1,41 @@
 .btn.text-muted {
   color: @text-muted;
 }
+
+.btn-reddit-mixin(@btn-color, @text-color) {
+  @darkenBgColor: darken(@btn-color, 10%);
+  @lightenBgColor: lighten(@btn-color, 10%);
+
+  .box-shadow(0 3px 0 0 @darkenBgColor);
+  .translate(0,-2px);
+  .transition(all .2s); //box-shadow 0.1s, transform 0.1s, background-color 0.3s
+  text-transform: uppercase;
+  background-color: @btn-color;
+  color: @text-color;
+  cursor: pointer;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 3px;
+  display: inline-block;
+  outline: 0;
+  padding: 5px 14px;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    .box-shadow(0 1px 0 0 @darkenBgColor);
+    .translate(0,0);
+    background-color: @lightenBgColor;
+    color: @text-color;
+  }
+
+  html.no-touch &:active {
+    background-color: @darkenBgColor;
+  }
+}
+
+.btn-post {
+  .btn-reddit-mixin(@blue, @white);
+  padding: 6px 5px 1px;
+  font-size: .8em;
+}

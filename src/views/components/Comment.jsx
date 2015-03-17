@@ -21,6 +21,7 @@ class Comment extends React.Component {
       comment: this.props.comment,
       collapsed: this.props.comment.hidden,
       showReplyBox: false,
+      showTools: false,
     }
   }
 
@@ -33,6 +34,8 @@ class Comment extends React.Component {
     e.preventDefault();
     this.setState({
       collapsed: !this.state.collapsed,
+      showTools: false,
+      showReplyBox: false,
     })
   }
 
@@ -53,6 +56,14 @@ class Comment extends React.Component {
       collapsed: false,
       showReplyBox: false,
     });
+  }
+
+  showTools (e) {
+    this.setState({ showTools: !this.state.showTools });
+  }
+
+  preventPropagation (e) {
+    e.stopPropagation();
   }
 
   render () {
@@ -78,11 +89,45 @@ class Comment extends React.Component {
     var scoreClass = 'up';
 
     var commentBox;
+    var toolbox;
+    var highlighted = '';
     var app = props.app;
 
-    if (this.state.showReplyBox) {
-      commentBox = (
-        <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment }  />
+    if (this.state.showTools) {
+      highlighted = 'comment-highlighted';
+      if (this.state.showReplyBox) {
+        commentBox = (
+          <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment }  />
+        );
+      }
+      toolbox = (
+        <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
+          <li>
+            <a href='#' onClick={this.showReplyBox.bind(this)}>
+              <i className="glyphicon glyphicon-share-alt text-mirror"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="glyphicon glyphicon-star"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="glyphicon glyphicon-arrow-up"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="glyphicon glyphicon-arrow-down"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="glyphicon glyphicon-option-horizontal"></i>
+            </a>
+          </li>
+        </ul>
       );
     }
 
@@ -130,64 +175,46 @@ class Comment extends React.Component {
           </div>
         );
       }
-
-      vote = (
-        <Vote {...props} thing={ comment }/>
-      );
-    } else {
-      vote = (
-        <span className='label label-primary'>
-          <span className='glyphicon glyphicon-arrow-up'></span>
-          { comment.score }
-        </span>
-      );
     }
 
+    var caretDirection = (this.state.collapsed) ? 'right' : 'bottom';
+
     return (
-      <div className={ 'comment' }>
+      <div className='comment'>
         <div className={ commentCollapseClass }>
-          <article>
+          <article className={`comment-article ${highlighted}`}>
             <div className={'comment-submitted ' + headerCollapseClass}>
-              <ul className='linkbar linkbar-compact'>
-                <li>
-                  <a href='#' onClick={ this.collapse.bind(this) }>
-                    <span className='glyphicon glyphicon-collapse-down'></span>
-                  </a>
-                </li>
-                <li>
-                  <strong className={ opClass }>
-                    <a href={ '#/u/' + comment.author } className={ distinguished }>
+              <a href='#' onClick={ this.collapse.bind(this) }>
+                <ul className='linkbar linkbar-compact comment-title-list'>
+                  <li className='comment-title-collapse-container'>
+                    <span className={ `comment-title-vote-icon glyphicon glyphicon-triangle-${caretDirection}` }></span>
+                  </li>
+                  <li className="comment-title-username">
+                    <span className={ opClass + " " + distinguished }>
                       { comment.author }
-                    </a>
-                  </strong>
+                    </span>
 
-                  { authorFlair }
-                  { gilded }
-                </li>
-
-
-                <li>
-                  <a href={ permalink } className='text-muted'>{ submitted }</a>
-                </li>
-
-                <li>
-                  { vote }
-                </li>
-              </ul>
-            </div>
-
-            <div className={ contentCollapseClass }>
-              <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-                __html: comment.bodyHtml
-              }} />
-
-              <footer>
-                <ul className='linkbar'>
-                  <li>
-                    <a href={'/comment/' + comment.id } className='btn btn-xs' onClick={ this.showReplyBox.bind(this) } data-no-route='true'>reply</a>
+                    { authorFlair }
+                    <span className='comment-timestamp'>
+                      { moment(this.props.comment.created_utc, 'X').fromNow() }
+                    </span>
+                    { gilded }
+                  </li>
+                  <li className='comment-title-score'>
+                    { this.props.comment.score }
                   </li>
                 </ul>
+              </a>
+            </div>
 
+            <div className={ `comment-body ${contentCollapseClass}` }>
+              <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
+                  __html: comment.bodyHtml
+                }} 
+                onClick={this.showTools.bind(this)} />
+
+              <footer>
+                { toolbox }
                 { commentBox }
               </footer>
             </div>

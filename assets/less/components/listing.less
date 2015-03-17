@@ -9,6 +9,10 @@
   width: auto !important;
 }
 
+.listing-main {
+  background-color: @white;
+}
+
 .listing {
   background-color: @white;
   margin-bottom: 18px;
@@ -43,7 +47,6 @@
 
   .img-preview {
     width: 100%;
-    // max-height: 200px;
     object-fit: cover;
     object-position: center;
 
@@ -143,11 +146,12 @@
   margin-bottom: @row-spacing-base / 2;
 }
 
-.glyphicon-gilded {
+.glyphicon.glyphicon-gilded {
   height: 16px;
   width: 16px;
   display: inline-block;
-  background: url('/img/gilded.gif');
+  background-image: url('/img/gilded.gif');
+  background-position-y: -4px; 
 }
 
 .vote-form {

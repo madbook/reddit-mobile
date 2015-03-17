@@ -48,6 +48,7 @@ class Listing extends React.Component {
 
     this.state = {
       expanded: this.props.expanded,
+      canUnexpand: !this.props.expanded,
     };
   }
 
@@ -72,9 +73,15 @@ class Listing extends React.Component {
         );
         }
     } else {
-      return (
-        <img ref='img' src={ url } className='img-responsive img-preview' height='200' width='100%' />
-      );
+      if (this.props.showWholeImage) {
+        return (
+          <img ref='img' src={ url } className='img-responsive' width='100%' />
+        );
+      } else {
+        return (
+          <img ref='img' src={ url } className='img-responsive img-preview' height='200' width='100%' />
+        );
+      }
     }
   }
 
@@ -178,9 +185,11 @@ class Listing extends React.Component {
   expand (e) {
     e.preventDefault();
 
-    this.setState({
-      expanded: !this.state.expanded,
-    });
+    if (this.state.canUnexpand) {
+      this.setState({
+        expanded: !this.state.expanded,
+      });
+    }
   }
 
   render () {
@@ -225,9 +234,11 @@ class Listing extends React.Component {
     if (!props.hideSubredditLabel) {
       subredditLabel = (
         <li>
-          <span className='listing-subreddit'>
-            { listing.subreddit }
-          </span>
+          <a href={`/r/${listing.subreddit}`}>
+            <span className='listing-subreddit'>
+              { listing.subreddit }
+            </span>
+          </a>
         </li>
       )
     }
@@ -292,7 +303,7 @@ class Listing extends React.Component {
                   { linkFlair }
                 </div>
 
-                <a href={ permalink }>
+                <a href={ this.props.titleLink }>
                   <h1 className={ 'panel-title ' + distinguished }>
                     { listing.title } { edited }
                   </h1>
@@ -304,7 +315,9 @@ class Listing extends React.Component {
             <ul className='linkbar text-muted small'>
               { gilded }
               <li className='linkbar-item-no-seperator'><Vote app={app} thing={ listing }  token={ this.props.token } api={ this.props.api }/></li>
-              <li className='linkbar-item-no-seperator'>{ listing.num_comments } comments</li>
+              <li className='linkbar-item-no-seperator'>
+                <a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a>
+              </li>
               { subredditLabel }
               { domain }
             </ul>

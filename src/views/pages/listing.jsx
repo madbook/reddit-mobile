@@ -66,32 +66,22 @@ class ListingPage extends React.Component {
     var author = listing.author;
     var listingElement;
     var commentBoxElement;
-    var commentHeader;
 
     var sort = this.props.sort || 'best';
     var app=this.props.app;
 
     if (!loading) {
       listingElement = (
-        <Listing app={ app } listing={ listing } single={ true } user={ user } token={ token } api={ api } expanded={ true } />
-      );
-
-      commentHeader = (
-        <div className='comments-header'>
-          <div className='text-center'>
-            <span className='glyphicon glyphicon-align-justify text-muted'></span>
-          </div>
-          <div className='text-center'>
-            <ul className='linkbar'>
-              <li>
-                { comments.length } comments
-              </li>
-              <li>
-                <a href={ listing.url } target='_blank'>open in tab</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <Listing 
+          app={ app } 
+          listing={ listing } 
+          single={ true } 
+          user={ user } 
+          token={ token } 
+          api={ api } 
+          expanded={ true } 
+          titleLink={ listing.url }
+          showWholeImage={true} />
       );
 
       commentBoxElement = (
@@ -107,12 +97,11 @@ class ListingPage extends React.Component {
     }
 
     return (
-      <main>
+      <main className='listing-main'>
         { loading }
         <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
         <div className='container' key='container'>
           { listingElement }
-          { commentHeader }
           { commentBoxElement }
           {
             comments.map(function(comment, i) {
