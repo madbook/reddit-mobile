@@ -109,7 +109,7 @@ class ListingPage extends React.Component {
     return (
       <main>
         { loading }
-        <TopSubnav user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
+        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
         <div className='container' key='container'>
           { listingElement }
           { commentHeader }
