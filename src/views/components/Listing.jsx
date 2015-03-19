@@ -1,26 +1,26 @@
 import React from 'react';
 import moment from 'moment';
-
 import VoteFactory from '../components/Vote';
 var Vote;
-
 import ActionsFactory from '../components/Actions';
 var Actions;
-
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 import GoldIconFactory from '../components/GoldIcon';
 var GoldIcon;
-
+import PlayIconFactory from '../components/PlayIcon';
+var PlayIcon;
 import short from '../../lib/formatDifference';
-
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
-
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 
-function gifToHTML5 (url) {
-  if (!url) { return; }
-  if (url.indexOf('.gif') < 1) { return; }
+function gifToHTML5(url) {
+  if (!url) {
+    return;
+  }
+  if (url.indexOf('.gif') < 1) {
+    return;
+  }
 
   // If it's imgur, make a gifv link
   if (url.indexOf('imgur.com') > -1) {
@@ -37,7 +37,7 @@ function gifToHTML5 (url) {
 
       return {
         iframe: 'http://gfycat.com/ifr/' + id,
-      }
+      };
     }
   }
 }
@@ -52,64 +52,67 @@ class Listing extends React.Component {
     };
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (nextProps !== this.props || nextState !== this.state);
   }
 
-  buildImage (url, embed) {
+  buildImage(url, embed, fixedRatio) {
     var html5 = gifToHTML5(url);
-
     if (html5) {
       var height = embed ? embed.height : 300;
 
       if (html5.iframe) {
+        return (
         <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height } sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+          );
       } else {
         return (
-          <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true'>
-            <source type='video/webm' src={ html5.webm } />
-            <source type='video/mp4' src={ html5.mp4 } />
-          </video>
-        );
-        }
-    } else {
-      if (this.props.showWholeImage) {
-        return (
-          <img ref='img' src={ url } className='img-responsive' width='100%' />
-        );
-      } else {
-        return (
-          <img ref='img' src={ url } className='img-responsive img-preview' height='200' width='100%' />
+          <div className='ratio16x9'>
+            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true'>
+              <source type='video/webm' src={ html5.webm } />
+              <source type='video/mp4' src={ html5.mp4 } />
+            </video>
+          </div>
         );
       }
+    } else if (fixedRatio) {
+      return (
+        <div className='ratio16x9-child' style={ {backgroundImage: 'url('+url+')'} }>
+          <PlayIcon/>
+        </div>
+      );
+    } else {
+      return (
+        <img ref='img' src={ url } className='img-responsive img-preview'/>
+      );
     }
   }
 
-  buildOver18 () {
+  buildOver18() {
     return (
       <a href={ this.props.listing.permalink }>
         <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
           XXX
         </span>
       </a>
-    )
+    );
   }
 
-  buildContent () {
+  buildContent() {
     var listing = this.props.listing;
-    if (!listing) return;
-
+    if (!listing) {
+      return;
+    }
     var media = listing.media;
-    var content;
     var permalink = listing.cleanPermalink;
-    var over_18 = false;
+    var over18 = false;
 
-    if ((listing.title.match(/nsf[wl]/gi) || listing.over_18) && !this.state.expanded) {
-      over_18 = true;
+    if ((listing.title.match(/nsf[wl]/gi) || listing.over18) && !this.state.expanded) {
+      over18 = true;
     }
 
     if (media && media.oembed) {
-      if (over_18) {
+      if (over18) {
         return this.buildOver18();
       }
 
@@ -130,20 +133,20 @@ class Listing extends React.Component {
       } else if (media.oembed.type === 'video') {
         if (this.state.expanded) {
           return (
-            <div className='listing-video' dangerouslySetInnerHTML={{
+            <div className='listing-video ratio16x9' dangerouslySetInnerHTML={{
               __html: listing.expandContent
             }} />
-          )
+          );
         } else {
           return (
-            <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-              { this.buildImage(media.oembed.thumbnail_url, media.oembed) }
+            <a href={ permalink } onClick={ this.expand.bind(this) } className='ratio16x9' data-no-route='true'>
+              { this.buildImage(media.oembed.thumbnail_url, media.oembed, true) }
             </a>
           );
         }
       }
     } else if (listing.url.match(imgMatch)) {
-      if (over_18) {
+      if (over18) {
         return this.buildOver18();
       }
 
@@ -182,7 +185,7 @@ class Listing extends React.Component {
     }
   }
 
-  expand (e) {
+  expand(e) {
     e.preventDefault();
 
     if (this.state.canUnexpand) {
@@ -192,44 +195,21 @@ class Listing extends React.Component {
     }
   }
 
-  render () {
+  render() {
     var props = this.props;
     var listing = props.listing;
-
     var permalink = listing.cleanPermalink;
-    var url = listing.cleanUrl || '';
-
     var linkFlair;
     var nsfwFlair;
     var subredditLabel;
     var domain;
     var gilded;
-
     var distinguished = listing.distinguished ? ' text-distinguished' : '';
-
-    var submitted = short(listing.created_utc * 1000);
     var edited = listing.edited ? '*' : '';
-    var comment = 'comments';
-
     var linkFlairClass = (listing.link_flair_css_class);
-
-    var scoreClass = 'up';
-
-    var opClass = 'text-muted';
-
     var listingClass = props.listingClass || '';
-
-    var aboutAuthor;
-
-    if (props.single) {
-      opClass = 'label label-primary';
-    }
-
+    var comment = listing.num_comments < 2 ? 'comment' : 'comments';
     var isSelf;
-
-    if (listing.domain) {
-      listing.domain.indexOf('self.') == 0;
-    }
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -240,7 +220,7 @@ class Listing extends React.Component {
             </span>
           </a>
         </li>
-      )
+      );
     }
 
     if (!isSelf) {
@@ -257,10 +237,6 @@ class Listing extends React.Component {
       );
     }
 
-    if (listing.score < 0) {
-      scoreClass = 'down';
-    }
-
     if (listing.link_flair_text) {
       linkFlair = (
         <span className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
@@ -269,27 +245,17 @@ class Listing extends React.Component {
       );
     }
 
-    if (listing.title.match(/nsf[wl]/gi) || listing.over_18) {
+    if (listing.title.match(/nsf[wl]/gi) || listing.over18) {
       nsfwFlair = (
         <span className='listing-link-flair label label-danger'>
           NSFW
         </span>
       );
     }
-
-    if (listing.num_comments < 2) {
-      comment = 'comment';
-    }
-
-    var app=this.props.app;
-    var buildContent=this.buildContent();
-    if(buildContent)
-      var stalactite= <div className='stalactite'/>;
-
-    if (!props.hideAuthor) {
-      aboutAuthor = (
-        <li><a href={ '/u/' + listing.author }>About { listing.author }</a></li>
-      );
+    var app = this.props.app;
+    var buildContent = this.buildContent();
+    if (buildContent) {
+      var stalactite = <div className='stalactite'/>;
     }
 
     return (
@@ -314,7 +280,7 @@ class Listing extends React.Component {
 
             <ul className='linkbar text-muted small'>
               { gilded }
-              <li className='linkbar-item-no-seperator'><Vote app={app} thing={ listing }  token={ this.props.token } api={ this.props.api }/></li>
+              <li className='linkbar-item-no-seperator'><Vote app={app} thing={ listing } token={ this.props.token } api={ this.props.api }/></li>
               <li className='linkbar-item-no-seperator'>
                 <a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a>
               </li>
@@ -336,6 +302,7 @@ function ListingFactory(app) {
   Actions = ActionsFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
   GoldIcon = GoldIconFactory(app);
+  PlayIcon = PlayIconFactory(app);
 
   return app.mutate('core/components/listing', Listing);
 }

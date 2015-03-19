@@ -6,8 +6,8 @@ class SideNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened:false,
-      twirly:''
+      opened: false,
+      twirly: '',
     };
 
     this._onTwirlyClick = this._onTwirlyClick.bind(this);
@@ -49,8 +49,8 @@ class SideNav extends React.Component {
           <a className='SideNav-button' href='/'>Home</a>
         </li>
         { loginLink }
-        <li className={'SideNav-dropdown tween'+(this.state.twirly=='about'?' opened':'')}>
-          <button className={'twirly before SideNav-button'+(this.state.twirly=='about'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
+        <li className={'SideNav-dropdown tween'+(this.state.twirly === 'about' ? ' opened' : '')}>
+          <button className={'twirly before SideNav-button'+(this.state.twirly === 'about' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
           <ul className='SideNav-ul'>
             <li>
               <a className='SideNav-button' href='/blog/'>Blog</a>
@@ -72,8 +72,8 @@ class SideNav extends React.Component {
             </li>
           </ul>
         </li>
-        <li className={'SideNav-dropdown tween'+(this.state.twirly=='help'?' opened':'')}>
-          <button className={'twirly before SideNav-button'+(this.state.twirly=='help'?' opened':'')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
+        <li className={'SideNav-dropdown tween' + (this.state.twirly === 'help' ? ' opened' : '')}>
+          <button className={'twirly before SideNav-button' + (this.state.twirly === 'help' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
           <ul className='SideNav-ul'>
             <li>
               <a className='SideNav-button' href='/wiki/'>Wiki</a>
@@ -105,20 +105,18 @@ class SideNav extends React.Component {
 
   _toggle() {
     this.props.app.emit(SideNav.TOGGLE, !this.state.opened);
-    this.setState({opened:!this.state.opened});
+    this.setState({opened: !this.state.opened});
   }
 
   _close() {
-    if(this.state.opened)
-    {
+    if (this.state.opened) {
       this.props.app.emit(SideNav.TOGGLE, false);
-      this.setState({opened:false});
+      this.setState({opened: false});
     }
   }
 
-  _onTwirlyClick(str, evt) {
-    var twirly = this.state.twirly;
-    this.setState({twirly:this.state.twirly == str?'':str})
+  _onTwirlyClick(str) {
+    this.setState({twirly: this.state.twirly === str ? '' : str});
   }
 }
 
