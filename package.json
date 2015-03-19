@@ -1,6 +1,6 @@
 {
   "name": "reddit-mobile",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "",
   "main": "src/app.es6.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "reddit-text-js": "0.5.2",
     "scmp": "1.0.0",
     "simple-oauth2": "0.2.1",
-    "snoode": "0.3.1",
+    "snoode": "0.3.3",
     "superagent": "1.1.0"
   },
   "devDependencies": {
