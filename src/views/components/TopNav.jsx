@@ -14,9 +14,9 @@ var MobileButton;
 // import SideNavFactory from '../components/SideNav';
 // var SideNav;
 
-function shorten (text, len) {
+function shorten(text, len) {
   if (text.length > 15) {
-    text = text.substr(0, Math.min(13,len-2)) + '…';
+    text = text.substr(0, Math.min(13, len-2)) + '…';
   }
 
   return text;
@@ -26,9 +26,9 @@ class TopNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subredditName:'',
-      rollover:'',
-      sideNavOpen:false
+      subredditName: '',
+      rollover: '',
+      sideNavOpen: false,
     };
 
     this._changeSubredditName = this._changeSubredditName.bind(this);
@@ -49,16 +49,17 @@ class TopNav extends React.Component {
 
   render() {
     var subredditName = shorten(this.state.subredditName || '', 20);
-    if(subredditName)
+    if (subredditName) {
       var subredditBreadcrumb = <a className='TopNav-a' href={'/r/'+subredditName}>{subredditName}</a>;
-    else
+    } else {
       subredditBreadcrumb = <a className='TopNav-a' href='/'><Logo/></a>;
+    }
 
     return (
       <nav className='TopNav shadow'>
         <div className='pull-left TopNav-padding'>
           <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')} over={this._onMouseEnter.bind(this, 'hamburger')} out={this._onMouseLeave.bind(this, 'hamburger')}>
-            <HamburgerIcon hovered={this.state.rollover=='hamburger'} opened={this.state.sideNavOpen}/>
+            <HamburgerIcon hovered={this.state.rollover === 'hamburger'} opened={this.state.sideNavOpen}/>
           </MobileButton>
           <h1 className='TopNav-text TopNav-floaty'>
             <span className='TopNavHeadline'>{subredditBreadcrumb}</span>
@@ -66,31 +67,30 @@ class TopNav extends React.Component {
         </div>
         <div className='pull-right TopNav-padding'>
           <MobileButton className='TopNav-floaty' over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave.bind(this, 'post')} onClick={this._onClick.bind(this, 'post')}>
-            <PostIcon opened={this.state.rollover=='post'}/>
+            <PostIcon opened={this.state.rollover === 'post'}/>
           </MobileButton>
           <MobileButton className='TopNav-floaty' over={this._onMouseEnter.bind(this, 'search')} out={this._onMouseLeave.bind(this, 'search')} onClick={this._onClick.bind(this, 'search')}>
-            <SearchIcon opened={this.state.rollover=='search'}/>
+            <SearchIcon opened={this.state.rollover === 'search'}/>
           </MobileButton>
         </div>
       </nav>
-    );
+   );
   }
 
   _changeSubredditName(str) {
-    this.setState({subredditName:str});
+    this.setState({subredditName: str});
   }
 
   _onMouseEnter(str) {
-    this.setState({rollover:str});
+    this.setState({rollover: str});
   }
 
-  _onMouseLeave(str) {
-    this.setState({rollover:''});
+  _onMouseLeave() {
+    this.setState({rollover: ''});
   }
 
   _onClick(str) {
-    console.log('TopNav._onClick', str);
-    switch(str) {
+    switch (str) {
       case 'hamburger':
         this.props.app.emit(TopNav.HAMBURGER_CLICK);
         break;
@@ -104,7 +104,7 @@ class TopNav extends React.Component {
   }
 
   _onToggle(bool) {
-    this.setState({sideNavOpen:bool});
+    this.setState({sideNavOpen: bool});
   }
 }
 
