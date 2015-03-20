@@ -18,7 +18,7 @@ class EllipsisIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={20} height={20} fallbackText='menu'>
+      <SVG width={20} height={20}>
         <g fill="#b8b8b8">
           <circle ref="one" cx={_CENTER - _DIST} cy={_CENTER} r={_DIAMETER}/>
           <circle cx={_CENTER} cy={_CENTER} r={_DIAMETER}/>

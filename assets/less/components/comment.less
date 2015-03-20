@@ -10,11 +10,34 @@
 
   border-left: dotted 1px #ccc;
   margin-left: 1em;
+}
 
-  article {
-    padding-left: .5em;
+.comment-vote-container {
+
+  .vote-score-container {
+    display: none;
+  }
+
+  .linkbar {
+    width: 100%;
+
+    > li {
+      width: 50%;
+      margin: 0;
+    }
   }
 }
+
+.comment-article {
+  .transition(.2s all ease);
+  background-color: @white;
+  padding-left: .5em;
+
+  &.comment-highlighted {
+    background-color: @brand-primary-bg-lightest;
+  }
+}
+
 
 .comment-content, footer {
   margin-left: 1em;
@@ -26,10 +49,6 @@
 
 .comment-toolbar {
   padding: 15px 0;
-}
-
-.comment-highlighted {
-  background-color: @brand-primary-bg-lightest;
 }
 
 .comment-title-score {
@@ -45,7 +64,7 @@
   width: 5px;
   position: relative;
   left: -1em;
-  margin-right: 1.5em;
+  margin-right: 1.1em;
   padding-bottom: .4em;
 }
 
@@ -103,4 +122,40 @@
 .comment-timestamp {
   color: @light-gray;
   margin-left: 1em;
+}
+
+.share-icon {
+  .transform(scaleX(-1) rotateZ(0deg));
+  .transition(.4s all ease);
+
+  &.share-icon-active {
+    .transform(scaleX(-1) rotateZ(90deg));
+    background-color:  @green;
+  }
+}
+
+.favorite-icon {
+  .transition(.4s background-color ease);
+
+  &.favorite-icon-active {
+    .transition(.6s all ease);
+    .transform(rotateZ(360deg));
+    background-color:  @green;
+  }
+
+  &:before {
+    // add icon is slightly off center
+    position: relative;
+    left: 1px;
+  }
+
+}
+
+.encircle-icon.encircle-options-icon {
+  display: inline-block;
+  padding: 1px;
+
+  .SVG-fill {
+    fill: @white;
+  }
 }

@@ -144,7 +144,7 @@ class Vote extends React.Component {
               </MobileButton>
             </form>
           </li>
-          <li>
+          <li className='vote-score-container'>
             <span className='vote-score' data-vote-score={this.state.score } data-thingid={ this.props.thing.name }>
               { this.state.score }
             </span>

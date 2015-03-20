@@ -11,3 +11,10 @@
 .tween {
   .transition(0.2s);
 }
+
+.transform(@output) {
+  -webkit-transform: @output;
+      -ms-transform: @output; // IE9 only
+       -o-transform: @output;
+          transform: @output;
+}

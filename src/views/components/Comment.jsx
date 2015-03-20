@@ -4,8 +4,14 @@ import moment from 'moment';
 import VoteFactory from '../components/Vote';
 var Vote;
 
+import EllipsisIconFactory from '../components/EllipsisIcon';
+var EllipsisIcon;
+
 import CommentBoxFactory from '../components/CommentBox';
 var CommentBox;
+
+import ListingDropdownFactory from '../components/ListingDropdown';
+var ListingDropdown;
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
@@ -19,6 +25,8 @@ class Comment extends React.Component {
       collapsed: this.props.comment.hidden,
       showReplyBox: false,
       showTools: false,
+      favorited: false,
+      optionsOpen: false,
     }
   }
 
@@ -33,6 +41,7 @@ class Comment extends React.Component {
       collapsed: !this.state.collapsed,
       showTools: false,
       showReplyBox: false,
+      optionsOpen: false,
     })
   }
 
@@ -41,6 +50,22 @@ class Comment extends React.Component {
 
     this.setState({
       showReplyBox: !this.state.showReplyBox,
+    });
+  }
+
+  favorite (e) {
+    e.preventDefault();
+
+    this.setState({
+      favorited: !this.state.favorited,
+    });
+  }
+
+  openOptions (e) {
+    e.preventDefault();
+
+    this.setState({
+      optionsOpen: !this.state.optionsOpen
     });
   }
 
@@ -97,32 +122,32 @@ class Comment extends React.Component {
           <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment }  />
         );
       }
+      var activeShareClass = (this.state.showReplyBox) ? 'share-icon-active' : '';
+      var activeFavoriteClass = (this.state.favorited) ? 'favorite-icon-active' : '';
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
             <a href='#' onClick={this.showReplyBox.bind(this)}>
-              <i className="glyphicon glyphicon-share-alt text-mirror"></i>
+              <i className={`share-icon glyphicon glyphicon-share-alt text-mirror ${activeShareClass} encircle-icon`}></i>
             </a>
           </li>
           <li>
-            <a href="#">
-              <i className="glyphicon glyphicon-star"></i>
+            <a href='#' onClick={this.favorite.bind(this)}>
+              <i className={`favorite-icon glyphicon glyphicon-plus encircle-icon ${activeFavoriteClass}`}></i>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <i className="glyphicon glyphicon-arrow-up"></i>
-            </a>
+          <li className='linkbar-spread-li-double comment-vote-container'>
+            <Vote 
+              thing={this.props.comment}
+              app={this.props.app}
+            />
           </li>
           <li>
-            <a href="#">
-              <i className="glyphicon glyphicon-arrow-down"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i className="glyphicon glyphicon-option-horizontal"></i>
-            </a>
+            <div className="encircle-icon encircle-options-icon">
+              <ListingDropdown
+                listing={this.props.comment}
+                app={this.props.app} />
+              </div>
           </li>
         </ul>
       );
@@ -227,7 +252,9 @@ class Comment extends React.Component {
 
 function CommentFactory(app) {
   Vote = VoteFactory(app);
+  EllipsisIcon = EllipsisIconFactory(app);
   CommentBox = CommentBoxFactory(app);
+  ListingDropdown = ListingDropdownFactory(app);
 
   return app.mutate('core/components/comment', Comment);
 }

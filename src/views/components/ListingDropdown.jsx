@@ -52,7 +52,7 @@ class ListingDropdown extends React.Component {
   render() {
     var opened = this.state.opened;
     var listing = this.props.listing;
-    var button = <button><EllipsisIcon opened={opened}/></button>;
+    var button = <button><EllipsisIcon opened={opened} /></button>;
     return (
       <Dropdown app={ this.props.app } right={ true } button={ button } id={ this._id }>
         <li className='Dropdown-li'>
