@@ -13,7 +13,7 @@ class SearchIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened:false,
+      opened: false,
     };
     this._look = this._look.bind(this);
     this._lookPause = this._lookPause.bind(this);
@@ -22,10 +22,10 @@ class SearchIcon extends React.Component {
   render() {
         // <circle ref='eyeball' fill='#b8b8b8' cx={_EYE_CENTER} cy={_EYE_CENTER} r='3.665432' clip-path='url(#nav_search_mask)'/>
     return (
-      <SVG width={20} height={20}>
+      <SVG width={20} height={20} fallbackText='search'>
         <defs>
           <clipPath id='nav_search_mask'>
-            <rect ref='mask' x='3.441775' y={_MASK_TOP+_MASK_SIZE/2} width={_MASK_SIZE} height='0' fill='#000'/>
+            <rect ref='mask' x='3.441775' y={_MASK_TOP + _MASK_SIZE / 2} width={_MASK_SIZE} height='0' fill='#000'/>
           </clipPath>
         </defs>
         <path fill='#b8b8b8' d='M17.703157,19.37462l-5.939255-5.939255c-0.167171-0.167171-0.167171-0.438208,0-0.605378l1.066085-1.066085 c0.167171-0.167171,0.438208-0.167171,0.605378,0l5.939255,5.939255c0.16717,0.16717,0.16717,0.438208,0,0.605377 l-1.066086,1.066086C18.141365,19.54179,17.870327,19.54179,17.703157,19.37462z'/>
@@ -36,31 +36,37 @@ class SearchIcon extends React.Component {
   }
 
   componentDidMount() {
+    if (!SVG.ENABLED) {
+      return;
+    }
     this.refs.pupil.getDOMNode().setAttribute('clip-path', 'url(#nav_search_mask)');
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!SVG.ENABLED) {
+      return;
+    }
     var opened = nextProps.opened;
-    if (typeof opened != 'undefined' && opened != this.state.opened)
+    if (typeof opened !== 'undefined' && opened !== this.state.opened) {
       this._open(opened);
+    }
   }
 
   _open(bool) {
-    this.setState({opened:bool}, this._transform);
-    if(bool) {
-      TweenLite.to(this.refs.mask.getDOMNode(), 0.1, {attr:{y:_MASK_TOP, height:_MASK_SIZE}, ease:Linear.easeNone});
+    this.setState({opened: bool}, this._transform);
+    if (bool) {
+      TweenLite.to(this.refs.mask.getDOMNode(), 0.1, {attr: {y: _MASK_TOP, height: _MASK_SIZE}, ease: Linear.easeNone});
       this._look();
-    }
-    else {
-      TweenLite.to(this.refs.mask.getDOMNode(), 0.1, {attr:{y:_MASK_TOP+_MASK_SIZE/2, height:0}, ease:Linear.easeNone});
+    } else {
+      TweenLite.to(this.refs.mask.getDOMNode(), 0.1, {attr: {y: _MASK_TOP + _MASK_SIZE / 2, height: 0}, ease: Linear.easeNone});
       clearTimeout(this._timeout);
       TweenLite.killTweensOf(this.refs.pupil.getDOMNode());
     }
   }
 
   _look() {
-    var point = MyMath.randomPointInCircle({x:_EYE_CENTER, y:_EYE_CENTER}, _LOOK_DIST);
-    TweenLite.to(this.refs.pupil.getDOMNode(), 0.1, {attr:{cx:point.x, cy:point.y}, ease:Linear.easeNone, onComplete:this._lookPause});
+    var point = MyMath.randomPointInCircle({x: _EYE_CENTER, y: _EYE_CENTER}, _LOOK_DIST);
+    TweenLite.to(this.refs.pupil.getDOMNode(), 0.1, {attr: {cx: point.x, cy: point.y}, ease: Linear.easeNone, onComplete: this._lookPause});
   }
 
   _lookPause() {

@@ -2,14 +2,14 @@ import React from 'react';
 import MyMath from '../../lib/danehansen/MyMath';
 import Point from '../../lib/danehansen/Point';
 import MobileButtonFactory from '../components/MobileButton';
-import SVGFactory from '../components/SVG';
 var MobileButton;
+import SVGFactory from '../components/SVG';
 var SVG;
 
 const _MOUTH_STROKE = 1.0875;
-const _DINGLEBERRY_CENTER = {x:22.65625, y:6.71875};
-const _ELBOW = {x:14.5, y:4.725};
-const _ROOT = {x:14.5, y:13.0625};
+const _DINGLEBERRY_CENTER = {x: 22.65625, y: 6.71875};
+const _ELBOW = {x: 14.5, y: 4.725};
+const _ROOT = {x: 14.5, y: 13.0625};
 const _REPEL_RADIUS = 10;
 const _REPEL_FORCE = -0.05;
 const _RETURN_FORCE = 0.05;
@@ -25,7 +25,7 @@ class SnooButton extends React.Component {
     this._onTick = this._onTick.bind(this);
 
     this._mouse = {};
-    this._dingleberryCenter = {x:_DINGLEBERRY_CENTER.x, y:_DINGLEBERRY_CENTER.y};
+    this._dingleberryCenter = {x: _DINGLEBERRY_CENTER.x, y: _DINGLEBERRY_CENTER.y};
 
     this._baseLength = Point.distance(_ROOT, _ELBOW);
     this._endLength = Point.distance(_DINGLEBERRY_CENTER, _ELBOW);
@@ -34,8 +34,8 @@ class SnooButton extends React.Component {
 
   render() {
     return (
-      <MobileButton element='a' href='/' over={this._onMouseEnter} out={this._onMouseLeave} onMouseMove={this._onMouseMove} onTouchMove={this._onMouseMove}>
-        <SVG width={29} height={33}>
+      <MobileButton element='a' href='/' over={SVG.ENABLED ? this._onMouseEnter : null} out={SVG.ENABLED ? this._onMouseLeave : null} move={SVG.ENABLED ? this._onMouseMove : null}>
+        <SVG width={29} height={33} fallbackText='logo'>
           <ellipse ref='head' fill='#fff' cx='14.5' cy='23.03125' rx='12.6875' ry='9.96875'/>
           <circle ref='leftEar' fill='#fff' cx='3.625' cy='18.5' r='3.625'/>
           <circle ref='rightEar' fill='#fff' cx='25.375' cy='18.5' r='3.625'/>
@@ -53,71 +53,69 @@ class SnooButton extends React.Component {
   }
 
   componentWillUnmount() {
-    if(this._ticking)
+    if (this._ticking) {
       TweenLite.ticker.removeEventListener('tick', this._onTick);
+    }
   }
 
   _onMouseEnter(evt) {
-    TweenLite.to(this.refs.mouth.getDOMNode(), 0.1, {attr:{'stroke-width':3}, ease:Linear.easeNone});
-    this._onMouseMove(evt)
+    TweenLite.to(this.refs.mouth.getDOMNode(), 0.1, {attr: {'stroke-width': 3}, ease: Linear.easeNone});
+    this._onMouseMove(evt);
   }
 
   _onMouseLeave() {
-    TweenLite.to(this.refs.mouth.getDOMNode(), 0.1, {attr:{'stroke-width':_MOUTH_STROKE}, ease:Linear.easeNone});
+    TweenLite.to(this.refs.mouth.getDOMNode(), 0.1, {attr: {'stroke-width': _MOUTH_STROKE}, ease: Linear.easeNone});
     this._mouse.x = Number.MAX_VALUE;
     this._mouse.y = Number.MAX_VALUE;
   }
 
   _onMouseMove(evt) {
     this._mouse = Point.relativePosition(evt.nativeEvent, this.refs.svg.getDOMNode());
-    if (!this._ticking)
-    {
-      this._ticking=true;
+    if (!this._ticking) {
+      this._ticking = true;
       TweenLite.ticker.addEventListener('tick', this._onTick);
     }
   }
 
   _onTick() {
     //find distance
-      var xDist = Math.abs(this._dingleberryCenter.x-this._mouse.x);
-      var yDist = Math.abs(this._dingleberryCenter.y-this._mouse.y);
-      var dist = Math.sqrt(Math.pow(xDist,2)+Math.pow(yDist,2))
+    var xDist = Math.abs(this._dingleberryCenter.x-this._mouse.x);
+    var yDist = Math.abs(this._dingleberryCenter.y-this._mouse.y);
+    var dist = Math.sqrt(Math.pow(xDist, 2)+Math.pow(yDist, 2));
     //repel mouse if close enough
-      if (dist < _REPEL_RADIUS)
-      {
-        var totalDist = xDist + yDist;
-        var force = (_REPEL_RADIUS - dist) / _REPEL_RADIUS * _REPEL_FORCE;
-        MyMath.velocityEase(this._dingleberryCenter, 'x', this._mouse.x, xDist / totalDist * force);
-        MyMath.velocityEase(this._dingleberryCenter, 'y', this._mouse.y, yDist / totalDist * force);
-      }
+    if (dist < _REPEL_RADIUS) {
+      var totalDist = xDist + yDist;
+      var force = (_REPEL_RADIUS - dist) / _REPEL_RADIUS * _REPEL_FORCE;
+      MyMath.velocityEase(this._dingleberryCenter, 'x', this._mouse.x, xDist / totalDist * force);
+      MyMath.velocityEase(this._dingleberryCenter, 'y', this._mouse.y, yDist / totalDist * force);
+    }
     //return to centerpoint
-      var diff = MyMath.velocityEase(this._dingleberryCenter, 'x', _DINGLEBERRY_CENTER.x, _RETURN_FORCE);
-      diff += MyMath.velocityEase(this._dingleberryCenter, 'y', _DINGLEBERRY_CENTER.y, _RETURN_FORCE);
-      if (Math.abs(diff) < 0.01 && Point.distance(_DINGLEBERRY_CENTER, this._dingleberryCenter) < 0.01)
-      {
-        this._ticking = false;
-        TweenLite.ticker.removeEventListener('tick', this._onTick);
-      }
+    var diff = MyMath.velocityEase(this._dingleberryCenter, 'x', _DINGLEBERRY_CENTER.x, _RETURN_FORCE);
+    diff += MyMath.velocityEase(this._dingleberryCenter, 'y', _DINGLEBERRY_CENTER.y, _RETURN_FORCE);
+    if (Math.abs(diff) < 0.01 && Point.distance(_DINGLEBERRY_CENTER, this._dingleberryCenter) < 0.01) {
+      this._ticking = false;
+      TweenLite.ticker.removeEventListener('tick', this._onTick);
+    }
     //set dingleberry to new position
-      var dingleberry = this.refs.dingleberry.getDOMNode();
-      dingleberry.setAttribute('cx', this._dingleberryCenter.x);
-      dingleberry.setAttribute('cy', this._dingleberryCenter.y);
+    var dingleberry = this.refs.dingleberry.getDOMNode();
+    dingleberry.setAttribute('cx', this._dingleberryCenter.x);
+    dingleberry.setAttribute('cy', this._dingleberryCenter.y);
     //set stem end tip to new position
-      var stemEnd = this.refs.stemEnd.getDOMNode();
-      stemEnd.setAttribute('x2', this._dingleberryCenter.x);
-      stemEnd.setAttribute('y2', this._dingleberryCenter.y);
+    var stemEnd = this.refs.stemEnd.getDOMNode();
+    stemEnd.setAttribute('x2', this._dingleberryCenter.x);
+    stemEnd.setAttribute('y2', this._dingleberryCenter.y);
     //find potential elbow points
-      var pot = MyMath.circleIntersection(this._dingleberryCenter, this._endLength, _ROOT, this._baseLength);
+    var pot = MyMath.circleIntersection(this._dingleberryCenter, this._endLength, _ROOT, this._baseLength);
     //choose which one is closest to original elbow
-      var dist1 = Point.distance(pot[0], _ELBOW);
-      var dist2 = Point.distance(pot[1], _ELBOW);
-      var elbow = dist1 > dist2?pot[1]:pot[0];
+    var dist1 = Point.distance(pot[0], _ELBOW);
+    var dist2 = Point.distance(pot[1], _ELBOW);
+    var elbow = dist1 > dist2?pot[1]:pot[0];
     //set elbow position
-      stemEnd.setAttribute('x1', elbow.x);
-      stemEnd.setAttribute('y1', elbow.y);
-      var stemBase = this.refs.stemBase.getDOMNode();
-      stemBase.setAttribute('x1', elbow.x);
-      stemBase.setAttribute('y1', elbow.y);
+    stemEnd.setAttribute('x1', elbow.x);
+    stemEnd.setAttribute('y1', elbow.y);
+    var stemBase = this.refs.stemBase.getDOMNode();
+    stemBase.setAttribute('x1', elbow.x);
+    stemBase.setAttribute('y1', elbow.y);
   }
 }
 

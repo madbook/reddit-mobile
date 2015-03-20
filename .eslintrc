@@ -9,17 +9,19 @@
   },
   // To give you an idea how to override rule options:
   "rules": {
-    "comma-dangle": [2, "always-multiline"],
-    "quotes": [2, "single"],
-    "indent": [2, 2],
     "brace-style": [2, "1tbs", { "allowSingleLine": false }],
-    "strict": [2, "never"],
+    "comma-dangle": [2, "always-multiline"],
+    "consistent-return": false,
+    "indent": [2, 2],
+    "no-underscore-dangle": false,
+    "quotes": [2, "single"],
     "space-after-keywords": [2, "always"],
     "space-before-blocks": [2, "always"],
     "space-before-function-parentheses": [2, "never"],
     "space-in-brackets": [2, "never"],
     "space-in-parens": [2, "never"],
-    "consistent-return": false,
-    "no-underscore-dangle": false
+    "space-return-throw-case": true,
+    "space-unary-ops": [1, { "words": true, "nonwords": false }],
+    "strict": [2, "never"],
   }
 }
