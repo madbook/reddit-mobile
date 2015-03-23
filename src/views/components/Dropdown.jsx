@@ -18,13 +18,13 @@ class Dropdown extends React.Component {
     var touch = Utils.touch();
     var className = 'Dropdown ' + (this.props.className || '');
     className += ( this.state.opened ? ' opened' : '' );
-    className += ( this.props.right ? ' right' : '' );
+    className += ( this.props.right ? ' pull-right' : '' );
 
     return (
       <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter } onMouseLeave={ touch ? null : this._onMouseLeave } onClick={touch ? this._onClick : null}>
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
-          <div className={'stalagmite' + ( this.props.right ? ' right' : '' )}></div>
+          <div className={'stalagmite' + ( this.props.right ? ' pull-right' : '' )}></div>
           <ul className='Dropdown-ul'>
             { this.props.children }
           </ul>
