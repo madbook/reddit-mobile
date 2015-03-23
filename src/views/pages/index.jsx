@@ -117,7 +117,6 @@ class IndexPage extends React.Component {
                     hideSubredditLabel={ hideSubredditLabel }
                     user={user}
                     token={token}
-                    titleLink={ listing.url }
                     api={api}
                   />
                 );

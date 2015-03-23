@@ -8,10 +8,7 @@ import CommentBoxFactory from '../components/CommentBox';
 var CommentBox;
 
 import short from '../../lib/formatDifference';
-
-function mobilify(url) {
-  return url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
-}
+import mobilify from '../../lib/mobilify';
 
 class Comment extends React.Component {
   constructor(props) {

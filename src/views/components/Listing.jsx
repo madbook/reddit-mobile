@@ -1,16 +1,24 @@
 import React from 'react';
 import moment from 'moment';
+
+import short from '../../lib/formatDifference';
+import mobilify from '../../lib/mobilify';
+
 import VoteFactory from '../components/Vote';
 var Vote;
+
 import ActionsFactory from '../components/Actions';
 var Actions;
+
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
+
 import GoldIconFactory from '../components/GoldIcon';
 var GoldIcon;
+
 import PlayIconFactory from '../components/PlayIcon';
 var PlayIcon;
-import short from '../../lib/formatDifference';
+
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 
@@ -212,6 +220,9 @@ class Listing extends React.Component {
     var isSelf;
     var when = short(listing.created_utc * 1000);
 
+    var titleLink = mobilify(listing.url);
+    var isRemote = titleLink === listing.url;
+
     if (!props.hideSubredditLabel) {
       subredditLabel = (
         <li>
@@ -263,7 +274,7 @@ class Listing extends React.Component {
           <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
-                <a href={ this.props.titleLink }>
+                <a href={ titleLink } target={isRemote ? '_blank' : '_self' }>
                   <h1 className={ 'panel-title ' + distinguished }>
                     { listing.title } { edited }
                   </h1>

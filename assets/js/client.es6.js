@@ -73,7 +73,7 @@ function initialize(bindLinks) {
         // If it has a target=_blank, or an 'external' data attribute, or it's
         // an absolute url, let the browser route rather than forcing a capture.
         if (
-          ($link.attr('target') || $link.attr('data-no-route')) ||
+          ($link.attr('target') === '_blank' || $link.attr('data-no-route')) ||
           href.indexOf('//') > -1
         ) {
           return;

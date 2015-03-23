@@ -80,7 +80,6 @@ class ListingPage extends React.Component {
           token={ token } 
           api={ api } 
           expanded={ true } 
-          titleLink={ listing.url }
           showWholeImage={true} />
       );
 
