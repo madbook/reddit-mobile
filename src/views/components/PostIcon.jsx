@@ -9,13 +9,13 @@ class PostIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened:false,
+      opened: false,
     };
   }
 
   render() {
     return (
-      <SVG width={20} height={20}>
+      <SVG width={20} height={20} fallbackText='post'>
         <path fill='none' stroke='#b8b8b8' strokeWidth='2' d='M16,18.999926H3.999687C2.343006,18.999926,1,17.656919,1,16.000238V3.999926c0-1.656855,1.343146-3,3-3 h12.000313C17.656994,0.999926,19,2.342932,19,3.999614v12.000313C19,17.65678,17.656855,18.999926,16,18.999926z'/>
         <g fill='none' stroke='#b8b8b8' strokeWidth='2' strokeLinejoin='round'>
           <line ref='x1' x1={_X_LEFT} y1={_X_RIGHT} x2={_X_LEFT} y2={_X_RIGHT}/>
@@ -30,28 +30,34 @@ class PostIcon extends React.Component {
   }
 
   componentDidMount() {
+    if (!SVG.ENABLED) {
+      return;
+    }
     var pencil = this.refs.pencil.getDOMNode();
     var diff = _X_RIGHT - _X_LEFT;
-    this._timeline = new TimelineLite({paused:true});
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x:diff, y:-diff}));
-    this._timeline.add(TweenLite.to(this.refs.x1.getDOMNode(), 0.1, {attr:{x2:_X_RIGHT, y2:_X_LEFT}}),0);
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x:0}));
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x:diff, y:0}));
-    this._timeline.add(TweenLite.to(this.refs.x2.getDOMNode(), 0.1, {attr:{x2:_X_RIGHT, y2:_X_RIGHT}}),0.2);
+    this._timeline = new TimelineLite({paused: true});
+    this._timeline.add(TweenLite.to(pencil, 0.1, {x: diff, y: -diff}));
+    this._timeline.add(TweenLite.to(this.refs.x1.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_LEFT}}), 0);
+    this._timeline.add(TweenLite.to(pencil, 0.1, {x: 0}));
+    this._timeline.add(TweenLite.to(pencil, 0.1, {x: diff, y: 0}));
+    this._timeline.add(TweenLite.to(this.refs.x2.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_RIGHT}}), 0.2);
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!SVG.ENABLED) {
+      return;
+    }
     var opened = nextProps.opened;
-    if (typeof opened != 'undefined' && opened != this.state.opened)
+    if (typeof opened !== 'undefined' && opened !== this.state.opened) {
       this._open(opened);
+    }
   }
 
   _open(bool) {
-    this.setState({opened:bool}, this._transform);
-    if(bool) {
+    this.setState({opened: bool}, this._transform);
+    if (bool) {
       this._timeline.play();
-    }
-    else {
+    } else {
       this._timeline.reverse();
     }
   }

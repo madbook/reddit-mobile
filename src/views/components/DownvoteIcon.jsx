@@ -1,7 +1,7 @@
 import React from 'react';
 import SVGFactory from '../components/SVG';
-import MyMath from '../../lib/danehansen/MyMath';
 var SVG;
+import MyMath from '../../lib/danehansen/MyMath';
 
 class DownvoteIcon extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class DownvoteIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={20} height={20}>
+      <SVG width={20} height={20} fallbackText='downvote'>
         <defs>
           <clipPath id={this._maskID}>
             <circle ref='mask' fill='#000' cx='10' cy='10' r='10'/>
@@ -30,16 +30,22 @@ class DownvoteIcon extends React.Component {
   }
 
   componentDidMount() {
+    if (!SVG.ENABLED) {
+      return;
+    }
     this.refs.arrows.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!SVG.ENABLED) {
+      return;
+    }
     var opened = nextProps.opened;
-    if (typeof opened != 'undefined' && opened != this.props.opened) {
+    if (typeof opened !== 'undefined' && opened !== this.props.opened) {
       this._open(opened);
     }
     var hovered = nextProps.hovered;
-    if (typeof hovered != 'undefined' && hovered != this.props.hovered) {
+    if (typeof hovered !== 'undefined' && hovered !== this.props.hovered) {
       this._hover(hovered);
     }
   }
@@ -49,23 +55,23 @@ class DownvoteIcon extends React.Component {
     var ease = Back.easeOut.config(rand);
     var t = 0.3 + (rand - 1) / 3 * 0.3;
     var delay = Math.random() * 0.1;
-    if(bool) {
-      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr:{y:20}, ease:ease, delay:delay});
-      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr:{cy:-10}, ease:ease, delay:delay});
+    if (bool) {
+      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr: {y: 20}, ease: ease, delay: delay});
+      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: -10}, ease: ease, delay: delay});
     } else {
-      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr:{y:0}, ease:ease, delay:delay});
-      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr:{cy:10}, ease:ease, delay:delay});
+      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr: {y: 0}, ease: ease, delay: delay});
+      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: 10}, ease: ease, delay: delay});
     }
   }
 
   _hover(bool) {
-    TweenLite.to([this.refs.arrow1.getDOMNode(), this.refs.arrow2.getDOMNode()], 0.2, {scale:bool ? 1.3 : 1, ease:Back.easeOut, transformOrigin:'50% 50%'});
+    TweenLite.to([this.refs.arrow1.getDOMNode(), this.refs.arrow2.getDOMNode()], 0.2, {scale: bool ? 1.3 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
   }
 }
 
 DownvoteIcon.defaultProps = {
-  opened:false,
-  hovered:false,
+  opened: false,
+  hovered: false,
 };
 
 function DownvoteIconFactory(app) {

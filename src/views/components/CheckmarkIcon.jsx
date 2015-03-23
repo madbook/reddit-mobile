@@ -5,16 +5,16 @@ var SVG;
 const _SIZE = 20;
 
 class CheckmarkIcon extends React.Component {
-  constructor ( props ) {
+  constructor(props) {
     super(props);
     this.state = {};
     this._open = this._open.bind(this);
     this._maskID = 'mask' + Math.random();
   }
 
-  render () {
+  render() {
     return (
-      <SVG width={_SIZE} height={_SIZE}>
+      <SVG width={_SIZE} height={_SIZE} fallbackText='checkmark'>
         <defs>
           <clipPath id={this._maskID}>
             <rect ref='mask' x='0' y='0' width='0' height={_SIZE} fill='#000'/>
@@ -25,29 +25,36 @@ class CheckmarkIcon extends React.Component {
     );
   }
 
-  componentDidMount () {
+  componentDidMount() {
+    if (!SVG.ENABLED) {
+      return;
+    }
     this.refs.line.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
-    if(this.props.opened) {
+    if (this.props.opened) {
       this._open(true);
     }
   }
 
-  _open (opened) {
-    TweenLite.to(this.refs.mask.getDOMNode(), 0.2, {attr: {width:opened?_SIZE:0}, ease:Linear.easeNone});
+  _open(opened) {
+    TweenLite.to(this.refs.mask.getDOMNode(), 0.2, {attr: {width: opened ? _SIZE : 0}, ease: Linear.easeNone});
   }
 
-  componentWillReceiveProps ( nextProps ) {
+  componentWillReceiveProps(nextProps) {
+    if (!SVG.ENABLED) {
+      return;
+    }
     var opened = nextProps.opened;
-    if (typeof opened != 'undefined' && opened!=this.props.opened)
+    if (typeof opened !== 'undefined' && opened !== this.props.opened) {
       this._open(opened);
+    }
   }
 }
 
 CheckmarkIcon.defaultProps = {
-  opened:false,
+  opened: false,
 };
 
-function CheckmarkIconFactory ( app ) {
+function CheckmarkIconFactory(app) {
   SVG = SVGFactory(app);
   return app.mutate('core/components/CheckmarkIcon', CheckmarkIcon);
 }
