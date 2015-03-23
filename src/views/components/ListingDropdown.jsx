@@ -74,9 +74,9 @@ class ListingDropdown extends React.Component {
           </form>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave.bind(this, 'post')}>
+          <MobileButton className='Dropdown-button' href={listing.permalink} over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave.bind(this, 'post')}>
             <UpvoteIcon hovered={this.state.rollover=='post'}/>
-            <span className='Dropdown-text'>Post comment</span>
+            <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
