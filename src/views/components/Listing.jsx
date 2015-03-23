@@ -226,9 +226,7 @@ class Listing extends React.Component {
 
     if (!isSelf) {
       domain = (
-        <li>
-          { listing.domain }
-        </li>
+        <em className='label label-info listing-link-flair'>{ listing.domain }</em>
       );
     }
 
@@ -265,11 +263,6 @@ class Listing extends React.Component {
           <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
-                <div className='link-flair-container'>
-                  { nsfwFlair }
-                  { linkFlair }
-                </div>
-
                 <a href={ this.props.titleLink }>
                   <h1 className={ 'panel-title ' + distinguished }>
                     { listing.title } { edited }
@@ -285,12 +278,18 @@ class Listing extends React.Component {
               { gilded }
               <li className='linkbar-item-no-seperator'><Vote app={app} thing={ listing } token={ this.props.token } api={ this.props.api }/></li>
               <li className='linkbar-item-no-seperator'>
-                <a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a>
+                <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>
               </li>
               { subredditLabel }
-              { domain }
               <li>{ when }</li>
             </ul>
+
+            <div className='link-flair-container vertical-spacing-top'>
+              { domain }
+              { nsfwFlair }
+              { linkFlair }
+            </div>
+
             { stalactite }
           </header>
 
