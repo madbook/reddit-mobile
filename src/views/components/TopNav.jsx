@@ -26,7 +26,7 @@ class TopNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subredditName: '',
+      subredditName: props.subredditName,
       rollover: '',
       sideNavOpen: false,
     };
@@ -50,7 +50,7 @@ class TopNav extends React.Component {
   render() {
     var subredditName = shorten(this.state.subredditName || '', 20);
     if (subredditName) {
-      var subredditBreadcrumb = <a className='TopNav-a' href={'/r/'+subredditName}>{subredditName}</a>;
+      var subredditBreadcrumb = <a className='TopNav-a' href={'/r/'+this.state.subredditName}>/r/{subredditName}</a>;
     } else {
       subredditBreadcrumb = <a className='TopNav-a' href='/'><Logo/></a>;
     }

@@ -216,7 +216,7 @@ class Listing extends React.Component {
         <li>
           <a href={`/r/${listing.subreddit}`}>
             <span className='listing-subreddit'>
-              { listing.subreddit }
+              /r/{ listing.subreddit }
             </span>
           </a>
         </li>
