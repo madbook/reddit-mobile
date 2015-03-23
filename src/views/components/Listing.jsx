@@ -210,6 +210,7 @@ class Listing extends React.Component {
     var listingClass = props.listingClass || '';
     var comment = listing.num_comments < 2 ? 'comment' : 'comments';
     var isSelf;
+    var when = short(listing.created_utc * 1000);
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -275,7 +276,9 @@ class Listing extends React.Component {
                   </h1>
                 </a>
               </div>
-              <ListingDropdown listing={listing} app={app}/>
+              <div className='col-xs-1'>
+                <ListingDropdown listing={listing} app={app}/>
+              </div>
             </div>
 
             <ul className='linkbar text-muted small'>
@@ -286,6 +289,7 @@ class Listing extends React.Component {
               </li>
               { subredditLabel }
               { domain }
+              <li>{ when }</li>
             </ul>
             { stalactite }
           </header>
