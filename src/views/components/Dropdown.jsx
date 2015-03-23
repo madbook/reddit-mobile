@@ -25,7 +25,7 @@ class Dropdown extends React.Component {
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
           <div className={'stalagmite' + ( this.props.right ? ' pull-right' : '' )}></div>
-          <ul className='Dropdown-ul'>
+          <ul className='Dropdown-ul list-unstyled'>
             { this.props.children }
           </ul>
         </div>
