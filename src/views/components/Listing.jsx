@@ -231,7 +231,7 @@ class Listing extends React.Component {
       );
     }
 
-    if (listing.gilded) {
+    if (listing.gilded && props.single) {
       gilded = (
         <li><GoldIcon/></li>
       );
