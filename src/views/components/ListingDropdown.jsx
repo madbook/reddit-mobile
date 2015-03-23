@@ -106,13 +106,13 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave.bind(this, 'more')}>
             <UpvoteIcon hovered={this.state.rollover=='more'}/>
-            <span className='Dropdown-text'>More from { listing.subreddit }</span>
+            <span className='Dropdown-text'>More from /r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/u/' + listing.author } over={this._onMouseEnter.bind(this, 'about')} out={this._onMouseLeave.bind(this, 'about')}>
             <UpvoteIcon hovered={this.state.rollover=='about'}/>
-            <span className='Dropdown-text'>About { listing.author }</span>
+            <span className='Dropdown-text'>About /u/{ listing.author }</span>
           </MobileButton>
         </li>
       </Dropdown>
