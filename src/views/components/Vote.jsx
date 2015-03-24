@@ -1,5 +1,7 @@
 import React from 'react';
 import { models } from 'snoode';
+import constants from '../../constants';
+
 import UpvoteIconFactory from '../components/UpvoteIcon';
 var UpvoteIcon;
 import DownvoteIconFactory from '../components/DownvoteIcon';
@@ -7,77 +9,63 @@ var DownvoteIcon;
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
 
-var d = new Date();
-var year = d.getFullYear();
-
 class Vote extends React.Component {
   constructor(props) {
     super(props);
 
+    this._score = props.thing.score;
+
     this.state = {
-      score: this.props.thing.score,
-      downvoted: this.props.thing.likes === false,
-      upvoted: this.props.thing.likes === true,
+      score: this._score,
       rollover: '',
+    };
+
+    var likes = props.thing.likes;
+
+    if (likes === false) {
+      this.state.localScore = -1;
+    } else if (likes === true) {
+      this.state.localScore = 1;
+    } else {
+      this.state.localScore = 0;
     }
 
-    this.upvote=this.upvote.bind(this);
-    this.downvote=this.downvote.bind(this);
-    this._onVote=this._onVote.bind(this);
+    this._onVote = this._onVote.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (nextProps !== this.props || nextState !== this.state);
   }
 
-  upvote (e) {
-    if(e)
-      e.preventDefault();
+  componentDidMount() {
+    this.props.app.on(constants.VOTE+':'+this.props.thing.id, this._onVote);
+  }
 
-    if (this.state.upvoted) {
-      this.vote(0);
-    } else {
-      this.vote(1);
+  componentWillUnmount() {
+    this.props.app.off(constants.VOTE+':'+this.props.thing.id, this._onVote);
+  }
+
+  _onClick(str, evt) {
+    switch (str) {
+      case 'upvote':
+        evt.preventDefault();
+        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, 1);
+        break;
+      case 'downvote':
+        evt.preventDefault();
+        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, -1);
+        break;
     }
   }
 
-  downvote (e) {
-    if(e)
-      e.preventDefault();
-    if (this.state.downvoted) {
-      this.vote(0);
-    } else {
-      this.vote(-1);
-    }
+  _onVote(dir) {
+    var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
+    this.setState({localScore: localScore, score: this._score + localScore});
+    this.submitVote(localScore);
   }
 
-  vote (direction) {
-    var upvoted = false;
-    var downvoted = false;
-    var score = this.props.thing.score;
-    switch (direction) {
-      case -1:
-        score = score - 1;
-        downvoted = true;
-        break;
-      case 0:
-        break;
-      case 1:
-        score = score + 1;
-        upvoted = true;
-        break;
-    }
-
-    this.props.app.emit(Vote.REMOTE_VOTE+':'+this.props.thing.id, direction);
-    this.submitVote(direction);
-    this.setState({
-      upvoted: upvoted,
-      downvoted: downvoted,
-      score: score,
-    });
-  }
-
-  submitVote (direction) {
+  submitVote(direction) {
     if (!this.props.token) {
       // TODO: replace this with login form
       console.warn('Must log in first.');
@@ -98,40 +86,15 @@ class Vote extends React.Component {
     this.props.api.votes.post(options);
   }
 
-  componentDidMount() {
-    this.props.app.on(Vote.VOTE+':'+this.props.thing.id, this._onVote);
+  _onMouseEnter(str) {
+    this.setState({rollover: str});
   }
 
-  componentWillUnmount() {
-    this.props.app.off(Vote.VOTE+':'+this.props.thing.id, this._onVote);
+  _onMouseLeave() {
+    this.setState({rollover: ''});
   }
 
-  _onVote(dir) {
-    if(dir==1)
-      this.upvote();
-    else
-      this.downvote();
-  }
-
-  _onButtonMouseEnter(str) {
-    this.setState({rollover:str});
-  }
-
-  _onButtonMouseLeave(str) {
-    this.setState({rollover:''});
-  }
-
-  render () {
-    var upvoteDirection = 1;
-    var downvoteDirection = -1;
-
-    if (this.state.upvoted) {
-      upvoteDirection = 0;
-
-    } else if (this.state.downvoted) {
-      downvoteDirection = 0;
-    }
-
+  render() {
     return (
         <ul className='linkbar linkbar-compact'>
           <li>
@@ -139,8 +102,8 @@ class Vote extends React.Component {
               <input type='hidden' name='direction' value='1'/>
               <MobileButton type='submit'
                 className={'vote text-muted'} data-vote='up' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={ this.upvote } over={this._onButtonMouseEnter.bind(this, 'upvote')} out={this._onButtonMouseLeave.bind(this, 'upvote')}>
-                <UpvoteIcon opened={this.state.upvoted} hovered={this.state.rollover=='upvote'}/>
+                data-no-route='true' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave}>
+                <UpvoteIcon opened={this.state.upvoted} hovered={this.state.rollover=='upvote'} altered={ this.state.localScore > 0 } />
               </MobileButton>
             </form>
           </li>
@@ -154,8 +117,8 @@ class Vote extends React.Component {
               <input type='hidden' name='direction' value='-1'/>
               <MobileButton type='submit'
                 className={'vote text-muted'} data-vote='down' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={ this.downvote } over={this._onButtonMouseEnter.bind(this, 'downvote')} out={this._onButtonMouseLeave.bind(this, 'downvote')}>
-                <DownvoteIcon opened={this.state.downvoted} hovered={this.state.rollover=='downvote'}/>
+                data-no-route='true' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave}>
+                <DownvoteIcon opened={this.state.downvoted} hovered={this.state.rollover=='downvote'} altered={ this.state.localScore < 0 } />
               </MobileButton>
             </form>
           </li>
@@ -163,9 +126,6 @@ class Vote extends React.Component {
     );
   }
 }
-
-Vote.VOTE = 'voteVote';
-Vote.REMOTE_VOTE = 'voteRemoteVote';
 
 function VoteFactory(app) {
   UpvoteIcon = UpvoteIconFactory(app);

@@ -1,15 +1,13 @@
 import React from 'react';
 import q from 'q';
 import querystring from 'querystring';
+import constants from '../../constants';
 
 import LoadingFactory from '../components/Loading';
 var Loading;
 
 import ListingFactory from '../components/Listing';
 var Listing;
-
-import TopNavFactory from '../components/TopNav';
-var TopNav;
 
 import TopSubnavFactory from '../components/TopSubnav';
 var TopSubnav;
@@ -23,7 +21,7 @@ class IndexPage extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     IndexPage.populateData(this.props.api, this.props, true).done((function(data) {
 
       this.setState({
@@ -31,10 +29,10 @@ class IndexPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(TopNav.SUBREDDIT_NAME, this.props.subredditName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.subredditName);
   }
 
-  render () {
+  render() {
     var loading;
 
     if (this.state.listings === undefined) {
@@ -95,7 +93,7 @@ class IndexPage extends React.Component {
         </a>
       );
     }
-    var app=this.props.app;
+    var app = this.props.app;
     return (
       <main>
         { loading }
@@ -136,7 +134,7 @@ class IndexPage extends React.Component {
     );
   }
 
-  static populateData (api, props, synchronous) {
+  static populateData(api, props, synchronous) {
     var defer = q.defer();
 
     // Only used for server-side rendering. Client-side, call when
@@ -187,7 +185,6 @@ class IndexPage extends React.Component {
 function IndexPageFactory(app) {
   Listing = ListingFactory(app);
   Loading = LoadingFactory(app);
-  TopNav = TopNavFactory(app);
   TopSubnav = TopSubnavFactory(app);
 
   return app.mutate('core/pages/index', IndexPage);

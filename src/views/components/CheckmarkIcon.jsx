@@ -8,7 +8,7 @@ class CheckmarkIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this._open = this._open.bind(this);
+    this._play = this._play.bind(this);
     this._maskID = 'mask' + Math.random();
   }
 
@@ -30,28 +30,28 @@ class CheckmarkIcon extends React.Component {
       return;
     }
     this.refs.line.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
-    if (this.props.opened) {
-      this._open(true);
+    if (this.props.played) {
+      this._play(true, true);
     }
-  }
-
-  _open(opened) {
-    TweenLite.to(this.refs.mask.getDOMNode(), 0.2, {attr: {width: opened ? _SIZE : 0}, ease: Linear.easeNone});
   }
 
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
     }
-    var opened = nextProps.opened;
-    if (typeof opened !== 'undefined' && opened !== this.props.opened) {
-      this._open(opened);
+    var played = nextProps.played;
+    if (typeof played !== 'undefined' && played !== this.props.played) {
+      this._play(played);
     }
+  }
+
+  _play(bool, instant) {
+    TweenLite.to(this.refs.mask.getDOMNode(), instant ? 0 : 0.2, {attr: {width: bool ? _SIZE : 0}, ease: Linear.easeNone});
   }
 }
 
 CheckmarkIcon.defaultProps = {
-  opened: false,
+  played: false,
 };
 
 function CheckmarkIconFactory(app) {

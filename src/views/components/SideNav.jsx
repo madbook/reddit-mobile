@@ -1,6 +1,5 @@
 import React from 'react';
-import TopNavFactory from '../components/TopNav';
-var TopNav;
+import constants from '../../constants';
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -16,12 +15,12 @@ class SideNav extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(TopNav.HAMBURGER_CLICK, this._toggle);
+    this.props.app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
     this.props.app.on('route:start', this._close);
   }
 
   componentWillUnount() {
-    this.props.app.off(TopNav.HAMBURGER_CLICK, this._toggle);
+    this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
     this.props.app.off('route:start', this._close);
   }
 
@@ -44,14 +43,14 @@ class SideNav extends React.Component {
 
     return (
       <nav className={'SideNav tween' + (this.state.opened?' opened':'')}>
-      <ul className='SideNav-ul'>
+      <ul className='SideNav-ul list-unstyled'>
         <li>
           <a className='SideNav-button' href='/'>Home</a>
         </li>
         { loginLink }
         <li className={'SideNav-dropdown tween'+(this.state.twirly === 'about' ? ' opened' : '')}>
           <button className={'twirly before SideNav-button'+(this.state.twirly === 'about' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
-          <ul className='SideNav-ul'>
+          <ul className='SideNav-ul list-unstyled'>
             <li>
               <a className='SideNav-button' href='/blog/'>Blog</a>
             </li>
@@ -74,7 +73,7 @@ class SideNav extends React.Component {
         </li>
         <li className={'SideNav-dropdown tween' + (this.state.twirly === 'help' ? ' opened' : '')}>
           <button className={'twirly before SideNav-button' + (this.state.twirly === 'help' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
-          <ul className='SideNav-ul'>
+          <ul className='SideNav-ul list-unstyled'>
             <li>
               <a className='SideNav-button' href='/wiki/'>Wiki</a>
             </li>
@@ -104,13 +103,13 @@ class SideNav extends React.Component {
   }
 
   _toggle() {
-    this.props.app.emit(SideNav.TOGGLE, !this.state.opened);
+    this.props.app.emit(constants.SIDE_NAV_TOGGLE, !this.state.opened);
     this.setState({opened: !this.state.opened});
   }
 
   _close() {
     if (this.state.opened) {
-      this.props.app.emit(SideNav.TOGGLE, false);
+      this.props.app.emit(constants.SIDE_NAV_TOGGLE, false);
       this.setState({opened: false});
     }
   }
@@ -120,10 +119,7 @@ class SideNav extends React.Component {
   }
 }
 
-SideNav.TOGGLE = 'sideNavToggle';
-
 function SideNavFactory(app) {
-  TopNav = TopNavFactory(app);
   return app.mutate('core/components/SideNav', SideNav);
 }
 

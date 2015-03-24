@@ -10,16 +10,14 @@ const _DIAMETER = 2;
 class EllipsisIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      opened:false
-    };
-    this._open = this._open.bind(this);
+    this.state = {};
+    this._play = this._play.bind(this);
   }
 
   render() {
     return (
-      <SVG width={20} height={20}>
-        <g fill="#b8b8b8">
+      <SVG width={20} height={20} fallbackText='menu'>
+        <g className='SVG-fill'>
           <circle ref="one" cx={_CENTER - _DIST} cy={_CENTER} r={_DIAMETER}/>
           <circle cx={_CENTER} cy={_CENTER} r={_DIAMETER}/>
           <circle ref="three" cx={_CENTER + _DIST} cy={_CENTER} r={_DIAMETER}/>
@@ -41,25 +39,28 @@ class EllipsisIcon extends React.Component {
     this._timeline.add(TweenLite.to(three, 0.2, {attr: {cy: _CENTER + _DIST}, ease: ease.easeIn, overwrite: 0}), 0);
   }
 
-  _open(bool) {
+  componentWillReceiveProps(nextProps) {
+    if (!SVG.ENABLED) {
+      return;
+    }
+    var played = nextProps.played;
+    if (typeof played !== 'undefined' && played !== this.props.played) {
+      this._play(played);
+    }
+  }
+
+  _play(bool) {
     if (bool) {
       this._timeline.play();
     } else {
       this._timeline.reverse();
     }
-    this.setState({opened: bool});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    var opened = nextProps.opened;
-    if (typeof opened !== 'undefined' && opened !== this.state.opened) {
-      this._open(opened);
-    }
   }
 }
+
+EllipsisIcon.defaultProps = {
+  played: false,
+};
 
 function EllipsisIconFactory(app) {
   SVG = SVGFactory(app);

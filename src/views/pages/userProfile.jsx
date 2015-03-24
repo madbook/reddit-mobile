@@ -1,6 +1,7 @@
 import React from 'react';
 import q from 'q';
 import querystring from 'querystring';
+import constants from '../../constants';
 
 import LoadingFactory from '../components/Loading';
 var Loading;
@@ -11,9 +12,6 @@ var UserProfileNav;
 import UserProfileFactory from '../components/UserProfile';
 var UserProfile;
 
-import TopNavFactory from '../components/TopNav';
-var TopNav;
-
 class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -23,17 +21,17 @@ class UserProfilePage extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     UserProfilePage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
         userProfile: data.userProfile,
       });
     }).bind(this));
 
-    this.props.app.emit(TopNav.SUBREDDIT_NAME, this.props.userName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.userName);
   }
 
-  render () {
+  render() {
     var loading;
     var profile;
 
@@ -67,7 +65,7 @@ class UserProfilePage extends React.Component {
     );
   }
 
-  static populateData (api, props, synchronous) {
+  static populateData(api, props, synchronous) {
     var defer = q.defer();
 
     // Only used for server-side rendering. Client-side, call when
@@ -109,7 +107,6 @@ function UserProfilePageFactory(app) {
   UserProfile = UserProfileFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
   Loading = LoadingFactory(app);
-  TopNav = TopNavFactory(app);
 
   return app.mutate('core/pages/userProfile', UserProfilePage);
 }

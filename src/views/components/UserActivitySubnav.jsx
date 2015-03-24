@@ -1,12 +1,9 @@
 import React from 'react';
 import querystring from 'querystring';
-
 import SortDropdownFactory from '../components/SortDropdown';
 var SortDropdown;
-
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
-
 import CheckmarkIconFactory from '../components/CheckmarkIcon';
 var CheckmarkIcon;
 
@@ -22,25 +19,25 @@ class UserActivitySubnav extends React.Component {
       activity: props.activity || 'comments',
     };
 
-    this._onOpen=this._onOpen.bind(this);
+    this._onOpen = this._onOpen.bind(this);
     this._id = Math.random();
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.app.on(_ACTIVITY_TYPE_OPEN + ':' + this._id, this._onOpen);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.app.off(_ACTIVITY_TYPE_OPEN + ':' + this._id, this._onOpen);
   }
 
-  _onOpen (bool) {
+  _onOpen(bool) {
     this.setState({
       opened: bool,
     });
   }
 
-  buildUrl (base, activity, sort, page) {
+  buildUrl(base, activity, sort, page) {
     var url = base;
 
     var q = {
@@ -65,11 +62,11 @@ class UserActivitySubnav extends React.Component {
 
     switch (activity) {
       case 'listings':
-        sortList = 'listings'
+        sortList = 'listings';
         break;
       case 'overview':
       case 'gilded':
-        sortList = 'both'
+        sortList = 'both';
         break;
     }
 
@@ -90,18 +87,18 @@ class UserActivitySubnav extends React.Component {
         activity: 'gilded',
         text: 'Gilded',
       },
-    ]
+    ];
 
     var activityTitle = dropdownList.find((d) => {
       return d.activity === activity;
     }).text;
 
     var button = (
-      <button className={'twirly after' + ( this.state.opened ? ' opened' : '' )}>
+      <button className={'twirly after' + (this.state.opened ? ' opened' : '')}>
         { activityTitle }
       </button>
     );
-
+    var opened = this.state.opened;
 
     return (
       <div className='TopSubnav'>
@@ -111,7 +108,7 @@ class UserActivitySubnav extends React.Component {
               return (
                 <li className='Dropdown-li' key={`ua-subnav-${d.text}`}>
                   <a className='Dropdown-button' href={ this.buildUrl(baseUrl, d.activity, this.state.sort, this.state.page) }>
-                    <CheckmarkIcon opened={ activity === d.activity }/>
+                    <CheckmarkIcon played={ opened && activity === d.activity }/>
                     <span className='Dropdown-text'>{ d.text }</span>
                   </a>
                 </li>

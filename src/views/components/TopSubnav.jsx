@@ -1,6 +1,5 @@
 import React from 'react';
 import SortDropdownFactory from '../components/SortDropdown';
-
 var SortDropdown;
 
 class TopSubnav extends React.Component {

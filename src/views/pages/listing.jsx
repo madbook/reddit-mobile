@@ -1,8 +1,7 @@
 import React from 'react';
-
 import q from 'q';
-
 import commentsMap from '../../lib/commentsMap';
+import constants from '../../constants';
 
 import LoadingFactory from '../components/Loading';
 var Loading;
@@ -15,9 +14,6 @@ var CommentBox;
 
 import CommentFactory from '../components/Comment';
 var Comment;
-
-import TopNavFactory from '../components/TopNav';
-var TopNav;
 
 import TopSubnavFactory from '../components/TopSubnav';
 var TopSubnav;
@@ -32,7 +28,7 @@ class ListingPage extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     ListingPage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
         listing: data.listing,
@@ -40,15 +36,15 @@ class ListingPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(TopNav.SUBREDDIT_NAME, this.props.subredditName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.subredditName);
   }
 
-  onNewComment (comment) {
+  onNewComment(comment) {
     this.state.comments.splice(0, 0, comment);
-    this.setState({ comments: this.props.comments });
+    this.setState({comments: this.props.comments});
   }
 
-  render () {
+  render() {
     var loading;
 
     if (this.state.listing === undefined) {
@@ -68,18 +64,18 @@ class ListingPage extends React.Component {
     var commentBoxElement;
 
     var sort = this.props.sort || 'best';
-    var app=this.props.app;
+    var app = this.props.app;
 
     if (!loading) {
       listingElement = (
-        <Listing 
-          app={ app } 
-          listing={ listing } 
-          single={ true } 
-          user={ user } 
-          token={ token } 
-          api={ api } 
-          expanded={ true } 
+        <Listing
+          app={ app }
+          listing={ listing }
+          single={ true }
+          user={ user }
+          token={ token }
+          api={ api }
+          expanded={ true }
           showWholeImage={true} />
       );
 
@@ -127,7 +123,7 @@ class ListingPage extends React.Component {
     );
   }
 
-  static populateData (api, props, synchronous) {
+  static populateData(api, props, synchronous) {
     var defer = q.defer();
 
     // Only used for server-side rendering. Client-side, call when
@@ -139,7 +135,7 @@ class ListingPage extends React.Component {
 
     var options = api.buildOptions(props.token);
 
-    function decodeHtmlEntities(html){
+    function decodeHtmlEntities(html) {
       return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<');
     }
 
@@ -147,7 +143,7 @@ class ListingPage extends React.Component {
       if (comment && comment.body) {
         comment.body_html = decodeHtmlEntities(comment.body_html);
 
-        if (comment.replies){
+        if (comment.replies) {
           comment.replies = comment.replies.map(mapComment) || [];
         }
 
@@ -170,8 +166,8 @@ class ListingPage extends React.Component {
     }
 
 
-    api.comments.get(options).done(function(data){
-      data.comments = data.comments.map(function(comment){
+    api.comments.get(options).done(function(data) {
+      data.comments = data.comments.map(function(comment) {
         return mapComment(comment);
       });
 
@@ -180,14 +176,13 @@ class ListingPage extends React.Component {
 
     return defer.promise;
   }
-};
+}
 
 function ListingPageFactory(app) {
   Loading = LoadingFactory(app);
   Listing = ListingFactory(app);
   Comment = CommentFactory(app);
   CommentBox = CommentBoxFactory(app);
-  TopNav = TopNavFactory(app);
   TopSubnav = TopSubnavFactory(app);
 
   return app.mutate('core/pages/listing', ListingPage);

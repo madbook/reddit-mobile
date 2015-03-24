@@ -16,18 +16,13 @@ const _BOTTOM_BUN_Y = _SIZE / 2 + _HAMBURGER_SPACING;
 class HamburgerIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      opened: false,
-      hovered: false,
-    };
-    this._open = this._open.bind(this);
-    this._hover = this._hover.bind(this);
+    this.state = {};
   }
 
   render() {
     return (
       <SVG width={_SIZE} height={_SIZE} fallbackText='menu'>
-        <g stroke='#bababa' strokeWidth='2' strokeLinecap='square'>
+        <g className='SVG-stroke' strokeWidth='2' strokeLinecap='square'>
           <line ref='topBun' x1={_HAMBURGER_LEFT} y1={_TOP_BUN_Y} x2={_HAMBURGER_RIGHT} y2={_TOP_BUN_Y}/>
           <line ref='patty' x1={_HAMBURGER_LEFT} y1={_MIDDLE} x2={_HAMBURGER_RIGHT} y2={_MIDDLE}/>
           <line ref='bottomBun' x1={_HAMBURGER_LEFT} y1={_BOTTOM_BUN_Y} x2={_HAMBURGER_RIGHT} y2={_BOTTOM_BUN_Y}/>
@@ -36,46 +31,35 @@ class HamburgerIcon extends React.Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (!SVG.ENABLED) {
       return;
     }
-    var opened = nextProps.opened;
-    if (typeof opened !== 'undefined' && opened !== this.state.opened) {
-      this._open(opened);
+    var altered = prevProps.altered;
+    var played = prevProps.played;
+    if ((typeof altered !== 'undefined' && altered !== this.props.altered) || (typeof played !== 'undefined' && played !== this.props.played)) {
+      this._transform();
     }
-    var hovered = nextProps.hovered;
-    if (typeof hovered !== 'undefined' && hovered !== this.state.hovered) {
-      this._hover(hovered);
-    }
-  }
-
-  _open(bool) {
-    this.setState({opened: bool}, this._transform);
-  }
-
-  _hover(bool) {
-    this.setState({hovered: bool}, this._transform);
   }
 
   _transform() {
-    var hovered = this.state.hovered;
-    var opened = this.state.opened;
+    var played = this.props.played;
+    var altered = this.props.altered;
     var topBun = this.refs.topBun.getDOMNode();
     var patty = this.refs.patty.getDOMNode();
     var bottomBun = this.refs.bottomBun.getDOMNode();
 
-    if (hovered && opened) {
+    if (played && altered) {
       //left
       TweenLite.to(topBun, _T, {attr: {x1: _HAMBURGER_LEFT + _HAMBURGER_SPACING, y1: _TOP_BUN_Y, x2: _HAMBURGER_LEFT, y2: _MIDDLE}});
       TweenLite.to(patty, _T, {attr: {x1: _HAMBURGER_LEFT + 1, y1: _MIDDLE, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _HAMBURGER_LEFT + _HAMBURGER_SPACING, y1: _BOTTOM_BUN_Y, x2: _HAMBURGER_LEFT, y2: _MIDDLE}});
-    } else if (hovered && !opened) {
+    } else if (played && !altered) {
       //right
       TweenLite.to(topBun, _T, {attr: {x1: _HAMBURGER_RIGHT - _HAMBURGER_SPACING, y1: _TOP_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
       TweenLite.to(patty, _T, {attr: {x1: _HAMBURGER_LEFT, y1: _MIDDLE, x2: _HAMBURGER_RIGHT - 1, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _HAMBURGER_RIGHT - _HAMBURGER_SPACING, y1: _BOTTOM_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
-    } else if (!hovered && opened) {
+    } else if (!played && altered) {
       //x
       TweenLite.to(topBun, _T, {attr: {x1: _X_RIGHT, y1: _X_LEFT, x2: _X_LEFT, y2: _X_RIGHT}});
       TweenLite.to(patty, _T, {attr: {x1: _MIDDLE, y1: _MIDDLE, x2: _MIDDLE, y2: _MIDDLE}});
@@ -88,6 +72,11 @@ class HamburgerIcon extends React.Component {
     }
   }
 }
+
+HamburgerIcon.defaultProps = {
+  played: false,
+  altered: false,
+};
 
 function HamburgerIconFactory(app) {
   SVG = SVGFactory(app);

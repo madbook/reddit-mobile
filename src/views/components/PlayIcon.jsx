@@ -26,10 +26,6 @@ class PlayIcon extends React.Component {
     if (typeof opened !== 'undefined' && opened !== this.props.opened) {
       this._open(opened);
     }
-    var hovered = nextProps.hovered;
-    if (typeof hovered !== 'undefined' && hovered !== this.props.hovered) {
-      this._hover(hovered);
-    }
   }
 
   _open(bool) {

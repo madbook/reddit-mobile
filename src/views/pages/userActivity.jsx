@@ -1,6 +1,7 @@
 import React from 'react';
 import q from 'q';
 import querystring from 'querystring';
+import constants from '../../constants';
 
 import LoadingFactory from '../components/Loading';
 var Loading;
@@ -10,9 +11,6 @@ var Listing;
 
 import CommentPreviewFactory from '../components/CommentPreview';
 var CommentPreview;
-
-import TopNavFactory from '../components/TopNav';
-var TopNav;
 
 import UserActivitySubnavFactory from '../components/UserActivitySubnav';
 var UserActivitySubnav;
@@ -29,17 +27,17 @@ class UserActivityPage extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     UserActivityPage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
         activities: data.activities,
       });
     }).bind(this));
 
-    this.props.app.emit(TopNav.SUBREDDIT_NAME, this.props.userName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.userName);
   }
 
-  render () {
+  render() {
     var loading;
 
     if (this.state.activities === undefined) {
@@ -110,7 +108,7 @@ class UserActivityPage extends React.Component {
     );
   }
 
-  static populateData (api, props, synchronous) {
+  static populateData(api, props, synchronous) {
     var defer = q.defer();
 
     // Only used for server-side rendering. Client-side, call when
@@ -158,7 +156,6 @@ class UserActivityPage extends React.Component {
 function UserActivityPageFactory(app) {
   Listing = ListingFactory(app);
   Loading = LoadingFactory(app);
-  TopNav = TopNavFactory(app);
   UserActivitySubnav = UserActivitySubnavFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
   CommentPreview = CommentPreviewFactory(app);

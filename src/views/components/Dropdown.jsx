@@ -1,30 +1,31 @@
 import React from 'react';
 import Utils from '../../lib/danehansen/Utils';
+import constants from '../../constants';
 
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      opened:false
+      opened: false,
     };
-    this._onMouseEnter=this._onMouseEnter.bind(this);
-    this._onMouseLeave=this._onMouseLeave.bind(this);
-    this._onClick=this._onClick.bind(this);
-    this._open=this._open.bind(this);
-    this._close=this._close.bind(this);
+    this._onMouseEnter = this._onMouseEnter.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
+    this._onClick = this._onClick.bind(this);
+    this._open = this._open.bind(this);
+    this._close = this._close.bind(this);
   }
 
   render() {
     var touch = Utils.touch();
     var className = 'Dropdown ' + (this.props.className || '');
-    className += ( this.state.opened ? ' opened' : '' );
-    className += ( this.props.right ? ' pull-right' : '' );
+    className += (this.state.opened ? ' opened' : '');
+    className += (this.props.right ? ' pull-right' : '');
 
     return (
       <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter } onMouseLeave={ touch ? null : this._onMouseLeave } onClick={touch ? this._onClick : null}>
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
-          <div className={'stalagmite' + ( this.props.right ? ' pull-right' : '' )}></div>
+          <div className={'stalagmite' + (this.props.right ? ' pull-right' : '')}></div>
           <ul className='Dropdown-ul list-unstyled'>
             { this.props.children }
           </ul>
@@ -42,20 +43,21 @@ class Dropdown extends React.Component {
   }
 
   _onClick() {
-    if(this.state.opened)
+    if (this.state.opened) {
       this._close();
-    else
+    } else {
       this._open();
+    }
   }
 
   _open() {
-    this.setState({opened:true});
-    this.props.app.emit(Dropdown.OPEN + ':' + this.props.id, true);
+    this.setState({opened: true});
+    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
   }
 
   _close() {
-    this.setState({opened:false});
-    this.props.app.emit(Dropdown.OPEN + ':' + this.props.id, false);
+    this.setState({opened: false});
+    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
 

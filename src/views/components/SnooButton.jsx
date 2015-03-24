@@ -17,8 +17,7 @@ const _RETURN_FORCE = 0.05;
 class SnooButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
     this._onMouseEnter = this._onMouseEnter.bind(this);
     this._onMouseLeave = this._onMouseLeave.bind(this);
     this._onMouseMove = this._onMouseMove.bind(this);
@@ -34,19 +33,19 @@ class SnooButton extends React.Component {
 
   render() {
     return (
-      <MobileButton element='a' href='/' over={SVG.ENABLED ? this._onMouseEnter : null} out={SVG.ENABLED ? this._onMouseLeave : null} move={SVG.ENABLED ? this._onMouseMove : null}>
+      <MobileButton href='/' over={SVG.ENABLED ? this._onMouseEnter : null} out={SVG.ENABLED ? this._onMouseLeave : null} move={SVG.ENABLED ? this._onMouseMove : null}>
         <SVG width={29} height={33} fallbackText='logo'>
-          <ellipse ref='head' fill='#fff' cx='14.5' cy='23.03125' rx='12.6875' ry='9.96875'/>
-          <circle ref='leftEar' fill='#fff' cx='3.625' cy='18.5' r='3.625'/>
-          <circle ref='rightEar' fill='#fff' cx='25.375' cy='18.5' r='3.625'/>
-          <path ref='mouth' fill='none' stroke='#0f6b8f' strokeWidth={_MOUTH_STROKE} strokeLinecap='round' d='M19.9375,28.143154c-1.515734,0.798412-3.394432,1.27738-5.4375,1.27738s-3.921766-0.478968-5.4375-1.27738'/>
-          <circle ref='leftEye' fill='#0f6b8f' cx='8.88125' cy='22.125' r='2.71875'/>
-          <circle ref='rightEye' fill='#0f6b8f' cx='20.11875' cy='22.125' r='2.71875'/>
-          <g fill='none' stroke='#fff' strokeWidth='1.45' strokeLinecap='round'>
+          <ellipse ref='head' className='SVG-fill' cx='14.5' cy='23.03125' rx='12.6875' ry='9.96875'/>
+          <circle ref='leftEar' className='SVG-fill' cx='3.625' cy='18.5' r='3.625'/>
+          <circle ref='rightEar' className='SVG-fill' cx='25.375' cy='18.5' r='3.625'/>
+          <path ref='mouth' fill='none' className='SVG-stroke-bg' strokeWidth={_MOUTH_STROKE} strokeLinecap='round' d='M19.9375,28.143154c-1.515734,0.798412-3.394432,1.27738-5.4375,1.27738s-3.921766-0.478968-5.4375-1.27738'/>
+          <circle ref='leftEye' className='SVG-fill-bg' cx='8.88125' cy='22.125' r='2.71875'/>
+          <circle ref='rightEye' className='SVG-fill-bg' cx='20.11875' cy='22.125' r='2.71875'/>
+          <g fill='none' className='SVG-stroke' strokeWidth='1.45' strokeLinecap='round'>
             <line ref='stemBase' x1={_ELBOW.x} y1={_ELBOW.y} x2={_ROOT.x} y2={_ROOT.y}/>
             <line ref='stemEnd' x1={_ELBOW.x} y1={_ELBOW.y} x2={_DINGLEBERRY_CENTER.x} y2={_DINGLEBERRY_CENTER.y}/>
           </g>
-          <circle ref='dingleberry' fill='#fff' cx={_DINGLEBERRY_CENTER.x} cy={_DINGLEBERRY_CENTER.y} r='2.71875'/>
+          <circle ref='dingleberry' className='SVG-fill' cx={_DINGLEBERRY_CENTER.x} cy={_DINGLEBERRY_CENTER.y} r='2.71875'/>
         </SVG>
       </MobileButton>
     );

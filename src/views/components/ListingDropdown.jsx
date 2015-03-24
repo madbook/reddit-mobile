@@ -1,4 +1,6 @@
 import React from 'react';
+import constants from '../../constants';
+
 import EllipsisIconFactory from '../components/EllipsisIcon';
 var EllipsisIcon;
 import UpvoteIconFactory from '../components/UpvoteIcon';
@@ -18,35 +20,21 @@ class ListingDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rollover:'',
-      direction:0,
-      opened:false,
+      rollover: '',
+      opened: false,
     };
-    var likes = this.props.listing.likes === true
-    if (likes === true) {
-      this.state.direction=1;
-    } else if (likes === false) {
-      this.state.direction=-1;
+    var likes = props.listing.likes;
+    if (likes === false) {
+      this.state.localScore = -1;
+    } else if (likes === true) {
+      this.state.localScore = 1;
     } else {
-      this.state.direction=0;
+      this.state.localScore = 0;
     }
-    this._onOpen=this._onOpen.bind(this);
+    this._onOpen = this._onOpen.bind(this);
     this._id = Math.random();
-    this._onRemoteVote = this._onRemoteVote.bind(this);
-  }
-
-  componentDidMount () {
-    this.props.app.on(Vote.REMOTE_VOTE+':'+this.props.listing.id, this._onRemoteVote);
-    this.props.app.on(Dropdown.OPEN + ':' + this._id, this._onOpen);
-  }
-
-  componentWillUnmount() {
-    this.props.app.off(Vote.REMOTE_VOTE+':'+this.props.listing.id, this._onRemoteVote);
-    this.props.app.off(Dropdown.OPEN + ':' + this._id, this._onOpen);
-  }
-
-  _onRemoteVote(direction) {
-    this.setState({direction:direction});
+    this._onVote = this._onVote.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
   render() {
@@ -58,8 +46,8 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='1'/>
-            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave.bind(this, 'upvote')}>
-              <UpvoteIcon hovered={this.state.rollover=='upvote'} opened={this.state.direction > 0}/>
+            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave}>
+              <UpvoteIcon played={this.state.rollover === 'upvote'} altered={this.state.localScore > 0}/>
               <span className='Dropdown-text'>Upvote</span>
             </MobileButton>
           </form>
@@ -67,51 +55,51 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='-1'/>
-            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave.bind(this, 'downvote')}>
-              <DownvoteIcon hovered={this.state.rollover=='downvote'} opened={this.state.direction < 0}/>
+            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave}>
+              <DownvoteIcon played={this.state.rollover === 'downvote'} altered={this.state.localScore < 0}/>
               <span className='Dropdown-text'>Downvote</span>
             </MobileButton>
           </form>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={listing.permalink} over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave.bind(this, 'post')}>
-            <UpvoteIcon hovered={this.state.rollover=='post'}/>
+          <MobileButton className='Dropdown-button' href={listing.permalink} over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover === 'post'}/>
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'save')} over={this._onMouseEnter.bind(this, 'save')} out={this._onMouseLeave.bind(this, 'save')}>
-            <UpvoteIcon hovered={this.state.rollover=='save'}/>
+          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'save')} over={this._onMouseEnter.bind(this, 'save')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover === 'save'}/>
             <span className='Dropdown-text'>Save</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'gold')} over={this._onMouseEnter.bind(this, 'gold')} out={this._onMouseLeave.bind(this, 'gold')}>
-            <GoldIcon opened={this.state.rollover=='gold'}/>
+          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'gold')} over={this._onMouseEnter.bind(this, 'gold')} out={this._onMouseLeave}>
+            <GoldIcon played={this.state.rollover === 'gold'}/>
             <span className='Dropdown-text'>Give gold</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'report')} over={this._onMouseEnter.bind(this, 'report')} out={this._onMouseLeave.bind(this, 'report')}>
-            <UpvoteIcon hovered={this.state.rollover=='report'}/>
+          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'report')} over={this._onMouseEnter.bind(this, 'report')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover === 'report'}/>
             <span className='Dropdown-text'>Report</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'share')} over={this._onMouseEnter.bind(this, 'share')} out={this._onMouseLeave.bind(this, 'share')}>
-            <UpvoteIcon hovered={this.state.rollover=='share'}/>
+          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'share')} over={this._onMouseEnter.bind(this, 'share')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover ==='share'}/>
             <span className='Dropdown-text'>Share</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave.bind(this, 'more')}>
-            <UpvoteIcon hovered={this.state.rollover=='more'}/>
+          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover ==='more'}/>
             <span className='Dropdown-text'>More from /r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/u/' + listing.author } over={this._onMouseEnter.bind(this, 'about')} out={this._onMouseLeave.bind(this, 'about')}>
-            <UpvoteIcon hovered={this.state.rollover=='about'}/>
+          <MobileButton className='Dropdown-button' href={ '/u/' + listing.author } over={this._onMouseEnter.bind(this, 'about')} out={this._onMouseLeave}>
+            <UpvoteIcon played={this.state.rollover ==='about'}/>
             <span className='Dropdown-text'>About /u/{ listing.author }</span>
           </MobileButton>
         </li>
@@ -119,23 +107,25 @@ class ListingDropdown extends React.Component {
     );
   }
 
-  _onMouseEnter(str) {
-    this.setState({rollover:str});
+  componentDidMount() {
+    this.props.app.on(constants.VOTE+':'+this.props.listing.id, this._onVote);
+    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
-  _onMouseLeave(str) {
-    this.setState({rollover:''});
+  componentWillUnmount() {
+    this.props.app.off(constants.VOTE+':'+this.props.listing.id, this._onVote);
+    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   _onClick(str, evt) {
-    switch(str) {
+    switch (str) {
       case 'upvote':
         evt.preventDefault();
-        this.props.app.emit(Vote.VOTE+':'+this.props.listing.id, 1);
+        this.props.app.emit(constants.VOTE+':'+this.props.listing.id, 1);
         break;
       case 'downvote':
         evt.preventDefault();
-        this.props.app.emit(Vote.VOTE+':'+this.props.listing.id, -1);
+        this.props.app.emit(constants.VOTE+':'+this.props.listing.id, -1);
         break;
       case 'gold':
         // TODO: give gold
@@ -152,8 +142,21 @@ class ListingDropdown extends React.Component {
     }
   }
 
-  _onOpen ( bool ) {
-    this.setState({opened:bool});
+  _onVote(dir) {
+    var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
+    this.setState({localScore: localScore});
+  }
+
+  _onMouseEnter(str) {
+    this.setState({rollover: str});
+  }
+
+  _onMouseLeave() {
+    this.setState({rollover: ''});
+  }
+
+  _onOpen(bool) {
+    this.setState({opened: bool});
   }
 }
 
