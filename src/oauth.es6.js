@@ -82,6 +82,7 @@ var oauthRoutes = function(app) {
   router.get('/logout', function * () {
     this.cookies.set('token');
     this.cookies.set('user');
+    this.redirect('/');
   });
 
   router.get('/oauth2/error', function *() {
