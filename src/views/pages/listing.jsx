@@ -6,6 +6,9 @@ import constants from '../../constants';
 import LoadingFactory from '../components/Loading';
 var Loading;
 
+import TrackingPixelFactory from '../components/TrackingPixel';
+var TrackingPixel;
+
 import ListingFactory from '../components/Listing';
 var Listing;
 
@@ -23,43 +26,54 @@ class ListingPage extends React.Component {
     super(props);
 
     this.state = {
-      comments: props.comments,
-      listing: props.listing,
+      data: props.data || {},
     };
+
+    this.state.loaded = !!this.state.data.data;
   }
 
   componentDidMount() {
     ListingPage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
-        listing: data.listing,
-        comments: data.comments,
+        data: data,
+        loaded: true,
       });
     }).bind(this));
 
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.subredditName);
   }
 
-  onNewComment(comment) {
-    this.state.comments.splice(0, 0, comment);
-    this.setState({comments: this.props.comments});
+
+  onNewComment (comment) {
+    this.state.data.data.comments.splice(0, 0, comment);
+
+    this.setState({
+      data: this.props.data,
+    });
   }
 
   render() {
     var loading;
+    var tracking;
 
-    if (this.state.listing === undefined) {
+    if (!this.state.loaded) {
       loading = (
         <Loading />
       );
     }
 
-    var listing = this.state.listing || {};
-    var comments = this.state.comments || [];
+    var data = this.state.data.data;
+
+    var listing = data ? data.listing : {};
+    var comments = data ? data.comments : [];
+
     var api = this.props.api;
     var user = this.props.user;
     var token = this.props.token;
-
     var author = listing.author;
+    var sort = this.props.sort || 'best';
+    var app = this.props.app;
+
     var listingElement;
     var commentBoxElement;
 
@@ -91,6 +105,10 @@ class ListingPage extends React.Component {
       );
     }
 
+    if (this.state.data.meta && this.props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+    }
+
     return (
       <main className='listing-main'>
         { loading }
@@ -119,6 +137,8 @@ class ListingPage extends React.Component {
             })
           }
         </div>
+
+        { tracking }
       </main>
     );
   }
@@ -129,7 +149,7 @@ class ListingPage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve();
+      defer.resolve({});
       return defer.promise;
     }
 
@@ -155,19 +175,15 @@ class ListingPage extends React.Component {
     options.sort = props.sort || 'confidence';
 
     // Initialized with data already.
-    if (typeof props.comments !== 'undefined') {
-      api.hydrate('comments', options, {
-        listing: props.listings,
-        comments: props.comments,
-      });
+    if (props.data && typeof props.data.data !== 'undefined') {
+      api.hydrate('comments', options, props.data);
 
-      defer.resolve(props);
+      defer.resolve(props.data);
       return defer.promise;
     }
 
-
-    api.comments.get(options).done(function(data) {
-      data.comments = data.comments.map(function(comment) {
+    api.comments.get(options).done(function(data){
+      data.data.comments = data.data.comments.map(function(comment){
         return mapComment(comment);
       });
 
@@ -180,6 +196,7 @@ class ListingPage extends React.Component {
 
 function ListingPageFactory(app) {
   Loading = LoadingFactory(app);
+  TrackingPixel = TrackingPixelFactory(app);
   Listing = ListingFactory(app);
   Comment = CommentFactory(app);
   CommentBox = CommentBoxFactory(app);

@@ -103,7 +103,12 @@ function initialize(bindLinks) {
       });
     }
 
+    // Don't re-render tracking pixel on first load. App reads from state
+    // (bootstrap) on first load, so override state, and then set the proper
+    // config value after render.
+    app.setState('renderTracking', false);
     app.render(fullPathName(), true);
+    app.config.renderTracking = true;
   });
 }
 

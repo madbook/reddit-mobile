@@ -6,6 +6,9 @@ import constants from '../../constants';
 import LoadingFactory from '../components/Loading';
 var Loading;
 
+import TrackingPixelFactory from '../components/TrackingPixel';
+var TrackingPixel;
+
 import ListingFactory from '../components/Listing';
 var Listing;
 
@@ -17,15 +20,17 @@ class IndexPage extends React.Component {
     super(props);
 
     this.state = {
-      listings: props.listings,
+      data: props.data || {},
     };
+
+    this.state.loaded = !!this.state.data.data;
   }
 
   componentDidMount() {
     IndexPage.populateData(this.props.api, this.props, true).done((function(data) {
-
       this.setState({
-        listings: data.listings,
+        data: data,
+        loaded: true,
       });
     }).bind(this));
 
@@ -34,24 +39,29 @@ class IndexPage extends React.Component {
 
   render() {
     var loading;
+    var data = this.state.data;
 
-    if (this.state.listings === undefined) {
+    if (!this.state.loaded) {
       loading = (
         <Loading />
       );
     }
 
-    var firstId;
-    var lastId;
-    var prevButton;
-    var nextButton;
+    var listings = data.data || [];
+
     var hideSubredditLabel = this.props.subredditName;
     var page = this.props.page || 0;
     var api = this.props.api;
     var token = this.props.token;
     var user = this.props.user;
+    var app = this.props.app;
 
-    var listings = this.state.listings || [];
+    var firstId;
+    var lastId;
+    var prevButton;
+    var nextButton;
+
+    var tracking;
 
     var subreddit = '';
 
@@ -93,7 +103,13 @@ class IndexPage extends React.Component {
         </a>
       );
     }
+
     var app = this.props.app;
+
+    if (this.state.data.meta && this.props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+    }
+
     return (
       <main>
         { loading }
@@ -130,6 +146,8 @@ class IndexPage extends React.Component {
             </div>
           </div>
         </div>
+
+        { tracking }
       </main>
     );
   }
@@ -140,7 +158,7 @@ class IndexPage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve();
+      defer.resolve({});
       return defer.promise;
     }
 
@@ -163,17 +181,15 @@ class IndexPage extends React.Component {
     }
 
     // Initialized with data already.
-    if (typeof props.listings !== 'undefined') {
-      api.hydrate('links', options, props.listings);
+    if (props.data && typeof props.data.data !== 'undefined') {
+      api.hydrate('links', options, props.data);
 
-      defer.resolve(props);
+      defer.resolve(props.data);
       return defer.promise;
     }
 
     api.links.get(options).then(function(data) {
-      defer.resolve({
-        listings: data,
-      });
+      defer.resolve(data);
     }, function(error) {
       defer.reject(error);
     });
@@ -185,6 +201,7 @@ class IndexPage extends React.Component {
 function IndexPageFactory(app) {
   Listing = ListingFactory(app);
   Loading = LoadingFactory(app);
+  TrackingPixel = TrackingPixelFactory(app);
   TopSubnav = TopSubnavFactory(app);
 
   return app.mutate('core/pages/index', IndexPage);

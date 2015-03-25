@@ -28,6 +28,8 @@ class Server {
     // Intantiate a new App instance (React middleware)
     var app = new App(config);
 
+    app.config.renderTracking = true;
+
     var plugin, p;
 
     if (plugins) {

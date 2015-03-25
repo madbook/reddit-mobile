@@ -32,7 +32,7 @@
     "reddit-text-js": "0.5.3",
     "scmp": "1.0.0",
     "simple-oauth2": "0.2.1",
-    "snoode": "0.3.7",
+    "snoode": "1.0.0",
     "superagent": "1.1.0"
   },
   "devDependencies": {

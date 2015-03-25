@@ -40,12 +40,6 @@ var Layout;
 import BodyLayoutFactory from './views/layouts/BodyLayout';
 var BodyLayout;
 
-function wrap(fn, ctx, ...args) {
-  return new Promise(function(resolve, reject) {
-    fn.apply(ctx, args).then(resolve, reject);
-  });
-}
-
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
@@ -77,6 +71,7 @@ function routes(app) {
       params: ctx.params,
       api: app.V1Api(ctx.token),
       url: ctx.url,
+      renderTracking: app.getConfig('renderTracking'),
     };
 
     return Object.assign({}, defaultProps, ctx.props, props);
@@ -99,9 +94,12 @@ function routes(app) {
       sort: sort,
     });
 
-    var data = yield wrap(IndexPage.populateData, this, props.api, props, this.renderSynchronous, this.useCache);
+    var data = yield IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({}, data, props);
+    props = Object.assign({
+      data: data,
+      app: app,
+    }, props);
 
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
@@ -123,21 +121,22 @@ function routes(app) {
   app.router.get('/', indexPage);
   app.router.get('/r/:subreddit', indexPage);
 
-  app.router.get('/r/:subreddit/comments/:listingId/:listingTitle/:commentId?', function *(next) {
+  app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', function *(next) {
     var page;
     var ctx = this;
 
     var props = buildProps(this, {
       subredditName: ctx.params.subreddit,
       sort: ctx.query.sort,
+      listingId: ctx.params.listingId,
     });
-
-    props.listingId = this.params.listingId;
 
     var data = yield ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({}, data, props);
-    props.app = app;
+    props = Object.assign({
+      data: data,
+      app: app,
+    }, props);
 
     var key = `listing-${props.listingId}-${stringify(this.query)}`;
 
@@ -166,8 +165,10 @@ function routes(app) {
 
     var data = yield UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({}, data, props);
-    props.app = app;
+    props = Object.assign({
+      data: data,
+      app: app,
+    }, props);
 
     var key = `user-profile-${ctx.params.user}`;
 
@@ -196,8 +197,10 @@ function routes(app) {
 
     var data = yield UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({}, data, props);
-    props.app = app;
+    props = Object.assign({
+      data: data,
+      app: app,
+    }, props);
 
     var key = `user-gild-${ctx.params.user}`;
 
@@ -233,9 +236,12 @@ function routes(app) {
       sort: sort,
     });
 
-    var data = yield wrap(UserActivityPage.populateData, this, props.api, props, this.renderSynchronous, this.useCache);
+    var data = yield UserActivityPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({}, data, props);
+    props = Object.assign({
+      data: data,
+      app: app,
+    }, props);
 
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
@@ -320,7 +326,7 @@ function routes(app) {
   });
 
   // Server-side only!
-  app.router.all('vote', '/vote/:id',
+  app.router.post('vote', '/vote/:id',
     function * () {
       var endpoints = {
         '1': 'comment',
@@ -329,10 +335,6 @@ function routes(app) {
 
       var id = this.params.id;
       var endpoint = endpoints[id[1]];
-
-      if (!(this.access_token)) {
-        this.redirect(this.headers.referer || '/');
-      }
 
       var vote = new models.Vote({
         direction: parseInt(this.query.direction),
@@ -349,10 +351,7 @@ function routes(app) {
         });
 
         api.votes.post(options).done(function() {
-          this.redirect(this.headers.referer || '/');
         });
-      } else {
-        this.redirect(this.headers.referer || '/');
       }
     });
 

@@ -18,19 +18,25 @@ var UserActivitySubnav;
 import UserProfileNavFactory from '../components/UserProfileNav';
 var UserProfileNav;
 
+import TrackingPixelFactory from '../components/TrackingPixel';
+var TrackingPixel;
+
 class UserActivityPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activities: props.activities,
+      data: props.data || {},
     };
+
+    this.state.loading = !!this.state.data.data;
   }
 
   componentDidMount() {
     UserActivityPage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
-        activities: data.activities,
+        data: data,
+        loaded: true,
       });
     }).bind(this));
 
@@ -40,7 +46,7 @@ class UserActivityPage extends React.Component {
   render() {
     var loading;
 
-    if (this.state.activities === undefined) {
+    if (!this.state.loaded) {
       loading = (
         <Loading />
       );
@@ -51,7 +57,7 @@ class UserActivityPage extends React.Component {
     var token = this.props.token;
     var user = this.props.user;
 
-    var activities = this.state.activities || [];
+    var activities = this.state.data.data || [];
 
     var subreddit = '';
 
@@ -65,6 +71,12 @@ class UserActivityPage extends React.Component {
 
     var userProfile = this.props.userProfile || {};
     var name = this.props.userName;
+
+    var tracking;
+
+    if (this.state.data.meta && this.props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+    }
 
     return (
       <main>
@@ -104,6 +116,8 @@ class UserActivityPage extends React.Component {
             })
           }
         </div>
+
+        { tracking }
       </main>
     );
   }
@@ -114,7 +128,7 @@ class UserActivityPage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve();
+      defer.resolve({});
       return defer.promise;
     }
 
@@ -136,15 +150,13 @@ class UserActivityPage extends React.Component {
     options.user = props.userName;
 
     // Initialized with data already.
-    if (typeof props.activities !== 'undefined') {
-      defer.resolve(props);
+    if (props.data && typeof props.data.data !== 'undefined') {
+      defer.resolve(props.data);
       return defer.promise;
     }
 
     api.activities.get(options).then(function(data) {
-      defer.resolve({
-        activities: data,
-      });
+      defer.resolve(data);
     }, function(error) {
       defer.reject(error);
     });
@@ -159,6 +171,7 @@ function UserActivityPageFactory(app) {
   UserActivitySubnav = UserActivitySubnavFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
   CommentPreview = CommentPreviewFactory(app);
+  TrackingPixel = TrackingPixelFactory(app);
 
   return app.mutate('core/pages/userActivity', UserActivityPage);
 }

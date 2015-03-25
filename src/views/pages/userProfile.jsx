@@ -12,19 +12,25 @@ var UserProfileNav;
 import UserProfileFactory from '../components/UserProfile';
 var UserProfile;
 
+import TrackingPixelFactory from '../components/TrackingPixel';
+var TrackingPixel;
+
 class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userProfile: props.userProfile,
+      data: props.data,
     };
+
+    this.state.loaded = !!this.state.data.data;
   }
 
   componentDidMount() {
     UserProfilePage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
-        userProfile: data.userProfile,
+        data: data,
+        loaded: true,
       });
     }).bind(this));
 
@@ -35,10 +41,11 @@ class UserProfilePage extends React.Component {
     var loading;
     var profile;
 
-    var userProfile = this.state.userProfile || {};
+    var userProfile = this.state.data.data || {};
     var name = this.props.userName;
+    var tracking;
 
-    if (this.state.userProfile === undefined) {
+    if (!this.state.loaded) {
       loading = (
         <Loading />
       );
@@ -54,6 +61,10 @@ class UserProfilePage extends React.Component {
       );
     }
 
+    if (this.state.data.meta && this.props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+    }
+
     return (
       <main>
         { loading }
@@ -61,6 +72,8 @@ class UserProfilePage extends React.Component {
           <UserProfileNav userName={ name } profileActive={ true } />
           { profile }
         </div>
+
+        { tracking }
       </main>
     );
   }
@@ -71,7 +84,7 @@ class UserProfilePage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve();
+      defer.resolve({});
       return defer.promise;
     }
 
@@ -84,17 +97,15 @@ class UserProfilePage extends React.Component {
     }
 
     // Initialized with data already.
-    if (typeof props.userProfile !== 'undefined') {
-      api.hydrate('users', options, props.userProfile);
+    if (props.data.data && typeof props.data.data !== 'undefined') {
+      api.hydrate('users', options, data);
 
       defer.resolve(props);
       return defer.promise;
     }
 
     api.users.get(options).then(function(data) {
-      defer.resolve({
-        userProfile: data,
-      });
+      defer.resolve(data);
     }, function(error) {
       defer.reject(error);
     });
@@ -107,6 +118,7 @@ function UserProfilePageFactory(app) {
   UserProfile = UserProfileFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
   Loading = LoadingFactory(app);
+  TrackingPixel = TrackingPixelFactory(app);
 
   return app.mutate('core/pages/userProfile', UserProfilePage);
 }
