@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import short from '../../lib/formatDifference';
+import mobilify from '../../lib/mobilify';
 
 class CommentPreview extends React.Component {
   constructor(props) {
@@ -27,8 +28,8 @@ class CommentPreview extends React.Component {
         <div className='panel-body'>
           <div className='row'>
             <div className='col-xs-11'>
-              <a href={ comment.link_url }>
-                { comment.link_title } 
+              <a href={ mobilify(comment.link_url) }>
+                { comment.link_title }
               </a>
               <span className='text-muted'> in </span>
               <a href={ `/r/${comment.subreddit}` }>
