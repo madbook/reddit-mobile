@@ -274,7 +274,7 @@ class Listing extends React.Component {
           <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
-                <a href={ titleLink } target={isRemote ? '_blank' : '_self' }>
+                <a href={ titleLink }>
                   <h1 className={ 'panel-title ' + distinguished }>
                     { listing.title } { edited }
                   </h1>
