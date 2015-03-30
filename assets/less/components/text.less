@@ -55,11 +55,35 @@ a.voted.text-downvote:focus,
     padding: 0;
     display: inline-block;
     margin-right: .5em;
+    vertical-align: bottom;
 
     &:nth-child(n+2)::before {
       content: '·';
       padding-right: .5em;
     }
+  }
+}
+
+.linkbar-single-line {
+  height: 1.5em;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+
+  &:after {
+   content: '';
+   position: absolute;
+   height: 2em;
+   z-index: 1;
+   bottom: 0;
+   right: 0;
+   width: 3em;
+
+   #gradient > .horizontal(@start-color: rgba(255,255,255,0); @end-color: rgba(255,255,255,1););
+ }
+
+  > .linkbar {
+    width: 1000%;
   }
 }
 
@@ -69,7 +93,12 @@ a.voted.text-downvote:focus,
 }
 
 .linkbar-compact {
+  vertical-align: middle;
   margin: 0;
+
+  li:before {
+    display: none;
+  }
 
   & > li:nth-child(n+2)::before {
     content: '';
