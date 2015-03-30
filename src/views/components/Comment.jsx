@@ -164,7 +164,7 @@ class Comment extends React.Component {
     }
 
     if (op == comment.author) {
-      opClass = 'label label-primary label-large';
+      opClass = 'comment-op';
     }
 
     var headerCollapseClass = '';

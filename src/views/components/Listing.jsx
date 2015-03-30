@@ -217,7 +217,7 @@ class Listing extends React.Component {
     var linkFlairClass = (listing.link_flair_css_class);
     var listingClass = props.listingClass || '';
     var comment = listing.num_comments < 2 ? 'comment' : 'comments';
-    var isSelf;
+    var isSelf = listing.domain.indexOf('self.') === 0;
     var when = short(listing.created_utc * 1000);
 
     var titleLink = mobilify(listing.url);
