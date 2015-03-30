@@ -26,8 +26,24 @@ a.voted.text-downvote:focus,
   text-decoration: none;
 }
 
-.text-distinguished {
-  color: @brand-danger;
+.text-admin {
+  color: @admin-text;
+
+  &:after {
+    content: ' [A]';
+  }
+}
+
+.text-moderator {
+  color: @mod-text;
+
+  &:after {
+    content: ' [M]';
+  }
+}
+
+.text-special {
+  color: @special-text;
 }
 
 .linkbar {

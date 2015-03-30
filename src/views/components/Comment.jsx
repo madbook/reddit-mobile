@@ -106,7 +106,7 @@ class Comment extends React.Component {
 
     var permalink = '/comment/' + comment.id + '?context=3';
 
-    var distinguished = comment.distinguished ? ' text-distinguished' : '';
+    var distinguished = comment.distinguished ? ' text-' + comment.distinguished : '';
 
     var scoreClass = 'up';
 
