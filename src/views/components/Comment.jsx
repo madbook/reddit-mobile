@@ -218,7 +218,7 @@ class Comment extends React.Component {
 
                     { authorFlair }
                     <span className='comment-timestamp'>
-                      { moment(this.props.comment.created_utc, 'X').fromNow() }
+                      { submitted }
                     </span>
                     { gilded }
                   </li>
