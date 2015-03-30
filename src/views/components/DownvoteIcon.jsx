@@ -14,7 +14,7 @@ class DownvoteIcon extends React.Component {
 
   render() {
     return (
-      <SVG className={'DownvoteIcon' + (this.props.altered ? ' altered' : '')} width={20} height={20} fallbackText='downvote'>
+      <SVG className={'DownvoteIcon' + (this.props.altered ? ' altered' : '')} width={16} height={16} fallbackText='downvote'>
         <defs>
           <clipPath id={this._maskID}>
             <circle ref='mask' fill='#000' cx='10' cy='10' r='10'/>
