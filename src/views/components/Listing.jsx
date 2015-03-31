@@ -71,12 +71,14 @@ class Listing extends React.Component {
 
       if (html5.iframe) {
         return (
-        <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height } sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
-          );
+          <div className='ratio16x9'>
+            <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height } sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+          </div>
+        );
       } else {
         return (
           <div className='ratio16x9'>
-            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true'>
+            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoplay='true'>
               <source type='video/webm' src={ html5.webm } />
               <source type='video/mp4' src={ html5.mp4 } />
             </video>
@@ -85,8 +87,10 @@ class Listing extends React.Component {
       }
     } else if (fixedRatio) {
       return (
-        <div className='ratio16x9-child' style={ {backgroundImage: 'url('+url+')'} }>
-          <PlayIcon/>
+        <div className='ratio16x9'>
+          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+url+')'} }>
+            <PlayIcon/>
+          </div>
         </div>
       );
     } else {
@@ -146,7 +150,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ permalink } onClick={ this.expand.bind(this) } className='ratio16x9' data-no-route='true'>
+            <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
               { this.buildImage(media.oembed.thumbnail_url, media.oembed, true) }
             </a>
           );
