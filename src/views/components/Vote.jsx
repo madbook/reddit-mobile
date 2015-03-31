@@ -103,7 +103,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted'} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave}>
-                <UpvoteIcon opened={this.state.upvoted} hovered={this.state.rollover=='upvote'} altered={ this.state.localScore > 0 } />
+                <UpvoteIcon played={this.state.rollover === 'upvote'} altered={this.state.localScore > 0} />
               </MobileButton>
             </form>
           </li>
@@ -118,7 +118,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted'} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave}>
-                <DownvoteIcon opened={this.state.downvoted} hovered={this.state.rollover=='downvote'} altered={ this.state.localScore < 0 } />
+                <DownvoteIcon played={this.state.rollover === 'downvote'} altered={this.state.localScore < 0}/>
               </MobileButton>
             </form>
           </li>
