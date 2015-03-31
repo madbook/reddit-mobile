@@ -66,6 +66,7 @@ class Listing extends React.Component {
 
   buildImage(url, embed, fixedRatio) {
     var html5 = gifToHTML5(url);
+
     if (html5) {
       var height = embed ? embed.height : 300;
 
@@ -98,7 +99,7 @@ class Listing extends React.Component {
 
   buildOver18() {
     return (
-      <a href={ this.props.listing.permalink }>
+      <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this)>
         <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
           XXX
         </span>
@@ -108,22 +109,19 @@ class Listing extends React.Component {
 
   buildContent() {
     var listing = this.props.listing;
+
     if (!listing) {
       return;
     }
+
     var media = listing.media;
     var permalink = listing.cleanPermalink;
-    var over18 = false;
 
-    if ((listing.title.match(/nsf[wl]/gi) || listing.over18) && !this.state.expanded) {
-      over18 = true;
+    if (this.isNSFW(listing) && !this.props.preferences.viewNSFW && !this.state.expanded) {
+      return this.buildOver18();
     }
 
     if (media && media.oembed) {
-      if (over18) {
-        return this.buildOver18();
-      }
-
       if (media.oembed.type === 'rich' || media.oembed.type === 'image') {
         if (this.state.expanded) {
           return (
@@ -154,10 +152,6 @@ class Listing extends React.Component {
         }
       }
     } else if (listing.url.match(imgMatch)) {
-      if (over18) {
-        return this.buildOver18();
-      }
-
       if (this.state.expanded) {
         return (
           <a href={ listing.url } className='external-image'>
@@ -201,6 +195,10 @@ class Listing extends React.Component {
         expanded: !this.state.expanded,
       });
     }
+  }
+
+  isNSFW(listing) {
+    var isNSFW = (listing.title.match(/nsf[wl]/gi) || listing.over_18);
   }
 
   render() {
@@ -255,13 +253,14 @@ class Listing extends React.Component {
       );
     }
 
-    if (listing.title.match(/nsf[wl]/gi) || listing.over18) {
+    if (this.isNSFW(listing)) {
       nsfwFlair = (
         <span className='listing-link-flair label label-danger'>
           NSFW
         </span>
       );
     }
+
     var app = this.props.app;
     var buildContent = this.buildContent();
     if (buildContent) {

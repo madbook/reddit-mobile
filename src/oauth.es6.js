@@ -119,7 +119,7 @@ var oauthRoutes = function(app) {
 
     var user = yield app.V1Api(token.token.access_token).users.get(options);
 
-    this.cookies.set('user', JSON.stringify(user), cookieOptions);
+    this.cookies.set('user', JSON.stringify(user.data), cookieOptions);
 
     this.redirect(referer || '/');
   });

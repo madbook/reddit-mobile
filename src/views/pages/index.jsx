@@ -130,6 +130,7 @@ class IndexPage extends React.Component {
         { loading }
 
         <TopSubnav app={ app } user={ user } sort={ sort } list='listings' baseUrl={ this.props.url }/>
+
         <div className='container listing-container' ref='listings'>
           {
             listings.map(function(listing, i) {
