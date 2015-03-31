@@ -88,9 +88,7 @@ class ListingPage extends React.Component {
           single={ true }
           user={ user }
           token={ token }
-          api={ api }
-          expanded={ true }
-          showWholeImage={true} />
+          api={ api } />
       );
 
       commentBoxElement = (

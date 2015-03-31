@@ -56,7 +56,6 @@ class Listing extends React.Component {
 
     this.state = {
       expanded: this.props.expanded,
-      canUnexpand: !this.props.expanded,
     };
   }
 
@@ -99,7 +98,7 @@ class Listing extends React.Component {
 
   buildOver18() {
     return (
-      <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this)>
+      <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
         <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
           XXX
         </span>
@@ -117,13 +116,15 @@ class Listing extends React.Component {
     var media = listing.media;
     var permalink = listing.cleanPermalink;
 
-    if (this.isNSFW(listing) && !this.props.preferences.viewNSFW && !this.state.expanded) {
+    if (this.isNSFW(listing) && !this.state.expanded) {
       return this.buildOver18();
     }
 
+    var expanded = this.state.expanded || this.state.single;
+
     if (media && media.oembed) {
       if (media.oembed.type === 'rich' || media.oembed.type === 'image') {
-        if (this.state.expanded) {
+        if (expanded) {
           return (
             <div className='listing-frame'>
               <iframe src={ listing.url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
@@ -137,7 +138,7 @@ class Listing extends React.Component {
           );
         }
       } else if (media.oembed.type === 'video') {
-        if (this.state.expanded) {
+        if (expanded) {
           return (
             <div className='listing-video ratio16x9' dangerouslySetInnerHTML={{
               __html: listing.expandContent
@@ -152,7 +153,7 @@ class Listing extends React.Component {
         }
       }
     } else if (listing.url.match(imgMatch)) {
-      if (this.state.expanded) {
+      if (expanded) {
         return (
           <a href={ listing.url } className='external-image'>
             { this.buildImage(listing.url) }
@@ -166,7 +167,7 @@ class Listing extends React.Component {
         );
       }
     } else if (listing.selftext) {
-      if (this.state.expanded) {
+      if (expanded) {
         return (
           <div className='well listing-selftext' dangerouslySetInnerHTML={{
             __html: listing.expandContent
@@ -190,15 +191,13 @@ class Listing extends React.Component {
   expand(e) {
     e.preventDefault();
 
-    if (this.state.canUnexpand) {
-      this.setState({
-        expanded: !this.state.expanded,
-      });
-    }
+    this.setState({
+      expanded: !this.state.expanded,
+    });
   }
 
-  isNSFW(listing) {
-    var isNSFW = (listing.title.match(/nsf[wl]/gi) || listing.over_18);
+  isNSFW(listing={}) {
+    return listing.title.match(/nsf[wl]/gi) || listing.over_18;
   }
 
   render() {
@@ -263,6 +262,7 @@ class Listing extends React.Component {
 
     var app = this.props.app;
     var buildContent = this.buildContent();
+
     if (buildContent) {
       var stalactite = <div className='stalactite'/>;
     }
