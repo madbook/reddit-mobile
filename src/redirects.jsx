@@ -11,6 +11,10 @@ function routes(app) {
   app.router.get('/user/:user', function *(next) {
     this.redirect('/u/' + this.params.user);
   });
+
+  app.router.get('/user/:user/m/:multi', function *(next) {
+    this.redirect('/u/' + this.params.user + '/m/' + this.params.multi);
+  });
 }
 
 export default routes;

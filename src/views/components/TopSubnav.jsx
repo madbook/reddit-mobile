@@ -5,8 +5,6 @@ var SortDropdown;
 class TopSubnav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {

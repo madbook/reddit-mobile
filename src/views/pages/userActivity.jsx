@@ -61,10 +61,6 @@ class UserActivityPage extends React.Component {
 
     var subreddit = '';
 
-    if (this.props.subredditName) {
-      subreddit = '/r/' + this.props.subredditName;
-    }
-
     var sort = this.props.sort || 'hot';
 
     var app = this.props.app;

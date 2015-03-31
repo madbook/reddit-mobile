@@ -33,7 +33,7 @@ class CommentPreview extends React.Component {
               </a>
               <span className='text-muted'> in </span>
               <a href={ `/r/${comment.subreddit}` }>
-                /r/{ comment.subreddit }
+                r/{ comment.subreddit }
               </a>
             </div>
 

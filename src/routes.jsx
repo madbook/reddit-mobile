@@ -88,6 +88,8 @@ function routes(app) {
 
     var props = buildProps(ctx, {
       subredditName: ctx.params.subreddit,
+      multi: ctx.params.multi,
+      multiUser: ctx.params.user,
       after: ctx.query.after,
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
@@ -120,6 +122,7 @@ function routes(app) {
   // The homepage route.
   app.router.get('/', indexPage);
   app.router.get('/r/:subreddit', indexPage);
+  app.router.get('/u/:user/m/:multi', indexPage);
 
   app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', function *(next) {
     var page;

@@ -24,8 +24,17 @@ function shorten(text, len) {
 class TopNav extends React.Component {
   constructor(props) {
     super(props);
+
+    var subredditName;
+
+    if (props.multi) {
+      subredditName = 'm/' + props.multi;
+    } else if (props.subredditName) {
+      subredditName = 'r/' + props.subredditName;
+    }
+
     this.state = {
-      subredditName: props.subredditName,
+      subredditName: subredditName,
       rollover: '',
       sideNavOpen: false,
     };
@@ -47,9 +56,10 @@ class TopNav extends React.Component {
 
   render() {
     var subredditName = shorten(this.state.subredditName || '', 20);
+
     if (subredditName) {
-      var breadcrumbLink = '/r/'+this.state.subredditName;
-      var breadcrumbContents = /r/ + subredditName;
+      var breadcrumbLink = this.state.subredditName;
+      var breadcrumbContents = subredditName;
     } else {
       breadcrumbLink = '/';
       breadcrumbContents = <Logo played={this.state.rollover === 'breadcrumb'}/>;
@@ -82,7 +92,9 @@ class TopNav extends React.Component {
   }
 
   _changeSubredditName(str) {
-    this.setState({subredditName: str});
+    this.setState({
+      subredditName: str
+    });
   }
 
   _onMouseEnter(str) {

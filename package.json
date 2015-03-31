@@ -16,7 +16,7 @@
     "co": "4.4.0",
     "es5-shim": "4.1.0",
     "gsap": "1.15.1",
-    "horse": "1.0.4",
+    "horse": "1.0.5",
     "horse-react": "0.0.6",
     "koa": "0.18.1",
     "koa-body-parser": "1.1.1",
@@ -32,7 +32,7 @@
     "reddit-text-js": "0.5.3",
     "scmp": "1.0.0",
     "simple-oauth2": "0.2.1",
-    "snoode": "1.0.0",
+    "snoode": "1.0.1",
     "superagent": "1.1.0"
   },
   "devDependencies": {

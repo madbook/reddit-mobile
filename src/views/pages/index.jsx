@@ -19,8 +19,17 @@ class IndexPage extends React.Component {
   constructor(props) {
     super(props);
 
+    var subredditName;
+
+    if (props.subredditName) {
+      subredditName = 'r/' + props.subredditName;
+    } else if (props.multi) {
+      subredditName = 'm/' + props.multi;
+    }
+
     this.state = {
       data: props.data || {},
+      subredditName: subredditName,
     };
 
     this.state.loaded = !!this.state.data.data;
@@ -34,7 +43,7 @@ class IndexPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.subredditName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
   }
 
   render() {
@@ -49,7 +58,9 @@ class IndexPage extends React.Component {
 
     var listings = data.data || [];
 
-    var hideSubredditLabel = this.props.subredditName;
+    var hideSubredditLabel = this.props.subredditName &&
+                             this.props.subredditName.indexOf('+') === -1;
+
     var page = this.props.page || 0;
     var api = this.props.api;
     var token = this.props.token;
@@ -67,6 +78,10 @@ class IndexPage extends React.Component {
 
     if (this.props.subredditName) {
       subreddit = '/r/' + this.props.subredditName;
+    }
+
+    if (this.props.multi) {
+      subreddit = '/u/' + this.props.multiUser + '/m/' + this.props.multi;
     }
 
     var sort = this.props.sort || 'hot';
@@ -174,6 +189,11 @@ class IndexPage extends React.Component {
 
     if (props.subredditName) {
       options.query.subredditName = props.subredditName;
+    }
+
+    if (props.multi) {
+      options.query.multi = props.multi;
+      options.query.multiUser = props.multiUser;
     }
 
     if (props.sort) {
