@@ -59,7 +59,8 @@ class IndexPage extends React.Component {
     var listings = data.data || [];
 
     var hideSubredditLabel = this.props.subredditName &&
-                             this.props.subredditName.indexOf('+') === -1;
+                             this.props.subredditName.indexOf('+') === -1 &&
+                             this.props.subredditName !== 'all';
 
     var page = this.props.page || 0;
     var api = this.props.api;
