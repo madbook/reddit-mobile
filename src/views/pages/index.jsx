@@ -41,9 +41,14 @@ class IndexPage extends React.Component {
         data: data,
         loaded: true,
       });
+
     }).bind(this));
 
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
+  }
+
+  componentDidUpdate() {
+    this.props.app.emit('page:update');
   }
 
   render() {

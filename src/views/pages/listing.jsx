@@ -43,6 +43,9 @@ class ListingPage extends React.Component {
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
   }
 
+  componentDidUpdate() {
+    this.props.app.emit('page:update');
+  }
 
   onNewComment (comment) {
     this.state.data.data.comments.splice(0, 0, comment);

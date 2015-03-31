@@ -34,6 +34,10 @@ class UserGildPage extends React.Component {
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.userName);
   }
 
+  componentDidUpdate() {
+    this.props.app.emit('page:update');
+  }
+
   render() {
     var loading;
 

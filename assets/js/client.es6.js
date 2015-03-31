@@ -61,6 +61,8 @@ function initialize(bindLinks) {
 
     var history = window.history || window.location.history;
 
+    var scrollCache = {};
+
     var initialUrl = fullPathName();
     attachFastClick(document.body);
 
@@ -81,6 +83,8 @@ function initialize(bindLinks) {
 
         e.preventDefault();
 
+        scrollCache[currentUrl] = window.scrollY;
+
         if (href.indexOf('#') === 0) {
           return;
         }
@@ -95,10 +99,20 @@ function initialize(bindLinks) {
       });
 
       $(window).on('popstate', function(e) {
+        var href = fullPathName();
         // Work around some browsers firing popstate on initial load
-        if (fullPathName() !== initialUrl) {
-          initialUrl = fullPathName();
-          app.render(fullPathName());
+        if (href !== initialUrl) {
+          scrollCache[initialUrl] = window.scrollY;
+
+          initialUrl = href;
+
+          app.render(href).then(function() {
+            if(scrollCache[href]) {
+              $('html, body').animate({
+                scrollTop: scrollCache[href],
+              }, 0);
+            }
+          });
         }
       });
     }
