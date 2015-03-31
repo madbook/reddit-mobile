@@ -101,6 +101,9 @@ class SideNav extends React.Component {
               </li>
             </ul>
           </li>
+          <li>
+            <a className='SideNav-button' href='https://www.reddit.com'>Desktop view</a>
+          </li>
         </ul>
       </nav>
     );
