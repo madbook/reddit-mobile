@@ -68,6 +68,7 @@ class TopNav extends React.Component {
     return (
       <nav className='TopNav shadow'>
         <div className='pull-left TopNav-padding'>
+          <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')} over={this._onMouseEnter.bind(this, 'hamburger')} out={this._onMouseLeave}>
             <HamburgerIcon played={this.state.rollover === 'hamburger'} altered={this.state.sideNavOpen}/>
           </MobileButton>
