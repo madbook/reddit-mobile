@@ -196,7 +196,9 @@ class Listing extends React.Component {
     });
   }
 
-  isNSFW(listing={}) {
+  isNSFW(listing) {
+    if (!listing) { return; }
+
     return listing.title.match(/nsf[wl]/gi) || listing.over_18;
   }
 
