@@ -70,7 +70,7 @@ function routes(app) {
       query: ctx.query,
       params: ctx.params,
       api: app.V1Api(ctx.token),
-      url: ctx.url,
+      url: ctx.path,
       renderTracking: app.getConfig('renderTracking'),
     };
 
