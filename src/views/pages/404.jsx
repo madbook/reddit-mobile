@@ -1,7 +1,4 @@
 import React from 'react';
-import BodyLayoutFactory from '../layouts/BodyLayout';
-
-var BodyLayout;
 
 class NotFoundPage extends React.Component {
   constructor(props) {
@@ -33,8 +30,6 @@ class NotFoundPage extends React.Component {
 }
 
 function NotFoundPageFactory(app) {
-  BodyLayout = BodyLayoutFactory(app);
-
   return app.mutate('core/pages/notFound', NotFoundPage);
 }
 

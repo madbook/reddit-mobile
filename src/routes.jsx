@@ -31,6 +31,9 @@ var NotFoundPage;
 import ClientErrorPageFactory from './views/pages/400';
 var ClientErrorPage;
 
+import FAQPageFactory from './views/pages/faq';
+var FAQPage;
+
 import ServerErrorPageFactory from './views/pages/500';
 var ServerErrorPage;
 
@@ -50,6 +53,7 @@ function routes(app) {
   UserActivityPage = UserActivityPageFactory(app);
   NotFoundPage = NotFoundPageFactory(app);
   ClientErrorPage = ClientErrorPageFactory(app);
+  FAQPage = FAQPageFactory(app);
   ServerErrorPage = ServerErrorPageFactory(app);
   Layout = LayoutFactory(app);
   BodyLayout = BodyLayoutFactory(app);
@@ -254,6 +258,29 @@ function routes(app) {
         </BodyLayout>
       );
     } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  app.router.get('/faq', function * () {
+    var ctx = this;
+
+    var props = buildProps(this, {
+      referrer: ctx.headers.referer,
+    });
+
+    try {
+      var page = (
+        <BodyLayout {...props} app={app}>
+          <FAQPage {...props}/>
+        </BodyLayout>
+      );
+    } catch (e) {
+      console.log(e, e.stack)
       return app.error(e, this, next);
     }
 

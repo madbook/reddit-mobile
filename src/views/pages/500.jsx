@@ -1,7 +1,4 @@
 import React from 'react';
-import BodyLayoutFactory from '../layouts/BodyLayout';
-
-var BodyLayout;
 
 class ServerErrorPage extends React.Component{
   constructor(props) {
@@ -33,7 +30,6 @@ class ServerErrorPage extends React.Component{
 }
 
 function ServerErrorPageFactory(app) {
-  BodyLayout = BodyLayoutFactory(app);
   return app.mutate('core/pages/serverError', ServerErrorPage);
 }
 

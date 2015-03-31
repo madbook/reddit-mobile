@@ -29,10 +29,6 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   initialize(true);
 }
 
-function fullPathName () {
-  return document.location.pathname + document.location.search;
-}
-
 function initialize(bindLinks) {
   // Null this out, or errors everywhere
   config.userAgent = undefined;
@@ -63,14 +59,14 @@ function initialize(bindLinks) {
 
     var scrollCache = {};
 
-    var initialUrl = fullPathName();
+    var initialUrl = app.fullPathName();
     attachFastClick(document.body);
 
     if(history && bindLinks) {
       $body.on('click', 'a', function(e) {
         var $link = $(this);
         var href = $link.attr('href');
-        var currentUrl = fullPathName();
+        var currentUrl = app.fullPathName();
 
         // If it has a target=_blank, or an 'external' data attribute, or it's
         // an absolute url, let the browser route rather than forcing a capture.
@@ -95,16 +91,15 @@ function initialize(bindLinks) {
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        app.render(fullPathName());
+        app.render(app.fullPathName());
       });
 
       $(window).on('popstate', function(e) {
-        var href = fullPathName();
+        var href = app.fullPathName();
         // Work around some browsers firing popstate on initial load
         if (href !== initialUrl) {
           scrollCache[initialUrl] = window.scrollY;
 
-          initialUrl = href;
 
           app.render(href).then(function() {
             if(scrollCache[href]) {
@@ -113,6 +108,8 @@ function initialize(bindLinks) {
               }, 0);
             }
           });
+
+          initialUrl = href;
         }
       });
     }
@@ -121,7 +118,7 @@ function initialize(bindLinks) {
     // (bootstrap) on first load, so override state, and then set the proper
     // config value after render.
     app.setState('renderTracking', false);
-    app.render(fullPathName(), true);
+    app.render(app.fullPathName(), true);
     app.config.renderTracking = true;
   });
 }

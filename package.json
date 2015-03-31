@@ -17,7 +17,7 @@
     "es5-shim": "4.1.0",
     "gsap": "1.16.1",
     "horse": "1.1.0",
-    "horse-react": "0.1.0",
+    "horse-react": "0.1.1",
     "koa": "0.18.1",
     "koa-body-parser": "1.1.1",
     "koa-compress": "1.0.8",
