@@ -30,7 +30,7 @@ class FAQPage extends React.Component {
                 <dd>
                   The interface should look good on phones (depending on the
                   phone, with more or less fancy functionality.) It should look
-                  <em>okay</em> on tablets - which will get better as we progress.
+                  <em> okay</em> on tablets - which will get better as we progress.
                   It may or may not be decent on desktop.
                 </dd>
 
@@ -65,10 +65,9 @@ class FAQPage extends React.Component {
                   rid of it or that mobile web isn't implementing it?
                 </dt>
                 <dd>
-                  Mobile web is being released to beta <em>way</em> before it's
-                  ready to actually be caleld "ready". If it's missing a
-                  feature, it's coming, it just may be prioritized to happen
-                  later on.
+                  Mobile web is being released to a public beta far before it's
+                  it can be called "ready". If it's missing a feature, it's
+                  coming, it just may be prioritized to happen later on.
                 </dd>
 
                 <dt>
@@ -79,7 +78,9 @@ class FAQPage extends React.Component {
                   <a href='https://github.com/reddit/reddit-mobile'>github</a>.
                   It's in a very early development state, so things might be a
                   little messy. Our tech stack uses io.js, React, and the
-                  reddit APIs (using oauth).
+                  reddit APIs (using oauth). Getting it up and running should
+                  be a very simple process (install iojs, install dependencies,
+                  build, and run.)
                 </dd>
 
                 <dt>
@@ -87,7 +88,7 @@ class FAQPage extends React.Component {
                 </dt>
                 <dd>
                   Hopefully, most things that you can see are working at this
-                  stage, but feel free to leave feedback at &nbsp;
+                  stage, but feel free to leave feedback at&nbsp;
                   <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>
                   after checking for duplicate issues.
                 </dd>
