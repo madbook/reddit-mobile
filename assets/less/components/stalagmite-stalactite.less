@@ -2,9 +2,10 @@
   width: 18px;
   height: 10px;
   position: absolute;
-  left: 5px;
+  left: 14px;
   overflow: hidden;
   z-index: 1;
+  margin-left: -9px;
 
   &:after {
     content: "";
@@ -14,6 +15,9 @@
     background: @white;
     .rotate(45deg);
     left: 4px;
+    .tween;
+    .shadow;
+     border: @gray-border;
   }
 
   &.pull-right {
@@ -37,5 +41,9 @@
 
     &:after {
       top: -5px;
+    }
+
+    &.hidden:after {
+      top: -10px;
     }
   }

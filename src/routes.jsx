@@ -46,6 +46,9 @@ var Layout;
 import BodyLayoutFactory from './views/layouts/BodyLayout';
 var BodyLayout;
 
+import UserProfileNavFactory from './views/components/UserProfileNav';
+var UserProfileNav;
+
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
@@ -61,6 +64,7 @@ function routes(app) {
   ServerErrorPage = ServerErrorPageFactory(app);
   Layout = LayoutFactory(app);
   BodyLayout = BodyLayoutFactory(app);
+  UserProfileNav = UserProfileNavFactory(app);
 
   // Build all the standard properties used to render layouts. This may move
   // higher up (into reddit-mobile) at some point.
@@ -222,6 +226,7 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
+          <UserProfileNav userName={ props.userName } profileActive={ true } />
           <UserProfilePage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -254,6 +259,7 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
+          <UserProfileNav userName={ props.userName } gildActive={ true } />
           <UserGildPage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -294,6 +300,7 @@ function routes(app) {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
         <BodyLayout {...props} app={app}>
+          <UserProfileNav userName={ props.userName } activityActive={ true } />
           <UserActivityPage {...props} key={ key } app={app}/>
         </BodyLayout>
       );

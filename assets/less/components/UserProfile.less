@@ -1,0 +1,49 @@
+.UserProfile {
+  max-width: @max-width;
+  margin:0 auto;
+
+  .SVG-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+}
+
+  .UserProfile-ul {
+    max-width: calc(~'66.67% + 25px');
+    margin:0 auto;
+  }
+
+    .UserProfile-li {
+      font-size: 18px;
+      line-height: 25px;
+      margin: 0 0 15px;
+
+      > .SVG-icon {
+        vertical-align: middle;
+      }
+    }
+
+      .UserProfile-trophies {
+        margin-top: 15px;
+      }
+
+        .UserProfile-trophy {
+          font-size: 12px;
+          margin: 0 0 19px 35px;
+          line-height: 14px;
+
+            .SVG-icon {
+              .pull-left;
+            }
+        }
+
+          .UserProfile-trophy-title {
+            font-weight: bold;
+            margin: 0;
+          }
+
+          .UserProfile-trophy-date {
+            color: @light-gray;
+            margin: 0;
+          }

@@ -6,9 +6,6 @@ import constants from '../../constants';
 import LoadingFactory from '../components/Loading';
 var Loading;
 
-import UserProfileNavFactory from '../components/UserProfileNav';
-var UserProfileNav;
-
 import UserProfileFactory from '../components/UserProfile';
 var UserProfile;
 
@@ -72,8 +69,7 @@ class UserProfilePage extends React.Component {
     return (
       <main>
         { loading }
-        <div className='container'>
-          <UserProfileNav userName={ name } profileActive={ true } />
+        <div>
           { profile }
         </div>
 
@@ -102,7 +98,7 @@ class UserProfilePage extends React.Component {
 
     // Initialized with data already.
     if (props.data && typeof props.data.data !== 'undefined') {
-      api.hydrate('users', options, data);
+      api.hydrate('users', options, props.data);
 
       defer.resolve(props);
       return defer.promise;
@@ -120,7 +116,6 @@ class UserProfilePage extends React.Component {
 
 function UserProfilePageFactory(app) {
   UserProfile = UserProfileFactory(app);
-  UserProfileNav = UserProfileNavFactory(app);
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
 

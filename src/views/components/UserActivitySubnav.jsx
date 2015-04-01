@@ -1,13 +1,15 @@
 import React from 'react';
 import querystring from 'querystring';
+import constants from '../../constants';
+
 import SortDropdownFactory from '../components/SortDropdown';
 var SortDropdown;
+
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
+
 import CheckmarkIconFactory from '../components/CheckmarkIcon';
 var CheckmarkIcon;
-
-const _ACTIVITY_TYPE_OPEN = 'userActivitySubnav:activityType:open';
 
 class UserActivitySubnav extends React.Component {
   constructor(props) {
@@ -24,11 +26,11 @@ class UserActivitySubnav extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(_ACTIVITY_TYPE_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(_ACTIVITY_TYPE_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   _onOpen(bool) {

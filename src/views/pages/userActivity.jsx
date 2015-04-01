@@ -15,9 +15,6 @@ var CommentPreview;
 import UserActivitySubnavFactory from '../components/UserActivitySubnav';
 var UserActivitySubnav;
 
-import UserProfileNavFactory from '../components/UserProfileNav';
-var UserProfileNav;
-
 import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
@@ -79,9 +76,8 @@ class UserActivityPage extends React.Component {
     }
 
     return (
-      <main>
+      <main className="user-activity">
         { loading }
-        <UserProfileNav userName={ name } activityActive={ true } />
         <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ this.props.activity }/>
 
         <div className='container listing-container'>
@@ -169,7 +165,6 @@ function UserActivityPageFactory(app) {
   Listing = ListingFactory(app);
   Loading = LoadingFactory(app);
   UserActivitySubnav = UserActivitySubnavFactory(app);
-  UserProfileNav = UserProfileNavFactory(app);
   CommentPreview = CommentPreviewFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
 
