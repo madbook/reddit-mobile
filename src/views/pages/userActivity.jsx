@@ -29,7 +29,7 @@ class UserActivityPage extends React.Component {
       data: props.data || {},
     };
 
-    this.state.loading = !!this.state.data.data;
+    this.state.loaded = this.state.data && this.state.data.data;
   }
 
   componentDidMount() {

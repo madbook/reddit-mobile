@@ -32,7 +32,7 @@ class IndexPage extends React.Component {
       subredditName: subredditName,
     };
 
-    this.state.loaded = !!this.state.data.data;
+    this.state.loaded = this.state.data && this.state.data.data;
   }
 
   componentDidMount() {

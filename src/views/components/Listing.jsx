@@ -78,7 +78,7 @@ class Listing extends React.Component {
       } else {
         return (
           <div className='ratio16x9'>
-            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoplay='true'>
+            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoPlay='true'>
               <source type='video/webm' src={ html5.webm } />
               <source type='video/mp4' src={ html5.mp4 } />
             </video>

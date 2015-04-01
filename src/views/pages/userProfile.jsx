@@ -20,10 +20,10 @@ class UserProfilePage extends React.Component {
     super(props);
 
     this.state = {
-      data: props.data,
+      data: props.data || {},
     };
 
-    this.state.loaded = !!this.state.data.data;
+    this.state.loaded = this.state.data && this.state.data.data;
   }
 
   componentDidMount() {
