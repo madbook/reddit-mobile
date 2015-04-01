@@ -101,7 +101,7 @@ class UserProfilePage extends React.Component {
     }
 
     // Initialized with data already.
-    if (props.data.data && typeof props.data.data !== 'undefined') {
+    if (props.data && typeof props.data.data !== 'undefined') {
       api.hydrate('users', options, data);
 
       defer.resolve(props);
