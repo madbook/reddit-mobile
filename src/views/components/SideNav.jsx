@@ -55,22 +55,22 @@ class SideNav extends React.Component {
             <button className={'twirly before SideNav-button'+(this.state.twirly === 'about' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
             <ul className='SideNav-ul list-unstyled'>
               <li>
-                <a className='SideNav-button' href='/blog/'>Blog</a>
+                <a className='SideNav-button' href='https://www.reddit.com/blog/'>Blog</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/about/'>About</a>
+                <a className='SideNav-button' href='https://www.reddit.com/about/'>About</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/about/team/'>Team</a>
+                <a className='SideNav-button' href='https://www.reddit.com/about/team/'>Team</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/code/'>Source Code</a>
+                <a className='SideNav-button' href='https://www.reddit.com/code/'>Source Code</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/advertising/'>Advertise</a>
+                <a className='SideNav-button' href='https://www.reddit.com/advertising/'>Advertise</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/r/redditjobs/'>Jobs</a>
+                <a className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>Jobs</a>
               </li>
             </ul>
           </li>
@@ -79,25 +79,25 @@ class SideNav extends React.Component {
             <button className={'twirly before SideNav-button' + (this.state.twirly === 'help' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'help')}>Help</button>
             <ul className='SideNav-ul list-unstyled'>
               <li>
-                <a className='SideNav-button' href='/wiki/'>Wiki</a>
+                <a className='SideNav-button' href='https://www.reddit.com/wiki/'>Wiki</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/wiki/faq'>FAQ</a>
+                <a className='SideNav-button' href='https://www.reddit.com/wiki/faq'>FAQ</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/wiki/reddiquette'>Reddiquette</a>
+                <a className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>Reddiquette</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/rules/'>Rules</a>
+                <a className='SideNav-button' href='https://www.reddit.com/rules/'>Rules</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/help/useragreement'>User Agreement</a>
+                <a className='SideNav-button' href='https://www.reddit.com/help/useragreement'>User Agreement</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/help/privacypolicy'>Privacy Policy</a>
+                <a className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>Privacy Policy</a>
               </li>
               <li>
-                <a className='SideNav-button' href='/contact/'>Contact Us</a>
+                <a className='SideNav-button' href='https://www.reddit.com/contact/'>Contact Us</a>
               </li>
             </ul>
           </li>
