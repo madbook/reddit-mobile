@@ -160,8 +160,8 @@ class Comment extends React.Component {
     }
 
     if (comment.author_flair_text) {
-      authorFlair = <span className={ 'label label-default ' + comment.author_flair_cssclass }>
-        { comment.author_flair }
+      authorFlair = <span className={ 'label label-default ' + comment.author_flair_css_class }>
+        { comment.author_flair_text }
       </span>;
     }
 
@@ -219,6 +219,7 @@ class Comment extends React.Component {
                     </span>
 
                     { authorFlair }
+
                     <span className='comment-timestamp'>
                       { submitted }
                     </span>
