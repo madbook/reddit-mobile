@@ -19,11 +19,14 @@ var Dropdown;
 class ListingDropdown extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       rollover: '',
       opened: false,
     };
+
     var likes = props.listing.likes;
+
     if (likes === false) {
       this.state.localScore = -1;
     } else if (likes === true) {
@@ -31,6 +34,7 @@ class ListingDropdown extends React.Component {
     } else {
       this.state.localScore = 0;
     }
+
     this._onOpen = this._onOpen.bind(this);
     this._id = Math.random();
     this._onVote = this._onVote.bind(this);

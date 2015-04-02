@@ -51,12 +51,18 @@ class Dropdown extends React.Component {
   }
 
   _open() {
-    this.setState({opened: true});
+    this.setState({ opened: true });
+    this.props.app.emit(constants.DROPDOWN_OPEN, this.props.id);
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
+
+    // Close once another dropdown opens
+    this.props.app.emitter.once(constants.DROPDOWN_OPEN, function(id) {
+      this._close();
+    }.bind(this));
   }
 
   _close() {
-    this.setState({opened: false});
+    this.setState({ opened: false });
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
