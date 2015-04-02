@@ -46,7 +46,7 @@ class DefaultLayout extends React.Component {
             { this.props.children }
           </div>
 
-          <script src={ clientJS } async></script>
+          <script src={ clientJS }></script>
           {liveReload}
         </body>
       </html>
