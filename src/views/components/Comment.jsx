@@ -71,12 +71,14 @@ class Comment extends React.Component {
 
   onNewComment (comment) {
     this.state.comment.replies = this.state.comment.replies || [];
-    this.state.comment.replies.splice(0,0,comment);
+    this.state.comment.replies.splice(0, 0, comment);
 
-    this.replaceState({
+    this.setState({
       comment: this.state.comment,
       collapsed: false,
       showReplyBox: false,
+      showTools: false,
+      optionsOpen: false,
     });
   }
 
@@ -119,7 +121,7 @@ class Comment extends React.Component {
       highlighted = 'comment-highlighted';
       if (this.state.showReplyBox) {
         commentBox = (
-          <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment }  />
+          <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
       var activeShareClass = (this.state.showReplyBox) ? 'share-icon-active' : '';

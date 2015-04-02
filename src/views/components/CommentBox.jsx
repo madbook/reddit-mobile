@@ -25,6 +25,10 @@ class CommentBox extends React.Component {
       return;
     }
 
+    if (!text) {
+      return;
+    }
+
     var comment = new models.Comment({
       thingId: thingId,
       text: text
@@ -36,10 +40,10 @@ class CommentBox extends React.Component {
       model: comment,
     });
 
-    var onSubmit = this.props.onSubmit;
+    var onSubmit = this.props.onSubmit.bind(this);
 
     this.props.api.comments.post(options).done((function(comment) {
-      this.props.onSubmit(comment);
+      this.props.onSubmit(comment.data);
     }).bind(this));
   }
 
@@ -53,10 +57,10 @@ class CommentBox extends React.Component {
     return (
       <div className='row CommentBox'>
         <div className='col-xs-12'>
-          <form action={ '/comment' } method='POST' onSubmit={ this.submit }>
+          <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
             <div className='form-group'>
               <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
-              <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2' className='form-control' name='text'></textarea>
+              <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2' className='form-control' name='text' ref='text'></textarea>
               <input type='hidden' name='thingId' value={ this.props.thingId } />
               { csrf }
             </div>

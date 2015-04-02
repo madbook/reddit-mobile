@@ -101,7 +101,7 @@ class ListingPage extends React.Component {
           token={ token }
           api={ api }
           csrf={ this.props.csrf }
-          onSubmit={ this.onNewComment }
+          onSubmit={ this.onNewComment.bind(this) }
         />
       );
     }
