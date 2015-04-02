@@ -89,7 +89,7 @@ class FAQPage extends React.Component {
                 <dd>
                   Hopefully, most things that you can see are working at this
                   stage, but feel free to leave feedback at&nbsp;
-                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>
+                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>&nbsp;
                   after checking for duplicate issues.
                 </dd>
 
@@ -100,7 +100,7 @@ class FAQPage extends React.Component {
                   We're working on building a great interface. We can't please
                   everyone, but we do welcome criticism. Please feel free to
                   leave feedback at&nbsp;
-                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>
+                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>&nbsp;
                   after checking for duplicate issues..
                 </dd>
               </dl>
