@@ -147,6 +147,7 @@ class Comment extends React.Component {
             <Vote 
               thing={this.props.comment}
               app={this.props.app}
+              token={this.props.token}
             />
           </li>
           <li>
