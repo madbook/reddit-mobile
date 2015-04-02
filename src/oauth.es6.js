@@ -86,7 +86,7 @@ var oauthRoutes = function(app) {
   });
 
   router.get('/oauth2/error', function *() {
-    this.body = this.query;
+    this.redirect('/');
   });
 
   router.get('/oauth2/token', function * () {
