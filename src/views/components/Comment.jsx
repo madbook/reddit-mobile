@@ -145,9 +145,10 @@ class Comment extends React.Component {
           </li>
           <li className='linkbar-spread-li-double comment-vote-container'>
             <Vote 
-              thing={this.props.comment}
-              app={this.props.app}
-              token={this.props.token}
+              app={app}
+              thing={ this.props.comment }
+              token={ this.props.token }
+              api={ this.props.api }
             />
           </li>
           <li>
