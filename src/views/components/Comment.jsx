@@ -13,6 +13,11 @@ var CommentBox;
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
+import GoldIconFactory from '../components/GoldIcon';
+var GoldIcon;
+
+import PlayIconFactory from '../components/PlayIcon';
+
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
@@ -179,7 +184,7 @@ class Comment extends React.Component {
 
     if (comment.gilded) {
       gilded = (
-        <li><span className='glyphicon glyphicon-gilded' /></li>
+        <GoldIcon />
       );
     }
 
@@ -258,6 +263,7 @@ function CommentFactory(app) {
   EllipsisIcon = EllipsisIconFactory(app);
   CommentBox = CommentBoxFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
+  GoldIcon = GoldIconFactory(app);
 
   return app.mutate('core/components/comment', Comment);
 }
