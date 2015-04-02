@@ -128,7 +128,7 @@ class IndexPage extends React.Component {
     var app = this.props.app;
 
     if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
     }
 
     return (

@@ -56,7 +56,7 @@ class UserGildPage extends React.Component {
     var tracking;
 
     if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } />);
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
     }
 
     return (

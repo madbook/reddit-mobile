@@ -29,6 +29,13 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   initialize(true);
 }
 
+function modifyContext (ctx) {
+  ctx.loid = this.getState('loid');
+  ctx.loidcreated = this.getState('loidcreated');
+
+  return ctx;
+}
+
 function initialize(bindLinks) {
   // Null this out, or errors everywhere
   config.userAgent = undefined;
@@ -37,6 +44,7 @@ function initialize(bindLinks) {
     var plugin;
     var p;
     var $body = $('body');
+
 
     config.mountPoint = document.getElementById('app-container');
 
@@ -54,6 +62,8 @@ function initialize(bindLinks) {
     }
 
     routes(app);
+
+    modifyContext = modifyContext.bind(app);
 
     var history = window.history || window.location.history;
 
@@ -91,7 +101,7 @@ function initialize(bindLinks) {
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        app.render(app.fullPathName());
+        app.render(app.fullPathName(), false, modifyContext);
       });
 
       $(window).on('popstate', function(e) {
@@ -100,8 +110,7 @@ function initialize(bindLinks) {
         if (href !== initialUrl) {
           scrollCache[initialUrl] = window.scrollY;
 
-
-          app.render(href).then(function() {
+          app.render(href, false, modifyContext).then(function() {
             if(scrollCache[href]) {
               $('html, body').animate({
                 scrollTop: scrollCache[href],
@@ -118,7 +127,7 @@ function initialize(bindLinks) {
     // (bootstrap) on first load, so override state, and then set the proper
     // config value after render.
     app.setState('renderTracking', false);
-    app.render(app.fullPathName(), true);
+    app.render(app.fullPathName(), true, modifyContext);
     app.config.renderTracking = true;
   });
 }

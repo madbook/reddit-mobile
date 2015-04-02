@@ -11,7 +11,12 @@ class TrackingPixel extends React.Component {
 
   render () {
     if (this.props.url) {
-      var trackingUrl = this.props.url + '&' + Math.random();
+      var trackingUrl = this.props.url + '&r=' + Math.random();
+
+      if (!this.props.user && this.props.loid) {
+        trackingUrl += '&loid=' + this.props.loid;
+        trackingUrl += '&loidcreated=' + this.props.loidcreated;
+      }
 
       return (
         <img src={ trackingUrl } style={{ display: 'none' }} width='0' height='0' />

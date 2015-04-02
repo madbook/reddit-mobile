@@ -23,6 +23,17 @@ import plugins from './plugins';
 import oauth from './oauth';
 import routes from './routes';
 
+function randomString(len) {
+  var id = [];
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < len; i++) {
+    id.push(chars.charAt(Math.floor(Math.random() * chars.length)));
+  }
+
+  return id.join('');
+}
+
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
@@ -54,6 +65,7 @@ class Server {
 
     // Set up oauth routes
 
+    server.use(this.setLOID(app));
     server.use(this.setHeaders(app));
     server.use(this.modifyRequest);
 
@@ -61,6 +73,30 @@ class Server {
 
     this.server = server;
     this.app = app;
+  }
+
+  setLOID (app) {
+    return function * (next) {
+      if (this.cookies.get('loid')) {
+        yield next;
+        return;
+      }
+
+      var loggedOutId = randomString(18);
+      var created = (new Date()).toISOString();
+
+      var cookieOptions = {
+        signed: true,
+        secure: app.getConfig('https'),
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+      }
+
+      this.cookies.set('loid', loggedOutId, cookieOptions);
+      this.cookies.set('loidcreated', created, cookieOptions);
+
+      yield next;
+    }
   }
 
   setHeaders (app) {
@@ -90,6 +126,10 @@ class Server {
 
     this.renderSynchronous = true;
     this.useCache = false;
+
+    this.loid = this.cookies.get('loid');
+    this.loidcreated = this.cookies.get('loidcreated');
+
     yield next;
   }
 
