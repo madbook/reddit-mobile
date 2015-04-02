@@ -21,8 +21,7 @@ class CommentBox extends React.Component {
 
   submitComment (thingId, text) {
     if (!this.props.token) {
-      // TODO: replace this with login form
-      console.warn('Must log in first.');
+      window.location = '/login';
       return;
     }
 

@@ -67,8 +67,7 @@ class Vote extends React.Component {
 
   submitVote(direction) {
     if (!this.props.token) {
-      // TODO: replace this with login form
-      console.warn('Must log in first.');
+      window.location = '/login';
       return;
     }
 

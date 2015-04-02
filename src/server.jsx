@@ -45,8 +45,7 @@ class Server {
     var server = koa();
     server.keys = config.keys;
 
-    //csrf(server);
-
+    server.use(csrf.middleware);
     server.use(compress());
     server.use(bodyParser());
 
@@ -92,7 +91,6 @@ class Server {
     this.renderSynchronous = true;
     this.useCache = false;
     yield next;
-    //req.csrf = req.csrfToken();
   }
 
   start () {
