@@ -35,7 +35,7 @@ var oauthRoutes = function(app) {
         redirect_uri: redirect,
       }, function(err, result) {
         if (err) {
-          return ctx.redirect('/oauth2/error?message=' + encodeURIComponent(err.message));
+          return ctx.redirect('/');
         }
 
         resolve(result);
