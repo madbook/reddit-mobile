@@ -16,6 +16,9 @@ var IndexPage;
 import ListingPageFactory from './views/pages/listing';
 var ListingPage;
 
+import SubredditAboutPageFactory from './views/pages/subredditAbout';
+var SubredditAboutPage;
+
 import UserProfilePageFactory from './views/pages/userProfile';
 var UserProfilePage;
 
@@ -48,6 +51,7 @@ var BodyLayout;
 function routes(app) {
   IndexPage = IndexPageFactory(app);
   ListingPage = ListingPageFactory(app);
+  SubredditAboutPage = SubredditAboutPageFactory(app);
   UserProfilePage = UserProfilePageFactory(app);
   UserGildPage = UserGildPageFactory(app);
   UserActivityPage = UserActivityPageFactory(app);
@@ -127,8 +131,42 @@ function routes(app) {
 
   // The homepage route.
   app.router.get('/', indexPage);
+
   app.router.get('/r/:subreddit', indexPage);
   app.router.get('/u/:user/m/:multi', indexPage);
+
+  app.router.get('/r/:subreddit/about', function *(next) {
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      subredditName: ctx.params.subreddit,
+      subredditAboutPage: true
+    });
+
+    var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+
+    props = Object.assign({
+      data: data,
+      app: app
+    }, props);
+
+    var key = `subreddit-about-${props.subredditName}`;
+
+    try {
+      page = (
+        <BodyLayout {...props} app={ app }>
+          <SubredditAboutPage {...props} key={ key } app={ app } />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
 
   app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', function *(next) {
     var page;
