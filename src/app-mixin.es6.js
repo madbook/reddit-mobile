@@ -1,6 +1,8 @@
 import { mutate } from 'react-mutator';
 import { EventEmitter } from 'events';
 
+var mutator = mutate;
+
 // The base routes
 import routes from './routes';
 import redirects from './redirects';
@@ -44,7 +46,7 @@ function mixin (App) {
 
       if (args && args.length) {
         args.splice(0, 0, component);
-        return mutate.apply(component, args);
+        return mutator.apply(component, args);
       }
 
       return component;
