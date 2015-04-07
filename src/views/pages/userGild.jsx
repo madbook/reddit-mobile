@@ -6,9 +6,6 @@ import constants from '../../constants';
 import LoadingFactory from '../components/Loading';
 var Loading;
 
-import UserProfileNavFactory from '../components/UserProfileNav';
-var UserProfileNav;
-
 import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
@@ -62,10 +59,9 @@ class UserGildPage extends React.Component {
     return (
       <main>
         { loading }
-        <UserProfileNav userName={ name } gildActive={ true } />
         <div className='container'>
           <div className='well well-lg'>
-            <p>Sorry, this isn't ready yet!</p>
+            <p>Sorry, this isn’t ready yet!</p>
           </div>
         </div>
 
@@ -111,7 +107,6 @@ class UserGildPage extends React.Component {
 }
 
 function UserGildPageFactory(app) {
-  UserProfileNav = UserProfileNavFactory(app);
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
 

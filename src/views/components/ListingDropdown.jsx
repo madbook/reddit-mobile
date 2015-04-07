@@ -3,16 +3,22 @@ import constants from '../../constants';
 
 import EllipsisIconFactory from '../components/EllipsisIcon';
 var EllipsisIcon;
+
 import UpvoteIconFactory from '../components/UpvoteIcon';
 var UpvoteIcon;
+
 import DownvoteIconFactory from '../components/DownvoteIcon';
 var DownvoteIcon;
+
 import GoldIconFactory from '../components/GoldIcon';
 var GoldIcon;
+
 import VoteFactory from '../components/Vote';
 var Vote;
+
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
+
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
 

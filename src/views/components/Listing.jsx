@@ -246,7 +246,7 @@ class Listing extends React.Component {
 
     if (listing.gilded && props.single) {
       gilded = (
-        <li><GoldIcon/></li>
+        <li><GoldIcon altered='true'/></li>
       );
     }
 
