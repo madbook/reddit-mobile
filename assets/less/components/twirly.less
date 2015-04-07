@@ -3,16 +3,23 @@
     position: absolute;
     content: '';
     border: 4px solid transparent;
-    border-top-color: @black;
+    border-left-color: @black;
     top: 13px;
+    .transition(0.2s);
   }
 
   &.before:before {
-    top: 16px;
-    margin-left: -18px;
+    left: 5px;
   }
 
   &.after:after {
-    margin-left: 3px;
+    left: calc(~'100% + 5px');
+  }
+
+  &.opened {
+    &.before:before, &.after:after {
+      -webkit-transform: rotate(90deg) translate(2px, 2px);
+      transform: rotate(90deg) translate(2px, 2px);
+    }
   }
 }
