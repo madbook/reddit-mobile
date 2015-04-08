@@ -137,7 +137,7 @@ function routes(app) {
 
     var props = buildProps(this, {
       subredditName: ctx.params.subreddit,
-      subredditAboutPage: true
+      subredditAboutPage: true,
     });
 
     var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
@@ -333,7 +333,7 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
-      title: '404 - Sorry, that page doesn\'t seem to exist.'
+      title: '404 - Sorry, that page doesn\'t seem to exist.',
     });
 
     var page = (
@@ -352,7 +352,7 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
-      title: '400 - Oops, looks like something went wrong.'
+      title: '400 - Oops, looks like something went wrong.',
     });
 
     try {
@@ -375,7 +375,7 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
-      title: '500 - Oops, looks like something went wrong.'
+      title: '500 - Oops, looks like something went wrong.',
     });
 
     if (app.getConfig('debug')) {
