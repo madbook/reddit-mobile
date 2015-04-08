@@ -7,6 +7,7 @@
     "start": "node --harmony index.js",
     "build": "gulp",
     "watch": "gulp watch",
+    "dev": "gulp dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "reddit <jack@reddit.com>",
@@ -37,13 +38,14 @@
   },
   "devDependencies": {
     "babelify": "5.0.4",
-    "browserify": "9.0.3",
+    "browserify": "9.0.7",
     "del": "1.1.1",
     "exorcist": "0.1.6",
     "fastclick": "1.0.6",
     "gulp": "3.8.11",
     "gulp-buffer": "0.0.2",
     "gulp-concat": "2.5.1",
+    "gulp-if": "^1.2.5",
     "gulp-less": "3.0.0",
     "gulp-livereload": "3.7.0",
     "gulp-minify-css": "0.4.6",
@@ -56,6 +58,6 @@
     "jquery": "1.11.2",
     "streamqueue": "0.1.2",
     "vinyl-source-stream": "1.0.0",
-    "watchify": "2.4.0"
+    "watchify": "3.1.0"
   }
 }

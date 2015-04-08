@@ -17,18 +17,31 @@ var watchify = require('watchify');
 var babelify = require('babelify');
 var exorcist = require('exorcist');
 
-module.exports = function buildJS(gulp, buildjs, watch) {
-  return function(cb) {
-    gutil.log('Starting browserify');
+var gulpIf = require('gulp-if');
 
+module.exports = function buildJS(gulp, buildjs, watch, prod) {
+  return function(cb) {
     var entryFile = './assets/js/client.es6.js';
+
+    var shims = streamqueue({ objectMode: true });
+    shims.queue(gulp.src('public/js/es5-shims.js'));
+    shims.queue(gulp.src('node_modules/babel/browser-polyfill.js'));
+
+    shims.done()
+      .pipe(concat('shims.js'))
+      .pipe(gulp.dest(buildjs));
 
     var bundler = browserify({
       cache: {},
       packageCache: {},
-      //fullPaths: true,
-      debug: true,
+      fullPaths: true,
+      debug: !prod,
       extensions: ['.js', '.es6.js', '.jsx'],
+      ignore: [
+        'jquery',
+        'q',
+        'moment',
+      ],
     });
 
     if (watch) {
@@ -44,58 +57,58 @@ module.exports = function buildJS(gulp, buildjs, watch) {
       .require('react')
       .require('jquery')
       .require('reddit-text-js')
-      //.require('snoode')
-      .require('superagent')
-      .require('./lib/snooboots/dist/js/bootstrap.js', {
-        expose: 'bootstrap',
-        depends: {
-          'jquery': 'jQuery'
-        }
-      });
+      .require('superagent');
 
     bundler.add(entryFile);
 
     bundler
       .transform(babelify.configure({
-        ignore: false,
-        ///only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
+        ignore: /.+node_modules\/(moment|q|react|jquery|reddit-text-js|superagent|gsap)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
-        sourceMap: true,
+        sourceMap: !prod,
       }), {
         global: true,
       });
 
+    var bundling = false;
+
     var rebundle = function () {
+      if(bundling) {
+        return;
+      } else {
+        bundling = true;
+      }
+
+      gutil.log('Starting bundle...');
+
       var stream = bundler.bundle();
-
-      stream.on('error', function (err) { console.error(err.toString()) });
-
-      var shims = streamqueue({ objectMode: true });
-      shims.queue(gulp.src('public/js/es5-shims.js'));
-      shims.queue(gulp.src('node_modules/babel/browser-polyfill.js'));
-
-      shims.done()
-        .pipe(concat('shims.js'))
-        .pipe(gulp.dest(buildjs));
 
       stream
         .pipe(exorcist(buildjs + '/client.js.map'))
         .pipe(source(entryFile))
         .pipe(rename('client.js'))
         .pipe(gulp.dest(buildjs))
-        .pipe(streamify(uglify()))
+        .pipe(gulpIf(prod, streamify(uglify())))
         .pipe(rename('client.min.js'))
         .pipe(buffer())
         .pipe(rev())
         .pipe(gulp.dest(buildjs))
         .pipe(rev.manifest())
         .pipe(rename('client-manifest.json'))
-        .pipe(gulp.dest(buildjs));
+        .pipe(gulp.dest(buildjs))
+        .on('finish', function() {
+          if(cb) { cb(); };
+          cb = null;
+          bundling = false;
+
+          gutil.log('Finished bundle.');
+        })
+        .on('error', function (err) {
+          console.error(err.toString());
+        });
     }
 
     bundler.on('update', rebundle);
     return rebundle();
-
-   cb();
   }
 }

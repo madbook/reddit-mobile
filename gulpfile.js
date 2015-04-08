@@ -25,6 +25,9 @@ var buildLess = require('./buildTasks/less');
 gulp.task('less', buildLess(gulp, buildcss));
 gulp.task('js', buildJS(gulp, buildjs));
 
+gulp.task('prod-less', buildLess(gulp, buildcss, false, true));
+gulp.task('prod-js', buildJS(gulp, buildjs, false, true));
+
 gulp.task('watchless', buildLess(gulp, buildcss, true));
 gulp.task('watchjs', buildJS(gulp, buildjs, true));
 
@@ -53,6 +56,7 @@ gulp.task('live', function(cb) {
   gulp.watch([build + '/**/*'], reloadPage);
 })
 
-gulp.task('default', sequence('clean', 'assets', ['js', 'less']));
-gulp.task('watch', sequence('default', ['buildless', 'buildjs'], 'live'));
+gulp.task('default', sequence('clean', 'assets', ['prod-js', 'prod-less']));
+gulp.task('dev', sequence('clean', 'assets', ['js', 'less']));
+gulp.task('watch', sequence('watchless', 'watchjs'));
 

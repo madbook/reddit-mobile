@@ -5,7 +5,6 @@ global.jQuery = global.$ = $;
 
 import querystring from 'querystring';
 
-import 'bootstrap';
 import attachFastClick from 'fastclick';
 
 import {ClientReactApp} from 'horse-react';
