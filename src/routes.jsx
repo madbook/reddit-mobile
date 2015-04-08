@@ -104,6 +104,14 @@ function routes(app) {
 
     var data = yield IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
+    if (props.subredditName) {
+      var subredditData = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
+      props = Object.assign({
+        subredditId: ((subredditData || {}).data || {}).name,
+        userIsSubscribed: ((subredditData || {}).data || {}).user_is_subscriber,
+      }, props);
+    }
+
     props = Object.assign({
       data: data,
       app: app,
@@ -137,12 +145,13 @@ function routes(app) {
 
     var props = buildProps(this, {
       subredditName: ctx.params.subreddit,
-      subredditAboutPage: true,
     });
 
-    var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
 
     props = Object.assign({
+      subredditId: ((data || {}).data || {}).name,
+      userIsSubscribed: ((data || {}).data || {}).user_is_subscriber,
       data: data,
       app: app
     }, props);

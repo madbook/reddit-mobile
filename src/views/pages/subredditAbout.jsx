@@ -81,7 +81,7 @@ class SubredditAboutPage extends React.Component {
     );
   }
 
-  static populateData(api, props, synchronous) {
+  static populateData(api, props, synchronous, useCache = true) {
     var defer = q.defer();
 
     // Only used for server-side rendering. Client-side, call when
@@ -93,9 +93,10 @@ class SubredditAboutPage extends React.Component {
 
     var options = api.buildOptions(props.token);
     options.query.subreddit = props.subredditName;
+    options.useCache = useCache;
 
     // Initialized with data already.
-    if ((props.data || {}).data) {
+    if (useCache && (props.data || {}).data) {
       api.hydrate('subreddits', options, props.data);
 
       defer.resolve(props.data);

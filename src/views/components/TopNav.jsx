@@ -41,19 +41,13 @@ function shorten(text, len) {
 }
 
 function loadSubredditData(ctx) {
-  // NOTE:
-  //  cannot call with `ctx.props` because `ctx.props.data`
-  //  could lead to a wrong cached resource
-  SubredditAboutPage.populateData(ctx.props.api, {
-    subredditName: ctx.props.subredditName,
-    token: ctx.props.token
-  }, true).done((function (data) {
+  SubredditAboutPage.populateData(ctx.props.api, ctx.props, true, false).done(function (data) {
     ctx.setState({
       loaded: true,
       subredditId: ((data || {}).data || {}).name,
       userIsSubscribed: ((data || {}).data || {}).user_is_subscriber
     });
-  }).bind(ctx));
+  });
 }
 
 class TopNav extends React.Component {
@@ -70,11 +64,11 @@ class TopNav extends React.Component {
 
     this.state = {
       subredditName: subredditName,
-      subredditId: null,
+      loaded: true,
+      subredditId: props.subredditId,
+      userIsSubscribed: props.userIsSubscribed,
       rollover: '',
       sideNavOpen: false,
-      loaded: !(props.subredditName && props.token),
-      userIsSubscribed: false
     };
 
     this._changeSubredditName = this._changeSubredditName.bind(this);
@@ -185,7 +179,7 @@ class TopNav extends React.Component {
       var props = this.props;
 
       var subscription = new models.Subscription({
-        action: this.state.userIsSubscribed ? 'unsub' : 'sub',
+        action: state.userIsSubscribed ? 'unsub' : 'sub',
         sr: state.subredditId
       });
 
@@ -194,31 +188,47 @@ class TopNav extends React.Component {
         model: subscription
       });
 
+      // react immediately and assuming everything goes well,
+      this.setState({
+        userIsSubscribed: !state.userIsSubscribed
+      });
+
+      // and send request to the server to do actual work
       props.api.subscriptions.post(options)
         .done(function (data) {
-          if (!Object.keys(data.data).length) {
+          // if it fails revert back to the original state
+          if (Object.keys(data.data).length) {
             this.setState({
-              userIsSubscribed: !this.state.userIsSubscribed
+              userIsSubscribed: !state.userIsSubscribed
             });
-          } else {
-            window.console.warn(data);
+            props.app.render('/400', false);
           }
         }.bind(this));
     }
   }
 
-  _changeSubredditName(str) {
-    var loaded = !(str && this.props.token);
+  _changeSubredditName(newName) {
+    var state = this.state;
+    var currentSubredditName = state.subredditName;
+    if (currentSubredditName !== newName) {
+      var loaded = true;
+      var userIsSubscribed = state.userIsSubscribed;
 
-    if (!loaded) {
-      loadSubredditData(this);
+      // if it's subreddit do more work
+      if (newName && newName.startsWith('r/') && newName.indexOf(currentSubredditName) !== 0) {
+        loaded = !(newName && this.props.token);
+        if (!loaded) {
+          userIsSubscribed = false;
+          loadSubredditData(this);
+        }
+      }
+
+      this.setState({
+        subredditName: newName,
+        loaded: loaded,
+        userIsSubscribed: userIsSubscribed
+      });
     }
-
-    this.setState({
-      subredditName: str,
-      loaded: loaded,
-      userIsSubscribed: false
-    });
   }
 
   _onMouseEnter(str) {

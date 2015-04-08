@@ -16,7 +16,6 @@ class UserProfile extends React.Component {
   render() {
     var props = this.props;
     var userProfile = props.userProfile;
-    console.log(userProfile);
     var created = moment(userProfile.created * 1000);
       //TODO trophy case items can look like this when we get that data
       /*<li className='UserProfile-trophy clearfix'>
