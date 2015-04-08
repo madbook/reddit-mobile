@@ -28,17 +28,11 @@ var UserGildPage;
 import UserActivityPageFactory from './views/pages/userActivity';
 var UserActivityPage;
 
-import NotFoundPageFactory from './views/pages/404';
-var NotFoundPage;
-
-import ClientErrorPageFactory from './views/pages/400';
-var ClientErrorPage;
+import ErrorPageFactory from './views/pages/error';
+var ErrorPage;
 
 import FAQPageFactory from './views/pages/faq';
 var FAQPage;
-
-import ServerErrorPageFactory from './views/pages/500';
-var ServerErrorPage;
 
 import LayoutFactory from './views/layouts/DefaultLayout';
 var Layout;
@@ -58,10 +52,8 @@ function routes(app) {
   UserProfilePage = UserProfilePageFactory(app);
   UserGildPage = UserGildPageFactory(app);
   UserActivityPage = UserActivityPageFactory(app);
-  NotFoundPage = NotFoundPageFactory(app);
-  ClientErrorPage = ClientErrorPageFactory(app);
+  ErrorPage = ErrorPageFactory(app);
   FAQPage = FAQPageFactory(app);
-  ServerErrorPage = ServerErrorPageFactory(app);
   Layout = LayoutFactory(app);
   BodyLayout = BodyLayoutFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
@@ -341,11 +333,12 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
+      title: '404 - Sorry, that page doesn\'t seem to exist.'
     });
 
     var page = (
       <BodyLayout {...props} app={app}>
-        <NotFoundPage {...props}/>
+        <ErrorPage {...props}/>
       </BodyLayout>
     );
 
@@ -359,12 +352,13 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
+      title: '400 - Oops, looks like something went wrong.'
     });
 
     try {
       var page = (
         <BodyLayout {...props} app={app}>
-          <ClientErrorPage {...props}/>
+          <ErrorPage {...props}/>
         </BodyLayout>
       );
     } catch (e) {
@@ -381,6 +375,7 @@ function routes(app) {
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
+      title: '500 - Oops, looks like something went wrong.'
     });
 
     if (app.getConfig('debug')) {
@@ -390,7 +385,7 @@ function routes(app) {
     try {
       var page = (
         <BodyLayout {...props} app={app}>
-          <ServerErrorPage {...props}/>
+          <ErrorPage {...props}/>
         </BodyLayout>
       );
     } catch (e) {

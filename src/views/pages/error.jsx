@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ServerErrorPage extends React.Component{
+class ErrorPage extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -13,8 +13,8 @@ class ServerErrorPage extends React.Component{
         <div className='container'>
           <div className='row'>
             <div className='col-xs-12'>
-              <h1>Server Error.</h1>
-              <h2><a href={ link }>Go back?</a></h2>
+              <h1>{ this.props.title }</h1>
+              <h3><a href={ link }>Go back?</a></h3>
             </div>
           </div>
         </div>
@@ -29,8 +29,8 @@ class ServerErrorPage extends React.Component{
   }
 }
 
-function ServerErrorPageFactory(app) {
-  return app.mutate('core/pages/serverError', ServerErrorPage);
+function ErrorPageFactory(app) {
+  return app.mutate('core/pages/error', ErrorPage);
 }
 
-export default ServerErrorPageFactory;
+export default ErrorPageFactory;
