@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
+import utils from '../../lib/utils';
 
 class CommentPreview extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class CommentPreview extends React.Component {
           </div>
           <div className='row'>
             <div className='col-xs-12' dangerouslySetInnerHTML={{
-              __html: comment.bodyHtml
+              __html: utils.cleanHtml(comment.body_html)
             }} />
           </div>
         </div>

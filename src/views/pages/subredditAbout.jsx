@@ -55,15 +55,13 @@ class SubredditAboutPage extends React.Component {
     var htmlDump;
     if (!loading) {
       var data = this.state.data.data;
-      var prettyHtml = utils.cleanHtml(data.description_html);
-
       htmlDump = [
         <ul className='subreddit-about-numbers' key='subreddit-about-numbers'>
           <li>{ `${data.subscribers} readers` }</li>
           <li>{ `${data.accounts_active} users here now` }</li>
         </ul>,
         <div className='subreddit-about-rules' key='subreddit-about-rules'
-          dangerouslySetInnerHTML={{ __html: prettyHtml }}>
+          dangerouslySetInnerHTML={{ __html: utils.cleanHtml(data.description_html) }}>
         </div>
       ];
     }

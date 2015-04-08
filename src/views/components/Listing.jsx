@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
+import utils from '../../lib/utils';
 
 import VoteFactory from '../components/Vote';
 var Vote;
@@ -174,13 +175,13 @@ class Listing extends React.Component {
       if (expanded) {
         return (
           <div className='well listing-selftext' dangerouslySetInnerHTML={{
-            __html: listing.expandContent
+            __html: utils.cleanHtml(listing.expandContent)
           }} onClick={ this.expand.bind(this) } />
         );
       } else {
         return (
           <div className='well listing-selftext listing-selftext-collapsed' dangerouslySetInnerHTML={{
-            __html: listing.expandContent
+            __html: utils.cleanHtml(listing.expandContent)
           }} onClick={ this.expand.bind(this) } />
         );
       }

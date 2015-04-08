@@ -20,6 +20,7 @@ import PlayIconFactory from '../components/PlayIcon';
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
+import utils from '../../lib/utils';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -241,7 +242,7 @@ class Comment extends React.Component {
 
             <div className={ `comment-body ${contentCollapseClass}` }>
               <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-                  __html: comment.bodyHtml
+                  __html: utils.cleanHtml(comment.body_html)
                 }} 
                 onClick={this.showTools.bind(this)} />
 
