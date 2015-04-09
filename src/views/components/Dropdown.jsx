@@ -2,6 +2,8 @@ import React from 'react';
 import Utils from '../../lib/danehansen/Utils';
 import constants from '../../constants';
 
+const _TOUCH = Utils.touch();
+
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -16,13 +18,12 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    var touch = Utils.touch();
     var className = 'Dropdown ' + (this.props.className || '');
     className += (this.state.opened ? ' opened' : '');
     className += (this.props.right ? ' pull-right' : '');
 
     return (
-      <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter } onMouseLeave={ touch ? null : this._onMouseLeave } onClick={touch ? this._onClick : null}>
+      <div className={className} onMouseEnter={ _TOUCH ? null : this._onMouseEnter } onMouseLeave={ _TOUCH ? null : this._onMouseLeave } onClick={_TOUCH ? this._onClick : null}>
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
           <div className={'stalagmite' + (this.props.right ? ' pull-right' : '')}></div>

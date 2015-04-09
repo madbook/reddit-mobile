@@ -1,26 +1,70 @@
 import React from 'react';
 
+import RIconFactory from '../components/RIcon';
+var RIcon;
+
+import SnooIconFactory from '../components/SnooIcon';
+var SnooIcon;
+
 class Loading extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
+    this.state = {flipFlop: true};
+    this._mounted = true;
+    this._iconOn = this._iconOn.bind(this);
+    this._iconOff = this._iconOff.bind(this);
+    this._iconSwapped = this._iconSwapped.bind(this);
+    this._wait = this._wait.bind(this);
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return false;
-  }
+  render() {
+    var icon = this.state.flipFlop ? <SnooIcon ref='icon'/> : <RIcon ref='icon'/>;
 
-  render () {
     return (
-      <div className='loading-indicator'>
-        <p>
-          <span className='glyphicon loading glyphicon-refresh'></span>
-        </p>
+      <div className='Loading'>
+        {icon}
       </div>
     );
+  }
+
+  componentDidMount() {
+    this._iconSwapped();
+  }
+
+  _iconSwapped() {
+    if (this._mounted) {
+      this.refs.icon.tweenOn(this._iconOn);
+    }
+  }
+
+  _iconOn() {
+    if (this._mounted) {
+      this._timeout = setTimeout(this._wait, 1000);
+    }
+  }
+
+  _wait() {
+    this._timeout = null;
+    if (this._mounted) {
+      this.refs.icon.tweenOff(this._iconOff);
+    }
+  }
+
+  _iconOff() {
+    if (this._mounted) {
+      this.setState({flipFlop: !this.state.flipFlop}, this._iconSwapped);
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._timeout);
+    this._mounted = false;
   }
 }
 
 function LoadingFactory(app) {
+  RIcon = RIconFactory(app);
+  SnooIcon = SnooIconFactory(app);
   return app.mutate('core/components/loading', Loading);
 }
 
