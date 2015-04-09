@@ -9,11 +9,6 @@
 var Utils={};
 
 (function(){
-	if(typeof window=="undefined")
-		var window={
-			getComputedStyle:function(){},
-			location:{href:""}
-		};
 
 	function _isList(list)
 	{

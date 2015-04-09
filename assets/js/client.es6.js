@@ -16,7 +16,6 @@ import config from '../../src/config';
 import plugins from '../../src/plugins';
 
 import routes from '../../src/routes';
-
 import TweenLite from 'gsap';
 
 // A few es5 sanity checks
