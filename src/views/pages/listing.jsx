@@ -156,13 +156,9 @@ class ListingPage extends React.Component {
 
     var options = api.buildOptions(props.token);
 
-    function decodeHtmlEntities(html) {
-      return html.replace(/&gt;/g, '>').replace(/&lt;/g, '<');
-    }
-
     function mapComment(comment) {
       if (comment && comment.body) {
-        comment.body_html = decodeHtmlEntities(comment.body_html);
+        comment.body_html = comment.body_html;
 
         if (comment.replies) {
           comment.replies = comment.replies.map(mapComment) || [];

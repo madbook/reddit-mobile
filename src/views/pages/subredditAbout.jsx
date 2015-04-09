@@ -1,7 +1,6 @@
 import React from 'react';
 import q from 'q';
 import constants from '../../constants';
-import utils from '../../lib/utils';
 
 import LoadingFactory from '../components/Loading';
 var Loading;
@@ -61,7 +60,7 @@ class SubredditAboutPage extends React.Component {
           <li>{ `${data.accounts_active} users here now` }</li>
         </ul>,
         <div className='subreddit-about-rules' key='subreddit-about-rules'
-          dangerouslySetInnerHTML={{ __html: utils.cleanHtml(data.description_html) }}>
+          dangerouslySetInnerHTML={{ __html: data.description_html }}>
         </div>
       ];
     }
