@@ -63,7 +63,7 @@ class UserProfilePage extends React.Component {
     }
 
     if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking }  loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
     }
 
     return (
