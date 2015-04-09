@@ -2,8 +2,6 @@ import React from 'react';
 import Utils from '../../lib/danehansen/Utils';
 import constants from '../../constants';
 
-const _TOUCH = Utils.touch();
-
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +21,7 @@ class Dropdown extends React.Component {
     className += (this.props.right ? ' pull-right' : '');
 
     return (
-      <div className={className} onMouseEnter={ _TOUCH ? null : this._onMouseEnter } onMouseLeave={ _TOUCH ? null : this._onMouseLeave } onClick={_TOUCH ? this._onClick : null}>
+      <div className={className} onMouseEnter={ this._touch ? null : this._onMouseEnter } onMouseLeave={ this._touch ? null : this._onMouseLeave } onClick={this._touch ? this._onClick : null}>
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
           <div className={'stalagmite' + (this.props.right ? ' pull-right' : '')}></div>
@@ -33,6 +31,16 @@ class Dropdown extends React.Component {
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    this._touch = Utils.touch();
+  }
+
+  componentWillUnmount() {
+    if (this._touch) {
+      this.props.app.off(constants.DROPDOWN_OPEN, this._close);
+    }
   }
 
   _onMouseEnter() {
@@ -52,18 +60,19 @@ class Dropdown extends React.Component {
   }
 
   _open() {
-    this.setState({ opened: true });
+    this.setState({opened: true});
     this.props.app.emit(constants.DROPDOWN_OPEN, this.props.id);
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
-    this.props.app.emitter.once(constants.DROPDOWN_OPEN, function(id) {
-      this._close();
-    }.bind(this));
+    if (this._touch) {
+      this.props.app.on(constants.DROPDOWN_OPEN, this._close);
+    }
   }
 
   _close() {
-    this.setState({ opened: false });
+    this.componentWillUnmount();
+    this.setState({opened: false});
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
