@@ -3,8 +3,9 @@ import querystring from 'querystring';
 import titleCase from '../../lib/titleCase';
 import constants from '../../constants';
 
-import CheckmarkIconFactory from '../components/CheckmarkIcon';
+import CheckmarkIconFactory from '../components/icons/CheckmarkIcon';
 var CheckmarkIcon;
+
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
 

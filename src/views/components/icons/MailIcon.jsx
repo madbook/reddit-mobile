@@ -1,5 +1,5 @@
 import React from 'react';
-import SVGFactory from '../components/SVG';
+import SVGFactory from '../../components/SVG';
 var SVG;
 
 class MailIcon extends React.Component {
@@ -13,7 +13,7 @@ class MailIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon MailIcon' width={20} height={20} fallbackText='comment'>
+      <SVG className='SVG-icon MailIcon' width={20} height={20} fallbackIcon='icon-mail-circled'>
         <circle className='SVG-fill' cx='10' cy='10' r='10'/>
         <rect x='4.166667' y='6.666667' className='SVG-fill-bg' width='11.666667' height='7.5'/>
         <g ref='page'>
@@ -93,7 +93,7 @@ MailIcon.defaultProps = {
 
 function MailIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/MailIcon', MailIcon);
+  return app.mutate('core/components/icons/MailIcon', MailIcon);
 }
 
 export default MailIconFactory;

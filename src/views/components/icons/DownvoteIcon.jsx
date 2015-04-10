@@ -1,9 +1,9 @@
 import React from 'react';
-import SVGFactory from '../components/SVG';
-import MyMath from '../../lib/danehansen/MyMath';
+import SVGFactory from '../../components/SVG';
 var SVG;
+import MyMath from '../../../lib/danehansen/MyMath';
 
-class UpvoteIcon extends React.Component {
+class DownvoteIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,16 +14,16 @@ class UpvoteIcon extends React.Component {
 
   render() {
     return (
-      <SVG className={'SVG-icon UpvoteIcon' + (this.props.altered ? ' altered' : '')} width={20} height={20} fallbackText='upwnvote'>
+      <SVG className={'SVG-icon DownvoteIcon' + (this.props.altered ? ' altered' : '')} width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-downvote-circled'>
         <defs>
           <clipPath id={this._maskID}>
-            <circle ref='mask' fill='#000' cx='10' cy='10' r='10'/>
+            <circle ref='mask' fill='#000' cx={SVG.ICON_SIZE * 0.5} cy={SVG.ICON_SIZE * 0.5} r={SVG.ICON_SIZE * 0.5}/>
           </clipPath>
         </defs>
         <circle className='tween SVG-fill' cx='10' cy='10' r='10'/>
         <svg ref='arrows' className='SVG-fill-bg' y='0' x='0' clip-path={'url(#' + this._maskID + ')'}>
-          <path ref='arrow1' d='M9.947201,4.166667H9.94716L4.586799,9.992448C4.589067,9.997617,4.587845,9.994831,4.590113,10h3.321361 c0.000668,0.000668,0.001042,0.001041,0.001709,0.001709V15h4.166667v-4.99648 c0.001369-0.001369,0.002151-0.002151,0.00352-0.00352h3.32983L9.947201,4.166667z'/>
-          <path ref='arrow2' d='M9.947201,24.166666H9.94716l-5.360361,5.825783C4.589067,29.997616,4.587845,29.994831,4.590113,30h3.321361 c0.000668,0.000668,0.001042,0.001041,0.001709,0.001709V35h4.166667v-4.996481 c0.001369-0.001368,0.002151-0.00215,0.00352-0.003519h3.32983L9.947201,24.166666z'/>
+          <path ref='arrow1' d='M10.052799,15.833334h0.000041l5.36036-5.825782c-0.002268-0.005168-0.001045-0.002383-0.003313-0.007551 h-3.321362c-0.000668-0.000668-0.001041-0.001042-0.001709-0.001709V5H7.92015v4.99648 c-0.001369,0.001369-0.002151,0.002151-0.00352,0.00352H4.586799L10.052799,15.833334z'/>
+          <path ref='arrow2' d='M10.052799-4.166666h0.000041l5.36036-5.825782c-0.002268-0.005168-0.001045-0.002383-0.003313-0.007551 h-3.321362c-0.000668-0.000668-0.001041-0.001042-0.001709-0.001709v-4.998291H7.92015v4.99648 c-0.001369,0.001369-0.002151,0.002151-0.00352,0.00352H4.586799L10.052799-4.166666z'/>
         </svg>
       </SVG>
     );
@@ -68,27 +68,27 @@ class UpvoteIcon extends React.Component {
       delay = Math.random() * 0.1;
     }
     if (bool) {
-      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr: {y: -20}, ease: ease, delay: delay});
-      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: 30}, ease: ease, delay: delay});
+      TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr: {y: SVG.ICON_SIZE}, ease: ease, delay: delay});
+      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: SVG.ICON_SIZE * -0.5}, ease: ease, delay: delay});
     } else {
       TweenLite.to(this.refs.arrows.getDOMNode(), t, {attr: {y: 0}, ease: ease, delay: delay});
-      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: 10}, ease: ease, delay: delay});
+      TweenLite.to(this.refs.mask.getDOMNode(), t, {attr: {cy: SVG.ICON_SIZE * 0.5}, ease: ease, delay: delay});
     }
   }
 
   _play(bool, instant) {
-    TweenLite.to([this.refs.arrow1.getDOMNode(), this.refs.arrow2.getDOMNode()], instant ? 0 : 0.2, {scale: bool ? 1.3 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
+    TweenLite.to([this.refs.arrow1.getDOMNode(), this.refs.arrow2.getDOMNode()], instant ? 0 : 0.4, {scale: bool ? 1.3 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
   }
 }
 
-UpvoteIcon.defaultProps = {
+DownvoteIcon.defaultProps = {
   altered: false,
   played: false,
 };
 
-function UpvoteIconFactory(app) {
+function DownvoteIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/UpvoteIcon', UpvoteIcon);
+  return app.mutate('core/components/icons/DownvoteIcon', DownvoteIcon);
 }
 
-export default UpvoteIconFactory;
+export default DownvoteIconFactory;

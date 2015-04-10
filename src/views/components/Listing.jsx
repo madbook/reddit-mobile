@@ -10,7 +10,7 @@ var Vote;
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
-import PlayIconFactory from '../components/PlayIcon';
+import PlayIconFactory from '../components/icons/PlayIcon';
 var PlayIcon;
 
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;

@@ -18,6 +18,10 @@ class SVG extends React.Component {
         </svg>
       );
     } else {
+      var fallbackIcon = this.props.fallbackIcon;
+      if (fallbackIcon) {
+        return <span className={fallbackIcon}/>;
+      }
       var fallbackText = this.props.fallbackText;
       if (fallbackText) {
         return <span className='fallbackText'>{fallbackText}</span>;
@@ -30,12 +34,17 @@ class SVG extends React.Component {
       if (Fallback) {
         return <Fallback/>;
       }
-      return <span className='fallbackText'>PLACEHOLDER</span>;
+      return <span className='placeholder'/>;
     }
   }
 }
 
 SVG.ENABLED = ((typeof document === 'undefined') || (!!document.createElementNS && !!document.createElementNS(_NS, 'svg').createSVGRect));
+SVG.ICON_SIZE = 20;
+
+SVG.perc = function(num) {
+  return num / SVG.ICON_SIZE * 100 + '%';
+};
 
 function SVGFactory(app) {
   return app.mutate('core/components/SVG', SVG);

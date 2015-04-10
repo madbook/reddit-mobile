@@ -34,7 +34,7 @@ class SnooButton extends React.Component {
   render() {
     return (
       <MobileButton href='/' over={SVG.ENABLED ? this._onMouseEnter : null} out={SVG.ENABLED ? this._onMouseLeave : null} move={SVG.ENABLED ? this._onMouseMove : null}>
-        <SVG width={29} height={33} fallbackText='logo'>
+        <SVG width={29} height={33} fallbackIcon='icon-snoo'>
           <ellipse ref='head' className='SVG-fill' cx='14.5' cy='23.03125' rx='12.6875' ry='9.96875'/>
           <circle ref='leftEar' className='SVG-fill' cx='3.625' cy='18.5' r='3.625'/>
           <circle ref='rightEar' className='SVG-fill' cx='25.375' cy='18.5' r='3.625'/>

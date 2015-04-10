@@ -1,5 +1,5 @@
 import React from 'react';
-import SVGFactory from '../components/SVG';
+import SVGFactory from '../../components/SVG';
 var SVG;
 
 class CommentIcon extends React.Component {
@@ -11,7 +11,7 @@ class CommentIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon CommentIcon' width={20} height={20} fallbackText='comment'>
+      <SVG className='SVG-icon CommentIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-comments-circled'>
         <circle className='SVG-fill' cx='10' cy='10' r='10'/>
         <g ref='right'>
           <path className='SVG-fill-bg' d='M12.130859,14.142578h-1.928711c-2.087402,0-3.785645-1.698242-3.785645-3.785645 C6.416504,8.198242,8.114746,6.5,10.202148,6.5h2.928711c2.086914,0,3.785156,1.698242,3.785156,3.785645 c0,1.069824-0.384766,2.01123-1.083008,2.722168c-0.146484,0.150391-3.277344,3.207031-3.277344,3.207031l-0.424805,0.415039 V14.142578z'/>
@@ -61,7 +61,7 @@ CommentIcon.defaultProps = {
 
 function CommentIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/CommentIcon', CommentIcon);
+  return app.mutate('core/components/icons/CommentIcon', CommentIcon);
 }
 
 export default CommentIconFactory;

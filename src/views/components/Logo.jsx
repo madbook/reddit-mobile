@@ -3,7 +3,6 @@ import SVGFactory from '../components/SVG';
 var SVG;
 
 const _WIDTH = 55;
-const _HEIGHT = 20;
 const _TOP_LEFT = 10;
 const _BOTTOM_LEFT = 5;
 
@@ -20,10 +19,10 @@ class Logo extends React.Component {
 
   render() {
     return (
-      <SVG fill='#231f20' width={_WIDTH} height={_HEIGHT} fallbackText='reddit'>
+      <SVG fill='#231f20' width={_WIDTH} height={SVG.ICON_SIZE} fallbackIcon='icon-logo'>
         <defs>
           <clipPath id={this._maskID}>
-            <polyline ref='mask' points={'0,0 ' + _WIDTH + ',0 ' + _WIDTH + ',' + _HEIGHT + ' 0,' + _HEIGHT}/>
+            <polyline ref='mask' points={'0,0 ' + _WIDTH + ',0 ' + _WIDTH + ',' + SVG.ICON_SIZE + ' 0,' + SVG.ICON_SIZE}/>
           </clipPath>
         </defs>
         <g ref='logo' clip-path={'url(#' + this._maskID + ')'}>
@@ -79,7 +78,7 @@ class Logo extends React.Component {
       return this._alterAmount;
     } else if (this._alterAmount !== num) {
       this._alterAmount = num;
-      this.refs.mask.getDOMNode().setAttribute('points', '0,0 ' + ((_WIDTH - _TOP_LEFT) * this._alterAmount + _TOP_LEFT) + ',0 ' + ((_WIDTH - _BOTTOM_LEFT) * this._alterAmount + _BOTTOM_LEFT) + ',' + _HEIGHT + ' 0,' + _HEIGHT);
+      this.refs.mask.getDOMNode().setAttribute('points', '0,0 ' + ((_WIDTH - _TOP_LEFT) * this._alterAmount + _TOP_LEFT) + ',0 ' + ((_WIDTH - _BOTTOM_LEFT) * this._alterAmount + _BOTTOM_LEFT) + ',' + SVG.ICON_SIZE + ' 0,' + SVG.ICON_SIZE);
     }
   }
 }

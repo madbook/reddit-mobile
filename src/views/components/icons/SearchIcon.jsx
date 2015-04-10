@@ -1,7 +1,7 @@
 import React from 'react';
-import MyMath from '../../lib/danehansen/MyMath';
-import Point from '../../lib/danehansen/Point';
-import SVGFactory from '../components/SVG';
+import MyMath from '../../../lib/danehansen/MyMath';
+import Point from '../../../lib/danehansen/Point';
+import SVGFactory from '../../components/SVG';
 var SVG;
 
 const _MASK_SIZE = 11.4;
@@ -19,7 +19,7 @@ class SearchIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={20} height={20} fallbackText='search'>
+      <SVG width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-search'>
         <defs>
           <clipPath id={this._maskID}>
             <rect ref='mask' x={_EYE_CENTER - _MASK_SIZE / 2} y={_EYE_CENTER} width={_MASK_SIZE} height='0' fill='#000'/>
@@ -79,7 +79,7 @@ SearchIcon.defaultProps = {
 
 function SearchIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/SearchIcon', SearchIcon);
+  return app.mutate('core/components/icons/SearchIcon', SearchIcon);
 }
 
 export default SearchIconFactory;
