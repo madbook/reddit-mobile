@@ -78,10 +78,10 @@ function mixin (App) {
           // Should be a refresh token instead of a login redirect, but this
           // will at least fix issues for currently logged-in users.
           // TODO: change to refresh
-          ctx.redirect('/login');
+          ctx.redirect(app.config.loginPath);
         } else if (e.statusCode === 403) {
           // Missing authorization
-          ctx.redirect('/login');
+          ctx.redirect(app.config.loginPath);
         }
       } else {
         super.error(e, ctx, app);

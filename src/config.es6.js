@@ -22,6 +22,8 @@ var config = {
 
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
+
+  loginPath: process.env.LOGIN_PATH || '/oauth2/login',
 };
 
 export default config;

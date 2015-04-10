@@ -143,6 +143,7 @@ class Comment extends React.Component {
               thing={ this.props.comment }
               token={ this.props.token }
               api={ this.props.api }
+              loginPath={ this.props.loginPath }
             />
           </li>
           <li>

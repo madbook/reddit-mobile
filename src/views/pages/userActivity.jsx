@@ -70,6 +70,7 @@ class UserActivityPage extends React.Component {
     var name = this.props.userName;
 
     var tracking;
+    var loginPath = this.props.loginPath;
 
     if (this.state.data.meta && this.props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
@@ -98,6 +99,7 @@ class UserActivityPage extends React.Component {
                     token={token}
                     api={api}
                     hideUser={ true }
+                    loginPath={ loginPath }
                   />
                 );
               } else if (thing._type === 'Comment') {

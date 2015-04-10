@@ -126,6 +126,7 @@ class IndexPage extends React.Component {
     }
 
     var app = this.props.app;
+    var loginPath = this.props.loginPath;
 
     if (this.state.data.meta && this.props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
@@ -135,7 +136,7 @@ class IndexPage extends React.Component {
       <main>
         { loading }
 
-        <TopSubnav app={ app } user={ user } sort={ sort } list='listings' baseUrl={ this.props.url }/>
+        <TopSubnav app={ app } user={ user } sort={ sort } list='listings' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
 
         <div className='container listing-container' ref='listings'>
           {
@@ -154,6 +155,7 @@ class IndexPage extends React.Component {
                     user={user}
                     token={token}
                     api={api}
+                    loginPath={loginPath}
                   />
                 );
               }

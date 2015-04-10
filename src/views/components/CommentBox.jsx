@@ -28,7 +28,7 @@ class CommentBox extends React.Component {
 
   submitComment (thingId, text) {
     if (!this.props.token) {
-      window.location = '/login';
+      window.location = this.props.loginPath;
       return;
     }
 

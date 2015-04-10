@@ -58,7 +58,7 @@ var oauthRoutes = function(app) {
     return hmac.read();
   }
 
-  router.get('/login', function * () {
+  router.get('/oauth2/login', function * () {
     var origin = app.getConfig('origin') + '/';
 
     // referer spelled wrong according to spec.

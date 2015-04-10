@@ -68,6 +68,7 @@ function routes(app) {
       minifyAssets: app.getConfig('minifyAssets'),
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
+      loginPath: app.getConfig('loginPath'),
       loid: ctx.loid,
       loidcreated: ctx.loidcreated,
       user: ctx.user,

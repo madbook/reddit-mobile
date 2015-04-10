@@ -37,7 +37,7 @@ class SideNav extends React.Component {
     } else {
       loginLink = (
         <li>
-          <a className='SideNav-button' href='/login' data-no-route='true'>Login / Register</a>
+          <a className='SideNav-button' href={ this.props.loginPath } data-no-route='true'>Login / Register</a>
         </li>
       );
     }

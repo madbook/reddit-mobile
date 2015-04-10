@@ -83,6 +83,8 @@ class ListingPage extends React.Component {
     var sort = this.props.sort || 'best';
     var app = this.props.app;
 
+    var loginPath = this.props.loginPath;
+
     if (!loading) {
       listingElement = (
         <Listing
@@ -91,7 +93,9 @@ class ListingPage extends React.Component {
           single={ true }
           user={ user }
           token={ token }
-          api={ api } />
+          api={ api }
+          loginPath={ loginPath }
+          />
       );
 
       commentBoxElement = (
@@ -102,6 +106,7 @@ class ListingPage extends React.Component {
           api={ api }
           csrf={ this.props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
+          loginPath={ loginPath }
         />
       );
     }
@@ -110,10 +115,11 @@ class ListingPage extends React.Component {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } loid={ this.props.loid } loidcreated={ this.props.loidcreated } user={ this.props.user } />);
     }
 
+
     return (
       <main className='listing-main'>
         { loading }
-        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url }/>
+        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
         <div className='container' key='container'>
           { listingElement }
           { commentBoxElement }
@@ -132,6 +138,7 @@ class ListingPage extends React.Component {
                     user={ user }
                     token={ token }
                     api={api}
+                    loginPath={loginPath}
                   />
                 );
               }

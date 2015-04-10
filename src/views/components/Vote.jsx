@@ -67,7 +67,7 @@ class Vote extends React.Component {
 
   submitVote(direction) {
     if (!this.props.token) {
-      window.location = '/login';
+      window.location = this.props.loginPath;
       return;
     }
 

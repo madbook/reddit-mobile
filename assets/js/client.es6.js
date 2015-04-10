@@ -48,8 +48,8 @@ function initialize(bindLinks) {
 
     var app = new ClientReactApp(config);
 
-    app.router.get('/login', function * () {
-      window.location = '/login';
+    app.router.get('/oauth2/login', function * () {
+      window.location = '/oauth2/login';
     });
 
     if (plugins) {

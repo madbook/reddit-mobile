@@ -69,7 +69,7 @@ class SubredditAboutPage extends React.Component {
       <main className='subreddit-about-main'>
         { loading }
 
-        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url }/>
+        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
 
         <div className='container' key='container'>
           { htmlDump }
