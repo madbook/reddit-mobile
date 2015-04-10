@@ -7,7 +7,7 @@ const _CENTER = 10;
 const _DIST = 7.5;
 const _DIAMETER = 2;
 
-class EllipsisIcon extends React.Component {
+class SeashellIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -58,13 +58,13 @@ class EllipsisIcon extends React.Component {
   }
 }
 
-EllipsisIcon.defaultProps = {
+SeashellIcon.defaultProps = {
   played: false,
 };
 
-function EllipsisIconFactory(app) {
+function SeashellIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/EllipsisIcon', EllipsisIcon);
+  return app.mutate('core/components/SeashellIcon', SeashellIcon);
 }
 
-export default EllipsisIconFactory;
+export default SeashellIconFactory;

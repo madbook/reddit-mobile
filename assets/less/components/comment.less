@@ -80,13 +80,9 @@
   position: relative;
   left: -.5em;
 
-  .SVG-icon {
-    height: 1em;
-    width: 1em;
-    margin-bottom: 0;
+  .icon-font({
     margin-left: .5em;
-    vertical-align: middle;
-  }
+  });
 }
 
 .comment-submitted {
@@ -101,7 +97,7 @@
 
 .comment-collapsed {
   .comment-title-list {
-    color: @light-gray;  
+    color: @light-gray;
   }
 
   &.comment-content {

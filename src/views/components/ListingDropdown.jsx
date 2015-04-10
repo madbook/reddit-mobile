@@ -1,8 +1,8 @@
 import React from 'react';
 import constants from '../../constants';
 
-import EllipsisIconFactory from '../components/EllipsisIcon';
-var EllipsisIcon;
+import SeashellIconFactory from '../components/SeashellIcon';
+var SeashellIcon;
 
 import UpvoteIconFactory from '../components/UpvoteIcon';
 var UpvoteIcon;
@@ -13,11 +13,29 @@ var DownvoteIcon;
 import GoldIconFactory from '../components/GoldIcon';
 var GoldIcon;
 
+import CommentIconFactory from '../components/CommentIcon';
+var CommentIcon;
+
+import SaveIconFactory from '../components/SaveIcon';
+var SaveIcon;
+
+import FlagIconFactory from '../components/FlagIcon';
+var FlagIcon;
+
+import ShareIconFactory from '../components/ShareIcon';
+var ShareIcon;
+
 import VoteFactory from '../components/Vote';
 var Vote;
 
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
+
+import SnooIconFactory from '../components/SnooIcon';
+var SnooIcon;
+
+import InfoIconFactory from '../components/InfoIcon';
+var InfoIcon;
 
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
@@ -50,7 +68,7 @@ class ListingDropdown extends React.Component {
   render() {
     var opened = this.state.opened;
     var listing = this.props.listing;
-    var button = <button><EllipsisIcon played={opened} /></button>;
+    var button = <button><SeashellIcon played={opened} /></button>;
     return (
       <Dropdown app={ this.props.app } right={ true } button={ button } id={ this._id }>
         <li className='Dropdown-li'>
@@ -73,13 +91,13 @@ class ListingDropdown extends React.Component {
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink} over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover === 'post'}/>
+            <CommentIcon played={this.state.rollover === 'post'}/>
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'save')} over={this._onMouseEnter.bind(this, 'save')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover === 'save'}/>
+            <SaveIcon played={this.state.rollover === 'save'}/>
             <span className='Dropdown-text'>Save</span>
           </MobileButton>
         </li>
@@ -91,25 +109,25 @@ class ListingDropdown extends React.Component {
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'report')} over={this._onMouseEnter.bind(this, 'report')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover === 'report'}/>
+            <FlagIcon played={this.state.rollover === 'report'}/>
             <span className='Dropdown-text'>Report</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'share')} over={this._onMouseEnter.bind(this, 'share')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover ==='share'}/>
+            <ShareIcon played={this.state.rollover ==='share'}/>
             <span className='Dropdown-text'>Share</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover ==='more'}/>
+            <SnooIcon played={this.state.rollover ==='more'}/>
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/u/' + listing.author } over={this._onMouseEnter.bind(this, 'about')} out={this._onMouseLeave}>
-            <UpvoteIcon played={this.state.rollover ==='about'}/>
+            <InfoIcon played={this.state.rollover ==='about'}/>
             <span className='Dropdown-text'>About { listing.author }</span>
           </MobileButton>
         </li>
@@ -171,10 +189,16 @@ class ListingDropdown extends React.Component {
 }
 
 function ListingDropdownFactory(app) {
-  EllipsisIcon = EllipsisIconFactory(app);
+  SeashellIcon = SeashellIconFactory(app);
   UpvoteIcon = UpvoteIconFactory(app);
   DownvoteIcon = DownvoteIconFactory(app);
   GoldIcon = GoldIconFactory(app);
+  InfoIcon = InfoIconFactory(app);
+  ShareIcon = ShareIconFactory(app);
+  SaveIcon = SaveIconFactory(app);
+  FlagIcon = FlagIconFactory(app);
+  CommentIcon = CommentIconFactory(app);
+  SnooIcon = SnooIconFactory(app);
   Vote = VoteFactory(app);
   MobileButton = MobileButtonFactory(app);
   Dropdown = DropdownFactory(app);
