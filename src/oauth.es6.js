@@ -1,5 +1,7 @@
-var crypto = require('crypto');
-var scmp = require('scmp');
+import crypto from 'crypto';
+import scmp from 'scmp';
+import superagent from 'superagent';
+import uuid from 'uuid';
 
 // set up oauth routes
 var oauthRoutes = function(app) {
@@ -122,6 +124,75 @@ var oauthRoutes = function(app) {
     this.cookies.set('user', JSON.stringify(user.data), cookieOptions);
 
     this.redirect(referer || '/');
+  });
+
+
+  /*
+   * Only works with specific clients with specific trusted client IDs
+   * (`mobile_auth_allowed_clients` in reddit config.) If you aren't that,
+   * set the LOGIN_PATH env variable to nothing or '/oauth2/login' (default).
+   */
+  router.post('/login', function * () {
+    var ctx = this;
+    var id = uuid.v4();
+    var endpoint = app.config.nonAuthAPIOrigin + '/api/fp/1/auth/access_token';
+
+    var b = new Buffer(
+      app.config.oauth.secretClientId + ':' + app.config.oauth.secretSecret
+    );
+
+    var s = b.toString('base64');
+
+    var basicAuth = 'Basic ' + s;
+
+    var data = {
+      grant_type: 'password',
+      username: ctx.body.username,
+      password: ctx.body.password,
+      device_id: id,
+      duration: 'permanent',
+    };
+
+    var p = new Promise(function(resolve, reject) {
+      superagent
+        .post(endpoint)
+        .set({
+          'User-Agent': app.config.userAgent,
+          'Authorization': basicAuth,
+        })
+        .type('form')
+        .send(data)
+        .end((err, res) => {
+          if (err || !res.ok) {
+            return resolve(ctx.redirect('/login?error=' + (res.status || 500)));
+          }
+
+          /* temporary while api returns a `200` with an error in body */
+          if (res.body.error) {
+            return resolve(ctx.redirect('/login?error=401'));
+          }
+
+          var token = OAuth2.accessToken.create(res.body);
+
+          ctx.cookies.set('token', token.token.access_token, cookieOptions);
+
+          var options = {
+            user: 'me', //the current oauth api doesn't return userid. :(
+            headers: {
+              Authorization: 'bearer ' + token.token.access_token,
+            },
+          };
+
+          app.V1Api(token.token.access_token).users.get(options).then(function(user) {
+            ctx.cookies.set('user', JSON.stringify(user.data), cookieOptions);
+            return resolve(ctx.redirect('/'));
+          }, function(e) {
+            return resolve(ctx.redirect('/login?error=500'));
+          });
+        });
+    });
+
+    yield p;
   });
 }
 

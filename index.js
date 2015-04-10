@@ -41,6 +41,9 @@ config.liveReload = process.env.LIVERELOAD || true;
 config.oauth = {
   clientId: process.env.OAUTH_CLIENT_ID || '',
   secret: process.env.OAUTH_SECRET || '',
+
+  secretClientId: process.env.SECRET_OAUTH_CLIENT_ID || '',
+  secretSecret: process.env.SECRET_OAUTH_SECRET || '',
 };
 
 config.keys = [ process.env.SERVER_SIGNED_COOKIE_KEY || 'lambeosaurus' ];

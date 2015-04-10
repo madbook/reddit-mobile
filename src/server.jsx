@@ -7,9 +7,11 @@ import co from 'co';
 // server and middleware
 import koa from 'koa';
 import koaStatic from 'koa-static';
-import bodyParser from 'koa-body-parser';
+import bodyParser from 'koa-bodyparser';
 import csrf from 'koa-csrf';
 import compress from 'koa-compress';
+
+import session from 'koa-session';
 
 import { ServerReactApp } from 'horse-react';
 import mixin from './app-mixin';
@@ -40,6 +42,7 @@ class Server {
     var app = new App(config);
 
     app.config.renderTracking = true;
+    app.config.userAgent = process.env.API_USER_AGENT;
 
     var plugin, p;
 
@@ -56,14 +59,15 @@ class Server {
     var server = koa();
     server.keys = config.keys;
 
-    server.use(csrf.middleware);
+    server.use(session(server));
     server.use(compress());
     server.use(bodyParser());
 
+    csrf(server);
+    server.use(this.csrf(app));
+
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
-
-    // Set up oauth routes
 
     server.use(this.setLOID(app));
     server.use(this.setHeaders(app));
@@ -73,6 +77,21 @@ class Server {
 
     this.server = server;
     this.app = app;
+  }
+
+  csrf (app) {
+    return function * (next) {
+      if (['GET', 'HEAD', 'OPTIONS'].includes(this.method)) {
+        return yield* next;
+      }
+
+      try {
+        this.assertCSRF(this.request.body)
+        yield next;
+      } catch (e) {
+        this.redirect('/?error=invalid_token');
+      }
+    }
   }
 
   setLOID (app) {
@@ -114,6 +133,8 @@ class Server {
   }
 
   * modifyRequest (next) {
+    this.body = this.request.body;
+
     var user = this.cookies.get('user');
     var token = this.cookies.get('token');
 

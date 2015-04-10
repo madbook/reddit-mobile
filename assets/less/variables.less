@@ -4,6 +4,9 @@
 @font-family-sans-serif:  helvetica, arial, sans-serif;
 @font-size-base: 13px;
 
+@white: #fff;
+@gray: #505453;
+@green: #2ECC40;
 @red: #ff0011;
 @dark-red: #BE1337;
 @green: #228822;
@@ -11,7 +14,10 @@
 @blue: #126d92;
 @periwinkle: #9494FF;
 @orangered: #FF4500;
+@gold: #d8c161;
 @brand-primary: @blue;
+@light-gray: #dedede;
+
 @brand-primary-bg-lightest: #f6f9fa;
 @brand-info: #f0f0f0;
 
@@ -24,13 +30,11 @@
 @row-spacing-base: 9px;
 @grid-gutter-width: 10px;
 
-@white: #fff;
-@gray: #505453;
-@green: #2ECC40;
-
-@light-gray: #dedede;
 @gray-border: 1px solid #e7e7e7;
 @max-width: 1000px;
 @top-nav-height: 45px;
 @icon-size: 16px;
-@gold: #d8c161;
+
+@state-danger-text: @dark-red;
+@state-danger-bg: lighten(@red, 40%);
+@state-danger-border: darken(spin(@state-danger-bg, -10), 5%);
