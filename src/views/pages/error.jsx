@@ -5,7 +5,11 @@ class ErrorPage extends React.Component {
     super(props);
   }
 
-  render () {
+  componentDidUpdate() {
+    this.props.app.emit('page:update');
+  }
+
+  render() {
     var link = this.props.referrer || '/';
 
     return (

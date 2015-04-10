@@ -19,6 +19,9 @@ var ListingPage;
 import SubredditAboutPageFactory from './views/pages/subredditAbout';
 var SubredditAboutPage;
 
+import SearchPageFactory from './views/pages/search';
+var SearchPage;
+
 import UserProfilePageFactory from './views/pages/userProfile';
 var UserProfilePage;
 
@@ -52,6 +55,7 @@ function routes(app) {
   IndexPage = IndexPageFactory(app);
   ListingPage = ListingPageFactory(app);
   SubredditAboutPage = SubredditAboutPageFactory(app);
+  SearchPage = SearchPageFactory(app);
   UserProfilePage = UserProfilePageFactory(app);
   UserGildPage = UserGildPageFactory(app);
   UserActivityPage = UserActivityPageFactory(app);
@@ -177,6 +181,52 @@ function routes(app) {
     this.layout = Layout;
     this.props = props;
   });
+
+  function * searchPage(next) {
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      query: ctx.query.q,
+      subredditName: ctx.params.subreddit,
+      after: ctx.query.after,
+      before: ctx.query.before,
+    });
+
+    var data = {};
+    if (props.query) {
+      data = yield SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    }
+
+    var subreddits = {};
+    if (SearchPage.isNoRecordsFound(data)) {
+      subreddits = yield SearchPage.populatePopularSubreddits(props.api, props, this.renderSynchronous, this.useCache);
+    }
+
+    props = Object.assign({
+      results: data,
+      subreddits: subreddits,
+      app: app
+    }, props);
+
+    try {
+      var key = 'search-results'; // <-- don't make it dynamic if you want input element doesn't get re-rendered
+      page = (
+        <BodyLayout {...props} app={ app }>
+          <SearchPage {...props} key={ key } app={ app } />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  }
+
+  app.router.get('/search', searchPage);
+  app.router.get('/r/:subreddit/search', searchPage);
 
   app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', function *(next) {
     var page;

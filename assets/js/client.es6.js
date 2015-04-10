@@ -64,6 +64,11 @@ function initialize(bindLinks) {
     modifyContext = modifyContext.bind(app);
 
     var history = window.history || window.location.history;
+    app.pushState = (data, title, url) => {
+      if (history) {
+        history.pushState(data, title, url);
+      }
+    };
 
     var scrollCache = {};
 
@@ -95,7 +100,7 @@ function initialize(bindLinks) {
 
         initialUrl = href;
 
-        history.pushState(null, null, href);
+        app.pushState(null, null, href);
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.

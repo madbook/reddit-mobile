@@ -33,6 +33,10 @@ class SubredditAboutPage extends React.Component {
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, `r/${this.props.subredditName}/about`);
   }
 
+  componentDidUpdate() {
+    this.props.app.emit('page:update');
+  }
+
   render() {
     var loading;
     var tracking;
@@ -45,7 +49,6 @@ class SubredditAboutPage extends React.Component {
 
     var app = this.props.app;
     var user = this.props.user;
-    var sort = this.props.sort || 'hot';
 
     if (this.state.data.meta && this.props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);

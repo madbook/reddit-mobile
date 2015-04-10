@@ -92,11 +92,10 @@ class TopNav extends React.Component {
   }
 
   render() {
+    var props = this.props;
     var content = null;
 
     if (this.state.loaded) {
-      var props = this.props;
-
       var subredditName = shorten(this.state.subredditName || '', 20);
 
       if (subredditName) {
@@ -109,13 +108,13 @@ class TopNav extends React.Component {
 
       var subredditMenu = null;
       if (props.subredditName) {
-        var button = (
-          <button className="TopNav-floaty TopNav-search">
+        var sidebarButton = (
+          <button className="TopNav-floaty TopNav-sidebar">
             <SeashellIcon opened={ false } />
           </button>
         );
         subredditMenu = (
-          <Dropdown app={ props.app } right={ true } button={ button } id={ this.state.subredditName }>
+          <Dropdown app={ props.app } right={ true } button={ sidebarButton } id={ this.state.subredditName }>
             <li className='Dropdown-li'>
               <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
                 <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
@@ -156,11 +155,12 @@ class TopNav extends React.Component {
           <MobileButton className='TopNav-floaty TopNav-post' over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave} onClick={this._onClick.bind(this, 'post')}>
             <PostIcon played={this.state.rollover === 'post'}/>
           </MobileButton>
-          <MobileButton className='TopNav-floaty TopNav-search' over={this._onMouseEnter.bind(this, 'search')} out={this._onMouseLeave} onClick={this._onClick.bind(this, 'search')}>
+          <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }
+                        over={this._onMouseEnter.bind(this, 'search')} out={this._onMouseLeave}>
             <SearchIcon played={this.state.rollover === 'search'}/>
           </MobileButton>
           { subredditMenu }
-        </div>
+        </div>,
       ];
     } else {
       content = <Loading />;
@@ -243,9 +243,6 @@ class TopNav extends React.Component {
     switch (str) {
       case 'hamburger':
         this.props.app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
-        break;
-      case 'search':
-        // TODO search
         break;
       case 'post':
         // TODO post
