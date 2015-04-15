@@ -4,17 +4,11 @@ import moment from 'moment';
 import VoteFactory from '../components/Vote';
 var Vote;
 
-import EllipsisIconFactory from '../components/EllipsisIcon';
-var EllipsisIcon;
-
 import CommentBoxFactory from '../components/CommentBox';
 var CommentBox;
 
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
-
-import GoldIconFactory from '../components/GoldIcon';
-var GoldIcon;
 
 import PlayIconFactory from '../components/PlayIcon';
 
@@ -144,7 +138,7 @@ class Comment extends React.Component {
             </a>
           </li>
           <li className='linkbar-spread-li-double comment-vote-container'>
-            <Vote 
+            <Vote
               app={app}
               thing={ this.props.comment }
               token={ this.props.token }
@@ -186,7 +180,7 @@ class Comment extends React.Component {
 
     if (comment.gilded) {
       gilded = (
-        <GoldIcon />
+        <span className='icon-gold-circled'/>
       );
     }
 
@@ -199,7 +193,7 @@ class Comment extends React.Component {
                 if (c) {
                   var key = 'page-comment-' + c.name + '-' + i;
 
-                  return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}  />;
+                  return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
                 }
               })
             }
@@ -242,7 +236,7 @@ class Comment extends React.Component {
             <div className={ `comment-body ${contentCollapseClass}` }>
               <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
                   __html: comment.body_html
-                }} 
+                }}
                 onClick={this.showTools.bind(this)} />
 
               <footer>
@@ -262,10 +256,8 @@ class Comment extends React.Component {
 
 function CommentFactory(app) {
   Vote = VoteFactory(app);
-  EllipsisIcon = EllipsisIconFactory(app);
   CommentBox = CommentBoxFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
-  GoldIcon = GoldIconFactory(app);
 
   return app.mutate('core/components/comment', Comment);
 }

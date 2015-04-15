@@ -25,8 +25,27 @@
 }
 
 .SVG-icon {
-  height: 16px;
-  width: 16px;
+  height: @icon-size;
+  width: @icon-size;
+}
+
+button, a {
+  .SVG-fill {
+    .transition(fill 0.2s);
+  }
+
+  .SVG-stroke {
+    .transition(stroke 0.2s);
+  }
+
+  &:hover {
+    .SVG-fill {
+      fill: @gray;
+    }
+    .SVG-stroke {
+      stroke: @gray;
+    }
+  }
 }
 
 .DownvoteIcon.altered .SVG-fill {
@@ -38,5 +57,5 @@
 }
 
 .GoldIcon.altered .SVG-fill {
-  fill: #d8c161;
+  fill: @gold;
 }

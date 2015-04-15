@@ -17,10 +17,55 @@ var livereload = require('gulp-livereload');
 var del = require('del');
 var sequence = require('gulp-sequence');
 
-var config = require('./src/config.es6.js').default;
+var config = require('./src/config.es6.js');
 
 var buildJS = require('./buildTasks/js');
 var buildLess = require('./buildTasks/less');
+
+var iconfont = require('gulp-iconfont');
+var consolidate = require('gulp-consolidate');
+
+var rename = require('gulp-rename');
+var print = require('gulp-print')
+
+gulp.task('icons', function(cb) {
+  var r = Math.random();
+  var assetPath = (config.assetPath || '..') + '/fonts/';
+
+  del([
+    'assets/fonts/**',
+  ], function() {
+    gulp.src(['assets/icons/*.svg'])
+      .pipe(iconfont({
+        fontName: 'icons', // required
+        appendCodepoints: false,
+        normalize: true,
+        fontHeight: 1000,
+    }))
+      .on('codepoints', function(codepoints, options) {
+        for (var i = 0, iLen = codepoints.length; i<iLen; i++) {
+          var item = codepoints[i];
+          item.codePoint = item.codepoint.toString(16);
+          item.fileName = item.name;
+        }
+        gulp.src('node_modules/gulp-iconfont-css/templates/_icons.less')
+          .pipe(consolidate('lodash', {
+            glyphs: codepoints,
+            fontName: 'icons-' + r,
+            fontPath: assetPath,
+            className: 's',
+          }))
+          .pipe(gulp.dest('assets/less'));
+      })
+      .pipe(rename({
+        suffix: '-' + r,
+      }))
+      .pipe(gulp.dest('assets/fonts/'))
+      .on('finish', function() {
+        cb();
+      })
+  });
+});
 
 gulp.task('less', buildLess(gulp, buildcss));
 gulp.task('js', buildJS(gulp, buildjs));
@@ -41,6 +86,9 @@ gulp.task('assets', function (cb) {
   gulp.src('./public/**/*')
     .pipe(gulp.dest('./build/'));
 
+  gulp.src('./assets/fonts/*')
+    .pipe(gulp.dest('./build/fonts/'));
+
   gulp.src('./lib/snooboots/dist/fonts/*')
     .pipe(gulp.dest('./build/fonts'));
 
@@ -59,4 +107,3 @@ gulp.task('live', function(cb) {
 gulp.task('default', sequence('clean', 'assets', ['prod-js', 'prod-less']));
 gulp.task('dev', sequence('clean', 'assets', ['js', 'less']));
 gulp.task('watch', sequence('watchless', 'watchjs'));
-

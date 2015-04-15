@@ -13,9 +13,6 @@ var Actions;
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
-import GoldIconFactory from '../components/GoldIcon';
-var GoldIcon;
-
 import PlayIconFactory from '../components/PlayIcon';
 var PlayIcon;
 
@@ -246,7 +243,7 @@ class Listing extends React.Component {
 
     if (listing.gilded && props.single) {
       gilded = (
-        <li><GoldIcon altered='true'/></li>
+        <li><span className='icon-gold-circled'/></li>
       );
     }
 
@@ -322,7 +319,6 @@ function ListingFactory(app) {
   Vote = VoteFactory(app);
   Actions = ActionsFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
-  GoldIcon = GoldIconFactory(app);
   PlayIcon = PlayIconFactory(app);
 
   return app.mutate('core/components/listing', Listing);

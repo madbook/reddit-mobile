@@ -18,3 +18,8 @@
        -o-transform: @output;
           transform: @output;
 }
+
+.icon-font(@rules) {
+  [class^="icon-"] {@rules();}
+  [class*=" icon-"] {@rules();}
+}

@@ -2,11 +2,13 @@
   max-width: @max-width;
   margin:0 auto;
 
-  .SVG-icon {
+  .icon-font({
     width: 25px;
     height: 25px;
     margin-right: 10px;
-  }
+    line-height: 25px;
+    font-size: 25px;
+  });
 }
 
   .UserProfile-ul {
@@ -18,11 +20,8 @@
       font-size: 18px;
       line-height: 25px;
       margin: 0 0 15px;
-
-      > .SVG-icon {
-        vertical-align: middle;
-      }
     }
+
 
       .UserProfile-trophies {
         margin-top: 15px;
@@ -33,9 +32,9 @@
           margin: 0 0 19px 35px;
           line-height: 14px;
 
-            .SVG-icon {
+            .icon-font({
               .pull-left;
-            }
+            });
         }
 
           .UserProfile-trophy-title {

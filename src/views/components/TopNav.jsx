@@ -20,8 +20,8 @@ var HamburgerIcon;
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
 
-import EllipsisIconFactory from '../components/EllipsisIcon';
-var EllipsisIcon;
+import SeashellIconFactory from '../components/SeashellIcon';
+var SeashellIcon;
 
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
@@ -111,7 +111,7 @@ class TopNav extends React.Component {
       if (props.subredditName) {
         var button = (
           <button className="TopNav-floaty TopNav-search">
-            <EllipsisIcon opened={ false } />
+            <SeashellIcon opened={ false } />
           </button>
         );
         subredditMenu = (
@@ -265,7 +265,7 @@ function TopNavFactory(app) {
   HamburgerIcon = HamburgerIconFactory(app);
   MobileButton = MobileButtonFactory(app);
   Logo = LogoFactory(app);
-  EllipsisIcon = EllipsisIconFactory(app);
+  SeashellIcon = SeashellIconFactory(app);
   Dropdown = DropdownFactory(app);
   Loading = LoadingFactory(app);
   SubredditAboutPage = SubredditAboutPageFactory(app);

@@ -36,7 +36,7 @@ class SnooIcon extends React.Component {
         <circle ref='rightEye' className='SVG-fill' cx='12.2' cy='11' r='1'/>
         <rect ref='upperEyelids' x='6.8' y='10' className='SVG-fill-bg' width='6.4' height='0'/>
         <rect ref='lowerEyelids' x='6.8' y='12' className='SVG-fill-bg' width='6.4' height='0'/>
-        <path ref='mouth' fill='none' className='SVG-stroke' strokeWidth='0.5' strokeLinecap='round' d='M7.818661,13.516961c0.555894,0.555903,1.668416,0.662864,2.204755,0.662864 c0.53634,0,1.648866-0.10696,2.205542-0.662864'/>
+        <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth='0.5' strokeLinecap='round' d='M7.9,13.222941c0.533333,0.378255,1.272026,0.610392,2.066666,0.610392 c0.794641,0,1.533334-0.232137,2.066668-0.610392'/>
       </SVG>
     );
   }
@@ -87,22 +87,22 @@ class SnooIcon extends React.Component {
   }
 
   tweenOn(callback) {
-    TweenLite.from(this.refs.face.getDOMNode(), 0.3, {transformOrigin:'50% 50%', scale:0});
 
     var BACK_BASE = 1.70158;
     var refs = this.refs;
     var nodes = [refs.rightEye, refs.leftEye, refs.rightEar, refs.leftEar];
     var timeline = new TimelineLite({onComplete:callback});
-    for(var i = 0, iLen = nodes.length; i < iLen; i++) {
+    timeline.add(TweenLite.from(this.refs.face.getDOMNode(), 0.3, {transformOrigin:'50% 50%', scale:0}));
+    var dur = timeline.duration();
+    for (var i = 0, iLen = nodes.length; i < iLen; i++) {
       var overshoot = MyMath.random(2);
-      timeline.add(TweenLite.from(nodes[i].getDOMNode(), (BACK_BASE + overshoot) * 0.2, {scale: 0, transformOrigin: '50% 50%', ease: Back.easeOut.config(BACK_BASE + overshoot)}), 0.3 + MyMath.random(0.4));
+      timeline.add(TweenLite.from(nodes[i].getDOMNode(), (BACK_BASE + overshoot) * 0.2, {scale: 0, transformOrigin: '50% 50%', ease: Back.easeOut.config(BACK_BASE + overshoot)}), 0.15 + MyMath.random(0.4));
       if (i === 1) {
         timeline.call(this.startBlinking, null, this, timeline.duration());
       }
     }
     var base = refs.base.getDOMNode();
     var stem = refs.stem.getDOMNode();
-    var dur = timeline.duration() - 0.4;
     timeline.add(TweenLite.from(base, 0.001, {strokeWidth: 0, autoRound: false}), dur);
     timeline.add(TweenLite.from(base, 0.2, {attr: {x2 :10, y2: 7.666667}, ease: Cubic.easeIn}), dur);
     dur += 0.2;
@@ -126,7 +126,7 @@ class SnooIcon extends React.Component {
     timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.15, {attr: {x2: 10, y2: 7.666667}, transformOrigin: '50% 50%', ease: Cubic.easeOut}));
     timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.001, {strokeWidth: 0, autoRound: false}));
 
-    for(var i = 0, iLen = nodes.length; i < iLen; i++) {
+    for (var i = 0, iLen = nodes.length; i < iLen; i++) {
       timeline.add(TweenLite.to(nodes[i].getDOMNode(), 0.3, {scale: 0, transformOrigin: '50% 50%', ease: Cubic.easeOut}), 0);
     }
     timeline.add(TweenLite.to(this.refs.mouth.getDOMNode(), 0.2, {drawSVG: 0, ease: Cubic.easeInOut}), 0);
