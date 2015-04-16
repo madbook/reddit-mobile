@@ -191,6 +191,7 @@ function routes(app) {
       subredditName: ctx.params.subreddit,
       after: ctx.query.after,
       before: ctx.query.before,
+      page: parseInt(ctx.query.page) || 0,
     });
 
     var data = {};

@@ -34,7 +34,8 @@ class SearchPage extends React.Component {
     return (data.subredditName ? `/r/${data.subredditName}` : '')
       + `/search?q=${data.query}`
       + (data.before ? `&before=${data.before}` : '')
-      + (data.after ? `&after=${data.after}` : '');
+      + (data.after ? `&after=${data.after}` : '')
+      + (data.page ? `&page=${data.page}` : '');
   }
 
   _generateUniqueKey() {
@@ -131,16 +132,23 @@ class SearchPage extends React.Component {
       var noResults = listings.length === 0;
       var subredditResultsOnly = !noResults && props.subredditName;
 
-      var prevUrl = (state.results.data.meta || {}).before ? this._composeUrl({
+      var page = props.page || 0;
+      var meta = state.results.data.meta || {};
+
+      // API is messed up, so we have to do our own detection for the prev..
+      var prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
         query: props.query,
         subredditName: props.subredditName,
-        before: state.results.data.meta.before
+        before: meta.before || listings[0].name,
+        page: page - 1
       }) : null;
 
-      var nextUrl = (state.results.data.meta || {}).after ? this._composeUrl({
+      // ..and of course for the next too :-\
+      var nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
         query: props.query,
         subredditName: props.subredditName,
-        after: state.results.data.meta.after
+        after: meta.after || listings[listings.length - 1].name,
+        page: page + 1
       }) : null;
 
       controls = [
@@ -181,8 +189,7 @@ class SearchPage extends React.Component {
                 return (
                   <li className="subreddits-list-item" key={ `search-subreddit-${idx}` }>
                     <a href={subreddit.url} title={subreddit.name}>
-                      <span>{subreddit.name}</span>
-                      <span className="count">({subreddit.count})</span>
+                      <span>{subreddit.name} <strong>({subreddit.count})</strong></span>
                     </a>
                   </li>
                 );
@@ -216,14 +223,17 @@ class SearchPage extends React.Component {
           <div className="row pageNav">
             <div className="col-xs-12">
               <p>
+                {
                 <a href={ prevUrl } className={ `btn btn-sm btn-primary ${prevUrl ? '' : 'hidden'}` } rel="prev">
                   <span className='glyphicon glyphicon-chevron-left'></span>
                   Previous Page
                 </a>
+                } {
                 <a href={ nextUrl } className={ `btn btn-sm btn-primary ${nextUrl ? '' : 'hidden'}` } rel="next">
                   Next Page
                   <span className='glyphicon glyphicon-chevron-right'></span>
                 </a>
+                }
               </p>
             </div>
           </div>

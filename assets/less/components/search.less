@@ -61,25 +61,27 @@
     display: block;
     margin: 10px 0;
     text-align: left;
+    white-space: nowrap;
 
-    img,
-    span {
+    > img,
+    > span {
       display: inline-block;
       vertical-align: middle;
     }
 
-    img {
+    > img {
       border-radius: 50%;
       height: 32px;
       margin-right: 10px;
       width: 32px;
     }
 
-    span {
+    > span {
       font-size: 1.15em;
+      white-space: normal;
+      width: 85%;
 
-      &.count {
-        font-weight: bold;
+      strong {
         margin-left: 5px;
       }
     }
