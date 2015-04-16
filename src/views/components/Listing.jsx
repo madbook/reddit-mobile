@@ -14,6 +14,7 @@ import PlayIconFactory from '../components/icons/PlayIcon';
 var PlayIcon;
 
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
+var gifMatch = /\.(?:gif)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 
 function isImgurDomain(domain) {
@@ -24,6 +25,7 @@ function gifToHTML5(url, config) {
   if (!url) {
     return;
   }
+
   if (url.indexOf('.gif') < 1) {
     return;
   }
@@ -66,6 +68,18 @@ class Listing extends React.Component {
     this.state = {
       expanded: this.props.expanded,
     };
+
+    if (typeof window !== 'undefined') {
+      var width = (
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth
+      );
+
+      this.state.windowWidth = width;
+    } else {
+      this.state.windowWidth = 800;
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -73,47 +87,72 @@ class Listing extends React.Component {
   }
 
   buildImage(data) {
+    var expanded = this.state.expanded || this.props.single;
     var ctx = this;
+
     var html5 = gifToHTML5(data.url, {
       https: ctx.props.https,
-      httpsProxy: ctx.props.httpsProxy
+      httpsProxy: ctx.props.httpsProxy,
     });
 
-    if (html5) {
-      var height = data.embed ? data.embed.height : 300;
 
-      if (html5.iframe) {
+    if (expanded) {
+      if (html5) {
+        var height = data.embed ? data.embed.height : 300;
+
+        if (html5.iframe) {
+          return (
+            <div className='ratio16x9'>
+              <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height }
+                sandbox='allow-scripts allow-forms allow-same-origin'
+                onError={ ctx.handleIFrameError.bind(ctx, data.fallbackUrl) }></iframe>
+            </div>
+          );
+        } else {
+          return (
+            <div className='ratio16x9'>
+              <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoPlay='true'>
+                <source type='video/webm' src={ html5.webm } />
+                <source type='video/mp4' src={ html5.mp4 } />
+              </video>
+            </div>
+          );
+        }
+      } else if (data.fixedRatio) {
         return (
           <div className='ratio16x9'>
-            <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height }
-                    sandbox='allow-scripts allow-forms allow-same-origin'
-                    onError={ ctx.handleIFrameError.bind(ctx, data.fallbackUrl) }></iframe>
-          </div>
-        );
-      } else {
-        return (
-          <div className='ratio16x9'>
-            <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoPlay='true'>
-              <source type='video/webm' src={ html5.webm } />
-              <source type='video/mp4' src={ html5.mp4 } />
-            </video>
+            <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
+              <PlayIcon/>
+            </div>
           </div>
         );
       }
-    } else if (data.fixedRatio) {
+    }
+
+    if (html5 && html5.poster) {
       return (
         <div className='ratio16x9'>
-          <div className='ratio16x9-child' style={ { backgroundImage: 'url(' + data.url + ')' } }>
+          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+html5.poster+')'} }>
             <PlayIcon/>
           </div>
         </div>
       );
-    } else {
+    }
+
+    if (data.isVideo) {
       return (
-        <img ref='img' src={ data.url } className='img-responsive img-preview'
-             onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
+        <div className='ratio16x9'>
+          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
+            <PlayIcon/>
+          </div>
+        </div>
       );
     }
+
+    return (
+      <img ref='img' src={ data.url } className='img-responsive img-preview'
+        onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
+    );
   }
 
   buildOver18() {
@@ -126,10 +165,52 @@ class Listing extends React.Component {
     );
   }
 
+  previewImageUrl(listing, expanded) {
+    if (!listing) { return; }
+
+    var image;
+    var width = this.state.windowWidth;
+
+    if (expanded && listing.url.match(imgMatch)) {
+      return listing.url;
+    }
+
+    if (listing.preview) {
+      var preview = listing.preview.images[0];
+
+      if (preview.resolutions) {
+        var previewImage = preview.resolutions
+                        .concat([ preview.source ])
+                        .sort((a, b) => {
+                          return a.width - b.width;
+                        })
+                        .find((r) => {
+                          return r.width >= width;
+                        });
+      }
+
+      if (previewImage) {
+        return previewImage.url;
+      } else {
+        return preview.source.url;
+      }
+    }
+
+    if (listing.media && listing.media.oembed) {
+      return listing.media.oembed.thumbnail_url;
+    }
+
+    if (listing.url.match(imgMatch)) {
+      return listing.url;
+    }
+  }
+
   buildContent() {
     var ctx = this;
     var props = this.props;
     var listing = props.listing;
+
+    var expanded = this.state.expanded || this.props.single;
 
     if (!listing) {
       return;
@@ -142,11 +223,11 @@ class Listing extends React.Component {
     var media = listing.media;
     var permalink = listing.cleanPermalink;
 
+    var preview = this.previewImageUrl(listing, expanded);
+
     if (this.isNSFW(listing) && !this.state.expanded) {
       return this.buildOver18();
     }
-
-    var expanded = this.state.expanded || this.state.single;
 
     if (media && media.oembed) {
       if (media.oembed.type === 'rich' || media.oembed.type === 'image') {
@@ -163,7 +244,8 @@ class Listing extends React.Component {
             <a href={ permalink }>
               {
                 this.buildImage({
-                  url: adjustUrlToAppProtocol(media.oembed.thumbnail_url, config),
+                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
+                  fallbackUrl: preview || media.oembed.thumbnail_url,
                   embed: media.oembed
                 })
               }
@@ -182,9 +264,11 @@ class Listing extends React.Component {
             <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
               {
                 this.buildImage({
-                  url: adjustUrlToAppProtocol(media.oembed.thumbnail_url, config),
+                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
+                  fallbackUrl: preview || media.oembed.thumbnai_url,
                   embed: media.oembed,
-                  fixedRatio: true
+                  fixedRatio: true,
+                  isVideo: true,
                 })
               }
             </a>
@@ -208,8 +292,9 @@ class Listing extends React.Component {
           <a href={ permalink }>
             {
               this.buildImage({
-                url: adjustUrlToAppProtocol(listing.url, config),
-                fallbackUrl: listing.url
+                url: adjustUrlToAppProtocol(preview || listing.url, config),
+                fallbackUrl: preview || listing.url,
+                isVideo: listing.url.match(gifMatch),
               })
             }
           </a>
@@ -232,7 +317,6 @@ class Listing extends React.Component {
     } else if (listing.domain.indexOf('self.') === 0) {
       return null;
     } else {
-
       return null;
     }
   }
@@ -282,6 +366,8 @@ class Listing extends React.Component {
     var titleLink = mobilify(listing.url);
     var isRemote = titleLink === listing.url;
     var when;
+
+    var expanded = this.state.expanded || this.props.single;
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -338,7 +424,8 @@ class Listing extends React.Component {
     }
 
     var extImageSource;
-    if (this.state.expanded || this.props.single) {
+
+    if (expanded) {
       var url = isImgurDomain(listing.domain) ? listing.url.replace(imgMatch, '') : listing.url;
       extImageSource = (
         <div className="external-image-meta">
