@@ -26,7 +26,6 @@ var iconfont = require('gulp-iconfont');
 var consolidate = require('gulp-consolidate');
 
 var rename = require('gulp-rename');
-var print = require('gulp-print')
 
 gulp.task('icons', function(cb) {
   var r = Math.random();
