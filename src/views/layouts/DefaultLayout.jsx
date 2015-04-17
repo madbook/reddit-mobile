@@ -9,12 +9,13 @@ class DefaultLayout extends React.Component {
   }
 
   render () {
+    var assetPath = this.props.assetPath;
+
+    var baseCSS = assetPath + '/css/';
+    var fancyCSS = assetPath + '/css/';
+    var clientJS = assetPath + '/js/';
+
     var liveReload;
-
-    var baseCSS = this.props.assetPath + '/css/';
-    var fancyCSS = this.props.assetPath + '/css/';
-    var clientJS = this.props.assetPath + '/js/';
-
     if (this.props.liveReload) {
       liveReload = (<LiveReload />);
     }
@@ -39,7 +40,13 @@ class DefaultLayout extends React.Component {
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />
 
-          <link rel='shortcut icon' href='/favicon.ico' />
+          <link href={ `${assetPath}/favicon/64x64.png` } rel="apple-touch-icon" />
+          <link href={ `${assetPath}/favicon/76x76.png` } rel="apple-touch-icon" sizes="76x76" />
+          <link href={ `${assetPath}/favicon/120x120.png` } rel="apple-touch-icon" sizes="120x120" />
+          <link href={ `${assetPath}/favicon/152x152.png` } rel="apple-touch-icon" sizes="152x152" />
+          <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
+          <link href={ `${assetPath}/favicon/192x192.png` } rel="icon shortcut" sizes="192x192" />
+          <link href={ `${assetPath}/favicon/128x128.png` } rel="icon shortcut" sizes="128x128" />
         </head>
         <body className='navbar-offcanvas-target'>
           <div id='app-container'>
