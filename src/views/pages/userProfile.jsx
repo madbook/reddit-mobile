@@ -31,7 +31,7 @@ class UserProfilePage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.props.userName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
   }
 
   componentDidUpdate() {

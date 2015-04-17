@@ -140,12 +140,14 @@ class TopNav extends React.Component {
       content = [
         <div className='pull-left TopNav-padding' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
-          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')} over={this._onMouseEnter.bind(this, 'hamburger')} out={this._onMouseLeave}>
+          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}
+                        over={this._onMouseEnter.bind(this, 'hamburger')} out={this._onMouseLeave}>
             <HamburgerIcon played={this.state.rollover === 'hamburger'} altered={this.state.sideNavOpen}/>
           </MobileButton>
           <h1 className='TopNav-text TopNav-floaty'>
             <span className='TopNavHeadline'>
-              <MobileButton className='TopNav-a' href={breadcrumbLink} over={this._onMouseEnter.bind(this, 'breadcrumb')} out={this._onMouseLeave}>
+              <MobileButton className='TopNav-a' href={ breadcrumbLink } out={this._onMouseLeave}
+                            over={this._onMouseEnter.bind(this, 'breadcrumb')}>
                 {breadcrumbContents}
               </MobileButton>
             </span>
