@@ -169,9 +169,9 @@ class SearchPage extends React.Component {
               state.subreddits.data.map(function (subreddit, idx) {
                 return (
                   <li className="subreddits-list-item" key={ `popular-subreddit-${idx}` }>
-                    <a href={subreddit.url} title={subreddit.title}>
-                      <img src={subreddit.header_img} alt="Subreddit logo" />
-                      <span>{subreddit.title}</span>
+                    <a href={subreddit.url} title={subreddit.title} className="subreddit-link">
+                      <img src={subreddit.header_img} alt="Subreddit logo" className="subreddit-logo" />
+                      <span className="subreddit-name">{subreddit.title}</span>
                     </a>
                   </li>
                 );
@@ -188,8 +188,8 @@ class SearchPage extends React.Component {
               subreddits.map(function (subreddit, idx) {
                 return (
                   <li className="subreddits-list-item" key={ `search-subreddit-${idx}` }>
-                    <a href={subreddit.url} title={subreddit.name}>
-                      <span>{subreddit.name} <strong>({subreddit.count})</strong></span>
+                    <a href={subreddit.url} title={subreddit.name} className="subreddit-link">
+                      <span className="subreddit-name">{subreddit.name} <strong>({subreddit.count})</strong></span>
                     </a>
                   </li>
                 );
