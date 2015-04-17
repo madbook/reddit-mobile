@@ -3,6 +3,7 @@
 
 var config = {
   https: process.env.HTTPS === 'true',
+  httpsProxy: process.env.HTTPS_PROXY === 'true',
 
   debug: process.env.SWITCHAROO_DEBUG === 'true',
   minifyAssets: process.env.MINIFY_ASSETS === 'true',

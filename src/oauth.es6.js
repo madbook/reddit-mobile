@@ -10,6 +10,7 @@ var oauthRoutes = function(app) {
   var cookieOptions = {
     signed: true,
     secure: app.getConfig('https'),
+    secureProxy: app.getConfig('httpsProxy'),
     httpOnly: true,
     maxAge: 1000 * 3000,
   };

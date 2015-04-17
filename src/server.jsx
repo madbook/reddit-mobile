@@ -107,6 +107,7 @@ class Server {
       var cookieOptions = {
         signed: true,
         secure: app.getConfig('https'),
+        secureProxy: app.getConfig('httpsProxy'),
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
       }
