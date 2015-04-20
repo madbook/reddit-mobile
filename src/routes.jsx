@@ -342,7 +342,6 @@ function routes(app) {
       after: ctx.query.after,
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
-      user: ctx.params.user,
       sort: sort,
     });
 

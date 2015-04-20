@@ -56,6 +56,8 @@ class UserActivityPage extends React.Component {
     var page = this.props.page || 0;
     var api = this.props.api;
     var token = this.props.token;
+
+    var app = this.props.app;
     var user = this.props.user;
 
     var activities = this.state.data.data || [];
@@ -63,8 +65,6 @@ class UserActivityPage extends React.Component {
     var subreddit = '';
 
     var sort = this.props.sort || 'hot';
-
-    var app = this.props.app;
 
     var userProfile = this.props.userProfile || {};
     var name = this.props.userName;
@@ -77,9 +77,11 @@ class UserActivityPage extends React.Component {
     }
 
     return (
-      <main className="user-activity">
+      <main className="user-page user-activity">
+        <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ this.props.activity }
+                            user={ user } loginPath={ this.props.loginPath } />
+
         { loading }
-        <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ this.props.activity }/>
 
         <div className='container listing-container'>
           {

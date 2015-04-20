@@ -102,6 +102,14 @@ class UserActivitySubnav extends React.Component {
     );
     var opened = this.state.opened;
 
+    // add user to the bar as well
+    var user = this.props.user;
+    if (user) {
+      var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
+    } else {
+      loginLink = <a className='TopSubnav-a' href={ this.props.loginPath } data-no-route='true'>Log in / Register</a>;
+    }
+
     return (
       <div className='TopSubnav'>
         <Dropdown app={ this.props.app } id={ this._id } button={ button } className='Dropdown-inline'>
@@ -128,6 +136,8 @@ class UserActivitySubnav extends React.Component {
           baseUrl={ this.buildUrl(baseUrl, this.state.activity) }
           className='Dropdown-inline'
         />
+
+        <div className='pull-right'>{ loginLink }</div>
       </div>
     );
   }

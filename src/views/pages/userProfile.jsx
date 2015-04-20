@@ -12,6 +12,9 @@ var UserProfile;
 import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
+import TopSubnavFactory from '../components/TopSubnav';
+var TopSubnav;
+
 class UserProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +49,9 @@ class UserProfilePage extends React.Component {
     var name = this.props.userName;
     var tracking;
 
+    var app = this.props.app;
+    var user = this.props.user;
+
     if (!this.state.loaded) {
       loading = (
         <Loading />
@@ -67,8 +73,11 @@ class UserProfilePage extends React.Component {
     }
 
     return (
-      <main>
+      <main className="user-page user-profile">
         { loading }
+
+        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+
         <div>
           { profile }
         </div>
@@ -118,6 +127,7 @@ function UserProfilePageFactory(app) {
   UserProfile = UserProfileFactory(app);
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
+  TopSubnav = TopSubnavFactory(app);
 
   return app.mutate('core/pages/userProfile', UserProfilePage);
 }

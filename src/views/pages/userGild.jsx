@@ -9,6 +9,9 @@ var Loading;
 import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
+import TopSubnavFactory from '../components/TopSubnav';
+var TopSubnav;
+
 class UserGildPage extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +49,7 @@ class UserGildPage extends React.Component {
 
     var api = this.props.api;
     var token = this.props.token;
+    var app = this.props.app;
     var user = this.props.user || {};
 
     //var userProfile = this.state.data.data || {};
@@ -57,8 +61,11 @@ class UserGildPage extends React.Component {
     }
 
     return (
-      <main>
+      <main className="user-page user-gild">
+        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+
         { loading }
+
         <div className='container'>
           <div className='well well-lg'>
             <p>Sorry, this isn’t ready yet!</p>
@@ -109,6 +116,7 @@ class UserGildPage extends React.Component {
 function UserGildPageFactory(app) {
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
+  TopSubnav = TopSubnavFactory(app);
 
   return app.mutate('core/pages/userGild', UserGildPage);
 }
