@@ -59,7 +59,12 @@ class Server {
     var server = koa();
     server.keys = config.keys;
 
-    server.use(session(server));
+    // tell koa-session what security settings to use for the session cookie
+    var sessionOptions = {
+        secure: config.https,
+        secureProxy: config.httpsProxy
+    };
+    server.use(session(server, sessionOptions));
     server.use(compress());
     server.use(bodyParser());
 
