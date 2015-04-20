@@ -130,7 +130,7 @@ class Server {
       this.set('X-Content-Type-Options', 'nosniff');
       this.set('X-XSS-Protection', '1; mode=block');
 
-      if (app.config.https) {
+      if (app.config.https || app.config.httpsProxy) {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       }
 
