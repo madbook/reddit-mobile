@@ -99,7 +99,7 @@ class ListingDropdown extends React.Component {
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave}>
+          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
             <SnooIcon/>
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </MobileButton>
