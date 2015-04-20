@@ -13,7 +13,7 @@ class ErrorPage extends React.Component {
     var link = this.props.referrer || '/';
 
     return (
-      <main>
+      <div>
         <div className='container'>
           <div className='row'>
             <div className='col-xs-12'>
@@ -22,7 +22,7 @@ class ErrorPage extends React.Component {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 

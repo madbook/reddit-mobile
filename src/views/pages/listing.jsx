@@ -117,7 +117,7 @@ class ListingPage extends React.Component {
 
 
     return (
-      <main className='listing-main'>
+      <div className='listing-main'>
         { loading }
         <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
         <div className='container' key='container'>
@@ -147,7 +147,7 @@ class ListingPage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

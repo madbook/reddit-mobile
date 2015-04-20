@@ -69,7 +69,7 @@ class SubredditAboutPage extends React.Component {
     }
 
     return (
-      <main className='subreddit-about-main'>
+      <div className='subreddit-about-main'>
         { loading }
 
         <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
@@ -79,7 +79,7 @@ class SubredditAboutPage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

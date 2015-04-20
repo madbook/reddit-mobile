@@ -7,7 +7,7 @@ class FAQPage extends React.Component {
 
   render () {
     return (
-      <main>
+      <div>
         <div className='container'>
           <div className='row'>
             <div className='col-xs-12'>
@@ -107,7 +107,7 @@ class FAQPage extends React.Component {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 

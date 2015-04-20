@@ -133,7 +133,7 @@ class IndexPage extends React.Component {
     }
 
     return (
-      <main>
+      <div>
         { loading }
 
         <TopSubnav app={ app } user={ user } sort={ sort } list='listings' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
@@ -172,7 +172,7 @@ class IndexPage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

@@ -73,7 +73,7 @@ class UserProfilePage extends React.Component {
     }
 
     return (
-      <main className="user-page user-profile">
+      <div className="user-page user-profile">
         { loading }
 
         <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
@@ -83,7 +83,7 @@ class UserProfilePage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

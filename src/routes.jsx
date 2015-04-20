@@ -83,6 +83,7 @@ function routes(app) {
       loginPath: app.getConfig('loginPath'),
       loid: ctx.loid,
       loidcreated: ctx.loidcreated,
+      showBetaBanner: ctx.showBetaBanner,
       user: ctx.user,
       token: ctx.token,
       csrf: ctx.csrf,

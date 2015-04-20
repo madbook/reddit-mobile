@@ -13,7 +13,7 @@ class LoginPage extends React.Component {
     }
 
     return (
-      <main>
+      <div>
         <div className='container'>
           <div className='row'>
             <div className='col-xs-12 col-sm-6'>
@@ -41,7 +41,7 @@ class LoginPage extends React.Component {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 

@@ -61,7 +61,7 @@ class UserGildPage extends React.Component {
     }
 
     return (
-      <main className="user-page user-gild">
+      <div className="user-page user-gild">
         <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
 
         { loading }
@@ -73,7 +73,7 @@ class UserGildPage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

@@ -277,7 +277,7 @@ class SearchPage extends React.Component {
     }
 
     return (
-      <main className='search-main'>
+      <div className='search-main'>
         <div className="container search-bar-container">
           <SearchBar {...this.props} inputChangedCallback={ this.handleInputChanged.bind(this) } />
         </div>
@@ -285,7 +285,7 @@ class SearchPage extends React.Component {
         { controls }
 
         { tracking }
-      </main>
+      </div>
     );
   }
 

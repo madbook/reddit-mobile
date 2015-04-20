@@ -139,6 +139,8 @@ class Server {
   }
 
   * modifyRequest (next) {
+    this.showBetaBanner = !this.cookies.get('hideBetaBanner');
+
     this.body = this.request.body;
 
     var user = this.cookies.get('user');

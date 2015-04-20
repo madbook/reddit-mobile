@@ -77,7 +77,7 @@ class UserActivityPage extends React.Component {
     }
 
     return (
-      <main className="user-page user-activity">
+      <div className="user-page user-activity">
         <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ this.props.activity }
                             user={ user } loginPath={ this.props.loginPath } />
 
@@ -118,7 +118,7 @@ class UserActivityPage extends React.Component {
         </div>
 
         { tracking }
-      </main>
+      </div>
     );
   }
 
