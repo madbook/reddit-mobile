@@ -1,5 +1,6 @@
 import React from 'react';
 import q from 'q';
+import querystring from 'querystring';
 import constants from '../../constants';
 
 import LoadingFactory from '../components/Loading';
@@ -10,6 +11,9 @@ var TrackingPixel;
 
 import SearchBarFactory from '../components/SearchBar';
 var SearchBar;
+
+import SearchSortSubnavFactory from '../components/SearchSortSubnav';
+var SearchSortSubnav;
 
 import ListingFactory from '../components/Listing';
 var Listing;
@@ -31,11 +35,32 @@ class SearchPage extends React.Component {
   }
 
   _composeUrl(data) {
-    return (data.subredditName ? `/r/${data.subredditName}` : '')
-      + `/search?q=${data.query}`
-      + (data.before ? `&before=${data.before}` : '')
-      + (data.after ? `&after=${data.after}` : '')
-      + (data.page ? `&page=${data.page}` : '');
+    var qs = { q: data.query };
+    if (data.after) { qs.after = data.after; }
+    if (data.before) { qs.before = data.before; }
+    if (data.page) { qs.page = data.page; }
+    if (data.sort) { qs.sort = data.sort; }
+    if (data.time) { qs.time = data.time; }
+
+    return (data.subredditName ? `/r/${data.subredditName}` : '') +
+      '/search?' + querystring.stringify(qs);
+  }
+
+  _composeSortingUrl(data) {
+    var props = this.props;
+    var qs = { q: props.query };
+    if (props.after) { qs.after = props.after; }
+    if (props.before) { qs.before = props.before; }
+    if (props.page) { qs.page = props.page; }
+
+    if (data.isSort) {
+      if (props.time) { qs.time = props.time; }
+    } else if (data.isTime) {
+      if (props.sort) { qs.sort = props.sort; }
+    }
+
+    return (props.subredditName ? `/r/${props.subredditName}` : '') +
+      '/search?' + querystring.stringify(qs);
   }
 
   _generateUniqueKey() {
@@ -140,7 +165,9 @@ class SearchPage extends React.Component {
         query: props.query,
         subredditName: props.subredditName,
         before: meta.before || listings[0].name,
-        page: page - 1
+        page: page - 1,
+        sort: props.sort,
+        time: props.time,
       }) : null;
 
       // ..and of course for the next too :-\
@@ -148,7 +175,9 @@ class SearchPage extends React.Component {
         query: props.query,
         subredditName: props.subredditName,
         after: meta.after || listings[listings.length - 1].name,
-        page: page + 1
+        page: page + 1,
+        sort: props.sort,
+        time: props.time,
       }) : null;
 
       controls = [
@@ -203,6 +232,8 @@ class SearchPage extends React.Component {
         <div className={ `container listings-container ${noResults ? 'hidden' : ''}` }
              ref="listings" key="search-listings">
           <h4 className="text-center">Posts</h4>
+          <SearchSortSubnav app={ app } sort={ props.sort } time={ props.time }
+                            composeSortingUrl={ this._composeSortingUrl.bind(this) } />
           {
             listings.map(function (listing, idx) {
               if (!listing.hidden) {
@@ -278,6 +309,8 @@ class SearchPage extends React.Component {
     options.query.before = props.before;
     options.query.after = props.after;
     options.query.subreddit = props.subredditName;
+    options.query.sort = props.sort;
+    options.query.t = props.time;
     options.query.include_facets = 'on';
     options.useCache = useCache;
 
@@ -331,6 +364,7 @@ function SearchPageFactory(app) {
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
   SearchBar = SearchBarFactory(app);
+  SearchSortSubnav = SearchSortSubnavFactory(app);
   Listing = ListingFactory(app);
 
   return app.mutate('core/pages/search', SearchPage);

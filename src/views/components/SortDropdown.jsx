@@ -33,6 +33,23 @@ var _LISTS = {
     {text: 'top', param: 'top'},
     {text: 'controversial', param: 'controversial'},
   ],
+
+  search: [
+    {text: 'relevance', param: 'relevance'},
+    {text: 'new', param: 'new'},
+    {text: 'hot', param: 'hot'},
+    {text: 'top', param: 'top'},
+    {text: 'comments', param: 'comments'},
+  ],
+
+  time: [
+    {text: 'all time', param: 'all'},
+    {text: 'past year', param: 'year'},
+    {text: 'past month', param: 'month'},
+    {text: 'past week', param: 'week'},
+    {text: 'past day', param: 'day'},
+    {text: 'past hour', param: 'hour'},
+  ],
 };
 
 class SortDropdown extends React.Component {
@@ -66,6 +83,7 @@ class SortDropdown extends React.Component {
 
     var sortTitle = titleCase(sort.text);
 
+    var sortParam = this.props.sortParam || 'sort';
     var opened = this.state.opened;
     var button = <button className={'twirly after' + (opened ? ' opened' : '')}>{sortTitle}</button>;
 
@@ -77,11 +95,11 @@ class SortDropdown extends React.Component {
 
             if (baseUrl.indexOf('?') === -1) {
               url += '?' + querystring.stringify({
-                sort: map.param.toLowerCase(),
+                [sortParam]: map.param.toLowerCase(),
               });
             } else {
               url += '&' + querystring.stringify({
-                sort: map.param.toLowerCase(),
+                [sortParam]: map.param.toLowerCase(),
               });
             }
 

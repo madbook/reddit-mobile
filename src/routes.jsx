@@ -192,6 +192,8 @@ function routes(app) {
       after: ctx.query.after,
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
+      sort: ctx.query.sort || 'relevance',
+      time: ctx.query.time || 'all',
     });
 
     var data = {};
