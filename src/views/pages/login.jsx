@@ -17,7 +17,7 @@ class LoginPage extends React.Component {
         <div className='container'>
           <div className='row'>
             <div className='col-xs-12 col-sm-6'>
-              <h1>Log in</h1>
+              <h1 className='title h4'>Log in</h1>
 
               <form action='/login' method='POST'>
                 <div className='form-group'>
@@ -34,6 +34,10 @@ class LoginPage extends React.Component {
 
                 <button type='submit' className='btn-post btn-block'>Log In</button>
               </form>
+
+              <p>
+                <a href='/register' data-no-route='true'>Don't have an account? Register!</a>
+              </p>
             </div>
           </div>
         </div>

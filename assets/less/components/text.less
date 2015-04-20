@@ -135,6 +135,11 @@ a.voted.text-downvote:focus,
   &:extend(.text-muted);
 }
 
+.text-link,
+.text-muted .text-link {
+  color: @link-color;
+}
+
 .logo-reddit {
   background: url('/img/snoo-32.png') center right no-repeat;
   width: 32px;
@@ -199,4 +204,10 @@ p {
 
 dd {
   margin-bottom: 1em;
+}
+
+.title {
+  color: @blue;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }

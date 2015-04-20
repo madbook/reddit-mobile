@@ -127,14 +127,7 @@ var oauthRoutes = function(app) {
     this.redirect(referer || '/');
   });
 
-
-  /*
-   * Only works with specific clients with specific trusted client IDs
-   * (`mobile_auth_allowed_clients` in reddit config.) If you aren't that,
-   * set the LOGIN_PATH env variable to nothing or '/oauth2/login' (default).
-   */
-  router.post('/login', function * () {
-    var ctx = this;
+  function login(username, password, ctx) {
     var id = uuid.v4();
     var endpoint = app.config.nonAuthAPIOrigin + '/api/fp/1/auth/access_token';
 
@@ -148,8 +141,8 @@ var oauthRoutes = function(app) {
 
     var data = {
       grant_type: 'password',
-      username: ctx.body.username,
-      password: ctx.body.password,
+      username: username,
+      password: password,
       device_id: id,
       duration: 'permanent',
     };
@@ -165,12 +158,12 @@ var oauthRoutes = function(app) {
         .send(data)
         .end((err, res) => {
           if (err || !res.ok) {
-            return resolve(ctx.redirect('/login?error=' + (res.status || 500)));
+            return resolve(res.status || 500);
           }
 
           /* temporary while api returns a `200` with an error in body */
           if (res.body.error) {
-            return resolve(ctx.redirect('/login?error=401'));
+            return resolve(401);
           }
 
           var token = OAuth2.accessToken.create(res.body);
@@ -186,11 +179,86 @@ var oauthRoutes = function(app) {
 
           app.V1Api(token.token.access_token).users.get(options).then(function(user) {
             ctx.cookies.set('user', JSON.stringify(user.data), cookieOptions);
-            return resolve(ctx.redirect('/'));
+            return resolve(200);
           }, function(e) {
-            return resolve(ctx.redirect('/login?error=500'));
+            return resolve(500);
           });
         });
+    });
+
+    return p;
+  }
+
+  /*
+   * Only works with specific clients with specific trusted client IDs
+   * (`mobile_auth_allowed_clients` in reddit config.) If you aren't that,
+   * set the LOGIN_PATH env variable to nothing or '/oauth2/login' (default).
+   */
+  router.post('/login', function * () {
+    var status = yield login(this.body.username, this.body.password, this);
+
+    if (status === 200) {
+      this.redirect('/');
+    } else {
+      this.redirect('/login?error=' + status);
+    }
+  });
+
+  router.post('/register', function * () {
+    var ctx = this;
+    var endpoint = app.config.nonAuthAPIOrigin + '/api/register';
+
+    var data = {
+      user: ctx.body.username,
+      passwd: ctx.body.password,
+      passwd2: ctx.body.password2,
+      api_type: 'json',
+    };
+
+    if (ctx.body.email) {
+      data.email = ctx.body.email;
+    }
+
+    if (ctx.body.newsletter === 'on') {
+      data.newsletter_subscribe = true;
+    }
+
+    if (ctx.body.password !== ctx.body.password2) {
+      return ctx.redirect('/register?error=PASSWORD_MATCH&message=passwords+do+not+match');
+    }
+
+    if (!ctx.body.email && ctx.body.newsletter === 'on') {
+      return ctx.redirect('/register?error=EMAIL_NEWSLETTER&message=please+enter+an+email+to+sign+up+for+the+newsletter');
+    }
+
+    var p = new Promise(function(resolve, reject) {
+      superagent
+        .post(endpoint)
+        .set({
+          'User-Agent': app.config.userAgent,
+        })
+        .type('form')
+        .send(data)
+        .end((err, res) => {
+          if (err || !res.ok) {
+            return resolve(ctx.redirect('/register?error=' + (res.status || 500)));
+          }
+
+          /* temporary while api returns a `200` with an error in body */
+          if (res.body.json.errors && res.body.json.errors[0]) {
+            var error = res.body.json.errors[0];
+            return resolve(ctx.redirect(`/register?error=${error[0]}&message=${error[1]}`));
+          }
+
+
+          login(data.user, data.passwd, ctx).then(function(status) {
+            if (status === 200) {
+              return resolve(ctx.redirect('/'));
+            } else {
+              return resolve(ctx.redirect('/login?error=' + status));
+            }
+          });
+      });
     });
 
     yield p;

@@ -40,6 +40,9 @@ var FAQPage;
 import LoginPageFactory from './views/pages/login';
 var LoginPage;
 
+import RegisterPageFactory from './views/pages/register';
+var RegisterPage;
+
 import LayoutFactory from './views/layouts/DefaultLayout';
 var Layout;
 
@@ -62,6 +65,7 @@ function routes(app) {
   ErrorPage = ErrorPageFactory(app);
   FAQPage = FAQPageFactory(app);
   LoginPage = LoginPageFactory(app);
+  RegisterPage = RegisterPageFactory(app);
   Layout = LayoutFactory(app);
   BodyLayout = BodyLayoutFactory(app);
   UserProfileNav = UserProfileNavFactory(app);
@@ -404,6 +408,29 @@ function routes(app) {
       var page = (
         <BodyLayout {...props} app={app}>
           <LoginPage {...props}/>
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  app.router.get('/register', function * () {
+    var ctx = this;
+
+    var props = buildProps(this, {
+      error: ctx.query.error,
+      message: ctx.query.message,
+    });
+
+    try {
+      var page = (
+        <BodyLayout {...props} app={app}>
+          <RegisterPage {...props}/>
         </BodyLayout>
       );
     } catch (e) {
