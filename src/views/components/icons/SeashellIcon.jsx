@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SVGFactory from '../components/SVG';
+import SVGFactory from '../../components/SVG';
 var SVG;
 
 const _CENTER = 10;
@@ -16,7 +16,7 @@ class SeashellIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={20} height={20} fallbackText='menu'>
+      <SVG width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-seashells'>
         <g className='SVG-fill'>
           <circle ref="one" cx={_CENTER - _DIST} cy={_CENTER} r={_DIAMETER}/>
           <circle cx={_CENTER} cy={_CENTER} r={_DIAMETER}/>
@@ -64,7 +64,7 @@ SeashellIcon.defaultProps = {
 
 function SeashellIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/SeashellIcon', SeashellIcon);
+  return app.mutate('core/components/icons/SeashellIcon', SeashellIcon);
 }
 
 export default SeashellIconFactory;

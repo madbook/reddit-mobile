@@ -1,9 +1,9 @@
 import React from 'react';
 
-import RIconFactory from '../components/RIcon';
+import RIconFactory from '../components/icons/RIcon';
 var RIcon;
 
-import SnooIconFactory from '../components/SnooIcon';
+import SnooIconFactory from '../components/icons/SnooIcon';
 var SnooIcon;
 
 class Loading extends React.Component {

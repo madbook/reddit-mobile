@@ -1,28 +1,28 @@
 import React from 'react';
 import constants from '../../constants';
 
-import SeashellIconFactory from '../components/SeashellIcon';
+import SeashellIconFactory from '../components/icons/SeashellIcon';
 var SeashellIcon;
 
-import UpvoteIconFactory from '../components/UpvoteIcon';
+import UpvoteIconFactory from '../components/icons/UpvoteIcon';
 var UpvoteIcon;
 
-import DownvoteIconFactory from '../components/DownvoteIcon';
+import DownvoteIconFactory from '../components/icons/DownvoteIcon';
 var DownvoteIcon;
 
-import GoldIconFactory from '../components/GoldIcon';
+import GoldIconFactory from '../components/icons/GoldIcon';
 var GoldIcon;
 
-import CommentIconFactory from '../components/CommentIcon';
+import CommentIconFactory from '../components/icons/CommentIcon';
 var CommentIcon;
 
-import SaveIconFactory from '../components/SaveIcon';
+import SaveIconFactory from '../components/icons/SaveIcon';
 var SaveIcon;
 
-import FlagIconFactory from '../components/FlagIcon';
+import FlagIconFactory from '../components/icons/FlagIcon';
 var FlagIcon;
 
-import ShareIconFactory from '../components/ShareIcon';
+import ShareIconFactory from '../components/icons/ShareIcon';
 var ShareIcon;
 
 import VoteFactory from '../components/Vote';
@@ -31,10 +31,10 @@ var Vote;
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
 
-import SnooIconFactory from '../components/SnooIcon';
+import SnooIconFactory from '../components/icons/SnooIcon';
 var SnooIcon;
 
-import InfoIconFactory from '../components/InfoIcon';
+import InfoIconFactory from '../components/icons/InfoIcon';
 var InfoIcon;
 
 import DropdownFactory from '../components/Dropdown';
@@ -45,7 +45,6 @@ class ListingDropdown extends React.Component {
     super(props);
 
     this.state = {
-      rollover: '',
       opened: false,
     };
 
@@ -62,10 +61,14 @@ class ListingDropdown extends React.Component {
     this._onOpen = this._onOpen.bind(this);
     this._id = Math.random();
     this._onVote = this._onVote.bind(this);
-    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
   render() {
+    if (this.state.localScore > 0) {
+      var voteClass = ' upvoted';
+    } else if (this.state.localScore < 0) {
+      voteClass = ' downvoted';
+    }
     var opened = this.state.opened;
     var listing = this.props.listing;
     var button = <button><SeashellIcon played={opened} /></button>;
@@ -74,8 +77,8 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='1'/>
-            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave}>
-              <UpvoteIcon played={this.state.rollover === 'upvote'} altered={this.state.localScore > 0}/>
+            <MobileButton className={'Dropdown-button' + voteClass} type='submit' onClick={this._onClick.bind(this, 'upvote')}>
+              <UpvoteIcon altered={this.state.localScore > 0}/>
               <span className='Dropdown-text'>Upvote</span>
             </MobileButton>
           </form>
@@ -83,27 +86,27 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='-1'/>
-            <MobileButton className='Dropdown-button' type='submit' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave}>
-              <DownvoteIcon played={this.state.rollover === 'downvote'} altered={this.state.localScore < 0}/>
+            <MobileButton className={'Dropdown-button' + voteClass} type='submit' onClick={this._onClick.bind(this, 'downvote')}>
+              <DownvoteIcon altered={this.state.localScore < 0}/>
               <span className='Dropdown-text'>Downvote</span>
             </MobileButton>
           </form>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={listing.permalink} over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave}>
-            <CommentIcon played={this.state.rollover === 'post'}/>
+          <MobileButton className='Dropdown-button' href={listing.permalink}>
+            <CommentIcon/>
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave}>
-            <SnooIcon played={this.state.rollover ==='more'}/>
+            <SnooIcon/>
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/u/' + listing.author } over={this._onMouseEnter.bind(this, 'about')} out={this._onMouseLeave}>
-            <InfoIcon played={this.state.rollover ==='about'}/>
+          <MobileButton className='Dropdown-button' href={ '/u/' + listing.author }>
+            <InfoIcon/>
             <span className='Dropdown-text'>About { listing.author }</span>
           </MobileButton>
         </li>
@@ -149,14 +152,6 @@ class ListingDropdown extends React.Component {
   _onVote(dir) {
     var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
     this.setState({localScore: localScore});
-  }
-
-  _onMouseEnter(str) {
-    this.setState({rollover: str});
-  }
-
-  _onMouseLeave() {
-    this.setState({rollover: ''});
   }
 
   _onOpen(bool) {

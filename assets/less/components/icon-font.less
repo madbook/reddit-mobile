@@ -9,6 +9,26 @@
   }
 });
 
+button, a {
+  &.hover {
+    .icon-font({
+      color: @gray;
+    });
+  }
+}
+
 .icon-gold:before, .icon-gold-circled:before {
   color: @gold;
+}
+
+.downvoted {
+  .icon-downvote, .icon-downvote-circled {
+    color: @periwinkle;
+  }
+}
+
+.upvoted {
+  .icon-upvote, .icon-upvote-circled {
+    color: @orangered;
+  }
 }

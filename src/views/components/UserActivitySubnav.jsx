@@ -8,7 +8,7 @@ var SortDropdown;
 import DropdownFactory from '../components/Dropdown';
 var Dropdown;
 
-import CheckmarkIconFactory from '../components/CheckmarkIcon';
+import CheckmarkIconFactory from '../components/icons/CheckmarkIcon';
 var CheckmarkIcon;
 
 class UserActivitySubnav extends React.Component {

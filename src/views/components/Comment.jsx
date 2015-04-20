@@ -10,7 +10,7 @@ var CommentBox;
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
-import PlayIconFactory from '../components/PlayIcon';
+import PlayIconFactory from '../components/icons/PlayIcon';
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';

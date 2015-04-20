@@ -1,8 +1,8 @@
 import React from 'react';
-import MyMath from '../../lib/danehansen/MyMath';
-import DrawSVGPlugin from '../../lib/greensock/plugins/DrawSVGPlugin.min.js';
+import MyMath from '../../../lib/danehansen/MyMath';
+import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
-import SVGFactory from '../components/SVG';
+import SVGFactory from '../../components/SVG';
 var SVG;
 
 
@@ -22,21 +22,23 @@ class SnooIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon SnooIcon' width={20} height={20} fallbackText='comment'>
+      <SVG className='SVG-icon SnooIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-snoo-circled'>
         <circle className='SVG-fill' cx='10' cy='10' r='10'/>
-        <path ref='face' className='SVG-fill-bg' d='M15.333333,11.499898c0-2.113655-2.392639-3.833231-5.333565-3.833231 c-2.940686,0-5.333102,1.719576-5.333102,3.833231c0,2.113753,2.392416,3.833435,5.333102,3.833435 C12.940694,15.333333,15.333333,13.613651,15.333333,11.499898z'/>
-        <circle ref='dingleberry' className='SVG-fill-bg' cx='14.166199' cy='5' r='1'/>
-        <g fill='none' className='SVG-stroke-bg' strokeWidth='0.466667' strokeLinecap='round'>
-          <line ref='stem' x1='14.166667' y1='5.012208' x2='10.756104' y2='4.256104'/>
-          <line ref='base' x1='10' y1='7.666667' x2='10.756104' y2='4.256104'/>
+        <g ref='all'>
+          <path ref='face' className='SVG-fill-bg' d='M15.333333,11.499898c0-2.113655-2.392639-3.833231-5.333565-3.833231 c-2.940686,0-5.333102,1.719576-5.333102,3.833231c0,2.113753,2.392416,3.833435,5.333102,3.833435 C12.940694,15.333333,15.333333,13.613651,15.333333,11.499898z'/>
+          <circle ref='dingleberry' className='SVG-fill-bg' cx='14.166199' cy='5' r='1'/>
+          <g fill='none' className='SVG-stroke-bg' strokeWidth='0.466667' strokeLinecap='round'>
+            <line ref='stem' x1='14.166667' y1='5.012208' x2='10.756104' y2='4.256104'/>
+            <line ref='base' x1='10' y1='7.666667' x2='10.756104' y2='4.256104'/>
+          </g>
+          <circle ref='leftEar' className='SVG-fill-bg' cx='5.333431' cy='9.6668' r='1.3335'/>
+          <circle ref='rightEar' className='SVG-fill-bg' cx='14.666443' cy='9.6668' r='1.3335'/>
+          <circle ref='leftEye' className='SVG-fill' cx='7.8' cy='11' r='1'/>
+          <circle ref='rightEye' className='SVG-fill' cx='12.2' cy='11' r='1'/>
+          <rect ref='upperEyelids' x='6.8' y='10' className='SVG-fill-bg' width='6.4' height='0'/>
+          <rect ref='lowerEyelids' x='6.8' y='12' className='SVG-fill-bg' width='6.4' height='0'/>
+          <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth='0.5' strokeLinecap='round' d='M7.9,13.222941c0.533333,0.378255,1.272026,0.610392,2.066666,0.610392 c0.794641,0,1.533334-0.232137,2.066668-0.610392'/>
         </g>
-        <circle ref='leftEar' className='SVG-fill-bg' cx='5.333431' cy='9.6668' r='1.3335'/>
-        <circle ref='rightEar' className='SVG-fill-bg' cx='14.666443' cy='9.6668' r='1.3335'/>
-        <circle ref='leftEye' className='SVG-fill' cx='7.8' cy='11' r='1'/>
-        <circle ref='rightEye' className='SVG-fill' cx='12.2' cy='11' r='1'/>
-        <rect ref='upperEyelids' x='6.8' y='10' className='SVG-fill-bg' width='6.4' height='0'/>
-        <rect ref='lowerEyelids' x='6.8' y='12' className='SVG-fill-bg' width='6.4' height='0'/>
-        <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth='0.5' strokeLinecap='round' d='M7.9,13.222941c0.533333,0.378255,1.272026,0.610392,2.066666,0.610392 c0.794641,0,1.533334-0.232137,2.066668-0.610392'/>
       </SVG>
     );
   }
@@ -57,19 +59,19 @@ class SnooIcon extends React.Component {
     this._mounted = false;
   }
 
-  _play(bool) {
-    //TODO
+  _play(bool, instant) {
+    TweenLite.to(this.refs.all.getDOMNode(), instant ? 0 : 0.4, {scale: bool ? 1.2 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
   }
 
   startBlinking() {
-    if(this._mounted) {
+    if (this._mounted) {
       this._blinkable = true;
       this._blink();
     }
   }
 
   _blink() {
-    if(this._blinkable && this._mounted) {
+    if (this._blinkable && this._mounted) {
       var upper = this.refs.upperEyelids.getDOMNode();
       var lower = this.refs.lowerEyelids.getDOMNode();
       var timeline = new TimelineLite({onComplete: this._blinkTimeout});
@@ -139,7 +141,7 @@ SnooIcon.defaultProps = {
 
 function SnooIconFactory(app) {
   SVG = SVGFactory(app);
-  return app.mutate('core/components/SnooIcon', SnooIcon);
+  return app.mutate('core/components/icons/SnooIcon', SnooIcon);
 }
 
 export default SnooIconFactory;

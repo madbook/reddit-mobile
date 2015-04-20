@@ -2,9 +2,9 @@ import React from 'react';
 import { models } from 'snoode';
 import constants from '../../constants';
 
-import UpvoteIconFactory from '../components/UpvoteIcon';
+import UpvoteIconFactory from '../components/icons/UpvoteIcon';
 var UpvoteIcon;
-import DownvoteIconFactory from '../components/DownvoteIcon';
+import DownvoteIconFactory from '../components/icons/DownvoteIcon';
 var DownvoteIcon;
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
@@ -17,7 +17,6 @@ class Vote extends React.Component {
 
     this.state = {
       score: this._score,
-      rollover: '',
     };
 
     var likes = props.thing.likes;
@@ -31,7 +30,6 @@ class Vote extends React.Component {
     }
 
     this._onVote = this._onVote.bind(this);
-    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -85,24 +83,22 @@ class Vote extends React.Component {
     this.props.api.votes.post(options);
   }
 
-  _onMouseEnter(str) {
-    this.setState({rollover: str});
-  }
-
-  _onMouseLeave() {
-    this.setState({rollover: ''});
-  }
-
   render() {
+    if (this.state.localScore > 0) {
+      var voteClass = ' upvoted';
+    } else if (this.state.localScore < 0) {
+      voteClass = ' downvoted';
+    }
+
     return (
         <ul className='linkbar linkbar-compact'>
           <li>
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='1'/>
               <MobileButton type='submit'
-                className={'vote text-muted'} data-vote='up' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={this._onClick.bind(this, 'upvote')} over={this._onMouseEnter.bind(this, 'upvote')} out={this._onMouseLeave}>
-                <UpvoteIcon played={this.state.rollover === 'upvote'} altered={this.state.localScore > 0} />
+                className={'vote text-muted' + voteClass} data-vote='up' data-thingid={ this.props.thing.name }
+                data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
+                <UpvoteIcon altered={this.state.localScore > 0} />
               </MobileButton>
             </form>
           </li>
@@ -115,9 +111,9 @@ class Vote extends React.Component {
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='-1'/>
               <MobileButton type='submit'
-                className={'vote text-muted'} data-vote='down' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={this._onClick.bind(this, 'downvote')} over={this._onMouseEnter.bind(this, 'downvote')} out={this._onMouseLeave}>
-                <DownvoteIcon played={this.state.rollover === 'downvote'} altered={this.state.localScore < 0}/>
+                className={'vote text-muted' + voteClass} data-vote='down' data-thingid={ this.props.thing.name }
+                data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
+                <DownvoteIcon altered={this.state.localScore < 0}/>
               </MobileButton>
             </form>
           </li>
