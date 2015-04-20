@@ -217,13 +217,11 @@ class Comment extends React.Component {
 
                     { authorFlair }
 
-                    <span className='comment-timestamp'>
-                      { submitted }
-                    </span>
                     { gilded }
                   </li>
-                  <li className='comment-title-score'>
-                    { this.props.comment.score }
+                  <li className='comment-timestamp-score'>
+                    <span className='comment-timestamp'>{ submitted }</span>
+                    <span className='comment-title-score'>{ this.props.comment.score }</span>
                   </li>
                 </ul>
               </a>

@@ -38,7 +38,7 @@
   padding-left: .5em;
 
   &.comment-highlighted {
-    background-color: @brand-primary-bg-lightest;
+    background-color: darken(@brand-primary-bg-lightest, 2.5%);
   }
 }
 
@@ -55,9 +55,17 @@
   padding: 15px 0;
 }
 
-.comment-title-score {
+.comment-timestamp-score {
   float: right;
-  color: @light-gray;
+}
+
+.comment-timestamp,
+.comment-title-score {
+  color: darken(@light-gray, 20%);
+}
+
+.comment-timestamp {
+  margin-right: 1em;
 }
 
 .comment-title-vote-icon.glyphicon {
@@ -138,11 +146,6 @@
       visibility: visible;
     }
   }
-}
-
-.comment-timestamp {
-  color: @light-gray;
-  margin-left: 1em;
 }
 
 .share-icon {
