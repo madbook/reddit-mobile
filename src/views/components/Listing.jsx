@@ -7,9 +7,6 @@ import mobilify from '../../lib/mobilify';
 import VoteFactory from '../components/Vote';
 var Vote;
 
-import ActionsFactory from '../components/Actions';
-var Actions;
-
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
@@ -324,7 +321,6 @@ class Listing extends React.Component {
 
 function ListingFactory(app) {
   Vote = VoteFactory(app);
-  Actions = ActionsFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
   PlayIcon = PlayIconFactory(app);
 

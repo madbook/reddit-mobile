@@ -132,11 +132,6 @@ class Comment extends React.Component {
               <i className={`share-icon glyphicon glyphicon-share-alt text-mirror ${activeShareClass} encircle-icon`}></i>
             </a>
           </li>
-          <li>
-            <a href='#' onClick={this.favorite.bind(this)}>
-              <i className={`favorite-icon glyphicon glyphicon-plus encircle-icon ${activeFavoriteClass}`}></i>
-            </a>
-          </li>
           <li className='linkbar-spread-li-double comment-vote-container'>
             <Vote
               app={app}

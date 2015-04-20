@@ -96,30 +96,6 @@ class ListingDropdown extends React.Component {
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'save')} over={this._onMouseEnter.bind(this, 'save')} out={this._onMouseLeave}>
-            <SaveIcon played={this.state.rollover === 'save'}/>
-            <span className='Dropdown-text'>Save</span>
-          </MobileButton>
-        </li>
-        <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'gold')} over={this._onMouseEnter.bind(this, 'gold')} out={this._onMouseLeave}>
-            <GoldIcon played={this.state.rollover === 'gold'}/>
-            <span className='Dropdown-text'>Give gold</span>
-          </MobileButton>
-        </li>
-        <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'report')} over={this._onMouseEnter.bind(this, 'report')} out={this._onMouseLeave}>
-            <FlagIcon played={this.state.rollover === 'report'}/>
-            <span className='Dropdown-text'>Report</span>
-          </MobileButton>
-        </li>
-        <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={this._onClick.bind(this, 'share')} over={this._onMouseEnter.bind(this, 'share')} out={this._onMouseLeave}>
-            <ShareIcon played={this.state.rollover ==='share'}/>
-            <span className='Dropdown-text'>Share</span>
-          </MobileButton>
-        </li>
-        <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit } over={this._onMouseEnter.bind(this, 'more')} out={this._onMouseLeave}>
             <SnooIcon played={this.state.rollover ==='more'}/>
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>

@@ -154,9 +154,6 @@ class TopNav extends React.Component {
           </h1>
         </div>,
         <div className='pull-right TopNav-padding' key='topnav-actions'>
-          <MobileButton className='TopNav-floaty TopNav-post' over={this._onMouseEnter.bind(this, 'post')} out={this._onMouseLeave} onClick={this._onClick.bind(this, 'post')}>
-            <PostIcon played={this.state.rollover === 'post'}/>
-          </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }
                         over={this._onMouseEnter.bind(this, 'search')} out={this._onMouseLeave}>
             <SearchIcon played={this.state.rollover === 'search'}/>
