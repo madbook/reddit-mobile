@@ -77,6 +77,7 @@ function routes(app) {
       title: 'reddit: the front page of the internet',
       liveReload: app.getConfig('liveReload') === 'true',
       env: app.getConfig('env'),
+      reddit: app.getConfig('reddit'),
       minifyAssets: app.getConfig('minifyAssets'),
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),

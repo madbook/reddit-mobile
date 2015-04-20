@@ -30,12 +30,21 @@ class DefaultLayout extends React.Component {
       clientJS += 'client.js';
     }
 
+    var canonical;
+
+    if (this.props.url) {
+      canonical = (
+        <link rel='canonical' href={ `${this.props.reddit}${this.props.url}` } />
+      );
+    }
+
     return (
       <html>
         <head>
           <title>{ this.props.title }</title>
           <link href={ baseCSS } rel='stylesheet' />
           <link href={ fancyCSS } rel='stylesheet' media='screen' />
+          { canonical }
 
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />

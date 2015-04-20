@@ -19,6 +19,8 @@ var config = {
   nonAuthAPIOrigin: process.env.NON_AUTH_API_ORIGIN || 'https://ssl.reddit.com',
   authAPIOrigin: process.env.AUTH_API_ORIGIN || 'https://oauth.reddit.com',
 
+  reddit: process.env.REDDIT || 'https://www.reddit.com',
+
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
 
