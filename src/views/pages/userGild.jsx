@@ -38,7 +38,7 @@ class UserGildPage extends React.Component {
   render() {
     var loading;
 
-    if (this.state.userProfile === undefined) {
+    if (!this.state.loaded) {
       loading = (
         <Loading />
       );
@@ -48,8 +48,8 @@ class UserGildPage extends React.Component {
     var token = this.props.token;
     var user = this.props.user || {};
 
-    var userProfile = this.state.data.data || {};
-    var name = this.props.userName;
+    //var userProfile = this.state.data.data || {};
+    //var name = this.props.userName;
     var tracking;
 
     if (this.state.data.meta && this.props.renderTracking) {
