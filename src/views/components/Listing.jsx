@@ -16,6 +16,10 @@ var PlayIcon;
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 
+function isImgurDomain(domain) {
+  return (domain || '').indexOf('imgur.com') >= 0;
+}
+
 function gifToHTML5(url) {
   if (!url) {
     return;
@@ -262,9 +266,20 @@ class Listing extends React.Component {
 
     var app = this.props.app;
     var buildContent = this.buildContent();
-
     if (buildContent) {
       var stalactite = <div className='stalactite'/>;
+    }
+
+    var extImageSource;
+    if (this.state.expanded || this.props.single) {
+      var url = isImgurDomain(listing.domain) ? listing.url.replace(imgMatch, '') : listing.url;
+      extImageSource = (
+        <div className="external-image-meta">
+          <span>{listing.domain}</span>
+          <span> | </span>
+          <a href={url} data-no-route="true">{url}</a>
+        </div>
+      );
     }
 
     return (
@@ -314,6 +329,8 @@ class Listing extends React.Component {
 
           { buildContent }
         </div>
+
+        { extImageSource }
       </article>
     );
   }
