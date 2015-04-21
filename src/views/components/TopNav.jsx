@@ -41,9 +41,14 @@ var InfoIcon;
 import TextIconFactory from '../components/icons/TextIcon';
 var TextIcon;
 
+import SnooIconFactory from '../components/icons/SnooIcon';
+var SnooIcon;
+
 function shorten(text, len) {
-  if (text.length > 15) {
-    text = text.substr(0, Math.min(13, len-2)) + '…';
+  if (text.length > 17) {
+    text = text.substr(2, Math.min(15, len-2)) + '…';
+  } else {
+    text = text.substr(2);
   }
 
   return text;
@@ -100,76 +105,71 @@ class TopNav extends React.Component {
 
   render() {
     var props = this.props;
-    var content = null;
+    var subredditName = shorten(this.state.subredditName || '', 20);
 
-    if (this.state.loaded) {
-      var subredditName = shorten(this.state.subredditName || '', 20);
+    if (subredditName) {
+      var breadcrumbLink = '/' + this.state.subredditName;
+      var breadcrumbContents = subredditName;
+    } else {
+      breadcrumbLink = '/';
+      breadcrumbContents = <Logo/>;
+    }
 
-      if (subredditName) {
-        var breadcrumbLink = '/' + this.state.subredditName;
-        var breadcrumbContents = subredditName;
-      } else {
-        breadcrumbLink = '/';
-        breadcrumbContents = <Logo/>;
-      }
+    var subredditMenu = null;
+    if (props.subredditName) {
+      subredditMenu = (
+        <SeashellsDropdown app={ props.app } right={ true }>
+          <li className='Dropdown-li'>
+            <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
+              <InfoIcon/>
+              <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
+            </MobileButton>
+          </li>
+          <li className='Dropdown-li'>
+            <MobileButton className='Dropdown-button' href={ `${props.reddit}/r/${props.subredditName}/wiki` }
+                          data-no-route='true'>
+              <TextIcon/>
+              <span className='Dropdown-text'>Wiki</span>
+            </MobileButton>
+          </li>
+          <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
+            <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
+              <SaveIcon altered={this.state.userIsSubscribed}/>
+              <span className='Dropdown-text'>
+                { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
+              </span>
+            </MobileButton>
+          </li>
+        </SeashellsDropdown>
+      );
+    }
 
-      var subredditMenu = null;
-      if (props.subredditName) {
-        subredditMenu = (
-          <SeashellsDropdown app={ props.app } right={ true }>
-            <li className='Dropdown-li'>
-              <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
-                <InfoIcon/>
-                <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
-              </MobileButton>
-            </li>
-            <li className='Dropdown-li'>
-              <MobileButton className='Dropdown-button' href={ `${props.reddit}/r/${props.subredditName}/wiki` }
-                            data-no-route='true'>
-                <TextIcon/>
-                <span className='Dropdown-text'>Wiki</span>
-              </MobileButton>
-            </li>
-            <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
-              <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
-                <SaveIcon altered={this.state.userIsSubscribed}/>
-                <span className='Dropdown-text'>
-                  { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
-                </span>
-              </MobileButton>
-            </li>
-          </SeashellsDropdown>
-        );
-      }
-
-      content = [
-        <div className='pull-left TopNav-padding' key='topnav-menu'>
-          <div className='TopNav-beta'>beta</div>
-          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
-            <HamburgerIcon altered={this.state.sideNavOpen}/>
+    return (
+      <nav className='TopNav shadow'>
+        <div className='TopNav-centered'>
+          <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
+            <SnooIcon/>
           </MobileButton>
-          <h1 className='TopNav-text TopNav-floaty'>
-            <span className='TopNavHeadline'>
+          <h1 className='TopNav-text TopNav-padding'>
+            <span className='TopNav-headline'>
               <MobileButton className='TopNav-a' href={breadcrumbLink}>
                 {breadcrumbContents}
               </MobileButton>
             </span>
           </h1>
-        </div>,
-        <div className='pull-right TopNav-padding' key='topnav-actions'>
+        </div>
+        <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
+          <div className='TopNav-beta'>beta</div>
+          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
+            <HamburgerIcon altered={this.state.sideNavOpen}/>
+          </MobileButton>
+        </div>
+        <div className='pull-right TopNav-padding TopNav-right' key='topnav-actions'>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <SearchIcon/>
           </MobileButton>
           { subredditMenu }
-        </div>,
-      ];
-    } else {
-      content = <Loading />;
-    }
-
-    return (
-      <nav className='TopNav shadow'>
-        { content }
+        </div>
       </nav>
    );
   }
@@ -258,6 +258,7 @@ function TopNavFactory(app) {
   Logo = LogoFactory(app);
   SeashellIcon = SeashellIconFactory(app);
   SaveIcon = SaveIconFactory(app);
+  SnooIcon = SnooIconFactory(app);
   TextIcon = TextIconFactory(app);
   SeashellsDropdown = SeashellsDropdownFactory(app);
   Loading = LoadingFactory(app);
