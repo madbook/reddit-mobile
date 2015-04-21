@@ -63,6 +63,7 @@ class Server {
         secure: config.https,
         secureProxy: config.httpsProxy
     };
+
     server.use(session(server, sessionOptions));
     server.use(compress());
     server.use(bodyParser());

@@ -28,6 +28,24 @@ var failedProcesses = 0;
 config.manifest = {};
 config.processes = numCPUs;
 
+var apiHeaders = process.env.API_HEADERS;
+
+if (apiHeaders) {
+  var headers = {};
+  var key;
+  var value;
+  var split;
+
+  apiHeaders.split(';').forEach(function (h) {
+    if (h && h.indexOf('=')) {
+      var split = h.split('=');
+      headers[split[0].trim()] = split[1].trim();
+    }
+  });
+
+  config.apiHeaders = headers;
+}
+
 Object.assign(config.manifest, jsManifest, cssManifest);
 
 function start(config) {
