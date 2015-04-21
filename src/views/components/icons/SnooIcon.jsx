@@ -4,7 +4,8 @@ import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
 import SVGFactory from '../../components/SVG';
 var SVG;
-
+var _EYE_RADIUS = 1.142124;
+var _EYE_HEIGHT = 11.1461885;
 
 class SnooIcon extends React.Component {
   constructor(props) {
@@ -25,19 +26,19 @@ class SnooIcon extends React.Component {
       <SVG className='SVG-icon SnooIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-snoo-circled'>
         <circle className='SVG-fill' cx='10' cy='10' r='10'/>
         <g ref='all'>
-          <path ref='face' className='SVG-fill-bg' d='M15.333333,11.499898c0-2.113655-2.392639-3.833231-5.333565-3.833231 c-2.940686,0-5.333102,1.719576-5.333102,3.833231c0,2.113753,2.392416,3.833435,5.333102,3.833435 C12.940694,15.333333,15.333333,13.613651,15.333333,11.499898z'/>
-          <circle ref='dingleberry' className='SVG-fill-bg' cx='14.166199' cy='5' r='1'/>
-          <g fill='none' className='SVG-stroke-bg' strokeWidth='0.466667' strokeLinecap='round'>
-            <line ref='stem' x1='14.166667' y1='5.012208' x2='10.756104' y2='4.256104'/>
-            <line ref='base' x1='10' y1='7.666667' x2='10.756104' y2='4.256104'/>
+          <path ref='face' className='SVG-fill-bg' d='M16.086926,11.717036c0-2.414056-2.732691-4.378024-6.091592-4.378024 c-3.358627,0-6.091061,1.963968-6.091061,4.378024c0,2.414167,2.732434,4.378257,6.091061,4.378257 C13.354235,16.095293,16.086926,14.131204,16.086926,11.717036z'/>
+          <circle ref='dingleberry' className='SVG-fill-bg' cx='14.753913' cy='4.293349' r={_EYE_RADIUS}/>
+          <g fill='none' className='SVG-stroke-bg' strokeWidth='0.532991' strokeLinecap='round'>
+            <line ref='stem' x1='10.859162' y1='3.443727' x2='14.754447' y2='4.307292'/>
+            <line ref='base' x1='10.859162' y1='3.443727' x2='9.995599' y2='7.339012'/>
           </g>
-          <circle ref='leftEar' className='SVG-fill-bg' cx='5.333431' cy='9.6668' r='1.3335'/>
-          <circle ref='rightEar' className='SVG-fill-bg' cx='14.666443' cy='9.6668' r='1.3335'/>
-          <circle ref='leftEye' className='SVG-fill' cx='7.8' cy='11' r='1'/>
-          <circle ref='rightEye' className='SVG-fill' cx='12.2' cy='11' r='1'/>
-          <rect ref='upperEyelids' x='6.8' y='10' className='SVG-fill-bg' width='6.4' height='0'/>
-          <rect ref='lowerEyelids' x='6.8' y='12' className='SVG-fill-bg' width='6.4' height='0'/>
-          <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth='0.5' strokeLinecap='round' d='M7.9,13.222941c0.533333,0.378255,1.272026,0.610392,2.066666,0.610392 c0.794641,0,1.533334-0.232137,2.066668-0.610392'/>
+          <circle ref='leftEar' className='SVG-fill-bg' cx='4.6658' cy='9.6234565' r='1.523042'/>
+          <circle ref='rightEar' className='SVG-fill-bg' cx='15.325253' cy='9.6234565' r='1.523042'/>
+          <circle ref='leftEye' className='SVG-fill' cx='7.482927' cy={_EYE_HEIGHT} r={_EYE_RADIUS}/>
+          <circle ref='rightEye' className='SVG-fill' cx='12.508015' cy={_EYE_HEIGHT} r={_EYE_RADIUS}/>
+          <rect ref='upperEyelids' x='6.340803' y='10.004064' className='SVG-fill-bg' width='7.309336' height='0'/>
+          <rect ref='lowerEyelids' x='6.340803' y='12.288315' className='SVG-fill-bg' width='7.309336' height='0'/>
+          <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth='0.55' strokeLinecap='round' d='M7.652076,13.657867c0.460886,0.460942,1.363549,0.705836,2.347492,0.705836 c1.016057,0,1.886656-0.244787,2.348355-0.705836'/>
         </g>
       </SVG>
     );
@@ -60,7 +61,7 @@ class SnooIcon extends React.Component {
   }
 
   _play(bool, instant) {
-    TweenLite.to(this.refs.all.getDOMNode(), instant ? 0 : 0.4, {scale: bool ? 1.2 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
+    // TweenLite.to(this.refs.all.getDOMNode(), instant ? 0 : 0.4, {scale: bool ? 1.2 : 1, ease: Back.easeOut, transformOrigin: '50% 50%'});
   }
 
   startBlinking() {
@@ -75,10 +76,10 @@ class SnooIcon extends React.Component {
       var upper = this.refs.upperEyelids.getDOMNode();
       var lower = this.refs.lowerEyelids.getDOMNode();
       var timeline = new TimelineLite({onComplete: this._blinkTimeout});
-      timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: 1}, autoRound: false}));
-      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: 11}, autoRound: false}), 0);
+      timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: _EYE_RADIUS}, autoRound: false}));
+      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT}, autoRound: false}), 0);
       timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: 0}, autoRound: false}));
-      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: 12}, autoRound: false}), 0.1);
+      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT + _EYE_RADIUS}, autoRound: false}), 0.1);
     }
   }
 
