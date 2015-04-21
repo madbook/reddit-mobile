@@ -186,7 +186,7 @@ class IndexPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.apiHeaders);
+    var options = api.buildOptions(props.token, props.userAgent);
 
     if (props.after) {
       options.query.after = props.after;

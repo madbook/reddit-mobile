@@ -142,7 +142,7 @@ class Server {
     this.showBetaBanner = !this.cookies.get('hideBetaBanner');
 
     this.body = this.request.body;
-    this.apiHeaders = this.headers;
+    this.userAgent = this.headers['user-agent'];
 
     var user = this.cookies.get('user');
     var token = this.cookies.get('token');
