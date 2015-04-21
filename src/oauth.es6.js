@@ -96,6 +96,7 @@ var oauthRoutes = function(app) {
     var token;
     var code = this.query.code;
     var error = this.query.error;
+    var ctx = this;
 
     if (error) {
       return this.redirect('/oauth2/error?message=' + this.query.error);
@@ -117,8 +118,11 @@ var oauthRoutes = function(app) {
       user: 'me', //the current oauth api doesn't return userid. :(
       headers: {
         Authorization: 'bearer ' + token.token.access_token,
+        'User-Agent': ctx.headers['user-agent'],
       },
     }
+
+    Object.assign(options.headers, app.config.apiHeaders || {});
 
     var user = yield app.V1Api(token.token.access_token).users.get(options);
 
@@ -148,12 +152,16 @@ var oauthRoutes = function(app) {
     };
 
     var p = new Promise(function(resolve, reject) {
+      var headers = {
+        'User-Agent': ctx.headers['user-agent'],
+        'Authorization': basicAuth,
+      };
+
+      Object.assign(headers, app.config.apiHeaders || {});
+
       superagent
         .post(endpoint)
-        .set({
-          'User-Agent': ctx.headers['user-agent'],
-          'Authorization': basicAuth,
-        })
+        .set(headers)
         .type('form')
         .send(data)
         .end((err, res) => {
@@ -174,8 +182,11 @@ var oauthRoutes = function(app) {
             user: 'me', //the current oauth api doesn't return userid. :(
             headers: {
               Authorization: 'bearer ' + token.token.access_token,
+              'User-Agent': ctx.headers['user-agent'],
             },
           };
+
+          Object.assign(options.headers, app.config.apiHeaders || {});
 
           app.V1Api(token.token.access_token).users.get(options).then(function(user) {
             ctx.cookies.set('user', JSON.stringify(user.data), cookieOptions);
@@ -232,11 +243,13 @@ var oauthRoutes = function(app) {
     }
 
     var p = new Promise(function(resolve, reject) {
+      var headers = Object.assign({
+        'User-Agent': ctx.headers['user-agent'],
+      }, app.config.apiHeaders || {});
+
       superagent
         .post(endpoint)
-        .set({
-          'User-Agent': ctx.headers['user-agent'],
-        })
+        .set(headers)
         .type('form')
         .send(data)
         .end((err, res) => {
