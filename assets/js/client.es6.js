@@ -30,6 +30,8 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
 function modifyContext (ctx) {
   ctx.loid = this.getState('loid');
   ctx.loidcreated = this.getState('loidcreated');
+  ctx.token = this.getState('token');
+  ctx.user = this.getState('user');
 
   return ctx;
 }
