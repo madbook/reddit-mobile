@@ -63,7 +63,7 @@ class RegisterPage extends React.Component {
 
                 <div className='checkbox'>
                   <label>
-                    <input type='checkbox' name='newsletter' defaultChecked='checked' /> Subscribe to newsletter
+                    <input type='checkbox' name='newsletter' /> Subscribe to newsletter
                   </label>
                 </div>
 
