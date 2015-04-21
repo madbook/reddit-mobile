@@ -119,7 +119,7 @@ class TopNav extends React.Component {
               </MobileButton>
             </li>
             <li className='Dropdown-li'>
-              <MobileButton className='Dropdown-button' href={ `//www.reddit.com/${props.subredditName}/wiki` }
+              <MobileButton className='Dropdown-button' href={ `//www.reddit.com/r/${props.subredditName}/wiki` }
                             data-no-route='true'>
                 <span className='Dropdown-text'>Wiki</span>
               </MobileButton>
