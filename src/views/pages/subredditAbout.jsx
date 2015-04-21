@@ -93,7 +93,7 @@ class SubredditAboutPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token);
+    var options = api.buildOptions(props.token, props.userAgent);
     options.query.subreddit = props.subredditName;
     options.useCache = useCache;
 

@@ -87,7 +87,7 @@ class UserGildPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token);
+    var options = api.buildOptions(props.token, props.userAgent);
 
     if (props.userName) {
       options.user = props.userName;

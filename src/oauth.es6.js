@@ -151,7 +151,7 @@ var oauthRoutes = function(app) {
       superagent
         .post(endpoint)
         .set({
-          'User-Agent': app.config.userAgent,
+          'User-Agent': ctx.headers['user-agent'],
           'Authorization': basicAuth,
         })
         .type('form')
@@ -235,7 +235,7 @@ var oauthRoutes = function(app) {
       superagent
         .post(endpoint)
         .set({
-          'User-Agent': app.config.userAgent,
+          'User-Agent': ctx.headers['user-agent'],
         })
         .type('form')
         .send(data)

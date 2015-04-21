@@ -35,8 +35,6 @@ function modifyContext (ctx) {
 }
 
 function initialize(bindLinks) {
-  // Null this out, or errors everywhere
-  config.userAgent = undefined;
 
   $(function() {
     var plugin;

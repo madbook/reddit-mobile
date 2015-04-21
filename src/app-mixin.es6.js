@@ -20,12 +20,10 @@ function mixin (App) {
 
       // Set up two APIs (until we get non-authed oauth working).
       this.nonAuthAPI = new V1Api({
-        userAgent: config.userAgent,
         origin: config.nonAuthAPIOrigin,
       });
 
       this.oauthAPI = new V1Api({
-        userAgent: config.userAgent,
         origin: config.authAPIOrigin,
       });
 

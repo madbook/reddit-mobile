@@ -42,7 +42,6 @@ class Server {
     var app = new App(config);
 
     app.config.renderTracking = true;
-    app.config.userAgent = process.env.API_USER_AGENT;
 
     var plugin, p;
 
@@ -142,6 +141,7 @@ class Server {
     this.showBetaBanner = !this.cookies.get('hideBetaBanner');
 
     this.body = this.request.body;
+    this.userAgent = this.headers['user-agent'];
 
     var user = this.cookies.get('user');
     var token = this.cookies.get('token');

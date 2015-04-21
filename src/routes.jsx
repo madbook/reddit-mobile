@@ -85,6 +85,7 @@ function routes(app) {
       loid: ctx.loid,
       loidcreated: ctx.loidcreated,
       showBetaBanner: ctx.showBetaBanner,
+      userAgent: ctx.userAgent,
       user: ctx.user,
       token: ctx.token,
       csrf: ctx.csrf,
@@ -532,7 +533,7 @@ function routes(app) {
       if (vote.get('direction') !== undefined && vote.get('id')) {
         var api = app.V1Api(props.token);
 
-        var options = api.buildOptions(this.token);
+        var options = api.buildOptions(this.token, this.headers['user-agent']);
 
         options = Object.assign(options, {
           model: vote,
@@ -557,7 +558,7 @@ function routes(app) {
       return this.redirect(this.headers.referer || '/');
     }
 
-    var options = api.buildOptions(this.session.token.access_token);
+    var options = api.buildOptions(this.session.token.access_token, this.headers['user-agent']);
 
     options = Object.assign(options, {
       model: comment,
