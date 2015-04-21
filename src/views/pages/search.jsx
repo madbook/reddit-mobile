@@ -303,7 +303,7 @@ class SearchPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.token, props.headers);
     options.query.q = props.query;
     options.query.limit = _searchLimit;
     options.query.before = props.before;
@@ -340,7 +340,7 @@ class SearchPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.token, props.headers);
     options.query.sort = 'popular';
     options.useCache = useCache;
 
