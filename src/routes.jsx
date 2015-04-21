@@ -459,6 +459,8 @@ function routes(app) {
       </BodyLayout>
     );
 
+    this.status = 404;
+
     this.body = page;
     this.layout = Layout;
     this.props = props;
@@ -471,6 +473,8 @@ function routes(app) {
       referrer: ctx.headers.referer,
       title: '400 - Oops, looks like something went wrong.',
     });
+
+    this.status = 400;
 
     try {
       var page = (
@@ -489,6 +493,8 @@ function routes(app) {
 
   app.router.get(/\/5\d\d/, function * () {
     var ctx = this;
+
+    this.status = 500;
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer,
