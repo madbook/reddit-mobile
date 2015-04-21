@@ -155,7 +155,7 @@ class SearchPage extends React.Component {
       var subreddits = state.results.data.subreddits || [];
       var listings = state.results.data.links || [];
       var noResults = listings.length === 0;
-      var subredditResultsOnly = !noResults && props.subredditName;
+      var subredditResultsOnly = props.subredditName && props.query;
 
       var page = props.page || 0;
       var meta = state.results.data.meta || {};
@@ -209,7 +209,7 @@ class SearchPage extends React.Component {
           </ul>
         </div>,
 
-        <div className={ `container summary-container ${noResults || subredditResultsOnly ? 'hidden' : ''}` }
+        <div className={ `container summary-container ${noResults || (!noResults && subredditResultsOnly) ? 'hidden' : ''}` }
              ref='summary' key="search-summary">
           <h4 className="text-center">Subreddits</h4>
           <ul className="subreddits-list list-short-view">
