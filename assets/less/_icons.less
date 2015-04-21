@@ -1,14 +1,14 @@
 @font-face {
-	font-family: "icons-0.0317237745039165";
-	src: url('../fonts/icons-0.0317237745039165.eot');
-	src: url('../fonts/icons-0.0317237745039165.eot?#iefix') format('eot'),
-		url('../fonts/icons-0.0317237745039165.woff') format('woff'),
-		url('../fonts/icons-0.0317237745039165.ttf') format('truetype'),
-		url('../fonts/icons-0.0317237745039165.svg#icons-0.0317237745039165') format('svg');
+	font-family: "icons-0.2844158075749874";
+	src: url('../fonts/icons-0.2844158075749874.eot');
+	src: url('../fonts/icons-0.2844158075749874.eot?#iefix') format('eot'),
+		url('../fonts/icons-0.2844158075749874.woff') format('woff'),
+		url('../fonts/icons-0.2844158075749874.ttf') format('truetype'),
+		url('../fonts/icons-0.2844158075749874.svg#icons-0.2844158075749874') format('svg');
 }
 
 .icon-base-pseudo {
-	font-family: "icons-0.0317237745039165";
+	font-family: "icons-0.2844158075749874";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
@@ -65,12 +65,14 @@
 	@share: "\e02b";
 	@snoo-circled: "\e02c";
 	@snoo: "\e02d";
-	@unsave-circled: "\e02e";
-	@unsave: "\e02f";
-	@upvote-circled: "\e030";
-	@upvote: "\e031";
-	@x-circled: "\e032";
-	@x: "\e033";
+	@text-circled: "\e02e";
+	@text: "\e02f";
+	@unsave-circled: "\e030";
+	@unsave: "\e031";
+	@upvote-circled: "\e032";
+	@upvote: "\e033";
+	@x-circled: "\e034";
+	@x: "\e035";
 	
 	content: @@filename;
 }
@@ -218,6 +220,12 @@
 }
 .icon-snoo {
 	.icon(snoo);
+}
+.icon-text-circled {
+	.icon(text-circled);
+}
+.icon-text {
+	.icon(text);
 }
 .icon-unsave-circled {
 	.icon(unsave-circled);

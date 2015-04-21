@@ -23,14 +23,23 @@ var MobileButton;
 import SeashellIconFactory from '../components/icons/SeashellIcon';
 var SeashellIcon;
 
-import DropdownFactory from '../components/Dropdown';
-var Dropdown;
+import SaveIconFactory from '../components/icons/SaveIcon';
+var SaveIcon;
+
+import SeashellsDropdownFactory from '../components/SeashellsDropdown';
+var SeashellsDropdown;
 
 import LoadingFactory from '../components/Loading';
 var Loading;
 
 import SubredditAboutPageFactory from '../pages/subredditAbout';
 var SubredditAboutPage;
+
+import InfoIconFactory from '../components/icons/InfoIcon';
+var InfoIcon;
+
+import TextIconFactory from '../components/icons/TextIcon';
+var TextIcon;
 
 function shorten(text, len) {
   if (text.length > 15) {
@@ -106,32 +115,30 @@ class TopNav extends React.Component {
 
       var subredditMenu = null;
       if (props.subredditName) {
-        var sidebarButton = (
-          <button className="TopNav-floaty TopNav-sidebar">
-            <SeashellIcon opened={ false } />
-          </button>
-        );
         subredditMenu = (
-          <Dropdown app={ props.app } right={ true } button={ sidebarButton } id={ this.state.subredditName }>
+          <SeashellsDropdown app={ props.app } right={ true }>
             <li className='Dropdown-li'>
               <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
+                <InfoIcon/>
                 <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
               </MobileButton>
             </li>
             <li className='Dropdown-li'>
               <MobileButton className='Dropdown-button' href={ `//www.reddit.com/r/${props.subredditName}/wiki` }
                             data-no-route='true'>
+                <TextIcon/>
                 <span className='Dropdown-text'>Wiki</span>
               </MobileButton>
             </li>
             <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
               <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
+                <SaveIcon altered={this.state.userIsSubscribed}/>
                 <span className='Dropdown-text'>
                   { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
                 </span>
               </MobileButton>
             </li>
-          </Dropdown>
+          </SeashellsDropdown>
         );
       }
 
@@ -245,11 +252,14 @@ function TopNavFactory(app) {
   SnooButton = SnooButtonFactory(app);
   PostIcon = PostIconFactory(app);
   SearchIcon = SearchIconFactory(app);
+  InfoIcon = InfoIconFactory(app);
   HamburgerIcon = HamburgerIconFactory(app);
   MobileButton = MobileButtonFactory(app);
   Logo = LogoFactory(app);
   SeashellIcon = SeashellIconFactory(app);
-  Dropdown = DropdownFactory(app);
+  SaveIcon = SaveIconFactory(app);
+  TextIcon = TextIconFactory(app);
+  SeashellsDropdown = SeashellsDropdownFactory(app);
   Loading = LoadingFactory(app);
   SubredditAboutPage = SubredditAboutPageFactory(app);
   return app.mutate('core/components/TopNav', TopNav);
