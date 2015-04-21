@@ -132,7 +132,7 @@ class UserActivityPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.token, props.headers);
     options.activity = props.activity || 'comments';
 
     if (props.after) {

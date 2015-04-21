@@ -85,7 +85,7 @@ function routes(app) {
       loid: ctx.loid,
       loidcreated: ctx.loidcreated,
       showBetaBanner: ctx.showBetaBanner,
-      userAgent: ctx.userAgent,
+      apiHeaders: ctx.apiHeaders,
       user: ctx.user,
       token: ctx.token,
       csrf: ctx.csrf,

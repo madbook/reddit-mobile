@@ -41,7 +41,7 @@ class CommentBox extends React.Component {
       text: text
     });
 
-    var options = this.props.api.buildOptions(this.props.token, props.userAgent);
+    var options = this.props.api.buildOptions(this.props.token, props.headers);
 
     options = Object.assign(options, {
       model: comment,
