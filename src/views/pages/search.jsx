@@ -225,6 +225,7 @@ class SearchPage extends React.Component {
                     user={ props.user }
                     token={ props.token }
                     api={ props.api }
+                    compact={app.state.compact}
                   />
                 );
               }

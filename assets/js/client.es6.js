@@ -33,6 +33,8 @@ function modifyContext (ctx) {
   ctx.token = this.getState('token');
   ctx.user = this.getState('user');
   ctx.useCache = true;
+  var compact = this.getState('compact');
+  ctx.compact = compact === 'true' || compact === true;
 
   return ctx;
 }

@@ -132,7 +132,7 @@ class IndexPage extends React.Component {
     if (this.state.data.meta && props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
     }
-
+    var compact = app.state ? app.state.compact : false;
     return (
       <div>
         { loading }
@@ -147,7 +147,7 @@ class IndexPage extends React.Component {
           apiOptions={ apiOptions }
         />
 
-        <div className='container listing-container' ref='listings'>
+        <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
           {
             listings.map(function(listing, i) {
               var index = (page * 25) + i;
@@ -168,6 +168,7 @@ class IndexPage extends React.Component {
                     token={token}
                     api={api}
                     loginPath={loginPath}
+                    compact={compact}
                   />
                 );
               }

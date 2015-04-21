@@ -95,6 +95,8 @@ class Listing extends React.Component {
       httpsProxy: ctx.props.httpsProxy,
     });
 
+    var compact = this.props.compact || false;
+    compact = compact === 'true' || compact === true;
 
     if (expanded) {
       if (html5) {
@@ -140,27 +142,36 @@ class Listing extends React.Component {
     }
 
     if (data.isVideo) {
-      return (
-        <div className='ratio16x9'>
-          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-            <PlayIcon/>
+      if(compact) {
+        return (
+          <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
+        );
+      } else {
+        return (
+          <div className='ratio16x9'>
+            <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
+              <PlayIcon/>
+            </div>
           </div>
-        </div>
+        );
+      }
+    }
+    if(compact) {
+      return (
+        <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
+      );
+    } else {
+      return (
+        <img ref='img' src={ data.url } className='img-responsive img-preview'
+          onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
       );
     }
-
-    return (
-      <img ref='img' src={ data.url } className='img-responsive img-preview'
-        onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
-    );
   }
 
   buildOver18() {
     return (
-      <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-        <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
-          NSFW
-        </span>
+      <a className={'listing-preview-a listing-nsfw' + (this.props.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+        <span className={'icon-nsfw-circled'}/>
       </a>
     );
   }
@@ -231,6 +242,10 @@ class Listing extends React.Component {
 
     var preview = this.previewImageUrl(listing, expanded);
 
+
+    var compact = this.props.compact || false;
+    compact = compact === 'true' || compact === true;
+
     if (this.isNSFW(listing) && !this.state.expanded) {
       return this.buildOver18();
     }
@@ -247,7 +262,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ permalink }>
+            <a className='listing-preview-a' href={ permalink }>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -267,7 +282,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+            <a className='listing-preview-a' href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -283,7 +298,7 @@ class Listing extends React.Component {
       } else if (media.oembed.type === 'rich') {
         if (expanded) {
           return (
-            <a href={ listing.url } data-no-route='true'>
+            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -297,7 +312,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ listing.url } data-no-route='true'>
+            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -314,7 +329,7 @@ class Listing extends React.Component {
     } else if (listing.url.match(imgMatch)) {
       if (expanded) {
         return (
-          <a href={ listing.url } className='external-image'>
+          <a href={ listing.url } className='external-image listing-preview-a' >
             {
               this.buildImage({
                 url: adjustUrlToAppProtocol(listing.url, config),
@@ -325,7 +340,7 @@ class Listing extends React.Component {
         );
       } else {
         return (
-          <a href={ permalink }>
+          <a className='listing-preview-a' href={ permalink }>
             {
               this.buildImage({
                 url: adjustUrlToAppProtocol(preview || listing.url, config),
@@ -336,7 +351,7 @@ class Listing extends React.Component {
           </a>
         );
       }
-    } else if (listing.selftext) {
+    } else if (listing.selftext && !compact) {
       if (expanded) {
         return (
           <div className='well listing-selftext' dangerouslySetInnerHTML={{
@@ -354,7 +369,7 @@ class Listing extends React.Component {
       return null;
     } else if (preview) {
       return (
-        <a href={ permalink }>
+        <a className='listing-preview-a' href={ permalink }>
           {
             this.buildImage({
               url: adjustUrlToAppProtocol(preview, config),
@@ -369,14 +384,16 @@ class Listing extends React.Component {
   }
 
   expand(e) {
-    if (e.target && e.target.tagName === 'A' && e.target.href) {
-      return true;
-    } else {
-      e.preventDefault();
+    if(!this.props.compact) {
+      if (e.target && e.target.tagName === 'A' && e.target.href) {
+        return true;
+      } else {
+        e.preventDefault();
 
-      this.setState({
-        expanded: !this.state.expanded,
-      });
+        this.setState({
+          expanded: !this.state.expanded,
+        });
+      }
     }
   }
 
@@ -420,6 +437,9 @@ class Listing extends React.Component {
     var when;
 
     var expanded = this.state.expanded || this.props.single;
+
+    var compact = this.props.compact || false;
+    compact = compact === 'true' || compact === true;
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -481,8 +501,12 @@ class Listing extends React.Component {
 
     var app = this.props.app;
     var buildContent = this.buildContent();
-    if (buildContent) {
+    if (buildContent && !compact) {
       var stalactite = <div className='stalactite'/>;
+    }
+
+    if(!buildContent && compact) {
+      buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
     }
 
     var extImageSource;
@@ -498,10 +522,17 @@ class Listing extends React.Component {
       );
     }
 
+    if(nsfwFlair || linkFlair) {
+      var linkFlairHolder = <div className='link-flair-container vertical-spacing-top'>
+                { nsfwFlair }
+                { linkFlair }
+              </div>;
+    }
+
     return (
-      <article className={'listing ' + listingClass }>
+      <article className={'listing '+ (compact ? 'compact ' : '') + listingClass }>
         <div className='panel'>
-          <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
+          <header className={'panel-heading' + (buildContent ? ' preview' : ' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
                 <a href={ titleLink } className={ `panel-title ${distinguished}` }>
@@ -533,10 +564,7 @@ class Listing extends React.Component {
               </ul>
             </div>
 
-            <div className='link-flair-container vertical-spacing-top'>
-              { nsfwFlair }
-              { linkFlair }
-            </div>
+            { linkFlairHolder }
 
             { stalactite }
           </header>
