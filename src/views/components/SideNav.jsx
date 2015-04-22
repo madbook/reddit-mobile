@@ -42,6 +42,12 @@ class SideNav extends React.Component {
           <a className='SideNav-button' href='/logout' data-no-route='true'>Log out</a>
         </li>
       );
+    } else {
+      loginLink = (
+        <li>
+          <a className='SideNav-button' href={ this.props.loginPath } data-no-route='true'>Login / Register</a>
+        </li>
+      );
     }
 
     return (

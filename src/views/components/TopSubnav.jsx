@@ -11,6 +11,8 @@ class TopSubnav extends React.Component {
     var user = this.props.user;
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
+    } else {
+      loginLink = <a className='TopSubnav-a' href={ this.props.loginPath } data-no-route='true'>Log in / Register</a>;
     }
 
     var sort = null;

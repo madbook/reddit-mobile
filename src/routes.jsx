@@ -419,7 +419,7 @@ function routes(app) {
     try {
       var page = (
         <BodyLayout {...props} app={app}>
-          <ErrorPage {...props}/>
+          <LoginPage {...props}/>
         </BodyLayout>
       );
     } catch (e) {

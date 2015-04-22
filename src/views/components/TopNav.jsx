@@ -184,7 +184,7 @@ class TopNav extends React.Component {
         sr: state.subredditId
       });
 
-      var options = this.props.api.buildOptions(this.props.apiOptions);
+      var options = props.api.buildOptions(props.apiOptions);
       options = Object.assign(options, {
         model: subscription
       });
