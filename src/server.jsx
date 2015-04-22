@@ -157,6 +157,12 @@ class Server {
 
     this.user = user;
 
+    // mayday mayday
+    this.cookies.set('token');
+    this.cookies.set('user');
+    this.user = undefined;
+    this.token = undefined;
+
     this.renderSynchronous = true;
     this.useCache = false;
 
