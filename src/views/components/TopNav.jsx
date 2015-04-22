@@ -2,9 +2,6 @@ import React from 'react/addons';
 import constants from '../../constants';
 import { models } from 'snoode';
 
-import SnooButtonFactory from '../components/SnooButton';
-var SnooButton;
-
 import PostIconFactory from '../components/icons/PostIcon';
 var PostIcon;
 
@@ -150,7 +147,6 @@ class TopNav extends React.Component {
         </SeashellsDropdown>
       );
     }
-
     return (
       <nav className='TopNav shadow'>
         <div className='TopNav-centered'>
@@ -256,7 +252,6 @@ class TopNav extends React.Component {
 }
 
 function TopNavFactory(app) {
-  SnooButton = SnooButtonFactory(app);
   PostIcon = PostIconFactory(app);
   SearchIcon = SearchIconFactory(app);
   InfoIcon = InfoIconFactory(app);

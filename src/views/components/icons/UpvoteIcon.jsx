@@ -20,7 +20,7 @@ class UpvoteIcon extends React.Component {
             <circle ref='mask' fill='#000' cx={SVG.ICON_SIZE * 0.5} cy={SVG.ICON_SIZE * 0.5} r={SVG.ICON_SIZE * 0.5}/>
           </clipPath>
         </defs>
-        <circle className='tween SVG-fill' cx='10' cy='10' r='10'/>
+        <circle className='tween SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <svg ref='arrows' className='SVG-fill-bg' y='0' x='0' clip-path={'url(#' + this._maskID + ')'}>
           <path ref='arrow1' d='M9.947201,4.166667H9.94716L4.586799,9.992448C4.589067,9.997617,4.587845,9.994831,4.590113,10h3.321361 c0.000668,0.000668,0.001042,0.001041,0.001709,0.001709V15h4.166667v-4.99648 c0.001369-0.001369,0.002151-0.002151,0.00352-0.00352h3.32983L9.947201,4.166667z'/>
           <path ref='arrow2' d='M9.947201,24.166666H9.94716l-5.360361,5.825783C4.589067,29.997616,4.587845,29.994831,4.590113,30h3.321361 c0.000668,0.000668,0.001042,0.001041,0.001709,0.001709V35h4.166667v-4.996481 c0.001369-0.001368,0.002151-0.00215,0.00352-0.003519h3.32983L9.947201,24.166666z'/>

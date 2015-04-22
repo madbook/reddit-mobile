@@ -24,7 +24,7 @@ class ShareIcon extends React.Component {
             <circle fill='#000' cx={_half} cy={_half} r={_half}/>
           </clipPath>
         </defs>
-        <circle className='SVG-fill' cx='10' cy='10' r='10'/>
+        <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <g ref='plane' className='SVG-fill-bg' clip-path={'url(#' + this._planeMaskID + ')'}>
           <polygon points='2.928955,8.821472 7.92926,11.599365 15.151794,4.37677 '/>
           <polygon points='11.178528,17.070984 15.623169,4.848206 8.400574,12.07074 '/>

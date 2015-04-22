@@ -14,7 +14,7 @@ class MailIcon extends React.Component {
   render() {
     return (
       <SVG className='SVG-icon MailIcon' width={20} height={20} fallbackIcon='icon-mail-circled'>
-        <circle className='SVG-fill' cx='10' cy='10' r='10'/>
+        <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <rect x='4.166667' y='6.666667' className='SVG-fill-bg' width='11.666667' height='7.5'/>
         <g ref='page'>
           <rect x='5.266667' y='7.453' className='SVG-fill-bg SVG-stroke' strokeWidth='0.5' width='9.466666' height='7.213541'/>
