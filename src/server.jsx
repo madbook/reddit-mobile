@@ -134,6 +134,10 @@ class Server {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       }
 
+      if (this.cookies.get('user')) {
+        this.set('Cache-control', 'no-cache');
+      }
+
       yield next;
     }
   }
