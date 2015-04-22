@@ -288,10 +288,8 @@ class Listing extends React.Component {
           <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
-                <a href={ titleLink }>
-                  <h1 className={ 'panel-title ' + distinguished }>
-                    { listing.title } { edited }
-                  </h1>
+                <a href={ titleLink } className={ 'panel-title ' + distinguished }>
+                    { `${listing.title} ${edited}` }
                 </a>
               </div>
               <div className='col-xs-1'>
