@@ -213,7 +213,7 @@ class Listing extends React.Component {
     var subredditLabel;
     var domain;
     var gilded;
-    var distinguished = listing.distinguished ? ' text-distinguished' : '';
+    var distinguished = listing.distinguished ? `text-${listing.distinguished}` : '';
     var edited = listing.edited ? '*' : '';
     var linkFlairClass = (listing.link_flair_css_class);
     var listingClass = props.listingClass || '';
@@ -288,7 +288,7 @@ class Listing extends React.Component {
           <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
-                <a href={ titleLink } className={ 'panel-title ' + distinguished }>
+                <a href={ titleLink } className={ `panel-title ${distinguished}` }>
                   { `${listing.title} ${edited}` }
                 </a>
               </div>
