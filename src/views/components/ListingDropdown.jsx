@@ -53,7 +53,7 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='1'/>
-            <MobileButton className={'Dropdown-button' + voteClass} type='submit' onClick={this._onUpvoteClick}>
+            <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onUpvoteClick}>
               <UpvoteIcon altered={this.state.localScore > 0}/>
               <span className='Dropdown-text'>Upvote</span>
             </MobileButton>
@@ -62,7 +62,7 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='-1'/>
-            <MobileButton className={'Dropdown-button' + voteClass} type='submit' onClick={this._onDownvoteClick}>
+            <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onDownvoteClick}>
               <DownvoteIcon altered={this.state.localScore < 0}/>
               <span className='Dropdown-text'>Downvote</span>
             </MobileButton>

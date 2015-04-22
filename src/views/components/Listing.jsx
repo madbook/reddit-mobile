@@ -271,8 +271,8 @@ class Listing extends React.Component {
     }
 
     var extImageSource;
-    if (this.state.expanded || this.props.single) {
-      var url = isImgurDomain(listing.domain) ? listing.url.replace(imgMatch, '') : listing.url;
+    if ((this.state.expanded || this.props.single) && isImgurDomain(listing.domain)) {
+      var url = listing.url.replace(imgMatch, '');
       extImageSource = (
         <div className="external-image-meta">
           <span>{listing.domain}</span>
