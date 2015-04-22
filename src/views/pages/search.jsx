@@ -30,7 +30,7 @@ class SearchPage extends React.Component {
     this.state = {
       results: props.results || {},
       subreddits: props.subreddits || {},
-      loaded: props.results.data || props.subreddits.data
+      loaded: !this._lastQueryKey || props.results.data.length,
     };
   }
 
@@ -67,17 +67,6 @@ class SearchPage extends React.Component {
     return Math.random().toString(36).substr(2, 9);
   }
 
-  _getPopularSubreddits(props) {
-    var ctx = this;
-    SearchPage.populatePopularSubreddits(props.api, props, true).done(function (data) {
-      ctx.setState({
-        results: {},
-        subreddits: data || {},
-        loaded: true
-      });
-    });
-  }
-
   _performSearch(props) {
     var ctx = this;
     if (props.query) {
@@ -85,9 +74,7 @@ class SearchPage extends React.Component {
       ctx._lastQueryKey = currentQueryKey;
       SearchPage.populateData(props.api, props, true).done(function (data) {
         if (currentQueryKey === ctx._lastQueryKey) {
-          if (SearchPage.isNoRecordsFound(data)) {
-            ctx._getPopularSubreddits(props);
-          } else {
+          if (!SearchPage.isNoRecordsFound(data)) {
             ctx.setState({
               results: data || {},
               subreddits: {},
@@ -96,8 +83,6 @@ class SearchPage extends React.Component {
           }
         }
       });
-    } else {
-      ctx._getPopularSubreddits(props);
     }
   }
 
@@ -111,9 +96,12 @@ class SearchPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      loaded: false
-    });
+    if (nextProps.query) {
+      this.setState({
+        loaded: false
+      });
+    }
+
     this._performSearch(nextProps);
   }
 
@@ -151,7 +139,6 @@ class SearchPage extends React.Component {
     } else {
       // to make life easier
       state.results.data = state.results.data || {};
-      state.subreddits.data = state.subreddits.data || [];
 
       var subreddits = state.results.data.subreddits || [];
       var listings = state.results.data.links || [];
@@ -189,25 +176,6 @@ class SearchPage extends React.Component {
         <div className={ `container subreddit-only text-left ${subredditResultsOnly ? '' : 'hidden'}` } key="search-subreddit-only">
           <span>{ `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }</span>
           <a href={ this._composeUrl({ query: props.query }) }>Search all of reddit?</a>
-        </div>,
-
-        <div className={ `container subreddits-container ${noResults ? '' : 'hidden'}` }
-             ref="subreddits" key="popular-subreddits">
-          <h4 className="text-center">Trending subreddits</h4>
-          <ul className="subreddits-list">
-            {
-              state.subreddits.data.map(function (subreddit, idx) {
-                return (
-                  <li className="subreddits-list-item" key={ `popular-subreddit-${idx}` }>
-                    <a href={subreddit.url} title={subreddit.title} className="subreddit-link">
-                      <img src={subreddit.header_img} alt="Subreddit logo" className="subreddit-logo" />
-                      <span className="subreddit-name">{subreddit.title}</span>
-                    </a>
-                  </li>
-                );
-              })
-            }
-          </ul>
         </div>,
 
         <div className={ `container summary-container ${noResults || (!noResults && subredditResultsOnly) ? 'hidden' : ''}` }
@@ -343,34 +311,6 @@ class SearchPage extends React.Component {
     return defer.promise;
   }
 
-  static populatePopularSubreddits(api, props, synchronous, useCache = true) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve({});
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-    options.query.sort = 'popular';
-    options.useCache = useCache;
-
-    // Initialized with data already.
-    if (useCache && ((props.subreddits || {}).data || []).length) {
-      api.hydrate('subreddits', options, props.subreddits);
-
-      defer.resolve(props.subreddits);
-      return defer.promise;
-    }
-
-    api.subreddits.get(options).done(function (data) {
-      defer.resolve(data);
-    });
-
-    return defer.promise;
-  }
 }
 
 function SearchPageFactory(app) {

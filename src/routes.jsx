@@ -225,14 +225,8 @@ function routes(app) {
       data = yield SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
     }
 
-    var subreddits = {};
-    if (SearchPage.isNoRecordsFound(data)) {
-      subreddits = yield SearchPage.populatePopularSubreddits(props.api, props, this.renderSynchronous, this.useCache);
-    }
-
     props = Object.assign({
       results: data,
-      subreddits: subreddits,
     }, props);
 
     try {
