@@ -119,26 +119,31 @@
 }
 
 .well.listing-selftext {
-   background-color: #fafafa;
-   border: none;
-   padding: 1em;
+  background-color: @body-bg-alt;
+  border: none;
+  color: inherit;
+  padding: 1em;
+}
+
+.well.listing-selftext-collapsed {
+  color: lighten(@gray, 20%);
 }
 
 .listing-selftext-collapsed {
-   height: 8em;
-   overflow: hidden;
-   position: relative;
+  height: 8em;
+  overflow: hidden;
+  position: relative;
 
-   &:after {
-     content: '';
-     position: absolute;
-     height: 2em;
-     width: 3em;
-     z-index: 1;
-     bottom: 0;
-     right: 0;
-     #gradient > .vertical(@start-color: rgba(250,250,250,0); @end-color: rgba(250,250,250,1));
-   }
+  &:after {
+    content: '';
+    position: absolute;
+    height: 2em;
+    width: 3em;
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    #gradient > .vertical(@start-color: rgba(250,250,250,0); @end-color: rgba(250,250,250,1));
+  }
 }
 
 .pageNav {
