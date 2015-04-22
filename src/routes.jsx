@@ -112,6 +112,16 @@ function routes(app) {
       props.apiOptions.headers['Authorization'] = `bearer ${props.token}`
     }
 
+    props.apiOptions = props.api.buildOptions(props.apiOptions);
+
+    if (app.config.apiPassThroughHeaders) {
+      for (var h in ctx.headers) {
+        if (app.config.apiPassThroughHeaders.indexOf(h) > -1) {
+          props.apiOptions.headers[h] = ctx.headers[h];
+        }
+      }
+    }
+
     return props;
   }
 

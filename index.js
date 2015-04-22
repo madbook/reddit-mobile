@@ -28,23 +28,30 @@ var failedProcesses = 0;
 config.manifest = {};
 config.processes = numCPUs;
 
-var apiHeaders = process.env.API_HEADERS;
-
-if (apiHeaders) {
-  var headers = {};
+function parseObject (list) {
+  if (!list) { return; }
+  var obj = {};
   var key;
   var value;
   var split;
 
-  apiHeaders.split(';').forEach(function (h) {
-    if (h && h.indexOf('=')) {
-      var split = h.split('=');
-      headers[split[0].trim()] = split[1].trim();
+  list.split(';').forEach(function (l) {
+    if (l && l.indexOf('=')) {
+      var split = l.split('=');
+      obj[split[0].trim()] = split[1].trim();
     }
   });
 
-  config.apiHeaders = headers;
+  return obj;
 }
+
+function parseList (list) {
+  if (!list) { return; }
+  return list.split(';');
+}
+
+config.apiHeaders = parseObject(process.env.API_HEADERS);
+config.apiPassThroughHeaders = parseList(process.env.API_PASS_THROUGH_HEADERS);
 
 Object.assign(config.manifest, jsManifest, cssManifest);
 
