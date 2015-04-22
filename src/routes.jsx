@@ -90,15 +90,27 @@ function routes(app) {
       params: ctx.params,
       url: ctx.path,
       renderTracking: app.getConfig('renderTracking'),
+      apiOptions: {
+        useCache: ctx.useCache,
+        origin: app.getConfig('nonAuthAPIOrigin'),
+        headers: {
+          'user-agent': ctx.headers['user-agent'],
+        }
+      },
     };
 
     var props = Object.assign({}, defaultProps, ctx.props, props);
 
     props.app = app;
-    props.api = app.V1Api(ctx.token);
-    props.user = ctx.user;
-    props.token = ctx.token;
+    props.api = app.api;
     props.loid = ctx.loid;
+
+    if (ctx.token) {
+      props.user = ctx.user;
+      props.token = ctx.token;
+      props.apiOptions.origin = app.getConfig('authAPIOrigin');
+      props.apiOptions.headers['Authorization'] = `bearer ${props.token}`
+    }
 
     return props;
   }
@@ -534,13 +546,8 @@ function routes(app) {
       });
 
       if (vote.get('direction') !== undefined && vote.get('id')) {
-        var api = app.V1Api(props.token);
-
-        var options = api.buildOptions(this.token, this.headers['user-agent']);
-
-        options = Object.assign(options, {
-          model: vote,
-        });
+        var options = app.api.buildOptions(props.apiOptions);
+        options.model = vote;
 
         api.votes.post(options).done(function() {
         });
@@ -555,17 +562,12 @@ function routes(app) {
       text: ctx.body.text
     });
 
-    var api = app.V1Api(props.token);
-
     if (!this.token) {
       return this.redirect(this.headers.referer || '/');
     }
 
-    var options = api.buildOptions(this.session.token.access_token, this.headers['user-agent']);
-
-    options = Object.assign(options, {
-      model: comment,
-    });
+    var options = app.api.buildOptions(props.apiOptions);
+    options.model = comment;
 
     api.comments.post(options).done(function() {
       this.redirect(this.headers.referer || '/');

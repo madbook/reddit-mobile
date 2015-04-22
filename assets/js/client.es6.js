@@ -32,6 +32,7 @@ function modifyContext (ctx) {
   ctx.loidcreated = this.getState('loidcreated');
   ctx.token = this.getState('token');
   ctx.user = this.getState('user');
+  ctx.useCache = true;
 
   return ctx;
 }

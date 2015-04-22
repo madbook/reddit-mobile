@@ -19,13 +19,7 @@ function mixin (App) {
       this.mutators = config.mutators || {};
 
       // Set up two APIs (until we get non-authed oauth working).
-      this.nonAuthAPI = new V1Api({
-        origin: config.nonAuthAPIOrigin,
-        defaultHeaders: this.config.apiHeaders,
-      });
-
-      this.oauthAPI = new V1Api({
-        origin: config.authAPIOrigin,
+      this.api = new V1Api({
         defaultHeaders: this.config.apiHeaders,
       });
 
@@ -50,15 +44,6 @@ function mixin (App) {
       }
 
       return component;
-    }
-
-    // Return the proper API based on session information.
-    V1Api (token) {
-      if (token){
-        return this.oauthAPI;
-      }
-
-      return this.nonAuthAPI;
     }
 
     buildContext (href) {

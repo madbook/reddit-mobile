@@ -308,7 +308,9 @@ class Listing extends React.Component {
                     thing={ listing }
                     token={ this.props.token }
                     api={ this.props.api }
-                   loginPath={ this.props.loginPath } />
+                    apiOptions={ this.props.apiOptions }
+                    loginPath={ this.props.loginPath }
+                  />
                 </li>
                 <li className='linkbar-item-no-seperator'>
                   <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>

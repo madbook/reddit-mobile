@@ -27,11 +27,19 @@ class SideNav extends React.Component {
 
   render() {
     var user = this.props.user;
+    var loginLink;
+    var logoutLink;
 
     if (user) {
-      var loginLink = (
+      loginLink = (
         <li>
           <a className='SideNav-button' href={ '/u/' + user.name }>{ user.name }</a>
+        </li>
+      );
+
+      logoutLink = (
+        <li>
+          <a className='SideNav-button' href='/logout' data-no-route='true'>Log out</a>
         </li>
       );
     }
@@ -44,6 +52,7 @@ class SideNav extends React.Component {
           </li>
 
           { loginLink }
+          { logoutLink }
 
           <li className={'SideNav-dropdown tween'+(this.state.twirly === 'about' ? ' opened' : '')}>
             <button className={'twirly before SideNav-button'+(this.state.twirly === 'about' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>

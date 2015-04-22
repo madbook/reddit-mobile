@@ -74,7 +74,7 @@ class Vote extends React.Component {
       id: this.props.thing.name,
     });
 
-    var options = this.props.api.buildOptions(this.props.token);
+    var options = this.props.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: vote,

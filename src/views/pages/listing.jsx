@@ -84,10 +84,12 @@ class ListingPage extends React.Component {
     var app = this.props.app;
 
     var loginPath = this.props.loginPath;
+    var apiOptions = this.props.apiOptions;
 
     if (!loading) {
       listingElement = (
         <Listing
+          apiOptions={ apiOptions }
           app={ app }
           listing={ listing }
           single={ true }
@@ -100,6 +102,7 @@ class ListingPage extends React.Component {
 
       commentBoxElement = (
         <CommentBox
+          apiOptions={ apiOptions }
           thingId={ listing.name }
           user={ user }
           token={ token }
@@ -139,6 +142,7 @@ class ListingPage extends React.Component {
                     token={ token }
                     api={api}
                     loginPath={loginPath}
+                    apiOptions={apiOptions}
                   />
                 );
               }
@@ -161,7 +165,7 @@ class ListingPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.apiOptions);
 
     function mapComment(comment) {
       if (comment && comment.body) {

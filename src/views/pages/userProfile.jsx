@@ -97,7 +97,7 @@ class UserProfilePage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.apiOptions);
 
     if (props.userName) {
       options.user = props.userName;

@@ -127,6 +127,7 @@ class IndexPage extends React.Component {
 
     var app = this.props.app;
     var loginPath = this.props.loginPath;
+    var apiOptions = this.props.apiOptions;
 
     if (this.state.data.meta && this.props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
@@ -136,7 +137,15 @@ class IndexPage extends React.Component {
       <div>
         { loading }
 
-        <TopSubnav app={ app } user={ user } sort={ sort } list='listings' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+        <TopSubnav
+          app={ app }
+          user={ user }
+          sort={ sort }
+          list='listings'
+          baseUrl={ this.props.url }
+          loginPath={ this.props.loginPath }
+          apiOptions={ apiOptions }
+        />
 
         <div className='container listing-container' ref='listings'>
           {
@@ -146,6 +155,7 @@ class IndexPage extends React.Component {
               if (!listing.hidden) {
                 return (
                   <Listing
+                    apiOptions={ apiOptions }
                     app={app}
                     listing={listing}
                     index={index}
@@ -186,7 +196,7 @@ class IndexPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.apiOptions);
 
     if (props.after) {
       options.query.after = props.after;

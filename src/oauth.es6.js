@@ -8,7 +8,6 @@ var oauthRoutes = function(app) {
   var router = app.router;
 
   var cookieOptions = {
-    signed: true,
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: true,
@@ -114,17 +113,18 @@ var oauthRoutes = function(app) {
 
     this.cookies.set('token', token.token.access_token, cookieOptions);
 
-    var options = {
-      user: 'me', //the current oauth api doesn't return userid. :(
+    var apiOptions =  {
+      origin: app.getConfig('authAPIOrigin'),
       headers: {
-        Authorization: 'bearer ' + token.token.access_token,
-        'User-Agent': ctx.headers['user-agent'],
-      },
-    }
+        'Authorization': `bearer ${token.token.access_token}`,
+        'user-agent': ctx.headers['user-agent'],
+      }
+    };
 
-    Object.assign(options.headers, app.config.apiHeaders || {});
+    var options = app.api.buildOptions(apiOptions);
+    options.user = 'me';
 
-    var user = yield app.V1Api(token.token.access_token).users.get(options);
+    var user = yield app.api.users.get(options);
 
     this.cookies.set('user', JSON.stringify(user.data), cookieOptions);
 
@@ -178,17 +178,20 @@ var oauthRoutes = function(app) {
 
           ctx.cookies.set('token', token.token.access_token, cookieOptions);
 
-          var options = {
-            user: 'me', //the current oauth api doesn't return userid. :(
+          var apiOptions = {
+            origin: app.getConfig('authAPIOrigin'),
             headers: {
-              Authorization: 'bearer ' + token.token.access_token,
-              'User-Agent': ctx.headers['user-agent'],
-            },
+              'Authorization': `bearer ${token.token.access_token}`,
+              'user-agent': ctx.headers['user-agent'],
+            }
           };
+
+          var options = app.api.buildOptions(apiOptions);
+          options.user = 'me';
 
           Object.assign(options.headers, app.config.apiHeaders || {});
 
-          app.V1Api(token.token.access_token).users.get(options).then(function(user) {
+          app.api.users.get(options).then(function(user) {
             ctx.cookies.set('user', JSON.stringify(user.data), cookieOptions);
             return resolve(200);
           }, function(e) {

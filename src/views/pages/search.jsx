@@ -139,6 +139,7 @@ class SearchPage extends React.Component {
     var state = this.state;
     var props = this.props;
     var app = props.app;
+    var apiOptions = props.apiOptions;
 
     var controls;
     var tracking;
@@ -225,20 +226,28 @@ class SearchPage extends React.Component {
               })
             }
           </ul>
+
           <button className={ `btn-show-more btn-link pull-right ${subreddits.length > 3 ? '' : 'hidden'}` }
                   title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
         </div>,
 
         <div className={ `container listings-container ${noResults ? 'hidden' : ''}` }
              ref="listings" key="search-listings">
+
           <h4 className="text-center">Posts</h4>
-          <SearchSortSubnav app={ app } sort={ props.sort } time={ props.time }
-                            composeSortingUrl={ this._composeSortingUrl.bind(this) } />
+
+          <SearchSortSubnav
+            app={ app }
+            sort={ props.sort }
+            time={ props.time }
+            composeSortingUrl={ this._composeSortingUrl.bind(this) }
+          />
           {
             listings.map(function (listing, idx) {
               if (!listing.hidden) {
                 return (
                   <Listing
+                    apiOptions={ apiOptions }
                     app={ app }
                     listing={ listing }
                     index={ idx }
@@ -279,7 +288,10 @@ class SearchPage extends React.Component {
     return (
       <div className='search-main'>
         <div className="container search-bar-container">
-          <SearchBar {...this.props} inputChangedCallback={ this.handleInputChanged.bind(this) } />
+          <SearchBar
+            {...this.props}
+            inputChangedCallback={ this.handleInputChanged.bind(this) }
+          />
         </div>
 
         { controls }
@@ -303,7 +315,8 @@ class SearchPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.apiOptions);
+
     options.query.q = props.query;
     options.query.limit = _searchLimit;
     options.query.before = props.before;
@@ -340,7 +353,7 @@ class SearchPage extends React.Component {
       return defer.promise;
     }
 
-    var options = api.buildOptions(props.token, props.userAgent);
+    var options = api.buildOptions(props.apiOptions);
     options.query.sort = 'popular';
     options.useCache = useCache;
 

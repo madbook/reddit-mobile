@@ -36,6 +36,11 @@ function randomString(len) {
   return id.join('');
 }
 
+function formatProps (props = {}) {
+  delete props.apiOptions;
+  return props;
+}
+
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
@@ -74,11 +79,11 @@ class Server {
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
 
-    server.use(this.setLOID(app));
-    server.use(this.setHeaders(app));
     server.use(this.modifyRequest);
+    server.use(this.setHeaders(app));
+    server.use(this.setLOID(app));
 
-    server.use(App.serverRender(app));
+    server.use(App.serverRender(app, formatProps));
 
     this.server = server;
     this.app = app;
@@ -110,7 +115,6 @@ class Server {
       var created = (new Date()).toISOString();
 
       var cookieOptions = {
-        signed: true,
         secure: app.getConfig('https'),
         secureProxy: app.getConfig('httpsProxy'),
         httpOnly: true,
@@ -156,12 +160,6 @@ class Server {
     }
 
     this.user = user;
-
-    // mayday mayday
-    this.cookies.set('token');
-    this.cookies.set('user');
-    this.user = undefined;
-    this.token = undefined;
 
     this.renderSynchronous = true;
     this.useCache = false;
