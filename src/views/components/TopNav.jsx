@@ -55,13 +55,18 @@ function shorten(text, len) {
 }
 
 function loadSubredditData(ctx) {
-  SubredditAboutPage.populateData(ctx.props.api, ctx.props, true, false).done(function (data) {
-    ctx.setState({
-      loaded: true,
-      subredditId: ((data || {}).data || {}).name,
-      userIsSubscribed: ((data || {}).data || {}).user_is_subscriber
+  if (ctx.props.subredditName &&
+      ctx.props.subredditName.indexOf('+') === -1 &&
+      ctx.props.subredditName !== 'all') {
+
+    SubredditAboutPage.populateData(ctx.props.api, ctx.props, true, false).done(function (data) {
+      ctx.setState({
+        loaded: true,
+        subredditId: ((data || {}).data || {}).name,
+        userIsSubscribed: ((data || {}).data || {}).user_is_subscriber
+      });
     });
-  });
+  }
 }
 
 class TopNav extends React.Component {
@@ -116,7 +121,9 @@ class TopNav extends React.Component {
     }
 
     var subredditMenu = null;
-    if (props.subredditName) {
+    if (props.subredditName &&
+        props.subredditName.indexOf('+') === -1 &&
+        props.subredditName !== 'all') {
       subredditMenu = (
         <SeashellsDropdown app={ props.app } right={ true }>
           <li className='Dropdown-li'>

@@ -136,7 +136,10 @@ function routes(app) {
 
     var data = yield IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    if (props.subredditName) {
+    if (props.subredditName &&
+      props.subredditName.indexOf('+') === -1 &&
+      props.subredditName !== 'all') {
+
       var subredditData = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
       props = Object.assign({
         subredditId: ((subredditData || {}).data || {}).name,
