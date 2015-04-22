@@ -29,7 +29,7 @@ class UserProfilePage extends React.Component {
   componentDidMount() {
     UserProfilePage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
-        data: data,
+        data: data || {},
         loaded: true,
       });
     }).bind(this));
@@ -45,7 +45,7 @@ class UserProfilePage extends React.Component {
     var loading;
     var profile;
 
-    var userProfile = this.state.data.data || {};
+    var userProfile = (this.state.data || {}).data || {};
     var name = this.props.userName;
     var tracking;
 
@@ -106,10 +106,10 @@ class UserProfilePage extends React.Component {
     }
 
     // Initialized with data already.
-    if (props.data && typeof props.data.data !== 'undefined') {
+    if ((props.data || {}).data) {
       api.hydrate('users', options, props.data);
 
-      defer.resolve(props);
+      defer.resolve(props.data);
       return defer.promise;
     }
 
