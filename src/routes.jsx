@@ -407,7 +407,7 @@ function routes(app) {
     try {
       var page = (
         <BodyLayout {...props} app={app}>
-          <LoginPage {...props}/>
+          <ErrorPage {...props}/>
         </BodyLayout>
       );
     } catch (e) {
