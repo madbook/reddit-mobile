@@ -289,7 +289,7 @@ class Listing extends React.Component {
             <div className='row'>
               <div className='col-xs-11'>
                 <a href={ titleLink } className={ 'panel-title ' + distinguished }>
-                    { `${listing.title} ${edited}` }
+                  { `${listing.title} ${edited}` }
                 </a>
               </div>
               <div className='col-xs-1'>
