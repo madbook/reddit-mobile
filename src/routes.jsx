@@ -82,21 +82,25 @@ function routes(app) {
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
       loginPath: app.getConfig('loginPath'),
-      loid: ctx.loid,
       loidcreated: ctx.loidcreated,
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
-      user: ctx.user,
-      token: ctx.token,
       csrf: ctx.csrf,
       query: ctx.query,
       params: ctx.params,
-      api: app.V1Api(ctx.token),
       url: ctx.path,
       renderTracking: app.getConfig('renderTracking'),
     };
 
-    return Object.assign({}, defaultProps, ctx.props, props);
+    var props = Object.assign({}, defaultProps, ctx.props, props);
+
+    props.app = app;
+    props.api = app.V1Api(ctx.token);
+    props.user = ctx.user;
+    props.token = ctx.token;
+    props.loid = ctx.loid;
+
+    return props;
   }
 
   app.router.get('/health', function * () {
@@ -130,7 +134,6 @@ function routes(app) {
 
     props = Object.assign({
       data: data,
-      app: app,
     }, props);
 
     try {
@@ -169,7 +172,6 @@ function routes(app) {
       subredditId: ((data || {}).data || {}).name,
       userIsSubscribed: ((data || {}).data || {}).user_is_subscriber,
       data: data,
-      app: app
     }, props);
 
     var key = `subreddit-about-${props.subredditName}`;
@@ -216,7 +218,6 @@ function routes(app) {
     props = Object.assign({
       results: data,
       subreddits: subreddits,
-      app: app
     }, props);
 
     try {
@@ -252,7 +253,6 @@ function routes(app) {
 
     props = Object.assign({
       data: data,
-      app: app,
     }, props);
 
     var key = `listing-${props.listingId}-${stringify(this.query)}`;
@@ -284,7 +284,6 @@ function routes(app) {
 
     props = Object.assign({
       data: data,
-      app: app,
     }, props);
 
     var key = `user-profile-${ctx.params.user}`;
@@ -317,7 +316,6 @@ function routes(app) {
 
     props = Object.assign({
       data: data,
-      app: app,
     }, props);
 
     var key = `user-gild-${ctx.params.user}`;
@@ -358,7 +356,6 @@ function routes(app) {
 
     props = Object.assign({
       data: data,
-      app: app,
     }, props);
 
     try {

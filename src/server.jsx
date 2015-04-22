@@ -145,14 +145,13 @@ class Server {
     this.userAgent = this.headers['user-agent'];
 
     var user = this.cookies.get('user');
-    var token = this.cookies.get('token');
+    this.token = this.cookies.get('token');
 
     if (user) {
       user = JSON.parse(user);
     }
 
     this.user = user;
-    this.token = token;
 
     this.renderSynchronous = true;
     this.useCache = false;
