@@ -20,8 +20,11 @@ class Dropdown extends React.Component {
     className += (this.state.opened ? ' opened' : '');
     className += (this.props.right ? ' pull-right' : '');
 
+    var isTouch = Utils.touch();
+
     return (
-      <div className={className} onMouseEnter={ this._touch ? null : this._onMouseEnter } onMouseLeave={ this._touch ? null : this._onMouseLeave } onClick={this._touch ? this._onClick : null}>
+      <div className={className} onMouseEnter={ isTouch ? null : this._onMouseEnter }
+           onMouseLeave={ isTouch ? null : this._onMouseLeave } onClick={ isTouch ? this._onClick : null }>
         { this.props.button }
         <div className='Dropdown-tab shadow tween'>
           <div className={'stalagmite' + (this.props.right ? ' pull-right' : '')}></div>
@@ -33,12 +36,8 @@ class Dropdown extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this._touch = Utils.touch();
-  }
-
   componentWillUnmount() {
-    if (this._touch) {
+    if (Utils.touch()) {
       this.props.app.off(constants.DROPDOWN_OPEN, this._close);
     }
   }
@@ -65,7 +64,7 @@ class Dropdown extends React.Component {
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
-    if (this._touch) {
+    if (Utils.touch()) {
       this.props.app.on(constants.DROPDOWN_OPEN, this._close);
     }
   }

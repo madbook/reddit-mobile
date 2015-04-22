@@ -473,11 +473,11 @@ var Utils={};
 
 	Utils.touch=function()
 	{
-		if(_touch==null)
-			_touch="ontouchstart" in window;
-		return _touch;
+    if (typeof window !== 'undefined') {
+      return ("ontouchstart" in window);
+    }
+    return false;
 	}
-		var _touch;
 })();
 
 export default Utils;
