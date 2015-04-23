@@ -398,7 +398,7 @@ function routes(app) {
     var ctx = this;
 
     var props = buildProps(this, {
-      referrer: ctx.headers.referer,
+      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
     });
 
     try {
@@ -463,9 +463,10 @@ function routes(app) {
 
   app.router.get('/404', function * () {
     var ctx = this;
+    ctx.status = 404;
 
     var props = buildProps(this, {
-      referrer: ctx.headers.referer,
+      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: '404 - Sorry, that page doesn\'t seem to exist.',
     });
 
@@ -475,8 +476,6 @@ function routes(app) {
       </BodyLayout>
     );
 
-    this.status = 404;
-
     this.body = page;
     this.layout = Layout;
     this.props = props;
@@ -484,13 +483,12 @@ function routes(app) {
 
   app.router.get(/\/4\d\d/, function * () {
     var ctx = this;
+    ctx.status = 400;
 
     var props = buildProps(this, {
-      referrer: ctx.headers.referer,
+      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: '400 - Oops, looks like something went wrong.',
     });
-
-    this.status = 400;
 
     try {
       var page = (
@@ -509,11 +507,10 @@ function routes(app) {
 
   app.router.get(/\/5\d\d/, function * () {
     var ctx = this;
-
-    this.status = 500;
+    ctx.status = 500;
 
     var props = buildProps(this, {
-      referrer: ctx.headers.referer,
+      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: '500 - Oops, looks like something went wrong.',
     });
 
