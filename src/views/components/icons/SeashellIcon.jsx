@@ -16,7 +16,7 @@ class SeashellIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-seashells'>
+      <SVG className='SeashellIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-seashells'>
         <g className='SVG-fill'>
           <circle ref="one" cx={_CENTER - _DIST} cy={_CENTER} r={_DIAMETER}/>
           <circle cx={_CENTER} cy={_CENTER} r={_DIAMETER}/>

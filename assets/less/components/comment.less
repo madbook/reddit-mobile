@@ -8,8 +8,49 @@
   -moz-hyphens: auto;
   hyphens: auto;
 
-  border-left: dotted 1px #ccc;
   margin-left: 1em;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 17px;
+    bottom: 0;
+    left: -1px;
+    border-left: @gray-border;
+  }
+
+  .comment-svg {
+    .SVG-fill-bg {
+      fill: darken(@brand-primary-bg-lightest, 2.5%);
+    }
+
+    .SVG-stroke-bg {
+      stroke: darken(@brand-primary-bg-lightest, 2.5%);
+    }
+
+    .SVG-fill {
+      fill: @light-gray;
+    }
+
+    .SVG-stroke {
+      stroke: @light-gray;
+    }
+
+    .SeashellIcon {
+      .SVG-fill {
+        fill: darken(@brand-primary-bg-lightest, 2.5%);
+      }
+
+      .SVG-fill-bg {
+        fill: @light-gray;
+      }
+    }
+  }
+
+  .Dropdown {
+    top: -2px;
+  }
 }
 
 .comment-op {
@@ -49,6 +90,20 @@
 
 .linkbar.comment-title-list {
   width: 100%;
+
+  &.linkbar-compact li.twirly {
+    left: -14px;
+    width: 19px;
+    padding-bottom: 0;
+    margin-right: 0;
+    height: 17px;
+
+    &:before {
+      display: inline-block;
+      border-left-color: @blue;
+      margin-top: -8px;
+    }
+  }
 }
 
 .comment-toolbar {
@@ -178,8 +233,4 @@
 .encircle-icon.encircle-options-icon {
   display: inline-block;
   padding: 1px;
-
-  .SVG-fill {
-    fill: @white;
-  }
 }
