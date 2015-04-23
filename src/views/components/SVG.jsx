@@ -1,4 +1,5 @@
 import React from 'react';
+import Utils from '../../lib/danehansen/Utils';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
@@ -12,8 +13,11 @@ class SVG extends React.Component {
     if (SVG.ENABLED) {
       var width = this.props.width;
       var height = this.props.height;
+      var move = this.props.move;
+      var out = this.props.out;
       return (
-        <svg className={this.props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height}>
+        <svg className={this.props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height} onMouseMove={this._touch ? null : move}
+          onTouchMove={this._touch ? move : null} onMouseLeave={this._touch ? null : out} onTouchEnd={this._touch ? out : null}>
           {this.props.children}
         </svg>
       );
@@ -36,6 +40,10 @@ class SVG extends React.Component {
       }
       return <span className='placeholder'/>;
     }
+  }
+
+  componentDidMount() {
+    this._touch = Utils.touch();
   }
 }
 

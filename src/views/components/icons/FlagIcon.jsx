@@ -28,7 +28,7 @@ class FlagIcon extends React.Component {
             <rect ref='mask' x={_POINTS[0].x} y='0' width={_X_DIFF} height={SVG.ICON_SIZE} fill='#000'/>
           </clipPath>
         </defs>
-        <circle className='SVG-fill' cx='10' cy='10' r='10'/>
+        <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <line className='SVG-stroke-bg' strokeWidth='0.7' strokeLinecap='round' x1='5' y1='5' x2='5' y2='15.8'/>
         <path ref='flag' className='SVG-fill-bg' clip-path={'url(#' + this._maskID + ')'} d='M10.8,5.5c-2.1,1.2-5-0.2-5-0.2s-3-1.4-5-0.2c-2.1,1.2-5-0.2-5-0.2v6.7c0,0,2.9,1.2,5,0.2c2.2-1,5,0.2,5,0.2s2.9,1.2,5,0.2 c2.2-1,5,0.2,5,0.2V5.7C15.8,5.7,12.9,4.3,10.8,5.5z'/>
       </SVG>

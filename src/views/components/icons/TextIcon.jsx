@@ -12,7 +12,7 @@ class TextIcon extends React.Component {
   render() {
     return (
       <SVG className='SVG-icon TextIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-text-circled'>
-        <circle className='SVG-fill' cx='10' cy='10' r='10'/>
+        <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <g ref='all'>
           <rect className='SVG-fill-bg' x='6.666687' y='5.333313' width='6.666626' height='9.333313'/>
           <g className='SVG-stroke' strokeWidth='0.4'>
