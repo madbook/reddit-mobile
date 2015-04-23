@@ -278,10 +278,10 @@ class Listing extends React.Component {
     var listingClass = props.listingClass || '';
     var comment = listing.num_comments < 2 ? 'comment' : 'comments';
     var isSelf = listing.domain.indexOf('self.') === 0;
-    var when = short(listing.created_utc * 1000);
 
     var titleLink = mobilify(listing.url);
     var isRemote = titleLink === listing.url;
+    var when;
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -295,9 +295,17 @@ class Listing extends React.Component {
       );
     }
 
-    if (!isSelf) {
+    if (!props.hideWhen) {
+      when = (<li>{ short(listing.created_utc * 1000) }</li>);
+    }
+
+    if (!isSelf && !props.hideDomain) {
       domain = (
         <li>{ listing.domain }</li>
+      );
+    } else if (props.sponsored) {
+      domain = (
+        <li className='text-primary sponsored-label'>Sponsored</li>
       );
     }
 
@@ -373,7 +381,7 @@ class Listing extends React.Component {
                   <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>
                 </li>
                 { subredditLabel }
-                <li>{ when }</li>
+                { when }
                 { domain }
               </ul>
             </div>

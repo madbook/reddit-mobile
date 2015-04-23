@@ -40,7 +40,11 @@ class ListingPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
+    if (this.props.subredditName) {
+      this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
+    } else {
+      this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE);
+    }
   }
 
   componentDidUpdate() {

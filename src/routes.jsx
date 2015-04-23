@@ -260,7 +260,7 @@ function routes(app) {
   app.router.get('/search', searchPage);
   app.router.get('/r/:subreddit/search', searchPage);
 
-  app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', function *(next) {
+  function * commentsPage(next) {
     var page;
     var ctx = this;
 
@@ -291,7 +291,10 @@ function routes(app) {
     this.body = page;
     this.layout = Layout;
     this.props = props;
-  });
+  }
+
+  app.router.get('/comments/:listingId/:listingTitle', commentsPage);
+  app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
 
   app.router.get('/u/:user', function *(next) {
     var page;
