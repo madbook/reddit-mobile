@@ -30,6 +30,7 @@ function gifToHTML5(url, config) {
 
   // If it's imgur, make a gifv link
   if (url.indexOf('imgur.com') > -1) {
+    url = adjustUrlToAppProtocol(url, config);
     return {
       webm: url.replace(/\.gif/, '.webm'),
       mp4: url.replace(/\.gif/, '.mp4'),
