@@ -7,10 +7,14 @@ var Vote;
 import CommentBoxFactory from '../components/CommentBox';
 var CommentBox;
 
+import MobileButtonFactory from '../components/MobileButton';
+var MobileButton;
+
 import ListingDropdownFactory from '../components/ListingDropdown';
 var ListingDropdown;
 
-import PlayIconFactory from '../components/icons/PlayIcon';
+import ReplyIconFactory from '../components/icons/ReplyIcon';
+var ReplyIcon;
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
@@ -123,16 +127,14 @@ class Comment extends React.Component {
           <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
-      var activeShareClass = (this.state.showReplyBox) ? 'share-icon-active' : '';
-      var activeFavoriteClass = (this.state.favorited) ? 'favorite-icon-active' : '';
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
-            <a href='#' onClick={this.showReplyBox.bind(this)}>
-              <i className={`share-icon glyphicon glyphicon-share-alt text-mirror ${activeShareClass} encircle-icon`}></i>
-            </a>
+            <MobileButton href='#' onClick={this.showReplyBox.bind(this)} className='comment-svg'>
+              <ReplyIcon altered={this.state.showReplyBox}/>
+            </MobileButton>
           </li>
-          <li className='linkbar-spread-li-double comment-vote-container'>
+          <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
               app={app}
               thing={ this.props.comment }
@@ -146,8 +148,8 @@ class Comment extends React.Component {
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
                 listing={this.props.comment}
-                app={this.props.app} />
-              </div>
+                app={this.props.app}/>
+            </div>
           </li>
         </ul>
       );
@@ -208,8 +210,7 @@ class Comment extends React.Component {
             <div className={'comment-submitted ' + headerCollapseClass}>
               <a href='#' onClick={ this.collapse.bind(this) }>
                 <ul className='linkbar linkbar-compact comment-title-list'>
-                  <li className='comment-title-collapse-container'>
-                    <span className={ `comment-title-vote-icon glyphicon glyphicon-triangle-${caretDirection}` }></span>
+                  <li className={'comment-title-collapse-container twirly before' + (this.state.collapsed ? '' : ' opened')}>
                   </li>
                   <li className="comment-title-username">
                     <span className={ opClass + " " + distinguished }>
@@ -252,7 +253,9 @@ class Comment extends React.Component {
 function CommentFactory(app) {
   Vote = VoteFactory(app);
   CommentBox = CommentBoxFactory(app);
+  MobileButton = MobileButtonFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
+  ReplyIcon = ReplyIconFactory(app);
 
   return app.mutate('core/components/comment', Comment);
 }
