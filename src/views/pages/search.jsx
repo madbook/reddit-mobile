@@ -22,6 +22,13 @@ const _searchMinLength = 3;
 const _searchLimit = 25;
 
 class SearchPage extends React.Component {
+  shouldComponentUpdate (nextProps, nextState) {
+    return (
+      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
+      JSON.stringify(nextState) !== JSON.stringify(this.state)
+    );
+  }
+
   constructor(props) {
     super(props);
 
@@ -30,7 +37,7 @@ class SearchPage extends React.Component {
     this.state = {
       results: props.results || {},
       subreddits: props.subreddits || {},
-      loaded: !this._lastQueryKey || props.results.data.length,
+      loaded: !!props.results.data.length,
     };
   }
 
