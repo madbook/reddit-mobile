@@ -119,7 +119,7 @@ class Listing extends React.Component {
     return (
       <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
         <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
-          XXX
+          NSFW
         </span>
       </a>
     );
