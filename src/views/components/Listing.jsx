@@ -20,7 +20,7 @@ function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
 }
 
-function gifToHTML5(url) {
+function gifToHTML5(url, app) {
   if (!url) {
     return;
   }
@@ -39,13 +39,26 @@ function gifToHTML5(url) {
     var gfy = gfyRegex.exec(url);
 
     if (gfy.length === 2) {
+      app.config = app.config || {};
       var id = gfy[1];
-
       return {
-        iframe: 'http://gfycat.com/ifr/' + id,
+        iframe: (app.config.https || app.config.httpsProxy ? 'https://' : 'http://') + 'gfycat.com/ifr/' + id,
       };
     }
   }
+}
+
+function adjustUrlToAppProtocol(url, app) {
+  if (app && url) {
+    app.config = app.config || {};
+    var isHttps = app.config.https || app.config.httpsProxy;
+    if (isHttps) {
+      return url.replace('http://', 'https://');
+    } else {
+      return url.replace('https://', 'http://');
+    }
+  }
+  return url;
 }
 
 class Listing extends React.Component {
@@ -61,16 +74,19 @@ class Listing extends React.Component {
     return (nextProps !== this.props || nextState !== this.state);
   }
 
-  buildImage(url, embed, fixedRatio) {
-    var html5 = gifToHTML5(url);
+  buildImage(data) {
+    var ctx = this;
+    var html5 = gifToHTML5(data.url, ctx.props.app || {});
 
     if (html5) {
-      var height = embed ? embed.height : 300;
+      var height = data.embed ? data.embed.height : 300;
 
       if (html5.iframe) {
         return (
           <div className='ratio16x9'>
-            <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height } sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+            <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height }
+                    sandbox='allow-scripts allow-forms allow-same-origin'
+                    onError={ ctx.handleIFrameError.bind(ctx, data.fallbackUrl) }></iframe>
           </div>
         );
       } else {
@@ -83,17 +99,18 @@ class Listing extends React.Component {
           </div>
         );
       }
-    } else if (fixedRatio) {
+    } else if (data.fixedRatio) {
       return (
         <div className='ratio16x9'>
-          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+url+')'} }>
+          <div className='ratio16x9-child' style={ { backgroundImage: 'url(' + data.url + ')' } }>
             <PlayIcon/>
           </div>
         </div>
       );
     } else {
       return (
-        <img ref='img' src={ url } className='img-responsive img-preview'/>
+        <img ref='img' src={ data.url } className='img-responsive img-preview'
+             onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
       );
     }
   }
@@ -109,6 +126,8 @@ class Listing extends React.Component {
   }
 
   buildContent() {
+    var ctx = this;
+    var app = this.props.app;
     var listing = this.props.listing;
 
     if (!listing) {
@@ -129,13 +148,20 @@ class Listing extends React.Component {
         if (expanded) {
           return (
             <div className='listing-frame'>
-              <iframe src={ listing.url } frameBorder='0' height='80%' width='100%' allowFullScreen='' sandbox='allow-scripts allow-forms allow-same-origin'></iframe>
+              <iframe src={ adjustUrlToAppProtocol(listing.url, app) } frameBorder='0' height='80%' width='100%' allowFullScreen=''
+                      sandbox='allow-scripts allow-forms allow-same-origin'
+                      onError={ ctx.handleIFrameError.bind(ctx, listing.url) }></iframe>
             </div>
           );
         } else {
           return (
             <a href={ permalink }>
-              { this.buildImage(media.oembed.thumbnail_url, media.oembed) }
+              {
+                this.buildImage({
+                  url: media.oembed.thumbnail_url,
+                  embed: media.oembed
+                })
+              }
             </a>
           );
         }
@@ -149,7 +175,13 @@ class Listing extends React.Component {
         } else {
           return (
             <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-              { this.buildImage(media.oembed.thumbnail_url, media.oembed, true) }
+              {
+                this.buildImage({
+                  url: media.oembed.thumbnail_url,
+                  embed: media.oembed,
+                  fixedRatio: true
+                })
+              }
             </a>
           );
         }
@@ -158,13 +190,23 @@ class Listing extends React.Component {
       if (expanded) {
         return (
           <a href={ listing.url } className='external-image'>
-            { this.buildImage(listing.url) }
+            {
+              this.buildImage({
+                url: adjustUrlToAppProtocol(listing.url, app),
+                fallbackUrl: listing.url
+              })
+            }
           </a>
         );
       } else {
         return (
           <a href={ permalink }>
-            { this.buildImage(listing.url) }
+            {
+              this.buildImage({
+                url: adjustUrlToAppProtocol(listing.url, app),
+                fallbackUrl: listing.url
+              })
+            }
           </a>
         );
       }
@@ -202,6 +244,18 @@ class Listing extends React.Component {
     if (!listing) { return; }
 
     return listing.title.match(/nsf[wl]/gi) || listing.over_18;
+  }
+
+  handleIFrameError(fallbackSrc, event) {
+    if (event && event.currentTarget && event.currentTarget.src !== fallbackSrc) {
+      event.currentTarget.src = fallbackSrc;
+    }
+  }
+
+  handleImageError(fallbackSrc, event) {
+    if (event && event.currentTarget && event.currentTarget.src !== fallbackSrc) {
+      event.currentTarget.src = fallbackSrc;
+    }
   }
 
   render() {
