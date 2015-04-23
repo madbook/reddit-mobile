@@ -163,7 +163,7 @@ class Listing extends React.Component {
             <a href={ permalink }>
               {
                 this.buildImage({
-                  url: media.oembed.thumbnail_url,
+                  url: adjustUrlToAppProtocol(media.oembed.thumbnail_url, config),
                   embed: media.oembed
                 })
               }
@@ -182,7 +182,7 @@ class Listing extends React.Component {
             <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
               {
                 this.buildImage({
-                  url: media.oembed.thumbnail_url,
+                  url: adjustUrlToAppProtocol(media.oembed.thumbnail_url, config),
                   embed: media.oembed,
                   fixedRatio: true
                 })
