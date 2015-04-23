@@ -20,7 +20,7 @@ function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
 }
 
-function gifToHTML5(url, app) {
+function gifToHTML5(url, config) {
   if (!url) {
     return;
   }
@@ -39,20 +39,17 @@ function gifToHTML5(url, app) {
     var gfy = gfyRegex.exec(url);
 
     if (gfy.length === 2) {
-      app.config = app.config || {};
       var id = gfy[1];
       return {
-        iframe: (app.config.https || app.config.httpsProxy ? 'https://' : 'http://') + 'gfycat.com/ifr/' + id,
+        iframe: (config.https || config.httpsProxy ? 'https://' : 'http://') + 'gfycat.com/ifr/' + id,
       };
     }
   }
 }
 
-function adjustUrlToAppProtocol(url, app) {
-  if (app && url) {
-    app.config = app.config || {};
-    var isHttps = app.config.https || app.config.httpsProxy;
-    if (isHttps) {
+function adjustUrlToAppProtocol(url, config) {
+  if (config && url) {
+    if (config.https || config.httpsProxy) {
       return url.replace('http://', 'https://');
     } else {
       return url.replace('https://', 'http://');
@@ -76,7 +73,10 @@ class Listing extends React.Component {
 
   buildImage(data) {
     var ctx = this;
-    var html5 = gifToHTML5(data.url, ctx.props.app || {});
+    var html5 = gifToHTML5(data.url, {
+      https: ctx.props.https,
+      httpsProxy: ctx.props.httpsProxy
+    });
 
     if (html5) {
       var height = data.embed ? data.embed.height : 300;
@@ -127,13 +127,17 @@ class Listing extends React.Component {
 
   buildContent() {
     var ctx = this;
-    var app = this.props.app;
-    var listing = this.props.listing;
+    var props = this.props;
+    var listing = props.listing;
 
     if (!listing) {
       return;
     }
 
+    var config = {
+      https: props.https,
+      httpsProxy: props.httpsProxy
+    };
     var media = listing.media;
     var permalink = listing.cleanPermalink;
 
@@ -148,7 +152,7 @@ class Listing extends React.Component {
         if (expanded) {
           return (
             <div className='listing-frame'>
-              <iframe src={ adjustUrlToAppProtocol(listing.url, app) } frameBorder='0' height='80%' width='100%' allowFullScreen=''
+              <iframe src={ adjustUrlToAppProtocol(listing.url, config) } frameBorder='0' height='80%' width='100%' allowFullScreen=''
                       sandbox='allow-scripts allow-forms allow-same-origin'
                       onError={ ctx.handleIFrameError.bind(ctx, listing.url) }></iframe>
             </div>
@@ -192,7 +196,7 @@ class Listing extends React.Component {
           <a href={ listing.url } className='external-image'>
             {
               this.buildImage({
-                url: adjustUrlToAppProtocol(listing.url, app),
+                url: adjustUrlToAppProtocol(listing.url, config),
                 fallbackUrl: listing.url
               })
             }
@@ -203,7 +207,7 @@ class Listing extends React.Component {
           <a href={ permalink }>
             {
               this.buildImage({
-                url: adjustUrlToAppProtocol(listing.url, app),
+                url: adjustUrlToAppProtocol(listing.url, config),
                 fallbackUrl: listing.url
               })
             }

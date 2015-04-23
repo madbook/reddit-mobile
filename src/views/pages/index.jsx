@@ -60,6 +60,7 @@ class IndexPage extends React.Component {
 
   render() {
     var loading;
+    var props = this.props;
     var data = this.state.data;
 
     if (!this.state.loaded) {
@@ -70,15 +71,15 @@ class IndexPage extends React.Component {
 
     var listings = data.data || [];
 
-    var hideSubredditLabel = this.props.subredditName &&
-                             this.props.subredditName.indexOf('+') === -1 &&
-                             this.props.subredditName !== 'all';
+    var hideSubredditLabel = props.subredditName &&
+                             props.subredditName.indexOf('+') === -1 &&
+                             props.subredditName !== 'all';
 
-    var page = this.props.page || 0;
-    var api = this.props.api;
-    var token = this.props.token;
-    var user = this.props.user;
-    var app = this.props.app;
+    var page = props.page || 0;
+    var api = props.api;
+    var token = props.token;
+    var user = props.user;
+    var app = props.app;
 
     var firstId;
     var lastId;
@@ -89,22 +90,22 @@ class IndexPage extends React.Component {
 
     var subreddit = '';
 
-    if (this.props.subredditName) {
-      subreddit = '/r/' + this.props.subredditName;
+    if (props.subredditName) {
+      subreddit = '/r/' + props.subredditName;
     }
 
-    if (this.props.multi) {
-      subreddit = '/u/' + this.props.multiUser + '/m/' + this.props.multi;
+    if (props.multi) {
+      subreddit = '/u/' + props.multiUser + '/m/' + props.multi;
     }
 
-    var sort = this.props.sort || 'hot';
+    var sort = props.sort || 'hot';
 
     if (listings.length) {
       firstId = listings[0].name;
       lastId = listings[listings.length - 1].name;
 
       if (page > 0) {
-        var prevQuery = Object.assign({}, this.props.query, {
+        var prevQuery = Object.assign({}, props.query, {
           count: 25,
           page: page - 1,
           before: firstId,
@@ -118,7 +119,7 @@ class IndexPage extends React.Component {
         );
       }
 
-      var nextQuery = Object.assign({}, this.props.query, {
+      var nextQuery = Object.assign({}, props.query, {
         count: 25,
         page: page + 1,
         after: lastId,
@@ -132,12 +133,11 @@ class IndexPage extends React.Component {
       );
     }
 
-    var app = this.props.app;
-    var loginPath = this.props.loginPath;
-    var apiOptions = this.props.apiOptions;
+    var loginPath = props.loginPath;
+    var apiOptions = props.apiOptions;
 
-    if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+    if (this.state.data.meta && props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
     }
 
     return (
@@ -149,8 +149,8 @@ class IndexPage extends React.Component {
           user={ user }
           sort={ sort }
           list='listings'
-          baseUrl={ this.props.url }
-          loginPath={ this.props.loginPath }
+          baseUrl={ props.url }
+          loginPath={ props.loginPath }
           apiOptions={ apiOptions }
         />
 
@@ -162,6 +162,8 @@ class IndexPage extends React.Component {
               if (!listing.hidden) {
                 return (
                   <Listing
+                    https={ props.https }
+                    httpsProxy={ props.httpsProxy }
                     apiOptions={ apiOptions }
                     app={app}
                     listing={listing}

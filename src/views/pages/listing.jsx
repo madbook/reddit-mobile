@@ -65,6 +65,7 @@ class ListingPage extends React.Component {
   render() {
     var loading;
     var tracking;
+    var props = this.props;
 
     if (!this.state.loaded) {
       loading = (
@@ -77,25 +78,24 @@ class ListingPage extends React.Component {
     var listing = data ? data.listing : {};
     var comments = data ? data.comments : [];
 
-    var api = this.props.api;
-    var user = this.props.user;
-    var token = this.props.token;
+    var api = props.api;
+    var user = props.user;
+    var token = props.token;
     var author = listing.author;
-    var sort = this.props.sort || 'best';
-    var app = this.props.app;
+    var sort = props.sort || 'best';
+    var app = props.app;
 
     var listingElement;
     var commentBoxElement;
 
-    var sort = this.props.sort || 'best';
-    var app = this.props.app;
-
-    var loginPath = this.props.loginPath;
-    var apiOptions = this.props.apiOptions;
+    var loginPath = props.loginPath;
+    var apiOptions = props.apiOptions;
 
     if (!loading) {
       listingElement = (
         <Listing
+          https={ props.https }
+          httpsProxy={ props.httpsProxy }
           apiOptions={ apiOptions }
           app={ app }
           listing={ listing }
@@ -114,22 +114,21 @@ class ListingPage extends React.Component {
           user={ user }
           token={ token }
           api={ api }
-          csrf={ this.props.csrf }
+          csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           loginPath={ loginPath }
         />
       );
     }
 
-    if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } loid={ this.props.loid } loidcreated={ this.props.loidcreated } user={ this.props.user } />);
+    if (this.state.data.meta && props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } loid={ props.loid } loidcreated={ props.loidcreated } user={ props.user } />);
     }
-
 
     return (
       <div className='listing-main'>
         { loading }
-        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ props.url } loginPath={ props.loginPath } />
         <div className='container' key='container'>
           { listingElement }
           { commentBoxElement }

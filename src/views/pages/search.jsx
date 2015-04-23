@@ -222,6 +222,8 @@ class SearchPage extends React.Component {
               if (!listing.hidden) {
                 return (
                   <Listing
+                    https={ props.https }
+                    httpsProxy={ props.httpsProxy }
                     apiOptions={ apiOptions }
                     app={ app }
                     listing={ listing }

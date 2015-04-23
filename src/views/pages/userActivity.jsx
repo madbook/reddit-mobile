@@ -53,6 +53,7 @@ class UserActivityPage extends React.Component {
 
   render() {
     var loading;
+    var props = this.props;
 
     if (!this.state.loaded) {
       loading = (
@@ -60,33 +61,33 @@ class UserActivityPage extends React.Component {
       );
     }
 
-    var page = this.props.page || 0;
-    var api = this.props.api;
-    var token = this.props.token;
+    var page = props.page || 0;
+    var api = props.api;
+    var token = props.token;
 
-    var app = this.props.app;
-    var user = this.props.user;
+    var app = props.app;
+    var user = props.user;
 
     var activities = this.state.data.data || [];
 
     var subreddit = '';
 
-    var sort = this.props.sort || 'hot';
+    var sort = props.sort || 'hot';
 
-    var userProfile = this.props.userProfile || {};
-    var name = this.props.userName;
+    var userProfile = props.userProfile || {};
+    var name = props.userName;
 
     var tracking;
-    var loginPath = this.props.loginPath;
+    var loginPath = props.loginPath;
 
-    if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+    if (this.state.data.meta && props.renderTracking) {
+      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
     }
 
     return (
       <div className="user-page user-activity">
-        <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ this.props.activity }
-                            user={ user } loginPath={ this.props.loginPath } />
+        <UserActivitySubnav app={ app } sort={ sort } name={ name } activity={ props.activity }
+                            user={ user } loginPath={ props.loginPath } />
 
         { loading }
 
@@ -98,6 +99,8 @@ class UserActivityPage extends React.Component {
               if (thing._type === 'Link') {
                 return (
                   <Listing
+                    https={ props.https }
+                    httpsProxy={ props.httpsProxy }
                     app={app}
                     listing={thing}
                     index={index}

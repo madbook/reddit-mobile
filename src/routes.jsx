@@ -76,6 +76,8 @@ function routes(app) {
     var defaultProps = {
       title: 'reddit: the front page of the internet',
       liveReload: app.getConfig('liveReload') === 'true',
+      https: app.getConfig('https'),
+      httpsProxy: app.getConfig('httpsProxy'),
       env: app.getConfig('env'),
       reddit: app.getConfig('reddit'),
       minifyAssets: app.getConfig('minifyAssets'),
