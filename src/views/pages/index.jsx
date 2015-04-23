@@ -16,13 +16,6 @@ import TopSubnavFactory from '../components/TopSubnav';
 var TopSubnav;
 
 class IndexPage extends React.Component {
-  shouldComponentUpdate (nextProps, nextState) {
-    return (
-      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-      JSON.stringify(nextState) !== JSON.stringify(this.state)
-    );
-  }
-
   constructor(props) {
     super(props);
 
@@ -39,7 +32,7 @@ class IndexPage extends React.Component {
       subredditName: subredditName,
     };
 
-    this.state.loaded = !!(this.state.data && this.state.data.data);
+    this.state.loaded = this.state.data && this.state.data.data;
   }
 
   componentDidMount() {

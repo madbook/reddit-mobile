@@ -19,13 +19,6 @@ import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
 class UserActivityPage extends React.Component {
-  shouldComponentUpdate (nextProps, nextState) {
-    return (
-      JSON.stringify(nextProps) !== JSON.stringify(this.props) ||
-      JSON.stringify(nextState) !== JSON.stringify(this.state)
-    );
-  }
-
   constructor(props) {
     super(props);
 
