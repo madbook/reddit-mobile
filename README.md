@@ -61,7 +61,7 @@ Plugins register themselves via two interfaces:
 Getting Up and Running
 ----------------------
 
-0. Install node.js or io.js.
+0. Install [node.js](https://nodejs.org/download/) or [io.js](https://iojs.org).
 1. [Fork](https://github.com/reddit/switcharoo/fork) and clone
   this project.
 2. Also fork and clone any plugins you plan on developing. In these, run
