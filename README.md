@@ -50,7 +50,7 @@ Plugins register themselves via two interfaces:
 1. Route handlers that take two paramaters, `req` and `res`. `res` is a promise
   interface that should be called using
   `res.resolve({ body: reactElement, status: 200})` or
-  `res.rejcet({ body: error, status: 400})`. (Body and status are optional in
+  `res.reject({ body: error, status: 400})`. (Body and status are optional in
   both cases, but should generally be added.)
   A complete example of route handling can be seen at
   [switcharoo-plugin-core](https://github.com/reddit/switcharoo-plugin-core).
