@@ -96,7 +96,7 @@ class Vote extends React.Component {
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='1'/>
               <MobileButton type='submit'
-                className={'vote text-muted' + voteClass} data-vote='up' data-thingid={ this.props.thing.name }
+                className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
                 <UpvoteIcon altered={this.state.localScore > 0} />
               </MobileButton>
@@ -111,7 +111,7 @@ class Vote extends React.Component {
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='-1'/>
               <MobileButton type='submit'
-                className={'vote text-muted' + voteClass} data-vote='down' data-thingid={ this.props.thing.name }
+                className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
                 <DownvoteIcon altered={this.state.localScore < 0}/>
               </MobileButton>

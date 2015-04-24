@@ -336,13 +336,13 @@ class Listing extends React.Component {
   }
 
   handleIFrameError(fallbackSrc, event) {
-    if (event && event.currentTarget && event.currentTarget.src !== fallbackSrc) {
+    if (event && event.currentTarget && fallbackSrc && event.currentTarget.src !== fallbackSrc) {
       event.currentTarget.src = fallbackSrc;
     }
   }
 
   handleImageError(fallbackSrc, event) {
-    if (event && event.currentTarget && event.currentTarget.src !== fallbackSrc) {
+    if (event && event.currentTarget && fallbackSrc && event.currentTarget.src !== fallbackSrc) {
       event.currentTarget.src = fallbackSrc;
     }
   }
