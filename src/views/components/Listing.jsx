@@ -230,7 +230,7 @@ class Listing extends React.Component {
     }
 
     if (media && media.oembed) {
-      if (media.oembed.type === 'rich' || media.oembed.type === 'image') {
+      if (media.oembed.type === 'image') {
         if (expanded) {
           return (
             <div className='listing-frame'>
@@ -246,7 +246,7 @@ class Listing extends React.Component {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
                   fallbackUrl: preview || media.oembed.thumbnail_url,
-                  embed: media.oembed
+                  embed: media.oembed,
                 })
               }
             </a>
@@ -262,6 +262,36 @@ class Listing extends React.Component {
         } else {
           return (
             <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+              {
+                this.buildImage({
+                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
+                  fallbackUrl: preview || media.oembed.thumbnai_url,
+                  embed: media.oembed,
+                  fixedRatio: true,
+                  isVideo: true,
+                })
+              }
+            </a>
+          );
+        }
+      } else if (media.oembed.type === 'rich') {
+        if (expanded) {
+          return (
+            <a href={ listing.url } data-no-route='true'>
+              {
+                this.buildImage({
+                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
+                  fallbackUrl: preview || media.oembed.thumbnai_url,
+                  embed: media.oembed,
+                  fixedRatio: true,
+                  isVideo: true,
+                })
+              }
+            </a>
+          );
+        } else {
+          return (
+            <a href={ listing.url } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -316,6 +346,17 @@ class Listing extends React.Component {
       }
     } else if (listing.domain.indexOf('self.') === 0) {
       return null;
+    } else if (preview) {
+      return (
+        <a href={ permalink }>
+          {
+            this.buildImage({
+              url: adjustUrlToAppProtocol(preview, config),
+              fallbackUrl: preview,
+            })
+          }
+        </a>
+      );
     } else {
       return null;
     }
