@@ -363,11 +363,15 @@ class Listing extends React.Component {
   }
 
   expand(e) {
-    e.preventDefault();
+    if (e.target && e.target.tagName === 'A' && e.target.href) {
+      return true;
+    } else {
+      e.preventDefault();
 
-    this.setState({
-      expanded: !this.state.expanded,
-    });
+      this.setState({
+        expanded: !this.state.expanded,
+      });
+    }
   }
 
   isNSFW(listing) {
