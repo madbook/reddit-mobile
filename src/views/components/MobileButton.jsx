@@ -1,11 +1,12 @@
 import React from 'react/addons';
-import Utils from '../../lib/danehansen/Utils';
+import Utils from '../../lib/danehansen/utils/Utils';
 
 class MobileButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       hover: false,
+      touch: false,
     };
     this._over = this._over.bind(this);
     this._out = this._out.bind(this);
@@ -30,12 +31,12 @@ class MobileButton extends React.Component {
         <a
           className={this.props.className + (this.state.hover ? ' hover' : '')}
           onClick={this.props.onClick}
-          onMouseEnter={this._touch ? null : this._over}
-          onMouseLeave={this._touch ? null : this._out}
-          onMouseMove={this._touch ? null : move}
-          onTouchMove={this._touch ? move : null}
-          onTouchStart={this._touch ? this._over : null}
-          onTouchEnd={this._touch ? this._out : null}
+          onMouseEnter={this.state.touch ? null : this._over}
+          onMouseLeave={this.state.touch ? null : this._out}
+          onMouseMove={this.state.touch ? null : move}
+          onTouchMove={this.state.touch ? move : null}
+          onTouchStart={this.state.touch ? this._over : null}
+          onTouchEnd={this.state.touch ? this._out : null}
           href={href}>
           { this.renderChildren() }
         </a>
@@ -45,12 +46,12 @@ class MobileButton extends React.Component {
         <button
           className={this.props.className + (this.state.hover ? ' hover' : '')}
           onClick={this.props.onClick}
-          onMouseEnter={this._touch ? null : this._over}
-          onMouseLeave={this._touch ? null : this._out}
-          onMouseMove={this._touch ? null : move}
-          onTouchMove={this._touch ? move : null}
-          onTouchStart={this._touch ? this._over : null}
-          onTouchEnd={this._touch ? this._out : null}
+          onMouseEnter={this.state.touch ? null : this._over}
+          onMouseLeave={this.state.touch ? null : this._out}
+          onMouseMove={this.state.touch ? null : move}
+          onTouchMove={this.state.touch ? move : null}
+          onTouchStart={this.state.touch ? this._over : null}
+          onTouchEnd={this.state.touch ? this._out : null}
           type={this.props.type}>
           { this.renderChildren() }
         </button>
@@ -59,7 +60,7 @@ class MobileButton extends React.Component {
   }
 
   componentDidMount() {
-    this._touch = Utils.touch();
+    this.setState({touch: Utils.touch()});
   }
 
   _over(evt) {
