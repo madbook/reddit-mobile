@@ -1,6 +1,6 @@
 import React from 'react';
-import MyMath from '../../../lib/danehansen/MyMath';
-import Point from '../../../lib/danehansen/Point';
+import MyMath from '../../../lib/danehansen/utils/MyMath';
+import Point from '../../../lib/danehansen/geom/Point';
 import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
 import SVGFactory from '../../components/SVG';

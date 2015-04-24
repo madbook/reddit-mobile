@@ -1,6 +1,6 @@
 import React from 'react';
 import SVGFactory from '../../components/SVG';
-import MyMath from '../../../lib/danehansen/MyMath';
+import MyMath from '../../../lib/danehansen/utils/MyMath';
 var SVG;
 
 class UpvoteIcon extends React.Component {

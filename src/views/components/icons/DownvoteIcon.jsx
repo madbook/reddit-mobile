@@ -1,7 +1,7 @@
 import React from 'react';
 import SVGFactory from '../../components/SVG';
 var SVG;
-import MyMath from '../../../lib/danehansen/MyMath';
+import MyMath from '../../../lib/danehansen/utils/MyMath';
 
 class DownvoteIcon extends React.Component {
   constructor(props) {
