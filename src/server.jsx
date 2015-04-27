@@ -23,6 +23,7 @@ import plugins from './plugins';
 
 // The core
 import oauth from './oauth';
+import serverRoutes from './serverRoutes';
 import routes from './routes';
 
 function randomString(len) {
@@ -58,6 +59,7 @@ class Server {
     }
 
     oauth(app);
+    serverRoutes(app);
     routes(app);
 
     var server = koa();
