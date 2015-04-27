@@ -30,7 +30,12 @@
       }
 
       &.opened {
-        max-height: 300px;
+        max-height: none;
+
+        > .SideNav-ul {
+          max-height: 280px;
+          overflow-y: auto;
+        }
       }
     }
 
