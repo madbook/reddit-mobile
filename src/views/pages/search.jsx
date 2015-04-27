@@ -28,9 +28,9 @@ class SearchPage extends React.Component {
     this._lastQueryKey = null;
 
     this.state = {
-      results: props.results || {},
+      data: props.data || {},
       subreddits: props.subreddits || {},
-      loaded: !this._lastQueryKey || props.results.data.length,
+      loaded: !!(props.data && props.data.data),
     };
   }
 
@@ -76,7 +76,7 @@ class SearchPage extends React.Component {
         if (currentQueryKey === ctx._lastQueryKey) {
           if (!SearchPage.isNoRecordsFound(data)) {
             ctx.setState({
-              results: data || {},
+              data: data || {},
               subreddits: {},
               loaded: true
             });
@@ -87,12 +87,12 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    this._performSearch(this.props);
+    //this._performSearch(this.props);
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, '');
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update');
+    this.props.app.emit('page:update', this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -138,15 +138,15 @@ class SearchPage extends React.Component {
       );
     } else {
       // to make life easier
-      state.results.data = state.results.data || {};
+      state.data.data = state.data.data || {};
 
-      var subreddits = state.results.data.subreddits || [];
-      var listings = state.results.data.links || [];
+      var subreddits = state.data.data.subreddits || [];
+      var listings = state.data.data.links || [];
       var noResults = listings.length === 0;
       var subredditResultsOnly = props.subredditName && props.query;
 
       var page = props.page || 0;
-      var meta = state.results.data.meta || {};
+      var meta = state.data.data.meta || {};
 
       // API is messed up, so we have to do our own detection for the prev..
       var prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
@@ -251,8 +251,8 @@ class SearchPage extends React.Component {
       ];
     }
 
-    if (state.results.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ state.results.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+    if (state.data.meta && this.props.renderTracking) {
+      tracking = (<TrackingPixel url={ state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
     }
 
     return (
@@ -281,7 +281,7 @@ class SearchPage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve({});
+      defer.resolve(props.data);
       return defer.promise;
     }
 
@@ -298,10 +298,10 @@ class SearchPage extends React.Component {
     options.useCache = useCache;
 
     // Initialized with data already.
-    if (useCache && (props.results || {}).data) {
-      api.hydrate('search', options, props.results);
+    if (useCache && (props.data || {}).data) {
+      api.hydrate('search', options, props.data);
 
-      defer.resolve(props.results);
+      defer.resolve(props.data);
       return defer.promise;
     }
 

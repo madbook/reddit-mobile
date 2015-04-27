@@ -6,7 +6,7 @@ class ErrorPage extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update');
+    this.props.app.emit('page:update', this.props);
   }
 
   render() {

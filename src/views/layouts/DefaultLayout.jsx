@@ -38,6 +38,14 @@ class DefaultLayout extends React.Component {
       );
     }
 
+    var metaDescription;
+
+    if (this.props.metaDescription) {
+      metaDescription = (
+        <meta name='description' content={ this.props.metaDescription } />
+      );
+    }
+
     return (
       <html>
         <head>
@@ -48,6 +56,7 @@ class DefaultLayout extends React.Component {
 
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />
+          { metaDescription }
 
           <link href={ `${assetPath}/favicon/64x64.png` } rel="icon shortcut" sizes="64x64" />
           <link href={ `${assetPath}/favicon/128x128.png` } rel="icon shortcut" sizes="128x128" />

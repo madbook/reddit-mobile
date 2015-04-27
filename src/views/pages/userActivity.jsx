@@ -41,7 +41,7 @@ class UserActivityPage extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update');
+    this.props.app.emit('page:update', this.props);
   }
 
   render() {
@@ -131,7 +131,7 @@ class UserActivityPage extends React.Component {
     // Only used for server-side rendering. Client-side, call when
     // componentedMounted instead.
     if (!synchronous) {
-      defer.resolve({});
+      defer.resolve(props.data);
       return defer.promise;
     }
 

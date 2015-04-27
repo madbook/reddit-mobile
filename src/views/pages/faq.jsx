@@ -5,6 +5,10 @@ class FAQPage extends React.Component {
     super(props);
   }
 
+  componentDidUpdate() {
+    this.props.app.emit('page:update', this.props);
+  }
+
   render () {
     return (
       <div>

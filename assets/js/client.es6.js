@@ -37,8 +37,13 @@ function modifyContext (ctx) {
   return ctx;
 }
 
-function initialize(bindLinks) {
+function setTitle(props={}) {
+  if (props.title) {
+    $('title').text(props.title);
+  }
+}
 
+function initialize(bindLinks) {
   $(function() {
     var plugin;
     var p;
@@ -105,7 +110,9 @@ function initialize(bindLinks) {
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        app.render(app.fullPathName(), false, modifyContext);
+        app.render(app.fullPathName(), false, modifyContext).then(function(props) {
+          setTitle(props);
+        });
       });
 
       $(window).on('popstate', function(e) {
@@ -114,12 +121,14 @@ function initialize(bindLinks) {
         if (href !== initialUrl) {
           scrollCache[initialUrl] = window.scrollY;
 
-          app.render(href, false, modifyContext).then(function() {
+          app.render(href, false, modifyContext).then(function(props) {
             if(scrollCache[href]) {
               $('html, body').animate({
                 scrollTop: scrollCache[href],
               }, 0);
             }
+
+            setTitle(props);
           });
 
           initialUrl = href;

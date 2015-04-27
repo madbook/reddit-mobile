@@ -75,6 +75,7 @@ function routes(app) {
   function buildProps(ctx, props) {
     var defaultProps = {
       title: 'reddit: the front page of the internet',
+      metaDescription: 'reddit: the front page of the internet',
       liveReload: app.getConfig('liveReload') === 'true',
       https: app.getConfig('https'),
       httpsProxy: app.getConfig('httpsProxy'),
@@ -101,7 +102,7 @@ function routes(app) {
       },
     };
 
-    var props = Object.assign({}, defaultProps, ctx.props, props);
+    Object.assign(props, defaultProps, ctx.props);
 
     props.app = app;
     props.api = app.api;
@@ -146,22 +147,29 @@ function routes(app) {
       sort: sort,
     });
 
+    if (ctx.params.multi) {
+      props.title = `m/${ctx.params.multi}`;
+      props.metaDescription = `u/${ctx.params.user}'s m/${ctx.params.multi} multireddit at reddit.com`;
+    } else if (ctx.params.subreddit) {
+      props.title = `r/${ctx.params.subreddit}`;
+      props.metaDescription = `r/${ctx.params.subreddit} at reddit.com`;
+    }
+
+
     var data = yield IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+
+    props.data = data;
 
     if (props.subredditName &&
       props.subredditName.indexOf('+') === -1 &&
       props.subredditName !== 'all') {
 
       var subredditData = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
-      props = Object.assign({
-        subredditId: ((subredditData || {}).data || {}).name,
-        userIsSubscribed: ((subredditData || {}).data || {}).user_is_subscriber,
-      }, props);
+
+      props.subredditId = ((subredditData || {}).data || {}).name;
+      props.userIsSubscribed =  ((subredditData || {}).data || {}).user_is_subscriber;
     }
 
-    props = Object.assign({
-      data: data,
-    }, props);
 
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
@@ -195,11 +203,13 @@ function routes(app) {
 
     var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
 
-    props = Object.assign({
+    Object.assign(props, {
       subredditId: ((data || {}).data || {}).name,
       userIsSubscribed: ((data || {}).data || {}).user_is_subscriber,
       data: data,
-    }, props);
+      title: `about r/${ctx.params.subreddit}`,
+      metaDescription: `about r/${ctx.params.subreddit} at reddit.com`,
+    });
 
     var key = `subreddit-about-${props.subredditName}`;
 
@@ -223,7 +233,6 @@ function routes(app) {
     var ctx = this;
 
     var props = buildProps(this, {
-      query: ctx.query.q,
       subredditName: ctx.params.subreddit,
       after: ctx.query.after,
       before: ctx.query.before,
@@ -233,13 +242,11 @@ function routes(app) {
     });
 
     var data = {};
+
     if (props.query) {
       data = yield SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+      props.data = data;
     }
-
-    props = Object.assign({
-      results: data,
-    }, props);
 
     try {
       var key = 'search-results'; // <-- don't make it dynamic if you want input element doesn't get re-rendered
@@ -271,10 +278,13 @@ function routes(app) {
     });
 
     var data = yield ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    props.data = data;
 
-    props = Object.assign({
-      data: data,
-    }, props);
+    if (data && data.data) {
+      let listing = data.data.listing;
+      props.title = listing.title;
+      props.metaDescription = `${listing.title} : ${listing.score} points and ${listing.num_comments} at reddit.com`;
+    }
 
     var key = `listing-${props.listingId}-${stringify(this.query)}`;
 
@@ -302,13 +312,12 @@ function routes(app) {
 
     var props = buildProps(this, {
       userName: ctx.params.user,
+      title: `about u/${ctx.params.user}`,
+      metaDescription: `about u/${ctx.params.user} on reddit.com`,
     });
 
     var data = yield UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache);
-
-    props = Object.assign({
-      data: data,
-    }, props);
+    props.data = data;
 
     var key = `user-profile-${ctx.params.user}`;
 
@@ -338,9 +347,11 @@ function routes(app) {
 
     var data = yield UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({
+    Object.assign(props, {
       data: data,
-    }, props);
+      title: `about u/${ctx.params.user}`,
+      metaDescription: `about u/${ctx.params.user} on reddit.com`,
+    });
 
     var key = `user-gild-${ctx.params.user}`;
 
@@ -378,9 +389,11 @@ function routes(app) {
 
     var data = yield UserActivityPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
 
-    props = Object.assign({
+    Object.assign(props, {
       data: data,
-    }, props);
+      title: `about u/${ctx.params.user}`,
+      metaDescription: `about u/${ctx.params.user} on reddit.com`,
+    });
 
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
