@@ -405,6 +405,7 @@ class Listing extends React.Component {
     var linkFlair;
     var nsfwFlair;
     var subredditLabel;
+    var commentsLabel;
     var domain;
     var gilded;
     var distinguished = listing.distinguished ? `text-${listing.distinguished}` : '';
@@ -434,6 +435,16 @@ class Listing extends React.Component {
 
     if (!props.hideWhen) {
       when = (<li>{ short(listing.created_utc * 1000) }</li>);
+    }
+
+    if (!props.hideComments) {
+      commentsLabel = (
+        <li className='linkbar-item-no-seperator'>
+          <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>
+        </li>
+      );
+    } else {
+      permalink = titleLink;
     }
 
     if (!isSelf && !props.hideDomain) {
@@ -515,9 +526,7 @@ class Listing extends React.Component {
                     loginPath={ this.props.loginPath }
                   />
                 </li>
-                <li className='linkbar-item-no-seperator'>
-                  <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>
-                </li>
+                { commentsLabel }
                 { subredditLabel }
                 { when }
                 { domain }

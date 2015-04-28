@@ -1,6 +1,6 @@
 {
   "name": "reddit-mobile",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "",
   "main": "src/app.es6.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "q": "1.2.0",
     "react": "0.13.1",
     "react-mutator": "0.4.1",
-    "reddit-mobile-plugin-ads": "1.0.5",
+    "reddit-mobile-plugin-ads": "1.0.6",
     "reddit-mobile-plugin-metrics": "1.1.1",
     "reddit-text-js": "0.5.3",
     "scmp": "1.0.0",
