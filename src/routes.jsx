@@ -303,7 +303,9 @@ function routes(app) {
     this.props = props;
   }
 
+  app.router.get('/comments/:listingId', commentsPage);
   app.router.get('/comments/:listingId/:listingTitle', commentsPage);
+  app.router.get('/r/:subreddit/comments/:listingId', commentsPage);
   app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
 
   app.router.get('/u/:user', function *(next) {
