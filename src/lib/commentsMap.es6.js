@@ -45,7 +45,7 @@ function commentsMap(comment, parent, op, score=4, nthSibling=0, nthNest=0, sibl
   comment.replies = comment.replies.map(function(c, i) {
     var sh = siblingHidden;
 
-    if (i > 0) {
+    if (i > 0 && comment.replies[i-1]) {
       sh = comment.replies[i-1].hidden;
     }
 
