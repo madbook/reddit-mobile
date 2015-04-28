@@ -176,9 +176,13 @@ class Listing extends React.Component {
     }
 
     if (listing.preview) {
-      var preview = listing.preview.images[0];
+      var preview = listing.preview;
 
-      if (preview.resolutions) {
+      if (preview.images) { 
+        preview = preview.images[0];
+      }
+
+      if (preview && preview.resolutions) {
         var previewImage = preview.resolutions
                         .concat([ preview.source ])
                         .sort((a, b) => {
@@ -187,6 +191,8 @@ class Listing extends React.Component {
                         .find((r) => {
                           return r.width >= width;
                         });
+      } else if (preview.source) {
+         return preview.source.url;
       }
 
       if (previewImage) {
