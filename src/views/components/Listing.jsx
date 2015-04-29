@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
+import constants from '../../constants';
+
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
@@ -66,7 +68,8 @@ class Listing extends React.Component {
     super(props);
 
     this.state = {
-      expanded: this.props.expanded,
+      expanded: props.expanded,
+      compact: props.compact,
     };
 
     if (typeof window !== 'undefined') {
@@ -80,10 +83,26 @@ class Listing extends React.Component {
     } else {
       this.state.windowWidth = 800;
     }
+
+    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return (nextProps !== this.props || nextState !== this.state);
+  }
+
+  _onCompactToggle (state) {
+    this.setState({
+      compact: state,
+    });
+  }
+
+  componentDidMount() {
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+  }
+
+  componentWillUnount() {
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   buildImage(data) {
@@ -95,8 +114,7 @@ class Listing extends React.Component {
       httpsProxy: ctx.props.httpsProxy,
     });
 
-    var compact = this.props.compact || false;
-    compact = compact === 'true' || compact === true;
+    var compact = this.state.compact;
 
     if (expanded) {
       if (html5) {
@@ -170,7 +188,7 @@ class Listing extends React.Component {
 
   buildOver18() {
     return (
-      <a className={'listing-preview-a listing-nsfw' + (this.props.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+      <a className={'listing-preview-a listing-nsfw' + (this.state.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
         <span className={'icon-nsfw-circled'}/>
       </a>
     );
@@ -243,8 +261,7 @@ class Listing extends React.Component {
     var preview = this.previewImageUrl(listing, expanded);
 
 
-    var compact = this.props.compact || false;
-    compact = compact === 'true' || compact === true;
+    var compact = this.state.compact;
 
     if (this.isNSFW(listing) && !this.state.expanded) {
       return this.buildOver18();
@@ -384,7 +401,7 @@ class Listing extends React.Component {
   }
 
   expand(e) {
-    if(!this.props.compact) {
+    if(!this.state.compact) {
       if (e.target && e.target.tagName === 'A' && e.target.href) {
         return true;
       } else {
@@ -437,9 +454,7 @@ class Listing extends React.Component {
     var when;
 
     var expanded = this.state.expanded || this.props.single;
-
-    var compact = this.props.compact || false;
-    compact = compact === 'true' || compact === true;
+    var compact = this.state.compact;
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (

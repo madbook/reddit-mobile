@@ -11,7 +11,6 @@ var BetaBanner;
 class BodyLayout extends React.Component {
   constructor(props) {
     super(props);
-    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   render () {
@@ -25,18 +24,6 @@ class BodyLayout extends React.Component {
         </main>
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
-  }
-
-  componentWillUnount() {
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
-  }
-
-  _onCompactToggle() {
-    this.forceUpdate();
   }
 }
 

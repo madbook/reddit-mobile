@@ -15,6 +15,8 @@ ClientReactApp = mixin(ClientReactApp);
 import config from '../../src/config';
 import plugins from '../../src/plugins';
 
+import constants from '../../src/constants';
+
 import routes from '../../src/routes';
 import TweenLite from 'gsap';
 
@@ -33,8 +35,7 @@ function modifyContext (ctx) {
   ctx.token = this.getState('token');
   ctx.user = this.getState('user');
   ctx.useCache = true;
-  var compact = this.getState('compact');
-  ctx.compact = compact === 'true' || compact === true;
+  ctx.compact = this.getState('compact').toString() === 'true';
 
   return ctx;
 }
@@ -144,6 +145,10 @@ function initialize(bindLinks) {
     app.setState('renderTracking', false);
     app.render(app.fullPathName(), true, modifyContext);
     app.config.renderTracking = true;
+
+    app.on(constants.COMPACT_TOGGLE, function(compact) {
+      app.setState('compact', compact);
+    });
   });
 }
 

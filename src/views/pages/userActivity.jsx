@@ -24,9 +24,11 @@ class UserActivityPage extends React.Component {
 
     this.state = {
       data: props.data || {},
+      compact: props.compact,
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
+    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
@@ -38,17 +40,29 @@ class UserActivityPage extends React.Component {
     }).bind(this));
 
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentDidUpdate() {
     this.props.app.emit('page:update', this.props);
   }
 
+  _onCompactToggle (state) {
+    this.setState({
+      compact: state,
+    });
+  }
+
+  componentWillUnount() {
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+  }
+
   render() {
     var loading;
     var props = this.props;
+    var state = this.state;
 
-    if (!this.state.loaded) {
+    if (!state.loaded) {
       loading = (
         <Loading />
       );
@@ -58,10 +72,12 @@ class UserActivityPage extends React.Component {
     var api = props.api;
     var token = props.token;
 
+    var compact = state.compact;
+
     var app = props.app;
     var user = props.user;
 
-    var activities = this.state.data.data || [];
+    var activities = state.data.data || [];
 
     var subreddit = '';
 
@@ -73,8 +89,8 @@ class UserActivityPage extends React.Component {
     var tracking;
     var loginPath = props.loginPath;
 
-    if (this.state.data.meta && props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
+    if (state.data.meta && props.renderTracking) {
+      tracking = (<TrackingPixel url={ state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
     }
 
     return (
@@ -84,7 +100,7 @@ class UserActivityPage extends React.Component {
 
         { loading }
 
-        <div className={'container listing-container' + (app.state.compact ? ' compact' : '')} >
+        <div className={'container listing-container' + ( compact ? ' compact' : '' )} >
           {
             activities.map(function(thing, i) {
               var index = (page * 25) + i;
@@ -105,7 +121,7 @@ class UserActivityPage extends React.Component {
                     api={api}
                     hideUser={ true }
                     loginPath={ loginPath }
-                    compact={app.state.compact}
+                    compact={ compact }
                   />
                 );
               } else if (thing._type === 'Comment') {
