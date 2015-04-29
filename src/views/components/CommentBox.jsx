@@ -52,6 +52,8 @@ class CommentBox extends React.Component {
     this.props.api.comments.post(options).done((function(comment) {
       this.props.onSubmit(comment.data);
     }).bind(this));
+
+    this.props.app.emit('comment', comment);
   }
 
   render () {

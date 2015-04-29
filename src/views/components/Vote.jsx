@@ -81,6 +81,7 @@ class Vote extends React.Component {
     });
 
     this.props.api.votes.post(options);
+    this.props.app.emit('vote', vote);
   }
 
   render() {

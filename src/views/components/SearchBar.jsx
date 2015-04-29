@@ -11,6 +11,7 @@ class SearchBar extends React.Component {
     var value = searchEl.value.trim();
     var cb = this.props.inputChangedCallback || Function.prototype;
     cb({ value: value });
+    this.props.app.emit('search', value);
   }
 
   render() {
