@@ -198,7 +198,7 @@ class Listing extends React.Component {
     if (!listing) { return; }
 
     var image;
-    var width = this.state.windowWidth;
+    var width = this.state.compact ? 80 : this.state.windowWidth;
 
     if (expanded && listing.url.match(imgMatch)) {
       return listing.url;
@@ -229,6 +229,10 @@ class Listing extends React.Component {
       } else {
         return preview.source.url;
       }
+    }
+
+    if (this.state.compact && listing.thumbnail) {
+      return listing.thumbnail;
     }
 
     if (listing.media && listing.media.oembed) {
