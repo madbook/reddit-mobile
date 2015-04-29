@@ -119,7 +119,14 @@ class ListingPage extends React.Component {
     }
 
     if (this.state.data.meta && props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } loid={ props.loid } loidcreated={ props.loidcreated } user={ props.user } />);
+      tracking = (
+        <TrackingPixel
+          url={ this.state.data.meta.tracking }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
+          user={ props.user }
+          compact={ props.compact }
+        />);
     }
 
     return (

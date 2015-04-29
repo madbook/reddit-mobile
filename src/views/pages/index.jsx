@@ -145,7 +145,14 @@ class IndexPage extends React.Component {
     var apiOptions = props.apiOptions;
 
     if (this.state.data.meta && props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
+      tracking = (
+        <TrackingPixel
+          url={ this.state.data.meta.tracking }
+          user={ props.user }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
+          copmact={ compact }
+          />);
     }
 
     return (

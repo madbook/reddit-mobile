@@ -256,7 +256,14 @@ class SearchPage extends React.Component {
     }
 
     if (state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+      tracking = (
+        <TrackingPixel
+          url={ state.data.meta.tracking }
+          user={ this.props.user }
+          loid={ this.props.loid }
+          loidcreated={ this.props.loidcreated }
+          compact={ this.props.compact }
+          />);
     }
 
     return (

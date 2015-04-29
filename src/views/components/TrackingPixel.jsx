@@ -18,6 +18,12 @@ class TrackingPixel extends React.Component {
         trackingUrl += '&loidcreated=' + this.props.loidcreated;
       }
 
+      if (this.props.compact) {
+        trackingUrl += '&view_type=compact';
+      } else {
+        trackingUrl += '&view_type=list';
+      }
+
       return (
         <img src={ trackingUrl } style={{ display: 'none' }} width='0' height='0' />
       );

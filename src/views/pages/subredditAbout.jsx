@@ -51,7 +51,14 @@ class SubredditAboutPage extends React.Component {
     var user = this.props.user;
 
     if (this.state.data.meta && this.props.renderTracking) {
-      tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ this.props.user } loid={ this.props.loid } loidcreated={ this.props.loidcreated } />);
+      tracking = (
+        <TrackingPixel
+          url={ this.state.data.meta.tracking }
+          user={ this.props.user }
+          loid={ this.props.loid }
+          loidcreated={ this.props.loidcreated }
+          compact={ this.props.compact }
+        />);
     }
 
     var htmlDump;

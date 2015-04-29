@@ -90,7 +90,14 @@ class UserActivityPage extends React.Component {
     var loginPath = props.loginPath;
 
     if (state.data.meta && props.renderTracking) {
-      tracking = (<TrackingPixel url={ state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
+      tracking = (
+        <TrackingPixel
+          url={ state.data.meta.tracking }
+          user={ props.user }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
+          compact={ this.props.compact }
+          />);
     }
 
     return (
