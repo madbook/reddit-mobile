@@ -81,7 +81,7 @@ class Server {
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
 
-    server.use(this.modifyRequest);
+    server.use(this.modifyRequest(app));
     server.use(this.setHeaders(app));
     server.use(this.setLOID(app));
 
@@ -148,30 +148,50 @@ class Server {
     }
   }
 
-  * modifyRequest (next) {
-    this.showBetaBanner = !this.cookies.get('hideBetaBanner');
+  modifyRequest (app) {
+    return function * (next) {
+      var compact = this.cookies.get('compact') === 'true' ||
+                    this.cookies.get('compact') === true;
 
-    this.body = this.request.body;
-    this.userAgent = this.headers['user-agent'];
+      var cookieOptions = {
+        secure: app.getConfig('https'),
+        secureProxy: app.getConfig('httpsProxy'),
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+      }
 
-    var user = this.cookies.get('user');
-    this.token = this.cookies.get('token');
-    var compact = this.cookies.get('compact');
-    this.compact = compact === 'true' || compact === true;
+      if (this.query.compact === 'on') {
+        this.cookies.set('compact', true, cookieOptions);
+        compact = true;
+      } else if (this.query.compact === 'off') {
+        this.cookies.set('compact', false, cookieOptions);
+        compact = false;
+      }
 
-    if (user) {
-      user = JSON.parse(user);
+      this.showBetaBanner = !this.cookies.get('hideBetaBanner');
+
+      this.body = this.request.body;
+      this.userAgent = this.headers['user-agent'];
+
+      var user = this.cookies.get('user');
+      this.token = this.cookies.get('token');
+
+      this.compact = compact;
+
+      if (user) {
+        user = JSON.parse(user);
+      }
+
+      this.user = user;
+
+      this.renderSynchronous = true;
+      this.useCache = false;
+
+      this.loid = this.cookies.get('loid');
+      this.loidcreated = this.cookies.get('loidcreated');
+
+      yield next;
     }
-
-    this.user = user;
-
-    this.renderSynchronous = true;
-    this.useCache = false;
-
-    this.loid = this.cookies.get('loid');
-    this.loidcreated = this.cookies.get('loidcreated');
-
-    yield next;
   }
 
   start () {
