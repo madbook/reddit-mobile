@@ -255,11 +255,11 @@ class Listing extends React.Component {
       https: props.https,
       httpsProxy: props.httpsProxy
     };
+
     var media = listing.media;
-    var permalink = listing.cleanPermalink;
+    var permalink = props.sponsored ? listing.cleanPermalink : listing.url;
 
     var preview = this.previewImageUrl(listing, expanded);
-
 
     var compact = this.state.compact;
 
@@ -445,7 +445,7 @@ class Listing extends React.Component {
     var distinguished = listing.distinguished ? `text-${listing.distinguished}` : '';
     var edited = listing.edited ? '*' : '';
     var linkFlairClass = (listing.link_flair_css_class);
-    var listingClass = props.listingClass || '';
+    var sponsored = props.sponsored ? ' listing-sponsored' : '';
     var comment = listing.num_comments < 2 ? 'comment' : 'comments';
     var isSelf = listing.domain.indexOf('self.') === 0;
 
@@ -545,7 +545,7 @@ class Listing extends React.Component {
     }
 
     return (
-      <article className={'listing '+ (compact ? 'compact ' : '') + listingClass }>
+      <article className={'listing ' + (compact ? 'compact ' : '') + sponsored }>
         <div className='panel'>
           <header className={'panel-heading' + (buildContent ? ' preview' : ' no-preview') }>
             <div className='row'>

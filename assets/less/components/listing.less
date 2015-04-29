@@ -23,6 +23,29 @@
   background-color: @white;
   margin-bottom: @row-spacing-base;
 
+  &.listing-sponsored .panel {
+    background: rgb(240,240,240);
+
+    .linkbar-single-line {
+      height: 1.5em;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+
+      &:after {
+       content: '';
+       position: absolute;
+       height: 2em;
+       z-index: 1;
+       bottom: 0;
+       right: 0;
+       width: 3em;
+
+       #gradient > .horizontal(@start-color: rgba(240,240,240,0); @end-color: rgba(240,240,240,1););
+      }
+    }
+  }
+
   a:hover {
     text-decoration: none;
   }
