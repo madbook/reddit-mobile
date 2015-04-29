@@ -30,9 +30,11 @@ class IndexPage extends React.Component {
     this.state = {
       data: props.data || {},
       subredditName: subredditName,
+      compact: props.compact,
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
+    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,17 @@ class IndexPage extends React.Component {
     }).bind(this));
 
     this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+  }
+
+  _onCompactToggle (state) {
+    this.setState({
+      compact: state,
+    });
+  }
+
+  componentWillUnount() {
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentDidUpdate() {
@@ -55,6 +68,8 @@ class IndexPage extends React.Component {
     var loading;
     var props = this.props;
     var data = this.state.data;
+
+    var compact = this.state.compact;
 
     if (!this.state.loaded) {
       return (
@@ -132,7 +147,7 @@ class IndexPage extends React.Component {
     if (this.state.data.meta && props.renderTracking) {
       tracking = (<TrackingPixel url={ this.state.data.meta.tracking } user={ props.user } loid={ props.loid } loidcreated={ props.loidcreated } />);
     }
-    var compact = app.state ? app.state.compact : false;
+
     return (
       <div>
         { loading }
