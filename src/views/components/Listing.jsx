@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
+import constants from '../../constants';
+
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
@@ -12,6 +14,12 @@ var ListingDropdown;
 
 import PlayIconFactory from '../components/icons/PlayIcon';
 var PlayIcon;
+
+import NSFWIconFactory from '../components/icons/NSFWIcon';
+var NSFWIcon;
+
+import MobileButtonFactory from '../components/MobileButton';
+var MobileButton;
 
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gifMatch = /\.(?:gif)/gi;
@@ -66,7 +74,8 @@ class Listing extends React.Component {
     super(props);
 
     this.state = {
-      expanded: this.props.expanded,
+      expanded: props.expanded,
+      compact: props.compact,
     };
 
     if (typeof window !== 'undefined') {
@@ -80,10 +89,26 @@ class Listing extends React.Component {
     } else {
       this.state.windowWidth = 800;
     }
+
+    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return (nextProps !== this.props || nextState !== this.state);
+  }
+
+  _onCompactToggle (state) {
+    this.setState({
+      compact: state,
+    });
+  }
+
+  componentDidMount() {
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+  }
+
+  componentWillUnount() {
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   buildImage(data) {
@@ -95,6 +120,7 @@ class Listing extends React.Component {
       httpsProxy: ctx.props.httpsProxy,
     });
 
+    var compact = this.state.compact;
 
     if (expanded) {
       if (html5) {
@@ -140,28 +166,37 @@ class Listing extends React.Component {
     }
 
     if (data.isVideo) {
-      return (
-        <div className='ratio16x9'>
-          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-            <PlayIcon/>
+      if(compact) {
+        return (
+          <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
+        );
+      } else {
+        return (
+          <div className='ratio16x9'>
+            <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
+              <PlayIcon/>
+            </div>
           </div>
-        </div>
+        );
+      }
+    }
+    if(compact) {
+      return (
+        <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
+      );
+    } else {
+      return (
+        <img ref='img' src={ data.url } className='img-responsive img-preview'
+          onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
       );
     }
-
-    return (
-      <img ref='img' src={ data.url } className='img-responsive img-preview'
-        onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
-    );
   }
 
   buildOver18() {
     return (
-      <a href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-        <span className='h1 img-responsive img-nsfw text-center vertical-padding text-inverted'>
-          NSFW
-        </span>
-      </a>
+      <MobileButton className={'listing-preview-a listing-nsfw' + (this.state.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+        <NSFWIcon/>
+      </MobileButton>
     );
   }
 
@@ -169,7 +204,7 @@ class Listing extends React.Component {
     if (!listing) { return; }
 
     var image;
-    var width = this.state.windowWidth;
+    var width = this.state.compact ? 80 : this.state.windowWidth;
 
     if (expanded && listing.url.match(imgMatch)) {
       return listing.url;
@@ -178,7 +213,7 @@ class Listing extends React.Component {
     if (listing.preview) {
       var preview = listing.preview;
 
-      if (preview.images) { 
+      if (preview.images) {
         preview = preview.images[0];
       }
 
@@ -231,6 +266,9 @@ class Listing extends React.Component {
 
     var preview = this.previewImageUrl(listing, expanded);
 
+
+    var compact = this.state.compact;
+
     if (this.isNSFW(listing) && !this.state.expanded) {
       return this.buildOver18();
     }
@@ -247,7 +285,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ permalink }>
+            <a className='listing-preview-a' href={ permalink }>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -267,7 +305,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+            <a className='listing-preview-a' href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -283,7 +321,7 @@ class Listing extends React.Component {
       } else if (media.oembed.type === 'rich') {
         if (expanded) {
           return (
-            <a href={ listing.url } data-no-route='true'>
+            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -297,7 +335,7 @@ class Listing extends React.Component {
           );
         } else {
           return (
-            <a href={ listing.url } data-no-route='true'>
+            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
               {
                 this.buildImage({
                   url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
@@ -314,7 +352,7 @@ class Listing extends React.Component {
     } else if (listing.url.match(imgMatch)) {
       if (expanded) {
         return (
-          <a href={ listing.url } className='external-image'>
+          <a href={ listing.url } className='external-image listing-preview-a' >
             {
               this.buildImage({
                 url: adjustUrlToAppProtocol(listing.url, config),
@@ -325,7 +363,7 @@ class Listing extends React.Component {
         );
       } else {
         return (
-          <a href={ permalink }>
+          <a className='listing-preview-a' href={ permalink }>
             {
               this.buildImage({
                 url: adjustUrlToAppProtocol(preview || listing.url, config),
@@ -336,7 +374,7 @@ class Listing extends React.Component {
           </a>
         );
       }
-    } else if (listing.selftext) {
+    } else if (listing.selftext && !compact) {
       if (expanded) {
         return (
           <div className='well listing-selftext' dangerouslySetInnerHTML={{
@@ -354,7 +392,7 @@ class Listing extends React.Component {
       return null;
     } else if (preview) {
       return (
-        <a href={ permalink }>
+        <a className='listing-preview-a' href={ permalink }>
           {
             this.buildImage({
               url: adjustUrlToAppProtocol(preview, config),
@@ -369,14 +407,16 @@ class Listing extends React.Component {
   }
 
   expand(e) {
-    if (e.target && e.target.tagName === 'A' && e.target.href) {
-      return true;
-    } else {
-      e.preventDefault();
+    if(!this.state.compact) {
+      if (e.target && e.target.tagName === 'A' && e.target.href) {
+        return true;
+      } else {
+        e.preventDefault();
 
-      this.setState({
-        expanded: !this.state.expanded,
-      });
+        this.setState({
+          expanded: !this.state.expanded,
+        });
+      }
     }
   }
 
@@ -420,6 +460,7 @@ class Listing extends React.Component {
     var when;
 
     var expanded = this.state.expanded || this.props.single;
+    var compact = this.state.compact;
 
     if (!props.hideSubredditLabel) {
       subredditLabel = (
@@ -481,8 +522,12 @@ class Listing extends React.Component {
 
     var app = this.props.app;
     var buildContent = this.buildContent();
-    if (buildContent) {
+    if (buildContent && !compact) {
       var stalactite = <div className='stalactite'/>;
+    }
+
+    if(!buildContent && compact) {
+      buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
     }
 
     var extImageSource;
@@ -498,10 +543,17 @@ class Listing extends React.Component {
       );
     }
 
+    if(nsfwFlair || linkFlair) {
+      var linkFlairHolder = <div className='link-flair-container vertical-spacing-top'>
+                { nsfwFlair }
+                { linkFlair }
+              </div>;
+    }
+
     return (
-      <article className={'listing ' + listingClass }>
+      <article className={'listing '+ (compact ? 'compact ' : '') + listingClass }>
         <div className='panel'>
-          <header className={'panel-heading' + (buildContent?' preview':' no-preview') }>
+          <header className={'panel-heading' + (buildContent ? ' preview' : ' no-preview') }>
             <div className='row'>
               <div className='col-xs-11'>
                 <a href={ titleLink } className={ `panel-title ${distinguished}` }>
@@ -533,10 +585,7 @@ class Listing extends React.Component {
               </ul>
             </div>
 
-            <div className='link-flair-container vertical-spacing-top'>
-              { nsfwFlair }
-              { linkFlair }
-            </div>
+            { linkFlairHolder }
 
             { stalactite }
           </header>
@@ -554,6 +603,8 @@ function ListingFactory(app) {
   Vote = VoteFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
   PlayIcon = PlayIconFactory(app);
+  NSFWIcon = NSFWIconFactory(app);
+  MobileButton = MobileButtonFactory(app);
 
   return app.mutate('core/components/listing', Listing);
 }

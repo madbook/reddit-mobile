@@ -10,6 +10,11 @@
   width: auto !important;
 }
 
+.listing-container.compact {
+  padding: 0;
+  border-top: @gray-border;
+}
+
 .listing-main {
   background-color: @white;
 }
@@ -204,5 +209,119 @@
 
   &:hover .PlayIcon {
     opacity: 1;
+  }
+}
+
+.listing.compact {
+  margin-bottom: 0;
+
+  @media (min-width: @max-width) {
+    border-left: @gray-border;
+    border-right: @gray-border;
+  }
+
+  .panel {
+    box-shadow: none;
+    border: none;
+    position: relative;
+  }
+
+    @compact-width: 80px;
+
+    .listing-preview-a {
+      position: absolute;
+      display: block;
+      top: 0;
+      height: 100%;
+      width: @compact-width;
+    }
+
+    .panel-heading {
+      border: none;
+      border-bottom: @gray-border;
+      margin-left: @compact-width;
+
+      &.preview {
+        box-shadow: none;
+      }
+    }
+}
+
+.listing-compact-img {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+
+  &.placeholder {
+    background-size: 100% auto;
+    background-image: url(/img/placeholder.svg);
+  }
+}
+
+.listing-nsfw {
+  position: relative;
+  display: block;
+  background-color: @light-gray;
+
+  &.compact {
+    .icon-nsfw-circled {
+      font-size: 60px;
+      line-height: 60px;
+      margin: -30px 0 0 -30px;
+    }
+
+    .NSFWIcon {
+      width: 60px;
+      height: 60px;
+      margin: -30px 0 0 -30px;
+    }
+  }
+
+  &:not(.compact) {
+    height: 140px;
+
+    .icon-nsfw-circled {
+      font-size: 100px;
+      line-height: 100px;
+      margin: -50px 0 0 -50px;
+    }
+
+    .NSFWIcon {
+      width: 100px;
+      height: 100px;
+      margin: -50px 0 0 -50px;
+    }
+  }
+
+  .icon-nsfw-circled, .NSFWIcon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: @white;
+  }
+
+  &.compact
+
+  &:not(.compact) .NSFWIcon {
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+  }
+
+  .SVG-fill {
+    fill: @white;
+  }
+
+  .SVG-stroke {
+    stroke: @white;
+  }
+
+  .SVG-fill-bg {
+    fill: @light-gray;
+  }
+
+  .SVG-stroke-bg {
+    stroke: @light-gray;
   }
 }

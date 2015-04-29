@@ -14,7 +14,7 @@ class SaveIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon SaveIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon={this.props.altered ? 'icon-unsave-circled' : 'icon-save-circled'}>
+      <SVG className='SVG-icon SaveIcon' fallbackIcon={this.props.altered ? 'icon-unsave-circled' : 'icon-save-circled'}>
         <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <g ref='ribbon'>
           <path className='SVG-fill-bg' d='M12.5,16.666687l-2.500001-2.5l-2.499999,2.5V5.833333V5.816667c0-0.91127-0.755397-1.65-1.666667-1.65l0,0h5 c0.920475,0,1.666667,0.746192,1.666667,1.666667V16.666687z'/>

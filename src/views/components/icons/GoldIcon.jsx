@@ -2,8 +2,6 @@ import React from 'react';
 import SVGFactory from '../../components/SVG';
 var SVG;
 
-const _SIZE = 20;
-
 class GoldIcon extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +11,7 @@ class GoldIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={_SIZE} height={_SIZE} fallbackIcon='icon-gold-circled' className={'SVG-icon' + (this.props.altered ? ' altered' : '')}>
+      <SVG fallbackIcon='icon-gold-circled' className={'SVG-icon' + (this.props.altered ? ' altered' : '')}>
         <circle className='SVG-fill tween' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <polygon className='SVG-fill-bg' points='17.088745,7.666626 12.190491,6.954895 10,2.516357 7.809448,6.954895 2.911133,7.666626 6.455566,11.121582 5.618774,16 10,13.696655 14.380981,16 13.544312,11.121582'/>
       </SVG>

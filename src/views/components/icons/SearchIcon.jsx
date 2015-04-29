@@ -19,7 +19,7 @@ class SearchIcon extends React.Component {
 
   render() {
     return (
-      <SVG width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-search'>
+      <SVG fallbackIcon='icon-search'>
         <defs>
           <clipPath id={this._maskID}>
             <rect ref='mask' x={_EYE_CENTER - _MASK_SIZE / 2} y={_EYE_CENTER} width={_MASK_SIZE} height='0' fill='#000'/>

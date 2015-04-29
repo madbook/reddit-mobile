@@ -1,0 +1,43 @@
+@bgColor: #e9f0f2;
+
+.TextSubNav {
+  background-color: @bgColor;
+  border-bottom: @gray-border;
+  margin-top: @top-nav-height;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+  .TextSubNav-ul {
+    margin-bottom: 0;
+  }
+
+    .TextSubNav-li {
+      display: inline-block;;
+    }
+
+      .TextSubNav-a {
+        font-size: 14px;
+        line-height: 45px;
+        color: @text-muted;
+        font-weight: bold;
+        .tween;
+        margin: 0 15px;
+
+        &:hover, &.active {
+          text-decoration: none;
+          color: @black;
+        }
+      }
+
+  .TextSubNav-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 3px;
+    width: 0;
+    background-color: #247cb4;
+    margin-width: 0;
+    .transition(width 0.3s, margin-left 0.6s cubic-bezier(0.330, 1.445, 0.545, 1.000););
+  }

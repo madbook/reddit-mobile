@@ -59,3 +59,13 @@ button, a {
 .GoldIcon.altered .SVG-fill {
   fill: @gold;
 }
+
+.NSFWIcon {
+  .SVG-stroke-bg {
+    .transition(stroke 0.4s);
+  }
+
+  &.played .SVG-stroke-bg {
+    stroke: @orangered;
+  }
+}

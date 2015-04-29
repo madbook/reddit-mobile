@@ -22,7 +22,7 @@ class FlagIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon FlagIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-flag-circled'>
+      <SVG className='SVG-icon FlagIcon' fallbackIcon='icon-flag-circled'>
         <defs>
           <clipPath id={this._maskID}>
             <rect ref='mask' x={_POINTS[0].x} y='0' width={_X_DIFF} height={SVG.ICON_SIZE} fill='#000'/>

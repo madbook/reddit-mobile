@@ -49,8 +49,8 @@ var Layout;
 import BodyLayoutFactory from './views/layouts/BodyLayout';
 var BodyLayout;
 
-import UserProfileNavFactory from './views/components/UserProfileNav';
-var UserProfileNav;
+import TextSubNavFactory from './views/components/TextSubNav';
+var TextSubNav;
 
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
@@ -68,7 +68,7 @@ function routes(app) {
   RegisterPage = RegisterPageFactory(app);
   Layout = LayoutFactory(app);
   BodyLayout = BodyLayoutFactory(app);
-  UserProfileNav = UserProfileNavFactory(app);
+  TextSubNav = TextSubNavFactory(app);
 
   // Build all the standard properties used to render layouts. This may move
   // higher up (into reddit-mobile) at some point.
@@ -89,6 +89,7 @@ function routes(app) {
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,
+      compact: ctx.compact.toString() === 'true',
       query: ctx.query,
       params: ctx.params,
       url: ctx.path,
@@ -326,7 +327,11 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
-          <UserProfileNav userName={ props.userName } profileActive={ true } />
+          <TextSubNav>
+            <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}`}>About</a></li>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/activity`}>Activity</a></li>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/gild`}>Give gold</a></li>
+          </TextSubNav>
           <UserProfilePage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -360,7 +365,11 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
-          <UserProfileNav userName={ props.userName } gildActive={ true } />
+          <TextSubNav>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}`}>About</a></li>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/activity`}>Activity</a></li>
+            <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}/gild`}>Give gold</a></li>
+          </TextSubNav>
           <UserGildPage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -401,7 +410,11 @@ function routes(app) {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
         <BodyLayout {...props} app={app}>
-          <UserProfileNav userName={ props.userName } activityActive={ true } />
+          <TextSubNav>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}`}>About</a></li>
+            <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}/activity`}>Activity</a></li>
+            <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/gild`}>Give gold</a></li>
+          </TextSubNav>
           <UserActivityPage {...props} key={ key } app={app}/>
         </BodyLayout>
       );

@@ -46,7 +46,7 @@ class SnooIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon SnooIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-snoo-circled' move={this.props.played ? this._onMove : null} out={this._onMouseLeave}>
+      <SVG className='SVG-icon SnooIcon' fallbackIcon='icon-snoo-circled' move={this.props.played ? this._onMove : null} out={this._onMouseLeave}>
         <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <g ref='all'>
           <path ref='face' className='SVG-fill-bg' d='M16.086926,11.717036c0-2.414056-2.732691-4.378024-6.091592-4.378024 c-3.358627,0-6.091061,1.963968-6.091061,4.378024c0,2.414167,2.732434,4.378257,6.091061,4.378257 C13.354235,16.095293,16.086926,14.131204,16.086926,11.717036z'/>
