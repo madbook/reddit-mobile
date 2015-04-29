@@ -8,11 +8,13 @@ class SideNav extends React.Component {
     this.state = {
       opened: false,
       twirly: '',
+      compact: props.compact,
     };
 
     this._onTwirlyClick = this._onTwirlyClick.bind(this);
     this._toggle = this._toggle.bind(this);
     this._close = this._close.bind(this);
+    this._onViewClick = this._onViewClick.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +31,7 @@ class SideNav extends React.Component {
     var user = this.props.user;
     var loginLink;
     var logoutLink;
+    var compact = this.state.compact;
 
     if (user) {
       loginLink = (
@@ -60,6 +63,9 @@ class SideNav extends React.Component {
           { loginLink }
           { logoutLink }
 
+          <li>
+            <button className='SideNav-button' onClick={this._onViewClick}>Switch to { compact ? 'list' : 'compact' } view</button>
+          </li>
           <li className={'SideNav-dropdown tween'+(this.state.twirly === 'about' ? ' opened' : '')}>
             <button className={'twirly before SideNav-button'+(this.state.twirly === 'about' ? ' opened' : '')} onClick={this._onTwirlyClick.bind(this, 'about')}>About</button>
             <ul className='SideNav-ul list-unstyled'>
@@ -135,6 +141,20 @@ class SideNav extends React.Component {
 
   _onTwirlyClick(str) {
     this.setState({twirly: this.state.twirly === str ? '' : str});
+  }
+
+  _onViewClick() {
+    var app = this.props.app;
+
+    var compact = this.state.compact;
+    document.cookie = 'compact=' + (!compact) + '; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+
+    app.emit(constants.COMPACT_TOGGLE, !compact);
+    this._close();
+
+    this.setState({
+      compact: !compact,
+    });
   }
 }
 

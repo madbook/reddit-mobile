@@ -4,4 +4,5 @@ export default {
   TOP_NAV_SUBREDDIT_CHANGE: 'topNavSubredditChange',
   VOTE: 'vote',
   DROPDOWN_OPEN: 'dropdownOpen',
+  COMPACT_TOGGLE: 'compactToggle',
 };

@@ -31,6 +31,7 @@ class SearchPage extends React.Component {
       data: props.data || {},
       subreddits: props.subreddits || {},
       loaded: !!(props.data && props.data.data),
+      compact: props.compact,
     };
   }
 
@@ -126,8 +127,10 @@ class SearchPage extends React.Component {
   render() {
     var state = this.state;
     var props = this.props;
+
     var app = props.app;
     var apiOptions = props.apiOptions;
+    var compact = state.compact;
 
     var controls;
     var tracking;
@@ -225,6 +228,7 @@ class SearchPage extends React.Component {
                     user={ props.user }
                     token={ props.token }
                     api={ props.api }
+                    compact={ compact }
                   />
                 );
               }

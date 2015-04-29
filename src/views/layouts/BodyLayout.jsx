@@ -2,6 +2,7 @@ import React from 'react';
 import TopNavFactory from '../components/TopNav';
 import SideNavFactory from '../components/SideNav';
 import BetaBannerFactory from '../components/BetaBanner';
+import constants from '../../constants';
 
 var TopNav;
 var SideNav;
@@ -17,7 +18,6 @@ class BodyLayout extends React.Component {
       <div className='container-with-betabanner'>
         <SideNav {...this.props} />
         <TopNav {...this.props}/>
-
         <main>
           <BetaBanner show={ this.props.showBetaBanner } />
           { this.props.children }

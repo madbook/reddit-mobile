@@ -156,6 +156,8 @@ class Server {
 
     var user = this.cookies.get('user');
     this.token = this.cookies.get('token');
+    var compact = this.cookies.get('compact');
+    this.compact = compact === 'true' || compact === true;
 
     if (user) {
       user = JSON.parse(user);
