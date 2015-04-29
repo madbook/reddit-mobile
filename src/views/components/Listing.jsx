@@ -261,7 +261,7 @@ class Listing extends React.Component {
     };
 
     var media = listing.media;
-    var permalink = props.sponsored ? listing.cleanPermalink : listing.url;
+    var permalink = props.sponsored ? listing.url : listing.cleanPermalink;
 
     var preview = this.previewImageUrl(listing, expanded);
 
