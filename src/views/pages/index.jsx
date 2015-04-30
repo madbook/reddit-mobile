@@ -191,6 +191,7 @@ class IndexPage extends React.Component {
                     api={api}
                     loginPath={loginPath}
                     compact={compact}
+                    subredditTitle={subreddit}
                   />
                 );
               }
