@@ -89,7 +89,7 @@ function routes(app) {
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,
-      compact: ctx.compact.toString() === 'true',
+      compact: ctx.compact ? ctx.compact.toString() === 'true' : false,
       query: ctx.query,
       params: ctx.params,
       url: ctx.path,

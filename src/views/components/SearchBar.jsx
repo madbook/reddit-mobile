@@ -19,7 +19,7 @@ class SearchBar extends React.Component {
       <div className="SearchBar">
         <input type="text" className="form-control" maxLength="512" name="search" ref="search"
                placeholder="Search..." onChange={ _.debounce(this.handleInputChange, 500).bind(this) }
-               defaultValue={this.props.query} />
+               defaultValue={this.props.query.q} />
       </div>
     );
   }

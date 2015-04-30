@@ -49,7 +49,7 @@ class SearchPage extends React.Component {
 
   _composeSortingUrl(data) {
     var props = this.props;
-    var qs = { q: props.query };
+    var qs = { q: props.query.q };
     if (props.after) { qs.after = props.after; }
     if (props.before) { qs.before = props.before; }
     if (props.page) { qs.page = props.page; }
@@ -114,7 +114,7 @@ class SearchPage extends React.Component {
   handleInputChanged(data) {
     var props = this.props;
     var value = data.value || '';
-    if (value !== props.query && (!value || value.length >= _searchMinLength)) {
+    if (value !== props.query.q && (!value || value.length >= _searchMinLength)) {
       var url = this._composeUrl({
         query: value,
         subredditName: props.subredditName
@@ -146,14 +146,14 @@ class SearchPage extends React.Component {
       var subreddits = state.data.data.subreddits || [];
       var listings = state.data.data.links || [];
       var noResults = listings.length === 0;
-      var subredditResultsOnly = props.subredditName && props.query;
+      var subredditResultsOnly = props.subredditName && props.query.q;
 
       var page = props.page || 0;
       var meta = state.data.data.meta || {};
 
       // API is messed up, so we have to do our own detection for the prev..
       var prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
-        query: props.query,
+        query: props.query.q,
         subredditName: props.subredditName,
         before: meta.before || listings[0].name,
         page: page - 1,
@@ -163,7 +163,7 @@ class SearchPage extends React.Component {
 
       // ..and of course for the next too :-\
       var nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
-        query: props.query,
+        query: props.query.q,
         subredditName: props.subredditName,
         after: meta.after || listings[listings.length - 1].name,
         page: page + 1,
@@ -172,13 +172,13 @@ class SearchPage extends React.Component {
       }) : null;
 
       controls = [
-        <div className={ `container no-results text-right text-special ${noResults && props.query ? '' : 'hidden'}` } key="search-no-results">
+        <div className={ `container no-results text-right text-special ${noResults && props.query.q ? '' : 'hidden'}` } key="search-no-results">
           Sorry, we couldn't find anything.
         </div>,
 
         <div className={ `container subreddit-only text-left ${subredditResultsOnly ? '' : 'hidden'}` } key="search-subreddit-only">
           <span>{ `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }</span>
-          <a href={ this._composeUrl({ query: props.query }) }>Search all of reddit?</a>
+          <a href={ this._composeUrl({ query: props.query.q }) }>Search all of reddit?</a>
         </div>,
 
         <div className={ `container summary-container ${noResults || (!noResults && subredditResultsOnly) ? 'hidden' : ''}` }
@@ -298,7 +298,7 @@ class SearchPage extends React.Component {
 
     var options = api.buildOptions(props.apiOptions);
 
-    options.query.q = props.query;
+    options.query.q = props.query.q;
     options.query.limit = _searchLimit;
     options.query.before = props.before;
     options.query.after = props.after;
