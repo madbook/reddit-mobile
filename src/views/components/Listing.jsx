@@ -15,6 +15,12 @@ var ListingDropdown;
 import PlayIconFactory from '../components/icons/PlayIcon';
 var PlayIcon;
 
+import NSFWIconFactory from '../components/icons/NSFWIcon';
+var NSFWIcon;
+
+import MobileButtonFactory from '../components/MobileButton';
+var MobileButton;
+
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gifMatch = /\.(?:gif)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
@@ -188,9 +194,9 @@ class Listing extends React.Component {
 
   buildOver18() {
     return (
-      <a className={'listing-preview-a listing-nsfw' + (this.state.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-        <span className={'icon-nsfw-circled'}/>
-      </a>
+      <MobileButton className={'listing-preview-a listing-nsfw' + (this.state.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+        <NSFWIcon/>
+      </MobileButton>
     );
   }
 
@@ -207,7 +213,7 @@ class Listing extends React.Component {
     if (listing.preview) {
       var preview = listing.preview;
 
-      if (preview.images) { 
+      if (preview.images) {
         preview = preview.images[0];
       }
 
@@ -601,6 +607,8 @@ function ListingFactory(app) {
   Vote = VoteFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
   PlayIcon = PlayIconFactory(app);
+  NSFWIcon = NSFWIconFactory(app);
+  MobileButton = MobileButtonFactory(app);
 
   return app.mutate('core/components/listing', Listing);
 }

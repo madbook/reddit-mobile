@@ -72,8 +72,6 @@ class UserActivityPage extends React.Component {
     var api = props.api;
     var token = props.token;
 
-    var compact = state.compact;
-
     var app = props.app;
     var user = props.user;
 
@@ -107,7 +105,7 @@ class UserActivityPage extends React.Component {
 
         { loading }
 
-        <div className={'container listing-container' + ( compact ? ' compact' : '' )} >
+        <div className={'container listing-container'} >
           {
             activities.map(function(thing, i) {
               var index = (page * 25) + i;
@@ -128,7 +126,6 @@ class UserActivityPage extends React.Component {
                     api={api}
                     hideUser={ true }
                     loginPath={ loginPath }
-                    compact={ compact }
                   />
                 );
               } else if (thing._type === 'Comment') {

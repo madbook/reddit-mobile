@@ -15,7 +15,7 @@ class ShareIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon ShareIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-share-circled'>
+      <SVG className='SVG-icon ShareIcon' fallbackIcon='icon-share-circled'>
         <defs>
           <clipPath id={this._planeMaskID}>
             <circle ref='planeMask' fill='#000' cx={_half} cy={_half} r={_half}/>

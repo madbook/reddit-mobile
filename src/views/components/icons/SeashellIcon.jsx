@@ -3,7 +3,6 @@ import React from 'react';
 import SVGFactory from '../../components/SVG';
 var SVG;
 
-const _CENTER = 10;
 const _DIST = 7.5;
 const _DIAMETER = 2;
 
@@ -16,11 +15,11 @@ class SeashellIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SeashellIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-seashells'>
+      <SVG className='SeashellIcon' fallbackIcon='icon-seashells'>
         <g className='SVG-fill'>
-          <circle ref="one" cx={_CENTER - _DIST} cy={_CENTER} r={_DIAMETER}/>
-          <circle cx={_CENTER} cy={_CENTER} r={_DIAMETER}/>
-          <circle ref="three" cx={_CENTER + _DIST} cy={_CENTER} r={_DIAMETER}/>
+          <circle ref="one" cx={SVG.ICON_SIZE / 2 - _DIST} cy={SVG.ICON_SIZE / 2} r={_DIAMETER}/>
+          <circle cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={_DIAMETER}/>
+          <circle ref="three" cx={SVG.ICON_SIZE / 2 + _DIST} cy={SVG.ICON_SIZE / 2} r={_DIAMETER}/>
         </g>
       </SVG>
     );
@@ -34,9 +33,9 @@ class SeashellIcon extends React.Component {
     var three = this.refs.three.getDOMNode();
     var ease = Sine;
     this._timeline = new TimelineLite({paused: true});
-    this._timeline.add(TweenLite.to([one, three], 0.2, {attr: {cx: _CENTER}, ease: ease.easeOut, overwrite: 0}), 0);
-    this._timeline.add(TweenLite.to(one, 0.2, {attr: {cy: _CENTER - _DIST}, ease: ease.easeIn, overwrite: 0}), 0);
-    this._timeline.add(TweenLite.to(three, 0.2, {attr: {cy: _CENTER + _DIST}, ease: ease.easeIn, overwrite: 0}), 0);
+    this._timeline.add(TweenLite.to([one, three], 0.2, {attr: {cx: SVG.ICON_SIZE / 2}, ease: ease.easeOut, overwrite: 0}), 0);
+    this._timeline.add(TweenLite.to(one, 0.2, {attr: {cy: SVG.ICON_SIZE / 2 - _DIST}, ease: ease.easeIn, overwrite: 0}), 0);
+    this._timeline.add(TweenLite.to(three, 0.2, {attr: {cy: SVG.ICON_SIZE / 2 + _DIST}, ease: ease.easeIn, overwrite: 0}), 0);
   }
 
   componentWillReceiveProps(nextProps) {

@@ -26,33 +26,37 @@ class MobileButton extends React.Component {
   render() {
     var move = this.props.move;
     var href = this.props.href;
+
+    var props = Utils.duplicate(this.props);
+    delete props.className;
+    delete props.move;
+    delete props.over;
+    delete props.out;
+
+    if(this.state.touch) {
+      props.onTouchStart = this._over;
+      props.onTouchEnd = this._out;
+      if(move) {
+        props.onTouchMove = move;
+      }
+    } else {
+      props.onMouseEnter = this._over;
+      props.onMouseLeave = this._out;
+      if(move) {
+        props.onMouseMove = move;
+      }
+    }
+    props.className = this.props.className + (this.state.hover ? ' hover' : '');
+
     if (href) {
       return (
-        <a
-          className={this.props.className + (this.state.hover ? ' hover' : '')}
-          onClick={this.props.onClick}
-          onMouseEnter={this.state.touch ? null : this._over}
-          onMouseLeave={this.state.touch ? null : this._out}
-          onMouseMove={this.state.touch ? null : move}
-          onTouchMove={this.state.touch ? move : null}
-          onTouchStart={this.state.touch ? this._over : null}
-          onTouchEnd={this.state.touch ? this._out : null}
-          href={href}>
+        <a {...props}>
           { this.renderChildren() }
         </a>
       );
     } else {
       return (
-        <button
-          className={this.props.className + (this.state.hover ? ' hover' : '')}
-          onClick={this.props.onClick}
-          onMouseEnter={this.state.touch ? null : this._over}
-          onMouseLeave={this.state.touch ? null : this._out}
-          onMouseMove={this.state.touch ? null : move}
-          onTouchMove={this.state.touch ? move : null}
-          onTouchStart={this.state.touch ? this._over : null}
-          onTouchEnd={this.state.touch ? this._out : null}
-          type={this.props.type}>
+        <button {...props}>
           { this.renderChildren() }
         </button>
       );

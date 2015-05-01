@@ -12,7 +12,7 @@ class ReplyIcon extends React.Component {
 
   render() {
     return (
-      <SVG className='SVG-icon ReplyIcon' width={SVG.ICON_SIZE} height={SVG.ICON_SIZE} fallbackIcon='icon-reply-circled'>
+      <SVG className='SVG-icon ReplyIcon' fallbackIcon='icon-reply-circled'>
         <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <g ref='all'>
           <rect className='SVG-stroke-bg' fill='none' strokeWidth='1.287276' x='4.276652' y='5.866364' width='11.446696' height='8.267272'/>

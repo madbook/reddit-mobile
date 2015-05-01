@@ -287,10 +287,18 @@
   display: block;
   background-color: @light-gray;
 
-  &.compact .icon-nsfw-circled {
-    font-size: 60px;
-    line-height: 60px;
-    margin: -30px 0 0 -30px;
+  &.compact {
+    .icon-nsfw-circled {
+      font-size: 60px;
+      line-height: 60px;
+      margin: -30px 0 0 -30px;
+    }
+
+    .NSFWIcon {
+      width: 60px;
+      height: 60px;
+      margin: -30px 0 0 -30px;
+    }
   }
 
   &:not(.compact) {
@@ -301,12 +309,42 @@
       line-height: 100px;
       margin: -50px 0 0 -50px;
     }
+
+    .NSFWIcon {
+      width: 100px;
+      height: 100px;
+      margin: -50px 0 0 -50px;
+    }
   }
 
-  .icon-nsfw-circled {
+  .icon-nsfw-circled, .NSFWIcon {
     position: absolute;
     left: 50%;
     top: 50%;
     color: @white;
+  }
+
+  &.compact
+
+  &:not(.compact) .NSFWIcon {
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+  }
+
+  .SVG-fill {
+    fill: @white;
+  }
+
+  .SVG-stroke {
+    stroke: @white;
+  }
+
+  .SVG-fill-bg {
+    fill: @light-gray;
+  }
+
+  .SVG-stroke-bg {
+    stroke: @light-gray;
   }
 }

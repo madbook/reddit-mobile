@@ -13,8 +13,8 @@ class SVG extends React.Component {
 
   render() {
     if (SVG.ENABLED) {
-      var width = this.props.width;
-      var height = this.props.height;
+      var width = this.props.width || SVG.ICON_SIZE;
+      var height = this.props.height || SVG.ICON_SIZE;
       var move = this.props.move;
       var out = this.props.out;
       return (
