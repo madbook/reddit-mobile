@@ -28,9 +28,7 @@ var oauthRoutes = function(app) {
 
   var redirect = app.config.origin + '/oauth2/token';
 
-  function getToken (code, redirect) {
-    var ctx = this;
-
+  function getToken (ctx, code, redirect) {
     return new Promise(function(resolve) {
       OAuth2.authCode.getToken({
         code: code,
@@ -107,7 +105,7 @@ var oauthRoutes = function(app) {
       return this.redirect('/403');
     }
 
-    var result = yield getToken(code, redirect);
+    var result = yield getToken(this, code, redirect);
 
     token = OAuth2.accessToken.create(result);
 

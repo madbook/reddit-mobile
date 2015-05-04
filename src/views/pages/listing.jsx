@@ -106,6 +106,7 @@ class ListingPage extends React.Component {
 
       commentBoxElement = (
         <CommentBox
+          app={ app }
           apiOptions={ apiOptions }
           thingId={ listing.name }
           user={ user }
