@@ -96,8 +96,8 @@ class UserActivitySubnav extends React.Component {
     }).text;
 
     var button = (
-      <button className={'twirly after' + (this.state.opened ? ' opened' : '')}>
-        { activityTitle }
+      <button className={(this.state.opened ? ' opened' : '')}>
+        { activityTitle } <span className='icon-caron'/>
       </button>
     );
     var opened = this.state.opened;

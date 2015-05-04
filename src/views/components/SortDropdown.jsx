@@ -85,7 +85,7 @@ class SortDropdown extends React.Component {
 
     var sortParam = this.props.sortParam || 'sort';
     var opened = this.state.opened;
-    var button = <button className={'twirly after' + (opened ? ' opened' : '')}>{sortTitle}</button>;
+    var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
 
     return (
       <Dropdown app={ this.props.app } id={ this._id } button={ button } className={ this.props.className }>

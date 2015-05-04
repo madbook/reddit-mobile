@@ -1,14 +1,14 @@
 @font-face {
-	font-family: "icons-0.4276139915455133";
-	src: url('../fonts/icons-0.4276139915455133.eot');
-	src: url('../fonts/icons-0.4276139915455133.eot?#iefix') format('eot'),
-		url('../fonts/icons-0.4276139915455133.woff') format('woff'),
-		url('../fonts/icons-0.4276139915455133.ttf') format('truetype'),
-		url('../fonts/icons-0.4276139915455133.svg#icons-0.4276139915455133') format('svg');
+	font-family: "icons-0.015889865811914206";
+	src: url('../fonts/icons-0.015889865811914206.eot');
+	src: url('../fonts/icons-0.015889865811914206.eot?#iefix') format('eot'),
+		url('../fonts/icons-0.015889865811914206.woff') format('woff'),
+		url('../fonts/icons-0.015889865811914206.ttf') format('truetype'),
+		url('../fonts/icons-0.015889865811914206.svg#icons-0.015889865811914206') format('svg');
 }
 
 .icon-base-pseudo {
-	font-family: "icons-0.4276139915455133";
+	font-family: "icons-0.015889865811914206";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
@@ -20,61 +20,63 @@
 }
 
 .icon-char(@filename) {
-	@check-circled: "\e001";
-	@check: "\e002";
-	@comments-circled: "\e003";
-	@comments: "\e004";
-	@crown-circled: "\e005";
-	@crown: "\e006";
-	@downvote-circled: "\e007";
-	@downvote: "\e008";
-	@flag-circled: "\e009";
-	@flag: "\e00a";
-	@gold-circled: "\e00b";
-	@gold: "\e00c";
-	@hamburger-circled: "\e00d";
-	@hamburger: "\e00e";
-	@info-circled: "\e00f";
-	@info: "\e010";
-	@karma-circled: "\e011";
-	@karma: "\e012";
-	@law-circled: "\e013";
-	@law: "\e014";
-	@link-circled: "\e015";
-	@link: "\e016";
-	@logo: "\e017";
-	@mail-circled: "\e018";
-	@mail: "\e019";
-	@nsfw-circled: "\e01a";
-	@nsfw: "\e01b";
-	@play-circled: "\e01c";
-	@play: "\e01d";
-	@post-circled: "\e01e";
-	@post: "\e01f";
-	@r-circled: "\e020";
-	@r: "\e021";
-	@reply-circled: "\e022";
-	@reply: "\e023";
-	@save-circled: "\e024";
-	@save: "\e025";
-	@search-circled: "\e026";
-	@search: "\e027";
-	@seashells-circled: "\e028";
-	@seashells: "\e029";
-	@settings-circled: "\e02a";
-	@settings: "\e02b";
-	@share-circled: "\e02c";
-	@share: "\e02d";
-	@snoo-circled: "\e02e";
-	@snoo: "\e02f";
-	@text-circled: "\e030";
-	@text: "\e031";
-	@unsave-circled: "\e032";
-	@unsave: "\e033";
-	@upvote-circled: "\e034";
-	@upvote: "\e035";
-	@x-circled: "\e036";
-	@x: "\e037";
+	@caron-circled: "\e001";
+	@caron: "\e002";
+	@check-circled: "\e003";
+	@check: "\e004";
+	@comments-circled: "\e005";
+	@comments: "\e006";
+	@crown-circled: "\e007";
+	@crown: "\e008";
+	@downvote-circled: "\e009";
+	@downvote: "\e00a";
+	@flag-circled: "\e00b";
+	@flag: "\e00c";
+	@gold-circled: "\e00d";
+	@gold: "\e00e";
+	@hamburger-circled: "\e00f";
+	@hamburger: "\e010";
+	@info-circled: "\e011";
+	@info: "\e012";
+	@karma-circled: "\e013";
+	@karma: "\e014";
+	@law-circled: "\e015";
+	@law: "\e016";
+	@link-circled: "\e017";
+	@link: "\e018";
+	@logo: "\e019";
+	@mail-circled: "\e01a";
+	@mail: "\e01b";
+	@nsfw-circled: "\e01c";
+	@nsfw: "\e01d";
+	@play-circled: "\e01e";
+	@play: "\e01f";
+	@post-circled: "\e020";
+	@post: "\e021";
+	@r-circled: "\e022";
+	@r: "\e023";
+	@reply-circled: "\e024";
+	@reply: "\e025";
+	@save-circled: "\e026";
+	@save: "\e027";
+	@search-circled: "\e028";
+	@search: "\e029";
+	@seashells-circled: "\e02a";
+	@seashells: "\e02b";
+	@settings-circled: "\e02c";
+	@settings: "\e02d";
+	@share-circled: "\e02e";
+	@share: "\e02f";
+	@snoo-circled: "\e030";
+	@snoo: "\e031";
+	@text-circled: "\e032";
+	@text: "\e033";
+	@unsave-circled: "\e034";
+	@unsave: "\e035";
+	@upvote-circled: "\e036";
+	@upvote: "\e037";
+	@x-circled: "\e038";
+	@x: "\e039";
 	
 	content: @@filename;
 }
@@ -88,6 +90,12 @@
 	}
 }
 
+.icon-caron-circled {
+	.icon(caron-circled);
+}
+.icon-caron {
+	.icon(caron);
+}
 .icon-check-circled {
 	.icon(check-circled);
 }
