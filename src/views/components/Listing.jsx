@@ -107,7 +107,7 @@ class Listing extends React.Component {
     this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
-  componentWillUnount() {
+  componentWillUnmount() {
     this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
