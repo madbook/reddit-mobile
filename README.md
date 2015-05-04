@@ -67,7 +67,9 @@ Getting Up and Running
 2. Also fork and clone any plugins you plan on developing. In these, run
   `npm link` to cause the local version of the plugin to be linked to npm.
 3. Run `npm install` to install other dependencies.
-4. Run `npm start` to start the web server. Optionally, create a startup script
+4. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
+   watcher)
+5. Run `npm start` to start the web server. Optionally, create a startup script
   at `start.sh` that sets environment variables and starts the server;
   `start.sh` has been added to the `.gitignore` and will not get checked in.
 
