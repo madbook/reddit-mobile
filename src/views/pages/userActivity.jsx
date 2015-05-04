@@ -53,7 +53,7 @@ class UserActivityPage extends React.Component {
     });
   }
 
-  componentWillUnount() {
+  componentWillUnmount() {
     this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 

@@ -22,7 +22,7 @@ class SideNav extends React.Component {
     this.props.app.on('route:start', this._close);
   }
 
-  componentWillUnount() {
+  componentWillUnmount() {
     this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
     this.props.app.off('route:start', this._close);
   }
