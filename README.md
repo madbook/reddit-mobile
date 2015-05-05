@@ -66,9 +66,12 @@ Getting Up and Running
   this project.
 2. Also fork and clone any plugins you plan on developing. In these, run
   `npm link` to cause the local version of the plugin to be linked to npm.
-3. Run `npm install` to install other dependencies.
+  You'll also want to `npm link` from within `reddit-mobile` so that plugins
+  can resolve circular dependencies.
+3. Run `npm install` to install other dependencies. `rm -rf node_modules/<plugin_name>`
+  if you are doing local plugin development as well.
 4. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
-   watcher)
+   watcher, which will include linked plugins.)
 5. Run `npm start` to start the web server. Optionally, create a startup script
   at `start.sh` that sets environment variables and starts the server;
   `start.sh` has been added to the `.gitignore` and will not get checked in.
