@@ -244,10 +244,6 @@ class Listing extends React.Component {
     if (listing.media && listing.media.oembed) {
       return listing.media.oembed.thumbnail_url;
     }
-
-    if (listing.url.match(imgMatch)) {
-      return listing.url;
-    }
   }
 
   buildContent() {
@@ -370,7 +366,7 @@ class Listing extends React.Component {
           <a className='listing-preview-a' href={ permalink }>
             {
               this.buildImage({
-                url: adjustUrlToAppProtocol(preview || listing.url, config),
+                url: adjustUrlToAppProtocol(preview, config),
                 fallbackUrl: preview || listing.url,
                 isVideo: listing.url.match(gifMatch),
               })
