@@ -47,12 +47,33 @@ function setTitle(props={}) {
   }
 }
 
+function refreshToken (app, tries=0) {
+  if (tries >= 3) {
+    window.location = '/logout';
+  }
+
+  $.get('/oauth2/refresh').done(function(token) {
+    app.setState('token', token.token);
+    app.setState('tokenExpires', token.tokenExpires);
+
+    var now = new Date();
+    var expires = new Date(token.tokenExpires);
+
+    window.setTimeout(function() {
+      refreshToken(app);
+    }, (expires - now) * .9);
+  }).fail(function() {
+    window.setTimeout(function() {
+      refreshToken(app, tries + 1);
+    }, 1000 * 10);
+  });
+}
+
 function initialize(bindLinks) {
   $(function() {
     var plugin;
     var p;
     var $body = $('body');
-
 
     config.mountPoint = document.getElementById('app-container');
 
@@ -63,6 +84,23 @@ function initialize(bindLinks) {
     });
 
     var app = new ClientReactApp(config);
+
+    if (app.getState('token')) {
+      var now = new Date();
+      var expires = new Date(app.getState('tokenExpires'));
+
+      var refreshMS = (expires - now);
+
+      // refresh a little before it expires, to be safe
+      refreshMS *= .90; 
+
+      // if it's within a minute, refresh now
+      refreshMS = Math.max(refreshMS - (1000 * 60), 0);
+
+      window.setTimeout(function() {
+        refreshToken(app);
+      }, refreshMS);
+    };
 
     app.router.get('/oauth2/login', function * () {
       window.location = '/oauth2/login';

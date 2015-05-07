@@ -22,7 +22,7 @@ var App = mixin(ServerReactApp);
 import plugins from './plugins';
 
 // The core
-import oauth from './oauth';
+import oauthRoutes from './oauth';
 import serverRoutes from './serverRoutes';
 import routes from './routes';
 
@@ -58,7 +58,7 @@ class Server {
       }
     }
 
-    oauth(app);
+    oauthRoutes(app);
     serverRoutes(app);
     routes(app);
 
@@ -84,6 +84,7 @@ class Server {
     server.use(this.modifyRequest(app));
     server.use(this.setHeaders(app));
     server.use(this.setLOID(app));
+    server.use(this.checkToken(app));
 
     server.use(App.serverRender(app, formatProps));
 
@@ -175,6 +176,7 @@ class Server {
 
       var user = this.cookies.get('user');
       this.token = this.cookies.get('token');
+      this.tokenExpires = this.cookies.get('tokenExpires');
 
       this.compact = compact;
 
@@ -191,6 +193,36 @@ class Server {
       this.loidcreated = this.cookies.get('loidcreated');
 
       yield next;
+    }
+  }
+
+  checkToken (app) {
+    return function * (next) {
+      var now = new Date();
+      var expires = this.cookies.get('tokenExpires');
+
+      if (!expires) {
+        yield next;
+        return;
+      }
+
+      expires = new Date(expires);
+
+      if (now > expires) {
+        var rToken = this.cookies.get('refreshToken');
+
+        try {
+          var token = yield app.refreshToken(this, rToken);
+          app.setTokenCookie(this, token);
+        } catch (e) {
+          this.cookies.set('token');
+          this.cookies.set('user');
+          this.redirect('/');
+        }
+      }
+
+      yield next;
+      return;
     }
   }
 
