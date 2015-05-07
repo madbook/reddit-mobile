@@ -70,9 +70,10 @@ Getting Up and Running
   can resolve circular dependencies.
 3. Run `npm install` to install other dependencies. `rm -rf node_modules/<plugin_name>`
   if you are doing local plugin development as well.
-4. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
+4. Run `git submodule update --init` to download this project's submodules
+5. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
    watcher, which will include linked plugins.)
-5. Run `npm start` to start the web server. Optionally, create a startup script
+6. Run `npm start` to start the web server. Optionally, create a startup script
   at `start.sh` that sets environment variables and starts the server;
   `start.sh` has been added to the `.gitignore` and will not get checked in.
 
