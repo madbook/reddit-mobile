@@ -1,5 +1,6 @@
 import 'babel/polyfill';
 
+import _ from 'lodash';
 import $ from 'jquery';
 global.jQuery = global.$ = $;
 
@@ -54,6 +55,12 @@ function initialize(bindLinks) {
 
 
     config.mountPoint = document.getElementById('app-container');
+
+    _.forOwn(config, function(val, key) {
+      if (bootstrap[key]) {
+        config[key] = bootstrap[key];
+      }
+    });
 
     var app = new ClientReactApp(config);
 
