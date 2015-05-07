@@ -15,9 +15,6 @@ var ListingDropdown;
 import PlayIconFactory from '../components/icons/PlayIcon';
 var PlayIcon;
 
-import NSFWIconFactory from '../components/icons/NSFWIcon';
-var NSFWIcon;
-
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
 
@@ -193,11 +190,20 @@ class Listing extends React.Component {
   }
 
   buildOver18() {
-    return (
-      <MobileButton className={'listing-preview-a listing-nsfw' + (this.state.compact ? ' compact' : '')} href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-        <NSFWIcon/>
-      </MobileButton>
-    );
+    if(this.state.compact) {
+      return (
+        <a className={'listing-preview-a listing-nsfw compact' } href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+          <p className='listing-nsfw-p'>NSFW</p>
+        </a>
+      );
+    } else {
+      return (
+        <a className='listing-nsfw' href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
+          <p className='listing-nsfw-p'>This post is marked as NSFW</p>
+          <p className='listing-nsfw-p outlined'>Show post?</p>
+        </a>
+      );
+    }
   }
 
   previewImageUrl(listing, expanded) {
@@ -603,7 +609,6 @@ function ListingFactory(app) {
   Vote = VoteFactory(app);
   ListingDropdown = ListingDropdownFactory(app);
   PlayIcon = PlayIconFactory(app);
-  NSFWIcon = NSFWIconFactory(app);
   MobileButton = MobileButtonFactory(app);
 
   return app.mutate('core/components/listing', Listing);
