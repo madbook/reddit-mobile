@@ -55,6 +55,7 @@ class DefaultLayout extends React.Component {
           { canonical }
 
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+          <meta name='theme-color' content='#336699' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />
           { metaDescription }
 
