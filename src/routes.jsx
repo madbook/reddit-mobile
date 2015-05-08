@@ -103,7 +103,7 @@ function routes(app) {
       },
     };
 
-    Object.assign(props, defaultProps, ctx.props);
+    props = Object.assign({}, defaultProps, props, ctx.props);
 
     props.app = app;
     props.api = app.api;
