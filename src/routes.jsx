@@ -494,60 +494,24 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/404', function * () {
+  var errorMsgMap = {
+    '404': 'Sorry, that page doesn\'t seem to exist.',
+    '403': 'Sorry, you don\'t have access to this.',
+    'default': 'Oops, looks like something went wrong.',
+  };
+
+  app.router.get(/\/([45]\d\d)/, function * () {
     var ctx = this;
-    ctx.status = 404;
+    var statusCode = ctx.captures[0];
+    var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];
+    ctx.status = parseInt(statusCode);
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
-      title: '404 - Sorry, that page doesn\'t seem to exist.',
+      title: `${statusCode} - ${statusMsg}`,
     });
 
-    var page = (
-      <BodyLayout {...props} app={app}>
-        <ErrorPage {...props}/>
-      </BodyLayout>
-    );
-
-    this.body = page;
-    this.layout = Layout;
-    this.props = props;
-  });
-
-  app.router.get(/\/4\d\d/, function * () {
-    var ctx = this;
-    ctx.status = 400;
-
-    var props = buildProps(this, {
-      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
-      title: '400 - Oops, looks like something went wrong.',
-    });
-
-    try {
-      var page = (
-        <BodyLayout {...props} app={app}>
-          <ErrorPage {...props}/>
-        </BodyLayout>
-      );
-    } catch (e) {
-      return app.error(e, this, next);
-    }
-
-    this.body = page;
-    this.layout = Layout;
-    this.props = props;
-  });
-
-  app.router.get(/\/5\d\d/, function * () {
-    var ctx = this;
-    ctx.status = 500;
-
-    var props = buildProps(this, {
-      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
-      title: '500 - Oops, looks like something went wrong.',
-    });
-
-    if (app.getConfig('debug')) {
+    if (statusCode.match(/^5.*/) && app.getConfig('debug')) {
       props.error = ctx.error;
     }
 
