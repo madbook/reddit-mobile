@@ -1,8 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-
 import constants from '../../constants';
-
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
@@ -576,8 +574,12 @@ class Listing extends React.Component {
       var stalactite = <div className='stalactite'/>;
     }
 
-    if (!buildContent && compact && this.state.loaded) {
-      buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
+    if (!buildContent && compact) {
+      if (this.state.loaded) {
+        buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
+      } else {
+        buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img unloaded'/></a>;
+      }
     }
 
     var extImageSource;

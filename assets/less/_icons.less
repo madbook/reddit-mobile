@@ -1,14 +1,14 @@
 @font-face {
-	font-family: "icons-0.015889865811914206";
-	src: url('../fonts/icons-0.015889865811914206.eot');
-	src: url('../fonts/icons-0.015889865811914206.eot?#iefix') format('eot'),
-		url('../fonts/icons-0.015889865811914206.woff') format('woff'),
-		url('../fonts/icons-0.015889865811914206.ttf') format('truetype'),
-		url('../fonts/icons-0.015889865811914206.svg#icons-0.015889865811914206') format('svg');
+	font-family: "icons-0.5028162279631943";
+	src: url('../fonts/icons-0.5028162279631943.eot');
+	src: url('../fonts/icons-0.5028162279631943.eot?#iefix') format('eot'),
+		url('../fonts/icons-0.5028162279631943.woff') format('woff'),
+		url('../fonts/icons-0.5028162279631943.ttf') format('truetype'),
+		url('../fonts/icons-0.5028162279631943.svg#icons-0.5028162279631943') format('svg');
 }
 
 .icon-base-pseudo {
-	font-family: "icons-0.015889865811914206";
+	font-family: "icons-0.5028162279631943";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	font-style: normal;
@@ -71,12 +71,14 @@
 	@snoo: "\e031";
 	@text-circled: "\e032";
 	@text: "\e033";
-	@unsave-circled: "\e034";
-	@unsave: "\e035";
-	@upvote-circled: "\e036";
-	@upvote: "\e037";
-	@x-circled: "\e038";
-	@x: "\e039";
+	@twirly-circled: "\e034";
+	@twirly: "\e035";
+	@unsave-circled: "\e036";
+	@unsave: "\e037";
+	@upvote-circled: "\e038";
+	@upvote: "\e039";
+	@x-circled: "\e03a";
+	@x: "\e03b";
 	
 	content: @@filename;
 }
@@ -242,6 +244,12 @@
 }
 .icon-text {
 	.icon(text);
+}
+.icon-twirly-circled {
+	.icon(twirly-circled);
+}
+.icon-twirly {
+	.icon(twirly);
 }
 .icon-unsave-circled {
 	.icon(unsave-circled);

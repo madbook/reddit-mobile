@@ -22,7 +22,7 @@ class HamburgerIcon extends React.Component {
   render() {
     return (
       <SVG width={_SIZE} height={_SIZE} fallbackIcon={this.props.altered ? 'icon-x' : 'icon-hamburger'}>
-        <g className='SVG-stroke' strokeWidth='2' strokeLinecap='square'>
+        <g ref='all' className='SVG-stroke' strokeWidth='2' strokeLinecap='square'>
           <line ref='topBun' x1={_HAMBURGER_LEFT} y1={_TOP_BUN_Y} x2={_HAMBURGER_RIGHT} y2={_TOP_BUN_Y}/>
           <line ref='patty' x1={_HAMBURGER_LEFT} y1={_MIDDLE} x2={_HAMBURGER_RIGHT} y2={_MIDDLE}/>
           <line ref='bottomBun' x1={_HAMBURGER_LEFT} y1={_BOTTOM_BUN_Y} x2={_HAMBURGER_RIGHT} y2={_BOTTOM_BUN_Y}/>
@@ -48,24 +48,29 @@ class HamburgerIcon extends React.Component {
     var topBun = this.refs.topBun.getDOMNode();
     var patty = this.refs.patty.getDOMNode();
     var bottomBun = this.refs.bottomBun.getDOMNode();
+    var all = this.refs.all.getDOMNode();
 
     if (played && altered) {
       //left
+      TweenLite.to(all, _T, {rotation: 90, transformOrigin: '50% 50%', ease:Cubic.easeInOut});
       TweenLite.to(topBun, _T, {attr: {x1: _HAMBURGER_LEFT + _HAMBURGER_SPACING, y1: _TOP_BUN_Y, x2: _HAMBURGER_LEFT, y2: _MIDDLE}});
       TweenLite.to(patty, _T, {attr: {x1: _HAMBURGER_LEFT + 1, y1: _MIDDLE, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _HAMBURGER_LEFT + _HAMBURGER_SPACING, y1: _BOTTOM_BUN_Y, x2: _HAMBURGER_LEFT, y2: _MIDDLE}});
     } else if (played && !altered) {
       //right
+      TweenLite.to(all, _T, {rotation: 90, transformOrigin: '50% 50%', ease:Cubic.easeInOut});
       TweenLite.to(topBun, _T, {attr: {x1: _HAMBURGER_RIGHT - _HAMBURGER_SPACING, y1: _TOP_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
       TweenLite.to(patty, _T, {attr: {x1: _HAMBURGER_LEFT, y1: _MIDDLE, x2: _HAMBURGER_RIGHT - 1, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _HAMBURGER_RIGHT - _HAMBURGER_SPACING, y1: _BOTTOM_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
     } else if (!played && altered) {
       //x
+      TweenLite.to(all, _T, {rotation: 0, transformOrigin: '50% 50%', ease:Cubic.easeInOut});
       TweenLite.to(topBun, _T, {attr: {x1: _X_RIGHT, y1: _X_LEFT, x2: _X_LEFT, y2: _X_RIGHT}});
       TweenLite.to(patty, _T, {attr: {x1: _MIDDLE, y1: _MIDDLE, x2: _MIDDLE, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _X_RIGHT, y1: _X_RIGHT, x2: _X_LEFT, y2: _X_LEFT}});
     } else {
       //hamburger
+      TweenLite.to(all, _T, {rotation: 0, transformOrigin: '50% 50%', ease:Cubic.easeInOut});
       TweenLite.to(topBun, _T, {attr: {x1: _HAMBURGER_LEFT, y1: _TOP_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _TOP_BUN_Y}});
       TweenLite.to(patty, _T, {attr: {x1: _HAMBURGER_LEFT, y1: _MIDDLE, x2: _HAMBURGER_RIGHT, y2: _MIDDLE}});
       TweenLite.to(bottomBun, _T, {attr: {x1: _HAMBURGER_LEFT, y1: _BOTTOM_BUN_Y, x2: _HAMBURGER_RIGHT, y2: _BOTTOM_BUN_Y}});

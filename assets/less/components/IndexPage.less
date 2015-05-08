@@ -1,0 +1,29 @@
+.IndexPage-buttons-holder-holder {
+  margin-left: 0;
+}
+
+  .IndexPage-buttons-holder {
+    padding: 0;
+  }
+
+    .IndexPage-buttons {
+
+      &.compact {
+        padding-top: 5px;
+
+        @media (max-width: @max-width) {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    }
+
+      .IndexPage-button {
+        &.next {
+          float: right;
+        }
+
+        &.prev {
+          float: left;
+        }
+      }

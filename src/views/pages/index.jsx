@@ -120,7 +120,7 @@ class IndexPage extends React.Component {
         });
 
         prevButton = (
-          <a href={subreddit + '?' + querystring.stringify(prevQuery) } className='btn btn-sm btn-primary'>
+          <a href={subreddit + '?' + querystring.stringify(prevQuery) } className='btn btn-sm btn-primary IndexPage-button prev'>
             <span className='glyphicon glyphicon-chevron-left'></span>
             Previous Page
           </a>
@@ -134,7 +134,7 @@ class IndexPage extends React.Component {
       });
 
       nextButton = (
-        <a href={ subreddit + '?' + querystring.stringify(nextQuery) } className='btn btn-sm btn-primary'>
+        <a href={ subreddit + '?' + querystring.stringify(nextQuery) } className='btn btn-sm btn-primary IndexPage-button next'>
           Next Page
           <span className='glyphicon glyphicon-chevron-right'></span>
         </a>
@@ -151,7 +151,7 @@ class IndexPage extends React.Component {
           user={ props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
-          copmact={ compact }
+          compact={ compact }
           />);
     }
     return (
@@ -185,9 +185,9 @@ class IndexPage extends React.Component {
             compact={compact}
             subredditTitle={subreddit}
           />
-          <div className='row pageNav'>
-            <div className='col-xs-12'>
-              <p>
+          <div className='row pageNav IndexPage-buttons-holder-holder'>
+            <div className='col-xs-12 IndexPage-buttons-holder'>
+              <p className={'IndexPage-buttons' + (compact ? ' compact' : '')}>
                 { prevButton } { nextButton }
               </p>
             </div>

@@ -2,26 +2,8 @@ import React from 'react/addons';
 import constants from '../../constants';
 import { models } from 'snoode';
 
-import PostIconFactory from '../components/icons/PostIcon';
-var PostIcon;
-
-import SearchIconFactory from '../components/icons/SearchIcon';
-var SearchIcon;
-
-import LogoFactory from '../components/Logo';
-var Logo;
-
-import HamburgerIconFactory from '../components/icons/HamburgerIcon';
-var HamburgerIcon;
-
 import MobileButtonFactory from '../components/MobileButton';
 var MobileButton;
-
-import SeashellIconFactory from '../components/icons/SeashellIcon';
-var SeashellIcon;
-
-import SaveIconFactory from '../components/icons/SaveIcon';
-var SaveIcon;
 
 import SeashellsDropdownFactory from '../components/SeashellsDropdown';
 var SeashellsDropdown;
@@ -31,6 +13,24 @@ var Loading;
 
 import SubredditAboutPageFactory from '../pages/subredditAbout';
 var SubredditAboutPage;
+
+import LogoFactory from '../components/Logo';
+var Logo;
+
+import PostIconFactory from '../components/icons/PostIcon';
+var PostIcon;
+
+import SearchIconFactory from '../components/icons/SearchIcon';
+var SearchIcon;
+
+import HamburgerIconFactory from '../components/icons/HamburgerIcon';
+var HamburgerIcon;
+
+import SeashellIconFactory from '../components/icons/SeashellIcon';
+var SeashellIcon;
+
+import SaveIconFactory from '../components/icons/SaveIcon';
+var SaveIcon;
 
 import InfoIconFactory from '../components/icons/InfoIcon';
 var InfoIcon;
@@ -148,8 +148,9 @@ class TopNav extends React.Component {
       );
     }
     return (
-      <nav className='TopNav shadow'>
-        <div className='TopNav-centered'>
+      <nav className={'TopNav' + (this.state.sideNavOpen ? ' opened' : '')}>
+        <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
+          <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
             <SnooIcon/>
           </MobileButton>
@@ -161,17 +162,14 @@ class TopNav extends React.Component {
             </span>
           </h1>
         </div>
-        <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
-          <div className='TopNav-beta'>beta</div>
-          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
-            <HamburgerIcon altered={this.state.sideNavOpen}/>
-          </MobileButton>
-        </div>
         <div className='pull-right TopNav-padding TopNav-right' key='topnav-actions'>
+          { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <SearchIcon/>
           </MobileButton>
-          { subredditMenu }
+          <MobileButton className='TopNav-floaty TopNav-hamburger' onClick={this._onClick.bind(this, 'hamburger')}>
+            <HamburgerIcon altered={this.state.sideNavOpen}/>
+          </MobileButton>
         </div>
       </nav>
    );
@@ -252,19 +250,19 @@ class TopNav extends React.Component {
 }
 
 function TopNavFactory(app) {
-  PostIcon = PostIconFactory(app);
-  SearchIcon = SearchIconFactory(app);
-  InfoIcon = InfoIconFactory(app);
-  HamburgerIcon = HamburgerIconFactory(app);
   MobileButton = MobileButtonFactory(app);
   Logo = LogoFactory(app);
+  SeashellsDropdown = SeashellsDropdownFactory(app);
+  Loading = LoadingFactory(app);
+  SubredditAboutPage = SubredditAboutPageFactory(app);
   SeashellIcon = SeashellIconFactory(app);
   SaveIcon = SaveIconFactory(app);
   SnooIcon = SnooIconFactory(app);
   TextIcon = TextIconFactory(app);
-  SeashellsDropdown = SeashellsDropdownFactory(app);
-  Loading = LoadingFactory(app);
-  SubredditAboutPage = SubredditAboutPageFactory(app);
+  PostIcon = PostIconFactory(app);
+  SearchIcon = SearchIconFactory(app);
+  InfoIcon = InfoIconFactory(app);
+  HamburgerIcon = HamburgerIconFactory(app);
   return app.mutate('core/components/TopNav', TopNav);
 }
 
