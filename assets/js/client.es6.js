@@ -23,7 +23,7 @@ import TweenLite from 'gsap';
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
-  $.getScript('/js/es5-shims.js', function(){
+  $.getScript(window.bootstrap.assetPath + '/js/es5-shims.js', function(){
     initialize(false);
   })
 } else {
