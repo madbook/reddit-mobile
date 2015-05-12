@@ -23,6 +23,7 @@ Disallow: /*before=
 Disallow: /login
 Disallow: /search
 Disallow: /r/*/search
+Disallow: /u/*
 Allow: /
     `;
   });
