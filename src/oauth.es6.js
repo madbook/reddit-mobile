@@ -218,7 +218,7 @@ var oauthRoutes = function(app) {
 
           var token = OAuth2.accessToken.create(res.body);
 
-          setTokenCookie(this, token);
+          setTokenCookie(ctx, token);
 
           var apiOptions = {
             origin: app.getConfig('authAPIOrigin'),
