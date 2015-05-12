@@ -18,9 +18,9 @@ var oauthRoutes = function(app) {
     cookieOptions.domain = app.getConfig('cookieDomain');
   }
 
-  var longCookieOptions = Object.assign({
+  var longCookieOptions = Object.assign({}, cookieOptions, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
-  }, cookieOptions);
+  });
 
   function setTokenCookie(ctx, token) {
     ctx.cookies.set('token', token.token.access_token, longCookieOptions);
