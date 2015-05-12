@@ -112,6 +112,7 @@ var oauthRoutes = function(app) {
 
   router.get('/logout', function * () {
     this.cookies.set('token');
+    this.cookies.set('tokenExpires');
     this.cookies.set('refreshToken');
     this.cookies.set('user');
     this.redirect('/');
@@ -134,6 +135,7 @@ var oauthRoutes = function(app) {
         tokenExpires: result.token.expires_at.toString(),
       };
     } catch (e) {
+      this.cookies.set('tokenExpires');
       this.cookies.set('token');
       this.cookies.set('refreshToken');
       this.cookies.set('user');

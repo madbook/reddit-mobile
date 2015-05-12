@@ -215,6 +215,7 @@ class Server {
           var token = yield app.refreshToken(this, rToken);
           app.setTokenCookie(this, token);
         } catch (e) {
+          this.cookies.set('tokenExpires');
           this.cookies.set('token');
           this.cookies.set('refreshToken');
           this.cookies.set('user');
