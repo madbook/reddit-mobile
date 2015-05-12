@@ -101,6 +101,7 @@ class ListingPage extends React.Component {
           token={ token }
           api={ api }
           loginPath={ loginPath }
+          solo={ true }
           />
       );
 

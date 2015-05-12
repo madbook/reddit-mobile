@@ -15,8 +15,8 @@ var SearchBar;
 import SearchSortSubnavFactory from '../components/SearchSortSubnav';
 var SearchSortSubnav;
 
-import ListingFactory from '../components/Listing';
-var Listing;
+import ListingListFactory from '../components/ListingList';
+var ListingList;
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
@@ -213,41 +213,28 @@ class SearchPage extends React.Component {
             time={ props.time }
             composeSortingUrl={ this._composeSortingUrl.bind(this) }
           />
-          {
-            listings.map(function (listing, idx) {
-              if (!listing.hidden) {
-                return (
-                  <Listing
-                    https={ props.https }
-                    httpsProxy={ props.httpsProxy }
-                    apiOptions={ apiOptions }
-                    app={ app }
-                    listing={ listing }
-                    index={ idx }
-                    key={ `search-listing-${idx}` }
-                    user={ props.user }
-                    token={ props.token }
-                    api={ props.api }
-                    compact={ compact }
-                  />
-                );
-              }
-            })
-          }
+          <ListingList
+            listings={ listings}
+            https={ props.https }
+            httpsProxy={ props.httpsProxy }
+            apiOptions={ apiOptions }
+            app={ app }
+            user={ props.user }
+            token={ props.token }
+            api={ props.api }
+            compact={ compact }
+          />
           <div className="row pageNav">
             <div className="col-xs-12">
               <p>
-                {
                 <a href={ prevUrl } className={ `btn btn-sm btn-primary ${prevUrl ? '' : 'hidden'}` } rel="prev">
                   <span className='glyphicon glyphicon-chevron-left'></span>
                   Previous Page
                 </a>
-                } {
                 <a href={ nextUrl } className={ `btn btn-sm btn-primary ${nextUrl ? '' : 'hidden'}` } rel="next">
                   Next Page
                   <span className='glyphicon glyphicon-chevron-right'></span>
                 </a>
-                }
               </p>
             </div>
           </div>
@@ -331,7 +318,7 @@ function SearchPageFactory(app) {
   TrackingPixel = TrackingPixelFactory(app);
   SearchBar = SearchBarFactory(app);
   SearchSortSubnav = SearchSortSubnavFactory(app);
-  Listing = ListingFactory(app);
+  ListingList = ListingListFactory(app);
 
   return app.mutate('core/pages/search', SearchPage);
 }

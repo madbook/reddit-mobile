@@ -73,6 +73,8 @@ class Listing extends React.Component {
     this.state = {
       expanded: props.expanded,
       compact: props.compact,
+      loaded: false,
+      tallestHeight: 0,
     };
 
     if (typeof window !== 'undefined') {
@@ -88,6 +90,9 @@ class Listing extends React.Component {
     }
 
     this._onCompactToggle = this._onCompactToggle.bind(this);
+    this.checkPos = this.checkPos.bind(this);
+    this._loadContent = this._loadContent.bind(this);
+    this.resize = this.resize.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -100,8 +105,39 @@ class Listing extends React.Component {
     });
   }
 
+  checkPos(winHeight) {
+    if (this.state.loaded) {
+      return true;
+    }
+    var top = React.findDOMNode(this).getBoundingClientRect().top;
+    var load = top < winHeight;
+    if (load) {
+      this._loadContent();
+      return true;
+    }
+    return false;
+  }
+
+  resize() {
+    if (this.state.compact && this.state.loaded) {
+      var height = React.findDOMNode(this).offsetHeight;
+      if (height > this.state.tallestHeight) {
+        this.setState({tallestHeight: height});
+      }
+    }
+  }
+
+  _loadContent() {
+    this.setState({loaded: true}, this.resize);
+  }
+
   componentDidMount() {
     this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    if (this.props.solo) {
+      this._loadContent();
+    } else {
+      this.checkPos();
+    }
   }
 
   componentWillUnmount() {
@@ -163,7 +199,7 @@ class Listing extends React.Component {
     }
 
     if (data.isVideo) {
-      if(compact) {
+      if (compact) {
         return (
           <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
         );
@@ -177,7 +213,7 @@ class Listing extends React.Component {
         );
       }
     }
-    if(compact) {
+    if (compact) {
       return (
         <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
       );
@@ -190,7 +226,7 @@ class Listing extends React.Component {
   }
 
   buildOver18() {
-    if(this.state.compact) {
+    if (this.state.compact) {
       return (
         <a className={'listing-preview-a listing-nsfw compact' } href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
           <p className='listing-nsfw-p'>NSFW</p>
@@ -211,7 +247,8 @@ class Listing extends React.Component {
 
     var image;
     var width = this.state.compact ? 80 : this.state.windowWidth;
-
+    var compact = this.state.compact;
+    var height = this.state.tallestHeight;
     if (expanded && listing.url.match(imgMatch)) {
       return listing.url;
     }
@@ -230,7 +267,11 @@ class Listing extends React.Component {
                           return a.width - b.width;
                         })
                         .find((r) => {
-                          return r.width >= width;
+                          if (compact) {
+                            return r.width >= width && r.height >= height;
+                          } else {
+                            return r.width >= width;
+                          }
                         });
       } else if (preview.source) {
          return preview.source.url;
@@ -253,6 +294,9 @@ class Listing extends React.Component {
   }
 
   buildContent() {
+    if (!this.state.loaded) {
+      return null;
+    }
     var ctx = this;
     var props = this.props;
     var listing = props.listing;
@@ -413,7 +457,7 @@ class Listing extends React.Component {
   }
 
   expand(e) {
-    if(!this.state.compact) {
+    if (!this.state.compact) {
       if (e.target && e.target.tagName === 'A' && e.target.href) {
         return true;
       } else {
@@ -532,7 +576,7 @@ class Listing extends React.Component {
       var stalactite = <div className='stalactite'/>;
     }
 
-    if(!buildContent && compact) {
+    if (!buildContent && compact && this.state.loaded) {
       buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
     }
 
@@ -549,7 +593,7 @@ class Listing extends React.Component {
       );
     }
 
-    if(nsfwFlair || linkFlair) {
+    if (nsfwFlair || linkFlair) {
       var linkFlairHolder = <div className='link-flair-container vertical-spacing-top'>
                 { nsfwFlair }
                 { linkFlair }
