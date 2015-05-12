@@ -67,12 +67,12 @@ class CommentBox extends React.Component {
       <div className='row CommentBox'>
         <div className='col-xs-12'>
           <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
+            <input type='hidden' name='thingId' value={ this.props.thingId } />
+            { csrf }
             <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
             <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
                       className={ `form-control ${this.state.inputCssClass}` } name='text' ref='text'
                       onChange={ this.handleInputChange.bind(this) }></textarea>
-            <input type='hidden' name='thingId' value={ this.props.thingId } />
-            { csrf }
             <button type='submit' className='btn-post'>Post</button>
           </form>
         </div>
