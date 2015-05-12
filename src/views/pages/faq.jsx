@@ -105,7 +105,7 @@ class FAQPage extends React.Component {
                   everyone, but we do welcome criticism. Please feel free to
                   leave feedback at&nbsp;
                   <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a> after
-                  checking for duplicate issues..
+                  checking for duplicate issues.
                 </dd>
               </dl>
             </div>
