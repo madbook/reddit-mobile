@@ -112,7 +112,6 @@ function routes(app) {
     if (ctx.token) {
       props.user = ctx.user;
       props.token = ctx.token;
-      props.tokenExpires = ctx.tokenExpires;
       props.apiOptions.origin = app.getConfig('authAPIOrigin');
       props.apiOptions.headers['Authorization'] = `bearer ${props.token}`
     }

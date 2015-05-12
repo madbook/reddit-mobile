@@ -11,41 +11,22 @@ var oauthRoutes = function(app) {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: true,
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 3000,
   };
 
   if (app.getConfig('cookieDomain')) {
     cookieOptions.domain = app.getConfig('cookieDomain');
   }
 
-  var longCookieOptions = Object.assign({
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-  }, cookieOptions);
+  var OAuth2 = require('simple-oauth2')({
+    clientID: app.config.oauth.clientId,
+    clientSecret: app.config.oauth.secret,
+    site: app.config.nonAuthAPIOrigin,
+    authorizationPath: '/api/v1/authorize.compact',
+    tokenPath: '/api/v1/access_token',
+  });
 
-  function setTokenCookie(ctx, token) {
-    ctx.cookies.set('token', token.token.access_token, longCookieOptions);
-    ctx.cookies.set('tokenExpires', token.token.expires_at.toString(), longCookieOptions);
-
-    if (token.token.refresh_token) {
-      ctx.cookies.set('refreshToken', token.token.refresh_token, longCookieOptions);
-    }
-  }
-
-  app.setTokenCookie = setTokenCookie;
-
-  function hmac (key, data) {
-    var secret = new Buffer(key, 'base64').toString();
-    var algorithm = 'sha1';
-    var hash;
-    var hmac;
-
-    hmac = crypto.createHmac(algorithm, secret);
-    hmac.setEncoding('hex');
-    hmac.write(data);
-    hmac.end();
-
-    return hmac.read();
-  }
+  var redirect = app.config.origin + '/oauth2/token';
 
   function getToken (ctx, code, redirect) {
     return new Promise(function(resolve) {
@@ -62,38 +43,27 @@ var oauthRoutes = function(app) {
     });
   }
 
-  function refreshToken (ctx, rToken) {
-    return new Promise(function(resolve, reject) {
-      var token = OAuth2.accessToken.create({
-        'refresh_token': rToken,
-      });
+  function hmac (data) {
+    var key = app.getConfig('keys')[0];
+    var secret = new Buffer(key, 'base64').toString();
+    var algorithm = 'sha1';
+    var hash;
+    var hmac;
 
-      token.refresh(function(error, result) {
-        if (error) { return reject(error); }
-        return resolve(result);
-      });
-    });
+    hmac = crypto.createHmac(algorithm, secret);
+    hmac.setEncoding('hex');
+    hmac.write(data);
+    hmac.end();
+
+    return hmac.read();
   }
-
-  app.refreshToken = refreshToken;
-
-  var OAuth2 = require('simple-oauth2')({
-    clientID: app.config.oauth.clientId,
-    clientSecret: app.config.oauth.secret,
-    site: app.config.nonAuthAPIOrigin,
-    authorizationPath: '/api/v1/authorize.compact',
-    tokenPath: '/api/v1/access_token',
-  });
-
-  var redirect = app.config.origin + '/oauth2/token';
 
   router.get('/oauth2/login', function * () {
     var origin = app.getConfig('origin') + '/';
 
     // referer spelled wrong according to spec.
     var referer = this.get('Referer') || '/';
-    var key = app.getConfig('keys')[0];
-    var state = hmac(key, referer);
+    var state = hmac(referer);
     var redirectURI = referer;
 
     if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
@@ -101,7 +71,6 @@ var oauthRoutes = function(app) {
         redirect_uri: redirect,
         scope: 'history,identity,mysubreddits,read,subscribe,vote,submit,save',
         state: `${state}|${referer}`,
-        duration: 'permanent',
       });
 
       this.redirect(redirectURI);
@@ -120,20 +89,8 @@ var oauthRoutes = function(app) {
     this.redirect('/');
   });
 
-  router.get('/oauth2/refresh', function * () {
-    var token = this.cookies.get('token');
-    var rToken = this.cookies.get('refreshToken');
-
-    var result = yield refreshToken(this, rToken);
-    setTokenCookie(this, result);
-
-    this.body = {
-      token: result.token.access_token,
-      tokenExpires: result.token.expires_at.toString(),
-    };
-  });
-
   router.get('/oauth2/token', function * () {
+    var token;
     var code = this.query.code;
     var error = this.query.error;
     var ctx = this;
@@ -143,17 +100,16 @@ var oauthRoutes = function(app) {
     }
 
     var [state, referer] = this.query.state.split('|');
-    var key = app.getConfig('keys')[0];
 
-    if (!scmp(state, hmac(key, referer))) {
+    if (!scmp(state, hmac(referer))) {
       return this.redirect('/403');
     }
 
     var result = yield getToken(this, code, redirect);
 
-    var token = OAuth2.accessToken.create(result);
+    token = OAuth2.accessToken.create(result);
 
-    setTokenCookie(this, token);
+    this.cookies.set('token', token.token.access_token, cookieOptions);
 
     var apiOptions =  {
       origin: app.getConfig('authAPIOrigin'),
@@ -218,7 +174,7 @@ var oauthRoutes = function(app) {
 
           var token = OAuth2.accessToken.create(res.body);
 
-          setTokenCookie(this, token);
+          ctx.cookies.set('token', token.token.access_token, cookieOptions);
 
           var apiOptions = {
             origin: app.getConfig('authAPIOrigin'),
