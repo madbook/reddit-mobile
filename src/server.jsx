@@ -219,6 +219,7 @@ class Server {
           this.cookies.set('refreshToken');
           this.cookies.set('user');
           this.redirect('/');
+          return;
         }
       }
 
