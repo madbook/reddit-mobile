@@ -293,7 +293,7 @@ class SearchPage extends React.Component {
     options.query.sort = props.sort;
     options.query.t = props.time;
     options.query.type = ['sr','link'];
-    options.query.include_facets = 'on';
+    options.query.include_facets = 'off';
     options.useCache = useCache;
 
     // Initialized with data already.
