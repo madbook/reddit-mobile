@@ -6,11 +6,8 @@ import constants from '../../constants';
 import LoadingFactory from '../components/Loading';
 var Loading;
 
-import ListingFactory from '../components/Listing';
-var Listing;
-
-import CommentPreviewFactory from '../components/CommentPreview';
-var CommentPreview;
+import ListingListFactory from '../components/ListingList';
+var ListingList;
 
 import UserActivitySubnavFactory from '../components/UserActivitySubnav';
 var UserActivitySubnav;
@@ -106,39 +103,21 @@ class UserActivityPage extends React.Component {
         { loading }
 
         <div className={'container listing-container'} >
-          {
-            activities.map(function(thing, i) {
-              var index = (page * 25) + i;
+          <ListingList
+            listings={activities}
+            firstPage={page}
 
-              if (thing._type === 'Link') {
-                return (
-                  <Listing
-                    https={ props.https }
-                    httpsProxy={ props.httpsProxy }
-                    app={app}
-                    listing={thing}
-                    index={index}
-                    key={'page-listing-' + index}
-                    page={page}
-                    hideSubredditLabel={false}
-                    user={user}
-                    token={token}
-                    api={api}
-                    hideUser={ true }
-                    loginPath={ loginPath }
-                  />
-                );
-              } else if (thing._type === 'Comment') {
-                return (
-                  <CommentPreview
-                    comment={thing}
-                    key={'page-comment-' + index}
-                    page={page}
-                  />
-                );
-              }
-            })
-          }
+            https={ props.https }
+            httpsProxy={ props.httpsProxy }
+            app={app}
+            page={page}
+            hideSubredditLabel={false}
+            user={user}
+            token={token}
+            api={api}
+            hideUser={ true }
+            loginPath={ loginPath }
+          />
         </div>
 
         { tracking }
@@ -190,10 +169,9 @@ class UserActivityPage extends React.Component {
 }
 
 function UserActivityPageFactory(app) {
-  Listing = ListingFactory(app);
+  ListingList = ListingListFactory(app);
   Loading = LoadingFactory(app);
   UserActivitySubnav = UserActivitySubnavFactory(app);
-  CommentPreview = CommentPreviewFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
 
   return app.mutate('core/pages/userActivity', UserActivityPage);

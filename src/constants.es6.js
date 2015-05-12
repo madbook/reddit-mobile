@@ -6,4 +6,6 @@ export default {
   DROPDOWN_OPEN: 'dropdownOpen',
   COMPACT_TOGGLE: 'compactToggle',
   TOP_NAV_HEIGHT: 45,
+  RESIZE: 'resize',
+  SCROLL: 'scroll',
 };

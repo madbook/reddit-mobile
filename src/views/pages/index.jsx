@@ -9,8 +9,8 @@ var Loading;
 import TrackingPixelFactory from '../components/TrackingPixel';
 var TrackingPixel;
 
-import ListingFactory from '../components/Listing';
-var Listing;
+import ListingListFactory from '../components/ListingList';
+var ListingList;
 
 import TopSubnavFactory from '../components/TopSubnav';
 var TopSubnav;
@@ -154,7 +154,6 @@ class IndexPage extends React.Component {
           copmact={ compact }
           />);
     }
-
     return (
       <div>
         { loading }
@@ -170,34 +169,22 @@ class IndexPage extends React.Component {
         />
 
         <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
-          {
-            listings.map(function(listing, i) {
-              var index = (page * 25) + i;
-
-              if (!listing.hidden) {
-                return (
-                  <Listing
-                    https={ props.https }
-                    httpsProxy={ props.httpsProxy }
-                    apiOptions={ apiOptions }
-                    app={app}
-                    listing={listing}
-                    index={index}
-                    key={'page-listing-' + index}
-                    page={ page }
-                    hideSubredditLabel={ hideSubredditLabel }
-                    user={user}
-                    token={token}
-                    api={api}
-                    loginPath={loginPath}
-                    compact={compact}
-                    subredditTitle={subreddit}
-                  />
-                );
-              }
-            })
-          }
-
+          <ListingList
+            listings={listings}
+            firstPage={page}
+            https={ props.https }
+            httpsProxy={ props.httpsProxy }
+            apiOptions={ apiOptions }
+            app={app}
+            page={ page }
+            hideSubredditLabel={ hideSubredditLabel }
+            user={user}
+            token={token}
+            api={api}
+            loginPath={loginPath}
+            compact={compact}
+            subredditTitle={subreddit}
+          />
           <div className='row pageNav'>
             <div className='col-xs-12'>
               <p>
@@ -264,7 +251,7 @@ class IndexPage extends React.Component {
 }
 
 function IndexPageFactory(app) {
-  Listing = ListingFactory(app);
+  ListingList = ListingListFactory(app);
   Loading = LoadingFactory(app);
   TrackingPixel = TrackingPixelFactory(app);
   TopSubnav = TopSubnavFactory(app);

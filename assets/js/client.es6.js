@@ -194,6 +194,14 @@ function initialize(bindLinks) {
     app.on(constants.COMPACT_TOGGLE, function(compact) {
       app.setState('compact', compact);
     });
+
+    window.addEventListener('scroll', _.throttle(function() {
+        app.emit(constants.SCROLL);
+      }.bind(app), 100));
+
+    window.addEventListener('resize', _.throttle(function() {
+        app.emit(constants.RESIZE);
+      }.bind(app), 100));
   });
 }
 
