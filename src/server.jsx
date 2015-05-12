@@ -216,6 +216,7 @@ class Server {
           app.setTokenCookie(this, token);
         } catch (e) {
           this.cookies.set('token');
+          this.cookies.set('refreshToken');
           this.cookies.set('user');
           this.redirect('/');
         }

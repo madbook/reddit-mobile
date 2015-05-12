@@ -112,6 +112,7 @@ var oauthRoutes = function(app) {
 
   router.get('/logout', function * () {
     this.cookies.set('token');
+    this.cookies.set('refreshToken');
     this.cookies.set('user');
     this.redirect('/');
   });
@@ -124,13 +125,20 @@ var oauthRoutes = function(app) {
     var token = this.cookies.get('token');
     var rToken = this.cookies.get('refreshToken');
 
-    var result = yield refreshToken(this, rToken);
-    setTokenCookie(this, result);
+    try {
+      var result = yield refreshToken(this, rToken);
+      setTokenCookie(this, result);
 
-    this.body = {
-      token: result.token.access_token,
-      tokenExpires: result.token.expires_at.toString(),
-    };
+      this.body = {
+        token: result.token.access_token,
+        tokenExpires: result.token.expires_at.toString(),
+      };
+    } catch (e) {
+      this.cookies.set('token');
+      this.cookies.set('refreshToken');
+      this.cookies.set('user');
+      this.redirect('/');
+    }
   });
 
   router.get('/oauth2/token', function * () {
