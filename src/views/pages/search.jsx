@@ -189,8 +189,8 @@ class SearchPage extends React.Component {
               subreddits.map(function (subreddit, idx) {
                 return (
                   <li className="subreddits-list-item" key={ `search-subreddit-${idx}` }>
-                    <a href={subreddit.url} title={subreddit.name} className="subreddit-link">
-                      <span className="subreddit-name">{subreddit.name} <strong>({subreddit.count})</strong></span>
+                    <a href={subreddit.url} title={subreddit.display_name} className="subreddit-link">
+                      <span className="subreddit-name">{subreddit.display_name} </span>
                     </a>
                   </li>
                 );
@@ -292,6 +292,7 @@ class SearchPage extends React.Component {
     options.query.subreddit = props.subredditName;
     options.query.sort = props.sort;
     options.query.t = props.time;
+    options.query.type = ['sr','link'];
     options.query.include_facets = 'on';
     options.useCache = useCache;
 
