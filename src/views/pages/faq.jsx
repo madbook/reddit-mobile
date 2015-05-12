@@ -33,14 +33,14 @@ class FAQPage extends React.Component {
                 <dt>When you say mobile devices, what do you mean?</dt>
                 <dd>
                   The interface should look good on phones (depending on the
-                  phone, with more or less fancy functionality.) It should look
+                  phone, with more or less fancy functionality). It should look
                   <em> okay</em> on tablets - which will get better as we progress.
                   It may or may not be decent on desktop.
                 </dd>
 
                 <dt>What works?</dt>
                 <dd>
-                  You should expect that:
+                  You should expect that the following features all work:
 
                   <ul>
                     <li>Homepage</li>
@@ -52,7 +52,7 @@ class FAQPage extends React.Component {
                     <li>Commenting</li>
                   </ul>
 
-                  All works. Posting, managing settings, and all the rest of
+                  Posting, managing settings, and all the rest of
                   the features will come soon.
                 </dd>
 
@@ -60,7 +60,7 @@ class FAQPage extends React.Component {
                 <dd>
                   It doesn't. The goal of mobile web is to, eventually, provide
                   all desktop functionality - from posting to mod tools to
-                  gilding - independent of AlienBlue, the AMA app, or anything
+                  gilding - independent of Alien Blue, the AMA app, or anything
                   else.
                 </dd>
 
@@ -69,9 +69,9 @@ class FAQPage extends React.Component {
                   rid of it or that mobile web isn't implementing it?
                 </dt>
                 <dd>
-                  Mobile web is being released to a public beta far before it's
+                  Mobile web is being released to a public beta far before
                   it can be called "ready". If it's missing a feature, it's
-                  coming, it just may be prioritized to happen later on.
+                  coming, it may just be prioritized to happen later on.
                 </dd>
 
                 <dt>
@@ -84,7 +84,7 @@ class FAQPage extends React.Component {
                   little messy. Our tech stack uses io.js, React, and the
                   reddit APIs (using oauth). Getting it up and running should
                   be a very simple process (install iojs, install dependencies,
-                  build, and run.)
+                  build, and run).
                 </dd>
 
                 <dt>
@@ -93,8 +93,8 @@ class FAQPage extends React.Component {
                 <dd>
                   Hopefully, most things that you can see are working at this
                   stage, but feel free to leave feedback at&nbsp;
-                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>&nbsp;
-                  after checking for duplicate issues.
+                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a> after
+                  checking for duplicate issues.
                 </dd>
 
                 <dt>
@@ -104,8 +104,8 @@ class FAQPage extends React.Component {
                   We're working on building a great interface. We can't please
                   everyone, but we do welcome criticism. Please feel free to
                   leave feedback at&nbsp;
-                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a>&nbsp;
-                  after checking for duplicate issues..
+                  <a href='https://reddit.com/r/mobileweb'>r/mobileweb</a> after
+                  checking for duplicate issues..
                 </dd>
               </dl>
             </div>
