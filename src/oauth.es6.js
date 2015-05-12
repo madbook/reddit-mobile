@@ -168,7 +168,7 @@ var oauthRoutes = function(app) {
 
     var user = yield app.api.users.get(options);
 
-    this.cookies.set('user', JSON.stringify(user.data), cookieOptions);
+    this.cookies.set('user', JSON.stringify(user.data), longCookieOptions);
 
     this.redirect(referer || '/');
   });
@@ -234,7 +234,7 @@ var oauthRoutes = function(app) {
           Object.assign(options.headers, app.config.apiHeaders || {});
 
           app.api.users.get(options).then(function(user) {
-            ctx.cookies.set('user', JSON.stringify(user.data), cookieOptions);
+            ctx.cookies.set('user', JSON.stringify(user.data), longCookieOptions);
             return resolve(200);
           }, function(e) {
             return resolve(500);
