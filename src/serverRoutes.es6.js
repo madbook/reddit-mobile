@@ -33,42 +33,41 @@ Allow: /
       name: 'reddit: the front page of the internet',
       icons: [
         {
-            src: `${app.config.assetPath}/favicon/64x64.png`,
-            sizes: '64x64',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/64x64.png`,
+          sizes: '64x64',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/76x76.png`,
-            sizes: '76x76',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/76x76.png`,
+          sizes: '76x76',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/120x120.png`,
-            sizes: '120x120',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/120x120.png`,
+          sizes: '120x120',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/128x128.png`,
-            sizes: '128x128',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/128x128.png`,
+          sizes: '128x128',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/152x152.png`,
-            sizes: '152x152',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/152x152.png`,
+          sizes: '152x152',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/180x180.png`,
-            sizes: '180x180',
-            type: 'image/png'
+          src: `${app.config.assetPath}/favicon/180x180.png`,
+          sizes: '180x180',
+          type: 'image/png'
         },
         {
-            src: `${app.config.assetPath}/favicon/192x192.png`,
-            sizes: '192x192',
-            type: 'image/png'
-        }
+          src: `${app.config.assetPath}/favicon/192x192.png`,
+          sizes: '192x192',
+          type: 'image/png'
+        },
       ],
-
       short_name: 'reddit',
       start_url: '/',
       scope: `${app.config.origin}`,
