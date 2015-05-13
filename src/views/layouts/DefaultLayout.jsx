@@ -52,10 +52,12 @@ class DefaultLayout extends React.Component {
           <title>{ this.props.title }</title>
           <link href={ baseCSS } rel='stylesheet' />
           <link href={ fancyCSS } rel='stylesheet' media='screen' />
+          <link rel="manifest" href="manifest.json" />
           { canonical }
 
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
           <meta name='theme-color' content='#336699' />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />
           { metaDescription }
 
