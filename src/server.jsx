@@ -141,7 +141,7 @@ class Server {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       }
 
-      if (this.cookies.get('user') || this.cookies.get('token')) {
+      if (this.cookies.get('token')) {
         this.set('Cache-control', 'no-cache');
       }
 
@@ -174,23 +174,18 @@ class Server {
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'];
 
-      var user = this.cookies.get('user');
       this.token = this.cookies.get('token');
       this.tokenExpires = this.cookies.get('tokenExpires');
 
       this.compact = compact;
 
-      if (user) {
-        user = JSON.parse(user);
-      }
-
-      this.user = user;
-
       this.renderSynchronous = true;
       this.useCache = false;
 
-      this.loid = this.cookies.get('loid');
-      this.loidcreated = this.cookies.get('loidcreated');
+      if (!this.token) {
+        this.loid = this.cookies.get('loid');
+        this.loidcreated = this.cookies.get('loidcreated');
+      }
 
       yield next;
     }
@@ -218,7 +213,6 @@ class Server {
           this.cookies.set('tokenExpires');
           this.cookies.set('token');
           this.cookies.set('refreshToken');
-          this.cookies.set('user');
           this.redirect('/');
           return;
         }

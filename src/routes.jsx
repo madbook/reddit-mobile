@@ -70,6 +70,107 @@ function routes(app) {
   BodyLayout = BodyLayoutFactory(app);
   TextSubNav = TextSubNavFactory(app);
 
+  function loadUserSubscriptions (app, ctx, token) {
+    if (token) {
+      if (app.getState && app.getState('subscriptions')) {
+        return new Promise(function(resolve) {
+          resolve(app.getState('subscriptions'));
+        });
+      } else {
+        return new Promise(function(resolve, reject) {
+          var apiOptions =  {
+            origin: app.getConfig('authAPIOrigin'),
+            headers: {
+              'Authorization': `bearer ${token}`,
+              'user-agent': ctx.headers['user-agent'],
+            }
+          };
+
+          var options = app.api.buildOptions(apiOptions);
+          options.query.sort = 'mine/subscriber';
+          options.query.sr_detail = true;
+          options.query.feature = 'mobile_settings';
+
+          try {
+            app.api.subreddits.get(options).then(function(subreddits) {
+              resolve(subreddits.data);
+            }, function(error) {
+              reject(error);
+            });
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+    }
+  }
+
+  function loadUserData (app, ctx, token) {
+    if (token) {
+      if (app.getState && app.getState('user')) {
+        return new Promise(function(resolve) {
+          resolve(app.getState('user'));
+        });
+      } else {
+        return new Promise(function(resolve, reject) {
+          var apiOptions =  {
+            origin: app.getConfig('authAPIOrigin'),
+            headers: {
+              'Authorization': `bearer ${token}`,
+              'user-agent': ctx.headers['user-agent'],
+            }
+          };
+
+          var options = app.api.buildOptions(apiOptions);
+          options.user = 'me';
+
+          try {
+            app.api.users.get(options).then(function(user) {
+              resolve(user.data);
+            }, function(error) {
+              reject(error);
+            });
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+    }
+  }
+
+  function populateData(app, ctx, token, promises=[]) {
+    if (token) {
+      promises = promises.concat([
+        loadUserData(app, ctx, token),
+        loadUserSubscriptions(app, ctx, token),
+      ]);
+    }
+
+    return new Promise(function(resolve, reject) {
+      q.allSettled(promises).then(function(results) {
+        var data = [];
+
+        results.forEach(function(result) {
+          if (result.state === 'fulfilled') {
+            data.push(result.value);
+          } else {
+            reject(result.reason);
+          }
+        });
+
+        resolve(data);
+      }, function(error) {
+        reject(error);
+      });
+    });
+  }
+
+  function noop() {
+    return new Promise(function(resolve) {
+      resolve(undefined);
+    });
+  }
+
   // Build all the standard properties used to render layouts. This may move
   // higher up (into reddit-mobile) at some point.
   function buildProps(ctx, props) {
@@ -110,7 +211,6 @@ function routes(app) {
     props.loid = ctx.loid;
 
     if (ctx.token) {
-      props.user = ctx.user;
       props.token = ctx.token;
       props.tokenExpires = ctx.tokenExpires;
       props.apiOptions.origin = app.getConfig('authAPIOrigin');
@@ -157,21 +257,30 @@ function routes(app) {
       props.metaDescription = `r/${ctx.params.subreddit} at reddit.com`;
     }
 
-
-    var data = yield IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
-
-    props.data = data;
+    var promises = [
+      IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
 
     if (props.subredditName &&
       props.subredditName.indexOf('+') === -1 &&
       props.subredditName !== 'all') {
 
-      var subredditData = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
+      promises.push(
+        SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false)
+      );
 
-      props.subredditId = ((subredditData || {}).data || {}).name;
-      props.userIsSubscribed =  ((subredditData || {}).data || {}).user_is_subscriber;
+    } else {
+      promises.push(noop());
     }
 
+    var [data, subredditData, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.data = data;
+
+    props.subredditId = ((subredditData || {}).data || {}).name;
+    props.userIsSubscribed =  ((subredditData || {}).data || {}).user_is_subscriber;
+
+    props.user = user;
+    props.subscriptions = subscriptions;
 
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
@@ -203,7 +312,14 @@ function routes(app) {
       subredditName: ctx.params.subreddit,
     });
 
-    var data = yield SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false);
+    var promises = [
+      SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.data = data;
+    props.user = user;
+    props.subscriptions = subscriptions;
 
     Object.assign(props, {
       subredditId: ((data || {}).data || {}).name,
@@ -244,11 +360,18 @@ function routes(app) {
     });
 
     var data = {};
+    var promises = [];
 
     if (props.query) {
-      data = yield SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
-      props.data = data;
+      promises.push(
+        SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache)
+      );
     }
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.data = data;
+    props.user = user;
+    props.subscriptions = subscriptions;
 
     try {
       var key = 'search-results'; // <-- don't make it dynamic if you want input element doesn't get re-rendered
@@ -279,8 +402,14 @@ function routes(app) {
       listingId: ctx.params.listingId,
     });
 
-    var data = yield ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    var promises = [
+      ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
     props.data = data;
+    props.user = user;
+    props.subscriptions = subscriptions;
 
     if (data && data.data) {
       let listing = data.data.listing;
@@ -320,8 +449,14 @@ function routes(app) {
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
     });
 
-    var data = yield UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    var promises = [
+      UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
     props.data = data;
+    props.user = user;
+    props.subscriptions = subscriptions;
 
     var key = `user-profile-${ctx.params.user}`;
 
@@ -353,10 +488,17 @@ function routes(app) {
       userName: ctx.params.user,
     });
 
-    var data = yield UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    var promises = [
+      UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.data = data;
 
     Object.assign(props, {
       data: data,
+      user: user,
+      subscriptions: subscriptions,
       title: `about u/${ctx.params.user}`,
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
     });
@@ -399,10 +541,16 @@ function routes(app) {
       sort: sort,
     });
 
-    var data = yield UserActivityPage.populateData(props.api, props, this.renderSynchronous, this.useCache);
+    var promises = [
+      UserActivityPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
 
     Object.assign(props, {
       data: data,
+      user: user,
+      subscriptions: subscriptions,
       title: `about u/${ctx.params.user}`,
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
     });

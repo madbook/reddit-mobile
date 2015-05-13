@@ -114,7 +114,6 @@ var oauthRoutes = function(app) {
     this.cookies.set('token');
     this.cookies.set('tokenExpires');
     this.cookies.set('refreshToken');
-    this.cookies.set('user');
     this.redirect('/');
   });
 
@@ -125,6 +124,11 @@ var oauthRoutes = function(app) {
   router.get('/oauth2/refresh', function * () {
     var token = this.cookies.get('token');
     var rToken = this.cookies.get('refreshToken');
+
+    if (!this.cookies.get('token')) {
+      this.body = undefined;
+      return;
+    }
 
     try {
       var result = yield refreshToken(this, rToken);
@@ -138,8 +142,6 @@ var oauthRoutes = function(app) {
       this.cookies.set('tokenExpires');
       this.cookies.set('token');
       this.cookies.set('refreshToken');
-      this.cookies.set('user');
-      this.redirect('/');
     }
   });
 
@@ -164,21 +166,6 @@ var oauthRoutes = function(app) {
     var token = OAuth2.accessToken.create(result);
 
     setTokenCookie(this, token);
-
-    var apiOptions =  {
-      origin: app.getConfig('authAPIOrigin'),
-      headers: {
-        'Authorization': `bearer ${token.token.access_token}`,
-        'user-agent': ctx.headers['user-agent'],
-      }
-    };
-
-    var options = app.api.buildOptions(apiOptions);
-    options.user = 'me';
-
-    var user = yield app.api.users.get(options);
-
-    this.cookies.set('user', JSON.stringify(user.data), longCookieOptions);
 
     this.redirect(referer || '/');
   });
@@ -229,26 +216,7 @@ var oauthRoutes = function(app) {
           var token = OAuth2.accessToken.create(res.body);
 
           setTokenCookie(ctx, token);
-
-          var apiOptions = {
-            origin: app.getConfig('authAPIOrigin'),
-            headers: {
-              'Authorization': `bearer ${token.token.access_token}`,
-              'user-agent': ctx.headers['user-agent'],
-            }
-          };
-
-          var options = app.api.buildOptions(apiOptions);
-          options.user = 'me';
-
-          Object.assign(options.headers, app.config.apiHeaders || {});
-
-          app.api.users.get(options).then(function(user) {
-            ctx.cookies.set('user', JSON.stringify(user.data), longCookieOptions);
-            return resolve(200);
-          }, function(e) {
-            return resolve(500);
-          });
+          resolve(200);
         });
     });
 
