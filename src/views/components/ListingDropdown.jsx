@@ -39,6 +39,8 @@ class ListingDropdown extends React.Component {
     }
 
     this._onVote = this._onVote.bind(this);
+    this._onUpvoteClick = this._onUpvoteClick.bind(this);
+    this._onDownvoteClick = this._onDownvoteClick.bind(this);
   }
 
   render() {
