@@ -205,6 +205,9 @@ class TopNav extends React.Component {
             });
             props.app.render('/400', false);
           }
+
+          // Reset subscriptions so they are loaded next request
+          props.app.setState('subscriptions', undefined);
         }.bind(this));
     }
   }

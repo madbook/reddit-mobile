@@ -52,7 +52,7 @@ class SideNav extends React.Component {
 
     var twirly = this.state.twirly;
     var isAbout = twirly === 'about';
-    var isCommunities = twirly === 'communities';
+    var isSubreddits = twirly === 'subreddits';
 
     if (user) {
       loginLink = (
@@ -96,41 +96,35 @@ class SideNav extends React.Component {
       );
     }
 
-    //TODO: remove backup fake community object
-    var communities = this.props.communities || [
-        {url: 'spacedicks', title: 'Space Dicks', icon:'https://a.thumbs.redditmedia.com/mtwnduVr0DnrK1o8rpTPi6waLWuPimj_8ntK8i5t890.png'},
-        {url: 'funny', title: 'Funny', icon:''},
-        {url: 'gifs', title: 'Animated Gifs', icon:''},
-        {url: 'cats', title: 'Cats', icon:''},
-      ];
+    var subreddits = this.props.subscriptions || [];
 
-      var communityLinks = (
-        <li className={'SideNav-dropdown' + (isCommunities ? ' opened' : '')}>
-          <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'communities')}>
-            <TwirlyIcon altered={isCommunities}/>
-            <span className='SideNav-text'>My Communities</span>
-          </MobileButton>
-          <ul className='SideNav-ul list-unstyled'>
-            {
-              communities.map((d) => {
-                if(d.icon) {
-                  var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
-                } else {
-                  icon = <SnooIcon/>;
-                }
-                return (
-                  <li key={`SideNav-li-${d.url}`}>
-                    <MobileButton className='SideNav-button' href={'/r/' + d.url + '/'}>
-                      {icon}
-                      <span className='SideNav-text'>{d.title}</span>
-                    </MobileButton>
-                  </li>
-                );
-              })
-            }
-          </ul>
-        </li>
-      );
+    var subredditLinks = (
+      <li className={'SideNav-dropdown' + (isSubreddits ? ' opened' : '')}>
+        <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'subreddits')}>
+          <TwirlyIcon altered={isSubreddits}/>
+          <span className='SideNav-text'>My Subreddits</span>
+        </MobileButton>
+        <ul className='SideNav-ul list-unstyled'>
+          {
+            subreddits.map((d) => {
+              if(d.icon) {
+                var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
+              } else {
+                icon = <SnooIcon/>;
+              }
+              return (
+                <li key={`SideNav-li-${d.url}`}>
+                  <MobileButton className='SideNav-button' href={ d.url }>
+                    {icon}
+                    <span className='SideNav-text'>{d.display_name}</span>
+                  </MobileButton>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </li>
+    );
 
     return (
       <nav className={'SideNav tween shadow' + (this.state.opened?' opened':'')}>
@@ -144,7 +138,7 @@ class SideNav extends React.Component {
               <span className='SideNav-text'>Switch to { compact ? 'list' : 'compact' } view</span>
             </MobileButton>
           </li>
-          { communityLinks }
+          { subredditLinks }
           <li className={'SideNav-dropdown' + (isAbout ? ' opened' : '')}>
             <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'about')}>
               <TwirlyIcon altered={isAbout}/>

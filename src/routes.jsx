@@ -71,37 +71,53 @@ function routes(app) {
   TextSubNav = TextSubNavFactory(app);
 
   function loadUserSubscriptions (app, ctx, token) {
-    if (token) {
-      if (app.getState && app.getState('subscriptions')) {
-        return new Promise(function(resolve) {
-          resolve(app.getState('subscriptions'));
-        });
-      } else {
-        return new Promise(function(resolve, reject) {
+    if (app.getState && app.getState('subscriptions')) {
+      return new Promise(function(resolve) {
+        resolve(app.getState('subscriptions'));
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        var sort = 'default';
+
+        if (token) {
           var apiOptions =  {
             origin: app.getConfig('authAPIOrigin'),
             headers: {
               'Authorization': `bearer ${token}`,
-              'user-agent': ctx.headers['user-agent'],
             }
           };
 
-          var options = app.api.buildOptions(apiOptions);
-          options.query.sort = 'mine/subscriber';
-          options.query.sr_detail = true;
-          options.query.feature = 'mobile_settings';
+          sort = 'mine/subscriber';
+        } else {
+          var apiOptions =  {
+            origin: app.getConfig('nonAuthAPIOrigin'),
+          };
+        }
 
-          try {
-            app.api.subreddits.get(options).then(function(subreddits) {
+        var options = app.api.buildOptions(apiOptions);
+
+        options.headers['user-agent'] = ctx.headers['user-agent'];
+
+        options.query.sort = sort;
+        options.query.sr_detail = true;
+        options.query.feature = 'mobile_settings';
+
+        try {
+          app.api.subreddits.get(options).then(function(subreddits) {
+            if (subreddits.data.length > 0) {
               resolve(subreddits.data);
-            }, function(error) {
-              reject(error);
-            });
-          } catch (e) {
-            reject(e);
-          }
-        });
-      }
+            } else {
+              loadUserSubscriptions(app, ctx).then(function(data) {
+                resolve(data);
+              });
+            }
+          }, function(error) {
+            reject(error);
+          });
+        } catch (e) {
+          reject(e);
+        }
+      });
     }
   }
 
@@ -135,16 +151,14 @@ function routes(app) {
           }
         });
       }
+    } else {
+      return noop();
     }
   }
 
   function populateData(app, ctx, token, promises=[]) {
-    if (token) {
-      promises = promises.concat([
-        loadUserData(app, ctx, token),
-        loadUserSubscriptions(app, ctx, token),
-      ]);
-    }
+    promises.push(loadUserData(app, ctx, token));
+    promises.push(loadUserSubscriptions(app, ctx, token));
 
     return new Promise(function(resolve, reject) {
       q.allSettled(promises).then(function(results) {
