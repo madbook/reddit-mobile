@@ -52,6 +52,8 @@ function parseList (list) {
 
 config.apiHeaders = parseObject(process.env.API_HEADERS);
 config.apiPassThroughHeaders = parseList(process.env.API_PASS_THROUGH_HEADERS);
+config.statsDomain = process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/';
+config.actionNameSecret = process.env.ACTION_NAME_SECRET;
 
 Object.assign(config.manifest, jsManifest, cssManifest);
 

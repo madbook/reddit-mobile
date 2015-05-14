@@ -1,3 +1,6 @@
+import superagent from 'superagent';
+import crypto from 'crypto'
+
 // set up server-only routes
 var serverRoutes = function(app) {
   var router = app.router;
@@ -74,6 +77,38 @@ Allow: /
       lang: 'en-US',
       display: 'standalone',
     };
+  });
+
+  router.post('/timings', function * () {
+    var statsDomain = app.config.statsDomain;
+    var timings = this.request.body.rum;
+
+    if(!app.config.actionNameSecret) {
+      console.log('returning early, no secret');
+      return;
+    }
+
+    var secret = (new Buffer(app.config.actionNameSecret, 'base64')).toString();
+    var algorithm = 'sha1';
+    var hash;
+    var hmac;
+
+    hmac = crypto.createHmac(algorithm, secret);
+    hmac.setEncoding('hex');
+    hmac.write(timings.actionName);
+    hmac.end();
+
+    hash = hmac.read();
+
+    timings.verification = hash;
+
+    superagent
+        .post(statsDomain)
+        .type('json')
+        .send({ rum: timings })
+        .end((err, res) => {
+          console.log(err, res);
+        });
   });
 }
 

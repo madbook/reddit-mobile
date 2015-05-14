@@ -227,10 +227,14 @@ function routes(app) {
       }
     }
 
+    if (ctx.route.name) {
+      props.actionName = ctx.route.name;
+    }
+
     return props;
   }
 
-  app.router.get('/health', function * () {
+  app.router.get('health', '/health', function * () {
     this.body = 'OK';
   });
 
@@ -299,12 +303,12 @@ function routes(app) {
   }
 
   // The homepage route.
-  app.router.get('/', indexPage);
+  app.router.get('index', '/', indexPage);
 
-  app.router.get('/r/:subreddit', indexPage);
-  app.router.get('/u/:user/m/:multi', indexPage);
+  app.router.get('index.subreddit', '/r/:subreddit', indexPage);
+  app.router.get('index.multi', '/u/:user/m/:multi', indexPage);
 
-  app.router.get('/r/:subreddit/about', function *(next) {
+  app.router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
     var page;
     var ctx = this;
 
@@ -389,8 +393,8 @@ function routes(app) {
     this.props = props;
   }
 
-  app.router.get('/search', searchPage);
-  app.router.get('/r/:subreddit/search', searchPage);
+  app.router.get('search.index', '/search', searchPage);
+  app.router.get('search.subreddit', '/r/:subreddit/search', searchPage);
 
   function * commentsPage(next) {
     var page;
@@ -434,12 +438,12 @@ function routes(app) {
     this.props = props;
   }
 
-  app.router.get('/comments/:listingId', commentsPage);
-  app.router.get('/comments/:listingId/:listingTitle', commentsPage);
-  app.router.get('/r/:subreddit/comments/:listingId', commentsPage);
-  app.router.get('/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
+  app.router.get('comments.listingid', '/comments/:listingId', commentsPage);
+  app.router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
+  app.router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
+  app.router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
 
-  app.router.get('/u/:user', function *(next) {
+  app.router.get('user.profile', '/u/:user', function *(next) {
     var page;
     var ctx = this;
 
@@ -480,7 +484,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/u/:user/gild', function *(next) {
+  app.router.get('user.gild', '/u/:user/gild', function *(next) {
     var page;
     var ctx = this;
 
@@ -525,7 +529,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/u/:user/activity', function *(next) {
+  app.router.get('user.activity', '/u/:user/activity', function *(next) {
     var page;
     var sort = this.query.sort || 'hot';
     var activity = this.query.activity || 'comments';
@@ -576,7 +580,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/faq', function * () {
+  app.router.get('static.faq', '/faq', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -598,7 +602,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/login', function * () {
+  app.router.get('user.login', '/login', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -620,7 +624,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('/register', function * () {
+  app.router.get('user.register', '/register', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -649,7 +653,7 @@ function routes(app) {
     'default': 'Oops, looks like something went wrong.',
   };
 
-  app.router.get(/\/([45]\d\d)/, function * () {
+  app.router.get('static.error', /\/([45]\d\d)/, function * () {
     var ctx = this;
     var statusCode = ctx.captures[0];
     var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];

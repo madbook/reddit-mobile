@@ -21,6 +21,8 @@ import constants from '../../src/constants';
 import routes from '../../src/routes';
 import TweenLite from 'gsap';
 
+import getTimes from '../../src/lib/timing';
+
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
   $.getScript(window.bootstrap.assetPath + '/js/es5-shims.js', function(){
@@ -202,6 +204,26 @@ function initialize(bindLinks) {
     window.addEventListener('resize', _.throttle(function() {
         app.emit(constants.RESIZE);
       }.bind(app), 100));
+
+
+    // Send the timings during the next cycle.
+    setTimeout(function() {
+      if (window.bootstrap.actionName) {
+        var timings = getTimes();
+        timings.actionName = 'm.server.' + window.bootstrap.actionName;
+
+        $.ajax({
+          type: 'POST',
+          url: '/timings',
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({
+            rum: timings,
+            _csrf: $('#csrf-token-meta-tag').attr('content'),
+          }),
+        });
+      }
+    }, 1);
   });
 }
 
