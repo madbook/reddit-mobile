@@ -105,10 +105,7 @@ Allow: /
     superagent
         .post(statsDomain)
         .type('json')
-        .send({ rum: timings })
-        .end((err, res) => {
-          console.log(err, res);
-        });
+        .send({ rum: timings });
   });
 }
 
