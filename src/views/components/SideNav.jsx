@@ -30,7 +30,6 @@ class SideNav extends React.Component {
     this._toggle = this._toggle.bind(this);
     this._close = this._close.bind(this);
     this._onViewClick = this._onViewClick.bind(this);
-    this._onScroll = this._onScroll.bind(this);
   }
 
   componentDidMount() {
@@ -132,6 +131,7 @@ class SideNav extends React.Component {
         <ul className='list-unstyled'>
           { loginLink }
           { logoutLink }
+          { inboxLink }
           <li>
             <MobileButton className='SideNav-button' onClick={this._onViewClick}>
               <SettingsIcon/>
@@ -238,17 +238,7 @@ class SideNav extends React.Component {
 
   _toggle() {
     this.props.app.emit(constants.SIDE_NAV_TOGGLE, !this.state.opened);
-    if(!this.state.opened) {
-      this._top = document.body.scrollTop;
-      window.addEventListener('scroll', this._onScroll);
-    } else {
-      window.removeEventListener('scroll', this._onScroll);
-    }
     this.setState({opened: !this.state.opened});
-  }
-
-  _onScroll(evt) {
-    document.body.scrollTop = this._top;
   }
 
   _close() {
