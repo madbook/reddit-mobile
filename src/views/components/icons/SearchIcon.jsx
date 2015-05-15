@@ -26,7 +26,7 @@ class SearchIcon extends React.Component {
           </clipPath>
         </defs>
         <circle className='SVG-stroke' fill='none' strokeWidth='2.3' cx={_EYE_CENTER} cy={_EYE_CENTER} r='5.7'/>
-        <g ref='maskee' clipPath={'url(#' + this._maskID + ')'}>
+        <g ref='maskee' clip-path={'url(#' + this._maskID + ')'}>
           <circle className='SVG-stroke' fill='none' strokeWidth='1' cx={_EYE_CENTER} cy={_EYE_CENTER} r='3.5'/>
           <circle ref='pupil' className='SVG-fill' cx={_EYE_CENTER} cy={_EYE_CENTER} r='1.2'/>
         </g>

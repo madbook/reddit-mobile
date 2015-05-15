@@ -11,7 +11,7 @@ import attachFastClick from 'fastclick';
 import {ClientReactApp} from 'horse-react';
 import mixin from '../../src/app-mixin';
 
-var App = mixin(ClientReactApp);
+ClientReactApp = mixin(ClientReactApp);
 
 import config from '../../src/config';
 import plugins from '../../src/plugins';
@@ -85,7 +85,7 @@ function initialize(bindLinks) {
       }
     });
 
-    var app = new App(config);
+    var app = new ClientReactApp(config);
 
     if (app.getState('token')) {
       var now = new Date();
