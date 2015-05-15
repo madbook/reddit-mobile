@@ -282,7 +282,7 @@ class Listing extends React.Component {
       }
     }
 
-    if (this.state.compact && listing.thumbnail) {
+    if (this.state.compact && listing.thumbnail && listing.thumbnail.indexOf('http') === 0) {
       return listing.thumbnail;
     }
 
