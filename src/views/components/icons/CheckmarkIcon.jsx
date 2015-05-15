@@ -18,7 +18,7 @@ class CheckmarkIcon extends React.Component {
             <rect ref='mask' x='0' y='0' width='0' height={SVG.ICON_SIZE} fill='#000'/>
           </clipPath>
         </defs>
-        <polyline ref='line' fill='none' stroke='#52AA19' strokeWidth='2' strokeMiterlimit='10' points='2.575379,10 7.525126,14.949747 17.424622,5.050252' clip-path={'url(#'+this._maskID+')'}/>
+        <polyline ref='line' fill='none' stroke='#52AA19' strokeWidth='2' strokeMiterlimit='10' points='2.575379,10 7.525126,14.949747 17.424622,5.050252' clipPath={'url(#'+this._maskID+')'}/>
       </SVG>
     );
   }
