@@ -12,7 +12,6 @@ class DefaultLayout extends React.Component {
     var assetPath = this.props.assetPath;
 
     var baseCSS = assetPath + '/css/';
-    var fancyCSS = assetPath + '/css/';
     var clientJS = assetPath + '/js/';
 
     var liveReload;
@@ -22,11 +21,9 @@ class DefaultLayout extends React.Component {
 
     if (this.props.minifyAssets) {
       baseCSS += this.props.manifest['base.css'];
-      fancyCSS += this.props.manifest['fancy.css'];
       clientJS += this.props.manifest['client.min.js'];
     } else {
       baseCSS += 'base.css';
-      fancyCSS += 'fancy.css';
       clientJS += 'client.js';
     }
 
@@ -51,7 +48,6 @@ class DefaultLayout extends React.Component {
         <head>
           <title>{ this.props.title }</title>
           <link href={ baseCSS } rel='stylesheet' />
-          <link href={ fancyCSS } rel='stylesheet' media='screen' />
           <link rel='manifest' href='manifest.json' />
           { canonical }
 
