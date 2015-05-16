@@ -23,23 +23,33 @@ import TweenLite from 'gsap';
 
 import getTimes from '../../src/lib/timing';
 
+function loadShim() {
+  var head = document.head || document.getElementsByTagName('head')[0];
+
+  var shimScript = document.createElement('script');
+  shimScript.type = 'text\/javascript';
+  shimScript.onload = function() {
+    initialize(false);
+  }
+
+  head.appendChild(shimScript, document.currentScript);
+
+  shimScript.src = global.bootstrap.assetPath + '/js/es5-shims.js';
+}
+
+function onLoad(fn) {
+  if (document.readyState !== 'complete' && document.readyState !== 'interactive') {
+    window.addEventListener('DOMContentLoaded', fn);
+  } else {
+    fn();
+  }
+}
+
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
-  window.addEventListener('load', function() {
-    var head = document.head || document.getElementsByTagName('head')[0];
-
-    var shimScript = document.createElement('script');
-    shimScript.type = 'text\/javascript';
-    shimScript.onload = function() {
-      initialize(false);
-    }
-
-    head.appendChild(shimScript, document.currentScript);
-
-    shimScript.src = global.bootstrap.assetPath + '/js/es5-shims.js';
-  }, 1);
+  onLoad(loadShim);
 } else {
-  window.addEventListener('DOMContentLoaded', function() {
+  onLoad(function() {
     initialize(true);
   });
 }
