@@ -70,6 +70,14 @@ function routes(app) {
   BodyLayout = BodyLayoutFactory(app);
   TextSubNav = TextSubNavFactory(app);
 
+  function formatSubreddit(s) {
+    return {
+      icon: s.icon,
+      display_name: s.display_name,
+      url: s.url,
+    }
+  }
+
   function loadUserSubscriptions (app, ctx, token) {
     if (app.getState && app.getState('subscriptions')) {
       return new Promise(function(resolve) {
@@ -105,7 +113,7 @@ function routes(app) {
         try {
           app.api.subreddits.get(options).then(function(subreddits) {
             if (subreddits.data.length > 0) {
-              resolve(subreddits.data);
+              resolve(subreddits.data.map(formatSubreddit));
             } else {
               loadUserSubscriptions(app, ctx).then(function(data) {
                 resolve(data);
