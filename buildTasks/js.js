@@ -38,7 +38,6 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
       debug: !prod,
       extensions: ['.js', '.es6.js', '.jsx'],
       ignore: [
-        'jquery',
         'q',
         'moment',
       ],
@@ -55,7 +54,6 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
       .require('moment')
       .require('q')
       .require('react')
-      .require('jquery')
       .require('reddit-text-js')
       .require('superagent');
 
@@ -63,7 +61,7 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
 
     bundler
       .transform(babelify.configure({
-        ignore: /.+node_modules\/(moment|q|react|jquery|reddit-text-js|superagent|gsap)\/.+/i,
+        ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|gsap)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: !prod,
       }), {
