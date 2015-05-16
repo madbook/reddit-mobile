@@ -4,6 +4,7 @@ import Utils from '../../lib/danehansen/utils/Utils';
 class MobileButton extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       hover: false,
       touch: false,
@@ -27,7 +28,7 @@ class MobileButton extends React.Component {
     var move = this.props.move;
     var href = this.props.href;
 
-    var props = Utils.duplicate(this.props);
+    var props = Object.assign({}, this.props);
     delete props.className;
     delete props.move;
     delete props.over;
