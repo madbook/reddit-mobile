@@ -19,7 +19,7 @@ class Logo extends React.Component {
 
   render() {
     return (
-      <SVG fill='#231f20' width={_WIDTH} height={SVG.ICON_SIZE} fallbackIcon='icon-logo'>
+      <SVG className='Logo SVG-icon' fill='#231f20' width={_WIDTH} fallbackIcon='icon-logo'>
         <defs>
           <clipPath id={this._maskID}>
             <polyline ref='mask' points={'0,0 ' + _WIDTH + ',0 ' + _WIDTH + ',' + SVG.ICON_SIZE + ' 0,' + SVG.ICON_SIZE}/>

@@ -12,7 +12,7 @@ class CheckmarkIcon extends React.Component {
 
   render() {
     return (
-      <SVG fallbackIcon={this.props.played ? 'icon-check' : null}>
+      <SVG className='SVG-icon CheckmarkIcon' fallbackIcon={this.props.played ? 'icon-check' : null}>
         <defs>
           <clipPath id={this._maskID}>
             <rect ref='mask' x='0' y='0' width='0' height={SVG.ICON_SIZE} fill='#000'/>

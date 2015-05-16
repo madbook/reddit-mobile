@@ -54,8 +54,7 @@ class MobileButton extends React.Component {
         props.onMouseMove = move;
       }
     }
-
-    props.className = this.props.className + (this.state.hover ? ' hover' : '');
+    props.className = 'MobileButton ' + this.props.className + (this.state.hover ? ' hover' : '');
 
     if (href) {
       return (

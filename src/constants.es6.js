@@ -8,4 +8,5 @@ export default {
   TOP_NAV_HEIGHT: 45,
   RESIZE: 'resize',
   SCROLL: 'scroll',
+  ICON_SHRUNK_SIZE: 16,
 };

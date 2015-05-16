@@ -13,7 +13,7 @@ class TwirlyIcon extends React.Component {
 
   render() {
     return (
-      <SVG className={'SVG-icon TwirlyIcon' + (this.props.altered ? ' altered' : '')} fallbackIcon={this.props.altered ? 'icon-twirly-circled' : 'icon-play-circled'}>
+      <SVG className={'SVG-icon TwirlyIcon' + (this.props.altered ? ' altered' : '')} fallbackIcon='icon-play-circled'>
         <circle className='SVG-fill' cx={SVG.ICON_SIZE / 2} cy={SVG.ICON_SIZE / 2} r={SVG.ICON_SIZE / 2}/>
         <polygon ref='all' className='SVG-fill-bg' points='7.5,15 15.000061,9.999939 7.5,4.999817 '/>
       </SVG>

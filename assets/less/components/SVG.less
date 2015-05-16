@@ -1,79 +1,94 @@
-.SVG-fill {
-  fill: @light-gray;
-
-  &.outline {
-    stroke: @light-gray;
-    stroke-width: 0.5;
-  }
-}
-
-.SVG-fill-bg {
-  fill: @white;
-
-  &.outline {
-    stroke: @white;
-    stroke-width: 0.5;
-  }
-}
-
-.SVG-stroke {
-  stroke: @light-gray;
-}
-
-.SVG-stroke-bg {
-  stroke: @white;
-}
-
-.SVG-icon {
-  height: @icon-size;
-  width: @icon-size;
-}
-
-button, a {
-  .SVG-fill {
-    .transition(fill 0.2s);
+//icons
+  .SVG-icon {
+    display: inline-block;
+    height: @icon-size;
+    width: @icon-size;
+    vertical-align: middle;
+    font-size: @icon-size;
+    text-align: center;
   }
 
-  .SVG-stroke {
-    .transition(stroke 0.2s);
-  }
-
-  &.hover {
     .SVG-fill {
-      fill: @gray;
+      fill: @light-gray;
+
+      &.outline {
+        stroke: @light-gray;
+        stroke-width: 0.5;
+      }
     }
+
+    .SVG-fill-bg {
+      fill: @white;
+
+      &.outline {
+        stroke: @white;
+        stroke-width: 0.5;
+      }
+    }
+
     .SVG-stroke {
-      stroke: @gray;
+      stroke: @light-gray;
+    }
+
+    .SVG-stroke-bg {
+      stroke: @white;
+    }
+
+//icons inside buttons
+  .MobileButton {
+    .SVG-fill {
+      .transition(fill 0.2s);
+    }
+
+    .SVG-stroke {
+      .transition(stroke 0.2s);
+    }
+
+    &.hover {
+      .SVG-fill {
+        fill: @gray;
+      }
+      .SVG-stroke {
+        stroke: @gray;
+      }
     }
   }
-}
 
-.DownvoteIcon.altered .SVG-fill {
-  fill: @periwinkle;
-}
-
-.UpvoteIcon.altered .SVG-fill {
-  fill: @orangered;
-}
-
-.GoldIcon.altered .SVG-fill {
-  fill: @gold;
-}
-
-.NSFWIcon {
-  .SVG-stroke-bg {
-    .transition(stroke 0.4s);
+//specific to certain icons
+  .Logo {
+    @size: 20px;
+    font-size: @size;
+    height: @size;
+    width: 55px;
+    color: @black;
   }
 
-  &.played .SVG-stroke-bg {
-    stroke: @orangered;
+  .DownvoteIcon.altered .SVG-fill {
+    fill: @periwinkle;
   }
-}
 
-.TwirlyIcon {
-  .transition(transform 0.2s);
-
-  &.altered {
-    .rotate(90deg);
+  .UpvoteIcon.altered .SVG-fill {
+    fill: @orangered;
   }
-}
+
+  .GoldIcon.altered .SVG-fill {
+    fill: @gold;
+  }
+
+  .NSFWIcon {
+    .SVG-stroke-bg {
+      .transition(stroke 0.4s);
+    }
+
+    &.played .SVG-stroke-bg {
+      stroke: @orangered;
+    }
+  }
+
+  .TwirlyIcon {
+    .transition(transform 0.2s);
+
+    &.altered {
+      .rotate(90deg);
+    }
+  }
