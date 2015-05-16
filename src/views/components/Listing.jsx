@@ -179,7 +179,7 @@ class Listing extends React.Component {
         return (
           <div className='ratio16x9'>
             <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-              <PlayIcon/>
+              <PlayIcon random={this.props.random}/>
             </div>
           </div>
         );
@@ -190,7 +190,7 @@ class Listing extends React.Component {
       return (
         <div className='ratio16x9'>
           <div className='ratio16x9-child' style={ {backgroundImage: 'url('+html5.poster+')'} }>
-            <PlayIcon/>
+            <PlayIcon random={this.props.random}/>
           </div>
         </div>
       );
@@ -205,7 +205,7 @@ class Listing extends React.Component {
         return (
           <div className='ratio16x9'>
             <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-              <PlayIcon/>
+              <PlayIcon random={this.props.random}/>
             </div>
           </div>
         );
@@ -247,6 +247,7 @@ class Listing extends React.Component {
     var width = this.state.compact ? 80 : this.state.windowWidth;
     var compact = this.state.compact;
     var height = this.state.tallestHeight;
+
     if (expanded && listing.url.match(imgMatch)) {
       return listing.url;
     }
@@ -613,7 +614,11 @@ class Listing extends React.Component {
                 </a>
               </div>
               <div className='col-xs-1'>
-                <ListingDropdown listing={listing} app={app}/>
+                <ListingDropdown
+                  listing={listing}
+                  app={app}
+                  random={this.props.random}
+                />
               </div>
             </div>
 
@@ -623,6 +628,7 @@ class Listing extends React.Component {
                 <li className='linkbar-item-no-seperator'>
                   <Vote
                     app={app}
+                    random={ this.props.random }
                     thing={ listing }
                     token={ this.props.token }
                     api={ this.props.api }

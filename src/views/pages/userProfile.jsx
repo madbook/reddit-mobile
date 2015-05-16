@@ -83,7 +83,13 @@ class UserProfilePage extends React.Component {
       <div className="user-page user-profile">
         { loading }
 
-        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+        <TopSubnav
+          app={ app }
+          random={ this.props.random }
+          user={ user }
+          hideSort={ true }
+          baseUrl={ this.props.url }
+          loginPath={ this.props.loginPath } />
 
         <div>
           { profile }

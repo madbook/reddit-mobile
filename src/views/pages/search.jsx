@@ -120,13 +120,14 @@ class SearchPage extends React.Component {
         subredditName: props.subredditName
       });
       props.app.pushState(null, null, url);
-      props.app.render(url, false);
+      props.app.render(url, false, props.app.modifyContext);
     }
   }
 
   render() {
     var state = this.state;
     var props = this.props;
+    var random = props.random;
 
     var app = props.app;
     var apiOptions = props.apiOptions;
@@ -208,12 +209,14 @@ class SearchPage extends React.Component {
           <h4 className="text-center">Posts</h4>
 
           <SearchSortSubnav
+            random={ random }
             app={ app }
             sort={ props.sort }
             time={ props.time }
             composeSortingUrl={ this._composeSortingUrl.bind(this) }
           />
           <ListingList
+            random={ random }
             listings={ listings}
             https={ props.https }
             httpsProxy={ props.httpsProxy }

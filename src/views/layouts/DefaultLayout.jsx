@@ -67,7 +67,7 @@ class DefaultLayout extends React.Component {
         </head>
         <body className='navbar-offcanvas-target'>
           <div id='app-container'>
-            { this.props.children }
+            !!CONTENT!!
           </div>
 
           <script src={ clientJS } async='true'></script>

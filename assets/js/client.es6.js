@@ -11,7 +11,7 @@ import mixin from '../../src/app-mixin';
 
 import superagent from 'superagent';
 
-ClientReactApp = mixin(ClientReactApp);
+var App = mixin(ClientReactApp);
 
 import config from '../../src/config';
 import plugins from '../../src/plugins';
@@ -22,6 +22,7 @@ import routes from '../../src/routes';
 import TweenLite from 'gsap';
 
 import getTimes from '../../src/lib/timing';
+import randomBySeed from '../../src/lib/randomBySeed';
 
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
@@ -61,6 +62,8 @@ function modifyContext (ctx) {
   ctx.user = this.getState('user');
   ctx.useCache = true;
   ctx.compact = this.getState('compact').toString() === 'true';
+
+  ctx.random = randomBySeed(window.bootstrap.seed);
 
   return ctx;
 }
@@ -126,7 +129,8 @@ function initialize(bindLinks) {
     }
   });
 
-  var app = new ClientReactApp(config);
+  config.seed = window.bootstrap.seed || Math.random();
+  var app = new App(config);
 
   if (app.getState('token')) {
     var now = new Date();
@@ -159,6 +163,7 @@ function initialize(bindLinks) {
   routes(app);
 
   modifyContext = modifyContext.bind(app);
+  app.modifyContext = modifyContext;
 
   var history = window.history || window.location.history;
   app.pushState = (data, title, url) => {

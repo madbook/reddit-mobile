@@ -76,6 +76,7 @@ class ListingList extends React.Component {
         if (listing._type === 'Comment') {
           return (
             <CommentPreview
+              random={props.random}
               comment={listing}
               key={'page-comment-' + index}
               page={page}

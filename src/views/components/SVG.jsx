@@ -49,7 +49,7 @@ class SVG extends React.Component {
   }
 }
 
-SVG.ENABLED = typeof document !== 'undefined'  && (!!document.createElementNS && !!document.createElementNS(_NS, 'svg').createSVGRect);
+SVG.ENABLED = typeof document !== 'undefined' && (!!document.createElementNS && !!document.createElementNS(_NS, 'svg').createSVGRect);
 SVG.ICON_SIZE = 20;
 
 SVG.perc = function(num) {

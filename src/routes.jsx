@@ -231,6 +231,8 @@ function routes(app) {
     props.app = app;
     props.api = app.api;
     props.loid = ctx.loid;
+    props.seed = ctx.seed;
+    props.random = ctx.random;
 
     if (ctx.token) {
       props.token = ctx.token;

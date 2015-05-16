@@ -26,6 +26,8 @@ import oauthRoutes from './oauth';
 import serverRoutes from './serverRoutes';
 import routes from './routes';
 
+import randomBySeed from './lib/randomBySeed'
+
 function randomString(len) {
   var id = [];
   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -45,6 +47,10 @@ function formatProps (props = {}) {
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
+    this.seed = Math.random();
+    config.seed = this.seed;
+    config.staticMarkup = true;
+
     var app = new App(config);
 
     app.config.renderTracking = true;
@@ -170,6 +176,10 @@ class Server {
       }
 
       this.showBetaBanner = !this.cookies.get('hideBetaBanner');
+
+      this.seed = app.config.seed;
+      this.random = randomBySeed(this.seed);
+      this.staticMarkup = true;
 
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'];

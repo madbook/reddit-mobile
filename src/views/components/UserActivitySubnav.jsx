@@ -22,7 +22,7 @@ class UserActivitySubnav extends React.Component {
     };
 
     this._onOpen = this._onOpen.bind(this);
-    this._id = Math.random();
+    this._id = props.random();
   }
 
   componentDidMount() {
@@ -110,15 +110,17 @@ class UserActivitySubnav extends React.Component {
       loginLink = <a className='TopSubnav-a' href={ this.props.loginPath } data-no-route='true'>Log in / Register</a>;
     }
 
+    var props = this.props;
+
     return (
       <div className='TopSubnav'>
-        <Dropdown app={ this.props.app } id={ this._id } button={ button } className='Dropdown-inline'>
+        <Dropdown app={ this.props.app } random={ this.props.random } id={ this._id } button={ button } className='Dropdown-inline'>
           {
             dropdownList.map((d) => {
               return (
                 <li className='Dropdown-li' key={`ua-subnav-${d.text}`}>
                   <a className='Dropdown-button' href={ this.buildUrl(baseUrl, d.activity, this.state.sort, this.state.page) }>
-                    <CheckmarkIcon played={ opened && activity === d.activity }/>
+                    <CheckmarkIcon played={ opened && activity === d.activity } random={ props.random }/>
                     <span className='Dropdown-text'>{ d.text }</span>
                   </a>
                 </li>
@@ -131,6 +133,7 @@ class UserActivitySubnav extends React.Component {
 
         <SortDropdown
           app={ this.props.app }
+          random={ this.props.random }
           sort={ this.state.sort }
           list={ sortList }
           baseUrl={ this.buildUrl(baseUrl, this.state.activity) }

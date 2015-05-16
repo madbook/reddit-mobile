@@ -114,7 +114,7 @@ class TopNav extends React.Component {
       var breadcrumbContents = subredditName;
     } else {
       breadcrumbLink = '/';
-      breadcrumbContents = <Logo/>;
+      breadcrumbContents = <Logo random={props.random}/>;
     }
 
     var subredditMenu = null;
@@ -122,23 +122,23 @@ class TopNav extends React.Component {
         props.subredditName.indexOf('+') === -1 &&
         props.subredditName !== 'all') {
       subredditMenu = (
-        <SeashellsDropdown app={ props.app } right={ true }>
+        <SeashellsDropdown app={ props.app } random={ props.random } right={ true }>
           <li className='Dropdown-li'>
             <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
-              <InfoIcon/>
+              <InfoIcon random={ props.random }/>
               <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
             </MobileButton>
           </li>
           <li className='Dropdown-li'>
             <MobileButton className='Dropdown-button' href={ `${props.reddit}/r/${props.subredditName}/wiki` }
                           data-no-route='true'>
-              <TextIcon/>
+              <TextIcon random={ props.random }/>
               <span className='Dropdown-text'>Wiki</span>
             </MobileButton>
           </li>
           <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
             <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
-              <SaveIcon altered={this.state.userIsSubscribed}/>
+              <SaveIcon altered={this.state.userIsSubscribed} random={ props.random }/>
               <span className='Dropdown-text'>
                 { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
               </span>
@@ -152,7 +152,7 @@ class TopNav extends React.Component {
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
-            <SnooIcon/>
+            <SnooIcon random={props.random}/>
           </MobileButton>
           <h1 className='TopNav-text TopNav-padding'>
             <span className='TopNav-headline'>
@@ -165,10 +165,10 @@ class TopNav extends React.Component {
         <div className='pull-right TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
-            <SearchIcon/>
+            <SearchIcon random={props.random}/>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-hamburger' onClick={this._onClick.bind(this, 'hamburger')}>
-            <HamburgerIcon altered={this.state.sideNavOpen}/>
+            <HamburgerIcon altered={this.state.sideNavOpen} random={props.random}/>
           </MobileButton>
         </div>
       </nav>

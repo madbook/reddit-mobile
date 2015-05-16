@@ -99,7 +99,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
-                <UpvoteIcon altered={this.state.localScore > 0} />
+                <UpvoteIcon altered={this.state.localScore > 0} random={ this.props.random} />
               </MobileButton>
             </form>
           </li>
@@ -114,7 +114,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
-                <DownvoteIcon altered={this.state.localScore < 0}/>
+                <DownvoteIcon altered={this.state.localScore < 0} random={ this.props.random}/>
               </MobileButton>
             </form>
           </li>

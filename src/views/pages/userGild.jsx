@@ -69,7 +69,13 @@ class UserGildPage extends React.Component {
 
     return (
       <div className="user-page user-gild">
-        <TopSubnav app={ app } user={ user } hideSort={ true } baseUrl={ this.props.url } loginPath={ this.props.loginPath } />
+        <TopSubnav
+          app={ app }
+          random={ this.props.random }
+          user={ user }
+          hideSort={ true }
+          baseUrl={ this.props.url }
+          loginPath={ this.props.loginPath } />
 
         { loading }
 

@@ -61,7 +61,7 @@ class SortDropdown extends React.Component {
     };
 
     this._onOpen = this._onOpen.bind(this);
-    this._id = Math.random();
+    this._id = props.random();
   }
 
   componentDidMount() {
@@ -87,6 +87,8 @@ class SortDropdown extends React.Component {
     var opened = this.state.opened;
     var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
 
+    var random = this.props.random;
+
     return (
       <Dropdown app={ this.props.app } id={ this._id } button={ button } className={ this.props.className }>
         {
@@ -106,7 +108,7 @@ class SortDropdown extends React.Component {
             return (
               <li className='Dropdown-li' key={ url }>
                 <a className='Dropdown-button' href={ url }>
-                  <CheckmarkIcon played={opened && map.text === sortTitle.toLowerCase()}/>
+                  <CheckmarkIcon played={opened && map.text === sortTitle.toLowerCase()} random={random}/>
                   <span className='Dropdown-text'>{ titleCase(map.text) }</span>
                 </a>
               </li>

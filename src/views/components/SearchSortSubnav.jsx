@@ -16,6 +16,7 @@ class SearchSortSubnav extends React.Component {
 
         <SortDropdown
           app={ props.app }
+          random={ props.random }
           sort={ props.sort || 'relevance' }
           sortParam={ 'sort' }
           list={ 'search' }
@@ -27,6 +28,7 @@ class SearchSortSubnav extends React.Component {
 
         <SortDropdown
           app={ props.app }
+          random={ props.random }
           sort={ props.time || 'all' }
           sortParam={ 'time' }
           list={ 'time' }

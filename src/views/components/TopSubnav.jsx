@@ -17,8 +17,13 @@ class TopSubnav extends React.Component {
 
     var sort = null;
     if (!this.props.hideSort){
-      sort = <SortDropdown app={ this.props.app } sort={ this.props.sort } list={ this.props.list }
-                           baseUrl={ this.props.baseUrl }/>;
+      sort = <SortDropdown 
+               app={ this.props.app }
+               random={ this.props.random }
+               sort={ this.props.sort }
+               list={ this.props.list }
+               baseUrl={ this.props.baseUrl }
+             />;
     }
 
     return (

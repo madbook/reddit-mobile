@@ -159,6 +159,7 @@ class IndexPage extends React.Component {
         { loading }
 
         <TopSubnav
+          random={ props.random }
           app={ app }
           user={ user }
           sort={ sort }
@@ -170,6 +171,7 @@ class IndexPage extends React.Component {
 
         <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
+            random={ props.random }
             listings={listings}
             firstPage={page}
             https={ props.https }

@@ -51,12 +51,12 @@ class ListingDropdown extends React.Component {
     }
     var listing = this.props.listing;
     return (
-      <SeashellsDropdown app={ this.props.app } right={ true }>
+      <SeashellsDropdown app={ this.props.app } random={ this.props.random } right={ true }>
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='1'/>
             <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onUpvoteClick}>
-              <UpvoteIcon altered={this.state.localScore > 0}/>
+              <UpvoteIcon altered={this.state.localScore > 0} random={ this.props.random }/>
               <span className='Dropdown-text'>Upvote</span>
             </MobileButton>
           </form>
@@ -65,7 +65,7 @@ class ListingDropdown extends React.Component {
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='-1'/>
             <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onDownvoteClick}>
-              <DownvoteIcon altered={this.state.localScore < 0}/>
+              <DownvoteIcon altered={this.state.localScore < 0} random={ this.props.random }/>
               <span className='Dropdown-text'>Downvote</span>
             </MobileButton>
           </form>

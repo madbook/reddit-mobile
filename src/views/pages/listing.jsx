@@ -87,10 +87,12 @@ class ListingPage extends React.Component {
 
     var loginPath = props.loginPath;
     var apiOptions = props.apiOptions;
+    var random = props.random;
 
     if (!loading) {
       listingElement = (
         <Listing
+          random={ props.random }
           https={ props.https }
           httpsProxy={ props.httpsProxy }
           apiOptions={ apiOptions }
@@ -107,6 +109,7 @@ class ListingPage extends React.Component {
 
       commentBoxElement = (
         <CommentBox
+          random={ props.random }
           app={ app }
           apiOptions={ apiOptions }
           thingId={ listing.name }
@@ -134,7 +137,15 @@ class ListingPage extends React.Component {
     return (
       <div className='listing-main'>
         { loading }
-        <TopSubnav app={ app } user={ user } sort={ sort } list='comments' baseUrl={ props.url } loginPath={ props.loginPath } />
+        <TopSubnav 
+          app={ app }
+          random={ props.random }
+          user={ user }
+          sort={ sort }
+          list='comments'
+          baseUrl={ props.url }
+          loginPath={ props.loginPath }
+        />
         <div className='container' key='container'>
           { listingElement }
           { commentBoxElement }
@@ -144,6 +155,7 @@ class ListingPage extends React.Component {
                 comment = commentsMap(comment, null, author, 4, 0);
                 return (
                   <Comment
+                    random={ random }
                     app={app}
                     comment={comment}
                     index={i}
