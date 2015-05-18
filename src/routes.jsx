@@ -213,6 +213,7 @@ function routes(app) {
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,
       compact: ctx.compact ? ctx.compact.toString() === 'true' : false,
+      experiments: ctx.experiments,
       query: ctx.query,
       params: ctx.params,
       url: ctx.path,

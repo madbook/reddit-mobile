@@ -131,6 +131,7 @@ class ListingPage extends React.Component {
           loidcreated={ props.loidcreated }
           user={ props.user }
           compact={ props.compact }
+          experiments={ props.experiments }
         />);
     }
 

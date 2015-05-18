@@ -253,7 +253,8 @@ class SearchPage extends React.Component {
           loid={ this.props.loid }
           loidcreated={ this.props.loidcreated }
           compact={ this.props.compact }
-          />);
+          experiments={ this.props.experiments }
+        />);
     }
 
     return (

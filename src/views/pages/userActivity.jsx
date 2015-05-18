@@ -84,7 +84,7 @@ class UserActivityPage extends React.Component {
     var tracking;
     var loginPath = props.loginPath;
 
-    if (state.data.meta && props.renderTracking) {
+    if (state.data.meta && this.props.renderTracking) {
       tracking = (
         <TrackingPixel
           url={ state.data.meta.tracking }
@@ -92,7 +92,8 @@ class UserActivityPage extends React.Component {
           loid={ props.loid }
           loidcreated={ props.loidcreated }
           compact={ this.props.compact }
-          />);
+          experiments={ this.props.experiments }
+        />);
     }
 
     return (

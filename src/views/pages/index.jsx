@@ -152,7 +152,8 @@ class IndexPage extends React.Component {
           loid={ props.loid }
           loidcreated={ props.loidcreated }
           compact={ compact }
-          />);
+          experiments={ props.experiments }
+        />);
     }
     return (
       <div>

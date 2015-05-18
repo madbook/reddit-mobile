@@ -39,9 +39,24 @@ function randomString(len) {
   return id.join('');
 }
 
+function getBucket(loid, choices, controlSize) {
+  return parseInt(loid.substring(loid.length - 4), 36) % 100;
+}
+
 function formatProps (props = {}) {
   delete props.apiOptions;
   return props;
+}
+
+function setExperiment(app, ctx, id, value) {
+  let cookieOptions = {
+    secure: app.getConfig('https'),
+    secureProxy: app.getConfig('httpsProxy'),
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+  };
+
+  ctx.experiments.push({ id, value });
 }
 
 class Server {
@@ -50,6 +65,7 @@ class Server {
     this.seed = Math.random();
     config.seed = this.seed;
     config.staticMarkup = true;
+    config.experiments = config.experiments || [];
 
     var app = new App(config);
 
@@ -87,9 +103,10 @@ class Server {
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
 
+    server.use(this.setLOID(app));
+    server.use(this.setExperiments(app));
     server.use(this.modifyRequest(app));
     server.use(this.setHeaders(app));
-    server.use(this.setLOID(app));
     server.use(this.checkToken(app));
 
     server.use(App.serverRender(app, formatProps));
@@ -116,12 +133,13 @@ class Server {
   setLOID (app) {
     return function * (next) {
       if (this.cookies.get('loid')) {
+        this.loid = this.cookies.get('loid');
         yield next;
         return;
       }
 
-      var loggedOutId = randomString(18);
-      var created = (new Date()).toISOString();
+      let loggedOutId = randomString(18);
+      let created = (new Date()).toISOString();
 
       var cookieOptions = {
         secure: app.getConfig('https'),
@@ -130,10 +148,59 @@ class Server {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
       }
 
+      this.loid = loggedOutId;
+      this.newUser = true;
       this.cookies.set('loid', loggedOutId, cookieOptions);
       this.cookies.set('loidcreated', created, cookieOptions);
 
       yield next;
+    }
+  }
+
+  setExperiments (app) {
+    return function * (next) {
+      if (!app.config.experiments) {
+        yield next;
+        return;
+      }
+
+      let bucket = getBucket(this.loid);
+      this.experiments = [];
+
+      if (this.newUser &&
+          !this.cookies.get('fiftyfifty') &&
+          app.config.experiments.fiftyfifty) {
+        // divide by two, because there are two possible buckets, plus control
+        let bucketSize = parseInt(app.config.experiments.fiftyfifty) / 2;
+
+        if (bucket < bucketSize) {
+          setExperiment(app, this, 'fiftyfifty', 'A');
+        } else if (bucket < bucketSize * 2) {
+          setExperiment(app, this, 'fiftyfifty', 'B');
+        } else  {
+          setExperiment(app, this, 'fiftyfifty', 'control');
+        }
+      }
+
+      if (this.newUser &&
+          !this.cookies.get('compactTest') &&
+          app.config.experiments.compactTest) {
+        // divide by two, because there are two possible buckets, plus control
+        let bucketSize = parseInt(app.config.experiments.compactTest) / 2;
+
+        if (bucket < bucketSize) {
+          this.cookies.set('compact', true, compactCookieOptions);
+          setExperiment(app, this, 'compactTest', 'compact');
+        } else if (bucket < bucketSize * 2) {
+          this.cookies.set('compact', false, compactCookieOptions);
+          setExperiment(app, this, 'compactTest', 'list');
+        } else {
+          setExperiment(app, this, 'compactTest', 'control');
+        }
+      }
+
+      yield next;
+      return;
     }
   }
 
@@ -175,6 +242,9 @@ class Server {
         compact = false;
       }
 
+      this.compact = compact;
+      this.compactTest = this.cookies.get('compactTest');
+
       this.showBetaBanner = !this.cookies.get('hideBetaBanner');
 
       this.seed = app.config.seed;
@@ -187,7 +257,6 @@ class Server {
       this.token = this.cookies.get('token');
       this.tokenExpires = this.cookies.get('tokenExpires');
 
-      this.compact = compact;
 
       this.renderSynchronous = true;
       this.useCache = false;

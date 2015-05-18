@@ -55,6 +55,8 @@ config.apiPassThroughHeaders = parseList(process.env.API_PASS_THROUGH_HEADERS);
 config.statsDomain = process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/';
 config.actionNameSecret = process.env.ACTION_NAME_SECRET;
 
+config.experiments = parseObject(process.env.EXPERIMENTS);
+
 Object.assign(config.manifest, jsManifest, cssManifest);
 
 function start(config) {
