@@ -1,5 +1,6 @@
 import React from 'react';
 import q from 'q';
+import querystring from 'querystring';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 
@@ -74,7 +75,9 @@ class ListingPage extends React.Component {
     var listingElement;
     var commentBoxElement;
 
-    var loginPath = props.loginPath;
+    var loginPath = props.loginPath + '/?' + querystring.stringify({
+      originalUrl: window.location.pathname,
+    });
     var apiOptions = props.apiOptions;
     var random = props.random;
 
@@ -134,7 +137,7 @@ class ListingPage extends React.Component {
           sort={ sort }
           list='comments'
           baseUrl={ props.url }
-          loginPath={ props.loginPath }
+          loginPath={ loginPath }
         />
         <div className='container' key='container'>
           { listingElement }

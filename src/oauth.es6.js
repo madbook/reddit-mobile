@@ -3,6 +3,7 @@ import scmp from 'scmp';
 import superagent from 'superagent';
 import uuid from 'uuid';
 import url from 'url';
+import querystring from 'querystring';
 
 var SCOPE = 'history,identity,mysubreddits,read,subscribe,vote,submit,save';
 
@@ -374,9 +375,16 @@ var oauthRoutes = function(app) {
    */
   router.post('/login', function * () {
     var status = yield login(this.body.username, this.body.password, this);
-
+    var referer = this.body.originalUrl || '';
+    if (referer) {
+      var dest = querystring.parse(referer)      
+    }
     if (status === 200) {
-      this.redirect('/');
+      if (referer) {
+        this.redirect(app.config.origin + dest.originalUrl);
+    } else {
+        this.redirect('/');
+      }
     } else {
       this.redirect('/login?error=' + status);
     }
@@ -385,6 +393,10 @@ var oauthRoutes = function(app) {
   router.post('/register', function * () {
     var ctx = this;
     var endpoint = app.config.nonAuthAPIOrigin + '/api/register';
+    var referer = this.body.originalUrl || '';
+    if (referer) {
+      var dest = querystring.parse(referer)      
+    }
 
     var data = {
       user: ctx.body.username,
@@ -433,7 +445,11 @@ var oauthRoutes = function(app) {
 
           login(data.user, data.passwd, ctx).then(function(status) {
             if (status === 200) {
-              return resolve(ctx.redirect('/'));
+              if (referer) {
+                return resolve(ctx.redirect(app.config.origin + dest.originalUrl));
+              } else {
+                return resolve(ctx.redirect('/'));
+              }
             } else {
               return resolve(ctx.redirect('/login?error=' + status));
             }

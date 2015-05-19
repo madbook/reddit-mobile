@@ -1,12 +1,15 @@
 import React from 'react';
+import querystring from 'querystring';
 import { models } from 'snoode';
 
 class CommentBox extends React.Component {
   constructor(props) {
     super(props);
+    
+    var inputClass = this.props.savedReply ? 'has-content' : ''
 
     this.state = {
-      inputCssClass: '',
+      inputCssClass: inputClass,
     };
   }
 
@@ -28,7 +31,10 @@ class CommentBox extends React.Component {
 
   submitComment (thingId, text) {
     if (!this.props.token) {
-      window.location = this.props.loginPath;
+      if (text) {
+        window.localStorage.setItem(this.props.thingId, text);        
+      }
+      window.location = this.props.loginPath
       return;
     }
 
@@ -62,7 +68,11 @@ class CommentBox extends React.Component {
     if(this.props.csrf) {
       csrf = (<input type='hidden' name='_csrf' value={ this.props.csrf } />);
     }
-
+    var savedText = '';
+    if (this.props.savedReply) {
+      var savedText = this.props.savedReply;
+      window.localStorage.clear();
+    }
     return (
       <div className='row CommentBox'>
         <div className='col-xs-12'>
@@ -72,7 +82,7 @@ class CommentBox extends React.Component {
             <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
             <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
                       className={ `form-control ${this.state.inputCssClass}` } name='text' ref='text'
-                      onChange={ this.handleInputChange.bind(this) }></textarea>
+                      onChange={ this.handleInputChange.bind(this) }>{ savedText }</textarea>
             <button type='submit' className='btn-post'>Post</button>
           </form>
         </div>

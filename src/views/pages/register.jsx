@@ -12,6 +12,12 @@ class RegisterPage extends React.Component {
 
     var errorClass = 'visually-hidden';
 
+    var referer = window.location.search;
+    var refererTag = '';
+    if (referer) {
+      refererTag = <input type='hidden' name='originalUrl' value={referer.slice(1)} />;
+    }
+
     if (this.props.error) {
       switch (this.props.error) {
         case 'EMAIL_NEWSLETTER':
@@ -67,13 +73,15 @@ class RegisterPage extends React.Component {
                   </label>
                 </div>
 
+                { refererTag }
+
                 <input type='hidden' value={ this.props.csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Create Account</button>
               </form>
 
               <p>
-                <a href='/login' data-no-route='true'>Already have an account? Log in!</a>
+                <a href={'/login' + referer } data-no-route='true'>Already have an account? Log in!</a>
               </p>
             </div>
           </div>
