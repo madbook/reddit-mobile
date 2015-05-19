@@ -9,6 +9,7 @@ class MobileButton extends React.Component {
       hover: false,
       touch: false,
     };
+
     this._over = this._over.bind(this);
     this._out = this._out.bind(this);
   }
@@ -24,11 +25,17 @@ class MobileButton extends React.Component {
     }.bind(this));
   }
 
+  click() {
+    // a no-op to prevent errors
+  }
+
   render() {
     var move = this.props.move;
     var href = this.props.href;
+    var click = this.props.onClick || this.click;
 
     var props = Object.assign({}, this.props);
+
     delete props.className;
     delete props.move;
     delete props.over;
@@ -47,17 +54,18 @@ class MobileButton extends React.Component {
         props.onMouseMove = move;
       }
     }
+
     props.className = this.props.className + (this.state.hover ? ' hover' : '');
 
     if (href) {
       return (
-        <a {...props}>
+        <a {...props} onClick={ click }>
           { this.renderChildren() }
         </a>
       );
     } else {
       return (
-        <button {...props}>
+        <button {...props} onClick={ click }>
           { this.renderChildren() }
         </button>
       );

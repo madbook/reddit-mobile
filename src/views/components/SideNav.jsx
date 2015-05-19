@@ -31,6 +31,8 @@ class SideNav extends React.Component {
     this._close = this._close.bind(this);
     this._onViewClick = this._onViewClick.bind(this);
     this._onScroll = this._onScroll.bind(this);
+
+    this._desktopSite = this._desktopSite.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +43,10 @@ class SideNav extends React.Component {
   componentWillUnmount() {
     this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
     this.props.app.off('route:start', this._close);
+  }
+
+  _desktopSite(e) {
+    this.props.app.emit('route:desktop', this.props.url);
   }
 
   render() {
@@ -226,7 +232,7 @@ class SideNav extends React.Component {
             </ul>
           </li>
           <li>
-            <MobileButton className='SideNav-button' href='http://www.reddit.com/'>
+            <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this.desktopSite }>
               <SnooIcon random={this.props.random}/>
               <span className='SideNav-text'>View Desktop Site</span>
             </MobileButton>

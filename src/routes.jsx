@@ -686,6 +686,7 @@ function routes(app) {
     var props = buildProps(this, {
       referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: `${statusCode} - ${statusMsg}`,
+      status: ctx.status,
     });
 
     if (statusCode.match(/^5.*/) && app.getConfig('debug')) {
