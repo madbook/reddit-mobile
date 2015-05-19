@@ -136,7 +136,7 @@ class Comment extends React.Component {
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
-              app={app}
+              app={this.props.app}
               thing={ this.props.comment }
               token={ this.props.token }
               api={ this.props.api }
