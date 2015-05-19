@@ -14,7 +14,8 @@ class BetaBanner extends React.Component {
   }
 
   _close () {
-    document.cookie = 'hideBetaBanner=true; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+    var year = (new Date()).getFullYear() + 2;
+    document.cookie = `hideBetaBanner=true; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
     this.setState({
       show: false,
     });

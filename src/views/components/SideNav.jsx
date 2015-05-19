@@ -302,9 +302,10 @@ class SideNav extends React.Component {
 
   _onViewClick() {
     var app = this.props.app;
+    var year = (new Date()).getFullYear() + 2;
 
     var compact = this.state.compact;
-    document.cookie = 'compact=' + (!compact) + '; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+    document.cookie = `compact=${!compact}; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
 
     app.emit(constants.COMPACT_TOGGLE, !compact);
     this._close();

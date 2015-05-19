@@ -249,7 +249,8 @@ function initialize(bindLinks) {
   app.config.renderTracking = true;
 
   app.on('route:desktop', function(route) {
-    document.cookie = '__cf_mob_redir=0; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+    var year = (new Date()).getFullYear() + 2;
+    document.cookie = `__cf_mob_redir=0; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
     window.location = `https://www.reddit.com${route}`;
   });
 
