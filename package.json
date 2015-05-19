@@ -1,6 +1,6 @@
 {
   "name": "reddit-mobile",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "",
   "main": "src/app.es6.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "co": "4.5.1",
     "es5-shim": "4.1.0",
     "gsap": "1.16.1",
-    "horse": "1.2.2",
+    "horse": "1.2.6",
     "horse-react": "0.3.0",
     "koa": "0.18.1",
     "koa-bodyparser": "1.5.0",

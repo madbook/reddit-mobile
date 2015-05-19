@@ -689,6 +689,7 @@ function routes(app) {
       referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: `${statusCode} - ${statusMsg}`,
       status: ctx.status,
+      originalUrl: decodeURIComponent(ctx.query.originalUrl) || '/',
     });
 
     if (statusCode.match(/^5.*/) && app.getConfig('debug')) {

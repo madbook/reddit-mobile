@@ -22,7 +22,7 @@ class ErrorPage extends React.Component {
     if (this.props.status === 404) {
       desktop = (
         <h3>
-          <a href={`https://www.reddit.com${this.props.url}`}
+          <a href={`https://www.reddit.com${this.props.originalUrl}`}
             onClick={ this._desktopSite } >
             Try the desktop site instead?
           </a>
