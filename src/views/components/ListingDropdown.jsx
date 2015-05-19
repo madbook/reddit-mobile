@@ -143,9 +143,9 @@ class ListingDropdown extends React.Component {
         </li>
         { permalink }
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/r/' + props.subreddit }>
+          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
             <SnooIcon/>
-            <span className='Dropdown-text'>More from r/{ props.subreddit }</span>
+            <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>

@@ -5,7 +5,7 @@ class PlayIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this._open = this._open.bind(this);
+    this._play = this._play.bind(this);
   }
 
   render() {
@@ -21,13 +21,13 @@ class PlayIcon extends React.Component {
     if (!SVG.ENABLED) {
       return;
     }
-    var opened = nextProps.opened;
-    if (typeof opened !== 'undefined' && opened !== this.props.opened) {
-      this._open(opened);
+    var played = nextProps.played;
+    if (typeof played !== 'undefined' && played !== this.props.played) {
+      this._play(played);
     }
   }
 
-  _open(bool) {
+  _play(bool) {
     if (bool) {
       // TODO
     } else {
@@ -37,7 +37,7 @@ class PlayIcon extends React.Component {
 }
 
 PlayIcon.defaultProps = {
-  opened: false,
+  played: false,
 };
 
 export default PlayIcon;

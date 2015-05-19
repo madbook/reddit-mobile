@@ -179,7 +179,7 @@ class IndexPage extends React.Component {
           apiOptions={ apiOptions }
         />
 
-        <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
+        <div className={'container Listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
             showAds={ showAds }
             adsPath={ props.adsPath }
@@ -199,7 +199,7 @@ class IndexPage extends React.Component {
             compact={compact}
             subredditTitle={subreddit}
           />
-          <div className='row pageNav IndexPage-buttons-holder-holder'>
+          <div className='pageNav IndexPage-buttons-holder-holder'>
             <div className='col-xs-12 IndexPage-buttons-holder'>
               <p className={'IndexPage-buttons' + (compact ? ' compact' : '')}>
                 { prevButton } { nextButton }

@@ -107,7 +107,7 @@ class UserSavedPage extends React.Component {
       <div className='user-page user-saved'>
         { loading }
 
-        <div className='container listing-container' >
+        <div className='container Listing-container' >
           <div className='vertical-spacing-top'>
             { noLinks }
             <ListingList
