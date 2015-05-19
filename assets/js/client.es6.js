@@ -251,7 +251,13 @@ function initialize(bindLinks) {
 
   app.on('route:desktop', function(route) {
     var year = (new Date()).getFullYear() + 2;
-    document.cookie = `__cf_mob_redir=0; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
+    var domain;
+
+    if (window.location.host.indexOf('localhost') === -1) {
+      domain = ' domain=.' + bootstrap.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
+    }
+
+    document.cookie = `__cf_mob_redir=0; expires=Fri, 31 Dec ${year} 23:59:59 GMT;${domain}`;
     window.location = `https://www.reddit.com${route}`;
   });
 

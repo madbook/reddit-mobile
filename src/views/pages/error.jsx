@@ -11,6 +11,7 @@ class ErrorPage extends React.Component {
   }
 
   _desktopSite(e) {
+    e.preventDefault();
     this.props.app.emit('route:desktop', this.props.url);
   }
 

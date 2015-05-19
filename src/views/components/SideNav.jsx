@@ -46,6 +46,7 @@ class SideNav extends React.Component {
   }
 
   _desktopSite(e) {
+    e.preventDefault();
     this.props.app.emit('route:desktop', this.props.url);
   }
 
@@ -232,7 +233,7 @@ class SideNav extends React.Component {
             </ul>
           </li>
           <li>
-            <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this.desktopSite }>
+            <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this._desktopSite }>
               <SnooIcon random={this.props.random}/>
               <span className='SideNav-text'>View Desktop Site</span>
             </MobileButton>
