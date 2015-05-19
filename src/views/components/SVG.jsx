@@ -1,5 +1,6 @@
 import React from 'react';
 import Utils from '../../lib/danehansen/utils/Utils';
+import constants from '../../constants';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
@@ -26,7 +27,7 @@ class SVG extends React.Component {
     } else {
       var fallbackIcon = this.props.fallbackIcon;
       if (fallbackIcon) {
-        return <span className={fallbackIcon}/>;
+        return <figure className={this.props.className + ' ' + fallbackIcon}/>;
       }
       var fallbackText = this.props.fallbackText;
       if (fallbackText) {

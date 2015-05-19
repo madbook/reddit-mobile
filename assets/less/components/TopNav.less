@@ -53,18 +53,26 @@
     vertical-align: bottom;
 
     .SnooIcon {
-      width: 30px;
-      height: 30px;
+      @size: 30px;
+      width: @size;
+      height: @size;
       margin-top: 7px;
+      color: @orangered;
+      line-height: @size;
+      font-size: @size;
 
       .SVG-fill {
-        fill: @orangered;
+        fill: @orangered !important;
       }
 
         .mouth {
-        stroke: @black;
+        stroke: @black !important;
       }
     }
+  }
+
+  .TopNav-left .Logo {
+    line-height: @top-nav-height;
   }
 
   .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
@@ -74,6 +82,24 @@
   .TopNav-right {
     .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
       margin-left: 8px;
+    }
+
+    .SVG-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @size: 30px;
+    .icon-font({
+      height: @size;
+      width: @size;
+      font-size: @size;
+      line-height: @top-nav-height;
+      line-height: @top-nav-height;
+    });
+
+    .icon-hamburger, .icon-x {
+      line-height: @size;
     }
   }
 
