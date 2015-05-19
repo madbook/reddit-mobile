@@ -62,6 +62,7 @@ function modifyContext (ctx) {
   ctx.user = this.getState('user');
   ctx.useCache = true;
   ctx.compact = this.getState('compact').toString() === 'true';
+  ctx.experiments = this.getState('experiments');
 
   ctx.random = randomBySeed(window.bootstrap.seed);
 

@@ -208,7 +208,6 @@ function routes(app) {
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
       loginPath: app.getConfig('loginPath'),
-      loidcreated: ctx.loidcreated,
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,
@@ -231,7 +230,6 @@ function routes(app) {
 
     props.app = app;
     props.api = app.api;
-    props.loid = ctx.loid;
     props.seed = ctx.seed;
     props.random = ctx.random;
 
@@ -240,6 +238,9 @@ function routes(app) {
       props.tokenExpires = ctx.tokenExpires;
       props.apiOptions.origin = app.getConfig('authAPIOrigin');
       props.apiOptions.headers['Authorization'] = `bearer ${props.token}`
+    } else {
+      props.loid = ctx.loid;
+      props.loidcreated = ctx.loidcreated;
     }
 
     props.apiOptions = props.api.buildOptions(props.apiOptions);

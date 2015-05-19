@@ -56,6 +56,7 @@ function setExperiment(app, ctx, id, value) {
     maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
   };
 
+  ctx.cookies.set(id, value, cookieOptions);
   ctx.experiments.push({ id, value });
 }
 
@@ -134,6 +135,7 @@ class Server {
     return function * (next) {
       if (this.cookies.get('loid')) {
         this.loid = this.cookies.get('loid');
+        this.loidcreated = this.cookies.get('loidcreated');
         yield next;
         return;
       }
@@ -149,6 +151,8 @@ class Server {
       }
 
       this.loid = loggedOutId;
+      this.loidcreated = created;
+
       this.newUser = true;
       this.cookies.set('loid', loggedOutId, cookieOptions);
       this.cookies.set('loidcreated', created, cookieOptions);
@@ -180,6 +184,11 @@ class Server {
         } else  {
           setExperiment(app, this, 'fiftyfifty', 'control');
         }
+      } else if (this.cookies.get('fiftyfifty')) {
+        this.experiments.push({
+          id: 'fiftyfifty',
+          value: this.cookies.get('fiftyfifty'),
+        });
       }
 
       if (this.newUser &&
@@ -197,6 +206,11 @@ class Server {
         } else {
           setExperiment(app, this, 'compactTest', 'control');
         }
+      } else if (this.cookies.get('compactTest')) {
+        this.experiments.push({
+          id: 'compactTest',
+          value: this.cookies.get('compactTest'),
+        });
       }
 
       yield next;
@@ -261,7 +275,7 @@ class Server {
       this.renderSynchronous = true;
       this.useCache = false;
 
-      if (!this.token) {
+      if (!this.token && !this.loid) {
         this.loid = this.cookies.get('loid');
         this.loidcreated = this.cookies.get('loidcreated');
       }
