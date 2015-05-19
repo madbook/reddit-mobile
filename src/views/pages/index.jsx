@@ -89,10 +89,16 @@ class IndexPage extends React.Component {
 
     var tracking;
 
+    var loginPath = props.loginPath;
+    var apiOptions = props.apiOptions;
+
     var subreddit = '';
 
     if (props.subredditName) {
       subreddit = '/r/' + props.subredditName;
+      loginPath += '/?' + querystring.stringify({
+        originalUrl: props.url,
+      });
     }
 
     if (props.multi) {
@@ -139,9 +145,6 @@ class IndexPage extends React.Component {
       );
     }
 
-    var loginPath = props.loginPath;
-    var apiOptions = props.apiOptions;
-
     if (this.state.data.meta && props.renderTracking) {
       tracking = (
         <TrackingPixel
@@ -165,7 +168,7 @@ class IndexPage extends React.Component {
           list='listings'
           excludedSorts={ excludedSorts }
           baseUrl={ props.url }
-          loginPath={ props.loginPath }
+          loginPath={ loginPath }
           apiOptions={ apiOptions }
         />
 

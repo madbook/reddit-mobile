@@ -24,6 +24,20 @@ class Comment extends React.Component {
       favorited: false,
       optionsOpen: false,
       reported: false,
+      savedReply: '',
+    }
+  }
+
+  componentDidMount () {
+    var savedReply = window.localStorage.getItem(this.props.comment.name);
+    if (savedReply) {
+      this.setState({
+        savedReply: savedReply,
+        showReplyBox: true,
+        showTools: true,
+      });
+      var domNode = React.findDOMNode(this);
+      domNode.scrollIntoView();
     }
 
     this.onReport = this.onReport.bind(this);
@@ -132,8 +146,11 @@ class Comment extends React.Component {
       highlighted = 'comment-highlighted';
 
       if (this.state.showReplyBox) {
+        if (this.state.savedReply) {
+          props.savedReply = this.state.savedReply;
+        }
         commentBox = (
-          <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
+          <CommentBox ref='commentBox' {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
 

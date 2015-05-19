@@ -1,5 +1,6 @@
 import React from 'react';
 import q from 'q';
+import querystring from 'querystring';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 
@@ -13,9 +14,13 @@ import TopSubnav from '../components/TopSubnav';
 class ListingPage extends React.Component {
   constructor(props) {
     super(props);
+    
+
+    this.props = props;
 
     this.state = {
       data: props.data || {},
+      linkComment: '',
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
@@ -23,9 +28,16 @@ class ListingPage extends React.Component {
 
   componentDidMount() {
     ListingPage.populateData(this.props.api, this.props, true).done((function(data) {
+      var name = data.data.listing.name;
+      var linkComment = '';
+      if (localStorage.getItem(name)) {
+        linkComment = window.localStorage.getItem(name);
+      }
+
       this.setState({
         data: data,
         loaded: true,
+        linkComment: linkComment,
       });
     }).bind(this));
 
@@ -74,7 +86,9 @@ class ListingPage extends React.Component {
     var listingElement;
     var commentBoxElement;
 
-    var loginPath = props.loginPath;
+    var loginPath = props.loginPath + '/?' + querystring.stringify({
+      originalUrl: props.url,
+    });
     var apiOptions = props.apiOptions;
     var random = props.random;
     var singleComment;
@@ -84,6 +98,14 @@ class ListingPage extends React.Component {
       permalink = listing.cleanPermalink;
     }
 
+    var keys = [];
+    if (global.localStorage) {
+      for (var key in localStorage) {
+        keys.push(key);
+      }      
+    }
+    var savedCommentKeys = keys;
+    var savedReply = this.state.linkComment;
     if (!loading) {
       listingElement = (
         <Listing
@@ -114,6 +136,7 @@ class ListingPage extends React.Component {
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           loginPath={ loginPath }
+          savedReply={ savedReply }
         />
       );
 
@@ -151,7 +174,7 @@ class ListingPage extends React.Component {
           sort={ sort }
           list='comments'
           baseUrl={ props.url }
-          loginPath={ props.loginPath }
+          loginPath={ loginPath }
         />
         <div className='container' key='container'>
           { listingElement }
@@ -160,7 +183,7 @@ class ListingPage extends React.Component {
           {
             comments.map(function(comment, i) {
               if (comment) {
-                comment = commentsMap(comment, null, author, 4, 0);
+                comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
                 return (
                   <Comment
                     subredditName={ props.subredditName }

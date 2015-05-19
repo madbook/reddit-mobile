@@ -1,4 +1,5 @@
 import React from 'react';
+import querystring from 'querystring';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -10,6 +11,16 @@ class LoginPage extends React.Component {
 
     if (this.props.error) {
       errorClass = 'has-error';
+    }
+
+    var dest = this.props.query.originalUrl;
+    var linkDest = '';
+    var refererTag = '';
+    if (dest) {
+      linkDest = '/?' + querystring.stringify({
+        originalUrl: dest,
+      });
+      refererTag = <input type='hidden' name='originalUrl' value={dest} />;
     }
 
     return (
@@ -30,13 +41,15 @@ class LoginPage extends React.Component {
                   <input id='password' className='form-control' name='password' type='password' placeholder='Password' />
                 </div>
 
+                { refererTag }
+
                 <input type='hidden' value={ this.props.csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Log In</button>
               </form>
 
               <p>
-                <a href='/register' data-no-route='true'>Don't have an account? Register!</a>
+                <a href={'/register' + linkDest } data-no-route='true'>Don't have an account? Register!</a>
               </p>
             </div>
           </div>

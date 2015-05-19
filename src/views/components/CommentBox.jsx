@@ -1,20 +1,37 @@
 import React from 'react';
+import querystring from 'querystring';
 import { models } from 'snoode';
 
 class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       inputCssClass: '',
+      savedReply: props.savedReply || '',
     };
   }
 
   handleInputChange (e) {
+    this.setState({savedReply: this.refs.text.value})
     var textEl = this.refs.text.getDOMNode();
     this.setState({
       inputCssClass: textEl.value.trim().length ? 'has-content' : '',
     });
+  }
+  
+  componentDidMount () {
+    if (this.props.savedReply) {
+      this.setState({inputCssClass: 'has-content'});
+    }
+  }
+
+  componentWillUnmount () {
+    window.localStorage.clear();
+  }
+  
+  componentWillReceiveProps (nextProps) {
+    this.setState({savedReply: nextProps.savedReply})
   }
 
   submit (e) {
@@ -28,7 +45,10 @@ class CommentBox extends React.Component {
 
   submitComment (thingId, text) {
     if (!this.props.token) {
-      window.location = this.props.loginPath;
+      if (text) {
+        window.localStorage.setItem(this.props.thingId, text);        
+      }
+      window.location = this.props.loginPath
       return;
     }
 
@@ -72,13 +92,17 @@ class CommentBox extends React.Component {
             <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
             <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
                       className={ `form-control ${this.state.inputCssClass}` } name='text' ref='text'
-                      onChange={ this.handleInputChange.bind(this) }></textarea>
+                      onChange={ this.handleInputChange.bind(this) } value={ this.state.savedReply } ></textarea>
             <button type='submit' className='btn-post'>Post</button>
           </form>
         </div>
       </div>
     );
   }
+}
+
+CommentBox.defaultProps = {
+  savedReply: '',
 }
 
 export default CommentBox;

@@ -1,10 +1,21 @@
-function commentsMap(comment, parent, op, score=4, nthSibling=0, nthNest=0, siblingHidden=false) {
+function showParents(comment){
+  comment.hidden = false;
+  comment.firstHidden = false;
+
+  if (comment.parent) {
+    showParents(comment.parent);
+  }
+}
+
+function commentsMap(comment, parent, op, score=4, nthSibling=0, nthNest=0, siblingHidden=false, showComments=[]) {
   var i = 0;
   var length;
 
   if (comment == undefined) {
     return;
   }
+
+  comment.parent = parent;
 
   // Start degrading
   score--;
@@ -30,6 +41,12 @@ function commentsMap(comment, parent, op, score=4, nthSibling=0, nthNest=0, sibl
     comment.firstHidden = true;
   }
 
+  if (showComments.indexOf(comment.name) > -1 && comment.parent) {
+    comment.hidden = false;
+    comment.firstHidden = false;
+    showParents(comment.parent)
+  }
+
   comment.hideScore = score;
 
   if (!comment.replies) {
@@ -49,9 +66,10 @@ function commentsMap(comment, parent, op, score=4, nthSibling=0, nthNest=0, sibl
       sh = comment.replies[i-1].hidden;
     }
 
-    return commentsMap(c, comment, op, score, i, nthNest, sh);
+    return commentsMap(c, comment, op, score, i, nthNest, sh, showComments);
   });
 
+  delete comment.parent;
   return comment;
 }
 
