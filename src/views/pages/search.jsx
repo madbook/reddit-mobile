@@ -42,6 +42,7 @@ class SearchPage extends React.Component {
     if (data.page) { qs.page = data.page; }
     if (data.sort) { qs.sort = data.sort; }
     if (data.time) { qs.time = data.time; }
+    if (data.type) { qs.type = data.type; }
 
     return (data.subredditName ? `/r/${data.subredditName}` : '') +
       '/search?' + querystring.stringify(qs);
@@ -107,14 +108,19 @@ class SearchPage extends React.Component {
   }
 
   handleShowMoreClick(e) {
-    var list = e.currentTarget.previousSibling;
-    list.className = list.className.replace('list-short-view', '');
+    var props = this.props;
+    var url = this._composeUrl({
+      query: props.query.q,
+      type: 'sr',
+    });
+    props.app.pushState(null, null, url);
+    props.app.render(url, false, props.app.modifyContext);
   }
 
   handleInputChanged(data) {
     var props = this.props;
     var value = data.value || '';
-    if (value !== props.query.q && (!value || value.length >= _searchMinLength)) {
+    if (value !== props.query.q && (value || value.length >= _searchMinLength)) {
       var url = this._composeUrl({
         query: value,
         subredditName: props.subredditName
@@ -146,7 +152,9 @@ class SearchPage extends React.Component {
 
       var subreddits = state.data.data.subreddits || [];
       var listings = state.data.data.links || [];
-      var noResults = listings.length === 0;
+      var noListResults = listings.length === 0;
+      var noSubResults = subreddits.length === 0;
+      var noResult = noSubResults && noListResults;
       var subredditResultsOnly = props.subredditName && props.query.q;
 
       var page = props.page || 0;
@@ -173,7 +181,7 @@ class SearchPage extends React.Component {
       }) : null;
 
       controls = [
-        <div className={ `container no-results text-right text-special ${noResults && props.query.q ? '' : 'hidden'}` } key="search-no-results">
+        <div className={ `container no-results text-right text-special ${noResult &&props.query.q ? '' : 'hidden'}` } key="search-no-results">
           Sorry, we couldn't find anything.
         </div>,
 
@@ -182,10 +190,10 @@ class SearchPage extends React.Component {
           <a href={ this._composeUrl({ query: props.query.q }) }>Search all of reddit?</a>
         </div>,
 
-        <div className={ `container summary-container ${noResults || (!noResults && subredditResultsOnly) ? 'hidden' : ''}` }
+        <div className={ `container summary-container ${noSubResults || (!noListResults && subredditResultsOnly) ? 'hidden' : ''}` }
              ref='summary' key="search-summary">
           <h4 className="text-center">Subreddits</h4>
-          <ul className="subreddits-list list-short-view">
+          <ul className="subreddits-list">
             {
               subreddits.map(function (subreddit, idx) {
                 return (
@@ -199,11 +207,11 @@ class SearchPage extends React.Component {
             }
           </ul>
 
-          <button className={ `btn-show-more btn-link pull-right ${subreddits.length > 3 ? '' : 'hidden'}` }
+          <button className={ `btn-show-more btn-link pull-right ${subreddits.length > 3 ? 'hidden' : ''}` }
                   title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
         </div>,
 
-        <div className={ `container listings-container ${noResults ? 'hidden' : ''}` }
+        <div className={ `container listings-container ${noListResults ? 'hidden' : ''}` }
              ref="listings" key="search-listings">
 
           <h4 className="text-center">Posts</h4>
@@ -274,7 +282,8 @@ class SearchPage extends React.Component {
   }
 
   static isNoRecordsFound(data) {
-    return (((data || {}).data || {}).links || []).length === 0;
+    return (((data || {}).data || {}).links || []).length === 0 &&
+           (((data || {}).data || {}).subreddits || []).length === 0
   }
 
   static populateData(api, props, synchronous, useCache = true) {
@@ -296,9 +305,9 @@ class SearchPage extends React.Component {
     options.query.subreddit = props.subredditName;
     options.query.sort = props.sort;
     options.query.t = props.time;
-    options.query.type = ['sr','link'];
     options.query.include_facets = 'off';
     options.useCache = useCache;
+    options.query.type = props.query.type || ['sr','link'];
 
     // Initialized with data already.
     if (useCache && (props.data || {}).data) {
