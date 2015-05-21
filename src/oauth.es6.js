@@ -64,14 +64,53 @@ var oauthRoutes = function(app) {
 
   function refreshToken (ctx, rToken) {
     return new Promise(function(resolve, reject) {
-      var token = OAuth2.accessToken.create({
-        'refresh_token': rToken,
-      });
+      var endpoint = app.config.nonAuthAPIOrigin + '/api/v1/access_token';
+      var b;
 
-      token.refresh(function(error, result) {
-        if (error) { return reject(error); }
-        return resolve(result);
-      });
+      if (app.config.oauth.secretClientId) {
+        b = new Buffer(
+          app.config.oauth.secretClientId + ':' + app.config.oauth.secretSecret
+        );
+      } else {
+        b = new Buffer(
+          app.config.oauth.clientId + ':' + app.config.oauth.secret
+        );
+      }
+
+      var s = b.toString('base64');
+
+      var basicAuth = 'Basic ' + s;
+
+      var data = {
+        grant_type: 'refresh_token',
+        refresh_token: rToken,
+      };
+
+      var headers = {
+        'User-Agent': ctx.headers['user-agent'],
+        'Authorization': basicAuth,
+      };
+
+      Object.assign(headers, app.config.apiHeaders || {});
+
+      superagent
+        .post(endpoint)
+        .set(headers)
+        .type('form')
+        .send(data)
+        .end((err, res) => {
+          if (err || !res.ok) {
+            return reject(err || res);
+          }
+
+          /* temporary while api returns a `200` with an error in body */
+          if (res.body.error) {
+            return reject(401);
+          }
+
+          var token = OAuth2.accessToken.create(res.body);
+          return resolve(token);
+        });
     });
   }
 
