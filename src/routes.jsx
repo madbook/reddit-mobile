@@ -166,6 +166,7 @@ function routes(app) {
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
       loginPath: app.getConfig('loginPath'),
+      adsPath: app.getConfig('adsPath'),
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,

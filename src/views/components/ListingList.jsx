@@ -1,14 +1,19 @@
+import _ from 'lodash';
 import React from 'react';
 import constants from '../../constants';
 
 import Listing from '../components/Listing';
 import CommentPreview from '../components/CommentPreview';
+import Ad from '../components/Ad';
+
+const AD_LOCATION = 11;
 
 class ListingList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      adLocation: Math.min(AD_LOCATION, props.listings.length)
     };
 
     this._scroll = this._scroll.bind(this);
@@ -37,7 +42,14 @@ class ListingList extends React.Component {
       if (ref) {
         var keepGoing = ref.checkPos(winHeight);
         if (!keepGoing) {
-          return;
+          if (i === this.state.adLocation) {
+            var adRef = this.refs.ad;
+            if (!adRef.getListingElement().checkPos(winHeight)) {
+              return;
+            }
+          } else {
+            return;
+          }
         }
       }
     }
@@ -63,9 +75,24 @@ class ListingList extends React.Component {
     }
   }
 
+  buildAd() {
+    if (this.props.listings.length > 0) {
+      var srnames = _.uniq(this.props.listings.map(function(l) {
+        return l.subreddit;
+      }));
+
+      return (
+        <Ad { ...this.props } srnames={srnames} key='ad' ref='ad' />
+      );
+    }
+  }
+
   render() {
     var props = this.props;
     var page = props.firstPage || 0;
+
+    var ad;
+
     var listings = (
       props.listings.map(function(listing, i) {
         var index = (page * 25) + i;
@@ -94,6 +121,13 @@ class ListingList extends React.Component {
         }
       })
     );
+
+    // If ads are enabled, splice an ad into the listings.
+    if (this.props.showAds && listings.length) {
+      ad = this.buildAd();
+      listings.splice(this.state.adLocation, 0, ad);
+    }
+
     this.length = listings.length;
 
     return <span>{listings}</span>;

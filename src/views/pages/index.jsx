@@ -165,6 +165,8 @@ class IndexPage extends React.Component {
 
         <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
+            showAds={ !!props.adsPath }
+            adsPath={ props.adsPath }
             random={ props.random }
             listings={listings}
             firstPage={page}

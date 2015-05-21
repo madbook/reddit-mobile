@@ -100,12 +100,15 @@ class Listing extends React.Component {
     if (this.state.loaded) {
       return true;
     }
+
     var top = React.findDOMNode(this).getBoundingClientRect().top;
     var load = top < winHeight;
+
     if (load) {
       this._loadContent();
       return true;
     }
+
     return false;
   }
 
@@ -119,7 +122,9 @@ class Listing extends React.Component {
   }
 
   _loadContent() {
-    this.setState({loaded: true}, this.resize);
+    this.setState({
+      loaded: true
+    }, this.resize);
   }
 
   componentDidMount() {
