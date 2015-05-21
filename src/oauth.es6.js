@@ -253,7 +253,9 @@ var oauthRoutes = function(app) {
     this.cookies.set('token');
     this.cookies.set('tokenExpires');
     this.cookies.set('refreshToken');
-    this.cookies.set('reddit_session');
+    this.cookies.set('reddit_session', undefined, {
+      domain: '.reddit.com',
+    });
     this.redirect('/');
   });
 
