@@ -104,11 +104,11 @@ class Server {
     // Set up static routes for built (and unbuilt, static) files
     server.use(koaStatic(__dirname + '/../build'));
 
+    server.use(this.checkToken(app));
     server.use(this.setLOID(app));
     server.use(this.setExperiments(app));
     server.use(this.modifyRequest(app));
     server.use(this.setHeaders(app));
-    server.use(this.checkToken(app));
 
     server.use(App.serverRender(app, formatProps));
 
@@ -288,17 +288,18 @@ class Server {
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'];
 
-      this.token = this.cookies.get('token');
-      this.tokenExpires = this.cookies.get('tokenExpires');
+      if (!this.token) {
+        this.token = this.cookies.get('token');
+        this.tokenExpires = this.cookies.get('tokenExpires');
 
+        if (!this.loid) {
+          this.loid = this.cookies.get('loid');
+          this.loidcreated = this.cookies.get('loidcreated');
+        }
+      }
 
       this.renderSynchronous = true;
       this.useCache = false;
-
-      if (!this.token && !this.loid) {
-        this.loid = this.cookies.get('loid');
-        this.loidcreated = this.cookies.get('loidcreated');
-      }
 
       yield next;
     }
@@ -321,6 +322,10 @@ class Server {
 
         try {
           var token = yield app.refreshToken(this, rToken);
+
+          this.token = token.token.access_token;
+          this.tokenExpires = token.token.expires_at.toString();
+
           app.setTokenCookie(this, token);
         } catch (e) {
           this.cookies.set('tokenExpires');
