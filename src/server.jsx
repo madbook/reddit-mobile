@@ -325,13 +325,7 @@ class Server {
 
           app.setTokenCookie(this, token);
         } catch (e) {
-          this.cookies.set('tokenExpires');
-          this.cookies.set('token');
-          this.cookies.set('refreshToken');
-          this.cookies.set('reddit_session', undefined, {
-            domain: '.reddit.com',
-          });
-          this.redirect('/');
+          this.redirect('/logout');
           return;
         }
 
