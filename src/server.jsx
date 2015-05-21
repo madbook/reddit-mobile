@@ -182,9 +182,9 @@ class Server {
       let bucket = getBucket(this.loid);
       this.experiments = [];
 
-      if (this.newUser &&
-          !this.cookies.get('fiftyfifty') &&
-          app.config.experiments.fiftyfifty) {
+      if (app.config.experiments.fiftyfifty &&
+          this.newUser &&
+          !this.cookies.get('fiftyfifty')) {
         // divide by two, because there are two possible buckets, plus control
         let bucketSize = parseInt(app.config.experiments.fiftyfifty) / 2;
 
@@ -202,17 +202,24 @@ class Server {
         });
       }
 
-      if (this.newUser &&
-          !this.cookies.get('compactTest') &&
-          app.config.experiments.compactTest) {
+      let compactCookieOptions = {
+        secure: app.getConfig('https'),
+        secureProxy: app.getConfig('httpsProxy'),
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+      };
+
+      if (app.config.experiments.compactTest &&
+          !this.cookies.get('compact') &&
+          !this.cookies.get('compactTest')) {
         // divide by two, because there are two possible buckets, plus control
         let bucketSize = parseInt(app.config.experiments.compactTest) / 2;
 
         if (bucket < bucketSize) {
-          this.cookies.set('compact', true, compactCookieOptions);
+          this.cookies.set('compact', 'true', compactCookieOptions);
           setExperiment(app, this, 'compactTest', 'compact');
         } else if (bucket < bucketSize * 2) {
-          this.cookies.set('compact', false, compactCookieOptions);
+          this.cookies.set('compact', 'false', compactCookieOptions);
           setExperiment(app, this, 'compactTest', 'list');
         } else {
           setExperiment(app, this, 'compactTest', 'control');
@@ -222,6 +229,8 @@ class Server {
           id: 'compactTest',
           value: this.cookies.get('compactTest'),
         });
+      } else {
+        this.cookies.set('compact', 'false', compactCookieOptions);
       }
 
       yield next;
