@@ -125,7 +125,9 @@ var oauthRoutes = function(app) {
 
       let headers = {
         'User-Agent': ctx.headers['user-agent'],
-        cookie: ctx.headers['cookie'],
+        cookie: ctx.headers['cookie'].replace(/__cf_mob_redir=1/, '__cf_mob_redir=0'),
+        'accept-encoding': ctx.headers['accept-encoding'],
+        'accept-language': ctx.headers['accept-language'],
       };
 
       Object.assign(headers, app.config.apiHeaders || {});
