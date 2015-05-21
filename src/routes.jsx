@@ -167,6 +167,7 @@ function routes(app) {
       assetPath: app.getConfig('assetPath'),
       loginPath: app.getConfig('loginPath'),
       adsPath: app.getConfig('adsPath'),
+      propertyId: app.getConfig('googleAnalyticsId'),
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,

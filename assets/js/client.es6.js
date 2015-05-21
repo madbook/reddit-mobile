@@ -23,6 +23,8 @@ import TweenLite from 'gsap';
 import getTimes from '../../src/lib/timing';
 import randomBySeed from '../../src/lib/randomBySeed';
 
+import trackingEvents from './trackingEvents';
+
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
 
@@ -34,7 +36,7 @@ function loadShim() {
 
   head.appendChild(shimScript, document.currentScript);
 
-  shimScript.src = global.bootstrap.assetPath + '/js/es5-shims.js';
+  shimScript.src = window.bootstrap.assetPath + '/js/es5-shims.js';
 }
 
 function onLoad(fn) {
@@ -131,6 +133,7 @@ function initialize(bindLinks) {
 
   config.seed = window.bootstrap.seed || Math.random();
   var app = new App(config);
+  app.emitter.setMaxListeners(30);
 
   if (app.getState('token')) {
     var now = new Date();
@@ -283,6 +286,10 @@ function initialize(bindLinks) {
         .end(function(){});
     }
   }, 1);
+
+  if (window.bootstrap.propertyId) {
+    trackingEvents(app);
+  }
 }
 
 module.exports = initialize;
