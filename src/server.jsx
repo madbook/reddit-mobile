@@ -57,6 +57,16 @@ function setExperiment(app, ctx, id, value) {
   ctx.experiments.push({ id, value });
 }
 
+function skipAuth(app, url) {
+  return (
+    url.indexOf('/logout') === 0 ||
+    url.indexOf('/login') === 0 ||
+    url.indexOf('/register') === 0 ||
+    url.indexOf('/oauth2') === 0 ||
+    url.indexOf('/timings') === 0
+  );
+}
+
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
@@ -93,6 +103,7 @@ class Server {
     server.use(koaStatic(__dirname + '/../build'));
 
     server.use(this.checkToken(app));
+    server.use(this.convertSession(app));
     server.use(this.setLOID(app));
     server.use(this.setExperiments(app));
     server.use(this.modifyRequest(app));
@@ -293,12 +304,52 @@ class Server {
     }
   }
 
+  convertSession(app) {
+    return function * (next) {
+      if (skipAuth(app, this.url)) {
+        yield next;
+        return;
+      }
+
+       let session = this.cookies.get('reddit_session');
+
+      if (!this.token &&
+          !this.cookies.get('token') &&
+          this.cookies.get('reddit_session')) {
+
+        try {
+          var token = yield app.convertSession(this, session);
+
+          this.token = token.token.access_token;
+          this.tokenExpires = token.token.expires_at.toString();
+
+          app.setTokenCookie(this, token);
+        } catch (e) {
+          this.cookies.set('tokenExpires');
+          this.cookies.set('token');
+          this.cookies.set('refreshToken');
+          this.redirect('/');
+          return;
+        }
+
+        yield next;
+      }
+
+      yield next;
+    }
+  }
+
   checkToken (app) {
     return function * (next) {
       var now = new Date();
       var expires = this.cookies.get('tokenExpires');
 
       if (!expires) {
+        yield next;
+        return;
+      }
+
+      if (skipAuth(app, this.url)) {
         yield next;
         return;
       }
