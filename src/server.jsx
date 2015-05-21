@@ -328,6 +328,9 @@ class Server {
           this.cookies.set('tokenExpires');
           this.cookies.set('token');
           this.cookies.set('refreshToken');
+          this.cookies.set('reddit_session', undefined, {
+            domain: '.reddit.com',
+          });
           this.redirect('/');
           return;
         }
