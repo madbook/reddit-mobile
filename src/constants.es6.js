@@ -9,4 +9,5 @@ export default {
   RESIZE: 'resize',
   SCROLL: 'scroll',
   ICON_SHRUNK_SIZE: 16,
+  CACHEABLE_COOKIES: ['compact'],
 };

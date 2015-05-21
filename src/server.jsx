@@ -19,6 +19,7 @@ import mixin from './app-mixin';
 var App = mixin(ServerReactApp);
 
 // The core
+import constants from './constants';
 import oauthRoutes from './oauth';
 import serverRoutes from './serverRoutes';
 import routes from './routes';
@@ -91,6 +92,10 @@ class Server {
         secure: config.https,
         secureProxy: config.httpsProxy
     };
+
+    // Runs after everything else, making sure private
+    // responses don't get cached.
+    server.use(this.cacheGuard());
 
     server.use(session(server, sessionOptions));
     server.use(compress());
@@ -247,11 +252,30 @@ class Server {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       }
 
+      // Don't cache if logged-in
       if (this.cookies.get('token')) {
-        this.set('Cache-control', 'no-cache');
+        this.set('Cache-Control', 'private, no-cache');
       }
 
       yield next;
+    }
+  }
+
+  cacheGuard (app) {
+    return function * (next) {
+
+      yield next;
+
+      var cookieHeaders = this.res.getHeader('Set-Cookie') || [];
+      var setUncacheableCookie = false;
+      cookieHeaders.forEach(c => {
+        c = c.split(/=/)[0];
+        // this isn't a cacheable cookie or its signature cookie?
+        if (!constants.CACHEABLE_COOKIES.find(x => (x == c || x + '.sig' == c))) {
+          // the response can't be cached, then
+          this.set('Cache-Control', 'private, no-cache');
+        }
+      });
     }
   }
 
