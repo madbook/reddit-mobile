@@ -54,6 +54,7 @@ class DefaultLayout extends React.Component {
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
         ga('create', '${propertyId}', 'auto', {'sampleRate': 50});
+        ga('send', 'pageview');
         </script>
       `;
 
