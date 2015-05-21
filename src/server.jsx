@@ -136,6 +136,17 @@ class Server {
       if (this.cookies.get('loid')) {
         this.loid = this.cookies.get('loid');
         this.loidcreated = this.cookies.get('loidcreated');
+
+        // If user came from desktop, and is a new user, treat them as new for
+        // experiments.
+        if (this.query.ref_source === 'desktop') {
+          let created = new Date(this.loidcreated);
+
+          if (created.setMinutes(created.getMinutes() - 5) < Date.now()) {
+            this.newUser = true;
+          }
+        }
+
         yield next;
         return;
       }
