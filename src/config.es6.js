@@ -11,7 +11,6 @@ var config = {
 
   assetPath: process.env.STATIC_BASE || '',
 
-  cookieDomain: process.env.COOKIE_DOMAIN || '',
   origin: process.env.ORIGIN || 'http://localhost:4444',
   port: process.env.PORT || 4444,
   env: process.env.NODE_ENV || 'development',
