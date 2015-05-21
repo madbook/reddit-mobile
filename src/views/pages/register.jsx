@@ -98,8 +98,4 @@ class RegisterPage extends React.Component {
   }
 };
 
-function RegisterPageFactory(app) {
-  return app.mutate('core/pages/register', RegisterPage);
-}
-
-export default RegisterPageFactory;
+export default RegisterPage;

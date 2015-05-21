@@ -3,8 +3,7 @@ import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
 import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _EYE_RADIUS = 1.142124;
 const _EYE_HEIGHT = 11.1461885;
@@ -237,9 +236,4 @@ SnooIcon.defaultProps = {
   played: false,
 };
 
-function SnooIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/SnooIcon', SnooIcon);
-}
-
-export default SnooIconFactory;
+export default SnooIcon;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 const _LEFT = 8.3;
 const _RIGHT = 11.7;
 
@@ -70,9 +69,4 @@ SaveIcon.defaultProps = {
   altered: false,
 };
 
-function SaveIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/SaveIcon', SaveIcon);
-}
-
-export default SaveIconFactory;
+export default SaveIcon;

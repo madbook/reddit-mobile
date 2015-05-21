@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class GoldIcon extends React.Component {
   constructor(props) {
@@ -39,9 +38,4 @@ GoldIcon.defaultProps = {
   played: false,
 };
 
-function GoldIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/GoldIcon', GoldIcon);
-}
-
-export default GoldIconFactory;
+export default GoldIcon;

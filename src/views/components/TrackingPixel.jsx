@@ -39,8 +39,4 @@ class TrackingPixel extends React.Component {
   }
 }
 
-function TrackingPixelFactory(app) {
-  return app.mutate('core/components/trackingPixel', TrackingPixel);
-}
-
-export default TrackingPixelFactory;
+export default TrackingPixel;

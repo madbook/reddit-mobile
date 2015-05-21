@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class PlayIcon extends React.Component {
   constructor(props) {
@@ -41,9 +40,4 @@ PlayIcon.defaultProps = {
   opened: false,
 };
 
-function PlayIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/PlayIcon', PlayIcon);
-}
-
-export default PlayIconFactory;
+export default PlayIcon;

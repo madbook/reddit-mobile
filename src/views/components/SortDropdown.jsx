@@ -3,11 +3,8 @@ import querystring from 'querystring';
 import titleCase from '../../lib/titleCase';
 import constants from '../../constants';
 
-import CheckmarkIconFactory from '../components/icons/CheckmarkIcon';
-var CheckmarkIcon;
-
-import DropdownFactory from '../components/Dropdown';
-var Dropdown;
+import CheckmarkIcon from '../components/icons/CheckmarkIcon';
+import Dropdown from '../components/Dropdown';
 
 var _LISTS = {
   listings: [
@@ -124,10 +121,4 @@ class SortDropdown extends React.Component {
   }
 }
 
-function SortDropdownFactory(app) {
-  CheckmarkIcon = CheckmarkIconFactory(app);
-  Dropdown = DropdownFactory(app);
-  return app.mutate('core/components/SortDropdown', SortDropdown);
-}
-
-export default SortDropdownFactory;
+export default SortDropdown;

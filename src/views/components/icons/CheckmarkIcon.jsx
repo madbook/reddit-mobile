@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class CheckmarkIcon extends React.Component {
   constructor(props) {
@@ -52,9 +51,4 @@ CheckmarkIcon.defaultProps = {
   played: false,
 };
 
-function CheckmarkIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/CheckmarkIcon', CheckmarkIcon);
-}
-
-export default CheckmarkIconFactory;
+export default CheckmarkIcon;

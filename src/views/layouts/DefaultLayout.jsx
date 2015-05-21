@@ -1,7 +1,5 @@
 import React from 'react';
-import LiveReloadFactory from '../components/LiveReload';
-
-var LiveReload;
+import LiveReload from '../components/LiveReload';
 
 class DefaultLayout extends React.Component {
   constructor(props) {
@@ -78,10 +76,4 @@ class DefaultLayout extends React.Component {
   }
 }
 
-function DefaultLayoutFactory(app) {
-  LiveReload = LiveReloadFactory(app);
-
-  return app.mutate('core/layouts/default', DefaultLayout);
-}
-
-export default DefaultLayoutFactory;
+export default DefaultLayout;

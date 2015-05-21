@@ -1,11 +1,8 @@
 import React from 'react';
 import constants from '../../constants';
 
-import SeashellIconFactory from '../components/icons/SeashellIcon';
-var SeashellIcon;
-
-import DropdownFactory from '../components/Dropdown';
-var Dropdown;
+import SeashellIcon from '../components/icons/SeashellIcon';
+import Dropdown from '../components/Dropdown';
 
 class SeashellsDropdown extends React.Component {
   constructor(props) {
@@ -42,10 +39,4 @@ class SeashellsDropdown extends React.Component {
   }
 }
 
-function SeashellsDropdownFactory(app) {
-  SeashellIcon = SeashellIconFactory(app);
-  Dropdown = DropdownFactory(app);
-  return app.mutate('core/components/SeashellsDropdown', SeashellsDropdown);
-}
-
-export default SeashellsDropdownFactory;
+export default SeashellsDropdown;

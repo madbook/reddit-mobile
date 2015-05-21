@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class ReplyIcon extends React.Component {
   constructor(props) {
@@ -57,9 +56,4 @@ ReplyIcon.defaultProps = {
   altered: false,
 };
 
-function ReplyIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/ReplyIcon', ReplyIcon);
-}
-
-export default ReplyIconFactory;
+export default ReplyIcon;

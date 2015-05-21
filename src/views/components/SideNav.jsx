@@ -1,20 +1,11 @@
 import React from 'react';
 import constants from '../../constants';
 
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
-
-import MailIconFactory from '../components/icons/MailIcon';
-var MailIcon;
-
-import SettingsIconFactory from '../components/icons/SettingsIcon';
-var SettingsIcon;
-
-import SnooIconFactory from '../components/icons/SnooIcon';
-var SnooIcon;
-
-import TwirlyIconFactory from '../components/icons/TwirlyIcon';
-var TwirlyIcon;
+import MobileButton from '../components/MobileButton';
+import MailIcon from '../components/icons/MailIcon';
+import SettingsIcon from '../components/icons/SettingsIcon';
+import SnooIcon from '../components/icons/SnooIcon';
+import TwirlyIcon from '../components/icons/TwirlyIcon';
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -317,13 +308,4 @@ class SideNav extends React.Component {
   }
 }
 
-function SideNavFactory(app) {
-  MobileButton = MobileButtonFactory(app);
-  MailIcon = MailIconFactory(app);
-  SettingsIcon = SettingsIconFactory(app);
-  SnooIcon = SnooIconFactory(app);
-  TwirlyIcon = TwirlyIconFactory(app);
-  return app.mutate('core/components/SideNav', SideNav);
-}
-
-export default SideNavFactory;
+export default SideNav;

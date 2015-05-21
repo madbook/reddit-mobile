@@ -78,8 +78,4 @@ class Dropdown extends React.Component {
   }
 }
 
-function DropdownFactory(app) {
-  return app.mutate('core/components/Dropdown', Dropdown);
-}
-
-export default DropdownFactory;
+export default Dropdown;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class TwirlyIcon extends React.Component {
   constructor(props) {
@@ -39,9 +38,4 @@ TwirlyIcon.defaultProps = {
   opened: false,
 };
 
-function TwirlyIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/TwirlyIcon', TwirlyIcon);
-}
-
-export default TwirlyIconFactory;
+export default TwirlyIcon;

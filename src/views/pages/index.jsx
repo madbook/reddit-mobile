@@ -3,17 +3,10 @@ import q from 'q';
 import querystring from 'querystring';
 import constants from '../../constants';
 
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import TrackingPixelFactory from '../components/TrackingPixel';
-var TrackingPixel;
-
-import ListingListFactory from '../components/ListingList';
-var ListingList;
-
-import TopSubnavFactory from '../components/TopSubnav';
-var TopSubnav;
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
+import ListingList from '../components/ListingList';
+import TopSubnav from '../components/TopSubnav';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -253,13 +246,4 @@ class IndexPage extends React.Component {
   }
 }
 
-function IndexPageFactory(app) {
-  ListingList = ListingListFactory(app);
-  Loading = LoadingFactory(app);
-  TrackingPixel = TrackingPixelFactory(app);
-  TopSubnav = TopSubnavFactory(app);
-
-  return app.mutate('core/pages/index', IndexPage);
-}
-
-export default IndexPageFactory;
+export default IndexPage;

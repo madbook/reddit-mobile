@@ -10,66 +10,24 @@ import { models } from 'snoode';
 // Load up the main react elements. Because of the way we define mutators, we
 // need to use factories that take an app instance (with registered mutators)
 // instead of requiring the elements directly. Womp womp
-import IndexPageFactory from './views/pages/index';
-var IndexPage;
-
-import ListingPageFactory from './views/pages/listing';
-var ListingPage;
-
-import SubredditAboutPageFactory from './views/pages/subredditAbout';
-var SubredditAboutPage;
-
-import SearchPageFactory from './views/pages/search';
-var SearchPage;
-
-import UserProfilePageFactory from './views/pages/userProfile';
-var UserProfilePage;
-
-import UserGildPageFactory from './views/pages/userGild';
-var UserGildPage;
-
-import UserActivityPageFactory from './views/pages/userActivity';
-var UserActivityPage;
-
-import ErrorPageFactory from './views/pages/error';
-var ErrorPage;
-
-import FAQPageFactory from './views/pages/faq';
-var FAQPage;
-
-import LoginPageFactory from './views/pages/login';
-var LoginPage;
-
-import RegisterPageFactory from './views/pages/register';
-var RegisterPage;
-
-import LayoutFactory from './views/layouts/DefaultLayout';
-var Layout;
-
-import BodyLayoutFactory from './views/layouts/BodyLayout';
-var BodyLayout;
-
-import TextSubNavFactory from './views/components/TextSubNav';
-var TextSubNav;
+import IndexPage from './views/pages/index';
+import ListingPage from './views/pages/listing';
+import SubredditAboutPage from './views/pages/subredditAbout';
+import SearchPage from './views/pages/search';
+import UserProfilePage from './views/pages/userProfile';
+import UserGildPage from './views/pages/userGild';
+import UserActivityPage from './views/pages/userActivity';
+import ErrorPage from './views/pages/error';
+import FAQPage from './views/pages/faq';
+import LoginPage from './views/pages/login';
+import RegisterPage from './views/pages/register';
+import Layout from './views/layouts/DefaultLayout';
+import BodyLayout from './views/layouts/BodyLayout';
+import TextSubNav from './views/components/TextSubNav';
 
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
-  IndexPage = IndexPageFactory(app);
-  ListingPage = ListingPageFactory(app);
-  SubredditAboutPage = SubredditAboutPageFactory(app);
-  SearchPage = SearchPageFactory(app);
-  UserProfilePage = UserProfilePageFactory(app);
-  UserGildPage = UserGildPageFactory(app);
-  UserActivityPage = UserActivityPageFactory(app);
-  ErrorPage = ErrorPageFactory(app);
-  FAQPage = FAQPageFactory(app);
-  LoginPage = LoginPageFactory(app);
-  RegisterPage = RegisterPageFactory(app);
-  Layout = LayoutFactory(app);
-  BodyLayout = BodyLayoutFactory(app);
-  TextSubNav = TextSubNavFactory(app);
-
   function formatSubreddit(s) {
     return {
       icon: s.icon,

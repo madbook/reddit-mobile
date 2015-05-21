@@ -57,8 +57,4 @@ SVG.perc = function(num) {
   return num / SVG.ICON_SIZE * 100 + '%';
 };
 
-function SVGFactory(app) {
-  return app.mutate('core/components/SVG', SVG);
-}
-
-export default SVGFactory;
+export default SVG;

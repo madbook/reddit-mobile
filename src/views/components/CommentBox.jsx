@@ -81,8 +81,4 @@ class CommentBox extends React.Component {
   }
 }
 
-function CommentBoxFactory(app) {
-  return app.mutate('core/components/commentBox', CommentBox);
-}
-
-export default CommentBoxFactory;
+export default CommentBox;

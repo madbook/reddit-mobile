@@ -54,8 +54,4 @@ class CommentPreview extends React.Component {
   }
 }
 
-function CommentPreviewFactory(app) {
-  return app.mutate('core/components/commentPreview', CommentPreview);
-}
-
-export default CommentPreviewFactory;
+export default CommentPreview;

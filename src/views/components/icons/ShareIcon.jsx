@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 var _diag;
 var _half;
 
@@ -89,11 +88,4 @@ ShareIcon.defaultProps = {
   played: false,
 };
 
-function ShareIconFactory(app) {
-  SVG = SVGFactory(app);
-  _diag = Math.sqrt(Math.pow(SVG.ICON_SIZE, 2) * 2) * 0.5;
-  _half = SVG.ICON_SIZE * 0.5;
-  return app.mutate('core/components/icons/ShareIcon', ShareIcon);
-}
-
-export default ShareIconFactory;
+export default ShareIcon;

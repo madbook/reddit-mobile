@@ -25,8 +25,4 @@ class SearchBar extends React.Component {
   }
 }
 
-function SearchBarFactory(app) {
-  return app.mutate('core/components/SearchBar', SearchBar);
-}
-
-export default SearchBarFactory;
+export default SearchBar;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../components/SVG';
-var SVG;
+import SVG from '../components/SVG';
 
 const _WIDTH = 55;
 const _TOP_LEFT = 10;
@@ -88,9 +87,4 @@ Logo.defaultProps = {
   altered: false,
 };
 
-function LogoFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/Logo', Logo);
-}
-
-export default LogoFactory;
+export default Logo;

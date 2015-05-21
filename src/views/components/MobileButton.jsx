@@ -90,8 +90,4 @@ class MobileButton extends React.Component {
   }
 }
 
-function MobileButtonFactory(app) {
-  return app.mutate('core/components/MobileButton', MobileButton);
-}
-
-export default MobileButtonFactory;
+export default MobileButton;

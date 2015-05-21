@@ -3,17 +3,10 @@ import q from 'q';
 import querystring from 'querystring';
 import constants from '../../constants';
 
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import ListingListFactory from '../components/ListingList';
-var ListingList;
-
-import UserActivitySubnavFactory from '../components/UserActivitySubnav';
-var UserActivitySubnav;
-
-import TrackingPixelFactory from '../components/TrackingPixel';
-var TrackingPixel;
+import Loading from '../components/Loading';
+import ListingList from '../components/ListingList';
+import UserActivitySubnav from '../components/UserActivitySubnav';
+import TrackingPixel from '../components/TrackingPixel';
 
 class UserActivityPage extends React.Component {
   constructor(props) {
@@ -175,13 +168,4 @@ class UserActivityPage extends React.Component {
   }
 }
 
-function UserActivityPageFactory(app) {
-  ListingList = ListingListFactory(app);
-  Loading = LoadingFactory(app);
-  UserActivitySubnav = UserActivitySubnavFactory(app);
-  TrackingPixel = TrackingPixelFactory(app);
-
-  return app.mutate('core/pages/userActivity', UserActivityPage);
-}
-
-export default UserActivityPageFactory;
+export default UserActivityPage;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class SettingsIcon extends React.Component {
   constructor(props) {
@@ -39,9 +38,4 @@ SettingsIcon.defaultProps = {
   played: false,
 };
 
-function SettingsIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/SettingsIcon', SettingsIcon);
-}
-
-export default SettingsIconFactory;
+export default SettingsIcon;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class TextIcon extends React.Component {
   constructor(props) {
@@ -48,9 +47,4 @@ TextIcon.defaultProps = {
   played: false,
 };
 
-function TextIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/TextIcon', TextIcon);
-}
-
-export default TextIconFactory;
+export default TextIcon;

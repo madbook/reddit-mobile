@@ -14,7 +14,6 @@ import superagent from 'superagent';
 var App = mixin(ClientReactApp);
 
 import config from '../../src/config';
-import plugins from '../../src/plugins';
 
 import constants from '../../src/constants';
 
@@ -153,13 +152,6 @@ function initialize(bindLinks) {
   app.router.get('/oauth2/login', function * () {
     window.location = '/oauth2/login';
   });
-
-  if (plugins) {
-    for (p in plugins) {
-      plugin = plugins[p];
-      plugin.register(app);
-    }
-  }
 
   routes(app);
 

@@ -66,8 +66,4 @@ class UserProfile extends React.Component {
   }
 }
 
-function UserProfileFactory(app) {
-  return app.mutate('core/components/userProfile', UserProfile);
-}
-
-export default UserProfileFactory;
+export default UserProfile;

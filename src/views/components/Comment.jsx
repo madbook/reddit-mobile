@@ -1,20 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 
-import VoteFactory from '../components/Vote';
-var Vote;
-
-import CommentBoxFactory from '../components/CommentBox';
-var CommentBox;
-
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
-
-import ListingDropdownFactory from '../components/ListingDropdown';
-var ListingDropdown;
-
-import ReplyIconFactory from '../components/icons/ReplyIcon';
-var ReplyIcon;
+import Vote from '../components/Vote';
+import CommentBox from '../components/CommentBox';
+import MobileButton from '../components/MobileButton';
+import ListingDropdown from '../components/ListingDropdown';
+import ReplyIcon from '../components/icons/ReplyIcon';
 
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
@@ -252,14 +243,4 @@ class Comment extends React.Component {
   }
 }
 
-function CommentFactory(app) {
-  Vote = VoteFactory(app);
-  CommentBox = CommentBoxFactory(app);
-  MobileButton = MobileButtonFactory(app);
-  ListingDropdown = ListingDropdownFactory(app);
-  ReplyIcon = ReplyIconFactory(app);
-
-  return app.mutate('core/components/comment', Comment);
-}
-
-export default CommentFactory;
+export default Comment;

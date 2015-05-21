@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _STROKE = 0.53;
 const _XS = [4, 8, 12, 16];
@@ -66,9 +65,4 @@ NSFWIcon.defaultProps = {
   played: false,
 };
 
-function NSFWIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/NSFWIcon', NSFWIcon);
-}
-
-export default NSFWIconFactory;
+export default NSFWIcon;

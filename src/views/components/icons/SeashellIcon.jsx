@@ -1,7 +1,6 @@
 import React from 'react';
 
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _DIST = 7.5;
 const _DIAMETER = 2;
@@ -61,9 +60,4 @@ SeashellIcon.defaultProps = {
   played: false,
 };
 
-function SeashellIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/SeashellIcon', SeashellIcon);
-}
-
-export default SeashellIconFactory;
+export default SeashellIcon;

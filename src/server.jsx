@@ -18,9 +18,6 @@ import mixin from './app-mixin';
 
 var App = mixin(ServerReactApp);
 
-// Plugins
-import plugins from './plugins';
-
 // The core
 import oauthRoutes from './oauth';
 import serverRoutes from './serverRoutes';
@@ -71,15 +68,6 @@ class Server {
     var app = new App(config);
 
     app.config.renderTracking = true;
-
-    var plugin, p;
-
-    if (plugins) {
-      for (p in plugins) {
-        plugin = plugins[p];
-        plugin.register(app);
-      }
-    }
 
     oauthRoutes(app);
     serverRoutes(app);

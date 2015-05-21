@@ -48,8 +48,4 @@ class TextSubNav extends React.Component {
   }
 }
 
-function TextSubNavFactory(app) {
-  return app.mutate('core/components/userProfileNav', TextSubNav);
-}
-
-export default TextSubNavFactory;
+export default TextSubNav;

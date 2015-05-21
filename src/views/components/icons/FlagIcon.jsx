@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _POINTS = [
   {x: 5.833,  y: 5.233},
@@ -80,9 +79,4 @@ FlagIcon.defaultProps = {
   played: false,
 };
 
-function FlagIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/FlagIcon', FlagIcon);
-}
-
-export default FlagIconFactory;
+export default FlagIcon;

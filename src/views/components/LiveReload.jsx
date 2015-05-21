@@ -16,8 +16,4 @@ class LiveReload extends React.Component {
   }
 }
 
-function LiveReloadFactory(app) {
-  return app.mutate('core/components/liveReload', LiveReload);
-}
-
-export default LiveReloadFactory;
+export default LiveReload;

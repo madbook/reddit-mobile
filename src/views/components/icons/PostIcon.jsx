@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _X_LEFT = 5.08719;
 const _X_RIGHT = 14.912809;
@@ -65,9 +64,4 @@ PostIcon.defaultProps = {
   played: false,
 };
 
-function PostIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/PostIcon', PostIcon);
-}
-
-export default PostIconFactory;
+export default PostIcon;

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import SortDropdownFactory from '../components/SortDropdown';
-var SortDropdown;
+import SortDropdown from '../components/SortDropdown';
 
 class SearchSortSubnav extends React.Component {
   constructor(props) {
@@ -40,9 +39,4 @@ class SearchSortSubnav extends React.Component {
   }
 }
 
-function SearchSortSubnavFactory(app) {
-  SortDropdown = SortDropdownFactory(app);
-  return app.mutate('core/components/SearchSortSubnav', SearchSortSubnav);
-}
-
-export default SearchSortSubnavFactory;
+export default SearchSortSubnav;

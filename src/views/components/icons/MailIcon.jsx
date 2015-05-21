@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class MailIcon extends React.Component {
   constructor(props) {
@@ -91,9 +90,4 @@ MailIcon.defaultProps = {
   played: false,
 };
 
-function MailIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/MailIcon', MailIcon);
-}
-
-export default MailIconFactory;
+export default MailIcon;

@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class CommentIcon extends React.Component {
   constructor(props) {
@@ -66,9 +65,4 @@ CommentIcon.defaultProps = {
   played: false,
 };
 
-function CommentIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/CommentIcon', CommentIcon);
-}
-
-export default CommentIconFactory;
+export default CommentIcon;

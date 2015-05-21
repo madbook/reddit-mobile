@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class InfoIcon extends React.Component {
   constructor(props) {
@@ -40,9 +39,4 @@ InfoIcon.defaultProps = {
   played: false,
 };
 
-function InfoIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/InfoIcon', InfoIcon);
-}
-
-export default InfoIconFactory;
+export default InfoIcon;

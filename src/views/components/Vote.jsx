@@ -2,12 +2,9 @@ import React from 'react';
 import { models } from 'snoode';
 import constants from '../../constants';
 
-import UpvoteIconFactory from '../components/icons/UpvoteIcon';
-var UpvoteIcon;
-import DownvoteIconFactory from '../components/icons/DownvoteIcon';
-var DownvoteIcon;
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
+import UpvoteIcon from '../components/icons/UpvoteIcon';
+import DownvoteIcon from '../components/icons/DownvoteIcon';
+import MobileButton from '../components/MobileButton';
 
 class Vote extends React.Component {
   constructor(props) {
@@ -123,11 +120,4 @@ class Vote extends React.Component {
   }
 }
 
-function VoteFactory(app) {
-  UpvoteIcon = UpvoteIconFactory(app);
-  DownvoteIcon = DownvoteIconFactory(app);
-  MobileButton = MobileButtonFactory(app);
-  return app.mutate('core/components/vote', Vote);
-}
-
-export default VoteFactory;
+export default Vote;

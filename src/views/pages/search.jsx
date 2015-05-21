@@ -3,20 +3,11 @@ import q from 'q';
 import querystring from 'querystring';
 import constants from '../../constants';
 
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import TrackingPixelFactory from '../components/TrackingPixel';
-var TrackingPixel;
-
-import SearchBarFactory from '../components/SearchBar';
-var SearchBar;
-
-import SearchSortSubnavFactory from '../components/SearchSortSubnav';
-var SearchSortSubnav;
-
-import ListingListFactory from '../components/ListingList';
-var ListingList;
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
+import SearchBar from '../components/SearchBar';
+import SearchSortSubnav from '../components/SearchSortSubnav';
+import ListingList from '../components/ListingList';
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
@@ -327,15 +318,4 @@ class SearchPage extends React.Component {
 
 }
 
-function SearchPageFactory(app) {
-  Loading = LoadingFactory(app);
-  TrackingPixel = TrackingPixelFactory(app);
-  SearchBar = SearchBarFactory(app);
-  SearchSortSubnav = SearchSortSubnavFactory(app);
-  ListingList = ListingListFactory(app);
-
-  return app.mutate('core/pages/search', SearchPage);
-}
-
-export default SearchPageFactory;
-
+export default SearchPage;

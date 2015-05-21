@@ -1,7 +1,4 @@
-import { mutate } from 'react-mutator';
 import { EventEmitter } from 'events';
-
-var mutator = mutate;
 
 // The base routes
 import routes from './routes';
@@ -16,8 +13,6 @@ function mixin (App) {
     constructor (config={}) {
       super(config)
 
-      this.mutators = config.mutators || {};
-
       // Set up two APIs (until we get non-authed oauth working).
       this.api = new V1Api({
         defaultHeaders: this.config.apiHeaders,
@@ -25,34 +20,6 @@ function mixin (App) {
 
       routes(this);
       redirects(this);
-    }
-
-    // Allow plugins to register mutators that change how React elements render.
-    registerMutators (elementName, mutators) {
-      this.mutators[elementName] = this.mutators[elementName] || [];
-      this.mutators[elementName] = this.mutators[elementName].concat(mutators);
-    }
-
-    // React elements in plugins should call `mutate` as a response to their
-    // Factory methods so that registered mutators can wrap the elements.
-    mutate (elementName, component) {
-      var args = this.mutators[elementName];
-
-      if (args && args.length) {
-        args.splice(0, 0, component);
-        return mutator.apply(component, args);
-      }
-
-      return component;
-    }
-
-    buildContext (href) {
-      var ctx = super.buildContext(href);
-
-      ctx.user = this.getState('user');
-      ctx.token = this.getState('token');
-
-      return ctx;
     }
 
     error (e, ctx, app) {

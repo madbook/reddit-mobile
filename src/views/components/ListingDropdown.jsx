@@ -1,26 +1,13 @@
 import React from 'react';
 import constants from '../../constants';
 
-import SeashellsDropdownFactory from '../components/SeashellsDropdown';
-var SeashellsDropdown;
-
-import UpvoteIconFactory from '../components/icons/UpvoteIcon';
-var UpvoteIcon;
-
-import DownvoteIconFactory from '../components/icons/DownvoteIcon';
-var DownvoteIcon;
-
-import CommentIconFactory from '../components/icons/CommentIcon';
-var CommentIcon;
-
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
-
-import SnooIconFactory from '../components/icons/SnooIcon';
-var SnooIcon;
-
-import InfoIconFactory from '../components/icons/InfoIcon';
-var InfoIcon;
+import SeashellsDropdown from '../components/SeashellsDropdown';
+import UpvoteIcon from '../components/icons/UpvoteIcon';
+import DownvoteIcon from '../components/icons/DownvoteIcon';
+import CommentIcon from '../components/icons/CommentIcon';
+import MobileButton from '../components/MobileButton';
+import SnooIcon from '../components/icons/SnooIcon';
+import InfoIcon from '../components/icons/InfoIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
@@ -116,15 +103,4 @@ class ListingDropdown extends React.Component {
   }
 }
 
-function ListingDropdownFactory(app) {
-  SeashellsDropdown = SeashellsDropdownFactory(app);
-  UpvoteIcon = UpvoteIconFactory(app);
-  DownvoteIcon = DownvoteIconFactory(app);
-  InfoIcon = InfoIconFactory(app);
-  CommentIcon = CommentIconFactory(app);
-  SnooIcon = SnooIconFactory(app);
-  MobileButton = MobileButtonFactory(app);
-  return app.mutate('core/components/ListingDropdown', ListingDropdown);
-}
-
-export default ListingDropdownFactory;
+export default ListingDropdown;

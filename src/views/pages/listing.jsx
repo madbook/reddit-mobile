@@ -3,23 +3,12 @@ import q from 'q';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import TrackingPixelFactory from '../components/TrackingPixel';
-var TrackingPixel;
-
-import ListingFactory from '../components/Listing';
-var Listing;
-
-import CommentBoxFactory from '../components/CommentBox';
-var CommentBox;
-
-import CommentFactory from '../components/Comment';
-var Comment;
-
-import TopSubnavFactory from '../components/TopSubnav';
-var TopSubnav;
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
+import Listing from '../components/Listing';
+import CommentBox from '../components/CommentBox';
+import Comment from '../components/Comment';
+import TopSubnav from '../components/TopSubnav';
 
 class ListingPage extends React.Component {
   constructor(props) {
@@ -227,15 +216,4 @@ class ListingPage extends React.Component {
   }
 }
 
-function ListingPageFactory(app) {
-  Loading = LoadingFactory(app);
-  TrackingPixel = TrackingPixelFactory(app);
-  Listing = ListingFactory(app);
-  Comment = CommentFactory(app);
-  CommentBox = CommentBoxFactory(app);
-  TopSubnav = TopSubnavFactory(app);
-
-  return app.mutate('core/pages/listing', ListingPage);
-}
-
-export default ListingPageFactory;
+export default ListingPage;

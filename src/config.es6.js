@@ -25,6 +25,8 @@ var config = {
   googleAnalyticsDomain: process.env.GOOGLE_ANALYTICS_DOMAIN,
 
   loginPath: process.env.LOGIN_PATH || '/oauth2/login',
+
+  adsPath: process.env.ADS_PATH,
 };
 
 export default config;

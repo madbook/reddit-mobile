@@ -122,8 +122,4 @@ class FAQPage extends React.Component {
   }
 };
 
-function FAQPageFactory(app) {
-  return app.mutate('core/pages/faq', FAQPage);
-}
-
-export default FAQPageFactory;
+export default FAQPage;

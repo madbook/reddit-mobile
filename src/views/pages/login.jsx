@@ -52,8 +52,4 @@ class LoginPage extends React.Component {
   }
 };
 
-function LoginPageFactory(app) {
-  return app.mutate('core/pages/login', LoginPage);
-}
-
-export default LoginPageFactory;
+export default LoginPage;

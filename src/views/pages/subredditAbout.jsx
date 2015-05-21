@@ -2,14 +2,9 @@ import React from 'react';
 import q from 'q';
 import constants from '../../constants';
 
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import TrackingPixelFactory from '../components/TrackingPixel';
-var TrackingPixel;
-
-import TopSubnavFactory from '../components/TopSubnav';
-var TopSubnav;
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
+import TopSubnav from '../components/TopSubnav';
 
 class SubredditAboutPage extends React.Component {
   constructor(props) {
@@ -127,13 +122,4 @@ class SubredditAboutPage extends React.Component {
   }
 }
 
-function SubredditAboutPageFactory(app) {
-  Loading = LoadingFactory(app);
-  TrackingPixel = TrackingPixelFactory(app);
-  TopSubnav = TopSubnavFactory(app);
-
-  return app.mutate('core/pages/listing/about', SubredditAboutPage);
-}
-
-export default SubredditAboutPageFactory;
-
+export default SubredditAboutPage;

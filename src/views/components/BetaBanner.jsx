@@ -44,8 +44,4 @@ class BetaBanner extends React.Component {
   }
 }
 
-function BetaBannerFactory(app) {
-  return app.mutate('core/components/betaBanner', BetaBanner);
-}
-
-export default BetaBannerFactory;
+export default BetaBanner;

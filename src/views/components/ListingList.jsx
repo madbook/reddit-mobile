@@ -1,11 +1,8 @@
 import React from 'react';
 import constants from '../../constants';
 
-import ListingFactory from '../components/Listing';
-var Listing;
-
-import CommentPreviewFactory from '../components/CommentPreview';
-var CommentPreview;
+import Listing from '../components/Listing';
+import CommentPreview from '../components/CommentPreview';
 
 class ListingList extends React.Component {
   constructor(props) {
@@ -17,7 +14,6 @@ class ListingList extends React.Component {
     this._scroll = this._scroll.bind(this);
     this._resize = this._resize.bind(this);
     this._removeListeners = this._removeListeners.bind(this);
-
   }
 
   componentDidMount() {
@@ -104,10 +100,4 @@ class ListingList extends React.Component {
   }
 }
 
-function ListingListFactory(app) {
-  Listing = ListingFactory(app);
-  CommentPreview = CommentPreviewFactory(app);
-  return app.mutate('core/components/listingList', ListingList);
-}
-
-export default ListingListFactory;
+export default ListingList;

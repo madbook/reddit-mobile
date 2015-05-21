@@ -52,8 +52,4 @@ class ErrorPage extends React.Component {
   }
 }
 
-function ErrorPageFactory(app) {
-  return app.mutate('core/pages/error', ErrorPage);
-}
-
-export default ErrorPageFactory;
+export default ErrorPage;

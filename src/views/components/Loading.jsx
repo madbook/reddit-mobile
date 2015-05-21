@@ -1,10 +1,7 @@
 import React from 'react';
 
-import RIconFactory from '../components/icons/RIcon';
-var RIcon;
-
-import SnooIconFactory from '../components/icons/SnooIcon';
-var SnooIcon;
+import RIcon from '../components/icons/RIcon';
+import SnooIcon from '../components/icons/SnooIcon';
 
 class Loading extends React.Component {
   constructor(props) {
@@ -62,10 +59,4 @@ class Loading extends React.Component {
   }
 }
 
-function LoadingFactory(app) {
-  RIcon = RIconFactory(app);
-  SnooIcon = SnooIconFactory(app);
-  return app.mutate('core/components/loading', Loading);
-}
-
-export default LoadingFactory;
+export default Loading;

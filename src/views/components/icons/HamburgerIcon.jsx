@@ -1,6 +1,5 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 const _SIZE = 20;
 const _MIDDLE = _SIZE / 2;
 const _X_LEFT = 4.343146;
@@ -83,9 +82,4 @@ HamburgerIcon.defaultProps = {
   altered: false,
 };
 
-function HamburgerIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/HamburgerIcon', HamburgerIcon);
-}
-
-export default HamburgerIconFactory;
+export default HamburgerIcon;

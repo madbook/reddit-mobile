@@ -1,8 +1,7 @@
 import React from 'react';
 import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 class RIcon extends React.Component {
   constructor(props) {
@@ -64,9 +63,4 @@ RIcon.defaultProps = {
   played: false,
 };
 
-function RIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/RIcon', RIcon);
-}
-
-export default RIconFactory;
+export default RIcon;

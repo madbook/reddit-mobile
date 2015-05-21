@@ -1,8 +1,7 @@
 import React from 'react';
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
 
 const _MASK_SIZE = 11.4;
 const _EYE_CENTER = 7.10293;
@@ -77,9 +76,4 @@ SearchIcon.defaultProps = {
   played: false,
 };
 
-function SearchIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/SearchIcon', SearchIcon);
-}
-
-export default SearchIconFactory;
+export default SearchIcon;

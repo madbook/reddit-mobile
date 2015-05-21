@@ -2,44 +2,19 @@ import React from 'react/addons';
 import constants from '../../constants';
 import { models } from 'snoode';
 
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
-
-import SeashellsDropdownFactory from '../components/SeashellsDropdown';
-var SeashellsDropdown;
-
-import LoadingFactory from '../components/Loading';
-var Loading;
-
-import SubredditAboutPageFactory from '../pages/subredditAbout';
-var SubredditAboutPage;
-
-import LogoFactory from '../components/Logo';
-var Logo;
-
-import PostIconFactory from '../components/icons/PostIcon';
-var PostIcon;
-
-import SearchIconFactory from '../components/icons/SearchIcon';
-var SearchIcon;
-
-import HamburgerIconFactory from '../components/icons/HamburgerIcon';
-var HamburgerIcon;
-
-import SeashellIconFactory from '../components/icons/SeashellIcon';
-var SeashellIcon;
-
-import SaveIconFactory from '../components/icons/SaveIcon';
-var SaveIcon;
-
-import InfoIconFactory from '../components/icons/InfoIcon';
-var InfoIcon;
-
-import TextIconFactory from '../components/icons/TextIcon';
-var TextIcon;
-
-import SnooIconFactory from '../components/icons/SnooIcon';
-var SnooIcon;
+import MobileButton from '../components/MobileButton';
+import SeashellsDropdown from '../components/SeashellsDropdown';
+import Loading from '../components/Loading';
+import SubredditAboutPage from '../pages/subredditAbout';
+import Logo from '../components/Logo';
+import PostIcon from '../components/icons/PostIcon';
+import SearchIcon from '../components/icons/SearchIcon';
+import HamburgerIcon from '../components/icons/HamburgerIcon';
+import SeashellIcon from '../components/icons/SeashellIcon';
+import SaveIcon from '../components/icons/SaveIcon';
+import InfoIcon from '../components/icons/InfoIcon';
+import TextIcon from '../components/icons/TextIcon';
+import SnooIcon from '../components/icons/SnooIcon';
 
 function shorten(text, len) {
   if (text.length > 17) {
@@ -252,21 +227,4 @@ class TopNav extends React.Component {
   }
 }
 
-function TopNavFactory(app) {
-  MobileButton = MobileButtonFactory(app);
-  Logo = LogoFactory(app);
-  SeashellsDropdown = SeashellsDropdownFactory(app);
-  Loading = LoadingFactory(app);
-  SubredditAboutPage = SubredditAboutPageFactory(app);
-  SeashellIcon = SeashellIconFactory(app);
-  SaveIcon = SaveIconFactory(app);
-  SnooIcon = SnooIconFactory(app);
-  TextIcon = TextIconFactory(app);
-  PostIcon = PostIconFactory(app);
-  SearchIcon = SearchIconFactory(app);
-  InfoIcon = InfoIconFactory(app);
-  HamburgerIcon = HamburgerIconFactory(app);
-  return app.mutate('core/components/TopNav', TopNav);
-}
-
-export default TopNavFactory;
+export default TopNav;

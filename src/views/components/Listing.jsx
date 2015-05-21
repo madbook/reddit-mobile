@@ -4,17 +4,10 @@ import constants from '../../constants';
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
-import VoteFactory from '../components/Vote';
-var Vote;
-
-import ListingDropdownFactory from '../components/ListingDropdown';
-var ListingDropdown;
-
-import PlayIconFactory from '../components/icons/PlayIcon';
-var PlayIcon;
-
-import MobileButtonFactory from '../components/MobileButton';
-var MobileButton;
+import Vote from '../components/Vote';
+import ListingDropdown from '../components/ListingDropdown';
+import PlayIcon from '../components/icons/PlayIcon';
+import MobileButton from '../components/MobileButton';
 
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gifMatch = /\.(?:gif)/gi;
@@ -657,13 +650,4 @@ class Listing extends React.Component {
   }
 }
 
-function ListingFactory(app) {
-  Vote = VoteFactory(app);
-  ListingDropdown = ListingDropdownFactory(app);
-  PlayIcon = PlayIconFactory(app);
-  MobileButton = MobileButtonFactory(app);
-
-  return app.mutate('core/components/listing', Listing);
-}
-
-export default ListingFactory;
+export default Listing;

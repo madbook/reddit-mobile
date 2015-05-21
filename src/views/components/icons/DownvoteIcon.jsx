@@ -1,6 +1,6 @@
 import React from 'react';
-import SVGFactory from '../../components/SVG';
-var SVG;
+import SVG from '../../components/SVG';
+
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 
 class DownvoteIcon extends React.Component {
@@ -86,9 +86,4 @@ DownvoteIcon.defaultProps = {
   played: false,
 };
 
-function DownvoteIconFactory(app) {
-  SVG = SVGFactory(app);
-  return app.mutate('core/components/icons/DownvoteIcon', DownvoteIcon);
-}
-
-export default DownvoteIconFactory;
+export default DownvoteIcon;
