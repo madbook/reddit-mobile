@@ -46,6 +46,10 @@ var events = {
   'search': function (query) {
     ga('send', 'event', 'search');
   },
+
+  'goto': function (query) {
+    ga('send', 'event', 'goto', query);
+  },
 };
 
 function trackingEvents(app) {
