@@ -13,31 +13,14 @@ import mobilify from '../../lib/mobilify';
 class Comment extends React.Component {
   constructor(props) {
     super(props);
-    
-    this.savedReply = window.localStorage.getItem(this.props.comment.name);
-    var collapsed = this.props.comment.hidden;
-    var showReplyBox = false;
-    var showTools = false;
-    if (this.savedReply) {
-      collapsed = false;
-      showReplyBox = true;
-      showTools = true;
-    } 
 
     this.state = {
       comment: this.props.comment,
-      collapsed: collapsed,
-      showReplyBox: showReplyBox,
-      showTools: showTools,
+      collapsed: this.props.comment.hidden,
+      showReplyBox: false,
+      showTools: false,
       favorited: false,
       optionsOpen: false,
-    }
-  }
-
-  componentDidMount () {
-    if (this.savedReply) {
-     var domNode = React.findDOMNode(this.refs.commentBox);
-     domNode.parentNode.scrollIntoView();
     }
   }
 
@@ -131,11 +114,8 @@ class Comment extends React.Component {
     if (this.state.showTools) {
       highlighted = 'comment-highlighted';
       if (this.state.showReplyBox) {
-      if (this.savedReply) {
-        props.savedReply = this.savedReply;
-      }
         commentBox = (
-          <CommentBox ref='commentBox' {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
+          <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
       toolbox = (
