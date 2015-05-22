@@ -1,5 +1,6 @@
 import React from 'react';
 import constants from '../../constants';
+import querystring from 'querystring';
 
 import MobileButton from '../components/MobileButton';
 import MailIcon from '../components/icons/MailIcon';
@@ -24,6 +25,8 @@ class SideNav extends React.Component {
     this._onScroll = this._onScroll.bind(this);
 
     this._desktopSite = this._desktopSite.bind(this);
+
+    this._goto = this._goto.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +42,18 @@ class SideNav extends React.Component {
   _desktopSite(e) {
     e.preventDefault();
     this.props.app.emit('route:desktop', this.props.url);
+  }
+
+  _goto(e) {
+    e.preventDefault();
+
+    let textEl = this.refs.location.getDOMNode();
+    let location = textEl.value.trim();
+
+    let query = querystring.stringify({ location });
+
+    let url = `/goto?${query}`;
+    this.props.app.redirect(url);
   }
 
   render() {
@@ -128,6 +143,12 @@ class SideNav extends React.Component {
     return (
       <nav className={'SideNav tween shadow' + (this.state.opened?' opened':'')}>
         <ul className='list-unstyled'>
+          <li>
+            <form method='GET' action='/goto' onSubmit={ this._goto } className='form-sm form-single'>
+              <input type='text' className='form-control form-control-sm' placeholder='r/...' name='location' ref='location' />
+              <button type='submit' className='btn btn-default'>Go</button>
+            </form>
+          </li>
           { loginLink }
           { logoutLink }
           <li>

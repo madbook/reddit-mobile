@@ -108,6 +108,51 @@ Allow: /
         .send({ rum: timings })
         .end(function(){ });
   });
+
+  // Server-side only!
+  app.router.post('vote', '/vote/:id',
+    function * () {
+      var endpoints = {
+        '1': 'comment',
+        '3': 'listing',
+      }
+
+      var id = this.params.id;
+      var endpoint = endpoints[id[1]];
+
+      var vote = new models.Vote({
+        direction: parseInt(this.query.direction),
+        id: id,
+      });
+
+      if (vote.get('direction') !== undefined && vote.get('id')) {
+        var options = app.api.buildOptions(props.apiOptions);
+        options.model = vote;
+
+        api.votes.post(options).done(function() {
+        });
+      }
+    });
+
+  app.router.post('/comment', function * () {
+    var ctx = this;
+
+    var comment = new models.Comment({
+      thingId: ctx.body.thingId,
+      text: ctx.body.text
+    });
+
+    if (!this.token) {
+      return this.redirect(this.headers.referer || '/');
+    }
+
+    var options = app.api.buildOptions(props.apiOptions);
+    options.model = comment;
+
+    api.comments.post(options).done(function() {
+      this.redirect(this.headers.referer || '/');
+    });
+  });
 }
 
 export default serverRoutes;

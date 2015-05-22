@@ -3,6 +3,8 @@
 import q from 'q';
 import { stringify } from 'querystring';
 import React from 'react';
+import superagent from 'superagent';
+import querystring from 'querystring';
 
 // Load models from snoode (api lib) so we can post new ones.
 import { models } from 'snoode';
@@ -28,6 +30,8 @@ import TextSubNav from './views/components/TextSubNav';
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
+  let router = app.router;
+
   function formatSubreddit(s) {
     return {
       icon: s.icon,
@@ -67,6 +71,7 @@ function routes(app) {
         options.query.sort = sort;
         options.query.sr_detail = true;
         options.query.feature = 'mobile_settings';
+        options.query.limit = 250;
 
         try {
           app.api.subreddits.get(options).then(function(subreddits) {
@@ -220,7 +225,7 @@ function routes(app) {
     return props;
   }
 
-  app.router.get('health', '/health', function * () {
+  router.get('health', '/health', function * () {
     this.body = 'OK';
   });
 
@@ -289,12 +294,12 @@ function routes(app) {
   }
 
   // The homepage route.
-  app.router.get('index', '/', indexPage);
+  router.get('index', '/', indexPage);
 
-  app.router.get('index.subreddit', '/r/:subreddit', indexPage);
-  app.router.get('index.multi', '/u/:user/m/:multi', indexPage);
+  router.get('index.subreddit', '/r/:subreddit', indexPage);
+  router.get('index.multi', '/u/:user/m/:multi', indexPage);
 
-  app.router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
+  router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
     var page;
     var ctx = this;
 
@@ -379,8 +384,8 @@ function routes(app) {
     this.props = props;
   }
 
-  app.router.get('search.index', '/search', searchPage);
-  app.router.get('search.subreddit', '/r/:subreddit/search', searchPage);
+  router.get('search.index', '/search', searchPage);
+  router.get('search.subreddit', '/r/:subreddit/search', searchPage);
 
   function * commentsPage(next) {
     var page;
@@ -424,12 +429,12 @@ function routes(app) {
     this.props = props;
   }
 
-  app.router.get('comments.listingid', '/comments/:listingId', commentsPage);
-  app.router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
-  app.router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
-  app.router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
+  router.get('comments.listingid', '/comments/:listingId', commentsPage);
+  router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
+  router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
+  router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
 
-  app.router.get('user.profile', '/u/:user', function *(next) {
+  router.get('user.profile', '/u/:user', function *(next) {
     var page;
     var ctx = this;
 
@@ -470,7 +475,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('user.gild', '/u/:user/gild', function *(next) {
+  router.get('user.gild', '/u/:user/gild', function *(next) {
     var page;
     var ctx = this;
 
@@ -515,7 +520,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('user.activity', '/u/:user/activity', function *(next) {
+  router.get('user.activity', '/u/:user/activity', function *(next) {
     var page;
     var sort = this.query.sort || 'hot';
     var activity = this.query.activity || 'comments';
@@ -566,7 +571,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('static.faq', '/faq', function * () {
+  router.get('static.faq', '/faq', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -588,7 +593,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('user.login', '/login', function * () {
+  router.get('user.login', '/login', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -610,7 +615,7 @@ function routes(app) {
     this.props = props;
   });
 
-  app.router.get('user.register', '/register', function * () {
+  router.get('user.register', '/register', function * () {
     var ctx = this;
 
     var props = buildProps(this, {
@@ -639,7 +644,7 @@ function routes(app) {
     'default': 'Oops, looks like something went wrong.',
   };
 
-  app.router.get('static.error', /\/([45]\d\d)/, function * () {
+  router.get('static.error', /\/([45]\d\d)/, function * () {
     var ctx = this;
     var statusCode = ctx.captures[0];
     var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];
@@ -671,49 +676,93 @@ function routes(app) {
     this.props = props;
   });
 
-  // Server-side only!
-  app.router.post('vote', '/vote/:id',
-    function * () {
-      var endpoints = {
-        '1': 'comment',
-        '3': 'listing',
-      }
+  function tryLoad (url, options) {
+    var endpoint = options.origin + url + '.json';
 
-      var id = this.params.id;
-      var endpoint = endpoints[id[1]];
+    return new Promise(function(resolve, reject) {
+      try {
+        let sa = superagent
+                  .head(endpoint)
+                  .set(options.headers);
 
-      var vote = new models.Vote({
-        direction: parseInt(this.query.direction),
-        id: id,
-      });
+        // bombs in browser
+        if (sa.redirects) {
+          sa.redirects(0);
+        }
 
-      if (vote.get('direction') !== undefined && vote.get('id')) {
-        var options = app.api.buildOptions(props.apiOptions);
-        options.model = vote;
-
-        api.votes.post(options).done(function() {
+        sa.end(function(err, res) {
+          if (err || !res || !res.ok) {
+            resolve();
+          } else {
+            resolve(true);
+          }
         });
+      } catch (e) {
+        console.log(e, e.stack);
       }
     });
+  }
 
-  app.router.post('/comment', function * () {
-    var ctx = this;
+  router.get('/goto', function * () {
+    let location = this.query.location;
+    let token = this.token;
+    let apiOptions;
+    let result;
 
-    var comment = new models.Comment({
-      thingId: ctx.body.thingId,
-      text: ctx.body.text
-    });
+    app.emit('goto', location);
 
-    if (!this.token) {
-      return this.redirect(this.headers.referer || '/');
+    if (token) {
+      apiOptions =  {
+        origin: app.getConfig('authAPIOrigin'),
+        headers: {
+          'Authorization': `bearer ${token}`,
+        }
+      };
+    } else {
+      apiOptions =  {
+        origin: app.getConfig('nonAuthAPIOrigin'),
+      };
     }
 
-    var options = app.api.buildOptions(props.apiOptions);
-    options.model = comment;
+    let options = app.api.buildOptions(apiOptions);
 
-    api.comments.post(options).done(function() {
-      this.redirect(this.headers.referer || '/');
+    if (this.headers['user-agent']) {
+      options.headers['user-agent'] = this.headers['user-agent'];
+    }
+
+    if (location.match(/.\/.+/)) {
+      if (location.indexOf('/') !== 0) {
+        location = `/${location}`;
+      }
+
+      if ([0,1].indexOf(location.indexOf('u/')) !== -1) {
+        location = location.replace(/u\//, 'user/');
+      }
+    } else {
+      location = `/r/${location}`;
+    }
+
+    try {
+      result = yield tryLoad(location, options);
+    } catch (e) {
+      console.log(e, e.stack);
+    }
+
+    if (result) {
+      return this.redirect(location);
+    }
+
+    let locationQuery = this.query.location;
+
+    if (this.query.location.indexOf('/') !== -1) {
+      locationQuery = this.query.location.split('/')[1];
+    }
+
+    var query = querystring.stringify({
+      q: locationQuery,
     });
+
+    this.redirect(`/search?${query}`);
   });
 }
 

@@ -168,6 +168,16 @@ function initialize(bindLinks) {
     }
   };
 
+  app.redirect = function(url) {
+    app.pushState(null, null, url);
+
+    // Set to the browser's interpretation of the current name (to make
+    // relative paths easier), and send in the old url.
+    app.render(app.fullPathName(), false, modifyContext).then(function(props) {
+      setTitle(props);
+    });
+  }
+
   var scrollCache = {};
 
   var initialUrl = app.fullPathName();
