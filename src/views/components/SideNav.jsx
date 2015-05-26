@@ -1,6 +1,9 @@
 import React from 'react';
-import constants from '../../constants';
 import querystring from 'querystring';
+
+import cookies from 'cookies-js';
+
+import constants from '../../constants';
 
 import MobileButton from '../components/MobileButton';
 import MailIcon from '../components/icons/MailIcon';
@@ -315,10 +318,20 @@ class SideNav extends React.Component {
 
   _onViewClick() {
     var app = this.props.app;
-    var year = (new Date()).getFullYear() + 2;
 
     var compact = this.state.compact;
-    document.cookie = `compact=${!compact}; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
+
+    let date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+
+    cookies.set('compact', (!compact).toString(), {
+      expires: date,
+      secure: this.props.app.getConfig('https') || this.props.app.getConfig('httpsProxy'),
+    });
+
+    this.setState({
+      show: false,
+    });
 
     app.emit(constants.COMPACT_TOGGLE, !compact);
     this._close();

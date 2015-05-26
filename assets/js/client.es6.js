@@ -25,6 +25,8 @@ import randomBySeed from '../../src/lib/randomBySeed';
 
 import trackingEvents from './trackingEvents';
 
+import cookies from 'cookies-js';
+
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
 
@@ -62,8 +64,12 @@ function modifyContext (ctx) {
   ctx.token = this.getState('token');
   ctx.user = this.getState('user');
   ctx.useCache = true;
-  ctx.compact = this.getState('compact').toString() === 'true';
   ctx.experiments = this.getState('experiments');
+
+  // Is set with a client-side cookie, sometimes hitting 'back' doesn't
+  // restore proper state
+  ctx.compact = cookies.get('compact').toString() === 'true';
+  ctx.hideBetaBanner = cookies.get('hideBetaBanner').toString() === 'true';
 
   ctx.random = randomBySeed(window.bootstrap.seed);
 
@@ -255,14 +261,19 @@ function initialize(bindLinks) {
   app.config.renderTracking = true;
 
   app.on('route:desktop', function(route) {
-    var year = (new Date()).getFullYear() + 2;
-    var domain;
+    let options = {};
+
+    let date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+    options.expire = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
-      domain = ' domain=.' + bootstrap.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
+      var domain = '.' + bootstrap.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
+      options.expire = domain;
     }
 
-    document.cookie = `__cf_mob_redir=0; expires=Fri, 31 Dec ${year} 23:59:59 GMT;${domain}`;
+    cookies.set('__cf_mob_redir', '0', options);
+
     window.location = `https://www.reddit.com${route}`;
   });
 

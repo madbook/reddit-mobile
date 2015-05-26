@@ -1,5 +1,7 @@
 import React from 'react';
 
+import cookies from 'cookies-js';
+
 class BetaBanner extends React.Component {
   constructor (props) {
     super(props);
@@ -14,8 +16,14 @@ class BetaBanner extends React.Component {
   }
 
   _close () {
-    var year = (new Date()).getFullYear() + 2;
-    document.cookie = `hideBetaBanner=true; expires=Fri, 31 Dec ${year} 23:59:59 GMT`;
+    let date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+
+    cookies.set('hideBetaBanner', 'true', {
+      expires: date,
+      secure: this.props.app.getConfig('https') || this.props.app.getConfig('httpsProxy'),
+    });
+
     this.setState({
       show: false,
     });

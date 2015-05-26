@@ -233,7 +233,7 @@ class Server {
           id: 'compactTest',
           value: this.cookies.get('compactTest'),
         });
-      } else {
+      } else if (!this.cookies.get('compact')) {
         this.cookies.set('compact', 'false', compactCookieOptions);
       }
 
