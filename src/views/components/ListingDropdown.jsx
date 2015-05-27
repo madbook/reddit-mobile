@@ -1,6 +1,8 @@
 import React from 'react';
 import constants from '../../constants';
 
+import { models } from 'snoode';
+
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import UpvoteIcon from '../components/icons/UpvoteIcon';
 import DownvoteIcon from '../components/icons/DownvoteIcon';
@@ -8,6 +10,7 @@ import CommentIcon from '../components/icons/CommentIcon';
 import MobileButton from '../components/MobileButton';
 import SnooIcon from '../components/icons/SnooIcon';
 import InfoIcon from '../components/icons/InfoIcon';
+import FlagIcon from '../components/icons/FlagIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
@@ -28,15 +31,51 @@ class ListingDropdown extends React.Component {
     this._onVote = this._onVote.bind(this);
     this._onUpvoteClick = this._onUpvoteClick.bind(this);
     this._onDownvoteClick = this._onDownvoteClick.bind(this);
+
+    this._onReportClick = this._onReportClick.bind(this);
+    this._onReportSubmit = this._onReportSubmit.bind(this);
+    this._onReport = this._onReport.bind(this);
   }
 
   render() {
+    var listing = this.props.listing;
+
     if (this.state.localScore > 0) {
       var voteClass = ' upvoted';
     } else if (this.state.localScore < 0) {
       voteClass = ' downvoted';
     }
-    var listing = this.props.listing;
+
+    var reportLink;
+    var reportForm;
+
+    if (this.props.token) {
+      if (this.state.reportFormOpen) {
+        reportForm = (
+          <form action={`/report/${ this.props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit }>
+            <div className='input-group'>
+              <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
+              <span className='input-group-btn'>
+                <button className='btn btn-default' type='submit'>
+                  <span className='glyphicon glyphicon-chevron-right'></span>
+                </button>
+              </span>
+            </div>
+          </form>
+        );
+      }
+
+      reportLink = (
+        <li className='Dropdown-li'>
+          <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
+            <FlagIcon random={ this.props.random }/>
+            <span className='Dropdown-text'>Report this</span>
+          </MobileButton>
+          { reportForm }
+        </li>
+      );
+    }
+
     return (
       <SeashellsDropdown app={ this.props.app } random={ this.props.random } right={ true }>
         <li className='Dropdown-li'>
@@ -75,6 +114,7 @@ class ListingDropdown extends React.Component {
             <span className='Dropdown-text'>About { listing.author }</span>
           </MobileButton>
         </li>
+        { reportLink }
       </SeashellsDropdown>
     );
   }
@@ -100,6 +140,47 @@ class ListingDropdown extends React.Component {
   _onVote(dir) {
     var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
     this.setState({localScore: localScore});
+  }
+
+  _onReportClick(e) {
+    this.setState({
+      reportFormOpen: true,
+    });
+  }
+
+  _onReportSubmit(e) {
+    e.preventDefault();
+
+    var id = this.props.listing.name;
+    var textEl = this.refs.otherReason.getDOMNode();
+
+    var report = new models.Report({
+      thing_id: id,
+      reason: 'other',
+      other_reason: textEl.value.trim(),
+    });
+
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+
+    options = Object.assign(options, {
+      model: report,
+    });
+
+    this.props.app.api.reports.post(options).done((comment) => {
+      this._onReport();
+    });
+
+    this.props.app.emit('report', this.props.listing.id);
+  }
+
+  _onReport() {
+    this.setState({
+      reported: true,
+    });
+
+    if (this.props.onReport) {
+      this.props.onReport();
+    }
   }
 }
 

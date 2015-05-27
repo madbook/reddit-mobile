@@ -32,7 +32,14 @@ class MobileButton extends React.Component {
   render() {
     var move = this.props.move;
     var href = this.props.href;
-    var click = this.props.onClick || this.click;
+    var click = this.props.onClick;
+    var noRoute = 'false';
+
+    if (click) {
+      noRoute = 'true';
+    } else {
+      click = this.click;
+    }
 
     var props = Object.assign({}, this.props);
 
@@ -58,7 +65,7 @@ class MobileButton extends React.Component {
 
     if (href) {
       return (
-        <a {...props} onClick={ click }>
+        <a {...props} onClick={ click } data-no-route={ noRoute }>
           { this.renderChildren() }
         </a>
       );

@@ -9,6 +9,8 @@ import ListingDropdown from '../components/ListingDropdown';
 import PlayIcon from '../components/icons/PlayIcon';
 import MobileButton from '../components/MobileButton';
 
+import ReportPlaceholder from '../components/ReportPlaceholder';
+
 var imgMatch = /\.(?:gif|jpe?g|png)/gi;
 var gifMatch = /\.(?:gif)/gi;
 var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
@@ -66,6 +68,7 @@ class Listing extends React.Component {
       compact: props.compact,
       loaded: false,
       tallestHeight: 0,
+      reported: false,
     };
 
     if (typeof window !== 'undefined') {
@@ -84,6 +87,11 @@ class Listing extends React.Component {
     this.checkPos = this.checkPos.bind(this);
     this._loadContent = this._loadContent.bind(this);
     this.resize = this.resize.bind(this);
+    this.onReport = this.onReport.bind(this);
+  }
+
+  onReport () {
+    this.setState({ reported: true });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -487,6 +495,10 @@ class Listing extends React.Component {
   }
 
   render() {
+    if (this.state.reported) {
+      return (<ReportPlaceholder />);
+    }
+
     var props = this.props;
     var listing = props.listing;
     var permalink = listing.cleanPermalink;
@@ -614,6 +626,9 @@ class Listing extends React.Component {
               </div>
               <div className='col-xs-1'>
                 <ListingDropdown
+                  onReport={ this.onReport }
+                  token={ this.props.token }
+                  apiOptions={ this.props.apiOptions }
                   listing={listing}
                   app={app}
                   random={this.props.random}

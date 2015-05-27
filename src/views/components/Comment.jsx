@@ -7,6 +7,8 @@ import MobileButton from '../components/MobileButton';
 import ListingDropdown from '../components/ListingDropdown';
 import ReplyIcon from '../components/icons/ReplyIcon';
 
+import ReportPlaceholder from '../components/ReportPlaceholder';
+
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
@@ -21,7 +23,14 @@ class Comment extends React.Component {
       showTools: false,
       favorited: false,
       optionsOpen: false,
+      reported: false,
     }
+
+    this.onReport = this.onReport.bind(this);
+  }
+
+  onReport () {
+    this.setState({ reported: true });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -85,6 +94,10 @@ class Comment extends React.Component {
   }
 
   render () {
+    if (this.state.reported) {
+      return (<ReportPlaceholder />);
+    }
+
     var props = this.props;
     var comment = this.state.comment;
 
@@ -139,6 +152,9 @@ class Comment extends React.Component {
           <li>
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
+                onReport={ this.onReport }
+                token={ this.props.token }
+                apiOptions={ this.props.apiOptions }
                 listing={this.props.comment}
                 random={this.props.random}
                 app={this.props.app}/>
