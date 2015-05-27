@@ -62,7 +62,7 @@ class SearchPage extends React.Component {
 
   _performSearch(props) {
     var ctx = this;
-    if (props.query) {
+    if (props.query && props.query.q) {
       let currentQueryKey = ctx._generateUniqueKey();
       ctx._lastQueryKey = currentQueryKey;
       SearchPage.populateData(props.api, props, true).done(function (data) {
@@ -133,7 +133,7 @@ class SearchPage extends React.Component {
     var controls;
     var tracking;
 
-    if (!state.loaded) {
+    if (!state.loaded && props.query && props.query.q) {
       controls = (
         <Loading />
       );
@@ -285,6 +285,10 @@ class SearchPage extends React.Component {
     if (!synchronous) {
       defer.resolve(props.data);
       return defer.promise;
+    }
+
+    if (!props.query.q) {
+      return defer.resolve();
     }
 
     var options = api.buildOptions(props.apiOptions);
