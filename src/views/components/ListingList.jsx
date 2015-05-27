@@ -44,9 +44,12 @@ class ListingList extends React.Component {
         if (!keepGoing) {
           if (i === this.state.adLocation) {
             var adRef = this.refs.ad;
-            var listing = adRef.getListingElement();
-            if (listing && listing.checkPos(winHeight)) {
-              return;
+
+            if (adRef) {
+              var listing = adRef.getListingElement();
+              if (listing && listing.checkPos(winHeight)) {
+                return;
+              }
             }
           } else {
             return;
