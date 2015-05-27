@@ -9,9 +9,12 @@ class SearchBar extends React.Component {
   handleInputChange(e) {
     var searchEl = this.refs.search.getDOMNode();
     var value = searchEl.value.trim();
-    var cb = this.props.inputChangedCallback || Function.prototype;
-    cb({ value: value });
-    this.props.app.emit('search', value);
+
+    if (value.length > 3) {
+      var cb = this.props.inputChangedCallback || Function.prototype;
+      cb({ value: value });
+      this.props.app.emit('search', value);
+    }
   }
 
   render() {
