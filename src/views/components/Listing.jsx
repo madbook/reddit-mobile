@@ -291,14 +291,15 @@ class Listing extends React.Component {
   }
 
   buildContent() {
-    if (!this.state.loaded) {
+    var expanded = this.state.expanded || this.props.single;
+
+    if (!this.state.loaded && !expanded) {
       return null;
     }
+
     var ctx = this;
     var props = this.props;
     var listing = props.listing;
-
-    var expanded = this.state.expanded || this.props.single;
 
     if (!listing) {
       return;
