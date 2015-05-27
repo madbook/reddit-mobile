@@ -55,9 +55,10 @@ class Vote extends React.Component {
   }
 
   _onVote(dir) {
-    var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
-    this.setState({localScore: localScore, score: this._score + localScore});
-    this.submitVote(localScore);
+    if (this.submitVote(localScore)) {
+      var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
+      this.setState({localScore: localScore, score: this._score + localScore});
+    }
   }
 
   submitVote(direction) {
@@ -79,6 +80,8 @@ class Vote extends React.Component {
 
     this.props.api.votes.post(options);
     this.props.app.emit('vote', vote);
+
+    return true;
   }
 
   render() {
