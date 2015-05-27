@@ -1,28 +1,52 @@
-// take less file
-// watch and rebuild it
+'use strict';
 
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var concat = require('gulp-concat');
+var combiner = require('stream-combiner2');
 var rev = require('gulp-rev');
 var rename = require('gulp-rename');
 var buffer = require('gulp-buffer');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
+var path = require('path');
+var livereload = require('gulp-livereload');
 
-module.exports = function buildLess(gulp, buildcss, watch) {
-  return function (cb) {
-    gulp.src('./assets/less/*.less')
-      .pipe(less())
-      .pipe(gulp.dest(buildcss))
-      .pipe(minifyCSS())
-      .pipe(buffer())
-      .pipe(rev())
-      .pipe(gulp.dest(buildcss))
-      .pipe(rev.manifest())
-      .pipe(rename('css-manifest.json'))
-      .pipe(gulp.dest(buildcss));
+var notify = require('./utils/notify');
+
+module.exports = function buildLess(gulp, options) {
+  var buildcss = path.join(options.paths.build, options.paths.css);
+
+  gulp.task('less', function (cb) {
+    notify({
+      message: 'Starting less...',
+    });
+
+    var error = false;
+    var combined = combiner.obj([
+      gulp.src('./assets/less/base.less'),
+      less(),
+      gulp.dest(buildcss),
+      minifyCSS(),
+      buffer(),
+      rev(),
+      gulp.dest(buildcss),
+      rev.manifest(),
+      rename('css-manifest.json'),
+      livereload(),
+      gulp.dest(buildcss)
+        .on('finish', function() {
+          if (!error) {
+            notify({
+              message: 'Finished less',
+            });
+          }
+        }),
+    ]);
+
+    combined
+      .on('error', function(e) {
+        error = true;
+        notify(e);
+      });
 
     cb();
-  }
-}
+  });
+};

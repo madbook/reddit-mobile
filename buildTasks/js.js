@@ -1,7 +1,6 @@
-// take js file
-// watch and rebuild it
+'use strict';
 
-var gulp = require('gulp');
+var combiner = require('stream-combiner2');
 var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
@@ -11,17 +10,20 @@ var buffer = require('gulp-buffer');
 var concat = require('gulp-concat');
 var source = require('vinyl-source-stream');
 var streamqueue = require('streamqueue');
-
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
 var exorcist = require('exorcist');
-
+var path = require('path');
 var gulpIf = require('gulp-if');
+var livereload = require('gulp-livereload');
 
-module.exports = function buildJS(gulp, buildjs, watch, prod) {
-  return function(cb) {
+var notify = require('./utils/notify');
+
+module.exports = function buildJS(gulp, options) {
+  gulp.task('js', function(cb) {
     var entryFile = './assets/js/client.es6.js';
+    var buildjs = path.join(options.paths.build, options.paths.js);
 
     var shims = streamqueue({ objectMode: true });
     shims.queue(gulp.src('public/js/es5-shims.js'));
@@ -35,7 +37,7 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
       cache: {},
       packageCache: {},
       fullPaths: true,
-      debug: !prod,
+      debug: options.debug,
       extensions: ['.js', '.es6.js', '.jsx'],
       ignore: [
         'q',
@@ -43,7 +45,7 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
       ],
     });
 
-    if (watch) {
+    if (options.watch) {
       bundler = watchify(bundler);
     }
 
@@ -63,50 +65,66 @@ module.exports = function buildJS(gulp, buildjs, watch, prod) {
       .transform(babelify.configure({
         ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|gsap|lodash)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
-        sourceMap: !prod,
+        sourceMap: !options.debug,
       }), {
         global: true,
       });
 
     var bundling = false;
 
-    var rebundle = function () {
-      if(bundling) {
+    var rebundle = function() {
+      if (bundling) {
         return;
       } else {
         bundling = true;
       }
 
-      gutil.log('Starting bundle...');
+      notify({
+        message: 'Starting js...',
+      });
 
       var stream = bundler.bundle();
 
-      stream
-        .pipe(exorcist(buildjs + '/client.js.map'))
-        .pipe(source(entryFile))
-        .pipe(rename('client.js'))
-        .pipe(gulp.dest(buildjs))
-        .pipe(gulpIf(prod, streamify(uglify())))
-        .pipe(rename('client.min.js'))
-        .pipe(buffer())
-        .pipe(rev())
-        .pipe(gulp.dest(buildjs))
-        .pipe(rev.manifest())
-        .pipe(rename('client-manifest.json'))
-        .pipe(gulp.dest(buildjs))
-        .on('finish', function() {
-          if(cb) { cb(); };
-          cb = null;
-          bundling = false;
+      // combine streams for error handling
+      var error = false;
+      var combined = combiner.obj([
+        stream,
+        exorcist(buildjs + '/client.js.map'),
+        source(entryFile),
+        rename('client.js'),
+        gulp.dest(buildjs),
+        gulpIf(!options.debug, streamify(uglify())),
+        rename('client.min.js'),
+        gulp.dest(buildjs),
+        buffer(),
+        rev(),
+        gulp.dest(buildjs),
+        rev.manifest(),
+        rename('client-manifest.json'),
+        livereload(),
+        gulp.dest(buildjs)
+          .on('finish', function() {
+            if (!error) {
+              notify({
+                message: 'Finished js',
+              });
+            }
 
-          gutil.log('Finished bundle.');
-        })
-        .on('error', function (err) {
-          console.error(err.toString());
+            if (cb) { cb(); };
+            cb = null;
+            bundling = false;
+            error = false;
+          }),
+      ]);
+
+      combined
+        .on('error', function(e) {
+          error = true;
+          notify(e);
         });
     }
 
     bundler.on('update', rebundle);
     return rebundle();
-  }
-}
+  });
+};

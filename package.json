@@ -43,6 +43,7 @@
     "del": "1.1.1",
     "exorcist": "0.1.6",
     "fastclick": "1.0.6",
+    "glob": "^5.0.10",
     "gulp": "3.8.11",
     "gulp-buffer": "0.0.2",
     "gulp-concat": "2.5.1",
@@ -59,6 +60,8 @@
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "1.2.0",
     "gulp-util": "3.0.3",
+    "node-notifier": "^4.2.1",
+    "stream-combiner2": "^1.0.2",
     "streamqueue": "0.1.2",
     "vinyl-source-stream": "1.0.0",
     "watchify": "3.1.0"

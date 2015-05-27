@@ -7,102 +7,47 @@ require('babel/register')({
   sourceMap: true,
 });
 
-/** File paths */
-var build = './build';
-var buildjs = build + '/js';
-var buildcss = build + '/css';
-
+var glob = require('glob');
 var gulp = require('gulp');
-var livereload = require('gulp-livereload');
-var del = require('del');
+var gutil = require('gulp-util');
 var sequence = require('gulp-sequence');
+var util = require('util');
 
-var config = require('./src/config.es6.js');
+var options = {
+  debug: true,
+  watch: false,
+  paths: {
+    build: './build',
+    js: 'js',
+    css: 'css',
+  },
+};
 
-var buildJS = require('./buildTasks/js');
-var buildLess = require('./buildTasks/less');
-
-var iconfont = require('gulp-iconfont');
-var consolidate = require('gulp-consolidate');
-
-var rename = require('gulp-rename');
-
-gulp.task('icons', function(cb) {
-  var r = Math.random();
-  var assetPath = (config.assetPath || '..') + '/fonts/';
-
-  del([
-    'assets/fonts/**',
-  ], function() {
-    gulp.src(['assets/icons/*.svg'])
-      .pipe(iconfont({
-        fontName: 'icons', // required
-        appendCodepoints: false,
-        normalize: true,
-        fontHeight: 1000,
-    }))
-      .on('codepoints', function(codepoints, options) {
-        for (var i = 0, iLen = codepoints.length; i<iLen; i++) {
-          var item = codepoints[i];
-          item.codePoint = item.codepoint.toString(16);
-          item.fileName = item.name;
-        }
-        gulp.src('node_modules/gulp-iconfont-css/templates/_icons.less')
-          .pipe(consolidate('lodash', {
-            glyphs: codepoints,
-            fontName: 'icons-' + r,
-            fontPath: assetPath,
-            className: 's',
-          }))
-          .pipe(gulp.dest('assets/less'));
-      })
-      .pipe(rename({
-        suffix: '-' + r,
-      }))
-      .pipe(gulp.dest('assets/fonts/'))
-      .on('finish', function() {
-        cb();
-      });
+gulp.task('load-tasks', function() {
+  glob.sync('./buildTasks/*.js').forEach(function(file) {
+    try {
+      var task = require(file);
+      gutil.log(util.format('loading task: %s', file));
+      task(gulp, options);
+    } catch (e) {
+      gutil.log(util.format('unable to require task: %s\n\n%s', file, e));
+    }
   });
 });
 
-gulp.task('less', buildLess(gulp, buildcss));
-gulp.task('js', buildJS(gulp, buildjs));
-
-gulp.task('prod-less', buildLess(gulp, buildcss, false, true));
-gulp.task('prod-js', buildJS(gulp, buildjs, false, true));
-
-gulp.task('watchless', buildLess(gulp, buildcss, true));
-gulp.task('watchjs', buildJS(gulp, buildjs, true));
-
-gulp.task('clean', function(cb) {
-  del([
-    'build/**',
-  ], cb);
+gulp.task('set-watch', function() {
+  options.watch = true;
 });
 
-gulp.task('assets', function(cb) {
-  gulp.src('./public/**/*')
-    .pipe(gulp.dest('./build/'));
-
-  gulp.src('./assets/fonts/*')
-    .pipe(gulp.dest('./build/fonts/'));
-
-  gulp.src('./lib/snooboots/dist/fonts/*')
-    .pipe(gulp.dest('./build/fonts'));
-
-  cb();
+gulp.task('set-prod', function() {
+  options.debug = false;
 });
 
-gulp.task('live', function(cb) {
-  var lrServer = livereload();
-  var reloadPage = function(evt) {
-    lrServer.changed(evt.path);
-  };
+gulp.task('load-prod', sequence('set-prod', 'load-tasks'));
+gulp.task('load-dev', sequence('load-tasks'));
+gulp.task('load-watch', sequence('set-watch', 'load-tasks', 'watcher'));
+gulp.task('build', sequence('clean', 'assets', ['js', 'less']));
 
-  gulp.watch([build + '/**/*'], reloadPage);
-});
-
-gulp.task('default', sequence('clean', 'assets', ['prod-js', 'prod-less']));
-gulp.task('dev', sequence('clean', 'assets', ['js', 'less']));
-gulp.task('watch', sequence('watchless', 'watchjs'));
+gulp.task('default', sequence('load-prod', 'build'));
+gulp.task('dev', sequence('load-dev', 'build'));
+gulp.task('watch', sequence('load-watch', 'build'));
