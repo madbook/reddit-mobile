@@ -18,7 +18,7 @@ class RegisterPage extends React.Component {
           emailClass = 'has-error';
           break;
         case 'PASSWORD_MATCH':
-          emailClass = 'has-error';
+          passwordClass = 'has-error';
           break;
         case 'USERNAME_TAKEN':
           usernameClass = 'has-error';
