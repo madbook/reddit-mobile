@@ -100,6 +100,11 @@ class IndexPage extends React.Component {
     }
 
     var sort = props.sort || 'hot';
+    var excludedSorts = [];
+
+    if (!props.subredditName || props.multi) {
+      excludedSorts.push('gilded');
+    }
 
     if (listings.length) {
       firstId = listings[0].name;
@@ -158,6 +163,7 @@ class IndexPage extends React.Component {
           user={ user }
           sort={ sort }
           list='listings'
+          excludedSorts={ excludedSorts }
           baseUrl={ props.url }
           loginPath={ props.loginPath }
           apiOptions={ apiOptions }

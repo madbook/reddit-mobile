@@ -21,6 +21,7 @@ class TopSubnav extends React.Component {
                app={ this.props.app }
                random={ this.props.random }
                sort={ this.props.sort }
+               excludedSorts={ this.props.excludedSorts }
                list={ this.props.list }
                baseUrl={ this.props.baseUrl }
              />;

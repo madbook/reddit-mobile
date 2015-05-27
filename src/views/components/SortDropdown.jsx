@@ -70,7 +70,14 @@ class SortDropdown extends React.Component {
   }
 
   render() {
+    var excludedSorts = this.props.excludedSorts || [];
     var list = _LISTS[this.props.list];
+
+    if (excludedSorts.length) {
+      list = list.filter(l => {
+        return !excludedSorts.includes(l.param);
+      });
+    }
 
     var baseUrl = this.props.baseUrl || '/';
 
