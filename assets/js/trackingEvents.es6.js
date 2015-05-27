@@ -50,6 +50,10 @@ var events = {
   'goto': function (query) {
     ga('send', 'event', 'goto', query);
   },
+
+  'report': function (query) {
+    ga('send', 'event', 'report');
+  },
 };
 
 function trackingEvents(app) {
