@@ -293,8 +293,9 @@ function initialize(bindLinks) {
   // Send the timings during the next cycle.
   setTimeout(function() {
     if (window.bootstrap.actionName) {
-      var timings = getTimes();
-      timings.actionName = 'm.server.' + window.bootstrap.actionName;
+      var timings = Object.assign({
+        actionName: 'm.server.' + window.bootstrap.actionName,
+      }, getTimes());
 
       var $csrf = document.getElementById('csrf-token-meta-tag');
 
