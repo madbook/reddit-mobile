@@ -35,6 +35,7 @@ class ListingDropdown extends React.Component {
     this._onReportClick = this._onReportClick.bind(this);
     this._onReportSubmit = this._onReportSubmit.bind(this);
     this._onReport = this._onReport.bind(this);
+    this._cancelBubble = this._cancelBubble.bind(this);
   }
 
   render() {
@@ -52,7 +53,7 @@ class ListingDropdown extends React.Component {
     if (this.props.token) {
       if (this.state.reportFormOpen) {
         reportForm = (
-          <form action={`/report/${ this.props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit }>
+          <form action={`/report/${ this.props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
             <div className='input-group'>
               <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
               <span className='input-group-btn'>
@@ -143,6 +144,8 @@ class ListingDropdown extends React.Component {
   }
 
   _onReportClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState({
       reportFormOpen: true,
     });
@@ -181,6 +184,10 @@ class ListingDropdown extends React.Component {
     if (this.props.onReport) {
       this.props.onReport();
     }
+  }
+
+  _cancelBubble(e) {
+    e.stopPropagation();
   }
 }
 
