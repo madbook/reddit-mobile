@@ -55,7 +55,7 @@ class Vote extends React.Component {
   }
 
   _onVote(dir) {
-    if (this.submitVote(localScore)) {
+    if (this.submitVote(dir)) {
       var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
       this.setState({localScore: localScore, score: this._score + localScore});
     }
@@ -65,6 +65,10 @@ class Vote extends React.Component {
     if (!this.props.token) {
       window.location = this.props.loginPath;
       return;
+    }
+
+    if (this.state.localScore === direction) {
+      direction = 0;
     }
 
     var vote = new models.Vote({
