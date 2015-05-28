@@ -269,7 +269,7 @@ function initialize(bindLinks) {
 
     if (window.location.host.indexOf('localhost') === -1) {
       var domain = '.' + bootstrap.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
-      options.expire = domain;
+      options.domain = domain;
     }
 
     cookies.set('__cf_mob_redir', '0', options);
