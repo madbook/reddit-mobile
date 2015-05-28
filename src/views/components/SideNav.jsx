@@ -83,7 +83,7 @@ class SideNav extends React.Component {
 
       logoutLink = (
         <li>
-          <MobileButton className='SideNav-button' href='/logout' data-no-route='true'>
+          <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
             <SnooIcon random={this.props.random}/>
             <span className='SideNav-text'>Log out</span>
           </MobileButton>
@@ -105,7 +105,7 @@ class SideNav extends React.Component {
     } else {
       loginLink = (
         <li>
-          <MobileButton className='SideNav-button' href={ this.props.loginPath } data-no-route='true'>
+          <MobileButton className='SideNav-button' href={ this.props.loginPath } noRoute='true'>
             <SnooIcon random={this.props.random}/>
             <span className='SideNav-text'>Login / Register</span>
           </MobileButton>

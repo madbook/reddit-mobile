@@ -33,7 +33,7 @@ class MobileButton extends React.Component {
     var move = this.props.move;
     var href = this.props.href;
     var click = this.props.onClick;
-    var noRoute = 'false';
+    var noRoute = this.props.noRoute || 'false';
 
     if (click) {
       noRoute = 'true';
