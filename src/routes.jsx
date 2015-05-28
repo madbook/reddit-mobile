@@ -395,6 +395,7 @@ function routes(app) {
       subredditName: ctx.params.subreddit,
       sort: ctx.query.sort,
       listingId: ctx.params.listingId,
+      commentId: ctx.params.commentId,
     });
 
     var promises = [
@@ -412,7 +413,7 @@ function routes(app) {
       props.metaDescription = `${listing.title} : ${listing.score} points and ${listing.num_comments} at reddit.com`;
     }
 
-    var key = `listing-${props.listingId}-${stringify(this.query)}`;
+    var key = `listing-${props.listingId}-${props.commentId || ''}${stringify(this.query)}`;
 
     try {
       page = (
@@ -429,10 +430,12 @@ function routes(app) {
     this.props = props;
   }
 
-  router.get('comments.listingid', '/comments/:listingId', commentsPage);
+
   router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
-  router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
+  router.get('comments.listingid', '/comments/:listingId', commentsPage);
+  router.get('comments.permalink', '/r/:subreddit/comments/:listingId/:listingTitle/:commentId', commentsPage);
   router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
+  router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
 
   router.get('user.profile', '/u/:user', function *(next) {
     var page;

@@ -77,6 +77,12 @@ class ListingPage extends React.Component {
     var loginPath = props.loginPath;
     var apiOptions = props.apiOptions;
     var random = props.random;
+    var singleComment;
+    var permalink;
+
+    if (listing) {
+      permalink = listing.cleanPermalink;
+    }
 
     if (!loading) {
       listingElement = (
@@ -110,6 +116,17 @@ class ListingPage extends React.Component {
           loginPath={ loginPath }
         />
       );
+
+      if (props.commentId) {
+        singleComment = (
+          <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
+            <p>
+              <span>You are viewing a single comment's thread. </span>
+              <a href={permalink}>View the rest of the comments</a>
+            </p>
+          </div>
+        );
+      }
     }
 
     if (this.state.data.meta && props.renderTracking) {
@@ -139,12 +156,16 @@ class ListingPage extends React.Component {
         <div className='container' key='container'>
           { listingElement }
           { commentBoxElement }
+          { singleComment }
           {
             comments.map(function(comment, i) {
               if (comment) {
                 comment = commentsMap(comment, null, author, 4, 0);
                 return (
                   <Comment
+                    subredditName={ props.subredditName }
+                    permalinkBase={ permalink }
+                    highlight={ props.commentId }
                     random={ random }
                     app={app}
                     comment={comment}
@@ -194,6 +215,12 @@ class ListingPage extends React.Component {
     }
 
     options.linkId = props.listingId;
+
+    if (props.commentId) {
+      options.query.comment = props.commentId;
+      options.query.context = props.query.context || 1;
+    }
+
     options.sort = props.sort || 'confidence';
 
     // Initialized with data already.

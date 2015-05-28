@@ -113,8 +113,6 @@ class Comment extends React.Component {
     var children;
     var vote;
 
-    var permalink = '/comment/' + comment.id + '?context=3';
-
     var distinguished = comment.distinguished ? ' text-' + comment.distinguished : '';
 
     var scoreClass = 'up';
@@ -124,13 +122,21 @@ class Comment extends React.Component {
     var highlighted = '';
     var random = props.random;
 
-    if (this.state.showTools) {
+    var permalink;
+
+    if (this.props.permalinkBase) {
+      permalink = this.props.permalinkBase + comment.id;
+    }
+
+    if (this.state.showTools || props.highlight === comment.id) {
       highlighted = 'comment-highlighted';
+
       if (this.state.showReplyBox) {
         commentBox = (
           <CommentBox {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
+
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
@@ -152,12 +158,14 @@ class Comment extends React.Component {
           <li>
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
+                subreddit={ props.subredditName }
+                permalink={ permalink }
                 onReport={ this.onReport }
-                token={ this.props.token }
-                apiOptions={ this.props.apiOptions }
-                listing={this.props.comment}
-                random={this.props.random}
-                app={this.props.app}/>
+                token={ props.token }
+                apiOptions={ props.apiOptions }
+                listing={props.comment}
+                random={props.random}
+                app={props.app}/>
             </div>
           </li>
         </ul>

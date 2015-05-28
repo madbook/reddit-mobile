@@ -596,7 +596,7 @@ class Listing extends React.Component {
 
     var extImageSource;
 
-    if (expanded) {
+    if (expanded && !(listing.domain.indexOf('self.') === 0)) {
       var url = isImgurDomain(listing.domain) ? listing.url.replace(imgMatch, '') : listing.url;
       extImageSource = (
         <div className="external-image-meta">
@@ -626,6 +626,7 @@ class Listing extends React.Component {
               </div>
               <div className='col-xs-1'>
                 <ListingDropdown
+                  subreddit={ listing.subreddit }
                   onReport={ this.onReport }
                   token={ this.props.token }
                   apiOptions={ this.props.apiOptions }

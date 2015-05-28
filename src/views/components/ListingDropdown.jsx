@@ -11,6 +11,7 @@ import MobileButton from '../components/MobileButton';
 import SnooIcon from '../components/icons/SnooIcon';
 import InfoIcon from '../components/icons/InfoIcon';
 import FlagIcon from '../components/icons/FlagIcon';
+import TextIcon from '../components/icons/TextIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
@@ -39,7 +40,8 @@ class ListingDropdown extends React.Component {
   }
 
   render() {
-    var listing = this.props.listing;
+    var props = this.props;
+    var listing = props.listing;
 
     if (this.state.localScore > 0) {
       var voteClass = ' upvoted';
@@ -50,10 +52,10 @@ class ListingDropdown extends React.Component {
     var reportLink;
     var reportForm;
 
-    if (this.props.token) {
+    if (props.token) {
       if (this.state.reportFormOpen) {
         reportForm = (
-          <form action={`/report/${ this.props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
+          <form action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
             <div className='input-group'>
               <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
               <span className='input-group-btn'>
@@ -69,7 +71,7 @@ class ListingDropdown extends React.Component {
       reportLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
-            <FlagIcon random={ this.props.random }/>
+            <FlagIcon random={ props.random }/>
             <span className='Dropdown-text'>Report this</span>
           </MobileButton>
           { reportForm }
@@ -77,13 +79,26 @@ class ListingDropdown extends React.Component {
       );
     }
 
+    var permalink;
+
+    if (props.permalink) {
+      permalink = (
+        <li className='Dropdown-li'>
+          <MobileButton className='Dropdown-button' href={ props.permalink }>
+            <TextIcon />
+            <span className='Dropdown-text'>Permalink</span>
+          </MobileButton>
+        </li>
+      );
+    }
+
     return (
-      <SeashellsDropdown app={ this.props.app } random={ this.props.random } right={ true }>
+      <SeashellsDropdown app={ props.app } random={ props.random } right={ true }>
         <li className='Dropdown-li'>
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='1'/>
             <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onUpvoteClick}>
-              <UpvoteIcon altered={this.state.localScore > 0} random={ this.props.random }/>
+              <UpvoteIcon altered={this.state.localScore > 0} random={ props.random }/>
               <span className='Dropdown-text'>Upvote</span>
             </MobileButton>
           </form>
@@ -92,7 +107,7 @@ class ListingDropdown extends React.Component {
           <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
             <input type='hidden' name='direction' value='-1'/>
             <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onDownvoteClick}>
-              <DownvoteIcon altered={this.state.localScore < 0} random={ this.props.random }/>
+              <DownvoteIcon altered={this.state.localScore < 0} random={ props.random }/>
               <span className='Dropdown-text'>Downvote</span>
             </MobileButton>
           </form>
@@ -103,10 +118,11 @@ class ListingDropdown extends React.Component {
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
+        { permalink }
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
+          <MobileButton className='Dropdown-button' href={ '/r/' + props.subreddit }>
             <SnooIcon/>
-            <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
+            <span className='Dropdown-text'>More from r/{ props.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
