@@ -1,7 +1,7 @@
-switcharoo
-==========
+reddit-mobile
+=============
 
-switcharoo is a web server and build system for building polymorphic
+reddit-mobile is a web server and build system for building polymorphic
 React applications in node or io.js. It is part of a larger series of plugins that,
 together, form frontend applications for reddit.
 
@@ -53,7 +53,7 @@ Plugins register themselves via two interfaces:
   `res.reject({ body: error, status: 400})`. (Body and status are optional in
   both cases, but should generally be added.)
   A complete example of route handling can be seen at
-  [switcharoo-plugin-core](https://github.com/reddit/switcharoo-plugin-core).
+  [routes.jsx](./src/routes.jsx).
 2. Mutators that modify the rendering of react components. An element query
   syntax is provided, documentation forthcoming.
 
