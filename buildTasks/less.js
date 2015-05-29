@@ -41,11 +41,15 @@ module.exports = function buildLess(gulp, options) {
         }),
     ]);
 
-    combined
-      .on('error', function(e) {
-        error = true;
-        notify(e);
-      });
+    // only catch errors in debug mode,
+    // otherwise prod builds won't fail
+    if (options.debug) {
+      combined
+        .on('error', function(e) {
+          error = true;
+          notify(e);
+        });
+    }
 
     cb();
   });

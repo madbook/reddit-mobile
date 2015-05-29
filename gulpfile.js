@@ -51,3 +51,12 @@ gulp.task('build', sequence('clean', 'assets', ['js', 'less']));
 gulp.task('default', sequence('load-prod', 'build'));
 gulp.task('dev', sequence('load-dev', 'build'));
 gulp.task('watch', sequence('load-watch', 'build'));
+
+// gulp seems to hang after finishing in some environments
+gulp.on('stop', function() {
+  if (!options.watch) {
+    process.nextTick(function() {
+      process.exit(0);
+    });
+  }
+});
