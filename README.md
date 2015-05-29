@@ -62,19 +62,14 @@ Getting Up and Running
 ----------------------
 
 0. Install [node.js](https://nodejs.org/download/) v0.12+ or [io.js](https://iojs.org) v1.8.1+.
-1. Make sure that npm's /node_modules/ directory is in your PATH with the variable name NODE_PATH.
-2. [Fork](https://github.com/reddit/switcharoo/fork) and clone
+1. [Fork](https://github.com/reddit/reddit-mobile/fork) and clone
   this project.
-3. Also fork and clone any plugins you plan on developing. In these, run
-  `npm link` to cause the local version of the plugin to be linked to npm.
-  You'll also want to `npm link` from within `reddit-mobile` so that plugins
-  can resolve circular dependencies.
-4. Run `npm install` to install other dependencies. `rm -rf node_modules/<plugin_name>`
-  if you are doing local plugin development as well.
-5. Run `git submodule update --init` to download this project's submodules
-6. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
-   watcher, which will include linked plugins.)
-7. Run `npm start` to start the web server. Optionally, create a startup script
+2. Run `npm install` to install other dependencies.
+3. Run `git submodule update --init` to download this project's submodules.
+4. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem
+   watcher.)
+5. Register a new [oauth application](https://www.reddit.com/prefs/apps/) and set up your [environment variables](./CONFIG.md)
+6. Run `npm start` to start the web server. Optionally, create a startup script
   at `start.sh` that sets environment variables and starts the server;
   `start.sh` has been added to the `.gitignore` and will not get checked in.
 
