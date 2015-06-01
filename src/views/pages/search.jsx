@@ -26,6 +26,11 @@ class SearchPage extends React.Component {
     };
   }
 
+  _onSubmitSearchForm(e) {
+    // Let the input change handle submission
+    e.preventDefault();
+  }
+
   _composeUrl(data) {
     var qs = { q: data.query };
     if (data.after) { qs.after = data.after; }
@@ -259,10 +264,17 @@ class SearchPage extends React.Component {
     return (
       <div className='search-main'>
         <div className="container search-bar-container">
-          <SearchBar
-            {...this.props}
-            inputChangedCallback={ this.handleInputChanged.bind(this) }
-          />
+          <form action='/search' method='GET' ref='searchForm' onSubmit={ this._onSubmitSearchForm }>
+            <div className='input-group vertical-spacing-top'>
+              <SearchBar
+                {...this.props}
+                inputChangedCallback={ this.handleInputChanged.bind(this) }
+              />
+              <span className='input-group-btn'>
+                <button className='btn btn-default' type='submit'>Search!</button>
+              </span>
+            </div>
+          </form>
         </div>
 
         { controls }
