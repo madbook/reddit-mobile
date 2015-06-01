@@ -44,7 +44,14 @@ class SideNav extends React.Component {
 
   _desktopSite(e) {
     e.preventDefault();
-    this.props.app.emit('route:desktop', this.props.url);
+    var url = this.props.url;
+    var query = '';
+
+    if (Object.keys(this.props.query).length > 0) {
+      query = '?' + querystring.stringify(this.props.query || {});
+    }
+
+    this.props.app.emit('route:desktop', `${url}${query}`);
   }
 
   _goto(e) {

@@ -274,6 +274,12 @@ function initialize(bindLinks) {
 
     cookies.set('__cf_mob_redir', '0', options);
 
+    if (route.indexOf('?') === -1) {
+      route += '?ref_source=mweb';
+    } else {
+      route += '&ref_source=mweb';
+    }
+
     window.location = `https://www.reddit.com${route}`;
   });
 
