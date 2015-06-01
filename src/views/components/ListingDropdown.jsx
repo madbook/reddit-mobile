@@ -4,8 +4,6 @@ import constants from '../../constants';
 import { models } from 'snoode';
 
 import SeashellsDropdown from '../components/SeashellsDropdown';
-import UpvoteIcon from '../components/icons/UpvoteIcon';
-import DownvoteIcon from '../components/icons/DownvoteIcon';
 import CommentIcon from '../components/icons/CommentIcon';
 import MobileButton from '../components/MobileButton';
 import SnooIcon from '../components/icons/SnooIcon';
@@ -29,10 +27,6 @@ class ListingDropdown extends React.Component {
       this.state.localScore = 0;
     }
 
-    this._onVote = this._onVote.bind(this);
-    this._onUpvoteClick = this._onUpvoteClick.bind(this);
-    this._onDownvoteClick = this._onDownvoteClick.bind(this);
-
     this._onReportClick = this._onReportClick.bind(this);
     this._onReportSubmit = this._onReportSubmit.bind(this);
     this._onReport = this._onReport.bind(this);
@@ -42,12 +36,6 @@ class ListingDropdown extends React.Component {
   render() {
     var props = this.props;
     var listing = props.listing;
-
-    if (this.state.localScore > 0) {
-      var voteClass = ' upvoted';
-    } else if (this.state.localScore < 0) {
-      voteClass = ' downvoted';
-    }
 
     var reportLink;
     var reportForm;
@@ -95,24 +83,6 @@ class ListingDropdown extends React.Component {
     return (
       <SeashellsDropdown app={ props.app } random={ props.random } right={ true }>
         <li className='Dropdown-li'>
-          <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
-            <input type='hidden' name='direction' value='1'/>
-            <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onUpvoteClick}>
-              <UpvoteIcon altered={this.state.localScore > 0} random={ props.random }/>
-              <span className='Dropdown-text'>Upvote</span>
-            </MobileButton>
-          </form>
-        </li>
-        <li className='Dropdown-li'>
-          <form className='Dropdown-form' action={'/vote/'+listing.name} method='post'>
-            <input type='hidden' name='direction' value='-1'/>
-            <MobileButton className={ `Dropdown-button ${voteClass || ''}` } type='submit' onClick={this._onDownvoteClick}>
-              <DownvoteIcon altered={this.state.localScore < 0} random={ props.random }/>
-              <span className='Dropdown-text'>Downvote</span>
-            </MobileButton>
-          </form>
-        </li>
-        <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
             <CommentIcon/>
             <span className='Dropdown-text'>View comments</span>
@@ -134,29 +104,6 @@ class ListingDropdown extends React.Component {
         { reportLink }
       </SeashellsDropdown>
     );
-  }
-
-  componentDidMount() {
-    this.props.app.on(constants.VOTE+':'+this.props.listing.id, this._onVote);
-  }
-
-  componentWillUnmount() {
-    this.props.app.off(constants.VOTE+':'+this.props.listing.id, this._onVote);
-  }
-
-  _onUpvoteClick(evt) {
-    evt.preventDefault();
-    this.props.app.emit(constants.VOTE+':'+this.props.listing.id, 1);
-  }
-
-  _onDownvoteClick(evt) {
-    evt.preventDefault();
-    this.props.app.emit(constants.VOTE+':'+this.props.listing.id, -1);
-  }
-
-  _onVote(dir) {
-    var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
-    this.setState({localScore: localScore});
   }
 
   _onReportClick(e) {
