@@ -27,6 +27,7 @@ import RegisterPage from './views/pages/register';
 import Layout from './views/layouts/DefaultLayout';
 import BodyLayout from './views/layouts/BodyLayout';
 import TextSubNav from './views/components/TextSubNav';
+import SubmitPage from './views/pages/submit';
 
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
@@ -38,6 +39,7 @@ function routes(app) {
       icon: s.icon,
       display_name: s.display_name,
       url: s.url,
+      submit_text: s.submit_text,
     }
   }
 
@@ -509,6 +511,48 @@ function routes(app) {
           </TextSubNav>
           <UserProfilePage {...props} key={ key } app={app} />
         </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  router.get('submit', '/submit', function *(next) {
+    var page;
+    var ctx = this;
+    var sub;
+
+    if (ctx.query) {
+      sub = ctx.query.subreddit || '';
+    }
+
+    if (!ctx.token) {
+      var subreddit = '';
+      if (sub) {
+        subreddit = '?subreddit=' + sub;
+      }
+
+      return ctx.redirect('/login?originalUrl=%2Fsubmit' + subreddit)
+    }
+
+    var props = buildProps(this, {
+      subredditName: sub,
+    });
+
+    var promises = [
+    ];
+
+    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.user = user;
+    props.subscriptions = subscriptions;
+
+    try {
+      page = (
+        <SubmitPage {...props} app={app} />
       );
     } catch (e) {
       return app.error(e, this, next);

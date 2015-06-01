@@ -17,10 +17,17 @@ class SeashellsDropdown extends React.Component {
   }
 
   render() {
+    var reversed = this.props.reversed || false;
     var opened = this.state.opened;
-    var button = <button className='SeashellsDropdown-button'><SeashellIcon played={opened} /></button>;
+    var button = <button type='button' className='SeashellsDropdown-button'><SeashellIcon played={opened} /></button>;
     return (
-      <Dropdown app={ this.props.app } right={ true } button={ button } id={ this._id }>
+      <Dropdown 
+        app={ this.props.app }
+        right={ true }
+        button={ button }
+        id={ this._id }
+        reversed={ reversed }
+      >
         {this.props.children}
       </Dropdown>
     );

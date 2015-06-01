@@ -1,0 +1,146 @@
+.Submit-form {
+  .display-flex();
+  .flex-direction(column);
+  .flex-wrap(nowrap);
+  height: 100%;
+  min-height: 400px;
+}
+
+.Submit-header {
+  background-color: @white;
+  padding: 8px 10px;
+  height: @top-nav-height;
+  border-bottom: @gray-border;
+  .flex(0, 0, 45px);
+
+  .close {
+    margin: 0 5px;
+  }
+}
+
+.alert.Submit-alert-bar {
+  margin: 0px -5px;
+}
+
+.Submit-header-text {
+  color: @black;
+  font-size: @font-size-h4;
+  margin-left: 8px;
+  position: relative;
+  top: 2px;
+}
+
+.Submit-close {
+  font-size: 1.3em;
+}
+
+.temp-icon {
+  font-size: @icon-size;
+}
+
+.Submit-title {
+  border-bottom: @gray-border;
+  background-color: @white;
+  margin-right: 20px;
+  min-height: 50px;
+}
+
+.form-control.full-screen-textarea {
+  border: none;
+  padding: 10px;
+  resize: none;
+  font-size: 1.3em;
+}
+
+.Submit-body {
+  .display-flex();
+  .flex(1, 1, 200px);
+  .flex-direction(column);
+}
+
+.form-control.Submit-body-text {
+  padding: 10px;
+  border: none;
+  resize: none;
+  .flex(1, 1, 200px);
+}
+
+.Submit-subreddit-choice {
+  border: none;
+}
+
+.Submit-main-form-wrap {
+  position: relative;
+  .flex(1, 1, 300px);
+  .display-flex();
+  .flex-direction(column);
+}
+
+.Submit-sendreplies-box {
+  position: absolute;
+  right: 15px;
+  height: 45px;
+  padding-top: 5px;
+  bottom: -50px;
+}
+
+.Submit-captcha-heading {
+  max-width: 220px;
+  margin: 0 auto 10px;
+  font-size: 1.4em;
+}
+
+// subreddit-selection
+
+.sub-selection-wrapper {
+  padding: @grid-gutter-width;
+}
+
+.sub-selection-option {
+  border-bottom: @gray-border;
+  position: relative;
+}
+
+.sub-icon-placeholder {
+  border-radius: 30px;
+  background-color: @light-gray;
+  width:20px;
+  height: 20px;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.sub-selection-heading {
+  height: @top-nav-height;
+  background-color: @white;
+  font-size: 1.3em;
+  padding: 10px;
+}
+
+.form-control.search-gray-lg {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.sub-selection-selected {
+  height: @top-nav-height;
+  padding: 15px;
+}
+
+.sub-selection-btn {
+  padding: 10px;
+  width: 85%;
+  text-align: left;
+}
+
+.sub-selection-menu {
+  position: absolute;
+  top: 9px;
+  right: 15px;
+}
+
+.sub-selection-rules {
+  background-color: white;
+  padding: 5px;
+}

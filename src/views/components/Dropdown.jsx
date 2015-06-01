@@ -20,12 +20,20 @@ class Dropdown extends React.Component {
     var className = 'Dropdown ' + (this.props.className || '');
     className += (this.state.opened ? ' opened' : '');
     className += (this.props.right ? ' pull-right' : '');
+
+    var pointer = 'stalagmite';
+    var tabClass = 'Dropdown-tab shadow tween';
+    if (this.props.reversed) {
+      pointer = 'stalactite';
+      tabClass += ' Dropdown-reverse-tab';
+    }
+
     return (
       <div className={className} onMouseEnter={ this.state.touch ? null : this._onMouseEnter }
            onMouseLeave={ this.state.touch ? null : this._onMouseLeave } onClick={ this.state.touch ? this._onClick : null }>
         { this.props.button }
-        <div className='Dropdown-tab shadow tween'>
-          <div className={'stalagmite' + (this.props.right ? ' pull-right' : '')}></div>
+        <div className={ tabClass }>
+          <div className={pointer + (this.props.right ? ' pull-right' : '')}></div>
           <ul className='Dropdown-ul list-unstyled'>
             { this.props.children }
           </ul>

@@ -37,6 +37,16 @@
           flex-direction: @direction;
 }
 
+.flex(@grow, @shrink, @minHeight) {
+  -webkit-flex: @grow @shrink @minHeight;
+          flex: @grow @shrink @minHeight;
+ }
+
+.flex-wrap(@value) {
+  -webkit-flex-wrap: @value;
+          flex-wrap: @value;
+}
+
 .justify-content(@alignment) {
   -webkit-justify-content: @alignment;
           justify-content: @alignment;

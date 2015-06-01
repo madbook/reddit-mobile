@@ -72,7 +72,7 @@ class MobileButton extends React.Component {
       );
     } else {
       return (
-        <button {...props} onClick={ click }>
+        <button type='button' {...props} onClick={ click }>
           { this.renderChildren() }
         </button>
       );
