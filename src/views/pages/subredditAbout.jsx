@@ -114,8 +114,10 @@ class SubredditAboutPage extends React.Component {
       return defer.promise;
     }
 
-    api.subreddits.get(options).done(function (data) {
+    api.subreddits.get(options).then(function (data) {
       defer.resolve(data);
+    }, function(error) {
+      defer.reject(error);
     });
 
     return defer.promise;

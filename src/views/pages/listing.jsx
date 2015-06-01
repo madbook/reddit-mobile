@@ -254,12 +254,14 @@ class ListingPage extends React.Component {
       return defer.promise;
     }
 
-    api.comments.get(options).done(function(data){
+    api.comments.get(options).then(function(data){
       data.data.comments = data.data.comments.map(function(comment){
         return mapComment(comment);
       });
 
       defer.resolve(data);
+    }, function(error) {
+      defer.reject(error);
     });
 
     return defer.promise;

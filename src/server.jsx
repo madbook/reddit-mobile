@@ -355,8 +355,10 @@ class Server {
 
           app.setTokenCookie(this, token);
         } catch (e) {
-          this.redirect('/logout');
-          return;
+          // server errored, continue as logged out for now
+          if (app.config.debug) {
+            console.log(e);
+          }
         }
 
         yield next;

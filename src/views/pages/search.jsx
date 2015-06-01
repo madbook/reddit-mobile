@@ -324,9 +324,11 @@ class SearchPage extends React.Component {
       return defer.promise;
     }
 
-    api.search.get(options).done(function (data) {
+    api.search.get(options).then(function (data) {
       data = data || {};
       defer.resolve(data);
+    }, function(error) {
+      defer.reject(error);
     });
 
     return defer.promise;
