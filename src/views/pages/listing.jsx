@@ -14,7 +14,6 @@ import TopSubnav from '../components/TopSubnav';
 class ListingPage extends React.Component {
   constructor(props) {
     super(props);
-    
 
     this.props = props;
 
@@ -56,7 +55,7 @@ class ListingPage extends React.Component {
     this.state.data.data.comments.splice(0, 0, comment);
 
     this.setState({
-      data: this.props.data,
+      data: this.state.data,
     });
   }
 
