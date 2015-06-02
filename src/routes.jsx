@@ -707,7 +707,7 @@ function routes(app) {
   }
 
   router.get('/goto', function * () {
-    let location = this.query.location;
+    let location = this.query.location.toLowerCase();
     let token = this.token;
     let apiOptions;
     let result;
