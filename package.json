@@ -1,6 +1,6 @@
 {
   "name": "reddit-mobile",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "",
   "main": "src/app.es6.js",
   "scripts": {
@@ -30,10 +30,10 @@
     "moment": "2.9.0",
     "q": "1.2.0",
     "react": "0.13.3",
-    "reddit-text-js": "0.5.3",
+    "reddit-text-js": "0.5.4",
     "scmp": "1.0.0",
     "simple-oauth2": "0.2.1",
-    "snoode": "1.5.5",
+    "snoode": "1.5.6",
     "superagent": "1.2.0",
     "uuid": "2.0.1"
   },
