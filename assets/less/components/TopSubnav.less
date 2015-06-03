@@ -19,9 +19,13 @@
     color: inherit;
     text-decoration: none;
 
-    &:hover {
+    &:hover, &:visited {
       color: inherit;
       text-decoration: none;
+    }
+
+    &:active {
+      color: lighten(@blue, 20%);
     }
   }
 

@@ -1,5 +1,13 @@
 a {
   color: @blue;
+
+  &:active {
+    color: lighten(@blue, 20%);
+  }
+
+  &:visited {
+    color: lighten(@blue, 40%);
+  }
 }
 
 a.voted.text-upvote:hover,
@@ -131,8 +139,13 @@ a.voted.text-downvote:focus,
 }
 
 .text-muted a,
+.text-muted a:visited,
 .text-muted a:hover {
   &:extend(.text-muted);
+}
+
+.text-muted a:active {
+  color: lighten(@gray-light, 20%);
 }
 
 .text-link,

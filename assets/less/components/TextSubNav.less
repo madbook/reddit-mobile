@@ -25,9 +25,13 @@
         .tween;
         margin: 0 15px;
 
-        &:hover, &.active {
+        &:hover, &:visited {
           text-decoration: none;
           color: @black;
+        }
+
+        &:active {
+          color: lighten(@black, 20%);
         }
       }
 

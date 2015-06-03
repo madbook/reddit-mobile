@@ -68,6 +68,14 @@
     font-size: @font-size-large;
     color: @black;
 
+    &:active {
+      color: lighten(@black, 20%);
+    }
+
+    &:visited {
+      color: lighten(@black, 40%);
+    }
+
     &.text-admin {
       color: @admin-text;
     }

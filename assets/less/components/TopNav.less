@@ -121,11 +121,15 @@
     display: inline-block;
   }
 
-    .TopNav-a, .TopNav-a:hover {
+    .TopNav-a, .TopNav-a:hover, .TopNav-a:visited {
       color: inherit;
       text-decoration: none;
       display: inline-block;
       height: 100%;
+    }
+
+    .TopNav-a:active {
+      color: lighten(@text-color, 20%);
     }
 
   .TopNav-post {
