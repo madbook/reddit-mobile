@@ -14,6 +14,14 @@
     width: 100%;
   }
 
+  a, a:visited, a:hover {
+    color: @text-color;
+  }
+
+  a:active {
+    color: lighten(@text-color, 20%);
+  }
+
   &.opened {
     // TODO: revist this after doing old android testing
     // height: calc(100% ~'-' @top-nav-height);

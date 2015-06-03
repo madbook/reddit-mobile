@@ -4,6 +4,8 @@ import moment from 'moment';
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
+const subredditRegex = /\/\/www.reddit.com\/r\/([^/]*)/;
+
 class CommentPreview extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,14 @@ class CommentPreview extends React.Component {
     var comment = this.props.comment;
     var submitted = short(comment.created_utc * 1000);
 
+    // such hack wow many fragile code
+    var match = comment.link_url.match(subredditRegex);
+    var subreddit;
+
+    if (match) {
+      subreddit = match[1];
+    }
+
     return (
       <div className='panel'>
         <div className='panel-body'>
@@ -32,8 +42,8 @@ class CommentPreview extends React.Component {
                 { comment.link_title }
               </a>
               <span className='text-muted'> in </span>
-              <a href={ `/r/${comment.subreddit}` }>
-                r/{ comment.subreddit }
+              <a href={ `/r/${subreddit}` }>
+                r/{ subreddit }
               </a>
             </div>
 

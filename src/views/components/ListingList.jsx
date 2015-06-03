@@ -39,7 +39,7 @@ class ListingList extends React.Component {
     var winHeight = window.innerHeight * 2;
     for (var i = 0; i < this.length; i++) {
       var ref = this.refs['listing' + i];
-      if (ref) {
+      if (ref && ref.checkPos) {
         var keepGoing = ref.checkPos(winHeight);
         if (!keepGoing) {
           if (i === this.state.adLocation) {
