@@ -641,7 +641,7 @@ function routes(app) {
       UserSavedPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
 
     Object.assign(props, {
       data: data,
