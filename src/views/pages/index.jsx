@@ -156,6 +156,13 @@ class IndexPage extends React.Component {
           experiments={ props.experiments }
         />);
     }
+
+    var showAds = !!props.adsPath;
+
+    if (props.prefs && props.prefs.hide_ads === true) {
+      showAds = false;
+    }
+
     return (
       <div>
         { loading }
@@ -174,7 +181,7 @@ class IndexPage extends React.Component {
 
         <div className={'container listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
-            showAds={ !!props.adsPath }
+            showAds={ showAds }
             adsPath={ props.adsPath }
             random={ props.random }
             listings={listings}
