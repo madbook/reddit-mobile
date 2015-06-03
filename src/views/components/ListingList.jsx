@@ -99,6 +99,7 @@ class ListingList extends React.Component {
 
     var listings = (
       props.listings.map(function(listing, i) {
+
         var index = (page * 25) + i;
         if (listing._type === 'Comment') {
           return (
@@ -111,7 +112,7 @@ class ListingList extends React.Component {
             />
           );
         } else {
-          if (!listing.hidden) {
+          if (props.showHidden || !listing.hidden) {
             return (
               <Listing
                 ref={'listing' + i}

@@ -25,6 +25,7 @@ class Comment extends React.Component {
       optionsOpen: false,
       reported: false,
       savedReply: '',
+      hidden: false,
     }
   }
 
@@ -45,6 +46,10 @@ class Comment extends React.Component {
 
   onReport () {
     this.setState({ reported: true });
+  }
+
+  onHide () {
+    this.setState({ hidden: true });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -108,6 +113,10 @@ class Comment extends React.Component {
   }
 
   render () {
+    if (this.state.hidden) {
+      return (<div />);
+    }
+
     if (this.state.reported) {
       return (<ReportPlaceholder />);
     }
@@ -175,6 +184,7 @@ class Comment extends React.Component {
           <li>
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
+                saved={ props.comment.saved }
                 subreddit={ props.subredditName }
                 permalink={ permalink }
                 onReport={ this.onReport }

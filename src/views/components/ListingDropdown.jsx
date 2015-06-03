@@ -10,12 +10,18 @@ import SnooIcon from '../components/icons/SnooIcon';
 import InfoIcon from '../components/icons/InfoIcon';
 import FlagIcon from '../components/icons/FlagIcon';
 import TextIcon from '../components/icons/TextIcon';
+import SaveIcon from '../components/icons/SaveIcon';
+import SettingsIcon from '../components/icons/SettingsIcon';
+import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      saved: props.listing.saved,
+      hidden: props.listing.hidden,
+    };
 
     var likes = props.listing.likes;
 
@@ -31,6 +37,9 @@ class ListingDropdown extends React.Component {
     this._onReportSubmit = this._onReportSubmit.bind(this);
     this._onReport = this._onReport.bind(this);
     this._cancelBubble = this._cancelBubble.bind(this);
+
+    this._onHideClick = this._onHideClick.bind(this);
+    this._onSaveClick = this._onSaveClick.bind(this);
   }
 
   render() {
@@ -39,6 +48,9 @@ class ListingDropdown extends React.Component {
 
     var reportLink;
     var reportForm;
+
+    var hideLink;
+    var saveLink;
 
     if (props.token) {
       if (this.state.reportFormOpen) {
@@ -65,6 +77,47 @@ class ListingDropdown extends React.Component {
           { reportForm }
         </li>
       );
+
+      var saveIcon;
+      var saveText = 'Save';
+
+      var hideIcon;
+      var hideText = 'Hide';
+
+
+      if (this.state.saved) {
+        saveIcon = (<span className='text-success'><SaveIcon /></span>);
+        saveText = 'Saved';
+      } else {
+        saveIcon = (<SaveIcon />);
+      }
+
+      if (this.state.hidden) {
+        hideIcon = (<span className='text-danger'><SettingsIcon /></span>);
+        hideText = 'Hidden';
+      } else {
+        hideIcon = (<SettingsIcon />);
+      }
+
+      saveLink = (
+        <li className='Dropdown-li'>
+          <MobileButton className='Dropdown-button' onClick={ this._onSaveClick }>
+            {saveIcon}
+            <span className='Dropdown-text'>{saveText}</span>
+          </MobileButton>
+        </li>
+      );
+
+      if (this.props.showHide) {
+        hideLink = (
+          <li className='Dropdown-li'>
+            <MobileButton className='Dropdown-button' onClick={ this._onHideClick }>
+              {hideIcon}
+              <span className='Dropdown-text'>{hideText}</span>
+            </MobileButton>
+          </li>
+        );
+      }
     }
 
     var permalink;
@@ -101,6 +154,8 @@ class ListingDropdown extends React.Component {
             <span className='Dropdown-text'>About { listing.author }</span>
           </MobileButton>
         </li>
+        { saveLink }
+        { hideLink }
         { reportLink }
       </SeashellsDropdown>
     );
@@ -112,6 +167,51 @@ class ListingDropdown extends React.Component {
     this.setState({
       reportFormOpen: true,
     });
+  }
+
+  _onSaveClick(e) {
+    e.preventDefault();
+
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+
+    options = Object.assign(options, {
+      id: this.props.listing.name,
+    });
+
+    if (this.state.saved) {
+      this.props.app.api.saved.delete(options).done(() => { });
+      this.setState({ saved: false });
+    } else {
+      this.props.app.api.saved.post(options).done(() => { });
+      this.setState({ saved: true });
+    }
+
+    if (this.props.onSave) {
+      this.props.onSave();
+    }
+  }
+
+  _onHideClick(e) {
+    e.preventDefault();
+    // api call
+    this.props.app.emit('hide', this.props.listing.id);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+
+    options = Object.assign(options, {
+      id: this.props.listing.name,
+    });
+
+    if (this.state.hidden) {
+      this.props.app.api.hidden.delete(options).done(() => { });
+      this.setState({ hidden: false });
+    } else {
+      this.props.app.api.hidden.post(options).done(() => { });
+      this.setState({ hidden: true });
+    }
+
+    if (this.props.onHide) {
+      this.props.onHide();
+    }
   }
 
   _onReportSubmit(e) {

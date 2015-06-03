@@ -10,6 +10,7 @@ import MailIcon from '../components/icons/MailIcon';
 import SettingsIcon from '../components/icons/SettingsIcon';
 import SnooIcon from '../components/icons/SnooIcon';
 import TwirlyIcon from '../components/icons/TwirlyIcon';
+import SaveIcon from '../components/icons/SaveIcon';
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -77,14 +78,35 @@ class SideNav extends React.Component {
     var twirly = this.state.twirly;
     var isAbout = twirly === 'about';
     var isSubreddits = twirly === 'subreddits';
+    var isUser = twirly === 'user';
 
     if (user) {
       loginLink = (
-        <li>
-          <MobileButton className='SideNav-button' href={ '/u/' + user.name }>
-            <SnooIcon random={this.props.random}/>
+        <li className={'SideNav-dropdown' + (isUser ? ' opened' : '')}>
+          <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'user')}>
+            <TwirlyIcon altered={isUser}/>
             <span className='SideNav-text'>{ user.name }</span>
           </MobileButton>
+          <ul className='SideNav-ul list-unstyled'>
+            <li>
+              <MobileButton className='SideNav-button' href={ `/u/${user.name}` }>
+                <SnooIcon random={this.props.random}/>
+                <span className='SideNav-text'>My Profile</span>
+              </MobileButton>
+            </li>
+            <li>
+              <MobileButton className='SideNav-button' href={ `/u/${user.name}/saved` }>
+                <SaveIcon random={this.props.random}/>
+                <span className='SideNav-text'>Saved</span>
+              </MobileButton>
+            </li>
+            <li>
+              <MobileButton className='SideNav-button' href={ `/u/${user.name}/hidden` }>
+                <SettingsIcon random={this.props.random}/>
+                <span className='SideNav-text'>Hidden</span>
+              </MobileButton>
+            </li>
+          </ul>
         </li>
       );
 

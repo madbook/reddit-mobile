@@ -69,6 +69,7 @@ class Listing extends React.Component {
       loaded: false,
       tallestHeight: 0,
       reported: false,
+      hidden: false,
     };
 
     if (typeof window !== 'undefined') {
@@ -88,10 +89,15 @@ class Listing extends React.Component {
     this._loadContent = this._loadContent.bind(this);
     this.resize = this.resize.bind(this);
     this.onReport = this.onReport.bind(this);
+    this.onHide = this.onHide.bind(this);
   }
 
   onReport () {
     this.setState({ reported: true });
+  }
+
+  onHide () {
+    this.setState({ hidden: true });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -495,6 +501,10 @@ class Listing extends React.Component {
   }
 
   render() {
+    if (this.state.hidden) {
+      return (<div />);
+    }
+
     if (this.state.reported) {
       return (<ReportPlaceholder />);
     }
@@ -626,8 +636,11 @@ class Listing extends React.Component {
               </div>
               <div className='col-xs-1'>
                 <ListingDropdown
+                  showHide={ true }
+                  saved={ listing.saved }
                   subreddit={ listing.subreddit }
                   onReport={ this.onReport }
+                  onHide={ this.onHide }
                   token={ this.props.token }
                   apiOptions={ this.props.apiOptions }
                   listing={listing}

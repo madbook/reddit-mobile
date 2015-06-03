@@ -19,6 +19,7 @@ import SearchPage from './views/pages/search';
 import UserProfilePage from './views/pages/userProfile';
 import UserGildPage from './views/pages/userGild';
 import UserActivityPage from './views/pages/userActivity';
+import UserSavedPage from './views/pages/userSaved';
 import ErrorPage from './views/pages/error';
 import FAQPage from './views/pages/faq';
 import LoginPage from './views/pages/login';
@@ -614,6 +615,65 @@ function routes(app) {
     this.body = page;
     this.layout = Layout;
     this.props = props;
+  });
+
+  function * saved (hidden=false) {
+    var page;
+    var sort = this.query.sort || 'hot';
+
+    var ctx = this;
+    var savedText = 'saved';
+
+    if (hidden) {
+      savedText = 'hidden';
+    }
+
+    var props = buildProps(ctx, {
+      userName: ctx.params.user,
+      after: ctx.query.after,
+      before: ctx.query.before,
+      page: parseInt(ctx.query.page) || 0,
+      sort: sort,
+      hidden: hidden,
+    });
+
+    var promises = [
+      UserSavedPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+
+    Object.assign(props, {
+      data: data,
+      user: user,
+      subscriptions: subscriptions,
+      title: `${savedText} links`,
+      metaDescription: `u/${user}'s saved links on reddit.com`,
+    });
+
+    try {
+      var key = 'saved-' + hidden.toString() + stringify(this.query);
+
+      page = (
+        <BodyLayout {...props} app={app}>
+          <UserSavedPage {...props} key={ key } app={app}/>
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  }
+
+  router.get('saved', '/u/:user/saved', function * () {
+    yield saved.call(this, false);
+  });
+
+  router.get('hidden', '/u/:user/hidden', function * () {
+    yield saved.call(this, true);
   });
 
   router.get('static.faq', '/faq', function * () {

@@ -5,10 +5,9 @@ import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import ListingList from '../components/ListingList';
-import UserActivitySubnav from '../components/UserActivitySubnav';
 import TrackingPixel from '../components/TrackingPixel';
 
-class UserActivityPage extends React.Component {
+class UserSavedPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +21,7 @@ class UserActivityPage extends React.Component {
   }
 
   componentDidMount() {
-    UserActivityPage.populateData(this.props.api, this.props, true).done((function(data) {
+    UserSavedPage.populateData(this.props.api, this.props, true).done((function(data) {
       this.setState({
         data: data,
         loaded: true,
@@ -58,6 +57,12 @@ class UserActivityPage extends React.Component {
       );
     }
 
+    var title = 'Saved';
+
+    if (props.hidden) {
+      title = 'Hidden';
+    }
+
     var page = props.page || 0;
     var api = props.api;
     var token = props.token;
@@ -89,36 +94,41 @@ class UserActivityPage extends React.Component {
         />);
     }
 
-    return (
-      <div className="user-page user-activity">
-        <UserActivitySubnav
-          app={ app }
-          random={ props.random }
-          sort={ sort }
-          name={ name }
-          activity={ props.activity }
-          user={ user }
-          loginPath={ props.loginPath } />
+    var noLinks;
+    if (this.state.loaded && activities.length === 0) {
+      noLinks = (
+        <div className='alert alert-info vertical-spacing-top'>
+          <p>{ `You have no ${title.toLowerCase()} links or comments.` }</p>
+        </div>
+      );
+    }
 
+    return (
+      <div className='user-page user-saved'>
         { loading }
 
-        <div className={'container listing-container'} >
-          <ListingList
-            listings={activities}
-            firstPage={page}
-            random={ props.random }
-            https={ props.https }
-            httpsProxy={ props.httpsProxy }
-            app={app}
-            page={page}
-            hideSubredditLabel={false}
-            user={user}
-            token={token}
-            api={api}
-            hideUser={ true }
-            loginPath={ loginPath }
-            apiOptions={ props.apiOptions }
-          />
+        <div className='container listing-container' >
+          <div className='vertical-spacing-top'>
+            { noLinks }
+            <ListingList
+              showHidden={true}
+              listings={activities}
+              firstPage={page}
+              random={ props.random }
+              https={ props.https }
+              httpsProxy={ props.httpsProxy }
+              app={app}
+              page={page}
+              hideSubredditLabel={false}
+              user={user}
+              token={token}
+              api={api}
+              hideUser={ false }
+              loginPath={ loginPath }
+              compact={props.compact}
+              apiOptions={ props.apiOptions }
+            />
+          </div>
         </div>
 
         { tracking }
@@ -137,7 +147,6 @@ class UserActivityPage extends React.Component {
     }
 
     var options = api.buildOptions(props.apiOptions);
-    options.activity = props.activity || 'comments';
 
     if (props.after) {
       options.query.after = props.after;
@@ -159,7 +168,13 @@ class UserActivityPage extends React.Component {
       return defer.promise;
     }
 
-    api.activities.get(options).then(function(data) {
+    var saved = api.saved;
+
+    if (props.hidden) {
+      saved = api.hidden;
+    }
+
+    saved.get(options).then(function(data) {
       defer.resolve(data);
     }, function(error) {
       defer.reject(error);
@@ -169,4 +184,4 @@ class UserActivityPage extends React.Component {
   }
 }
 
-export default UserActivityPage;
+export default UserSavedPage;
