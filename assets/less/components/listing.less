@@ -302,17 +302,14 @@
   position: relative;
   background-color: @light-gray;
   flex-direction: column;
-  display: flex !important;
   align-items: center;
   justify-content: center;
   display: block;
-
-  &:not(.compact) {
-    padding: 0 20px;
-  }
+  width: 100%;
 
   &:not(.compact) {
     height: 140px;
+    padding: 2em 20px 1.6em;
   }
 }
 
@@ -321,13 +318,14 @@
   font-size: 18px;
   max-width: 300px;
   text-align: center;
-  margin: 5px 0;
+  margin: 0 auto;
 
   &.outlined {
     line-height: 0;
     width: 100%;
     border-radius: 3px;
     border: 1px solid @white;
+    margin-top: 5px;
     padding: 20px;
   }
 
