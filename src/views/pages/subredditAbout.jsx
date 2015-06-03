@@ -6,6 +6,8 @@ import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import TopSubnav from '../components/TopSubnav';
 
+import process from 'reddit-text-js';
+
 class SubredditAboutPage extends React.Component {
   constructor(props) {
     super(props);
@@ -60,13 +62,14 @@ class SubredditAboutPage extends React.Component {
     var htmlDump;
     if (!loading) {
       var data = this.state.data.data;
+
       htmlDump = [
         <ul className='subreddit-about-numbers' key='subreddit-about-numbers'>
           <li>{ `${data.subscribers} readers` }</li>
           <li>{ `${data.accounts_active} users here now` }</li>
         </ul>,
         <div className='subreddit-about-rules' key='subreddit-about-rules'
-          dangerouslySetInnerHTML={{ __html: data.description_html }}>
+          dangerouslySetInnerHTML={{ __html: process(data.description) }}>
         </div>
       ];
     }
