@@ -124,9 +124,11 @@ var oauthRoutes = function(app) {
     return new Promise(function(resolve, reject) {
       let endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
 
+      let cookie = ctx.headers['cookie'].replace(/__cf_mob_redir=1/, '__cf_mob_redir=0');
+
       let headers = {
         'User-Agent': ctx.headers['user-agent'],
-        cookie: ctx.headers['cookie'].replace(/__cf_mob_redir=1/, '__cf_mob_redir=0'),
+        cookie: cookie,
         'accept-encoding': ctx.headers['accept-encoding'],
         'accept-language': ctx.headers['accept-language'],
       };
@@ -148,9 +150,23 @@ var oauthRoutes = function(app) {
           let modhash = res.body.data.modhash;
           let endpoint = app.config.nonAuthAPIOrigin + '/api/v1/authorize';
 
+          let redirect_uri = app.config.origin + '/oauth2/token';
+
+          let clientId;
+          let clientSecret;
+
+          if (app.config.oauth.secretClientId) {
+            clientId = app.config.oauth.secretClientId;
+            clientSecret = app.config.oauth.secretSecret;
+          } else {
+            clientId = app.config.oauth.clientId;
+            clientSecret = app.config.oauth.secret;
+          }
+
+
           let postParams = {
-            client_id: app.config.oauth.clientId,
-            redirect_uri: app.config.origin + '/oauth2/token',
+            client_id: clientId,
+            redirect_uri: redirect_uri,
             scope: SCOPE,
             state: modhash,
             duration: 'permanent',
@@ -182,11 +198,11 @@ var oauthRoutes = function(app) {
               let postData = {
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: app.config.origin + '/oauth2/token',
+                redirect_uri: redirect_uri,
               };
 
               let b = new Buffer(
-                app.config.oauth.clientId + ':' + app.config.oauth.secret
+                clientId + ':' + clientSecret
               );
 
               let s = b.toString('base64');

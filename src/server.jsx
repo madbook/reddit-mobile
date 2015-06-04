@@ -341,11 +341,11 @@ class Server {
         return;
       }
 
-       let session = this.cookies.get('reddit_session');
+      let session = this.cookies.get('reddit_session');
 
       if (!this.token &&
           !this.cookies.get('token') &&
-          this.cookies.get('reddit_session')) {
+          session) {
 
         try {
           var token = yield app.convertSession(this, session);
@@ -357,7 +357,7 @@ class Server {
         } catch (e) {
           // server errored, continue as logged out for now
           if (app.config.debug) {
-            console.log(e);
+            console.log(e, e.stack);
           }
         }
 
@@ -370,6 +370,7 @@ class Server {
 
   checkToken (app) {
     return function * (next) {
+
       var now = new Date();
       var expires = this.cookies.get('tokenExpires');
 
@@ -396,6 +397,10 @@ class Server {
 
           app.setTokenCookie(this, token);
         } catch (e) {
+          if (app.config.debug) {
+            console.log(e, e.stack);
+          }
+
           this.cookies.set('tokenExpires');
           this.cookies.set('token');
           this.cookies.set('refreshToken');
