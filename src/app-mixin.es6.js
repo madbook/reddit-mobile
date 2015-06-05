@@ -39,6 +39,13 @@ function mixin (App) {
         super.error(e, ctx, app);
       }
     }
+
+    safeStringify (obj) {
+      return JSON.stringify(obj)
+        .replace(/&/g, '\\u0026')
+        .replace(/</g, '\\u003C')
+        .replace(/>/g, '\\u003E');
+    }
   }
 
   return MixedInApp;

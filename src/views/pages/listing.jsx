@@ -10,6 +10,8 @@ import CommentBox from '../components/CommentBox';
 import Comment from '../components/Comment';
 import TopSubnav from '../components/TopSubnav';
 
+import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
+
 class ListingPage extends React.Component {
   constructor(props) {
     super(props);
@@ -160,6 +162,16 @@ class ListingPage extends React.Component {
     return (
       <div className='listing-main'>
         { loading }
+
+        <GoogleCarouselMetadata
+          app={ props.app }
+          url={ props.url }
+          origin={ props.origin }
+          show={ props.isGoogleCrawler }
+          listing={listing}
+          comments={comments}
+        />
+
         <TopSubnav
           app={ app }
           user={ user }

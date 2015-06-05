@@ -208,6 +208,7 @@ function routes(app) {
       assetPath: app.getConfig('assetPath'),
       loginPath: app.getConfig('loginPath'),
       adsPath: app.getConfig('adsPath'),
+      origin: app.getConfig('origin'),
       propertyId: app.getConfig('googleAnalyticsId'),
       showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
@@ -217,6 +218,7 @@ function routes(app) {
       query: ctx.query,
       params: ctx.params,
       url: ctx.path,
+      isGoogleCrawler: ctx.isGoogleCrawler,
       renderTracking: app.getConfig('renderTracking'),
       apiOptions: {
         useCache: ctx.useCache,
