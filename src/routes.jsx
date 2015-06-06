@@ -205,6 +205,8 @@ function routes(app) {
       httpsProxy: app.getConfig('httpsProxy'),
       env: app.getConfig('env'),
       reddit: app.getConfig('reddit'),
+      nonAuthAPIOrigin: app.getConfig('nonAuthAPIOrigin'),
+      authAPIOrigin: app.getConfig('authAPIOrigin'),
       minifyAssets: app.getConfig('minifyAssets'),
       manifest: app.getConfig('manifest'),
       assetPath: app.getConfig('assetPath'),
