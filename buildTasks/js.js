@@ -56,6 +56,7 @@ module.exports = function buildJS(gulp, options) {
       .require('moment')
       .require('q')
       .require('react')
+      .require('dom-serializer')
       .require('reddit-text-js')
       .require('superagent');
 

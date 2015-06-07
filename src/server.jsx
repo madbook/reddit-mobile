@@ -68,6 +68,37 @@ function skipAuth(app, url) {
   );
 }
 
+function setCompact(ctx, app) {
+  if (ctx.compact !== undefined) {
+    return;
+  }
+
+  let compact = (ctx.cookies.get('compact') || '').toString() === 'true';
+
+  let cookieOptions = {
+    secure: app.getConfig('https'),
+    secureProxy: app.getConfig('httpsProxy'),
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+  };
+
+  let ua = ctx.headers['user-agent'];
+
+  // Set compact for opera mini
+  if (ua.match(/(opera mini|android 2)/i)) {
+    compact = true;
+  }
+
+  if (ctx.query.compact === 'on') {
+    compact = true;
+  } else if (ctx.query.compact === 'off') {
+    compact = false;
+  }
+
+  ctx.cookies.set('compact', compact, cookieOptions);
+  ctx.compact = compact;
+}
+
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
@@ -220,12 +251,10 @@ class Server {
 
         if (bucket < bucketSize) {
           this.compact = true;
-          this.compactTest = 'compact';
           this.cookies.set('compact', 'true', compactCookieOptions);
           setExperiment(app, this, 'compactTest', 'compact');
         } else if (bucket < bucketSize * 2) {
           this.compact = false;
-          this.compactTest = 'list';
           this.cookies.set('compact', 'false', compactCookieOptions);
           setExperiment(app, this, 'compactTest', 'list');
         } else {
@@ -233,11 +262,14 @@ class Server {
           setExperiment(app, this, 'compactTest', 'control');
         }
       } else if (this.cookies.get('compactTest')) {
-        this.compactTest = 'control';
-        this.experiments.push({
-          id: 'compactTest',
-          value: this.cookies.get('compactTest'),
-        });
+        if (!app.config.experiments.compactTest) {
+          this.cookies.set('compactTest');
+        } else {
+          this.experiments.push({
+            id: 'compactTest',
+            value: this.cookies.get('compactTest'),
+          });
+        }
       } else if (!this.cookies.get('compact')) {
         this.cookies.set('compact', 'false', compactCookieOptions);
       }
@@ -284,28 +316,11 @@ class Server {
     }
   }
 
+  
+
   modifyRequest (app) {
     return function * (next) {
-      var compact = this.cookies.get('compact') === 'true' ||
-                    this.cookies.get('compact') === true;
-
-      var cookieOptions = {
-        secure: app.getConfig('https'),
-        secureProxy: app.getConfig('httpsProxy'),
-        httpOnly: false,
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
-      }
-
-        if (this.query.compact === 'on') {
-          this.cookies.set('compact', true, cookieOptions);
-          compact = true;
-        } else if (this.query.compact === 'off') {
-          this.cookies.set('compact', false, cookieOptions);
-          compact = false;
-        }
-
-      this.compact = this.compact || compact;
-      this.compactTest = this.compactTest || this.cookies.get('compactTest');
+      setCompact(this, app);
 
       this.showBetaBanner = !this.cookies.get('hideBetaBanner');
 
