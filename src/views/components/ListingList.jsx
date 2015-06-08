@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import constants from '../../constants';
-
 import Listing from '../components/Listing';
 import CommentPreview from '../components/CommentPreview';
 import Ad from '../components/Ad';
@@ -18,7 +17,6 @@ class ListingList extends React.Component {
 
     this._scroll = this._scroll.bind(this);
     this._resize = this._resize.bind(this);
-    this._removeListeners = this._removeListeners.bind(this);
   }
 
   componentDidMount() {
@@ -69,12 +67,11 @@ class ListingList extends React.Component {
   }
 
   _resize() {
-    if (this.props.compact) {
-      for (var i = 0; i < this.length; i++) {
-        var ref = this.refs['listing' + i];
-        if (ref) {
-          ref.resize();
-        }
+    var width = this.refs.root.getDOMNode().offsetWidth;
+    for (var i = 0; i < this.length; i++) {
+      var ref = this.refs['listing' + i];
+      if (ref) {
+        ref.resize(width);
       }
     }
   }
@@ -135,7 +132,13 @@ class ListingList extends React.Component {
 
     this.length = listings.length;
 
-    return <span>{listings}</span>;
+    return <div ref='root'>{listings}</div>;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.compact !== this.props.compact) {
+      this._resize();
+    }
   }
 }
 

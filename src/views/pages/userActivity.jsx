@@ -102,7 +102,7 @@ class UserActivityPage extends React.Component {
 
         { loading }
 
-        <div className={'container listing-container'} >
+        <div className={'container Listing-container'} >
           <ListingList
             listings={activities}
             firstPage={page}

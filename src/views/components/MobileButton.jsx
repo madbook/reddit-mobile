@@ -16,7 +16,7 @@ class MobileButton extends React.Component {
 
   renderChildren() {
     return React.Children.map(this.props.children, function(child) {
-      var type = child.type;
+      var type = child ? child.type : null;
       if (!type || typeof type === 'string') {
         return child;
       } else {
@@ -61,7 +61,8 @@ class MobileButton extends React.Component {
         props.onMouseMove = move;
       }
     }
-    props.className = 'MobileButton ' + this.props.className + (this.state.hover ? ' hover' : '');
+    var className = this.props.className;
+    props.className = 'MobileButton' + (className ? (' ' + className) : '') + (this.state.hover ? ' hover' : '');
 
     if (href) {
       return (

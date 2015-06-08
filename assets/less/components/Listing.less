@@ -1,0 +1,285 @@
+.container {
+  margin: 0 auto !important;
+  max-width: @max-width !important;
+  width: auto !important;
+}
+
+.Listing-container.compact {
+  padding: 0;
+}
+
+.Listing {
+  position: relative;
+
+  &.compact {
+    @media (min-width: @max-width) {
+      border-left: @gray-border;
+      border-right: @gray-border;
+    }
+
+    &:first-child .ListingContent-image {
+      border-top: @gray-border;
+    }
+
+    .Listing-header {
+      border-top: @gray-border;
+    }
+
+    .Listing-header, .Listing-footer {
+      margin-left: @listing-compact-width;
+    }
+
+    &:last-child {
+      border-bottom: @gray-border;
+    }
+
+    .Listing-header-row2 {
+      font-size: 14px;
+    }
+
+    .Listing-commentsbutton {
+      padding-top: 1px;
+    }
+
+    .Listing-vote {
+      .vote-score {
+        position: relative;
+        top: -5px;
+      }
+
+      .vote {
+        padding-top: 1px;
+      }
+    }
+  }
+
+  &:not(.compact) {
+    @radius: 3px;
+    margin-bottom: @row-spacing-base;
+    border-radius: @radius;
+    .shadow;
+
+    .Listing-header {
+      border-top-left-radius: @radius;
+      border-top-right-radius: @radius;
+    }
+
+    .Listing-footer {
+      border-bottom-left-radius: @radius;
+      border-bottom-right-radius: @radius;
+    }
+  }
+
+  &.Listing-sponsored {
+    background: rgb(240,240,240);
+
+    .linkbar-single-line {
+      height: 1.5em;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+
+      &:after {
+       content: '';
+       position: absolute;
+       height: 2em;
+       z-index: 1;
+       bottom: 0;
+       right: 0;
+       width: 3em;
+
+       #gradient > .horizontal(@start-color: rgba(240,240,240,0); @end-color: rgba(240,240,240,1););
+      }
+    }
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.Listing-link-flair {
+  font-weight: normal;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.Listing-header {
+  background-color: @white;
+  padding: 5px 10px 10px;
+  position: relative;
+
+  &.single-row {
+    .Listing-title {
+      padding-right: 30px;
+      display: inline-block;
+    }
+  }
+
+  .Dropdown {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+  .Listing-header-row1 {
+    margin-bottom: 30px;
+  }
+
+    .Listing-subreddit {
+      font-size: 12px;
+      float: left;
+      color: @gray;
+      font-weight: bold;
+      line-height: 240%;
+      margin-right: 5px;
+      display: inline-block;
+      min-height: 24px;
+
+      &:visited {
+        color: @gray;
+      }
+    }
+
+      .Listing-subreddit .SVG-icon, .Listing-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 24px;
+        line-height: 24px;
+        margin-right: 5px;
+        vertical-align: middle;
+        display: inline-block;
+      }
+
+      .Listing-icon {
+        background-color: @light-gray;
+        border-radius: 12px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+        margin-right: 5px;
+      }
+
+    .Listing-flair {
+      float: left;
+    }
+
+  .Listing-header-row2 {
+    clear: both;
+    font-size: 18px;
+    display: block;
+    line-height: 130%;
+  }
+
+    .Listing-title {
+      color: @black;
+
+      &.text-admin {
+        color: @admin-text;
+      }
+
+      &.text-moderator {
+        color: @mod-text;
+      }
+
+      &:active {
+        color: lighten(@black, 20%);
+      }
+
+      &:visited {
+        color: lighten(@black, 40%);
+      }
+    }
+
+.Listing-footer {
+  padding: 0 10px;
+  background-color: @white;
+  overflow: auto;
+  font-size: 12px;
+  margin:0;
+
+  .linkbar {
+    margin: 0;
+
+    > li {
+      vertical-align: middle;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .SVG-icon {
+    top: -1px;
+    position: relative;
+  }
+}
+
+  .Listing-comments {
+    .SVG-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .Listing-vote {
+    float: right;
+    color: #8e8e8e;
+
+    .vote {
+      padding: 10px 0;
+    }
+  }
+
+  .Listing-commentsbutton {
+    padding: 10px 0;
+    display: inline-block;
+  }
+
+  .Listing-numcomments {
+    margin-right: 0.5em;
+  }
+
+  .Listing-when, .Listing-domain {
+    vertical-align: middle;
+    padding: 0;
+    margin-right: 0.5em;
+
+    &:before {
+      content:'·';
+      padding-right: 0.5em;
+    }
+  }
+
+//this and below seem like the probably shouldn't be root level selectors?
+.external-image-meta {
+  .text-overflow();
+  margin: 5px 0;
+
+  span,
+  a {
+    color: darken(@light-gray, 20%);
+  }
+
+  a:hover,
+  a:active {
+    color: @blue;
+  }
+}
+
+.pageNav {
+  margin-bottom: 1em;
+}
+
+.label.label-danger {
+  color: #fff;
+}
+
+.vote-form {
+  margin: 0;
+}
+
+.vote {
+  position: relative;
+}

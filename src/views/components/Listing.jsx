@@ -1,62 +1,16 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react/addons';
 import constants from '../../constants';
-import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
-
-import Vote from '../components/Vote';
+import short from '../../lib/formatDifference';
+import CommentIcon from '../components/icons/CommentIcon';
+import SnooIcon from '../components/icons/SnooIcon';
+import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
-import PlayIcon from '../components/icons/PlayIcon';
 import MobileButton from '../components/MobileButton';
-
-import ReportPlaceholder from '../components/ReportPlaceholder';
-
-var imgMatch = /\.(?:gif|jpe?g|png)/gi;
-var gifMatch = /\.(?:gif)/gi;
-var gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
+import Vote from '../components/Vote';
 
 function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
-}
-
-function gifToHTML5(url, config) {
-  if (!url) {
-    return;
-  }
-
-  if (url.indexOf('.gif') < 1) {
-    return;
-  }
-
-  // If it's imgur, make a gifv link
-  if (url.indexOf('imgur.com') > -1) {
-    url = adjustUrlToAppProtocol(url, config);
-    return {
-      webm: url.replace(/\.gif/, '.webm'),
-      mp4: url.replace(/\.gif/, '.mp4'),
-      poster: url.replace(/\.gif/, 'h.jpg'),
-    };
-  } else if (url.indexOf('gfycat') > 8) {
-    var gfy = gfyRegex.exec(url);
-
-    if (gfy.length === 2) {
-      var id = gfy[1];
-      return {
-        iframe: (config.https || config.httpsProxy ? 'https://' : 'http://') + 'gfycat.com/ifr/' + id,
-      };
-    }
-  }
-}
-
-function adjustUrlToAppProtocol(url, config) {
-  if (config && url) {
-    if (config.https || config.httpsProxy) {
-      return url.replace('http://', 'https://');
-    } else {
-      return url.replace('https://', 'http://');
-    }
-  }
-  return url;
 }
 
 class Listing extends React.Component {
@@ -64,39 +18,26 @@ class Listing extends React.Component {
     super(props);
 
     this.state = {
-      expanded: props.expanded,
       compact: props.compact,
       loaded: false,
       tallestHeight: 0,
       reported: false,
       hidden: false,
+      width: 0,
     };
-
-    if (typeof window !== 'undefined') {
-      var width = (
-        window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.body.clientWidth
-      );
-
-      this.state.windowWidth = width;
-    } else {
-      this.state.windowWidth = 800;
-    }
 
     this._onCompactToggle = this._onCompactToggle.bind(this);
     this.checkPos = this.checkPos.bind(this);
-    this._loadContent = this._loadContent.bind(this);
     this.resize = this.resize.bind(this);
     this.onReport = this.onReport.bind(this);
     this.onHide = this.onHide.bind(this);
   }
 
-  onReport () {
+  onReport() {
     this.setState({ reported: true });
   }
 
-  onHide () {
+  onHide() {
     this.setState({ hidden: true });
   }
 
@@ -104,47 +45,207 @@ class Listing extends React.Component {
     return (nextProps !== this.props || nextState !== this.state);
   }
 
-  _onCompactToggle (state) {
-    this.setState({
-      compact: state,
-    });
-  }
+  //build headline
+    _renderHeadline() {
+      var props = this.props;
 
-  checkPos(winHeight) {
-    if (this.state.loaded) {
-      return true;
-    }
+      var listing = props.listing;
+      var hideSubredditLabel = props.hideSubredditLabel;
 
-    var top = React.findDOMNode(this).getBoundingClientRect().top;
-    var load = top < winHeight;
+      var distinguished = listing.distinguished;
+      var linkFlairText = listing.link_flair_text;
+      var subreddit = listing.subreddit;
 
-    if (load) {
-      this._loadContent();
-      return true;
-    }
+      var listingDropdownNode = (
+        <ListingDropdown
+          listing={ listing }
+          app={ props.app }
+          random={ props.random }
+        />
+      );
 
-    return false;
-  }
-
-  resize() {
-    if (this.state.compact && this.state.loaded) {
-      var height = React.findDOMNode(this).offsetHeight;
-      if (height > this.state.tallestHeight) {
-        this.setState({tallestHeight: height});
+      if (ListingContent.isNSFW(listing)) {
+        var nsfwNode = (
+          <span className='Listing-link-flair label label-danger'>
+            NSFW
+          </span>
+        );
       }
-    }
-  }
 
-  _loadContent() {
-    this.setState({
-      loaded: true
-    }, this.resize);
+      if (linkFlairText) {
+        var linkNode = (
+          <span className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }>
+            { linkFlairText }
+          </span>
+        );
+      }
+
+      if (nsfwNode || linkNode) {
+        var flairNode = <div className='Listing-flair link-flair-container vertical-spacing-top'>
+          { nsfwNode }
+          { linkNode }
+        </div>;
+      }
+
+      if (!hideSubredditLabel) {
+        var srDetail = listing.sr_detail;
+        if (srDetail) {
+          var iconImg = srDetail.icon_img;
+
+          var keyColor = srDetail.key_color;
+          if (keyColor) {
+            var style = {color: '#f00'};
+          }
+        }
+
+        if (!ListingContent.isCompact(props)) {
+          if (iconImg) {
+            var iconNode = (
+              <div className='Listing-icon' style={ {backgroundImage: 'url(' + iconImg + ')'} }>
+              </div>
+            );
+          } else {
+            iconNode = <SnooIcon/>;
+          }
+        }
+
+        var subredditNode = (
+          <MobileButton className='Listing-subreddit' href={`/r/${subreddit}`}>
+            { iconNode }
+            <span style={ style }>r/{ subreddit }</span>
+          </MobileButton>
+        );
+      }
+
+      if (subredditNode || flairNode) {
+        var row1Node = (
+          <div className='Listing-header-row1'>
+            { subredditNode }
+            { flairNode }
+            { listingDropdownNode }
+          </div>
+        );
+      } else {
+        var row2Dropdown = listingDropdownNode;
+      }
+
+      return (
+        <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '')}>
+          { row1Node }
+          <div className={ 'Listing-header-row2'}>
+            <a href={ mobilify(listing.url) } className={ 'Listing-title' + ( distinguished ? ' text-' + distinguished : '') }>
+              { listing.title + ' ' + (listing.edited ? '*' : '') }
+            </a>
+            { row2Dropdown }
+          </div>
+        </header>
+      );
+    }
+
+    _renderFooter() {
+      var props = this.props;
+
+      var listing = props.listing;
+
+      var domain = listing.domain;
+      var numComments = listing.num_comments;
+
+      if (listing.gilded && props.single) {
+        var gildedNode = (
+          <li><span className='icon-gold-circled'/></li>
+        );
+      }
+
+      if (!props.hideWhen) {
+        var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
+      }
+
+      if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
+        var domainNode = (
+          <span className='Listing-domain'>{ domain }</span>
+        );
+      } else if (props.sponsored) {
+        domainNode = (
+          <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
+        );
+      }
+
+      if (!props.hideComments) {
+        var commentsNode = (
+          <li className='Listing-comments linkbar-item-no-seperator'>
+            <MobileButton className='Listing-commentsbutton' href={ listing.cleanPermalink }>
+              <CommentIcon/>
+              <span className='Listing-numcomments'>{ numComments }</span>
+              { whenNode }
+              { domainNode }
+            </MobileButton>
+          </li>
+        );
+      }
+
+      return (
+        <footer className='Listing-footer'>
+          <ul className='linkbar text-muted'>
+            { commentsNode }
+            { gildedNode }
+          </ul>
+          <div className='Listing-vote'>
+            <Vote
+              app={ props.app }
+              random={ props.random }
+              thing={ listing }
+              token={ props.token }
+              api={ props.api }
+              apiOptions={ props.apiOptions }
+              loginPath={ props.loginPath }
+            />
+          </div>
+        </footer>
+      );
+    }
+
+  //build image credit
+    /*_renderImageCredit() {
+      var props = this.props;
+      var state = this.state;
+      var listing = props.listing;
+      var domain = listing.domain;
+      var url = listing.url;
+
+      if (!state.compact && state.expanded || props.single) {
+        var u = isImgurDomain(domain) ? url.replace(ListingContent.imgMatch, '') : url;
+        return (
+          <div className="external-image-meta">
+            <span>{ domain }</span>
+            <span> | </span>
+            <a href={ u } data-no-route="true">{ u }</a>
+          </div>
+        );
+      }
+    }*/
+
+  render() {
+    var state = this.state;
+    var compact = state.compact;
+    return (
+      <article ref='root' className={'Listing' + (compact ? ' compact' : '') + (this.props.sponsored ? ' Listing-sponsored' : '') }>
+        { this._renderHeadline() }
+        <ListingContent compact={ compact }
+                        width={ state.width }
+                        tallestHeight={ state.tallestHeight }
+                        loaded={ state.loaded }
+                        {...this.props}/>
+        { this._renderFooter() }
+      </article>
+    );
   }
 
   componentDidMount() {
     this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
-    if (this.props.solo) {
+    if (this.props.single) {
       this._loadContent();
+      this.props.app.on(constants.RESIZE, this.resize);
+      this.resize();
     } else {
       this.checkPos();
     }
@@ -152,536 +253,43 @@ class Listing extends React.Component {
 
   componentWillUnmount() {
     this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
-  }
-
-  buildImage(data) {
-    var expanded = this.state.expanded || this.props.single;
-    var ctx = this;
-
-    var html5 = gifToHTML5(data.url, {
-      https: ctx.props.https,
-      httpsProxy: ctx.props.httpsProxy,
-    });
-
-    var compact = this.state.compact;
-
-    if (expanded) {
-      if (html5) {
-        var height = data.embed ? data.embed.height : 300;
-
-        if (html5.iframe) {
-          return (
-            <div className='ratio16x9'>
-              <iframe src={ html5.iframe } frameBorder='0' width='100%' allowFullScreen='' height={ height }
-                sandbox='allow-scripts allow-forms allow-same-origin'
-                onError={ ctx.handleIFrameError.bind(ctx, data.fallbackUrl) }></iframe>
-            </div>
-          );
-        } else {
-          return (
-            <div className='ratio16x9'>
-              <video poster={ html5.poster } height={ height } width='100%' loop='true' muted='true' controls='true' autoPlay='true'>
-                <source type='video/webm' src={ html5.webm } />
-                <source type='video/mp4' src={ html5.mp4 } />
-              </video>
-            </div>
-          );
-        }
-      } else if (data.fixedRatio) {
-        return (
-          <div className='ratio16x9'>
-            <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-              <PlayIcon random={this.props.random}/>
-            </div>
-          </div>
-        );
-      }
-    }
-
-    if (html5 && html5.poster) {
-      return (
-        <div className='ratio16x9'>
-          <div className='ratio16x9-child' style={ {backgroundImage: 'url('+html5.poster+')'} }>
-            <PlayIcon random={this.props.random}/>
-          </div>
-        </div>
-      );
-    }
-
-    if (data.isVideo) {
-      if (compact) {
-        return (
-          <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
-        );
-      } else {
-        return (
-          <div className='ratio16x9'>
-            <div className='ratio16x9-child' style={ {backgroundImage: 'url('+data.url+')'} }>
-              <PlayIcon random={this.props.random}/>
-            </div>
-          </div>
-        );
-      }
-    }
-    if (compact) {
-      return (
-        <div style={ {backgroundImage: 'url(' + data.url + ')'} } className='listing-compact-img'/>
-      );
-    } else {
-      return (
-        <img ref='img' src={ data.url } className='img-responsive img-preview'
-          onError={ ctx.handleImageError.bind(ctx, data.fallbackUrl) } />
-      );
+    if (this.props.single) {
+      this.props.app.off(constants.RESIZE, this.resize);
     }
   }
 
-  buildOver18() {
-    if (this.state.compact) {
-      return (
-        <a className={'listing-preview-a listing-nsfw compact' } href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-          <p className='listing-nsfw-p'>NSFW</p>
-        </a>
-      );
-    } else {
-      return (
-        <a className='listing-nsfw' href={ this.props.listing.permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-          <p className='listing-nsfw-p'>This post is marked as NSFW</p>
-          <p className='listing-nsfw-p outlined'>Show post?</p>
-        </a>
-      );
+  checkPos(winHeight) {
+    if (this.state.loaded) {
+      return true;
     }
+    var top = React.findDOMNode(this).getBoundingClientRect().top;
+    if (top < winHeight) {
+      this._loadContent();
+      return true;
+    }
+    return false;
   }
 
-  previewImageUrl(listing, expanded) {
-    if (!listing) { return; }
-
-    var image;
-    var width = this.state.compact ? 80 : this.state.windowWidth;
-    var compact = this.state.compact;
-    var height = this.state.tallestHeight;
-
-    if (expanded && listing.url.match(imgMatch)) {
-      return listing.url;
-    }
-
-    if (listing.preview) {
-      var preview = listing.preview;
-
-      if (preview.images) {
-        preview = preview.images[0];
-      }
-
-      if (preview && preview.resolutions) {
-        var previewImage = preview.resolutions
-                        .concat([ preview.source ])
-                        .sort((a, b) => {
-                          return a.width - b.width;
-                        })
-                        .find((r) => {
-                          if (compact) {
-                            return r.width >= width && r.height >= height;
-                          } else {
-                            return r.width >= width;
-                          }
-                        });
-      } else if (preview.source) {
-         return preview.source.url;
-      }
-
-      if (previewImage) {
-        return previewImage.url;
-      } else {
-        return preview.source.url;
+  resize(width) {
+    var state = this.state;
+    var node = this.refs.root.getDOMNode();
+    var newState = {};
+    newState.width = width || node.offsetWidth;
+    if (state.compact && state.loaded) {
+      var height = node.offsetHeight;
+      if (height > this.state.tallestHeight) {
+        newState.tallestHeight = height;
       }
     }
-
-    if (this.state.compact && listing.thumbnail && listing.thumbnail.indexOf('http') === 0) {
-      return listing.thumbnail;
-    }
-
-    if (listing.media && listing.media.oembed) {
-      return listing.media.oembed.thumbnail_url;
-    }
+    this.setState(newState);
   }
 
-  buildContent() {
-    var expanded = this.state.expanded || this.props.single;
-
-    if (!this.state.loaded && !expanded) {
-      return null;
-    }
-
-    var ctx = this;
-    var props = this.props;
-    var listing = props.listing;
-
-    if (!listing) {
-      return;
-    }
-
-    var config = {
-      https: props.https,
-      httpsProxy: props.httpsProxy
-    };
-
-    var media = listing.media;
-    var permalink = props.sponsored ? listing.url : listing.cleanPermalink;
-
-    var preview = this.previewImageUrl(listing, expanded);
-
-    var compact = this.state.compact;
-
-    if (this.isNSFW(listing) && !this.state.expanded) {
-      return this.buildOver18();
-    }
-
-    if (media && media.oembed) {
-      if (media.oembed.type === 'image') {
-        if (expanded) {
-          return (
-            <div className='listing-frame'>
-              <iframe src={ adjustUrlToAppProtocol(listing.url, config) } frameBorder='0' height='80%' width='100%' allowFullScreen=''
-                      sandbox='allow-scripts allow-forms allow-same-origin'
-                      onError={ ctx.handleIFrameError.bind(ctx, listing.url) }></iframe>
-            </div>
-          );
-        } else {
-          return (
-            <a className='listing-preview-a' href={ permalink }>
-              {
-                this.buildImage({
-                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
-                  fallbackUrl: preview || media.oembed.thumbnail_url,
-                  embed: media.oembed,
-                })
-              }
-            </a>
-          );
-        }
-      } else if (media.oembed.type === 'video') {
-        if (expanded) {
-          return (
-            <div className='listing-video ratio16x9' dangerouslySetInnerHTML={{
-              __html: listing.expandContent
-            }} />
-          );
-        } else {
-          return (
-            <a className='listing-preview-a' href={ permalink } onClick={ this.expand.bind(this) } data-no-route='true'>
-              {
-                this.buildImage({
-                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
-                  fallbackUrl: preview || media.oembed.thumbnai_url,
-                  embed: media.oembed,
-                  fixedRatio: true,
-                  isVideo: true,
-                })
-              }
-            </a>
-          );
-        }
-      } else if (media.oembed.type === 'rich') {
-        if (expanded) {
-          return (
-            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
-              {
-                this.buildImage({
-                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
-                  fallbackUrl: preview || media.oembed.thumbnai_url,
-                  embed: media.oembed,
-                  fixedRatio: true,
-                  isVideo: true,
-                })
-              }
-            </a>
-          );
-        } else {
-          return (
-            <a className='listing-preview-a' href={ listing.url } data-no-route='true'>
-              {
-                this.buildImage({
-                  url: adjustUrlToAppProtocol(preview || media.oembed.thumbnail_url, config),
-                  fallbackUrl: preview || media.oembed.thumbnai_url,
-                  embed: media.oembed,
-                  fixedRatio: true,
-                  isVideo: true,
-                })
-              }
-            </a>
-          );
-        }
-      }
-    } else if (listing.url.match(imgMatch)) {
-      if (expanded) {
-        return (
-          <a href={ listing.url } className='external-image listing-preview-a' >
-            {
-              this.buildImage({
-                url: adjustUrlToAppProtocol(listing.url, config),
-                fallbackUrl: listing.url
-              })
-            }
-          </a>
-        );
-      } else {
-        return (
-          <a className='listing-preview-a' href={ permalink }>
-            {
-              this.buildImage({
-                url: adjustUrlToAppProtocol(preview, config),
-                fallbackUrl: preview || listing.url,
-                isVideo: listing.url.match(gifMatch),
-              })
-            }
-          </a>
-        );
-      }
-    } else if (listing.selftext && !compact) {
-      if (expanded) {
-        return (
-          <div className='well listing-selftext' dangerouslySetInnerHTML={{
-            __html: listing.expandContent
-          }} onClick={ this.expand.bind(this) } />
-        );
-      } else {
-        return (
-          <div className='well listing-selftext listing-selftext-collapsed' dangerouslySetInnerHTML={{
-            __html: listing.expandContent
-          }} onClick={ this.expand.bind(this) } />
-        );
-      }
-    } else if (listing.domain.indexOf('self.') === 0) {
-      return null;
-    } else if (preview) {
-      return (
-        <a className='listing-preview-a' href={ permalink }>
-          {
-            this.buildImage({
-              url: adjustUrlToAppProtocol(preview, config),
-              fallbackUrl: preview,
-            })
-          }
-        </a>
-      );
-    } else {
-      return null;
-    }
+  _loadContent() {
+    this.setState({loaded: true}, this.resize);
   }
 
-  expand(e) {
-    if (!this.state.compact) {
-      if (e.target && e.target.tagName === 'A' && e.target.href) {
-        return true;
-      } else {
-        e.preventDefault();
-
-        this.setState({
-          expanded: !this.state.expanded,
-        });
-      }
-    }
-  }
-
-  isNSFW(listing) {
-    if (!listing) { return; }
-
-    return listing.title.match(/nsf[wl]/gi) || listing.over_18;
-  }
-
-  handleIFrameError(fallbackSrc, event) {
-    if (event && event.currentTarget && fallbackSrc && event.currentTarget.src !== fallbackSrc) {
-      event.currentTarget.src = fallbackSrc;
-    }
-  }
-
-  handleImageError(fallbackSrc, event) {
-    if (event && event.currentTarget && fallbackSrc && event.currentTarget.src !== fallbackSrc) {
-      event.currentTarget.src = fallbackSrc;
-    }
-  }
-
-  render() {
-    if (this.state.hidden) {
-      return (<div />);
-    }
-
-    if (this.state.reported) {
-      return (<ReportPlaceholder />);
-    }
-
-    var props = this.props;
-    var listing = props.listing;
-    var permalink = listing.cleanPermalink;
-    var linkFlair;
-    var nsfwFlair;
-    var subredditLabel;
-    var commentsLabel;
-    var domain;
-    var gilded;
-    var distinguished = listing.distinguished ? `text-${listing.distinguished}` : '';
-    var edited = listing.edited ? '*' : '';
-    var linkFlairClass = (listing.link_flair_css_class);
-    var sponsored = props.sponsored ? ' listing-sponsored' : '';
-    var comment = listing.num_comments < 2 ? 'comment' : 'comments';
-    var isSelf = listing.domain.indexOf('self.') === 0;
-
-    var titleLink = mobilify(listing.url);
-    var isRemote = titleLink === listing.url;
-    var when;
-
-    var expanded = this.state.expanded || this.props.single;
-    var compact = this.state.compact;
-
-    if (!props.hideSubredditLabel) {
-      subredditLabel = (
-        <li>
-          <a href={`/r/${listing.subreddit}`}>
-            <span className='listing-subreddit'>
-              r/{ listing.subreddit }
-            </span>
-          </a>
-        </li>
-      );
-    }
-
-    if (!props.hideWhen) {
-      when = (<li>{ short(listing.created_utc * 1000) }</li>);
-    }
-
-    if (!props.hideComments) {
-      commentsLabel = (
-        <li className='linkbar-item-no-seperator'>
-          <strong><a href={ permalink }>{ `${listing.num_comments} ${comment}` }</a></strong>
-        </li>
-      );
-    } else {
-      permalink = titleLink;
-    }
-
-    if (!isSelf && !props.hideDomain) {
-      domain = (
-        <li>{ listing.domain }</li>
-      );
-    } else if (props.sponsored) {
-      domain = (
-        <li className='text-primary sponsored-label'>Sponsored</li>
-      );
-    }
-
-    if (listing.gilded && props.single) {
-      gilded = (
-        <li><span className='icon-gold-circled'/></li>
-      );
-    }
-
-    if (listing.link_flair_text) {
-      linkFlair = (
-        <span className={ 'listing-link-flair label label-primary ' + linkFlairClass }>
-          { listing.link_flair_text }
-        </span>
-      );
-    }
-
-    if (this.isNSFW(listing)) {
-      nsfwFlair = (
-        <span className='listing-link-flair label label-danger'>
-          NSFW
-        </span>
-      );
-    }
-
-    var app = this.props.app;
-    var buildContent = this.buildContent();
-    if (buildContent && !compact) {
-      var stalactite = <div className='stalactite'/>;
-    }
-
-    if (!buildContent && compact) {
-      if (this.state.loaded) {
-        buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img placeholder'/></a>;
-      } else {
-        buildContent = <a className='listing-preview-a' href={listing.cleanPermalink}><div className='listing-compact-img unloaded'/></a>;
-      }
-    }
-
-    var extImageSource;
-
-    if (expanded && !(listing.domain.indexOf('self.') === 0)) {
-      var url = isImgurDomain(listing.domain) ? listing.url.replace(imgMatch, '') : listing.url;
-      extImageSource = (
-        <div className="external-image-meta">
-          <span>{listing.domain}</span>
-          <span> | </span>
-          <a href={url} data-no-route="true">{url}</a>
-        </div>
-      );
-    }
-
-    if (nsfwFlair || linkFlair) {
-      var linkFlairHolder = <div className='link-flair-container vertical-spacing-top'>
-                { nsfwFlair }
-                { linkFlair }
-              </div>;
-    }
-
-    return (
-      <article className={'listing ' + (compact ? 'compact ' : '') + sponsored }>
-        <div className='panel'>
-          <header className={'panel-heading' + (buildContent ? ' preview' : ' no-preview') }>
-            <div className='row'>
-              <div className='col-xs-11'>
-                <a href={ titleLink } className={ `panel-title ${distinguished}` }>
-                  { `${listing.title} ${edited}` }
-                </a>
-              </div>
-              <div className='col-xs-1'>
-                <ListingDropdown
-                  showHide={ true }
-                  saved={ listing.saved }
-                  subreddit={ listing.subreddit }
-                  onReport={ this.onReport }
-                  onHide={ this.onHide }
-                  token={ this.props.token }
-                  apiOptions={ this.props.apiOptions }
-                  listing={listing}
-                  app={app}
-                  random={this.props.random}
-                />
-              </div>
-            </div>
-
-            <div className='linkbar-single-line'>
-              <ul className='linkbar text-muted small'>
-                { gilded }
-                <li className='linkbar-item-no-seperator'>
-                  <Vote
-                    app={app}
-                    random={ this.props.random }
-                    thing={ listing }
-                    token={ this.props.token }
-                    api={ this.props.api }
-                    apiOptions={ this.props.apiOptions }
-                    loginPath={ this.props.loginPath }
-                  />
-                </li>
-                { commentsLabel }
-                { subredditLabel }
-                { when }
-                { domain }
-              </ul>
-            </div>
-
-            { linkFlairHolder }
-
-            { stalactite }
-          </header>
-
-          { buildContent }
-        </div>
-
-        { extImageSource }
-      </article>
-    );
+  _onCompactToggle(state) {
+    this.setState({compact: state});
   }
 }
 

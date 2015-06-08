@@ -3,7 +3,6 @@ import q from 'q';
 import querystring from 'querystring';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
-
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import Listing from '../components/Listing';
@@ -14,9 +13,7 @@ import TopSubnav from '../components/TopSubnav';
 class ListingPage extends React.Component {
   constructor(props) {
     super(props);
-
     this.props = props;
-
     this.state = {
       data: props.data || {},
       linkComment: '',
@@ -101,7 +98,7 @@ class ListingPage extends React.Component {
     if (global.localStorage) {
       for (var key in localStorage) {
         keys.push(key);
-      }      
+      }
     }
     var savedCommentKeys = keys;
     var savedReply = this.state.linkComment;
@@ -166,7 +163,7 @@ class ListingPage extends React.Component {
     return (
       <div className='listing-main'>
         { loading }
-        <TopSubnav 
+        <TopSubnav
           app={ app }
           random={ props.random }
           user={ user }
