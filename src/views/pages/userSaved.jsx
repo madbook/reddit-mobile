@@ -114,7 +114,6 @@ class UserSavedPage extends React.Component {
               showHidden={true}
               listings={activities}
               firstPage={page}
-              random={ props.random }
               https={ props.https }
               httpsProxy={ props.httpsProxy }
               app={app}

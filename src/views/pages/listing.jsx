@@ -86,7 +86,6 @@ class ListingPage extends React.Component {
       originalUrl: props.url,
     });
     var apiOptions = props.apiOptions;
-    var random = props.random;
     var singleComment;
     var permalink;
 
@@ -105,7 +104,6 @@ class ListingPage extends React.Component {
     if (!loading) {
       listingElement = (
         <Listing
-          random={ props.random }
           https={ props.https }
           httpsProxy={ props.httpsProxy }
           apiOptions={ apiOptions }
@@ -122,7 +120,6 @@ class ListingPage extends React.Component {
 
       commentBoxElement = (
         <CommentBox
-          random={ props.random }
           app={ app }
           apiOptions={ apiOptions }
           thingId={ listing.name }
@@ -165,7 +162,6 @@ class ListingPage extends React.Component {
         { loading }
         <TopSubnav
           app={ app }
-          random={ props.random }
           user={ user }
           sort={ sort }
           list='comments'
@@ -185,7 +181,6 @@ class ListingPage extends React.Component {
                     subredditName={ props.subredditName }
                     permalinkBase={ permalink }
                     highlight={ props.commentId }
-                    random={ random }
                     app={app}
                     comment={comment}
                     index={i}

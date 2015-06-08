@@ -9,7 +9,7 @@ class DownvoteIcon extends React.Component {
     this.state = {};
     this._alter = this._alter.bind(this);
     this._play = this._play.bind(this);
-    this._maskID = 'mask' + props.random();
+    this._maskID = 'mask' + global.random();
   }
 
   render() {

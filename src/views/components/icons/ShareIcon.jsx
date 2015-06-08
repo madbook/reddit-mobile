@@ -8,8 +8,8 @@ class ShareIcon extends React.Component {
     super(props);
     this.state = {};
     this._play = this._play.bind(this);
-    this._planeMaskID = 'mask' + props.random();
-    this._lineMaskID = 'mask' + props.random();
+    this._planeMaskID = 'mask' + global.random();
+    this._lineMaskID = 'mask' + global.random();
   }
 
   render() {

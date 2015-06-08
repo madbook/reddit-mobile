@@ -90,19 +90,19 @@ class SideNav extends React.Component {
           <ul className='SideNav-ul list-unstyled'>
             <li>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}` }>
-                <SnooIcon random={this.props.random}/>
+                <SnooIcon/>
                 <span className='SideNav-text'>My Profile</span>
               </MobileButton>
             </li>
             <li>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}/saved` }>
-                <SaveIcon random={this.props.random}/>
+                <SaveIcon/>
                 <span className='SideNav-text'>Saved</span>
               </MobileButton>
             </li>
             <li>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}/hidden` }>
-                <SettingsIcon random={this.props.random}/>
+                <SettingsIcon/>
                 <span className='SideNav-text'>Hidden</span>
               </MobileButton>
             </li>
@@ -113,7 +113,7 @@ class SideNav extends React.Component {
       logoutLink = (
         <li>
           <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
-            <SnooIcon random={this.props.random}/>
+            <SnooIcon/>
             <span className='SideNav-text'>Log out</span>
           </MobileButton>
         </li>
@@ -126,7 +126,7 @@ class SideNav extends React.Component {
       inboxLink = (
         <li>
           <MobileButton className='SideNav-button' href='/message/inbox/'>
-            <MailIcon random={ this.props.random }/>
+            <MailIcon/>
             <span className='SideNav-text'>Inbox{newMail}</span>
           </MobileButton>
         </li>
@@ -135,7 +135,7 @@ class SideNav extends React.Component {
       loginLink = (
         <li>
           <MobileButton className='SideNav-button' href={ this.props.loginPath } noRoute='true'>
-            <SnooIcon random={this.props.random}/>
+            <SnooIcon/>
             <span className='SideNav-text'>Login / Register</span>
           </MobileButton>
         </li>
@@ -156,7 +156,7 @@ class SideNav extends React.Component {
               if(d.icon) {
                 var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
               } else {
-                icon = <SnooIcon random={this.props.random}/>;
+                icon = <SnooIcon/>;
               }
               return (
                 <li key={`SideNav-li-${d.url}`}>
@@ -198,79 +198,79 @@ class SideNav extends React.Component {
             <ul className='SideNav-ul list-unstyled'>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/blog/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Blog</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/about/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>About</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/about/team/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Team</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/code/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Source Code</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/advertising/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Advertise</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Jobs</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Wiki</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/faq'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>FAQ</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Reddiquette</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/rules/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Rules</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/help/useragreement'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>User Agreement</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Privacy Policy</span>
                 </MobileButton>
               </li>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/contact/'>
-                  <SnooIcon random={this.props.random}/>
+                  <SnooIcon/>
                   <span className='SideNav-text'>Contact Us</span>
                 </MobileButton>
               </li>
@@ -278,7 +278,7 @@ class SideNav extends React.Component {
           </li>
           <li>
             <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this._desktopSite }>
-              <SnooIcon random={this.props.random}/>
+              <SnooIcon/>
               <span className='SideNav-text'>View Desktop Site</span>
             </MobileButton>
           </li>

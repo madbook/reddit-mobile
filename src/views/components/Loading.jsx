@@ -15,7 +15,7 @@ class Loading extends React.Component {
   }
 
   render() {
-    var icon = this.state.flipFlop ? <SnooIcon ref='icon' random={ this.props.random }/> : <RIcon ref='icon' random={this.props.random}/>;
+    var icon = this.state.flipFlop ? <SnooIcon ref='icon'/> : <RIcon ref='icon'/>;
 
     return (
       <div className='Loading'>

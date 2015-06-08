@@ -17,9 +17,8 @@ class TopSubnav extends React.Component {
 
     var sort = null;
     if (!this.props.hideSort){
-      sort = <SortDropdown 
+      sort = <SortDropdown
                app={ this.props.app }
-               random={ this.props.random }
                sort={ this.props.sort }
                excludedSorts={ this.props.excludedSorts }
                list={ this.props.list }
