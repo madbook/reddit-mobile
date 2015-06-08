@@ -83,7 +83,6 @@ class SideNav extends React.Component {
   render() {
     var user = this.props.user;
     var loginLink;
-    var logoutLink;
     var inboxLink;
     var compact = this.state.compact;
 
@@ -119,26 +118,28 @@ class SideNav extends React.Component {
                 <span className='SideNav-text'>Hidden</span>
               </MobileButton>
             </li>
+            <li>
+                <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
+                <SnooIcon random={this.props.random}/>
+                <span className='SideNav-text'>Log out</span>
+              </MobileButton>
+            </li>
           </ul>
         </li>
       );
 
-      logoutLink = (
-        <li className='SideNav-li'>
-          <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
-            <SnooIcon/>
-            <span className='SideNav-text'>Log out</span>
-          </MobileButton>
-        </li>
-      );
-
       var inboxCount = user.inbox_count;
+      let newMail;
+      let newClass;
+
       if(inboxCount > 0) {
-        var newMail = <strong> ({inboxCount})</strong>;
+        newMail = (<strong>{` (${inboxCount})`}</strong>);
+        newClass = 'text-orangered';
       }
+
       inboxLink = (
-        <li className='SideNav-li'>
-          <MobileButton className='SideNav-button' href='/message/inbox/'>
+        <li>
+          <MobileButton className={`SideNav-button ${newClass}`} href='/message/inbox/'>
             <MailIcon/>
             <span className='SideNav-text'>Inbox{newMail}</span>
           </MobileButton>
@@ -195,8 +196,8 @@ class SideNav extends React.Component {
             </form>
           </li>
           { loginLink }
-          { logoutLink }
-          <li className='SideNav-li'>
+          { inboxLink }
+          <li>
             <MobileButton className='SideNav-button' onClick={this._onViewClick}>
               <SettingsIcon/>
               <span className='SideNav-text'>Switch to { compact ? 'list' : 'compact' } view</span>

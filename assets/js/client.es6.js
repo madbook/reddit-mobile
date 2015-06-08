@@ -145,8 +145,10 @@ function initialize(bindLinks) {
   config.seed = window.bootstrap.seed || Math.random();
 
   globals().random = randomBySeed(config.seed);
+
   var app = new App(config);
   globals().app = app;
+
   app.emitter.setMaxListeners(30);
 
   if (app.getState('token')) {

@@ -24,9 +24,12 @@ import ErrorPage from './views/pages/error';
 import FAQPage from './views/pages/faq';
 import LoginPage from './views/pages/login';
 import RegisterPage from './views/pages/register';
+import MessagesPage from './views/pages/messages';
+import MessageComposePage from './views/pages/messageCompose';
 import Layout from './views/layouts/DefaultLayout';
 import BodyLayout from './views/layouts/BodyLayout';
 import TextSubNav from './views/components/TextSubNav';
+import MessageNav from './views/components/MessageNav';
 import SubmitPage from './views/pages/submit';
 
 // The main entry point to this file is the routes function. It will call the
@@ -913,6 +916,92 @@ function routes(app) {
     });
 
     this.redirect(`/search?${query}`);
+  });
+
+  router.get('messages.compose', '/message/compose', function *(next) {
+    if (!this.token) {
+      let query = {
+        originalUrl: this.url,
+      }
+
+      return this.redirect('/login?' + querystring.stringify(query));
+    }
+
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      title: `Compose New Message`,
+      metaDescription: `user messages reddit.com`,
+    });
+
+    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token);
+    props.user = user;
+    props.prefs = prefs;
+    props.subscriptions = subscriptions;
+
+    var key = `user-messages-compose`;
+
+    try {
+      page = (
+        <BodyLayout {...props} app={app}>
+          <MessageNav user={ props.user } view='compose' />
+          <MessageComposePage {...props} key={ key } app={app} />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
+  });
+
+  router.get('messages', '/message/:view', function *(next) {
+    if (!this.token) {
+      let query = {
+        originalUrl: this.url,
+      }
+
+      return this.redirect('/login?' + querystring.stringify(query));
+    }
+
+    var page;
+    var ctx = this;
+
+    var props = buildProps(this, {
+      title: `Messages`,
+      view: ctx.params.view,
+      metaDescription: `user messages reddit.com`,
+    });
+
+    var promises = [
+      MessagesPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+    ];
+
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    props.data = data;
+    props.user = user;
+    props.prefs = prefs;
+    props.subscriptions = subscriptions;
+
+    var key = `user-messages-${ctx.params.view}`;
+
+    try {
+      page = (
+        <BodyLayout {...props} app={app}>
+          <MessageNav user={ props.user } view={ props.view } />
+          <MessagesPage {...props} key={ key } app={app} />
+        </BodyLayout>
+      );
+    } catch (e) {
+      return app.error(e, this, next);
+    }
+
+    this.body = page;
+    this.layout = Layout;
+    this.props = props;
   });
 }
 
