@@ -143,7 +143,6 @@ class Comment extends React.Component {
     var commentBox;
     var toolbox;
     var highlighted = '';
-    var random = props.random;
 
     var permalink;
 
@@ -167,7 +166,7 @@ class Comment extends React.Component {
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
             <MobileButton href='#' onClick={this.showReplyBox.bind(this)} className='comment-svg'>
-              <ReplyIcon altered={this.state.showReplyBox} random={ this.props.random }/>
+              <ReplyIcon altered={this.state.showReplyBox}/>
             </MobileButton>
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
@@ -178,7 +177,6 @@ class Comment extends React.Component {
               api={ this.props.api }
               loginPath={ this.props.loginPath }
               apiOptions={ this.props.apiOptions }
-              random={random}
             />
           </li>
           <li>
@@ -191,7 +189,6 @@ class Comment extends React.Component {
                 token={ props.token }
                 apiOptions={ props.apiOptions }
                 listing={props.comment}
-                random={props.random}
                 app={props.app}/>
             </div>
           </li>

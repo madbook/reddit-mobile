@@ -60,7 +60,6 @@ class Listing extends React.Component {
         <ListingDropdown
           listing={ listing }
           app={ props.app }
-          random={ props.random }
         />
       );
 
@@ -192,7 +191,6 @@ class Listing extends React.Component {
           <div className='Listing-vote'>
             <Vote
               app={ props.app }
-              random={ props.random }
               thing={ listing }
               token={ props.token }
               api={ props.api }

@@ -79,7 +79,6 @@ class UserProfilePage extends React.Component {
 
         <TopSubnav
           app={ app }
-          random={ this.props.random }
           user={ user }
           hideSort={ true }
           baseUrl={ this.props.url }

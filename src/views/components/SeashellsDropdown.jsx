@@ -13,14 +13,14 @@ class SeashellsDropdown extends React.Component {
     };
 
     this._onOpen = this._onOpen.bind(this);
-    this._id = props.random();
+    this._id = Math.random();
   }
 
   render() {
     var opened = this.state.opened;
     var button = <button className='SeashellsDropdown-button'><SeashellIcon played={opened} /></button>;
     return (
-      <Dropdown app={ this.props.app } random={ this.props.random } right={ true } button={ button } id={ this._id }>
+      <Dropdown app={ this.props.app } right={ true } button={ button } id={ this._id }>
         {this.props.children}
       </Dropdown>
     );

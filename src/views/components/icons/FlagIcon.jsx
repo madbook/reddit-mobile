@@ -16,7 +16,7 @@ class FlagIcon extends React.Component {
     super(props);
     this.state = {};
     this._play = this._play.bind(this);
-    this._maskID = 'mask' + props.random();
+    this._maskID = 'mask' + global.random();
   }
 
   render() {

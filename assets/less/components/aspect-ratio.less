@@ -1,0 +1,25 @@
+[class^="aspect-ratio-"]:before, [class*=" aspect-ratio-"]:before {
+  content: "";
+  display: block;
+}
+
+@WIDEST: 3;
+@TALLEST: 1 / 3;
+@HEIGHT: 1080;
+@INCREMENT: 40;
+
+.aspect-ratio(@HEIGHT * @WIDEST);
+
+.aspect-ratio(@n, @i: @HEIGHT * @TALLEST) when (@i =< @n) {
+  @fn: ~`fn = function euclid(a,b) { if(b==0){ return a;} else { return euclid(b, a%b); } }`;
+  @euclid: ~`fn(@{i},@{HEIGHT})`;
+
+
+  @width: @i / @euclid;
+  @height: @HEIGHT / @euclid;
+
+  .aspect-ratio-@{width}x@{height}:before {
+    padding-top: (@HEIGHT / @i * 100%);
+  }
+  .aspect-ratio(@n, (@i + @INCREMENT));
+}

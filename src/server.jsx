@@ -71,8 +71,7 @@ function skipAuth(app, url) {
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
-    this.seed = Math.random();
-    config.seed = this.seed;
+    config.seed = Math.random();
     config.staticMarkup = true;
     config.experiments = config.experiments || [];
 
@@ -310,8 +309,7 @@ class Server {
 
       this.showBetaBanner = !this.cookies.get('hideBetaBanner');
 
-      this.seed = app.config.seed;
-      this.random = randomBySeed(this.seed);
+      global.random = randomBySeed(app.config.seed);
       this.staticMarkup = true;
 
       this.body = this.request.body;

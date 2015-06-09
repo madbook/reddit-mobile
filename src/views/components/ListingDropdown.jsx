@@ -71,7 +71,7 @@ class ListingDropdown extends React.Component {
       reportLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
-            <FlagIcon random={ props.random }/>
+            <FlagIcon/>
             <span className='Dropdown-text'>Report this</span>
           </MobileButton>
           { reportForm }
@@ -134,7 +134,7 @@ class ListingDropdown extends React.Component {
     }
 
     return (
-      <SeashellsDropdown app={ props.app } random={ props.random } right={ true }>
+      <SeashellsDropdown app={ props.app } right={ true }>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
             <CommentIcon/>

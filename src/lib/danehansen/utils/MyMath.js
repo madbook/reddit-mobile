@@ -100,6 +100,14 @@ var MyMath = {};
 			targOrNum[propOrDest] += (destOrSpeed - targOrNum[propOrDest]) * (speed || defaultSpeed);
 	}
 
+	MyMath.euclid = function(intA, intB)
+	{
+		if(intB == 0)
+			return intA;
+		else
+			return MyMath.euclid(intB, intA % intB);
+	}
+
 	var _VELOCITY_VICTIMS = [];
 	MyMath.velocityEase = function(targ, prop, dest, speed, decay)
 	{
@@ -265,14 +273,7 @@ var MyMath = {};
 
 	MyMath.round = function(num, increment)
 	{
-		increment = typeof increment !== "undefined" ? increment : 1;
-		var goesInto = num / increment;
-		var lower = increment * Math.floor(goesInto);
-		var higher = increment * Math.ceil(goesInto);
-		if(Math.abs(num - lower) < Math.abs(num - higher))
-			return lower;
-		else
-			return higher;
+		return Math.round(num / increment) * increment;
 	}
 
 	MyMath.shuffle = function(list, duplicate)
