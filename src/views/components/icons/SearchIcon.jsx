@@ -13,7 +13,7 @@ class SearchIcon extends React.Component {
     this.state = {};
     this._look = this._look.bind(this);
     this._lookPause = this._lookPause.bind(this);
-    this._maskID = 'mask' + props.random();
+    this._maskID = 'mask' + global.random();
   }
 
   render() {

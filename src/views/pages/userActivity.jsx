@@ -93,7 +93,6 @@ class UserActivityPage extends React.Component {
       <div className="user-page user-activity">
         <UserActivitySubnav
           app={ app }
-          random={ props.random }
           sort={ sort }
           name={ name }
           activity={ props.activity }
@@ -106,7 +105,6 @@ class UserActivityPage extends React.Component {
           <ListingList
             listings={activities}
             firstPage={page}
-            random={ props.random }
             https={ props.https }
             httpsProxy={ props.httpsProxy }
             app={app}

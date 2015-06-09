@@ -71,8 +71,6 @@ function modifyContext (ctx) {
   ctx.compact = (cookies.get('compact') || '').toString() === 'true';
   ctx.hideBetaBanner = (cookies.get('hideBetaBanner') || '').toString() === 'true';
 
-  ctx.random = randomBySeed(window.bootstrap.seed);
-
   return ctx;
 }
 
@@ -138,6 +136,8 @@ function initialize(bindLinks) {
   });
 
   config.seed = window.bootstrap.seed || Math.random();
+
+  global.random = randomBySeed(config.seed);
   var app = new App(config);
   app.emitter.setMaxListeners(30);
 
@@ -148,7 +148,7 @@ function initialize(bindLinks) {
     var refreshMS = (expires - now);
 
     // refresh a little before it expires, to be safe
-    refreshMS *= .90; 
+    refreshMS *= .90;
 
     // if it's within a minute, refresh now
     refreshMS = Math.max(refreshMS - (1000 * 60), 0);
