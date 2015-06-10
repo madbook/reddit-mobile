@@ -29,12 +29,14 @@ function _gifToHTML5(url) {
   }
 }
 
+//there are css values in aspect-ratio.less that must correlate with _WIDEST and _TALLEST
 const _WIDEST = 3;
 const _TALLEST = 1 / 3;
 function _limitAspectRatio(aspectRatio) {
   return Math.min(Math.max(_TALLEST, aspectRatio), _WIDEST);
 }
 
+//there are css values in aspect-ratio.less that must correlate with _INCREMENT and _HEIGHT
 const _INCREMENT = 40;
 const _HEIGHT = 1080;
 function _aspectRatioClass(ratio) {
@@ -78,7 +80,6 @@ class ListingContent extends React.Component {
     if (!listing) {
       return null;
     }
-    var loaded = props.loaded;
     var expanded = this._isExpanded();
     var media = listing.media;
     var url = listing.url;
@@ -93,30 +94,15 @@ class ListingContent extends React.Component {
       var type = oembed.type;
       if (type === 'image') {
         if (expanded) {
-          var ctx = this;
           return this._renderIFrame(url);
         } else {
-          return (
-            this.buildImage({
-              href: permalink,
-              url: preview || thumbnailUrl,
-              embed: oembed,
-            })
-          );
+          return this.buildImage(preview || thumbnailUrl, permalink);
         }
       } else if (type === 'video') {
         if (expanded) {
           return this._renderHTML(listing.expandContent);
         } else {
-          return (
-            this.buildImage({
-              playIcon: true,
-              href: permalink,
-              onClick: this._expand,
-              url: preview || thumbnailUrl,
-              embed: oembed,
-            })
-          );
+          return this.buildImage(preview || thumbnailUrl, permalink, this._expand);
         }
       } else if (type === 'rich') {
           var findSrc = oembed.html.match(/src="([^"]*)/);
@@ -134,111 +120,50 @@ class ListingContent extends React.Component {
               )
             );
           } else {
-            return (
-              this.buildImage({
-                href: url,
-                playIcon: true,
-                onClick: this._expand,
-                url: preview || thumbnailUrl,
-                embed: oembed,
-              })
-            );
+            return this.buildImage(preview || thumbnailUrl, url, this._expand);
           }
         }
       } else if (url.match(ListingContent.imgMatch)) {
         if (expanded && _httpsRegex.test(url)) {
-          return (
-            this.buildImage({
-              href: url,
-              url: url,
-            })
-          );
+          return this.buildImage(url, url);
         } else {
-          return (
-            this.buildImage({
-              href: permalink,
-              playIcon: url.match(_gifMatch),
-              onClick: url.match(_gifMatch) ? this._expand : undefined,
-              url: preview,
-
-            })
-          );
+          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? this._expand : null);
         }
       } else if (listing.selftext && !props.compact) {
-        if (expanded) {
-          return this._renderTextHTML(listing.expandContent, false);
-        } else {
-          return this._renderTextHTML(listing.expandContent, true);
-        }
+        return this._renderTextHTML(listing.expandContent, !expanded);
       } else if (listing.domain.indexOf('self.') === 0) {
-        return this._renderPlaceholder();;
+        return this._renderPlaceholder();
       } else if (preview) {
-        return (
-          this.buildImage({
-            href: permalink,
-            url: preview,
-          })
-        );
+        return this.buildImage(preview, permalink);
       }
 
     return this._renderPlaceholder();
   }
 
   //TODO: this method should be integrated into buildContent but it hurts my brain to figure out how to do so
-  buildImage(data) {
-    var ctx = this;
+  buildImage(src, href, onClick) {
     var props = this.props;
-    var compact = ListingContent.isCompact(props);
-
-    var html5 = _gifToHTML5(data.url, {
+    var html5 = _gifToHTML5(src, {
       https: props.https,
       httpsProxy: props.httpsProxy,
     });
+    var expanded = this._isExpanded();
 
-    if (this._isExpanded()) {
+    if (expanded) {
       if (html5) {
-        var height = data.embed ? data.embed.height : 300;
-
         if (html5.iframe) {
           return this._renderIFrame(html5.iframe, this._aspectRatio());
         } else {
           return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
         }
-      } else if (data.fixedRatio) {
-        var options = {
-          playIcon: true,
-          onClick: data.onClick,
-        }
-        return this._renderImage(data.url, data.href, options);
       }
     }
 
     if (html5 && html5.poster) {
-      options = {
-        playIcon: true,
-        onClick: data.onClick,
-      }
-      return this._renderImage(html5.poster, data.href, options);
+      return this._renderImage(html5.poster, href, onClick);
     }
 
-    if (data.playIcon) {
-      options = {
-        playIcon: true,
-        onClick: data.onClick,
-      }
-      return this._renderImage(data.url, data.href, options);
-    }
-    if (compact) {
-      options = {
-        onClick: data.onClick,
-      }
-      return this._renderImage(data.url, data.href, options);
-    } else {
-      options = {
-        onClick: data.onClick,
-      };
-      return this._renderImage(data.url, data.href, options);
-    }
+    return this._renderImage(src, href, onClick);
   }
 
   _renderTextHTML(html, collapsed) {
@@ -249,16 +174,15 @@ class ListingContent extends React.Component {
     );
   }
 
-  _renderImage(src, href, options) {
-    //options include: onClick, playIcon
-    options = options || {};
+  _renderImage(src, href, onClick) {
     var props = this.props;
     var compact = ListingContent.isCompact(props);
     var style = {};
     var nsfw = ListingContent.isNSFW(props.listing);
     var expanded = this._isExpanded();
-    if (props.loaded) {
-      if (options.playIcon) {
+    var loaded = props.loaded;
+    if (loaded) {
+      if (onClick) {
         var playIconNode = <PlayIcon/>;
       }
       if (nsfw && !expanded) {
@@ -277,18 +201,20 @@ class ListingContent extends React.Component {
           );
         }
       }
-      style.backgroundImage = 'url(' + src + ')';
+      if (src) {
+        style.backgroundImage = 'url(' + src + ')';
+      }
     }
     var aspectRatio = this._aspectRatio();
     if (props.single) {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
-    var onClick = nsfw && !expanded ? this._expand : options.onClick;
+    onClick = nsfw && !expanded ? this._expand : onClick;
     var noRoute = !!onClick && !compact;
 
     return (
-      <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio)}
+      <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }
