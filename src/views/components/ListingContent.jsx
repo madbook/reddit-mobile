@@ -1,4 +1,5 @@
 import React from 'react/addons';
+import MyMath from '../../lib/danehansen/utils/MyMath';
 import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -28,11 +29,18 @@ function _gifToHTML5(url) {
   }
 }
 
-const _WIDEST = 1 / 3;
-const _TALLEST = 3;
-
+const _WIDEST = 3;
+const _TALLEST = 1 / 3;
 function _limitAspectRatio(aspectRatio) {
-  return Math.max(Math.min(_TALLEST, aspectRatio), _WIDEST);
+  return Math.min(Math.max(_TALLEST, aspectRatio), _WIDEST);
+}
+
+const _INCREMENT = 40;
+const _HEIGHT = 1080;
+function _aspectRatioClass(ratio) {
+  var w = MyMath.round(ratio * _HEIGHT, _INCREMENT);
+  var euclid = MyMath.euclid(w, _HEIGHT);
+  return  'aspect-ratio-' + w / euclid + 'x' + _HEIGHT / euclid;
 }
 
 class ListingContent extends React.Component {
@@ -271,15 +279,16 @@ class ListingContent extends React.Component {
       }
       style.backgroundImage = 'url(' + src + ')';
     }
-    if (!compact) {
-      style.height = props.width * this._aspectRatio() + 'px';
+    var aspectRatio = this._aspectRatio();
+    if (props.single) {
+      style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
     var onClick = nsfw && !expanded ? this._expand : options.onClick;
     var noRoute = !!onClick && !compact;
 
     return (
-      <a  className='ListingContent-image'
+      <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio)}
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }
@@ -295,29 +304,39 @@ class ListingContent extends React.Component {
     for (var i in src) {
       sources.push(<source type={ 'video/' + i } src={ src[i] } key={ 'video-src' + i } />);
     }
+    var props = this.props;
+    var aspectRatio = this._aspectRatio();
+    var style = {};
+    if (props.single) {
+      style.height = 1 / aspectRatio * props.width  + 'px';
+    }
     return (
-      <video  className='ListingContent-video'
-              poster={ poster }
-              width='100%'
-              height={ this._aspectRatio() * this.props.width + 'px' }
-              loop='true'
-              muted='true'
-              controls='true'
-              autoPlay='true'>
-        { sources }
-      </video>
+      <div className={'ListingContent-video ' + _aspectRatioClass(aspectRatio)} style={ style }>
+        <video  className='ListingContent-videovideo'
+                poster={ poster }
+                width='100%'
+                height='100%'
+                loop='true'
+                muted='true'
+                controls='true'
+                autoPlay='true'>
+          { sources }
+        </video>
+      </div>
     );
   }
 
   _renderIFrame(src, aspectRatio) {
-    var width = this.props.width;
-    var height = aspectRatio ? aspectRatio * width : 600
+    var style = {};
+    if (this.props.single && aspectRatio) {
+      style.height = height;
+    }
+    var className = 'ListingContent-iframe ' + (aspectRatio ? _aspectRatioClass(aspectRatio) : 'set-height');
     return (
-      <div  className='ListingContent-iframe'
-            style={ {height: height + 'px'} }>
+      <div  className={ className } style={ style }>
         <iframe className='ListingContent-iframeiframe'
-                width={ width }
-                height={ height }
+                width='100%'
+                height='100%'
                 src={ src }
                 frameBorder='0'
                 allowFullScreen=''
@@ -327,10 +346,15 @@ class ListingContent extends React.Component {
   }
 
   _renderHTML(html) {
+    var props = this.props;
+    var aspectRatio = this._aspectRatio();
+    if (props.single) {
+      var style = {height: 1 / aspectRatio * props.width + 'px'};
+    }
     return (
-      <div  className='ListingContent-html'
+      <div  className={'ListingContent-html ' + _aspectRatioClass(aspectRatio)}
             dangerouslySetInnerHTML={ {__html: html} }
-            style={ {height: this._aspectRatio() * this.props.width + 'px'} }/>
+            style={ style }/>
     );
   }
 
@@ -414,7 +438,7 @@ class ListingContent extends React.Component {
     if (media) {
       var oembed = media.oembed;
       if (oembed) {
-        return _limitAspectRatio(oembed.height / oembed.width);
+        return _limitAspectRatio(oembed.width / oembed.height);
       }
     }
 
@@ -426,13 +450,13 @@ class ListingContent extends React.Component {
         if (image) {
           var source = image.source;
           if (source) {
-            return _limitAspectRatio(source.height / source.width);
+            return _limitAspectRatio(source.width / source.height);
           }
         }
       }
     }
 
-    return 9 / 16;
+    return 16 / 9;
   }
 
   _expand(e) {
