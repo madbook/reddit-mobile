@@ -328,9 +328,11 @@ class ListingContent extends React.Component {
 
   _renderIFrame(src, aspectRatio) {
     var style = {};
+
     if (this.props.single && aspectRatio) {
-      style.height = height;
+      style.height = 1 / aspectRatio * this.props.width + 'px';
     }
+
     var className = 'ListingContent-iframe ' + (aspectRatio ? _aspectRatioClass(aspectRatio) : 'set-height');
     return (
       <div  className={ className } style={ style }>
