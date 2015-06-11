@@ -60,6 +60,13 @@ class Listing extends React.Component {
         <ListingDropdown
           listing={ listing }
           app={ props.app }
+          showHide={ true }
+          saved={ listing.saved }
+          subreddit={ listing.subreddit }
+          onReport={ this.onReport }
+          onHide={ this.onHide }
+          token={ props.token }
+          apiOptions={ props.apiOptions }
         />
       );
 
@@ -224,6 +231,10 @@ class Listing extends React.Component {
 
   render() {
     var state = this.state;
+    if (state.hidden) {
+      return null;
+    }
+
     var compact = state.compact;
     return (
       <article ref='root' className={'Listing' + (compact ? ' compact' : '') + (this.props.sponsored ? ' Listing-sponsored' : '') }>
