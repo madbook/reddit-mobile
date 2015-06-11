@@ -23,3 +23,26 @@
   [class^="icon-"] {@rules();}
   [class*=" icon-"] {@rules();}
 }
+
+.display-flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-direction(@direction) {
+  -webkit-flex-direction: @direction;
+          flex-direction: @direction;
+}
+
+.justify-content(@alignment) {
+  -webkit-justify-content: @alignment;
+          justify-content: @alignment;
+}
+
+.align-items(@alignment) {
+  -webkit-align-items: @alignment;
+          align-items: @alignment;
+}
