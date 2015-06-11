@@ -70,7 +70,7 @@ class ListingList extends React.Component {
     var width = this.refs.root.getDOMNode().offsetWidth;
     for (var i = 0; i < this.length; i++) {
       var ref = this.refs['listing' + i];
-      if (ref) {
+      if (ref && ref.resize) {
         ref.resize(width);
       }
     }
