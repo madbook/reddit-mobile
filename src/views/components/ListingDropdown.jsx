@@ -78,32 +78,14 @@ class ListingDropdown extends React.Component {
         </li>
       );
 
-      var saveIcon;
-      var saveText = 'Save';
-
-      var hideIcon;
-      var hideText = 'Hide';
-
-
-      if (this.state.saved) {
-        saveIcon = (<span className='text-success'><SaveIcon /></span>);
-        saveText = 'Saved';
-      } else {
-        saveIcon = (<SaveIcon />);
-      }
-
-      if (this.state.hidden) {
-        hideIcon = (<span className='text-danger'><SettingsIcon /></span>);
-        hideText = 'Hidden';
-      } else {
-        hideIcon = (<SettingsIcon />);
-      }
+      var saved = this.state.saved;
+      var hidden = this.state.hidden;
 
       saveLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onSaveClick }>
-            {saveIcon}
-            <span className='Dropdown-text'>{saveText}</span>
+            <SaveIcon altered={ saved }/>
+            <span className='Dropdown-text'>{ saved ? 'Saved' : 'Save' }</span>
           </MobileButton>
         </li>
       );
@@ -112,8 +94,8 @@ class ListingDropdown extends React.Component {
         hideLink = (
           <li className='Dropdown-li'>
             <MobileButton className='Dropdown-button' onClick={ this._onHideClick }>
-              {hideIcon}
-              <span className='Dropdown-text'>{hideText}</span>
+              <SettingsIcon altered={ hidden }/>
+              <span className='Dropdown-text'>{ hidden ? 'Hidden' : 'Hide' }</span>
             </MobileButton>
           </li>
         );
