@@ -196,7 +196,7 @@ class ListingContent extends React.Component {
       if (onClick) {
         var playIconNode = <PlayIcon/>;
       }
-      if (nsfw && !expanded) {
+      if (nsfw && !this.state.expanded) {
         if (compact) {
           var nsfwNode = (
             <div className='ListingContent-nsfw'>
@@ -221,8 +221,8 @@ class ListingContent extends React.Component {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
-    onClick = nsfw && !expanded ? this.props.expand : onClick;
-    var noRoute = !!onClick;
+    onClick = nsfw && !this.state.expanded ? this._expand : onClick;
+    var noRoute = !!onClick && !compact;
 
     return (
       <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}
@@ -314,19 +314,31 @@ class ListingContent extends React.Component {
     var url = listing.url;
     var width = compact ? 80 : props.width;
 
-    if (expanded && url.match(ListingContent.imgMatch)) {
-      return url;
+    var imgMatch = url.match(ListingContent.imgMatch);
+    var isNSFW = ListingContent.isNSFW(listing);
+
+    if (imgMatch) {
+      // If single or expanded and not nsfw, return image
+      if (expanded && !isNSFW) {
+        return url;
+      // If purposefully expanded and nsfw, return image
+      } else if (this.state.expanded && isNSFW) {
+        return url;
+      }
     }
 
     var preview = listing.preview;
+
     if (preview) {
       var images = preview.images;
       if (images) {
         preview = images[0];
       }
-      if (ListingContent.isNSFW(listing) && preview.variants && preview.variants.nsfw && preview.variants.nsfw.resolutions) {
+
+      if (!this.state.expanded && isNSFW && preview.variants && preview.variants.nsfw && preview.variants.nsfw.resolutions) {
         preview = preview.variants.nsfw;
       }
+
       var resolutions = preview.resolutions;
 
       var source = preview.source;
