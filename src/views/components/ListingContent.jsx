@@ -1,5 +1,7 @@
 import React from 'react/addons';
+import tweenDefault from '../../tweenDefault';
 import MyMath from '../../lib/danehansen/utils/MyMath';
+
 import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -54,6 +56,18 @@ class ListingContent extends React.Component {
     };
 
     this._expand = this._expand.bind(this);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    var last = this._isExpanded();
+    var next = nextState.expanded || nextProps.single;
+    if (last !== next) {
+      var ref = this.refs.text;
+      if (ref) {
+        //105 corresponds with a css value in ListingContent.less
+        tweenDefault.maxHeight(ref.getDOMNode(), next ? 'none' : 105, false);
+      }
+    }
   }
 
   render() {
@@ -168,7 +182,7 @@ class ListingContent extends React.Component {
 
   _renderTextHTML(html, collapsed) {
     return (
-      <div  className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
+      <div  ref='text' className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
             dangerouslySetInnerHTML={ {__html: html} }
             onClick={ this._expand }/>
     );
