@@ -99,8 +99,9 @@ class Listing extends React.Component {
           var iconImg = srDetail.icon_img;
 
           var keyColor = srDetail.key_color;
+
           if (keyColor) {
-            var style = {color: '#f00'};
+            var style = {color: keyColor};
           }
         }
 
