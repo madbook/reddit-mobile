@@ -536,7 +536,7 @@ function routes(app) {
         subreddit = '?subreddit=' + sub;
       }
 
-      return ctx.redirect('/login?originalUrl=%2Fsubmit' + subreddit)
+      window.location = '/login?originalUrl=%2Fsubmit' + subreddit;
     }
 
     var props = buildProps(this, {
