@@ -49,6 +49,18 @@ function onLoad(fn) {
   }
 }
 
+function redirect(status, path) {
+  if ((typeof status === 'string') && !path) {
+    path = status;
+  }
+
+  if (path.indexOf('/login') > -1 || path.indexOf('/register') > -1 ) {
+    window.location = path;
+  } else {
+    this.render(path);
+  }
+}
+
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
   onLoad(loadShim);
@@ -70,6 +82,8 @@ function modifyContext (ctx) {
   // restore proper state
   ctx.compact = (cookies.get('compact') || '').toString() === 'true';
   ctx.hideBetaBanner = (cookies.get('hideBetaBanner') || '').toString() === 'true';
+
+  ctx.redirect = redirect.bind(this);
 
   return ctx;
 }
