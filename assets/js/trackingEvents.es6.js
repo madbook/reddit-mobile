@@ -54,6 +54,18 @@ var events = {
   'report': function (query) {
     ga('send', 'event', 'report');
   },
+
+  'post:submit': function(subreddit) {
+    ga('send', 'event', 'post', 'submit', subreddit);
+  },
+
+  'post:selectSubreddit': function(subreddit) {
+    ga('send', 'event', 'post', 'selectSubreddit', subreddit);
+  },
+
+  'post:error': function() {
+    ga('send', 'event', 'post', 'captcha');
+  },
 };
 
 function trackingEvents(app) {

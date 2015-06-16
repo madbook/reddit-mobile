@@ -78,6 +78,7 @@ class SubmitPage extends React.Component {
     var kind = _determineKind(body);
 
     var errors = this._validateContent(sub, title, body);
+
     if (errors.length) {
       this.setState({
         error: {
@@ -86,6 +87,8 @@ class SubmitPage extends React.Component {
           fields: errors,
         }
       });
+
+      this.props.app.emit('post:error');
       return;
     }
 
@@ -144,9 +147,10 @@ class SubmitPage extends React.Component {
 
         props.app.pushState(null, null, url);
         props.app.render(url, false, props.app.modifyContext);
-        
+        props.app.emit('post:submit', link.sr);
       } else {
         this._handleApiErrors(res);
+        props.app.emit('post:error');
       }
     }.bind(this),
     function(err) {
@@ -182,8 +186,9 @@ class SubmitPage extends React.Component {
   }
 
   changeSubreddit (newSub) {
-    this.setState({subreddit: newSub});
-    this.setState({subredditSelectionOpen: false});
+    this.props.app.emit('post:selectSubreddit', newSub);
+    this.setState({ subreddit: newSub });
+    this.setState({ subredditSelectionOpen: false });
   }
 
   toggleSubSelect () {
@@ -277,11 +282,12 @@ class SubmitPage extends React.Component {
     var captcha;
     var showCaptchaError = (this.state.captchaCount > 1 &&
                             error.type === 'BAD_CAPTCHA');
+
     if (this.state.requiresCaptcha) {
       captcha = (
         <Modal open={true} >
           <div className='Submit-captcha-heading' >
-            <span>  Ok, one more thing. You're human right?</span>
+            <span>Ok, one more thing. You're human right?</span>
           </div>
           <CaptchaBox
             {...props}
