@@ -96,7 +96,7 @@ class ListingContent extends React.Component {
     var url = listing.url;
 
     var oembed = media ? media.oembed : null;
-    var permalink = props.sponsored ? url : listing.cleanPermalink;
+    var permalink = props.listing.promoted ? url : listing.cleanPermalink;
 
     var preview = this._previewImageUrl(expanded);
 

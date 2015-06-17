@@ -115,7 +115,6 @@ class Ad extends React.Component {
 
     var props = this.props;
     props.listing = this.state.ad;
-    props.sponsored = true;
     props.hideSubredditLabel = true;
     props.hideWhen = true;
     props.hideDomain = true;
