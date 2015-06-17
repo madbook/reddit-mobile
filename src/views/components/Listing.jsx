@@ -22,7 +22,7 @@ class Listing extends React.Component {
     super(props);
 
     this.state = {
-      compact: props.compact,
+      compact: props.compact || false,
       expanded: false,
       loaded: false,
       tallestHeight: 0,
@@ -52,169 +52,175 @@ class Listing extends React.Component {
   }
 
   //build headline
-    _renderHeadline() {
-      var props = this.props;
+  _renderHeadline() {
+    var props = this.props;
 
-      var listing = props.listing;
-      var hideSubredditLabel = props.hideSubredditLabel;
+    var listing = props.listing;
+    var hideSubredditLabel = props.hideSubredditLabel;
 
-      var distinguished = listing.distinguished;
-      var linkFlairText = listing.link_flair_text;
-      var subreddit = listing.subreddit;
+    var distinguished = listing.distinguished;
+    var linkFlairText = listing.link_flair_text;
+    var subreddit = listing.subreddit;
+    var showEdit = false;
+    if (props.user && props.single) {
+      showEdit = (props.user.name === listing.author) && listing.is_self;
+    }
 
-      var listingDropdownNode = (
-        <ListingDropdown
-          listing={ listing }
-          app={ props.app }
-          showHide={ true }
-          saved={ listing.saved }
-          subreddit={ listing.subreddit }
-          onReport={ this.onReport }
-          onHide={ this.onHide }
-          token={ props.token }
-          apiOptions={ props.apiOptions }
-        />
+    var listingDropdownNode = (
+      <ListingDropdown
+        listing={ listing }
+        app={ props.app }
+        showHide={ true }
+        saved={ listing.saved }
+        subreddit={ listing.subreddit }
+        showEdit={ showEdit }
+        onEdit={props.toggleEdit}
+        onReport={ this.onReport }
+        onHide={ this.onHide }
+        token={ props.token }
+        apiOptions={ props.apiOptions }
+      />
+    );
+
+    if (ListingContent.isNSFW(listing)) {
+      var nsfwNode = (
+        <span className='Listing-link-flair label label-danger'>
+          NSFW
+        </span>
       );
+    }
 
-      if (ListingContent.isNSFW(listing)) {
-        var nsfwNode = (
-          <span className='Listing-link-flair label label-danger'>
-            NSFW
-          </span>
-        );
-      }
+    if (linkFlairText) {
+      var linkNode = (
+        <span className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }>
+          { linkFlairText }
+        </span>
+      );
+    }
 
-      if (linkFlairText) {
-        var linkNode = (
-          <span className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }>
-            { linkFlairText }
-          </span>
-        );
-      }
+    if (nsfwNode || linkNode) {
+      var flairNode = <div className='Listing-flair link-flair-container vertical-spacing-top'>
+        { nsfwNode }
+        { linkNode }
+      </div>;
+    }
 
-      if (nsfwNode || linkNode) {
-        var flairNode = <div className='Listing-flair link-flair-container vertical-spacing-top'>
-          { nsfwNode }
-          { linkNode }
-        </div>;
-      }
+    if (!hideSubredditLabel) {
+      var srDetail = listing.sr_detail;
+      if (srDetail) {
+        var iconImg = srDetail.icon_img;
 
-      if (!hideSubredditLabel) {
-        var srDetail = listing.sr_detail;
-        if (srDetail) {
-          var iconImg = srDetail.icon_img;
+        var keyColor = srDetail.key_color;
 
-          var keyColor = srDetail.key_color;
-
-          if (keyColor) {
-            var style = {color: keyColor};
-          }
+        if (keyColor) {
+          var style = {color: keyColor};
         }
+      }
 
-        if (!ListingContent.isCompact(props)) {
-          if (iconImg) {
-            var iconNode = (
-              <div className='Listing-icon' style={ {backgroundImage: 'url(' + iconImg + ')'} }>
-              </div>
-            );
-          } else {
-            iconNode = <SnooIcon/>;
-          }
+      if (!ListingContent.isCompact(props)) {
+        if (iconImg) {
+          var iconNode = (
+            <div className='Listing-icon' style={ {backgroundImage: 'url(' + iconImg + ')'} }>
+            </div>
+          );
+        } else {
+          iconNode = <SnooIcon/>;
         }
+      }
 
-        var subredditNode = subreddit ? (
-          <MobileButton className='Listing-subreddit' href={`/r/${subreddit}`}>
-            { iconNode }
-            <span style={ style }>r/{ subreddit }</span>
+      var subredditNode = subreddit ? (
+        <MobileButton className='Listing-subreddit' href={`/r/${subreddit}`}>
+          { iconNode }
+          <span style={ style }>r/{ subreddit }</span>
+        </MobileButton>
+      ) : null;
+    }
+
+    if (subredditNode || flairNode) {
+      var row1Node = (
+        <div className='Listing-header-row1'>
+          { subredditNode }
+          { flairNode }
+          { listingDropdownNode }
+        </div>
+      );
+    } else {
+      var row2Dropdown = listingDropdownNode;
+    }
+
+    return (
+      <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '')}>
+        { row1Node }
+        <div className={ 'Listing-header-row2'}>
+          <a href={ mobilify(listing.url) } className={ 'Listing-title' + ( distinguished ? ' text-' + distinguished : '') }>
+            { listing.title + ' ' + (listing.edited ? '*' : '') }
+          </a>
+          { row2Dropdown }
+        </div>
+      </header>
+    );
+  }
+
+  _renderFooter() {
+    var props = this.props;
+
+    var listing = props.listing;
+
+    var domain = listing.domain;
+    var numComments = listing.num_comments;
+
+    if (listing.gilded && props.single) {
+      var gildedNode = (
+        <li><span className='icon-gold-circled'/></li>
+      );
+    }
+
+    if (!props.hideWhen) {
+      var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
+    }
+
+    if (props.listing.promoted) {
+      domainNode = (
+        <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
+      );
+    } else if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
+      var domainNode = (
+        <span className='Listing-domain'>{ domain }</span>
+      );
+    }
+
+    if (!props.hideComments) {
+      var commentsNode = (
+        <li className='Listing-comments linkbar-item-no-seperator'>
+          <MobileButton className='Listing-commentsbutton' href={ listing.cleanPermalink }>
+            <CommentIcon/>
+            <span className='Listing-numcomments'>{ numComments }</span>
+            { whenNode }
+            { domainNode }
           </MobileButton>
-        ) : null;
-      }
-
-      if (subredditNode || flairNode) {
-        var row1Node = (
-          <div className='Listing-header-row1'>
-            { subredditNode }
-            { flairNode }
-            { listingDropdownNode }
-          </div>
-        );
-      } else {
-        var row2Dropdown = listingDropdownNode;
-      }
-
-      return (
-        <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '')}>
-          { row1Node }
-          <div className={ 'Listing-header-row2'}>
-            <a href={ mobilify(listing.url) } className={ 'Listing-title' + ( distinguished ? ' text-' + distinguished : '') }>
-              { listing.title + ' ' + (listing.edited ? '*' : '') }
-            </a>
-            { row2Dropdown }
-          </div>
-        </header>
+        </li>
       );
     }
 
-    _renderFooter() {
-      var props = this.props;
-
-      var listing = props.listing;
-
-      var domain = listing.domain;
-      var numComments = listing.num_comments;
-
-      if (listing.gilded && props.single) {
-        var gildedNode = (
-          <li><span className='icon-gold-circled'/></li>
-        );
-      }
-
-      if (!props.hideWhen) {
-        var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
-      }
-
-      if (props.listing.promoted) {
-        domainNode = (
-          <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
-        );
-      } else if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
-        var domainNode = (
-          <span className='Listing-domain'>{ domain }</span>
-        );
-      }
-
-      if (!props.hideComments) {
-        var commentsNode = (
-          <li className='Listing-comments linkbar-item-no-seperator'>
-            <MobileButton className='Listing-commentsbutton' href={ listing.cleanPermalink }>
-              <CommentIcon/>
-              <span className='Listing-numcomments'>{ numComments }</span>
-              { whenNode }
-              { domainNode }
-            </MobileButton>
-          </li>
-        );
-      }
-
-      return (
-        <footer className='Listing-footer'>
-          <ul className='linkbar text-muted'>
-            { commentsNode }
-            { gildedNode }
-          </ul>
-          <div className='Listing-vote'>
-            <Vote
-              app={ props.app }
-              thing={ listing }
-              token={ props.token }
-              api={ props.api }
-              apiOptions={ props.apiOptions }
-              loginPath={ props.loginPath }
-            />
-          </div>
-        </footer>
-      );
-    }
+    return (
+      <footer className='Listing-footer'>
+        <ul className='linkbar text-muted'>
+          { commentsNode }
+          { gildedNode }
+        </ul>
+        <div className='Listing-vote'>
+          <Vote
+            app={ props.app }
+            thing={ listing }
+            token={ props.token }
+            api={ props.api }
+            apiOptions={ props.apiOptions }
+            loginPath={ props.loginPath }
+          />
+        </div>
+      </footer>
+    );
+  }
 
   //build image credit
     /*_renderImageCredit() {
@@ -273,6 +279,10 @@ class Listing extends React.Component {
                           width={ state.width }
                           tallestHeight={ state.tallestHeight }
                           loaded={ state.loaded }
+                          editing={this.props.editing}
+                          toggleEdit={this.props.toggleEdit}
+                          saveUpdatedText={this.props.saveUpdatedText}
+                          editError={ this.props.editError }
                           {...props}/>
           { this._renderFooter() }
         </div>
@@ -284,18 +294,20 @@ class Listing extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
     if (this.props.single) {
       this._loadContent();
       this.props.app.on(constants.RESIZE, this.resize);
       this.resize();
+    } else {
+      this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
     if (this.props.single) {
       this.props.app.off(constants.RESIZE, this.resize);
+    } else {
+      this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 

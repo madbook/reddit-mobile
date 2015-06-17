@@ -81,7 +81,7 @@ class TopNav extends React.Component {
     if (subredditName) {
       var breadcrumbLink = '/' + this.state.subredditName;
       var breadcrumbContents = subredditName;
-      currentSub = '?subreddit=' + subredditName;
+      currentSub = '?subreddit=' + this.state.subredditName;
     } else {
       breadcrumbLink = '/';
       breadcrumbContents = <Logo/>;
