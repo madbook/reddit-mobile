@@ -1,15 +1,17 @@
-import React from 'react';
-import moment from 'moment';
-import tweenDefault from '../../tweenDefault';
-import short from '../../lib/formatDifference';
+import React from 'react/addons';
 import mobilify from '../../lib/mobilify';
+import moment from 'moment';
+import short from '../../lib/formatDifference';
 
-import Vote from '../components/Vote';
+import AutoTween from '../components/AutoTween';
 import CommentBox from '../components/CommentBox';
-import MobileButton from '../components/MobileButton';
 import ListingDropdown from '../components/ListingDropdown';
+import MobileButton from '../components/MobileButton';
 import ReplyIcon from '../components/icons/ReplyIcon';
 import ReportPlaceholder from '../components/ReportPlaceholder';
+import Vote from '../components/Vote';
+
+var TransitionGroup = React.addons.TransitionGroup;
 
 class Comment extends React.Component {
   constructor(props) {
@@ -41,18 +43,6 @@ class Comment extends React.Component {
     }
 
     this.onReport = this.onReport.bind(this);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    var last = this.state.collapsed;
-    var next = nextState.collapsed;
-    if (last !== next) {
-      tweenDefault.height(this.refs.body.getDOMNode(), next ? 0 : 'auto');
-      var children = this.refs.children;
-      if (children) {
-        tweenDefault.height(children.getDOMNode(), next ? 0 : 'auto');
-      }
-    }
   }
 
   onReport () {
@@ -144,7 +134,6 @@ class Comment extends React.Component {
     var opClass = '';
     var commentCollapseClass = '';
     var gilded;
-    var children;
     var vote;
 
     var distinguished = comment.distinguished ? ' text-' + comment.distinguished : '';
@@ -228,23 +217,49 @@ class Comment extends React.Component {
       );
     }
 
-    if (comment.replies) {
-      children = (
-        <div ref='children' className={ 'comment-children comment-content' + (collapsed ? ' comment-collapsed' : '')}>
-          {
-            comment.replies.map(function(c, i) {
-              if (c) {
-                var key = 'page-comment-' + c.name + '-' + i;
+    if (comment.replies && !collapsed) {
+      if ( !this._childrenKey ) {
+        this._childrenKey = 'children' + Math.random();
+      }
+      var children = (
+        <AutoTween key={ this._childrenKey }>
+          <div className='comment-children comment-content'>
+            {
+              comment.replies.map(function(c, i) {
+                if (c) {
+                  var key = 'page-comment-' + c.name + '-' + i;
 
-                return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
-              }
-            })
-          }
-        </div>
+                  return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
+                }
+              })
+            }
+          </div>
+        </AutoTween>
       );
     }
 
     var caretDirection = (collapsed) ? 'right' : 'bottom';
+
+    if (!collapsed) {
+      if ( !this._bodyKey ) {
+        this._bodyKey = 'body' + Math.random();
+      }
+      var body = (
+        <AutoTween key={ this._bodyKey }>
+          <div className='comment-body'>
+            <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
+                __html: comment.body_html
+              }}
+              onClick={this.showTools.bind(this)} />
+
+            <footer>
+              { toolbox }
+              { commentBox }
+            </footer>
+          </div>
+        </AutoTween>
+      );
+    }
 
     return (
       <div className='comment'>
@@ -271,22 +286,13 @@ class Comment extends React.Component {
                 </ul>
               </a>
             </div>
-
-            <div ref='body' className={ 'comment-body' + (collapsed ? ' comment-collapsed' : '') }>
-              <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-                  __html: comment.body_html
-                }}
-                onClick={this.showTools.bind(this)} />
-
-              <footer>
-                { toolbox }
-                { commentBox }
-              </footer>
-            </div>
+            <TransitionGroup>
+              { body }
+            </TransitionGroup>
           </article>
-
-          { children }
-
+          <TransitionGroup>
+           { children }
+          </TransitionGroup>
         </div>
       </div>
     );

@@ -2,8 +2,8 @@ import React from 'react';
 import constants from '../../constants';
 import cookies from 'cookies-js';
 import querystring from 'querystring';
-import tweenDefault from '../../tweenDefault';
 
+import AutoTween from '../components/AutoTween';
 import MailIcon from '../components/icons/MailIcon';
 import MobileButton from '../components/MobileButton';
 import SaveIcon from '../components/icons/SaveIcon';
@@ -49,7 +49,7 @@ class SideNav extends React.Component {
         var str = refs[i];
         var ref = next === str;
         if (last === str || ref) {
-          tweenDefault.height(this.refs[str].getDOMNode(), ref ? 'auto' : 0, false);
+          AutoTween.height(this.refs[str].getDOMNode(), ref ? 'auto' : 0);
         }
       }
     }
