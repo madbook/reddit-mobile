@@ -1,16 +1,15 @@
 import React from 'react';
-import querystring from 'querystring';
-
-import cookies from 'cookies-js';
-
 import constants from '../../constants';
+import cookies from 'cookies-js';
+import querystring from 'querystring';
+import tweenDefault from '../../tweenDefault';
 
-import MobileButton from '../components/MobileButton';
 import MailIcon from '../components/icons/MailIcon';
+import MobileButton from '../components/MobileButton';
+import SaveIcon from '../components/icons/SaveIcon';
 import SettingsIcon from '../components/icons/SettingsIcon';
 import SnooIcon from '../components/icons/SnooIcon';
 import TwirlyIcon from '../components/icons/TwirlyIcon';
-import SaveIcon from '../components/icons/SaveIcon';
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -27,9 +26,7 @@ class SideNav extends React.Component {
     this._close = this._close.bind(this);
     this._onViewClick = this._onViewClick.bind(this);
     this._onScroll = this._onScroll.bind(this);
-
     this._desktopSite = this._desktopSite.bind(this);
-
     this._goto = this._goto.bind(this);
   }
 
@@ -41,6 +38,21 @@ class SideNav extends React.Component {
   componentWillUnmount() {
     this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
     this.props.app.off('route:start', this._close);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    var last = this.state.twirly;
+    var next = nextState.twirly;
+    var refs = ['about', 'subreddits', 'user'];
+    if (last !== next) {
+      for (var i = 0, iLen = refs.length; i < iLen; i++) {
+        var str = refs[i];
+        var ref = next === str;
+        if (last === str || ref) {
+          tweenDefault.height(this.refs[str].getDOMNode(), ref ? 'auto' : 0, false);
+        }
+      }
+    }
   }
 
   _desktopSite(e) {
@@ -87,7 +99,7 @@ class SideNav extends React.Component {
             <TwirlyIcon altered={isUser}/>
             <span className='SideNav-text'>{ user.name }</span>
           </MobileButton>
-          <ul className='SideNav-ul list-unstyled'>
+          <ul ref='user' className='SideNav-ul list-unstyled'>
             <li>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}` }>
                 <SnooIcon/>
@@ -150,7 +162,7 @@ class SideNav extends React.Component {
           <TwirlyIcon altered={isSubreddits}/>
           <span className='SideNav-text'>My Subreddits</span>
         </MobileButton>
-        <ul className='SideNav-ul list-unstyled'>
+        <ul ref='subreddits' className='SideNav-ul list-unstyled'>
           {
             subreddits.map((d) => {
               if(d.icon) {
@@ -195,7 +207,7 @@ class SideNav extends React.Component {
               <TwirlyIcon altered={isAbout}/>
               <span className='SideNav-text'>About reddit</span>
             </MobileButton>
-            <ul className='SideNav-ul list-unstyled'>
+            <ul ref='about' className='SideNav-ul list-unstyled'>
               <li>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/blog/'>
                   <SnooIcon/>
@@ -311,38 +323,7 @@ class SideNav extends React.Component {
   }
 
   _onTwirlyClick(str) {
-    this.setState({twirly: this.state.twirly === str ? '' : str}, this._heightsChanged.bind(this, this._findHeights()));
-  }
-
-  _findHeights() {
-    var uls = React.findDOMNode(this).querySelectorAll('.SideNav-ul');
-    var heights = [];
-    for(var i = 0, iLen = uls.length; i < iLen; i++) {
-      var ul = uls[i];
-      var tween = TweenLite.getTweensOf(ul)[0];
-      if(tween) {
-        tween.pause();
-      }
-      var height = ul.style.height;
-      ul.style.height = ''
-      heights.push(uls[i].offsetHeight);
-      ul.style.height = height;
-      if(tween) {
-        tween.resume();
-      }
-    }
-    return heights;
-  }
-
-  _heightsChanged(oldHeights) {
-    var newHeights = this._findHeights();
-    var uls = React.findDOMNode(this).querySelectorAll('.SideNav-ul');
-    for(var i = 0, iLen = uls.length; i < iLen; i++) {
-      if(newHeights[i] !== oldHeights[i]) {
-        var ul = uls[i];
-        TweenLite.fromTo(ul, 0.3, {height: ul.style.height || oldHeights[i]}, {height: newHeights[i], ease: Cubic.easeInOut, clearProps: 'all'});
-      }
-    }
+    this.setState({twirly: this.state.twirly === str ? '' : str});
   }
 
   _onViewClick() {

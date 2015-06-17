@@ -1,16 +1,15 @@
 import React from 'react';
 import moment from 'moment';
+import tweenDefault from '../../tweenDefault';
+import short from '../../lib/formatDifference';
+import mobilify from '../../lib/mobilify';
 
 import Vote from '../components/Vote';
 import CommentBox from '../components/CommentBox';
 import MobileButton from '../components/MobileButton';
 import ListingDropdown from '../components/ListingDropdown';
 import ReplyIcon from '../components/icons/ReplyIcon';
-
 import ReportPlaceholder from '../components/ReportPlaceholder';
-
-import short from '../../lib/formatDifference';
-import mobilify from '../../lib/mobilify';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -42,6 +41,18 @@ class Comment extends React.Component {
     }
 
     this.onReport = this.onReport.bind(this);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    var last = this.state.collapsed;
+    var next = nextState.collapsed;
+    if (last !== next) {
+      tweenDefault.height(this.refs.body.getDOMNode(), next ? 0 : 'auto');
+      var children = this.refs.children;
+      if (children) {
+        tweenDefault.height(children.getDOMNode(), next ? 0 : 'auto');
+      }
+    }
   }
 
   onReport () {
@@ -209,14 +220,7 @@ class Comment extends React.Component {
     if (op == comment.author) {
       opClass = 'comment-op';
     }
-
-    var headerCollapseClass = '';
-    var contentCollapseClass = '';
-
-    if (this.state.collapsed) {
-      headerCollapseClass = 'comment-header comment-collapsed';
-      contentCollapseClass = 'comment-content comment-collapsed';
-    }
+    var collapsed = this.state.collapsed;
 
     if (comment.gilded) {
       gilded = (
@@ -224,34 +228,32 @@ class Comment extends React.Component {
       );
     }
 
-    if (!this.state.collapsed) {
-      if (comment.replies) {
-        children = (
-          <div className={ contentCollapseClass }>
-            {
-              comment.replies.map(function(c, i) {
-                if (c) {
-                  var key = 'page-comment-' + c.name + '-' + i;
+    if (comment.replies) {
+      children = (
+        <div ref='children' className={ 'comment-children comment-content' + (collapsed ? ' comment-collapsed' : '')}>
+          {
+            comment.replies.map(function(c, i) {
+              if (c) {
+                var key = 'page-comment-' + c.name + '-' + i;
 
-                  return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
-                }
-              })
-            }
-          </div>
-        );
-      }
+                return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
+              }
+            })
+          }
+        </div>
+      );
     }
 
-    var caretDirection = (this.state.collapsed) ? 'right' : 'bottom';
+    var caretDirection = (collapsed) ? 'right' : 'bottom';
 
     return (
       <div className='comment'>
         <div className={ commentCollapseClass }>
           <article className={`comment-article ${highlighted}`}>
-            <div className={'comment-submitted ' + headerCollapseClass}>
+            <div className={'comment-submitted' + (collapsed ? ' comment-header comment-collapsed' : '')}>
               <a href='#' onClick={ this.collapse.bind(this) }>
-                <ul className='linkbar linkbar-compact comment-title-list'>
-                  <li className={'comment-title-collapse-container twirly before' + (this.state.collapsed ? '' : ' opened')}>
+                <ul className='linkbar linkbar-compact tween comment-title-list'>
+                  <li className={'comment-title-collapse-container twirly before' + (collapsed ? '' : ' opened')}>
                   </li>
                   <li className="comment-title-username">
                     <span className={ opClass + " " + distinguished }>
@@ -270,7 +272,7 @@ class Comment extends React.Component {
               </a>
             </div>
 
-            <div className={ `comment-body ${contentCollapseClass}` }>
+            <div ref='body' className={ 'comment-body' + (collapsed ? ' comment-collapsed' : '') }>
               <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
                   __html: comment.body_html
                 }}

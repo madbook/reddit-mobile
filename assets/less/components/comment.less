@@ -14,7 +14,7 @@
   &:after {
     content: "";
     position: absolute;
-    top: 17px;
+    top: 22px;
     bottom: 0;
     left: -1px;
     border-left: @gray-border;
@@ -161,9 +161,13 @@
   .comment-title-list {
     color: @light-gray;
   }
+}
 
-  &.comment-content {
-    display: none;
+.comment-children, .comment-body {
+  overflow: hidden;
+
+  &.comment-collapsed {
+    height: 0;
   }
 }
 

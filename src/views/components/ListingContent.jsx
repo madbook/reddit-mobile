@@ -1,5 +1,7 @@
 import React from 'react/addons';
+import tweenDefault from '../../tweenDefault';
 import MyMath from '../../lib/danehansen/utils/MyMath';
+
 import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -50,21 +52,30 @@ class ListingContent extends React.Component {
     super(props);
 
     this.state = {
-      expanded: props.expanded,
     };
+  }
 
-    this._expand = this._expand.bind(this);
+  componentWillUpdate(nextProps, nextState) {
+    var last = this._isExpanded();
+    var next = nextProps.expanded || nextProps.single;
+    if (last !== next) {
+      var ref = this.refs.text;
+      if (ref) {
+        //105 corresponds with a css value in ListingContent.less
+        tweenDefault.maxHeight(ref.getDOMNode(), next ? 'none' : 105, false);
+      }
+    }
   }
 
   render() {
     var contentNode = this.buildContent();
     if (contentNode) {
       var compact = ListingContent.isCompact(this.props);
-      if (!compact) {
+      if (!compact && !this.props.expandedCompact) {
         var stalactiteNode = <div className='stalactite'/>;
       }
       return (
-        <div className={ 'ListingContent' + (compact ? ' compact' : '')}>
+        <div ref='all' className={ 'ListingContent' + (compact ? ' compact' : '')}>
           { stalactiteNode }
           { contentNode }
         </div>
@@ -102,7 +113,7 @@ class ListingContent extends React.Component {
         if (expanded) {
           return this._renderHTML(listing.expandContent);
         } else {
-          return this.buildImage(preview || thumbnailUrl, permalink, this._expand);
+          return this.buildImage(preview || thumbnailUrl, permalink, this.props.expand);
         }
       } else if (type === 'rich') {
           var findSrc = oembed.html.match(/src="([^"]*)/);
@@ -120,14 +131,14 @@ class ListingContent extends React.Component {
               )
             );
           } else {
-            return this.buildImage(preview || thumbnailUrl, url, this._expand);
+            return this.buildImage(preview || thumbnailUrl, url, this.props.expand);
           }
         }
       } else if (url.match(ListingContent.imgMatch)) {
         if (expanded && _httpsRegex.test(url)) {
           return this.buildImage(url, url);
         } else {
-          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? this._expand : null);
+          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? this.props.expand : null);
         }
       } else if (listing.selftext && !props.compact) {
         return this._renderTextHTML(listing.expandContent, !expanded);
@@ -138,6 +149,14 @@ class ListingContent extends React.Component {
       }
 
     return this._renderPlaceholder();
+  }
+
+  componentDidEnter() {
+    tweenDefault.heightFrom(this.refs.all.getDOMNode(), 0);
+  }
+
+  componentWillLeave(callback) {
+    tweenDefault.height(this.refs.all.getDOMNode(), 0, callback);
   }
 
   //TODO: this method should be integrated into buildContent but it hurts my brain to figure out how to do so
@@ -168,9 +187,9 @@ class ListingContent extends React.Component {
 
   _renderTextHTML(html, collapsed) {
     return (
-      <div  className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
+      <div  ref='text' className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
             dangerouslySetInnerHTML={ {__html: html} }
-            onClick={ this._expand }/>
+            onClick={ this.props.expand }/>
     );
   }
 
@@ -210,8 +229,8 @@ class ListingContent extends React.Component {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
-    onClick = nsfw && !expanded ? this._expand : onClick;
-    var noRoute = !!onClick && !compact;
+    onClick = nsfw && !expanded ? this.props.expand : onClick;
+    var noRoute = !!onClick;
 
     return (
       <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}
@@ -355,7 +374,8 @@ class ListingContent extends React.Component {
   }
 
   _isExpanded() {
-    return this.state.expanded || this.props.single;
+    var props = this.props;
+    return props.expanded || props.single;
   }
 
   _aspectRatio() {
@@ -386,15 +406,6 @@ class ListingContent extends React.Component {
 
     return 16 / 9;
   }
-
-  _expand(e) {
-    if (!this.state.compact) {
-      e.preventDefault();
-      this.setState({
-        expanded: !this.state.expanded,
-      });
-    }
-  }
 }
 
 ListingContent.imgMatch = /\.(?:gif|jpe?g|png)/gi;
@@ -407,7 +418,7 @@ ListingContent.isNSFW = function(listing) {
 }
 
 ListingContent.isCompact = function(props) {
-  return props.compact && !props.single;
+  return props.compact && !props.single && !props.expandedCompact;
 }
 
 export default ListingContent;

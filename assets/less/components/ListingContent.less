@@ -36,11 +36,13 @@
     padding: 1em;
     word-wrap: break-word;
     margin: 0;
+    overflow: hidden;
+    .transition(color 0.5s);
 
     &.collapsed {
       color: lighten(@gray, 20%);
-      max-height: 8em;
-      overflow: hidden;
+      //max-height here needs to correlate with a value in ListingContent.jsx
+      max-height: 105px;
       position: relative;
     }
   }

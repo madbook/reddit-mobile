@@ -137,6 +137,7 @@ class ListingList extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.compact !== this.props.compact) {
       this._resize();
+      this._scroll();
     }
   }
 }
