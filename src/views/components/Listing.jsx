@@ -9,6 +9,8 @@ import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
 import Vote from '../components/Vote';
 
+var TransitionGroup = React.addons.TransitionGroup;
+
 function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
 }
@@ -19,6 +21,7 @@ class Listing extends React.Component {
 
     this.state = {
       compact: props.compact,
+      expanded: false,
       loaded: false,
       tallestHeight: 0,
       reported: false,
@@ -31,6 +34,7 @@ class Listing extends React.Component {
     this.resize = this.resize.bind(this);
     this.onReport = this.onReport.bind(this);
     this.onHide = this.onHide.bind(this);
+    this.expand = this.expand.bind(this);
   }
 
   onReport() {
@@ -236,15 +240,41 @@ class Listing extends React.Component {
     }
 
     var compact = state.compact;
-    return (
-      <article ref='root' className={'Listing' + (compact ? ' compact' : '') + (this.props.sponsored ? ' Listing-sponsored' : '') }>
-        { this._renderHeadline() }
-        <ListingContent compact={ compact }
+    var props = this.props;
+
+    if (compact && state.expanded && !props.single) {
+      if (!this.key) {
+        this.key = Math.random();
+      }
+      var expandedCompact = (
+        <ListingContent expand = { this.expand }
+                        expanded = { state.expanded }
+                        key = { this.key }
                         width={ state.width }
                         tallestHeight={ state.tallestHeight }
                         loaded={ state.loaded }
-                        {...this.props}/>
-        { this._renderFooter() }
+                        {...props}
+                        expandedCompact={ true }
+                        compact={ false }
+                        />
+      );
+    }
+
+    return (
+      <article ref='root' className={'Listing' + (compact ? ' compact' : '') + (props.sponsored ? ' Listing-sponsored' : '') }>
+        <div className='Listing-content-holder'>
+          { this._renderHeadline() }
+          <ListingContent expand = { this.expand }
+                          expanded = { state.expanded && !expandedCompact }
+                          width={ state.width }
+                          tallestHeight={ state.tallestHeight }
+                          loaded={ state.loaded }
+                          {...props}/>
+          { this._renderFooter() }
+        </div>
+        <TransitionGroup>
+          { expandedCompact }
+        </TransitionGroup>
       </article>
     );
   }
@@ -255,8 +285,6 @@ class Listing extends React.Component {
       this._loadContent();
       this.props.app.on(constants.RESIZE, this.resize);
       this.resize();
-    } else {
-      this.checkPos();
     }
   }
 
@@ -291,6 +319,13 @@ class Listing extends React.Component {
       }
     }
     this.setState(newState);
+  }
+
+  expand(e) {
+    e.preventDefault();
+    this.setState({
+      expanded: !this.state.expanded,
+    });
   }
 
   _loadContent() {
