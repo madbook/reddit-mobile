@@ -122,12 +122,12 @@ class Listing extends React.Component {
           }
         }
 
-        var subredditNode = (
+        var subredditNode = subreddit ? (
           <MobileButton className='Listing-subreddit' href={`/r/${subreddit}`}>
             { iconNode }
             <span style={ style }>r/{ subreddit }</span>
           </MobileButton>
-        );
+        ) : null;
       }
 
       if (subredditNode || flairNode) {
@@ -173,13 +173,13 @@ class Listing extends React.Component {
         var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
       }
 
-      if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
-        var domainNode = (
-          <span className='Listing-domain'>{ domain }</span>
-        );
-      } else if (props.sponsored) {
+      if (props.listing.promoted) {
         domainNode = (
           <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
+        );
+      } else if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
+        var domainNode = (
+          <span className='Listing-domain'>{ domain }</span>
         );
       }
 
