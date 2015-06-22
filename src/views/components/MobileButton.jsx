@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import Utils from '../../lib/danehansen/utils/Utils';
 
 class MobileButton extends React.Component {

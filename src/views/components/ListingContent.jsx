@@ -1,7 +1,7 @@
-import React from 'react/addons';
-import tweenDefault from '../../tweenDefault';
+import React from 'react';
 import MyMath from '../../lib/danehansen/utils/MyMath';
 
+import AutoTween from '../components/AutoTween';
 import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -62,7 +62,7 @@ class ListingContent extends React.Component {
       var ref = this.refs.text;
       if (ref) {
         //105 corresponds with a css value in ListingContent.less
-        tweenDefault.maxHeight(ref.getDOMNode(), next ? 'none' : 105, false);
+        AutoTween.maxHeight(ref.getDOMNode(), next ? 'none' : 105, false);
       }
     }
   }
@@ -149,14 +149,6 @@ class ListingContent extends React.Component {
       }
 
     return this._renderPlaceholder();
-  }
-
-  componentDidEnter() {
-    tweenDefault.heightFrom(this.refs.all.getDOMNode(), 0);
-  }
-
-  componentWillLeave(callback) {
-    tweenDefault.height(this.refs.all.getDOMNode(), 0, callback);
   }
 
   //TODO: this method should be integrated into buildContent but it hurts my brain to figure out how to do so

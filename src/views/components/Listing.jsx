@@ -2,11 +2,13 @@ import React from 'react/addons';
 import constants from '../../constants';
 import mobilify from '../../lib/mobilify';
 import short from '../../lib/formatDifference';
+
+import AutoTween from '../components/AutoTween';
 import CommentIcon from '../components/icons/CommentIcon';
-import SnooIcon from '../components/icons/SnooIcon';
 import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
+import SnooIcon from '../components/icons/SnooIcon';
 import Vote from '../components/Vote';
 
 var TransitionGroup = React.addons.TransitionGroup;
@@ -248,16 +250,17 @@ class Listing extends React.Component {
         this.key = Math.random();
       }
       var expandedCompact = (
-        <ListingContent expand = { this.expand }
-                        expanded = { state.expanded }
-                        key = { this.key }
-                        width={ state.width }
-                        tallestHeight={ state.tallestHeight }
-                        loaded={ state.loaded }
-                        {...props}
-                        expandedCompact={ true }
-                        compact={ false }
-                        />
+        <AutoTween key = { this.key }>
+          <ListingContent expand = { this.expand }
+                          expanded = { state.expanded }
+                          width={ state.width }
+                          tallestHeight={ state.tallestHeight }
+                          loaded={ state.loaded }
+                          {...props}
+                          expandedCompact={ true }
+                          compact={ false }
+                          />
+        </AutoTween>
       );
     }
 
