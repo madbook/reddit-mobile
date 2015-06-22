@@ -101,7 +101,9 @@ class ListingContent extends React.Component {
     var preview = this._previewImageUrl(expanded);
 
     if (media && oembed) {
-      var thumbnailUrl = oembed.thumbnail_url;
+      if (this.state.expanded || !ListingContent.isNSFW(listing)) {
+        var thumbnailUrl = oembed.thumbnail_url;
+      }
       var type = oembed.type;
       if (type === 'image') {
         if (expanded) {
@@ -327,6 +329,7 @@ class ListingContent extends React.Component {
       }
     }
 
+    var nsfw = ListingContent.isNSFW(listing);
     var preview = listing.preview;
 
     if (preview) {
@@ -334,8 +337,7 @@ class ListingContent extends React.Component {
       if (images) {
         preview = images[0];
       }
-
-      if (!this.state.expanded && isNSFW && preview.variants && preview.variants.nsfw && preview.variants.nsfw.resolutions) {
+      if (!this.state.expanded && nsfw && preview.variants && preview.variants.nsfw && preview.variants.nsfw.resolutions) {
         preview = preview.variants.nsfw;
       }
 
@@ -364,6 +366,8 @@ class ListingContent extends React.Component {
       } else {
         return source.url;
       }
+    } else if (!expanded && nsfw) {
+      return null;
     }
 
     var thumbnail = listing.thumbnail;
@@ -390,7 +394,8 @@ class ListingContent extends React.Component {
     if (media) {
       var oembed = media.oembed;
       if (oembed) {
-        return _limitAspectRatio(oembed.width / oembed.height);
+        var ratio = oembed.width / oembed.height;
+        return props.single ? ratio : _limitAspectRatio(ratio);
       }
     }
 
@@ -402,12 +407,17 @@ class ListingContent extends React.Component {
         if (image) {
           var source = image.source;
           if (source) {
-            return _limitAspectRatio(source.width / source.height);
+            ratio = source.width / source.height;
+            return props.single ? ratio : _limitAspectRatio(ratio);
           }
         }
       }
     }
 
+    //TODO: this doesn't work
+    /*if (props.app.config.debug) {
+      console.log('ListingContent._aspectRatio: missed a case', listing);
+    }*/
     return 16 / 9;
   }
 }
