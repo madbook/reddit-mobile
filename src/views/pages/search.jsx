@@ -105,24 +105,26 @@ class SearchPage extends React.Component {
 
   handleShowMoreClick(e) {
     var props = this.props;
+
     var url = this._composeUrl({
       query: props.query.q,
       type: 'sr',
     });
-    props.app.pushState(null, null, url);
-    props.app.render(url, false, props.app.modifyContext);
+
+    props.app.redirect(url);
   }
 
   handleInputChanged(data) {
     var props = this.props;
     var value = data.value || '';
+
     if (value !== props.query.q && (value || value.length >= _searchMinLength)) {
       var url = this._composeUrl({
         query: value,
         subredditName: props.subredditName
       });
-      props.app.pushState(null, null, url);
-      props.app.render(url, false, props.app.modifyContext);
+
+      props.app.redirect(url);
     }
   }
 

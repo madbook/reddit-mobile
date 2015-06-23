@@ -145,8 +145,7 @@ class SubmitPage extends React.Component {
       if (res.data && res.data.url) {
         var url = res.data.url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
 
-        props.app.pushState(null, null, url);
-        props.app.render(url, false, props.app.modifyContext);
+        props.app.redirect(url);
         props.app.emit('post:submit', link.sr);
       } else {
         this._handleApiErrors(res);
@@ -211,10 +210,7 @@ class SubmitPage extends React.Component {
   }
 
   close () {
-    var props = this.props;
-    var url = '/';
-    props.app.pushState(null, null, url);
-    props.app.render(url, false, props.app.modifyContext);
+    this.props.app.redirect('/');
   }
 
   updateCaptchaInfo (info) {
@@ -237,8 +233,8 @@ class SubmitPage extends React.Component {
 
       global.localStorage.setItem('savedLinkContent', JSON.stringify(content));
       var url = '/r/' + subName + '/about';
-      props.app.pushState(null, null, url);
-      props.app.render(url, false, props.app.modifyContext);
+
+      props.app.redirect(url);
     }
   }
 

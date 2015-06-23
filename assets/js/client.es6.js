@@ -57,7 +57,7 @@ function redirect(status, path) {
   if (path.indexOf('/login') > -1 || path.indexOf('/register') > -1 ) {
     window.location = path;
   } else {
-    this.render(path);
+    this.redirect(path);
   }
 }
 
