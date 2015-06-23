@@ -2,6 +2,7 @@ import React from 'react/addons';
 import mobilify from '../../lib/mobilify';
 import moment from 'moment';
 import short from '../../lib/formatDifference';
+import constants from '../../constants';
 
 import AutoTween from '../components/AutoTween';
 import CommentBox from '../components/CommentBox';
@@ -27,7 +28,10 @@ class Comment extends React.Component {
       reported: false,
       savedReply: '',
       hidden: false,
+      score: this.props.comment.score,
     }
+
+    this.setScore = this.setScore.bind(this);
   }
 
   componentDidMount () {
@@ -43,6 +47,12 @@ class Comment extends React.Component {
     }
 
     this.onReport = this.onReport.bind(this);
+  }
+
+  setScore (score) {
+    this.setState({
+      score: score,
+    });
   }
 
   onReport () {
@@ -138,8 +148,6 @@ class Comment extends React.Component {
 
     var distinguished = comment.distinguished ? ' text-' + comment.distinguished : '';
 
-    var scoreClass = 'up';
-
     var commentBox;
     var toolbox;
     var highlighted = '';
@@ -171,6 +179,7 @@ class Comment extends React.Component {
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
+              setScore={ this.setScore }
               app={this.props.app}
               thing={ this.props.comment }
               token={ this.props.token }
@@ -194,10 +203,6 @@ class Comment extends React.Component {
           </li>
         </ul>
       );
-    }
-
-    if (comment.score < 0) {
-      scoreClass = 'down';
     }
 
     if (comment.author_flair_text) {
@@ -281,7 +286,7 @@ class Comment extends React.Component {
                   </li>
                   <li className='comment-timestamp-score'>
                     <span className='comment-timestamp'>{ submitted }</span>
-                    <span className='comment-title-score'>{ this.props.comment.score }</span>
+                    <span className='comment-title-score'>{ this.state.score }</span>
                   </li>
                 </ul>
               </a>

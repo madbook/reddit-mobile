@@ -10,10 +10,8 @@ class Vote extends React.Component {
   constructor(props) {
     super(props);
 
-    this._score = props.thing.score;
-
     this.state = {
-      score: this._score,
+      score: props.thing.score,
     };
 
     var likes = props.thing.likes;
@@ -34,11 +32,11 @@ class Vote extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.VOTE+':'+this.props.thing.id, this._onVote);
+    this.props.app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.VOTE+':'+this.props.thing.id, this._onVote);
+    this.props.app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   _onClick(str, evt) {
@@ -56,8 +54,27 @@ class Vote extends React.Component {
 
   _onVote(dir) {
     if (this.submitVote(dir)) {
-      var localScore = Math.min(1, Math.max(-1, dir - this.state.localScore));
-      this.setState({localScore: localScore, score: this._score + localScore});
+      var diff;
+      var localScore;
+
+      if (this.state.localScore === dir) {
+        diff = dir * -1;
+        localScore = 0;
+      } else {
+        diff = dir - this.state.localScore;
+        localScore = dir;
+      }
+
+      var newScore = this.state.score + diff;
+
+      this.setState({
+        localScore: localScore,
+        score: newScore,
+      });
+
+      if (this.props.setScore) {
+        this.props.setScore(newScore);
+      }
     }
   }
 
