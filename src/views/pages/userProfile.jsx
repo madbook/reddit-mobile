@@ -61,7 +61,7 @@ class UserProfilePage extends React.Component {
       );
     }
 
-    if (this.state.data.meta && this.props.renderTracking) {
+    if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }

@@ -221,7 +221,6 @@ function routes(app) {
       params: ctx.params,
       url: ctx.path,
       isGoogleCrawler: ctx.isGoogleCrawler,
-      renderTracking: app.getConfig('renderTracking'),
       apiOptions: {
         useCache: ctx.useCache,
         origin: app.getConfig('nonAuthAPIOrigin'),

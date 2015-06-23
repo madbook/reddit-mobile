@@ -145,7 +145,7 @@ class IndexPage extends React.Component {
       );
     }
 
-    if (this.state.data.meta && props.renderTracking) {
+    if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }

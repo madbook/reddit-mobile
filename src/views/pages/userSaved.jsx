@@ -82,7 +82,7 @@ class UserSavedPage extends React.Component {
     var tracking;
     var loginPath = props.loginPath;
 
-    if (state.data.meta && this.props.renderTracking) {
+    if (state.data.meta) {
       tracking = (
         <TrackingPixel
           url={ state.data.meta.tracking }

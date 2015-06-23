@@ -1,15 +1,34 @@
 import React from 'react';
+import url from 'url';
 
 class TrackingPixel extends React.Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      loaded: false,
+    };
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return false;
+  componentDidMount () {
+    var state = {
+      loaded: true,
+    };
+
+    if (document && document.referrer) {
+      let domain = url.parse(document.referrer).host;
+      state.referrerDomain = domain;
+    }
+
+    this.setState(state);
   }
 
   render () {
+    // Only render client-side
+    if (!this.state.loaded) {
+      return (<div />);
+    }
+
     if (this.props.url) {
       var trackingUrl = this.props.url + '&r=' + Math.random();
 
@@ -28,6 +47,10 @@ class TrackingPixel extends React.Component {
         trackingUrl += '&exps=' + this.props.experiments.map((e) => {
           return e.id + ':' + e.value;
         }).join(';');
+      }
+
+      if (this.state.referrerDomain) {
+        trackingUrl += '&referrer_domain=' + this.state.referrerDomain;
       }
 
       return (

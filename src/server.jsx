@@ -108,8 +108,6 @@ class Server {
 
     var app = new App(config);
 
-    app.config.renderTracking = true;
-
     oauthRoutes(app);
     serverRoutes(app);
     routes(app);
