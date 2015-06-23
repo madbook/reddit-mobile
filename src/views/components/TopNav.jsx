@@ -82,7 +82,7 @@ class TopNav extends React.Component {
 
   render() {
     var props = this.props;
-    var subredditName = shorten(this.state.subredditName || '', 20);
+    var subredditName = shorten(this.state.subredditName || '', 10);
     var currentSub = '';
     if (subredditName) {
       var breadcrumbLink = '/' + this.state.subredditName;
