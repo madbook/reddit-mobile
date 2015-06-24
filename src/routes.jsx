@@ -792,7 +792,7 @@ function routes(app) {
     'default': 'Oops, looks like something went wrong.',
   };
 
-  router.get('static.error', /\/([45]\d\d)/, function * () {
+  router.get('static.error', /^\/([45]\d\d)$/, function * () {
     var ctx = this;
     var statusCode = ctx.captures[0];
     var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];
