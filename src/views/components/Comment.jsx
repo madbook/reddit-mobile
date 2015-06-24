@@ -4,7 +4,6 @@ import moment from 'moment';
 import short from '../../lib/formatDifference';
 import constants from '../../constants';
 
-import AutoTween from '../components/AutoTween';
 import CommentBox from '../components/CommentBox';
 import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
@@ -227,19 +226,17 @@ class Comment extends React.Component {
         this._childrenKey = 'children' + Math.random();
       }
       var children = (
-        <AutoTween key={ this._childrenKey }>
-          <div className='comment-children comment-content'>
-            {
-              comment.replies.map(function(c, i) {
-                if (c) {
-                  var key = 'page-comment-' + c.name + '-' + i;
+        <div className='comment-children comment-content'>
+          {
+            comment.replies.map(function(c, i) {
+              if (c) {
+                var key = 'page-comment-' + c.name + '-' + i;
 
-                  return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
-                }
-              })
-            }
-          </div>
-        </AutoTween>
+                return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
+              }
+            })
+          }
+        </div>
       );
     }
 
@@ -250,19 +247,17 @@ class Comment extends React.Component {
         this._bodyKey = 'body' + Math.random();
       }
       var body = (
-        <AutoTween key={ this._bodyKey }>
-          <div className='comment-body'>
-            <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-                __html: comment.body_html
-              }}
-              onClick={this.showTools.bind(this)} />
+        <div className='comment-body'>
+          <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
+              __html: comment.body_html
+            }}
+            onClick={this.showTools.bind(this)} />
 
-            <footer>
-              { toolbox }
-              { commentBox }
-            </footer>
-          </div>
-        </AutoTween>
+          <footer>
+            { toolbox }
+            { commentBox }
+          </footer>
+        </div>
       );
     }
 
@@ -291,13 +286,9 @@ class Comment extends React.Component {
                 </ul>
               </a>
             </div>
-            <TransitionGroup>
-              { body }
-            </TransitionGroup>
+            { body }
           </article>
-          <TransitionGroup>
            { children }
-          </TransitionGroup>
         </div>
       </div>
     );
