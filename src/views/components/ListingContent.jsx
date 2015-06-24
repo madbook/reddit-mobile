@@ -342,29 +342,28 @@ class ListingContent extends React.Component {
       }
 
       var resolutions = preview.resolutions;
-
       var source = preview.source;
-      if (preview && resolutions) {
-        var previewImage = resolutions
-                        .concat([ source ])
-                        .sort((a, b) => {
-                          return a.width - b.width;
-                        })
-                        .find((r) => {
-                          if (compact) {
-                            return r.width >= width && r.height >= props.tallestHeight;
-                          } else {
-                            return r.width >= width;
-                          }
-                        });
-      } else if (source) {
-         return source.url;
+
+      if (resolutions) {
+        var bestFit = resolutions
+          .sort((a, b) => {
+            return a.width - b.width;
+          })
+          .find((r) => {
+            if (compact) {
+              return r.width >= width && r.height >= props.tallestHeight;
+            } else {
+              return r.width >= width;
+            }
+          });
+
+        if (bestFit) {
+          return bestFit.url;
+        }
       }
 
-      if (previewImage) {
-        return previewImage.url;
-      } else {
-        return source.url;
+      if (source) {
+         return source.url;
       }
     } else if (!expanded && nsfw) {
       return null;
