@@ -17,8 +17,8 @@ import TextIcon from '../components/icons/TextIcon';
 import SnooIcon from '../components/icons/SnooIcon';
 
 function shorten(text, len) {
-  if (text.length > 17) {
-    text = text.substr(2, Math.min(15, len-2)) + '…';
+  if (text.length > 9) {
+    text = text.substr(2, Math.min(8, len-2)) + '…';
   } else {
     text = text.substr(2);
   }
@@ -82,7 +82,7 @@ class TopNav extends React.Component {
 
   render() {
     var props = this.props;
-    var subredditName = shorten(this.state.subredditName || '', 10);
+    var subredditName = shorten(this.state.subredditName || '', 9);
     var currentSub = '';
     if (subredditName) {
       var breadcrumbLink = '/' + this.state.subredditName;
