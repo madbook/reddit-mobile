@@ -43,8 +43,13 @@
   }
 }
 
-  .TopNav-left, .TopNav-right {
+  .TopNav-left {
     position: relative;
+    white-space: nowrap;
+
+    .Logo {
+      line-height: @top-nav-height;
+    }
   }
 
   .TopNav-snoo {
@@ -71,15 +76,18 @@
     }
   }
 
-  .TopNav-left .Logo {
-    line-height: @top-nav-height;
-  }
-
   .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
     padding: 0 6px;
   }
 
   .TopNav-right {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    padding-left: 30px;
+
+    #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
+
     .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
       margin-left: 8px;
     }

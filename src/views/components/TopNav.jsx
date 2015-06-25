@@ -16,14 +16,8 @@ import InfoIcon from '../components/icons/InfoIcon';
 import TextIcon from '../components/icons/TextIcon';
 import SnooIcon from '../components/icons/SnooIcon';
 
-function shorten(text, len) {
-  if (text.length > 9) {
-    text = text.substr(2, Math.min(8, len-2)) + '…';
-  } else {
-    text = text.substr(2);
-  }
-
-  return text;
+function removeR(text) {
+  return text.substr(2);
 }
 
 function loadSubredditData(ctx) {
@@ -82,7 +76,7 @@ class TopNav extends React.Component {
 
   render() {
     var props = this.props;
-    var subredditName = shorten(this.state.subredditName || '', 9);
+    var subredditName = removeR(this.state.subredditName || '', 9);
     var currentSub = '';
     if (subredditName) {
       var breadcrumbLink = '/' + this.state.subredditName;
@@ -138,7 +132,7 @@ class TopNav extends React.Component {
             </span>
           </h1>
         </div>
-        <div className='pull-right TopNav-padding TopNav-right' key='topnav-actions'>
+        <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-search' href={'/submit' + currentSub }>
             <PostIcon random={props.random}/>
