@@ -11,8 +11,6 @@ import ReplyIcon from '../components/icons/ReplyIcon';
 import ReportPlaceholder from '../components/ReportPlaceholder';
 import Vote from '../components/Vote';
 
-var TransitionGroup = React.addons.TransitionGroup;
-
 class Comment extends React.Component {
   constructor(props) {
     super(props);

@@ -223,8 +223,11 @@ class ListingContent extends React.Component {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
-    onClick = nsfw && !this.state.expanded ? this._expand : onClick;
-    var noRoute = !!onClick && !compact;
+    onClick = nsfw && !this.state.expanded ? this.props.expand : onClick;
+    if (!onClick && compact) {
+      onClick = this.props.expand;
+    }
+    var noRoute = !!onClick;
 
     return (
       <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}

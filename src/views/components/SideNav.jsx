@@ -94,25 +94,25 @@ class SideNav extends React.Component {
 
     if (user) {
       loginLink = (
-        <li className={'SideNav-dropdown' + (isUser ? ' opened' : '')}>
+        <li className={'SideNav-dropdown SideNav-li' + (isUser ? ' opened' : '')}>
           <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'user')}>
             <TwirlyIcon altered={isUser}/>
             <span className='SideNav-text'>{ user.name }</span>
           </MobileButton>
           <ul ref='user' className='SideNav-ul list-unstyled'>
-            <li>
+            <li className='SideNav-li'>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}` }>
                 <SnooIcon/>
                 <span className='SideNav-text'>My Profile</span>
               </MobileButton>
             </li>
-            <li>
+            <li className='SideNav-li'>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}/saved` }>
                 <SaveIcon/>
                 <span className='SideNav-text'>Saved</span>
               </MobileButton>
             </li>
-            <li>
+            <li className='SideNav-li'>
               <MobileButton className='SideNav-button' href={ `/u/${user.name}/hidden` }>
                 <SettingsIcon/>
                 <span className='SideNav-text'>Hidden</span>
@@ -123,7 +123,7 @@ class SideNav extends React.Component {
       );
 
       logoutLink = (
-        <li>
+        <li className='SideNav-li'>
           <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
             <SnooIcon/>
             <span className='SideNav-text'>Log out</span>
@@ -136,7 +136,7 @@ class SideNav extends React.Component {
         var newMail = <strong> ({inboxCount})</strong>;
       }
       inboxLink = (
-        <li>
+        <li className='SideNav-li'>
           <MobileButton className='SideNav-button' href='/message/inbox/'>
             <MailIcon/>
             <span className='SideNav-text'>Inbox{newMail}</span>
@@ -145,7 +145,7 @@ class SideNav extends React.Component {
       );
     } else {
       loginLink = (
-        <li>
+        <li className='SideNav-li'>
           <MobileButton className='SideNav-button' href={ this.props.loginPath } noRoute='true'>
             <SnooIcon/>
             <span className='SideNav-text'>Login / Register</span>
@@ -157,7 +157,7 @@ class SideNav extends React.Component {
     var subreddits = this.props.subscriptions || [];
 
     var subredditLinks = (
-      <li className={'SideNav-dropdown' + (isSubreddits ? ' opened' : '')}>
+      <li className={'SideNav-dropdown SideNav-li' + (isSubreddits ? ' opened' : '')}>
         <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'subreddits')}>
           <TwirlyIcon altered={isSubreddits}/>
           <span className='SideNav-text'>My Subreddits</span>
@@ -171,7 +171,7 @@ class SideNav extends React.Component {
                 icon = <SnooIcon/>;
               }
               return (
-                <li key={`SideNav-li-${d.url}`}>
+                <li className='SideNav-li' key={`SideNav-li-${d.url}`}>
                   <MobileButton className='SideNav-button' href={ d.url }>
                     {icon}
                     <span className='SideNav-text'>{d.display_name}</span>
@@ -187,7 +187,7 @@ class SideNav extends React.Component {
     return (
       <nav className={'SideNav tween shadow' + (this.state.opened?' opened':'')}>
         <ul className='list-unstyled'>
-          <li>
+          <li className='SideNav-li'>
             <form method='GET' action='/goto' onSubmit={ this._goto } className='form-sm form-single'>
               <input type='text' className='form-control form-control-sm' placeholder='r/...' name='location' ref='location' />
               <button type='submit' className='btn btn-default'>Go</button>
@@ -195,92 +195,92 @@ class SideNav extends React.Component {
           </li>
           { loginLink }
           { logoutLink }
-          <li>
+          <li className='SideNav-li'>
             <MobileButton className='SideNav-button' onClick={this._onViewClick}>
               <SettingsIcon/>
               <span className='SideNav-text'>Switch to { compact ? 'list' : 'compact' } view</span>
             </MobileButton>
           </li>
           { subredditLinks }
-          <li className={'SideNav-dropdown' + (isAbout ? ' opened' : '')}>
+          <li className={'SideNav-dropdown SideNav-li' + (isAbout ? ' opened' : '')}>
             <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'about')}>
               <TwirlyIcon altered={isAbout}/>
               <span className='SideNav-text'>About reddit</span>
             </MobileButton>
             <ul ref='about' className='SideNav-ul list-unstyled'>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/blog/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Blog</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/about/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>About</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/about/team/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Team</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/code/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Source Code</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/advertising/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Advertise</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Jobs</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Wiki</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/faq'>
                   <SnooIcon/>
                   <span className='SideNav-text'>FAQ</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Reddiquette</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/rules/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Rules</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/help/useragreement'>
                   <SnooIcon/>
                   <span className='SideNav-text'>User Agreement</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Privacy Policy</span>
                 </MobileButton>
               </li>
-              <li>
+              <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/contact/'>
                   <SnooIcon/>
                   <span className='SideNav-text'>Contact Us</span>
@@ -288,7 +288,7 @@ class SideNav extends React.Component {
               </li>
             </ul>
           </li>
-          <li>
+          <li className='SideNav-li'>
             <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this._desktopSite }>
               <SnooIcon/>
               <span className='SideNav-text'>View Desktop Site</span>
