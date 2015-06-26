@@ -22,7 +22,7 @@ class Listing extends React.Component {
     super(props);
 
     this.state = {
-      compact: props.compact || false,
+      compact: props.compact && !props.single,
       expanded: false,
       loaded: false,
       tallestHeight: 0,
@@ -62,6 +62,7 @@ class Listing extends React.Component {
     var linkFlairText = listing.link_flair_text;
     var subreddit = listing.subreddit;
     var showEdit = false;
+
     if (props.user && props.single) {
       showEdit = (props.user.name === listing.author) && listing.is_self;
     }
@@ -109,15 +110,13 @@ class Listing extends React.Component {
       var srDetail = listing.sr_detail;
       if (srDetail) {
         var iconImg = srDetail.icon_img;
-
         var keyColor = srDetail.key_color;
-
         if (keyColor) {
           var style = {color: keyColor};
         }
       }
 
-      if (!ListingContent.isCompact(props)) {
+      if (!this.state.compact) {
         if (iconImg) {
           var iconNode = (
             <div className='Listing-icon' style={ {backgroundImage: 'url(' + iconImg + ')'} }>
@@ -258,13 +257,13 @@ class Listing extends React.Component {
       var expandedCompact = (
         <AutoTween key = { this.key }>
           <ListingContent expand = { this.expand }
-                          expanded = { state.expanded }
+                          expanded = { true }
                           width={ state.width }
                           tallestHeight={ state.tallestHeight }
                           loaded={ state.loaded }
-                          {...props}
+                          { ...props }
                           expandedCompact={ true }
-                          compact={ false }
+                          compact={ compact }
                           />
         </AutoTween>
       );
@@ -283,7 +282,9 @@ class Listing extends React.Component {
                           toggleEdit={this.props.toggleEdit}
                           saveUpdatedText={this.props.saveUpdatedText}
                           editError={ this.props.editError }
-                          {...props}/>
+                          { ...props }
+                          compact={ compact }
+                          />
           { this._renderFooter() }
         </div>
         <TransitionGroup>
@@ -349,7 +350,7 @@ class Listing extends React.Component {
   }
 
   _onCompactToggle(state) {
-    this.setState({compact: state});
+    this.setState({compact: state && !this.props.single});
   }
 }
 

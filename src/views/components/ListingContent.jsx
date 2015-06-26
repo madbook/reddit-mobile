@@ -7,6 +7,7 @@ import PlayIcon from '../components/icons/PlayIcon';
 var _gifMatch = /\.(?:gif)/gi;
 var _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 var _httpsRegex = /^https:\/\//;
+const _DEFAULT_ASPECT_RATIO = 16 / 9;
 
 function _gifToHTML5(url) {
   if (!url || url.indexOf('.gif') < 1) {
@@ -42,6 +43,9 @@ function _limitAspectRatio(aspectRatio) {
 const _INCREMENT = 40;
 const _HEIGHT = 1080;
 function _aspectRatioClass(ratio) {
+  if (!ratio) {
+    return  'aspect-ratio-' + 16 + 'x' + 9;
+  }
   var w = MyMath.round(ratio * _HEIGHT, _INCREMENT);
   var euclid = MyMath.euclid(w, _HEIGHT);
   return  'aspect-ratio-' + w / euclid + 'x' + _HEIGHT / euclid;
@@ -70,12 +74,12 @@ class ListingContent extends React.Component {
   render() {
     var contentNode = this.buildContent();
     if (contentNode) {
-      var compact = ListingContent.isCompact(this.props);
-      if (!compact && !this.props.expandedCompact) {
+      var props = this.props;
+      if (!props.compact && !props.expandedCompact) {
         var stalactiteNode = <div className='stalactite'/>;
       }
       return (
-        <div ref='all' className={ 'ListingContent' + (compact ? ' compact' : '')}>
+        <div ref='all' className={ 'ListingContent' + (this._isCompact() ? ' compact' : '')}>
           { stalactiteNode }
           { contentNode }
         </div>
@@ -98,10 +102,10 @@ class ListingContent extends React.Component {
     var oembed = media ? media.oembed : null;
     var permalink = props.listing.promoted ? url : listing.cleanPermalink;
 
-    var preview = this._previewImageUrl(expanded);
+    var preview = this._previewImageUrl();
 
     if (media && oembed) {
-      if (this.state.expanded || !ListingContent.isNSFW(listing)) {
+      if (expanded || !ListingContent.isNSFW(listing)) {
         var thumbnailUrl = oembed.thumbnail_url;
       }
       var type = oembed.type;
@@ -115,7 +119,7 @@ class ListingContent extends React.Component {
         if (expanded) {
           return this._renderHTML(listing.expandContent);
         } else {
-          return this.buildImage(preview || thumbnailUrl, permalink, this.props.expand);
+          return this.buildImage(preview || thumbnailUrl, permalink, props.expand);
         }
       } else if (type === 'rich') {
           var findSrc = oembed.html.match(/src="([^"]*)/);
@@ -133,14 +137,14 @@ class ListingContent extends React.Component {
               )
             );
           } else {
-            return this.buildImage(preview || thumbnailUrl, url, this.props.expand);
+            return this.buildImage(preview || thumbnailUrl, url, props.expand);
           }
         }
       } else if (url.match(ListingContent.imgMatch)) {
         if (expanded && _httpsRegex.test(url)) {
           return this.buildImage(url, url);
         } else {
-          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? this.props.expand : null);
+          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? props.expand : null);
         }
       } else if (props.editing && listing.selftext) {
         return this._renderEditText(listing.selftext);
@@ -167,7 +171,7 @@ class ListingContent extends React.Component {
     if (expanded) {
       if (html5) {
         if (html5.iframe) {
-          return this._renderIFrame(html5.iframe, this._aspectRatio());
+          return this._renderIFrame(html5.iframe, this._aspectRatio() || _DEFAULT_ASPECT_RATIO);
         } else {
           return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
         }
@@ -191,16 +195,16 @@ class ListingContent extends React.Component {
 
   _renderImage(src, href, onClick) {
     var props = this.props;
-    var compact = ListingContent.isCompact(props);
+    var compact = this._isCompact();
     var style = {};
-    var nsfw = ListingContent.isNSFW(props.listing);
+    var isNSFW = ListingContent.isNSFW(props.listing);
     var expanded = this._isExpanded();
     var loaded = props.loaded;
     if (loaded) {
       if (onClick) {
         var playIconNode = <PlayIcon/>;
       }
-      if (nsfw && !this.state.expanded) {
+      if (isNSFW && !expanded) {
         if (compact) {
           var nsfwNode = (
             <div className='ListingContent-nsfw'>
@@ -225,15 +229,27 @@ class ListingContent extends React.Component {
       }
     }
     var aspectRatio = this._aspectRatio();
-    if (props.single) {
+    if (props.single && aspectRatio) {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
-
-    onClick = nsfw && !this.state.expanded ? this.props.expand : onClick;
+    onClick = (isNSFW && !expanded) ? props.expand : onClick;
     if (!onClick && compact) {
-      onClick = this.props.expand;
+      onClick = props.expand;
     }
     var noRoute = !!onClick;
+
+    if (src && !aspectRatio) {
+      return (
+        <a  className='ListingContent-image'
+          href={ href }
+          onClick={ onClick }
+          data-no-route={ noRoute }>
+          <img className='ListingContent-image-img' src={ src }/>
+          { playIconNode }
+          { nsfwNode }
+        </a>
+      );
+    }
 
     return (
       <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}
@@ -253,7 +269,7 @@ class ListingContent extends React.Component {
       sources.push(<source type={ 'video/' + i } src={ src[i] } key={ 'video-src' + i } />);
     }
     var props = this.props;
-    var aspectRatio = this._aspectRatio();
+    var aspectRatio = this._aspectRatio() || _DEFAULT_ASPECT_RATIO;
     var style = {};
     if (props.single) {
       style.height = 1 / aspectRatio * props.width  + 'px';
@@ -297,7 +313,7 @@ class ListingContent extends React.Component {
 
   _renderHTML(html) {
     var props = this.props;
-    var aspectRatio = this._aspectRatio();
+    var aspectRatio = this._aspectRatio() || _DEFAULT_ASPECT_RATIO;
     if (props.single) {
       var style = {height: 1 / aspectRatio * props.width + 'px'};
     }
@@ -310,7 +326,7 @@ class ListingContent extends React.Component {
 
   _renderPlaceholder() {
     var props = this.props;
-    if (ListingContent.isCompact(props)) {
+    if (this._isCompact()) {
       return (
         <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')} href={ props.listing.cleanPermalink }/>
       );
@@ -360,28 +376,24 @@ class ListingContent extends React.Component {
     this.props.saveUpdatedText(val);
   }
 
-  _previewImageUrl(expanded) {
+  _previewImageUrl() {
     var props = this.props;
     var listing = props.listing;
-    var compact = ListingContent.isCompact(props);
+    var compact = this._isCompact();
 
     var url = listing.url;
     var width = compact ? 80 : props.width;
 
     var imgMatch = url.match(ListingContent.imgMatch);
     var isNSFW = ListingContent.isNSFW(listing);
+    var expanded = this._isExpanded();
 
-    if (imgMatch) {
-      // If single or expanded and not nsfw, return image
-      if (expanded && !isNSFW) {
-        return url;
-      // If purposefully expanded and nsfw, return image
-      } else if (this.state.expanded && isNSFW) {
-        return url;
-      }
+
+    if (imgMatch && expanded) {
+      return url;
     }
 
-    var nsfw = ListingContent.isNSFW(listing);
+
     var preview = listing.preview;
 
     if (preview) {
@@ -389,8 +401,14 @@ class ListingContent extends React.Component {
       if (images) {
         preview = images[0];
       }
-      if (!this.state.expanded && nsfw && preview.variants && preview.variants.nsfw && preview.variants.nsfw.resolutions) {
-        preview = preview.variants.nsfw;
+
+      if (!expanded && isNSFW) {
+        try {
+          if (preview.variants.nsfw.resolutions) {
+            preview = preview.variants.nsfw;
+          }
+        } catch (err) {
+        }
       }
 
       var resolutions = preview.resolutions;
@@ -417,7 +435,7 @@ class ListingContent extends React.Component {
       if (source) {
          return source.url;
       }
-    } else if (!expanded && nsfw) {
+    } else if (!expanded && isNSFW) {
       return null;
     }
 
@@ -434,42 +452,35 @@ class ListingContent extends React.Component {
 
   _isExpanded() {
     var props = this.props;
-    return props.expanded || props.single;
+    return (props.single && !ListingContent.isNSFW(props.listing)) ? true : props.expanded;
+  }
+
+  _isCompact() {
+    var props = this.props;
+    return props.compact && !props.expandedCompact;
   }
 
   _aspectRatio() {
     var props = this.props;
     var listing = props.listing;
 
-    var media = listing.media;
-    if (media) {
-      var oembed = media.oembed;
-      if (oembed) {
-        var ratio = oembed.width / oembed.height;
-        return props.single ? ratio : _limitAspectRatio(ratio);
-      }
+    try {
+      var oembed = listing.media.oembed;
+      var ratio = oembed.width / oembed.height;
+      return props.single ? ratio : _limitAspectRatio(ratio);
+    } catch (err) {
     }
 
-    var preview = listing.preview;
-    if (preview) {
-      var images = preview.images;
-      if (images) {
-        var image = images[0];
-        if (image) {
-          var source = image.source;
-          if (source) {
-            ratio = source.width / source.height;
-            return props.single ? ratio : _limitAspectRatio(ratio);
-          }
-        }
-      }
+    try {
+      var source = listing.preview.images[0].source;
+      ratio = source.width / source.height;
+      return props.single ? ratio : _limitAspectRatio(ratio);
+    } catch (err) {
     }
-
-    //TODO: this doesn't work
-    /*if (props.app.config.debug) {
-      console.log('ListingContent._aspectRatio: missed a case', listing);
-    }*/
-    return 16 / 9;
+    // TODO: this doesn't work
+    // if (props.app.config.debug) {
+      // console.log('ListingContent._aspectRatio: missed a case', listing);
+    // }
   }
 }
 
@@ -480,10 +491,6 @@ ListingContent.isNSFW = function(listing) {
     return;
   }
   return listing.title.match(/nsf[wl]/gi) || listing.over_18;
-}
-
-ListingContent.isCompact = function(props) {
-  return props.compact && !props.single && !props.expandedCompact;
 }
 
 export default ListingContent;
