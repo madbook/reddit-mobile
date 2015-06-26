@@ -92,6 +92,7 @@ class RainbowSnooIcon extends React.Component {
     clearTimeout(this._timeout);
     this._blinkable = false;
     this._mounted = false;
+    TweenLite.ticker.removeEventListener('tick', this._onTick);
   }
 
   _play(bool) {
