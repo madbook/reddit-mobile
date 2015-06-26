@@ -142,10 +142,8 @@ class ListingContent extends React.Component {
         } else {
           return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? this.props.expand : null);
         }
-      } else if (props.editing && listing.selftext) {
-        return this._renderEditText(listing.selftext);
       } else if (listing.selftext && !props.compact) {
-        return this._renderTextHTML(listing.expandContent, !expanded, listing.id);
+        return this._renderTextHTML(listing.expandContent, !expanded);
       } else if (listing.domain.indexOf('self.') === 0) {
         return this._renderPlaceholder();
       } else if (preview) {
@@ -181,9 +179,9 @@ class ListingContent extends React.Component {
     return this._renderImage(src, href, onClick);
   }
 
-  _renderTextHTML(html, collapsed, id) {
+  _renderTextHTML(html, collapsed) {
     return (
-      <div  ref='text' key={id} className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
+      <div  ref='text' className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
             dangerouslySetInnerHTML={ {__html: html} }
             onClick={ this.props.expand }/>
     );
@@ -311,49 +309,6 @@ class ListingContent extends React.Component {
         <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')} href={ props.listing.cleanPermalink }/>
       );
     }
-  }
-
-  _renderEditText(text) {
-    var props = this.props;
-    var errorClass = 'visually-hidden';
-    var errorText = '';
-
-    if (props.editError) {
-      var err = props.editError[0];
-      errorClass = 'alert alert-danger alert-bar';
-      errorText = err[0] + ': ' + err[1];
-    }
-    return (
-      <div >
-        <div className={ errorClass } role='alert'>
-          { errorText }
-        </div>
-        <textarea
-          className='form-control'
-          defaultValue={text}
-          ref='updatedText'
-        ></textarea>
-        <div className=''>
-          <button
-            className='btn btn-primary btn-block'
-            type='button'
-            onClick={ this.props.toggleEdit }
-          >Cancel</button>
-          <button
-            className='btn btn-primary btn-block'
-            type='button'
-            onClick={ this.saveText.bind(this) }
-          >Save</button>
-        </div>
-      </div>
-    );
-  }
-
-  saveText(e) {
-    e.preventDefault();
-
-    var val = this.refs.updatedText.getDOMNode().value
-    this.props.saveUpdatedText(val);
   }
 
   _previewImageUrl(expanded) {

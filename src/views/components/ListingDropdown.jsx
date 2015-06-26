@@ -13,7 +13,6 @@ import TextIcon from '../components/icons/TextIcon';
 import SaveIcon from '../components/icons/SaveIcon';
 import SettingsIcon from '../components/icons/SettingsIcon';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
-import PostIcon from '../components/icons/PostIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
@@ -41,7 +40,6 @@ class ListingDropdown extends React.Component {
 
     this._onHideClick = this._onHideClick.bind(this);
     this._onSaveClick = this._onSaveClick.bind(this);
-    this._onEditClick = this._onEditClick.bind(this);
   }
 
   render() {
@@ -117,22 +115,8 @@ class ListingDropdown extends React.Component {
       );
     }
 
-    var editLink;
-
-    if (props.showEdit) {
-      editLink = (
-        <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={ this._onEditClick }>
-            <PostIcon />
-            <span className='Dropdown-text'>Edit Post</span>
-          </MobileButton>
-        </li>
-      );
-    }
-
     return (
       <SeashellsDropdown app={ props.app } right={ true }>
-        { editLink }
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
             <CommentIcon/>
@@ -209,14 +193,6 @@ class ListingDropdown extends React.Component {
 
     if (this.props.onHide) {
       this.props.onHide();
-    }
-  }
-
-  _onEditClick(e) {
-    e.preventDefault();
-
-    if (this.props.onEdit) {
-      this.props.onEdit();
     }
   }
 

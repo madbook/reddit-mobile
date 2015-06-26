@@ -1,12 +1,8 @@
 import React from 'react';
-
-import { models } from 'snoode';
-
 import q from 'q';
 import querystring from 'querystring';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
-
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import Listing from '../components/Listing';
@@ -23,8 +19,6 @@ class ListingPage extends React.Component {
     this.state = {
       data: props.data || {},
       linkComment: '',
-      editing: false,
-      linkEditError: null,
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
@@ -64,43 +58,6 @@ class ListingPage extends React.Component {
     });
   }
 
-  saveUpdatedText(newText) {
-    var props = this.props;
-    var listing = this.state.data.data.listing;
-    if (newText === listing.selftext) {
-      return;
-    }
-    
-    var link = new models.Link(listing);
-    var options = props.api.buildOptions(props.apiOptions);
-
-    options = Object.assign(options, {
-      model: link,
-      changeSet: newText,
-    });
-
-    props.api.links.patch(options).then(function(res) {
-      if (res) {
-        var data = this.state.data;
-        var listing = data.data.listing;
-        var newListing = res.data;
-        listing.selftext = newListing.selftext;
-        listing.expandContent = newListing.expandContent;
-        
-        this.setState({
-          editing: false,
-          data: data,
-        })
-      }
-    }.bind(this), function(err) {
-      this.setState({linkEditError: err});
-    }.bind(this))
-  }
-
-  toggleEdit() {
-    this.setState({editing: !this.state.editing});
-  }
-
   render() {
     var loading;
     var tracking;
@@ -113,7 +70,6 @@ class ListingPage extends React.Component {
     }
 
     var data = this.state.data.data;
-    var editing = this.state.editing;
 
     var listing = data ? data.listing : {};
     var comments = data ? data.comments : [];
@@ -160,10 +116,7 @@ class ListingPage extends React.Component {
           token={ token }
           api={ api }
           loginPath={ loginPath }
-          saveUpdatedText={ this.saveUpdatedText.bind(this) }
-          editing={ editing }
-          toggleEdit={ this.toggleEdit.bind(this) }
-          editError={ this.state.linkEditError }
+          solo={ true }
           />
       );
 

@@ -1,8 +1,5 @@
-
 import React from 'react/addons';
 import mobilify from '../../lib/mobilify';
-
-import { models } from 'snoode';
 import moment from 'moment';
 import short from '../../lib/formatDifference';
 import constants from '../../constants';
@@ -29,7 +26,6 @@ class Comment extends React.Component {
       savedReply: '',
       hidden: false,
       score: this.props.comment.score,
-      editing: false,
     }
 
     this.setScore = this.setScore.bind(this);
@@ -120,42 +116,6 @@ class Comment extends React.Component {
     this.setState({ showTools: !this.state.showTools });
   }
 
-  toggleEdit () {
-    this.setState({
-      editing: !this.state.editing,
-    })
-  }
-
-  updateComment () {
-    var props = this.props;
-    var newText = this.refs.updatedText.getDOMNode().value;
-    var comment = this.state.comment;
-    if (comment.body === newText) {
-      return;
-    }
-
-    var comment = new models.Comment(this.state.comment);
-    var options = props.api.buildOptions(props.apiOptions);
-
-    options = Object.assign(options, {
-      model: comment,
-      changeSet: newText,
-    });
-    // update comment here
-    props.api.comments.patch(options).then(function(res) {
-      if (res.data) {
-        this.setState({
-          comment: res.data,
-          editing: false,
-        })
-      }
-    }.bind(this), function(err) {
-      this.setState({
-        editError: err,
-      }.bind(this))
-    })
-  }
-
   preventPropagation (e) {
     e.stopPropagation();
   }
@@ -193,11 +153,6 @@ class Comment extends React.Component {
 
     if (this.props.permalinkBase) {
       permalink = this.props.permalinkBase + comment.id;
-    }
-
-    var showEdit = false;
-    if (props.user) {
-      showEdit = props.user.name === comment.author;
     }
 
     if (this.state.showTools || props.highlight === comment.id) {
@@ -240,10 +195,7 @@ class Comment extends React.Component {
                 token={ props.token }
                 apiOptions={ props.apiOptions }
                 listing={props.comment}
-                app={props.app}
-                showEdit={ showEdit }
-                onEdit={ this.toggleEdit.bind(this) }
-                />
+                app={props.app}/>
             </div>
           </li>
         </ul>
@@ -286,6 +238,8 @@ class Comment extends React.Component {
       );
     }
 
+    var caretDirection = (collapsed) ? 'right' : 'bottom';
+
     if (!collapsed) {
       if ( !this._bodyKey ) {
         this._bodyKey = 'body' + Math.random();
@@ -301,28 +255,6 @@ class Comment extends React.Component {
             { toolbox }
             { commentBox }
           </footer>
-        </div>
-      );
-    }
-
-    if (this.state.editing) {
-      var errorClass = 'visually-hidden';
-      var errorText = '';
-
-      if (this.state.editError) {
-        var err = props.editError[0];
-        errorClass = 'alert alert-danger alert-bar';
-        errorText = err[0] + ': ' + err[1];
-      }
-
-      body = (
-        <div className='comment-edit-box'>
-          <div className={ errorClass } role='alert'>
-            { errorText }
-          </div>
-          <textarea ref='updatedText' className='form-control' defaultValue={ comment.body }></textarea>
-          <button className='btn btn-primary btn-block' type='button' onClick={ this.toggleEdit.bind(this) }>Cancel</button>
-          <button className='btn btn-primary btn-block' type='button' onClick={ this.updateComment.bind(this) }>Save</button>
         </div>
       );
     }
