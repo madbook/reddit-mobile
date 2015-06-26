@@ -89,9 +89,9 @@ function setCompact(ctx, app) {
     compact = true;
   }
 
-  if (ctx.query.compact === 'on') {
+  if (ctx.query.compact === 'true') {
     compact = true;
-  } else if (ctx.query.compact === 'off') {
+  } else if (ctx.query.compact === 'false') {
     compact = false;
   }
 
