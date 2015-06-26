@@ -60,7 +60,7 @@ class SnooIcon extends React.Component {
           <circle ref='rightEye' className='SVG-fill' cx={_RIGHT_EYE_X} cy={_EYE_HEIGHT} r={_EYE_RADIUS}/>
           <rect ref='upperEyelids' x={_LEFT_EYE_X - _EYE_RADIUS} y={_EYE_HEIGHT - _EYE_RADIUS} className='SVG-fill-bg' width={_RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2} height='0'/>
           <rect ref='lowerEyelids' x={_LEFT_EYE_X - _EYE_RADIUS} y={_EYE_HEIGHT + _EYE_RADIUS} className='SVG-fill-bg' width={_RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2} height='0'/>
-          <path ref='mouth' fill='none' className='SVG-stroke mouth' strokeWidth={_MOUTH_STROKE} strokeLinecap='round' d='M7.652076,13.657867c0.460886,0.460942,1.363549,0.705836,2.347492,0.705836 c1.016057,0,1.886656-0.244787,2.348355-0.705836'/>
+          <path ref='mouth' fill='none' className='SVG-stroke' strokeWidth={_MOUTH_STROKE} strokeLinecap='round' d='M7.652076,13.657867c0.460886,0.460942,1.363549,0.705836,2.347492,0.705836 c1.016057,0,1.886656-0.244787,2.348355-0.705836'/>
         </g>
       </SVG>
     );

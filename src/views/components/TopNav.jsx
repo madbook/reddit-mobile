@@ -124,7 +124,11 @@ class TopNav extends React.Component {
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
+<<<<<<< HEAD
             { this.state.subredditName ? <SnooIcon/> : <RainbowSnooIcon/> }
+=======
+            <RainbowSnooIcon/>
+>>>>>>> Create rainbow snoo
           </MobileButton>
           <h1 className='TopNav-text TopNav-padding'>
             <span className='TopNav-headline'>
