@@ -2,19 +2,20 @@ import React from 'react/addons';
 import constants from '../../constants';
 import { models } from 'snoode';
 
-import MobileButton from '../components/MobileButton';
-import SeashellsDropdown from '../components/SeashellsDropdown';
-import Loading from '../components/Loading';
-import SubredditAboutPage from '../pages/subredditAbout';
-import Logo from '../components/Logo';
-import PostIcon from '../components/icons/PostIcon';
-import SearchIcon from '../components/icons/SearchIcon';
 import HamburgerIcon from '../components/icons/HamburgerIcon';
-import SeashellIcon from '../components/icons/SeashellIcon';
-import SaveIcon from '../components/icons/SaveIcon';
 import InfoIcon from '../components/icons/InfoIcon';
-import TextIcon from '../components/icons/TextIcon';
+import Loading from '../components/Loading';
+import Logo from '../components/Logo';
+import MobileButton from '../components/MobileButton';
+import PostIcon from '../components/icons/PostIcon';
+import RainbowSnooIcon from '../components/icons/RainbowSnooIcon';
+import SaveIcon from '../components/icons/SaveIcon';
+import SearchIcon from '../components/icons/SearchIcon';
+import SeashellIcon from '../components/icons/SeashellIcon';
+import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
+import SubredditAboutPage from '../pages/subredditAbout';
+import TextIcon from '../components/icons/TextIcon';
 
 function removeR(text) {
   return text.substr(2);
@@ -75,6 +76,7 @@ class TopNav extends React.Component {
   }
 
   render() {
+    console.log("NAME", this.state.subredditName);
     var props = this.props;
     var subredditName = removeR(this.state.subredditName || '', 9);
     var currentSub = '';
@@ -122,7 +124,7 @@ class TopNav extends React.Component {
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
-            <SnooIcon/>
+            { this.state.subredditName ? <SnooIcon/> : <RainbowSnooIcon/> }
           </MobileButton>
           <h1 className='TopNav-text TopNav-padding'>
             <span className='TopNav-headline'>

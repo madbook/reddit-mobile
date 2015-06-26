@@ -1,7 +1,7 @@
 import React from 'react';
 
 import RIcon from '../components/icons/RIcon';
-import SnooIcon from '../components/icons/SnooIcon';
+import RainbowSnooIcon from '../components/icons/RainbowSnooIcon';
 
 class Loading extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Loading extends React.Component {
   }
 
   render() {
-    var icon = this.state.flipFlop ? <SnooIcon ref='icon'/> : <RIcon ref='icon'/>;
+    var icon = this.state.flipFlop ? <RainbowSnooIcon ref='icon'/> : <RIcon ref='icon'/>;
 
     return (
       <div className='Loading'>
