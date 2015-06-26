@@ -22,17 +22,17 @@
   &:after {
     content:'';
     position: absolute;
-    width: 100%;
     height: 100%;
     background-color: @white;
     .shadow;
     z-index: -1;
     left: 0;
+    right: 0;
     .tween;
   }
 
   &.opened:after {
-    width: calc(100% ~'-' @top-nav-height);
+    right: @top-nav-height;
   }
 
   [class^="icon-"] {
@@ -44,6 +44,8 @@
 }
 
   .TopNav-left {
+    max-width: calc(100% ~'-' @top-nav-height);
+    overflow: hidden;
     position: relative;
     white-space: nowrap;
 
@@ -86,7 +88,17 @@
     height: 100%;
     padding-left: 30px;
 
-    #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
+    &:before {
+      content: '';
+      display: block;
+      height: 100%;
+      left: 0;
+      right: @top-nav-height;
+      position: absolute;
+
+      #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
+    }
+
 
     .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
       margin-left: 8px;
@@ -102,7 +114,6 @@
       height: @size;
       width: @size;
       font-size: @size;
-      line-height: @top-nav-height;
       line-height: @top-nav-height;
     });
 
@@ -142,14 +153,23 @@
 
   .TopNav-post {
     padding-right: 11px;
+
+    .SVG-icon {
+      margin-top: 11px;
+    }
   }
 
   .TopNav-search {
+    position: relative;
     padding-left: 1px;
 
-    svg {
+    .SVG-icon {
       margin-top: 11px;
     }
+  }
+
+  .TopNav-post {
+    position: relative;
   }
 
   .TopNav-beta {

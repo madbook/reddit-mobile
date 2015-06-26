@@ -4,8 +4,13 @@
   width: auto !important;
 }
 
-.Listing-container.compact {
-  padding: 0;
+.Listing-container {
+  z-index: 1;
+  position: relative;
+
+  &.compact {
+    padding: 0;
+  }
 }
 
 .Listing {

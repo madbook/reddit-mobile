@@ -271,7 +271,7 @@ class Listing extends React.Component {
     }
 
     return (
-      <article ref='root' className={'Listing' + (compact ? ' compact' : '') + (props.listing.promoted ? ' Listing-sponsored' : '') }>
+      <article ref='root' style={ {zIndex: props.z || 1} } className={'Listing' + (compact ? ' compact' : '') + (props.listing.promoted ? ' Listing-sponsored' : '') }>
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
           <ListingContent expand = { this.expand }

@@ -121,6 +121,7 @@ class ListingList extends React.Component {
   render() {
     var props = this.props;
     var page = props.firstPage || 0;
+    var length = props.listings.length;
 
     var listings = (
       props.listings.map(function(listing, i) {
@@ -143,6 +144,7 @@ class ListingList extends React.Component {
                 index={index}
                 key={'page-listing-' + index}
                 listing={listing}
+                z={length - i}
                 {...props}
               />
             );

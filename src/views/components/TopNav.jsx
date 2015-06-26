@@ -134,7 +134,7 @@ class TopNav extends React.Component {
         </div>
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
-          <MobileButton className='TopNav-floaty TopNav-search' href={'/submit' + currentSub }>
+          <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
             <PostIcon random={props.random}/>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
