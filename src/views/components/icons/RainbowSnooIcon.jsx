@@ -174,17 +174,13 @@ class RainbowSnooIcon extends React.Component {
 
   _blink() {
     if (this._blinkable && this._mounted) {
-      try {
-        var upper = this.refs.upperEyelids.getDOMNode();
-        var lower = this.refs.lowerEyelids.getDOMNode();
-        var timeline = new TimelineLite({onComplete: this._blinkTimeout});
-        timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: _EYE_RADIUS}, autoRound: false}));
-        timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT}, autoRound: false}), 0);
-        timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: 0}, autoRound: false}));
-        timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT + _EYE_RADIUS}, autoRound: false}), 0.1);
-      } catch (err) {
-        console.log("RainbowSnooIcon error");
-      }
+      var upper = this.refs.upperEyelids.getDOMNode();
+      var lower = this.refs.lowerEyelids.getDOMNode();
+      var timeline = new TimelineLite({onComplete: this._blinkTimeout});
+      timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: _EYE_RADIUS}, autoRound: false}));
+      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT}, autoRound: false}), 0);
+      timeline.add(TweenLite.to([upper, lower], 0.1, {attr: {height: 0}, autoRound: false}));
+      timeline.add(TweenLite.to(lower, 0.1, {attr: {y: _EYE_HEIGHT + _EYE_RADIUS}, autoRound: false}), 0.1);
     }
   }
 
