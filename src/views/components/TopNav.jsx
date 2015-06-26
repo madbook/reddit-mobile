@@ -8,7 +8,6 @@ import Loading from '../components/Loading';
 import Logo from '../components/Logo';
 import MobileButton from '../components/MobileButton';
 import PostIcon from '../components/icons/PostIcon';
-import RainbowSnooIcon from '../components/icons/RainbowSnooIcon';
 import SaveIcon from '../components/icons/SaveIcon';
 import SearchIcon from '../components/icons/SearchIcon';
 import SeashellIcon from '../components/icons/SeashellIcon';
@@ -123,7 +122,7 @@ class TopNav extends React.Component {
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
-            { this.state.subredditName ? <SnooIcon/> : <RainbowSnooIcon/> }
+            <SnooIcon rainbow={ false }/>
           </MobileButton>
           <h1 className='TopNav-text TopNav-padding'>
             <span className='TopNav-headline'>
