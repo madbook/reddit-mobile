@@ -148,6 +148,7 @@ class Comment extends React.Component {
           comment: res.data,
           editing: false,
         })
+        this.props.app.emit('comment:edit');
       }
     }.bind(this), function(err) {
       this.setState({

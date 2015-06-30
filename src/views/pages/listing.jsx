@@ -70,7 +70,7 @@ class ListingPage extends React.Component {
     if (newText === listing.selftext) {
       return;
     }
-    
+
     var link = new models.Link(listing);
     var options = props.api.buildOptions(props.apiOptions);
 
@@ -86,11 +86,13 @@ class ListingPage extends React.Component {
         var newListing = res.data;
         listing.selftext = newListing.selftext;
         listing.expandContent = newListing.expandContent;
-        
+
         this.setState({
           editing: false,
           data: data,
         })
+
+        this.props.app.emit('post:edit');
       }
     }.bind(this), function(err) {
       this.setState({linkEditError: err});

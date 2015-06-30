@@ -43,6 +43,10 @@ var events = {
     ga('send', 'event', 'comment', 'words', comment.get('text').match(/\S+/g).length);
   },
 
+  'comment:edit': function() {
+    ga('send', 'event', 'comment', 'edit');
+  },
+
   'search': function (query) {
     ga('send', 'event', 'search');
   },
@@ -57,6 +61,10 @@ var events = {
 
   'post:submit': function(subreddit) {
     ga('send', 'event', 'post', 'submit', subreddit);
+  },
+
+  'post:edit': function() {
+    ga('send', 'event', 'post', 'edit');
   },
 
   'post:selectSubreddit': function(subreddit) {
