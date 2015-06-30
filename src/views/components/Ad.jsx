@@ -13,10 +13,39 @@ class Ad extends React.Component {
 
     this.state = {
       loaded: false,
+      unavailable: false,
     };
 
     this._scroll = _.throttle(this._scroll.bind(this), 100);
     this._removeListeners = this._removeListeners.bind(this);
+  }
+
+  checkPos () {
+    if (this.state.unavailable) {
+      return true;
+    }
+
+    var listing = this.refs.listing;
+
+    if (!listing) {
+      return false;
+    }
+
+    return listing.checkPos.apply(listing, arguments);
+  }
+
+  resize () {
+    if (this.state.unavailable) {
+      return;
+    }
+
+    var listing = this.refs.listing;
+
+    if (!listing) {
+      return;
+    }
+
+    listing.resize.apply(listing, arguments);
   }
 
   getAd () {
@@ -60,13 +89,23 @@ class Ad extends React.Component {
         loaded: true,
         ad: new models.Link(ad).toJSON(),
       });
-    }, () => {});
+    }, () => {
+      this.setState({
+        unavailable: true,
+      });
+    });
 
     this.props.app.on(constants.SCROLL, this._scroll);
     this.props.app.on(constants.RESIZE, this._scroll);
 
     this._hasListeners = true;
     this._scroll();
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (!prevState.loaded && this.state.loaded) {
+      this.props.afterLoad();
+    }
   }
 
   componentWillUnmount() {
@@ -104,40 +143,29 @@ class Ad extends React.Component {
     }
   }
 
-  getListingElement () {
-    return this.refs.listing;
-  }
-
   render () {
-    if (!this.state.loaded) {
-      return (<div></div>);
+    if (!this.state.loaded || this.state.unavailable) {
+      return null;
     }
 
     var props = this.props;
-    props.listing = this.state.ad;
-    props.hideSubredditLabel = true;
-    props.hideWhen = true;
-    props.hideDomain = true;
-
-    if (props.listing.disable_comments) {
-      props.listing.permalink = undefined;
-      props.hide_comments = true;
-    }
-
-    if (props.listing.mobile_ad_url) {
-      props.listing.preview = {
-        source: {
-          url: props.listing.mobile_ad_url,
-        },
-      };
-    }
+    var listing = _.extend({}, this.state.ad, { compact: props.compact });
 
     return (
-      <div>
-        <Listing {...props } ref='listing' />
-      </div>
+      <Listing
+        ref='listing'
+        {...props}
+        listing={listing}
+        hideSubredditLabel={true}
+        hideDomain={true}
+        hideWhen={true} />
     );
   }
+};
+
+Ad.propTypes = {
+  afterLoad: React.PropTypes.func.isRequired,
+  compact: React.PropTypes.bool.isRequired,
 };
 
 export default Ad;

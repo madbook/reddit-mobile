@@ -15,16 +15,16 @@ class ListingList extends React.Component {
       adLocation: Math.min(AD_LOCATION, props.listings.length)
     };
 
-    this._scroll = this._scroll.bind(this);
+    this._lazyLoad = this._lazyLoad.bind(this);
     this._resize = this._resize.bind(this);
   }
 
   componentDidMount() {
     this._hasListeners = true;
-    this.props.app.on(constants.SCROLL, this._scroll);
-    this.props.app.on(constants.RESIZE, this._scroll);
+    this.props.app.on(constants.SCROLL, this._lazyLoad);
+    this.props.app.on(constants.RESIZE, this._lazyLoad);
     this.props.app.on(constants.RESIZE, this._resize);
-    this._scroll();
+    this._lazyLoad();
     this._resize();
   }
 
@@ -33,66 +33,94 @@ class ListingList extends React.Component {
     this.props.app.off(constants.RESIZE, this._resize);
   }
 
-  _scroll() {
-    var winHeight = window.innerHeight * 2;
-    for (var i = 0; i < this.length; i++) {
-      var ref = this.refs['listing' + i];
-      if (ref && ref.checkPos) {
-        var keepGoing = ref.checkPos(winHeight);
-        if (!keepGoing) {
-          if (i === this.state.adLocation) {
-            var adRef = this.refs.ad;
+  _getLoadedDistance () {
+    return window.innerHeight * 2;
+  }
 
-            if (adRef) {
-              var listing = adRef.getListingElement();
-              if (listing && listing.checkPos(winHeight)) {
-                return;
-              }
-            }
-          } else {
-            return;
-          }
-        }
+  _checkAdPos() {
+    var loadedDistance = this._getLoadedDistance();
+
+    if (!this.refs.ad) {
+      return false;
+    }
+
+    return this.refs.ad.checkPos(loadedDistance);
+  }
+
+  _hasAd() {
+    return this.props.showAds && this.refs.ad;
+  }
+
+  _isIndexOfAd(index) {
+    return this._hasAd() && index === this.state.adLocation;
+  }
+
+  _lazyLoad() {
+    var listings = this.props.listings;
+    var loadedDistance = this._getLoadedDistance();
+    var adIsMidListing = listings.length > this.state.adLocation;
+
+    for (var i = 0; i < listings.length; i++) {
+      var listing = this.refs['listing' + i];
+
+      // Check ad first since it'll be before the `i`th listing.
+      if (this._isIndexOfAd(i) && !this._checkAdPos()) {
+        return;
+      }
+
+      if (listing.checkPos && !listing.checkPos(loadedDistance)) {
+        return;
       }
     }
+
+    // Ad is after all the listings
+    if (this._hasAd() && !this._checkAdPos()) {
+      return;
+    }
+
     this._removeListeners();
   }
 
   _removeListeners() {
     if (this._hasListeners) {
-      this.props.app.off(constants.SCROLL, this._scroll);
-      this.props.app.off(constants.RESIZE, this._scroll);
+      this.props.app.off(constants.SCROLL, this._lazyLoad);
+      this.props.app.off(constants.RESIZE, this._lazyLoad);
       this._hasListeners = false;
     }
   }
 
   _resize() {
     var width = this.refs.root.getDOMNode().offsetWidth;
-    for (var i = 0; i < this.length; i++) {
+    for (var i = 0; i < this.props.listings.length; i++) {
       var ref = this.refs['listing' + i];
-      if (ref && ref.resize) {
-        ref.resize(width);
-      }
+
+      ref.resize && ref.resize(width);
+    }
+
+    if (this.refs.ad) {
+      this.refs.ad.resize(width);
     }
   }
 
   buildAd() {
-    if (this.props.listings.length > 0) {
-      var srnames = _.uniq(this.props.listings.map(function(l) {
-        return l.subreddit;
-      }));
+    var srnames = _.uniq(this.props.listings.map(function(l) {
+      return l.subreddit;
+    }));
 
-      return (
-        <Ad { ...this.props } srnames={srnames} key='ad' ref='ad' />
-      );
-    }
+    return (
+      <Ad
+        key='ad'
+        ref='ad'
+        {...this.props}
+        srnames={srnames}
+        afterLoad={this._checkAdPos.bind(this)}
+        />
+    );
   }
 
   render() {
     var props = this.props;
     var page = props.firstPage || 0;
-
-    var ad;
 
     var listings = (
       props.listings.map(function(listing, i) {
@@ -124,20 +152,19 @@ class ListingList extends React.Component {
     );
 
     // If ads are enabled, splice an ad into the listings.
-    if (this.props.showAds && listings.length) {
-      ad = this.buildAd();
-      listings.splice(this.state.adLocation, 0, ad);
+    if (props.showAds && listings.length) {
+      listings.splice(this.state.adLocation, 0, this.buildAd());
     }
 
-    this.length = listings.length;
-
-    return <div ref='root'>{listings}</div>;
+    return (
+      <div ref='root'>{listings}</div>
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.compact !== this.props.compact) {
       this._resize();
-      this._scroll();
+      this._lazyLoad();
     }
   }
 }
