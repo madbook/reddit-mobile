@@ -217,7 +217,11 @@ class ListingContent extends React.Component {
         }
       }
       if (src) {
-        style.backgroundImage = 'url(' + src + ')';
+        var a = document.createElement('a');
+        a.href = src;
+        a.protocol = location.protocol;
+
+        style.backgroundImage = 'url(' + a.href + ')';
       }
     }
     var aspectRatio = this._aspectRatio();
