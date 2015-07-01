@@ -95,7 +95,12 @@ function setCompact(ctx, app) {
     compact = false;
   }
 
-  ctx.cookies.set('compact', compact, cookieOptions);
+  if (compact) {
+    ctx.cookies.set('compact', compact, cookieOptions);
+  } else {
+    ctx.cookies.set('compact');
+  }
+
   ctx.compact = compact;
 }
 
@@ -232,44 +237,6 @@ class Server {
           id: 'fiftyfifty',
           value: this.cookies.get('fiftyfifty'),
         });
-      }
-
-      let compactCookieOptions = {
-        secure: app.getConfig('https'),
-        secureProxy: app.getConfig('httpsProxy'),
-        httpOnly: false,
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
-      };
-
-      if (app.config.experiments.compactTest &&
-          !this.cookies.get('compact') &&
-          !this.cookies.get('compactTest')) {
-        // divide by two, because there are two possible buckets, plus control
-        let bucketSize = parseInt(app.config.experiments.compactTest) / 2;
-
-        if (bucket < bucketSize) {
-          this.compact = true;
-          this.cookies.set('compact', 'true', compactCookieOptions);
-          setExperiment(app, this, 'compactTest', 'compact');
-        } else if (bucket < bucketSize * 2) {
-          this.compact = false;
-          this.cookies.set('compact', 'false', compactCookieOptions);
-          setExperiment(app, this, 'compactTest', 'list');
-        } else {
-          this.compact = false;
-          setExperiment(app, this, 'compactTest', 'control');
-        }
-      } else if (this.cookies.get('compactTest')) {
-        if (!app.config.experiments.compactTest) {
-          this.cookies.set('compactTest');
-        } else {
-          this.experiments.push({
-            id: 'compactTest',
-            value: this.cookies.get('compactTest'),
-          });
-        }
-      } else if (!this.cookies.get('compact')) {
-        this.cookies.set('compact', 'false', compactCookieOptions);
       }
 
       yield next;
