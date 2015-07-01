@@ -334,10 +334,14 @@ class SideNav extends React.Component {
     let date = new Date();
     date.setFullYear(date.getFullYear() + 2);
 
-    cookies.set('compact', (!compact).toString(), {
-      expires: date,
-      secure: this.props.app.getConfig('https') || this.props.app.getConfig('httpsProxy'),
-    });
+    if (compact) {
+      cookies.expire('compact');
+    } else {
+      cookies.set('compact', 'true', {
+        expires: date,
+        secure: this.props.app.getConfig('https') || this.props.app.getConfig('httpsProxy'),
+      });
+    }
 
     this.setState({
       show: false,
