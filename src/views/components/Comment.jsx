@@ -346,8 +346,14 @@ class Comment extends React.Component {
             { errorText }
           </div>
           <textarea ref='updatedText' className='form-control' defaultValue={ comment.body }></textarea>
-          <button className='btn btn-primary btn-block' type='button' onClick={ this.toggleEdit.bind(this) }>Cancel</button>
-          <button className='btn btn-primary btn-block' type='button' onClick={ this.updateComment.bind(this) }>Save</button>
+          <div className='btn-group btn-group-justified'>
+            <div className='btn-group'>
+              <button className='btn btn-primary btn-block' type='button' onClick={ this.toggleEdit.bind(this) }>Cancel</button>
+            </div>
+            <div className='btn-group'>
+              <button className='btn btn-primary btn-block' type='button' onClick={ this.updateComment.bind(this) }>Save</button>
+            </div>
+          </div>
         </div>
       );
     }
