@@ -167,16 +167,23 @@ class ListingDropdown extends React.Component {
       );
     }
 
-    return (
-      <SeashellsDropdown app={ props.app } right={ true }>
-        { editLink }
-        { delLink }
+    var viewComments;
+    if (props.listing._type === "Link") {
+      viewComments = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
             <CommentIcon/>
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
+      );
+    }
+
+    return (
+      <SeashellsDropdown app={ props.app } right={ true }>
+        { editLink }
+        { delLink }
+        { viewComments }
         { permalink }
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
