@@ -22,6 +22,7 @@ class ListingDropdown extends React.Component {
     this.state = {
       saved: props.listing.saved,
       hidden: props.listing.hidden,
+      showDelPrompt: false,
     };
 
     var likes = props.listing.likes;
@@ -42,6 +43,7 @@ class ListingDropdown extends React.Component {
     this._onHideClick = this._onHideClick.bind(this);
     this._onSaveClick = this._onSaveClick.bind(this);
     this._onEditClick = this._onEditClick.bind(this);
+    this._onDelToggle = this._onDelToggle.bind(this);
   }
 
   render() {
@@ -130,9 +132,44 @@ class ListingDropdown extends React.Component {
       );
     }
 
+    var delLink;
+
+    if (props.showDel) {
+      var confirmClass = 'hidden';
+      var toggleDelBtn = (
+        <MobileButton className='Dropdown-button' onClick={ this._onDelToggle }>
+          <span className='icon-x' />
+          <span className='Dropdown-text'>Delete Post</span>
+        </MobileButton>
+      );
+      if (this.state.showDelPrompt) {
+        confirmClass = '';
+        toggleDelBtn = null;
+      }
+
+
+      delLink = (
+        <li className='Dropdown-li'>
+          { toggleDelBtn }
+          <div className={ confirmClass }>
+            Are you sure?
+            <div className='btn-group btn-group-justified'>
+              <div className='btn-group'>
+                <button type='button' className='btn btn-primary' onClick={ props.onDelete }>yes</button>
+              </div>
+              <div className='btn-group'>
+                <button type='button' className='btn btn-primary' onClick={ this._onDelToggle }>no</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      );
+    }
+
     return (
       <SeashellsDropdown app={ props.app } right={ true }>
         { editLink }
+        { delLink }
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
             <CommentIcon/>
@@ -257,6 +294,13 @@ class ListingDropdown extends React.Component {
 
   _cancelBubble(e) {
     e.stopPropagation();
+  }
+
+  _onDelToggle(e) {
+    e.stopPropagation();
+    this.setState({
+      showDelPrompt: !this.state.showDelPrompt,
+    })
   }
 }
 

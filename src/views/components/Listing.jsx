@@ -61,11 +61,15 @@ class Listing extends React.Component {
     var distinguished = listing.distinguished;
     var linkFlairText = listing.link_flair_text;
     var subreddit = listing.subreddit;
+
     var showEdit = false;
+    var showDel = false;
 
     if (props.user && props.single) {
       showEdit = (props.user.name === listing.author) && listing.is_self;
+      showDel = props.user.name === listing.author;
     }
+
 
     var listingDropdownNode = (
       <ListingDropdown
@@ -75,7 +79,9 @@ class Listing extends React.Component {
         saved={ listing.saved }
         subreddit={ listing.subreddit }
         showEdit={ showEdit }
-        onEdit={props.toggleEdit}
+        onEdit={ props.toggleEdit }
+        onDelete={ props.onDelete }
+        showDel={ showDel }
         onReport={ this.onReport }
         onHide={ this.onHide }
         token={ props.token }

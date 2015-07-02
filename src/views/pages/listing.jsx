@@ -6,6 +6,7 @@ import q from 'q';
 import querystring from 'querystring';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
+import _ from 'lodash';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -99,6 +100,26 @@ class ListingPage extends React.Component {
     }.bind(this))
   }
 
+  onDelete(id) {
+    var props = this.props;
+    var options = props.api.buildOptions(props.apiOptions);
+
+    options = Object.assign(options, {
+      id: id,
+    });
+
+    // nothing returned for this endpoint
+    // so we assume success :/
+    props.api.links.delete(options).then(function(){
+      var data = props.app.state.data;
+      _.remove(data.data, {name: id});
+      props.app.setState({
+        data: data,
+      })
+      props.app.redirect('/r/' + props.subredditName);
+    })
+  }
+
   toggleEdit() {
     this.setState({editing: !this.state.editing});
   }
@@ -166,6 +187,7 @@ class ListingPage extends React.Component {
           editing={ editing }
           toggleEdit={ this.toggleEdit.bind(this) }
           editError={ this.state.linkEditError }
+          onDelete={this.onDelete.bind(this, listing.name)}
           />
       );
 

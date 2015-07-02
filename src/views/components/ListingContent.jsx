@@ -353,17 +353,21 @@ class ListingContent extends React.Component {
           defaultValue={text}
           ref='updatedText'
         ></textarea>
-        <div className=''>
-          <button
-            className='btn btn-primary btn-block'
-            type='button'
-            onClick={ this.props.toggleEdit }
-          >Cancel</button>
-          <button
-            className='btn btn-primary btn-block'
-            type='button'
-            onClick={ this.saveText.bind(this) }
-          >Save</button>
+        <div className='btn-group btn-group-justified'>
+          <div className='btn-group'>
+            <button
+              className='btn btn-primary btn-block'
+              type='button'
+              onClick={ this.props.toggleEdit }
+            >Cancel</button>
+          </div>
+          <div className='btn-group'>
+            <button
+              className='btn btn-primary btn-block'
+              type='button'
+              onClick={ this.saveText.bind(this) }
+            >Save</button>
+          </div>
         </div>
       </div>
     );
