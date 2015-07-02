@@ -44,6 +44,7 @@ class ListingDropdown extends React.Component {
     this._onSaveClick = this._onSaveClick.bind(this);
     this._onEditClick = this._onEditClick.bind(this);
     this._onDelToggle = this._onDelToggle.bind(this);
+    this._onDelClick = this._onDelClick.bind(this);
   }
 
   render() {
@@ -152,10 +153,10 @@ class ListingDropdown extends React.Component {
         <li className='Dropdown-li'>
           { toggleDelBtn }
           <div className={ confirmClass }>
-            Are you sure?
+            <p className='Dropdown-menu-text'>Are you sure?</p>
             <div className='btn-group btn-group-justified'>
               <div className='btn-group'>
-                <button type='button' className='btn btn-primary' onClick={ props.onDelete }>yes</button>
+                <button type='button' className='btn btn-primary' onClick={ this._onDelClick }>yes</button>
               </div>
               <div className='btn-group'>
                 <button type='button' className='btn btn-primary' onClick={ this._onDelToggle }>no</button>
@@ -300,7 +301,13 @@ class ListingDropdown extends React.Component {
     e.stopPropagation();
     this.setState({
       showDelPrompt: !this.state.showDelPrompt,
-    })
+    });
+  }
+
+  _onDelClick (){
+    if (this.props.onDelete) {
+      this.props.onDelete();
+    }
   }
 }
 

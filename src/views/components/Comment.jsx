@@ -126,6 +126,26 @@ class Comment extends React.Component {
     })
   }
 
+  onDelete (id) {
+    var props = this.props;
+    var options = props.api.buildOptions(props.apiOptions);
+
+    options = Object.assign(options, {
+      id: id,
+    });
+
+    // nothing returned for this endpoint
+    // so we assume success :/
+    props.api.links.delete(options).then(function(){
+      var deletedComment = this.state.comment;
+      deletedComment.body_html = '<p>[deleted]</p>';
+      deletedComment.author = '[deleted]';
+      this.setState({
+        comment: deletedComment
+      })
+    }.bind(this))
+  }
+
   updateComment () {
     var props = this.props;
     var newText = this.refs.updatedText.getDOMNode().value;
@@ -197,8 +217,10 @@ class Comment extends React.Component {
     }
 
     var showEdit = false;
+    var showDel;
     if (props.user) {
       showEdit = props.user.name === comment.author;
+      showDel = showEdit;
     }
 
     if (this.state.showTools || props.highlight === comment.id) {
@@ -244,6 +266,8 @@ class Comment extends React.Component {
                 app={props.app}
                 showEdit={ showEdit }
                 onEdit={ this.toggleEdit.bind(this) }
+                showDel={ showDel }
+                onDelete={ this.onDelete.bind(this, props.comment.name)}
                 />
             </div>
           </li>
