@@ -13,6 +13,7 @@ var streamqueue = require('streamqueue');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
+var envify = require('envify/custom');
 var exorcist = require('exorcist');
 var path = require('path');
 var gulpIf = require('gulp-if');
@@ -67,6 +68,11 @@ module.exports = function buildJS(gulp, options) {
         ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|gsap|lodash)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: !options.debug,
+      }), {
+        global: true,
+      })
+      .transform(envify({
+        NODE_ENV: options.debug ? 'development' : 'production',
       }), {
         global: true,
       });
