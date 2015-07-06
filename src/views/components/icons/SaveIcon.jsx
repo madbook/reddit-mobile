@@ -1,9 +1,12 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
+
 const _LEFT = 8.3;
 const _RIGHT = 11.7;
 
-class SaveIcon extends React.Component {
+class SaveIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

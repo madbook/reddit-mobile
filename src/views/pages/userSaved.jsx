@@ -7,8 +7,9 @@ import querystring from 'querystring';
 import Loading from '../components/Loading';
 import ListingList from '../components/ListingList';
 import TrackingPixel from '../components/TrackingPixel';
+import BaseComponent from '../components/BaseComponent';
 
-class UserSavedPage extends React.Component {
+class UserSavedPage extends BaseComponent {
   constructor(props) {
     super(props);
 

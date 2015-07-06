@@ -3,7 +3,9 @@ import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
 import constants from '../../constants';
 
-class BodyLayout extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class BodyLayout extends BaseComponent {
   constructor(props) {
     super(props);
   }

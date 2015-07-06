@@ -1,9 +1,12 @@
 import React from 'react';
-import MyMath from '../../../lib/danehansen/utils/MyMath';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
+
+import MyMath from '../../../lib/danehansen/utils/MyMath';
 import globals from '../../../globals';
 
-class DownvoteIcon extends React.Component {
+class DownvoteIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

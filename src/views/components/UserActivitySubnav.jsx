@@ -6,8 +6,9 @@ import querystring from 'querystring';
 import SortDropdown from '../components/SortDropdown';
 import Dropdown from '../components/Dropdown';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
+import BaseComponent from './BaseComponent';
 
-class UserActivitySubnav extends React.Component {
+class UserActivitySubnav extends BaseComponent {
   constructor(props) {
     super(props);
 

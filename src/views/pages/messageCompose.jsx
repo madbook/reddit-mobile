@@ -1,6 +1,8 @@
 import React from 'react';
 
-class MessageComposePage extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class MessageComposePage extends BaseComponent {
   constructor(props) {
     super(props);
   }

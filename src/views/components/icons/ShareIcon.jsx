@@ -1,11 +1,13 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
 
 var _diag;
 var _half;
 
-class ShareIcon extends React.Component {
+class ShareIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

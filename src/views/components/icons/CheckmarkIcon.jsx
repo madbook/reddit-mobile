@@ -1,8 +1,10 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
 
-class CheckmarkIcon extends React.Component {
+class CheckmarkIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

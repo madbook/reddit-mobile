@@ -1,8 +1,9 @@
 import React from 'react';
 
 import SortDropdown from '../components/SortDropdown';
+import BaseComponent from './BaseComponent';
 
-class TopSubnav extends React.Component {
+class TopSubnav extends BaseComponent {
   constructor(props) {
     super(props);
   }

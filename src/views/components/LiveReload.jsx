@@ -1,6 +1,8 @@
 import React from 'react';
 
-class LiveReload extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class LiveReload extends BaseComponent {
   constructor(props) {
     super(props);
   }

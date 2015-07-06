@@ -3,9 +3,13 @@ import { models } from 'snoode';
 import constants from '../../constants';
 import globals from '../../globals';
 
+import BaseComponent from '../components/BaseComponent';
+import UpvoteIcon from '../components/icons/UpvoteIcon';
+import DownvoteIcon from '../components/icons/DownvoteIcon';
+
 import MobileButton from '../components/MobileButton';
 
-class Vote extends React.Component {
+class Vote extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -24,10 +28,6 @@ class Vote extends React.Component {
     }
 
     this._onVote = this._onVote.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   componentDidMount() {
@@ -119,7 +119,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
-                <span className={'icon-upvote-circled' + (this.state.localScore > 0 ? ' orangered' : '')}/>
+                <UpvoteIcon altered={this.state.localScore > 0}/>
               </MobileButton>
             </form>
           </li>
@@ -134,7 +134,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
-                <span className={'icon-downvote-circled' + (this.state.localScore > 0 ? ' periwinkle' : '')}/>
+                <DownvoteIcon altered={this.state.localScore < 0}/>
               </MobileButton>
             </form>
           </li>

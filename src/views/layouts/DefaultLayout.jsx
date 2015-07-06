@@ -1,7 +1,9 @@
 import React from 'react';
 import LiveReload from '../components/LiveReload';
 
-class DefaultLayout extends React.Component {
+import BaseComponent from '../Components/BaseComponent';
+
+class DefaultLayout extends BaseComponent {
   constructor(props) {
     super(props);
   }

@@ -1,11 +1,12 @@
 import React from 'react';
 
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 const _DIST = 7.5;
 const _DIAMETER = 2;
 
-class SeashellIcon extends React.Component {
+class SeashellIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

@@ -8,8 +8,9 @@ import globals from '../../globals';
 import Loading from '../components/Loading';
 import Inbox from '../components/Inbox';
 import TrackingPixel from '../components/TrackingPixel';
+import BaseComponent from '../components/BaseComponent';
 
-class MessagesPage extends React.Component {
+class MessagesPage extends BaseComponent {
   constructor(props) {
     super(props);
 

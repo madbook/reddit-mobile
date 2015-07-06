@@ -1,7 +1,8 @@
 import React from 'react';
 import SVG from '../components/SVG';
+import BaseComponent from './BaseComponent';
 
-class Logo extends React.Component {
+class Logo extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

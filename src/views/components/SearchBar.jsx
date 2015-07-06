@@ -1,8 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import globals from '../../globals';
+import debounce from 'lodash/function/debounce';
+import BaseComponent from './BaseComponent';
 
-class SearchBar extends React.Component {
+class SearchBar extends BaseComponent {
   constructor(props) {
     super(props);
   }
@@ -22,7 +24,7 @@ class SearchBar extends React.Component {
     var customClass = this.props.className || '';
     return (
       <input type="text" className={"form-control " + customClass} maxLength="512" name="q" ref="search"
-             placeholder="Search..." onChange={ _.debounce(this.handleInputChange, 500).bind(this) }
+             placeholder="Search..." onChange={ debounce(this.handleInputChange, 500).bind(this) }
              defaultValue={this.props.query.q} />
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
+import BaseComponent from './BaseComponent';
 
-class Modal extends React.Component {
+class Modal extends BaseComponent {
   constructor(props) {
     super(props);
 

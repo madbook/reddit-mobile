@@ -1,15 +1,17 @@
 import React from 'react';
-import constants from '../../constants';
-import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
+
+import constants from '../../constants';
+import globals from '../../globals';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import ListingList from '../components/ListingList';
 import TopSubnav from '../components/TopSubnav';
+import BaseComponent from '../components/BaseComponent';
 
-class IndexPage extends React.Component {
+class IndexPage extends BaseComponent {
   constructor(props) {
     super(props);
 

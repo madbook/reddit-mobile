@@ -1,7 +1,8 @@
-import React from 'react';
 import globals from '../../globals';
+import React from 'react/addons';
+import BaseComponent from './BaseComponent';
 
-class MobileButton extends React.Component {
+class MobileButton extends BaseComponent {
   constructor(props) {
     super(props);
 

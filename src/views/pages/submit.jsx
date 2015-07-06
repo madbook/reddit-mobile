@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import globals from '../../globals';
+import throttle from 'lodash/function/throttle';
+
 import { models } from 'snoode';
 
 import SubredditSelectionButton from '../components/SubredditSelectionButton';
@@ -9,7 +11,7 @@ import MobileButton from '../components/MobileButton';
 import CaptchaBox from '../components/CaptchaBox';
 import Modal from '../components/Modal';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
-
+import BaseComponent from '../components/BaseComponent';
 
 function _removeNewLines(title) {
   return title.replace(/(\r\n|\n|\r)/gm,' ');
@@ -25,9 +27,10 @@ function _determineKind(body) {
   }
 }
 
-var debouncedDetermineKind = _.throttle(_determineKind, 1000);
+var debouncedDetermineKind = throttle(_determineKind, 1000);
 
-class SubmitPage extends React.Component {
+
+class SubmitPage extends BaseComponent {
   constructor(props) {
     super(props);
 

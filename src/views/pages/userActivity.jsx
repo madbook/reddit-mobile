@@ -8,8 +8,9 @@ import Loading from '../components/Loading';
 import ListingList from '../components/ListingList';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 import TrackingPixel from '../components/TrackingPixel';
+import BaseComponent from '../components/BaseComponent';
 
-class UserActivityPage extends React.Component {
+class UserActivityPage extends BaseComponent {
   constructor(props) {
     super(props);
 

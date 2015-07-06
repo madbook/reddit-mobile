@@ -1,6 +1,8 @@
 import React from 'react';
 
-class CaptchaBox extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class CaptchaBox extends BaseComponent {
   constructor(props) {
     super(props);
 

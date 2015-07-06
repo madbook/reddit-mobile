@@ -1,7 +1,9 @@
 import React from 'react';
 import globals from '../../globals';
 
-class FAQPage extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class FAQPage extends BaseComponent {
   constructor(props) {
     super(props);
   }

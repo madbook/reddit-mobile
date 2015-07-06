@@ -3,9 +3,11 @@ import Utils from '../../lib/danehansen/utils/Utils';
 import constants from '../../constants';
 import globals from '../../globals';
 
+import BaseComponent from './BaseComponent';
+
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-class Dropdown extends React.Component {
+class Dropdown extends BaseComponent {
   constructor(props) {
     super(props);
 

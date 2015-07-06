@@ -1,8 +1,9 @@
 import React from 'react';
+import BaseComponent from './BaseComponent';
 
 const _INDICATOR_PADDING = 2;
 
-class TextSubNav extends React.Component {
+class TextSubNav extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,13 +1,10 @@
 import React from 'react';
 import moment from 'moment';
+import BaseComponent from './BaseComponent';
 
-class UserProfile extends React.Component {
+class UserProfile extends BaseComponent {
   constructor(props) {
     super(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   render() {

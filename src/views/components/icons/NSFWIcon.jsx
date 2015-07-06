@@ -1,11 +1,13 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 const _STROKE = 0.53;
 const _XS = [4, 8, 12, 16];
 const _YS = [7.333328, 12.666672];
 
-class NSFWIcon extends React.Component {
+class NSFWIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

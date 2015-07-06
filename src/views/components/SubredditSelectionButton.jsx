@@ -5,10 +5,11 @@ import MobileButton from '../components/MobileButton';
 import Loading from '../components/Loading';
 
 import process from 'reddit-text-js';
+import BaseComponent from './BaseComponent';
 
 const _searchLimit = 25;
 
-class SubredditSelectionButton extends React.Component {
+class SubredditSelectionButton extends BaseComponent {
   constructor(props) {
     super(props);
 

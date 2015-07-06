@@ -1,7 +1,9 @@
 import React from 'react';
 import querystring from 'querystring';
 
-class RegisterPage extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class RegisterPage extends BaseComponent {
   constructor(props) {
     super(props);
   }

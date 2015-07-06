@@ -1,10 +1,12 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 const _X_LEFT = 5.08719;
 const _X_RIGHT = 14.912809;
 
-class PostIcon extends React.Component {
+class PostIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

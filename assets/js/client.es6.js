@@ -1,5 +1,8 @@
 import 'babel/polyfill';
-import _ from 'lodash';
+
+import throttle from 'lodash/function/throttle';
+import forOwn from 'lodash/object/forOwn';
+
 import {ClientReactApp} from 'horse-react';
 import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
@@ -139,7 +142,7 @@ function initialize(bindLinks) {
   config.mountPoint = document.getElementById('app-container');
   config.touch = true;
 
-  _.forOwn(config, function(val, key) {
+  forOwn(config, function(val, key) {
     if (bootstrap[key]) {
       config[key] = bootstrap[key];
     }
@@ -303,12 +306,12 @@ function initialize(bindLinks) {
     app.setState('compact', compact);
   });
 
-  window.addEventListener('scroll', _.throttle(function() {
+  window.addEventListener('scroll', throttle(function() {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 
   var startingWidth = window.innerWidth;
-  window.addEventListener('resize', _.throttle(function(e) {
+  window.addEventListener('resize', throttle(function(e) {
     // Prevent resize from firing when chrome shows/hides nav bar
     if (window.innerWidth !== startingWidth) {
       app.emit(constants.RESIZE);

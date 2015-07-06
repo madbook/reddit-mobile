@@ -1,4 +1,6 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
 import SVG from '../../components/SVG';
@@ -8,7 +10,7 @@ const _MASK_SIZE = 11.4;
 const _EYE_CENTER = 7.10293;
 const _LOOK_DIST = 3;
 
-class SearchIcon extends React.Component {
+class SearchIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

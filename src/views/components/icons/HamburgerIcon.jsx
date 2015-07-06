@@ -1,5 +1,8 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
+
 const _SIZE = 20;
 const _MIDDLE = _SIZE / 2;
 const _X_LEFT = 4.343146;
@@ -12,7 +15,7 @@ const _T = 0.2;
 const _TOP_BUN_Y = _SIZE / 2 - _HAMBURGER_SPACING;
 const _BOTTOM_BUN_Y = _SIZE / 2 + _HAMBURGER_SPACING;
 
-class HamburgerIcon extends React.Component {
+class HamburgerIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

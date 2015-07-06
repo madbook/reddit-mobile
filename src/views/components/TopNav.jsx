@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
 import { models } from 'snoode';
@@ -16,6 +16,7 @@ import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';
 import TextIcon from '../components/icons/TextIcon';
+import BaseComponent from './BaseComponent';
 
 function removeR(text) {
   return text.substr(2);
@@ -36,7 +37,7 @@ function loadSubredditData(ctx) {
   }
 }
 
-class TopNav extends React.Component {
+class TopNav extends BaseComponent {
   constructor(props) {
     super(props);
 

@@ -5,6 +5,7 @@ import mobilify from '../../lib/mobilify';
 import short from '../../lib/formatDifference';
 
 import AutoTween from '../components/AutoTween';
+import BaseComponent from './BaseComponent';
 import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
@@ -16,7 +17,7 @@ function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
 }
 
-class Listing extends React.Component {
+class Listing extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -44,10 +45,6 @@ class Listing extends React.Component {
 
   onHide() {
     this.setState({ hidden: true });
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   //build headline

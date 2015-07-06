@@ -5,6 +5,8 @@ import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
 import SVG from '../../components/SVG';
 
+import BaseComponent from '../../components/BaseComponent';
+
 const _EYE_RADIUS = 1.142124;
 const _EYE_HEIGHT = 11.1461885;
 const _MOUTH_STROKE = 0.55;
@@ -70,7 +72,7 @@ function _tweenOff(callback) {
   }
 }
 
-class SnooIcon extends React.Component {
+class SnooIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

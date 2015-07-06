@@ -8,8 +8,9 @@ import Loading from '../components/Loading';
 import UserProfile from '../components/UserProfile';
 import TrackingPixel from '../components/TrackingPixel';
 import TopSubnav from '../components/TopSubnav';
+import BaseComponent from '../components/BaseComponent';
 
-class UserProfilePage extends React.Component {
+class UserProfilePage extends BaseComponent {
   constructor(props) {
     super(props);
 

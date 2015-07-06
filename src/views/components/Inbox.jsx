@@ -2,8 +2,9 @@ import React from 'react';
 import moment from 'moment';
 
 import MessagePreview from './MessagePreview';
+import BaseComponent from './BaseComponent';
 
-class Inbox extends React.Component {
+class Inbox extends BaseComponent {
   constructor(props) {
     super(props);
 

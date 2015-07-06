@@ -1,19 +1,22 @@
 import React from 'react';
-import constants from '../../constants';
-import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
+
+import constants from '../../constants';
+import globals from '../../globals';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import SearchBar from '../components/SearchBar';
 import SearchSortSubnav from '../components/SearchSortSubnav';
 import ListingList from '../components/ListingList';
+import BaseComponent from '../components/BaseComponent';
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
 
-class SearchPage extends React.Component {
+
+class SearchPage extends BaseComponent {
   constructor(props) {
     super(props);
 

@@ -7,8 +7,9 @@ import querystring from 'querystring';
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 import TopSubnav from '../components/TopSubnav';
+import BaseComponent from '../components/BaseComponent';
 
-class UserGildPage extends React.Component {
+class UserGildPage extends BaseComponent {
   constructor(props) {
     super(props);
 

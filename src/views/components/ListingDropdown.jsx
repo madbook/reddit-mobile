@@ -4,12 +4,13 @@ import globals from '../../globals';
 
 import { models } from 'snoode';
 
+import BaseComponent from './BaseComponent';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import MobileButton from '../components/MobileButton';
 import SaveIcon from '../components/icons/SaveIcon';
-import SettingsIcon from '../components/icons/SettingsIcon';
+import FlagIcon from '../components/icons/FlagIcon';
 
-class ListingDropdown extends React.Component {
+class ListingDropdown extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -70,7 +71,7 @@ class ListingDropdown extends React.Component {
       reportLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
-            <span className='icon-flag-circled' />
+            <FlagIcon/>
             <span className='Dropdown-text'>Report this</span>
           </MobileButton>
           { reportForm }
@@ -93,7 +94,7 @@ class ListingDropdown extends React.Component {
         hideLink = (
           <li className='Dropdown-li'>
             <MobileButton className='Dropdown-button' onClick={ this._onHideClick }>
-              <SettingsIcon altered={ hidden }/>
+              <span className='icon-settings-circled'>{' '}</span>
               <span className='Dropdown-text'>{ hidden ? 'Hidden' : 'Hide' }</span>
             </MobileButton>
           </li>

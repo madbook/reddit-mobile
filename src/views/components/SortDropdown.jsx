@@ -6,6 +6,7 @@ import titleCase from '../../lib/titleCase';
 
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import Dropdown from '../components/Dropdown';
+import BaseComponent from './BaseComponent';
 
 var _LISTS = {
   listings: [
@@ -50,7 +51,7 @@ var _LISTS = {
   ],
 };
 
-class SortDropdown extends React.Component {
+class SortDropdown extends BaseComponent {
   constructor(props) {
     super(props);
 

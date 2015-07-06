@@ -2,8 +2,9 @@ import React from 'react';
 
 import RIcon from '../components/icons/RIcon';
 import SnooIcon from '../components/icons/SnooIcon';
+import BaseComponent from './BaseComponent';
 
-class Loading extends React.Component {
+class Loading extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {flipFlop: true};

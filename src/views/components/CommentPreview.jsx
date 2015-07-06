@@ -4,9 +4,11 @@ import moment from 'moment';
 import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
 
+import BaseComponent from './BaseComponent';
+
 const subredditRegex = /\/\/www.reddit.com\/r\/([^/]*)/;
 
-class CommentPreview extends React.Component {
+class CommentPreview extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -15,10 +17,6 @@ class CommentPreview extends React.Component {
       collapsed: this.props.comment.hidden,
       showReplyBox: false,
     }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   render () {

@@ -4,8 +4,9 @@ import globals from '../../globals';
 
 import SeashellIcon from '../components/icons/SeashellIcon';
 import Dropdown from '../components/Dropdown';
+import BaseComponent from './BaseComponent';
 
-class SeashellsDropdown extends React.Component {
+class SeashellsDropdown extends BaseComponent {
   constructor(props) {
     super(props);
 

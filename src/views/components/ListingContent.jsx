@@ -2,6 +2,7 @@ import React from 'react';
 import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
 
+import BaseComponent from './BaseComponent';
 import AutoTween from '../components/AutoTween';
 import PlayIcon from '../components/icons/PlayIcon';
 
@@ -62,7 +63,7 @@ function _wrapSelftextExpand(fn) {
   }
 }
 
-class ListingContent extends React.Component {
+class ListingContent extends BaseComponent {
   constructor(props) {
     super(props);
 

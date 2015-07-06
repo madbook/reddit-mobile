@@ -1,5 +1,7 @@
 import React from 'react';
 
+import BaseComponent from './BaseComponent';
+
 const _DURATION = 0.4;
 
 function _changeProp(style, prop, dest, onComplete) {
@@ -37,7 +39,7 @@ function _tween(node, dest, prop, dimention, autoVal, to, onComplete = null, cle
 
 //instances of this component must be placed within a TransitionGroup in order to work
 
-class AutoTween extends React.Component {
+class AutoTween extends BaseComponent {
   constructor(props) {
     super(props);
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import globals from '../../globals';
 
-class ErrorPage extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class ErrorPage extends BaseComponent {
   constructor(props) {
     super(props);
     this._desktopSite = this._desktopSite.bind(this);

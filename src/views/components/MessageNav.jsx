@@ -1,7 +1,9 @@
 import React from 'react';
 import TextSubNav from './TextSubNav';
 
-class MessageNav extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class MessageNav extends BaseComponent {
   constructor (props) {
     super(props);
   }

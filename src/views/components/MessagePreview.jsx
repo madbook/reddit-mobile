@@ -11,7 +11,9 @@ import mobilify from '../../lib/mobilify';
 
 const subredditRegex = /\/r\/([^/]*)/;
 
-class MessagePreview extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class MessagePreview extends BaseComponent {
   constructor(props) {
     super(props);
 

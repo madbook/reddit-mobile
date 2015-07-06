@@ -1,9 +1,12 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
+
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
 
-class UpvoteIcon extends React.Component {
+class UpvoteIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

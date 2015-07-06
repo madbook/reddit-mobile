@@ -3,7 +3,9 @@ import querystring from 'querystring';
 import { models } from 'snoode';
 import globals from '../../globals';
 
-class CommentBox extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class CommentBox extends BaseComponent {
   constructor(props) {
     super(props);
 

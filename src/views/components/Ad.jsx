@@ -2,12 +2,14 @@ import React from 'react';
 import superagent from 'superagent';
 import { models } from 'snoode';
 
+
 import constants from '../../constants';
 import globals from '../../globals';
 
+import BaseComponent from './BaseComponent';
 import Listing from './Listing';
 
-class Ad extends React.Component {
+class Ad extends BaseComponent {
   constructor (props) {
     super(props);
 
@@ -150,11 +152,7 @@ class Ad extends React.Component {
     }
 
     var props = this.props;
-<<<<<<< HEAD
-    var listing = _.extend({}, this.state.ad, { compact: props.compact });
-=======
     var listing = Object.assign({}, this.state.ad, { compact: props.compact });
->>>>>>> ddab082... [squash] ad scroll
 
     return (
       <Listing

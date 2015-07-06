@@ -1,6 +1,7 @@
 import React from 'react';
+import BaseComponent from './BaseComponent';
 
-class ReportPlaceholder extends React.Component {
+class ReportPlaceholder extends BaseComponent {
   constructor (props) {
     super(props);
 
@@ -10,10 +11,6 @@ class ReportPlaceholder extends React.Component {
 
     this._fade = this._fade.bind(this);
     this._close = this._close.bind(this);
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   componentDidMount() {

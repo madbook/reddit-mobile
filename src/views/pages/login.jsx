@@ -1,7 +1,9 @@
 import React from 'react';
 import querystring from 'querystring';
 
-class LoginPage extends React.Component {
+import BaseComponent from '../components/BaseComponent';
+
+class LoginPage extends BaseComponent {
   constructor(props) {
     super(props);
   }

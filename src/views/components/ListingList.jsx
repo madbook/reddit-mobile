@@ -1,14 +1,17 @@
-import _ from 'lodash';
+import uniq from 'lodash/array/uniq';
 import React from 'react';
+
 import constants from '../../constants';
 import globals from '../../globals';
+
+import BaseComponent from './BaseComponent';
 import Listing from '../components/Listing';
 import CommentPreview from '../components/CommentPreview';
 import Ad from '../components/Ad';
 
 const AD_LOCATION = 11;
 
-class ListingList extends React.Component {
+class ListingList extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -110,7 +113,7 @@ class ListingList extends React.Component {
   }
 
   buildAd() {
-    var srnames = _.uniq(this.props.listings.map(function(l) {
+    var srnames = uniq(this.props.listings.map(function(l) {
       return l.subreddit;
     }));
 

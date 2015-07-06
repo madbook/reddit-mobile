@@ -1,4 +1,6 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
 
@@ -12,7 +14,7 @@ const _LEN = _POINTS.length;
 const _X_DIFF = _POINTS[_LEN - 1].x - _POINTS[0].x;
 const _START_Y = _POINTS[0].y;
 
-class FlagIcon extends React.Component {
+class FlagIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};

@@ -1,10 +1,11 @@
 import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
+import BaseComponent from './BaseComponent';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
-class SVG extends React.Component {
+class SVG extends BaseComponent {
   constructor(props) {
     super(props);
   }

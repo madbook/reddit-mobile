@@ -4,7 +4,9 @@ import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import moment from 'moment';
 
-class GoogleCarouselMetadata extends React.Component {
+import BaseComponent from './BaseComponent';
+
+class GoogleCarouselMetadata extends BaseComponent {
   constructor (props) {
     super(props);
   }

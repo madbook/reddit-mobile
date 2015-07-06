@@ -7,6 +7,7 @@ import short from '../../lib/formatDifference';
 import constants from '../../constants';
 import globals from '../../globals';
 
+import BaseComponent from './BaseComponent';
 import CommentBox from '../components/CommentBox';
 import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
@@ -14,7 +15,7 @@ import ReplyIcon from '../components/icons/ReplyIcon';
 import ReportPlaceholder from '../components/ReportPlaceholder';
 import Vote from '../components/Vote';
 
-class Comment extends React.Component {
+class Comment extends BaseComponent {
   constructor(props) {
     super(props);
 
@@ -62,10 +63,6 @@ class Comment extends React.Component {
 
   onHide () {
     this.setState({ hidden: true });
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
   }
 
   // The collapsy icon

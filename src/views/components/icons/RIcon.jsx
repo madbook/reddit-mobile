@@ -1,9 +1,11 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 
 import SVG from '../../components/SVG';
 
-class RIcon extends React.Component {
+class RIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {outline: false};

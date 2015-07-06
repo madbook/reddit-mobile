@@ -1,7 +1,8 @@
 import React from 'react';
 import url from 'url';
+import BaseComponent from './BaseComponent';
 
-class TrackingPixel extends React.Component {
+class TrackingPixel extends BaseComponent {
   constructor (props) {
     super(props);
   }

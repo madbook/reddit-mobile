@@ -1,7 +1,9 @@
 import React from 'react';
+
+import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
-class TextIcon extends React.Component {
+class TextIcon extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};
