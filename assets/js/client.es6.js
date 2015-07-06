@@ -307,10 +307,13 @@ function initialize(bindLinks) {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 
+  var startingWidth = window.innerWidth;
   window.addEventListener('resize', _.throttle(function(e) {
-    console.log(e);
+    // Prevent resize from firing when chrome shows/hides nav bar
+    if (window.innerWidth !== startingWidth) {
       app.emit(constants.RESIZE);
-    }.bind(app), 100));
+    }
+  }.bind(app), 100));
 
 
   // Send the timings during the next cycle.

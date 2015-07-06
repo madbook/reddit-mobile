@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import superagent from 'superagent';
 import { models } from 'snoode';
@@ -17,7 +16,8 @@ class Ad extends React.Component {
       unavailable: false,
     };
 
-    this._scroll = _.throttle(this._scroll.bind(this), 100);
+    this._scroll = this._scroll.bind(this);
+
     this._removeListeners = this._removeListeners.bind(this);
   }
 
@@ -150,7 +150,11 @@ class Ad extends React.Component {
     }
 
     var props = this.props;
+<<<<<<< HEAD
     var listing = _.extend({}, this.state.ad, { compact: props.compact });
+=======
+    var listing = Object.assign({}, this.state.ad, { compact: props.compact });
+>>>>>>> ddab082... [squash] ad scroll
 
     return (
       <Listing
