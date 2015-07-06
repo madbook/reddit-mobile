@@ -110,7 +110,11 @@ class UserActivitySubnav extends React.Component {
 
     return (
       <div className='TopSubnav'>
-        <Dropdown id={ this._id } button={ button } className='Dropdown-inline'>
+        <Dropdown 
+          app={ this.props.app }
+          id={ this._id }
+          button={ button }
+          className='Dropdown-inline'>
           {
             dropdownList.map((d) => {
               return (

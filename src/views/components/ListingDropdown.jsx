@@ -5,16 +5,9 @@ import globals from '../../globals';
 import { models } from 'snoode';
 
 import SeashellsDropdown from '../components/SeashellsDropdown';
-import CommentIcon from '../components/icons/CommentIcon';
 import MobileButton from '../components/MobileButton';
-import SnooIcon from '../components/icons/SnooIcon';
-import InfoIcon from '../components/icons/InfoIcon';
-import FlagIcon from '../components/icons/FlagIcon';
-import TextIcon from '../components/icons/TextIcon';
 import SaveIcon from '../components/icons/SaveIcon';
 import SettingsIcon from '../components/icons/SettingsIcon';
-import CheckmarkIcon from '../components/icons/CheckmarkIcon';
-import PostIcon from '../components/icons/PostIcon';
 
 class ListingDropdown extends React.Component {
   constructor(props) {
@@ -77,7 +70,7 @@ class ListingDropdown extends React.Component {
       reportLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
-            <FlagIcon/>
+            <span className='icon-flag-circled' />
             <span className='Dropdown-text'>Report this</span>
           </MobileButton>
           { reportForm }
@@ -114,7 +107,7 @@ class ListingDropdown extends React.Component {
       permalink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ props.permalink }>
-            <TextIcon />
+            <span className='icon-link-circled' />
             <span className='Dropdown-text'>Permalink</span>
           </MobileButton>
         </li>
@@ -127,7 +120,7 @@ class ListingDropdown extends React.Component {
       editLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onEditClick }>
-            <PostIcon />
+            <span className='icon-post' />
             <span className='Dropdown-text'>Edit Post</span>
           </MobileButton>
         </li>
@@ -173,7 +166,7 @@ class ListingDropdown extends React.Component {
       viewComments = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>
-            <CommentIcon/>
+            <span className='icon-comments-circled'/>
             <span className='Dropdown-text'>View comments</span>
           </MobileButton>
         </li>
@@ -188,13 +181,13 @@ class ListingDropdown extends React.Component {
         { permalink }
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
-            <SnooIcon/>
+            <span className='icon-snoo-circled' />
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </MobileButton>
         </li>
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={ '/u/' + listing.author }>
-            <InfoIcon/>
+            <span className='icon-info-circled' />
             <span className='Dropdown-text'>About { listing.author }</span>
           </MobileButton>
         </li>

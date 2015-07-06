@@ -5,11 +5,9 @@ import mobilify from '../../lib/mobilify';
 import short from '../../lib/formatDifference';
 
 import AutoTween from '../components/AutoTween';
-import CommentIcon from '../components/icons/CommentIcon';
 import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
 import MobileButton from '../components/MobileButton';
-import SnooIcon from '../components/icons/SnooIcon';
 import Vote from '../components/Vote';
 
 var TransitionGroup = React.addons.TransitionGroup;
@@ -130,12 +128,14 @@ class Listing extends React.Component {
             </div>
           );
         } else {
-          iconNode = <SnooIcon/>;
+          iconNode = <span className='icon-snoo-circled icon' />;
         }
       }
 
       var subredditNode = subreddit ? (
-        <MobileButton className='Listing-subreddit' href={`/r/${subreddit}`}>
+        <MobileButton
+          className='Listing-subreddit'
+          href={`/r/${subreddit}`}>
           { iconNode }
           <span style={ style }>r/{ subreddit }</span>
         </MobileButton>
@@ -198,8 +198,10 @@ class Listing extends React.Component {
     if (!props.hideComments) {
       var commentsNode = (
         <li className='Listing-comments linkbar-item-no-seperator'>
-          <MobileButton className='Listing-commentsbutton' href={ listing.cleanPermalink }>
-            <CommentIcon/>
+          <MobileButton 
+            className='Listing-commentsbutton'
+            href={ listing.cleanPermalink }>
+            <span className='icon-comments-circled listing-footer-icon' />
             <span className='Listing-numcomments'>{ numComments }</span>
             { whenNode }
             { domainNode }

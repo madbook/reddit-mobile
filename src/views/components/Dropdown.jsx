@@ -8,10 +8,11 @@ var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       opened: false,
-      touch: false,
     };
+
     this._onMouseEnter = this._onMouseEnter.bind(this);
     this._onMouseLeave = this._onMouseLeave.bind(this);
     this._onClick = this._onClick.bind(this);
@@ -43,8 +44,8 @@ class Dropdown extends React.Component {
     }
 
     return (
-      <div className={className} onMouseEnter={ this.state.touch ? null : this._onMouseEnter }
-           onMouseLeave={ this.state.touch ? null : this._onMouseLeave } onClick={ this.state.touch ? this._onClick : null }>
+      <div className={className} onMouseEnter={ globals().touch ? null : this._onMouseEnter }
+           onMouseLeave={ globals().touch ? null : this._onMouseLeave } onClick={ globals().touch ? this._onClick : null }>
         { this.props.button }
         <CSSTransitionGroup transitionName="Dropdown-tab">
           { tab }
@@ -53,12 +54,8 @@ class Dropdown extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this.setState({touch: Utils.touch()});
-  }
-
   componentWillUnmount() {
-    if (this.state.touch) {
+    if (globals().touch) {
       globals().app.off(constants.DROPDOWN_OPEN, this._close);
     }
   }
@@ -85,7 +82,7 @@ class Dropdown extends React.Component {
     globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
-    if (this.state.touch) {
+    if (globals().touch) {
       globals().app.on(constants.DROPDOWN_OPEN, this._close);
     }
   }

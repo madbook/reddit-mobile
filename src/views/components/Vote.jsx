@@ -3,8 +3,6 @@ import { models } from 'snoode';
 import constants from '../../constants';
 import globals from '../../globals';
 
-import UpvoteIcon from '../components/icons/UpvoteIcon';
-import DownvoteIcon from '../components/icons/DownvoteIcon';
 import MobileButton from '../components/MobileButton';
 
 class Vote extends React.Component {
@@ -121,7 +119,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
-                <UpvoteIcon altered={this.state.localScore > 0}/>
+                <span className={'icon-upvote-circled' + (this.state.localScore > 0 ? ' orangered' : '')}/>
               </MobileButton>
             </form>
           </li>
@@ -136,7 +134,7 @@ class Vote extends React.Component {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
-                <DownvoteIcon altered={this.state.localScore < 0}/>
+                <span className={'icon-downvote-circled' + (this.state.localScore > 0 ? ' periwinkle' : '')}/>
               </MobileButton>
             </form>
           </li>

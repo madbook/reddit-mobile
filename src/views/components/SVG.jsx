@@ -1,15 +1,12 @@
 import React from 'react';
-import Utils from '../../lib/danehansen/utils/Utils';
 import constants from '../../constants';
+import globals from '../../globals';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
 class SVG extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      touch: false,
-    };
   }
 
   render() {
@@ -19,8 +16,8 @@ class SVG extends React.Component {
       var move = this.props.move;
       var out = this.props.out;
       return (
-        <svg className={this.props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height} onMouseMove={this.state.touch ? null : move}
-          onTouchMove={this.state.touch ? move : null} onMouseLeave={this.state.touch ? null : out} onTouchEnd={this.state.touch ? out : null}>
+        <svg className={this.props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height} onMouseMove={globals().touch ? null : move}
+          onTouchMove={globals().touch ? move : null} onMouseLeave={globals().touch ? null : out} onTouchEnd={globals().touch ? out : null}>
           {this.props.children}
         </svg>
       );
@@ -43,10 +40,6 @@ class SVG extends React.Component {
       }
       return <span className='placeholder'/>;
     }
-  }
-
-  componentDidMount() {
-    this.setState({touch: Utils.touch()});
   }
 }
 

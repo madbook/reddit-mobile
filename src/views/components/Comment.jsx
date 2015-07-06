@@ -238,7 +238,10 @@ class Comment extends React.Component {
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
-            <MobileButton href='#' onClick={this.showReplyBox.bind(this)} className='comment-svg'>
+            <MobileButton
+              href='#'
+              onClick={this.showReplyBox.bind(this)}
+              className='comment-svg'>
               <ReplyIcon altered={this.state.showReplyBox}/>
             </MobileButton>
           </li>

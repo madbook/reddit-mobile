@@ -1,5 +1,5 @@
 import React from 'react';
-import Utils from '../../lib/danehansen/utils/Utils';
+import globals from '../../globals';
 
 class MobileButton extends React.Component {
   constructor(props) {
@@ -7,7 +7,6 @@ class MobileButton extends React.Component {
 
     this.state = {
       hover: false,
-      touch: false,
     };
 
     this._over = this._over.bind(this);
@@ -48,7 +47,7 @@ class MobileButton extends React.Component {
     delete props.over;
     delete props.out;
 
-    if(this.state.touch) {
+    if(globals().touch) {
       props.onTouchStart = this._over;
       props.onTouchEnd = this._out;
       if(move) {
@@ -77,10 +76,6 @@ class MobileButton extends React.Component {
         </button>
       );
     }
-  }
-
-  componentDidMount() {
-    this.setState({touch: Utils.touch()});
   }
 
   _over(evt) {

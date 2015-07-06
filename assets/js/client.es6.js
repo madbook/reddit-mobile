@@ -15,6 +15,8 @@ import getTimes from '../../src/lib/timing';
 import globals from '../../src/globals';
 import randomBySeed from '../../src/lib/randomBySeed';
 import routes from '../../src/routes';
+import Utils from '../../src/lib/danehansen/utils/Utils';
+
 import trackingEvents from './trackingEvents';
 import TweenLite from 'gsap';
 
@@ -135,6 +137,7 @@ function initialize(bindLinks) {
   var p;
 
   config.mountPoint = document.getElementById('app-container');
+  config.touch = true;
 
   _.forOwn(config, function(val, key) {
     if (bootstrap[key]) {
@@ -144,6 +147,7 @@ function initialize(bindLinks) {
 
   config.seed = window.bootstrap.seed || Math.random();
 
+  globals().touch = Utils.touch();
   globals().random = randomBySeed(config.seed);
 
   var app = new App(config);
@@ -303,7 +307,8 @@ function initialize(bindLinks) {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 
-  window.addEventListener('resize', _.throttle(function() {
+  window.addEventListener('resize', _.throttle(function(e) {
+    console.log(e);
       app.emit(constants.RESIZE);
     }.bind(app), 100));
 

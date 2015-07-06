@@ -93,7 +93,11 @@ class SortDropdown extends React.Component {
     var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
 
     return (
-      <Dropdown id={ this._id } button={ button } className={ this.props.className }>
+      <Dropdown 
+        app={ this.props.app }
+        id={ this._id }
+        button={ button }
+        className={ this.props.className }>
         {
           list.map(function(map) {
             var url = baseUrl;

@@ -85,7 +85,7 @@ class TopNav extends React.Component {
       currentSub = '?subreddit=' + this.state.subredditName;
     } else {
       breadcrumbLink = '/';
-      breadcrumbContents = <Logo/>;
+      breadcrumbContents = <Logo />;
     }
 
     var subredditMenu = null;
@@ -144,7 +144,7 @@ class TopNav extends React.Component {
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
-            <PostIcon/>
+            <PostIcon random={props.random}/>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <SearchIcon/>
