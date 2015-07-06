@@ -67,7 +67,7 @@ module.exports = function buildJS(gulp, options) {
       .transform(babelify.configure({
         ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|gsap|lodash)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
-        sourceMap: !options.debug,
+        sourceMap: options.debug,
       }), {
         global: true,
       })
