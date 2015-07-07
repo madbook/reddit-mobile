@@ -1,6 +1,8 @@
-import React from 'react';
+import React from 'react/addons';
 import Utils from '../../lib/danehansen/utils/Utils';
 import constants from '../../constants';
+
+var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -14,30 +16,38 @@ class Dropdown extends React.Component {
     this._onClick = this._onClick.bind(this);
     this._open = this._open.bind(this);
     this._close = this._close.bind(this);
+    this._key = Math.random();
   }
 
   render() {
     var className = 'Dropdown ' + (this.props.className || '');
-    className += (this.state.opened ? ' opened' : '');
     className += (this.props.right ? ' pull-right' : '');
 
-    var pointer = 'stalagmite';
-    var tabClass = 'Dropdown-tab shadow tween';
-    if (this.props.reversed) {
-      pointer = 'stalactite';
-      tabClass += ' Dropdown-reverse-tab';
+    if (this.state.opened) {
+      var pointer = 'stalagmite';
+      var tabClass = 'Dropdown-tab shadow';
+      if (this.props.reversed) {
+        pointer = 'stalactite';
+        tabClass += ' Dropdown-reverse-tab';
+      }
+
+      var tab = (
+        <div className={ tabClass } key={ this._key }>
+          <div className={pointer + (this.props.right ? ' pull-right' : '')}></div>
+          <ul className='Dropdown-ul list-unstyled'>
+            { this.props.children }
+          </ul>
+        </div>
+      );
     }
 
     return (
       <div className={className} onMouseEnter={ this.state.touch ? null : this._onMouseEnter }
            onMouseLeave={ this.state.touch ? null : this._onMouseLeave } onClick={ this.state.touch ? this._onClick : null }>
         { this.props.button }
-        <div className={ tabClass }>
-          <div className={pointer + (this.props.right ? ' pull-right' : '')}></div>
-          <ul className='Dropdown-ul list-unstyled'>
-            { this.props.children }
-          </ul>
-        </div>
+        <CSSTransitionGroup transitionName="Dropdown-tab">
+          { tab }
+        </CSSTransitionGroup>
       </div>
     );
   }

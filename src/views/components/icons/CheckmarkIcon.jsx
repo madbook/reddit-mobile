@@ -28,7 +28,7 @@ class CheckmarkIcon extends React.Component {
     }
     this.refs.line.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
     if (this.props.played) {
-      this._play(true, true);
+      this._play(true);
     }
   }
 
@@ -42,8 +42,8 @@ class CheckmarkIcon extends React.Component {
     }
   }
 
-  _play(bool, instant) {
-    TweenLite.to(this.refs.mask.getDOMNode(), instant ? 0 : 0.2, {attr: {width: bool ? SVG.ICON_SIZE : 0}, ease: Linear.easeNone});
+  _play(bool) {
+    TweenLite.to(this.refs.mask.getDOMNode(), 0.2, {attr: {width: bool ? SVG.ICON_SIZE : 0}, ease: Linear.easeNone});
   }
 }
 

@@ -2,11 +2,6 @@
   position: relative;
   text-align: left;
 
-  &.opened .Dropdown-tab {
-    opacity: 1;
-    visibility: visible;
-  }
-
   .SeashellIcon {
     height: 20px;
     width: 20px;
@@ -34,9 +29,6 @@
     padding: 10px 10px 5px;
     z-index: 10;
     line-height: 25px;
-    opacity: 0;
-    visibility: hidden;
-    .shadow;
     border: @gray-border;
     top: calc(~'100% + 10px');
 
@@ -48,6 +40,24 @@
     .icon-font({
       margin-right: 5px;
     });
+  }
+
+  .Dropdown-tab-enter {
+    .transition(0.3s);
+    opacity: 0;
+  }
+
+  .Dropdown-tab-enter-active {
+    opacity: 1;
+  }
+
+  .Dropdown-tab-leave {
+    .transition(0.3s);
+    opacity: 1
+  }
+
+  .Dropdown-tab-leave-active {
+    opacity: 0;
   }
 
   .Dropdown-reverse-tab {

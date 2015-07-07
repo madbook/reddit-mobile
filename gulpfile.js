@@ -10,7 +10,7 @@ require('babel/register')({
 var glob = require('glob');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var sequence = require('gulp-sequence');
+var sequence = require('gulp-sequence').use(gulp);
 var util = require('util');
 
 var options = {
