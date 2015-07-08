@@ -287,8 +287,6 @@ class Server {
     return function * (next) {
       setCompact(this, app);
 
-      this.showBetaBanner = !this.cookies.get('hideBetaBanner');
-
       global.random = randomBySeed(app.config.seed);
       this.staticMarkup = true;
 

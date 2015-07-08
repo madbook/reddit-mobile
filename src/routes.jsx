@@ -214,7 +214,6 @@ function routes(app) {
       adsPath: app.getConfig('adsPath'),
       origin: app.getConfig('origin'),
       propertyId: app.getConfig('googleAnalyticsId'),
-      showBetaBanner: ctx.showBetaBanner,
       userAgent: ctx.userAgent,
       csrf: ctx.csrf,
       compact: ctx.compact ? ctx.compact.toString() === 'true' : false,

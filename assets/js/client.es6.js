@@ -81,7 +81,6 @@ function modifyContext (ctx) {
   // Is set with a client-side cookie, sometimes hitting 'back' doesn't
   // restore proper state
   ctx.compact = (cookies.get('compact') || '').toString() === 'true';
-  ctx.hideBetaBanner = (cookies.get('hideBetaBanner') || '').toString() === 'true';
 
   ctx.redirect = redirect.bind(this);
 
