@@ -168,7 +168,7 @@ class ListingDropdown extends React.Component {
     }
 
     var viewComments;
-    if (props.listing._type === "Link") {
+    if (props.viewComments && props.listing._type === "Link") {
       viewComments = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' href={listing.permalink}>

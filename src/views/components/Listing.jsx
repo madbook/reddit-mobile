@@ -73,6 +73,7 @@ class Listing extends React.Component {
 
     var listingDropdownNode = (
       <ListingDropdown
+        viewComments={ props.single }
         listing={ listing }
         app={ props.app }
         showHide={ true }

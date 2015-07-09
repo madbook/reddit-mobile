@@ -256,6 +256,7 @@ class Comment extends React.Component {
           <li>
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
+                viewComments={ false }
                 saved={ props.comment.saved }
                 subreddit={ props.subredditName }
                 permalink={ permalink }
