@@ -41,22 +41,20 @@ class CommentIcon extends React.Component {
     }
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
+  _timeline() {
+    if (!this._tl) {
+      this._tl = new TimelineLite({paused: true});
+      this._tl.add(TweenLite.to(this.refs.left.getDOMNode(), 0.2, {x: '-14%', y: '-7%'}));
+      this._tl.add(TweenLite.to(this.refs.right.getDOMNode(), 0.2, {x: '14%', y: '7%'}), 0);
     }
-    var left = this.refs.left.getDOMNode();
-    var right = this.refs.right.getDOMNode();
-    this._timeline = new TimelineLite({paused: true});
-    this._timeline.add(TweenLite.to(left, 0.2, {x: '-14%', y: '-7%'}));
-    this._timeline.add(TweenLite.to(right, 0.2, {x: '14%', y: '7%'}), 0);
+    return this._tl;
   }
 
   _play(bool) {
     if (bool) {
-      this._timeline.play();
+      this._timeline().play();
     } else {
-      this._timeline.reverse();
+      this._timeline().reverse();
     }
   }
 }

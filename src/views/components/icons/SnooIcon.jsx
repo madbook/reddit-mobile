@@ -21,6 +21,55 @@ const _EAR_RADIUS = 1.523042;
 const _BLUE = '#24A0ED';
 const _GREEN = '#7CD344';
 
+function _tweenOn(callback) {
+  if (SVG.ENABLED) {
+    var BACK_BASE = 1.70158;
+    var refs = this.refs;
+    var nodes = [refs.rightEye, refs.leftEye, refs.rightEar, refs.leftEar];
+    var timeline = new TimelineLite({onComplete:callback});
+    timeline.add(TweenLite.from(this.refs.face.getDOMNode(), 0.3, {transformOrigin:'50% 50%', scale:0}));
+    var dur = timeline.duration();
+    for (var i = 0, iLen = nodes.length; i < iLen; i++) {
+      var overshoot = MyMath.random(2);
+      timeline.add(TweenLite.from(nodes[i].getDOMNode(), (BACK_BASE + overshoot) * 0.2, {scale: 0, transformOrigin: '50% 50%', ease: Back.easeOut.config(BACK_BASE + overshoot)}), 0.15 + MyMath.random(0.4));
+      if (i === 1) {
+        timeline.call(this.startBlinking, null, this, timeline.duration());
+      }
+    }
+    var base = refs.base.getDOMNode();
+    var stem = refs.stem.getDOMNode();
+    timeline.add(TweenLite.from(base, 0.001, {strokeWidth: 0, autoRound: false}), dur);
+    timeline.add(TweenLite.from(base, 0.2, {attr: {x1: _ROOT.x, y1: _ROOT.y}, ease: Cubic.easeIn}), dur);
+    dur += 0.2;
+    timeline.add(TweenLite.from(stem, 0.001, {strokeWidth: 0, autoRound: false}), dur);
+    timeline.add(TweenLite.from(stem, 0.2, {attr: {x2: _ELBOW.x, y2: _ELBOW.y}, ease: Cubic.easeOut}), dur);
+    dur += 0.2;
+    timeline.add(TweenLite.from(refs.dingleberry.getDOMNode(), 0.7, {transformOrigin: '50% 50%', scale: 0, ease: Back.easeOut.config(5)}), dur);
+    timeline.add(TweenLite.from(refs.mouth.getDOMNode(), 0.2, {drawSVG: 0, ease: Cubic.easeInOut}), dur);
+  }
+}
+
+function _tweenOff(callback) {
+  if (SVG.ENABLED) {
+    this._blinkable = false;
+    var refs = this.refs;
+    var nodes = [refs.face, refs.rightEar, refs.leftEar, refs.rightEye, refs.leftEye, refs.dingleberry];
+    var timeline = new TimelineLite({onComplete: callback});
+    var lower = refs.lowerEyelids.getDOMNode();
+    timeline.add(TweenLite.to([refs.upperEyelids.getDOMNode(), lower], 0, {attr: {height: 0}}));
+    timeline.add(TweenLite.to(lower, 0, {attr: {y: 12}}));
+    timeline.add(TweenLite.to(this.refs.stem.getDOMNode(), 0.15, {attr: {x2: _ELBOW.x, y2: _ELBOW.y}, ease: Cubic.easeIn}), 0);
+    timeline.add(TweenLite.to(this.refs.stem.getDOMNode(), 0.001, {strokeWidth: 0, autoRound: false}));
+    timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.15, {attr: {x1: _ROOT.x, y1: _ROOT.y}, transformOrigin: '50% 50%', ease: Cubic.easeOut}));
+    timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.001, {strokeWidth: 0, autoRound: false}));
+
+    for (var i = 0, iLen = nodes.length; i < iLen; i++) {
+      timeline.add(TweenLite.to(nodes[i].getDOMNode(), 0.3, {scale: 0, transformOrigin: '50% 50%', ease: Cubic.easeOut}), 0);
+    }
+    timeline.add(TweenLite.to(this.refs.mouth.getDOMNode(), 0.2, {drawSVG: 0, ease: Cubic.easeInOut}), 0);
+  }
+}
+
 class SnooIcon extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +91,6 @@ class SnooIcon extends React.Component {
     this._baseLength = Point.distance(_ROOT, _ELBOW);
     this._endLength = Point.distance(_DINGLEBERRY_CENTER, _ELBOW);
     this._ticking = false;
-    this._scale = 1;
   }
 
   render() {
@@ -86,11 +134,6 @@ class SnooIcon extends React.Component {
     );
   }
 
-  componentDidMount() {
-    var svg = React.findDOMNode(this);
-    this._scale = Math.min(svg.offsetWidth, svg.offsetHeight) / SVG.ICON_SIZE;
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
@@ -102,10 +145,14 @@ class SnooIcon extends React.Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this._timeout);
+    if (this._timeout) {
+      clearTimeout(this._timeout);
+    }
     this._blinkable = false;
     this._mounted = false;
-    TweenLite.ticker.removeEventListener('tick', this._onTick);
+    if (this._ticking) {
+      TweenLite.ticker.removeEventListener('tick', this._onTick);
+    }
   }
 
   _play(bool) {
@@ -118,10 +165,18 @@ class SnooIcon extends React.Component {
     }
   }
 
+  _scale() {
+    if (!this._s) {
+      var svg = React.findDOMNode(this);
+      this._s = Math.min(svg.offsetWidth, svg.offsetHeight) / SVG.ICON_SIZE;
+    }
+    return this._s;
+  }
+
   _onMove(evt) {
     this._mouse = Point.relativePosition(evt.nativeEvent, React.findDOMNode(this));
-    this._mouse.x /= this._scale;
-    this._mouse.y /= this._scale;
+    this._mouse.x /= this._scale();
+    this._mouse.y /= this._scale();
     if (!this._ticking) {
       this._ticking = true;
       TweenLite.ticker.addEventListener('tick', this._onTick);
@@ -186,6 +241,7 @@ class SnooIcon extends React.Component {
   }
 
   _blink() {
+    this._timeout = null;
     if (this._blinkable && this._mounted) {
       var upper = this.refs.upperEyelids.getDOMNode();
       var lower = this.refs.lowerEyelids.getDOMNode();
@@ -204,52 +260,11 @@ class SnooIcon extends React.Component {
   }
 
   tweenOn(callback) {
-    if (SVG.ENABLED) {
-      var BACK_BASE = 1.70158;
-      var refs = this.refs;
-      var nodes = [refs.rightEye, refs.leftEye, refs.rightEar, refs.leftEar];
-      var timeline = new TimelineLite({onComplete:callback});
-      timeline.add(TweenLite.from(this.refs.face.getDOMNode(), 0.3, {transformOrigin:'50% 50%', scale:0}));
-      var dur = timeline.duration();
-      for (var i = 0, iLen = nodes.length; i < iLen; i++) {
-        var overshoot = MyMath.random(2);
-        timeline.add(TweenLite.from(nodes[i].getDOMNode(), (BACK_BASE + overshoot) * 0.2, {scale: 0, transformOrigin: '50% 50%', ease: Back.easeOut.config(BACK_BASE + overshoot)}), 0.15 + MyMath.random(0.4));
-        if (i === 1) {
-          timeline.call(this.startBlinking, null, this, timeline.duration());
-        }
-      }
-      var base = refs.base.getDOMNode();
-      var stem = refs.stem.getDOMNode();
-      timeline.add(TweenLite.from(base, 0.001, {strokeWidth: 0, autoRound: false}), dur);
-      timeline.add(TweenLite.from(base, 0.2, {attr: {x1: _ROOT.x, y1: _ROOT.y}, ease: Cubic.easeIn}), dur);
-      dur += 0.2;
-      timeline.add(TweenLite.from(stem, 0.001, {strokeWidth: 0, autoRound: false}), dur);
-      timeline.add(TweenLite.from(stem, 0.2, {attr: {x2: _ELBOW.x, y2: _ELBOW.y}, ease: Cubic.easeOut}), dur);
-      dur += 0.2;
-      timeline.add(TweenLite.from(refs.dingleberry.getDOMNode(), 0.7, {transformOrigin: '50% 50%', scale: 0, ease: Back.easeOut.config(5)}), dur);
-      timeline.add(TweenLite.from(refs.mouth.getDOMNode(), 0.2, {drawSVG: 0, ease: Cubic.easeInOut}), dur);
-    }
+    _tweenOn.bind(this)(callback);
   }
 
   tweenOff(callback) {
-    if (SVG.ENABLED) {
-      this._blinkable = false;
-      var refs = this.refs;
-      var nodes = [refs.face, refs.rightEar, refs.leftEar, refs.rightEye, refs.leftEye, refs.dingleberry];
-      var timeline = new TimelineLite({onComplete: callback});
-      var lower = refs.lowerEyelids.getDOMNode();
-      timeline.add(TweenLite.to([refs.upperEyelids.getDOMNode(), lower], 0, {attr: {height: 0}}));
-      timeline.add(TweenLite.to(lower, 0, {attr: {y: 12}}));
-      timeline.add(TweenLite.to(this.refs.stem.getDOMNode(), 0.15, {attr: {x2: _ELBOW.x, y2: _ELBOW.y}, ease: Cubic.easeIn}), 0);
-      timeline.add(TweenLite.to(this.refs.stem.getDOMNode(), 0.001, {strokeWidth: 0, autoRound: false}));
-      timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.15, {attr: {x1: _ROOT.x, y1: _ROOT.y}, transformOrigin: '50% 50%', ease: Cubic.easeOut}));
-      timeline.add(TweenLite.to(this.refs.base.getDOMNode(), 0.001, {strokeWidth: 0, autoRound: false}));
-
-      for (var i = 0, iLen = nodes.length; i < iLen; i++) {
-        timeline.add(TweenLite.to(nodes[i].getDOMNode(), 0.3, {scale: 0, transformOrigin: '50% 50%', ease: Cubic.easeOut}), 0);
-      }
-      timeline.add(TweenLite.to(this.refs.mouth.getDOMNode(), 0.2, {drawSVG: 0, ease: Cubic.easeInOut}), 0);
-    }
+    _tweenOff.bind(this)(callback);
   }
 }
 

@@ -27,20 +27,6 @@ class PostIcon extends React.Component {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    var pencil = this.refs.pencil.getDOMNode();
-    var diff = _X_RIGHT - _X_LEFT;
-    this._timeline = new TimelineLite({paused: true});
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x: diff, y: -diff}));
-    this._timeline.add(TweenLite.to(this.refs.x1.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_LEFT}}), 0);
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x: 0}));
-    this._timeline.add(TweenLite.to(pencil, 0.1, {x: diff, y: 0}));
-    this._timeline.add(TweenLite.to(this.refs.x2.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_RIGHT}}), 0.2);
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
@@ -51,11 +37,25 @@ class PostIcon extends React.Component {
     }
   }
 
+  _timeline() {
+    if(!this._tl) {
+      var pencil = this.refs.pencil.getDOMNode();
+      var diff = _X_RIGHT - _X_LEFT;
+      this._tl = new TimelineLite({paused: true});
+      this._tl.add(TweenLite.to(pencil, 0.1, {x: diff, y: -diff}));
+      this._tl.add(TweenLite.to(this.refs.x1.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_LEFT}}), 0);
+      this._tl.add(TweenLite.to(pencil, 0.1, {x: 0}));
+      this._tl.add(TweenLite.to(pencil, 0.1, {x: diff, y: 0}));
+      this._tl.add(TweenLite.to(this.refs.x2.getDOMNode(), 0.1, {attr: {x2: _X_RIGHT, y2: _X_RIGHT}}), 0.2);
+    }
+    return this._tl;
+  }
+
   _play(bool) {
     if (bool) {
-      this._timeline.play();
+      this._timeline().play();
     } else {
-      this._timeline.reverse();
+      this._timeline().reverse();
     }
   }
 }

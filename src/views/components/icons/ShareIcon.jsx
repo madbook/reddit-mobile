@@ -42,29 +42,6 @@ class ShareIcon extends React.Component {
     }
     this.refs.plane.getDOMNode().setAttribute('clip-path', 'url(#' + this._planeMaskID + ')');
     this.refs.lines.getDOMNode().setAttribute('clip-path', 'url(#' + this._lineMaskID + ')');
-
-    var dur = 0.3;
-    var planeDelay = dur * 0.5;
-    var trailDelay = dur * 1.0;
-    var plane = this.refs.plane.getDOMNode();
-    var top = this.refs.top.getDOMNode();
-    var bottom = this.refs.bottom.getDOMNode();
-    var planeMask = this.refs.planeMask.getDOMNode();
-
-    var bottomTimeline = new TimelineLite({paused: true});
-    bottomTimeline.add(TweenLite.fromTo(bottom, dur, {attr: {x2: 0, y2: SVG.ICON_SIZE}}, {ease: Linear.easeNone, attr: {x2: _half, y2: _half}}), 0);
-    bottomTimeline.add(TweenLite.fromTo(bottom, dur, {attr: {x1: 0, y1: SVG.ICON_SIZE, 'stroke-dashoffset': _diag}}, {ease: Linear.easeNone, attr: {x1: _half, y1: _half, 'stroke-dashoffset': _diag * 2}}), trailDelay);
-
-    this._timeline = new TimelineLite({paused: true, onComplete: this._play});
-    this._timeline.add(TweenLite.fromTo(plane, dur, {x: 0, y: 0}, {x: _half, y: SVG.ICON_SIZE * -0.5, ease: Linear.easeNone}), 0);
-    this._timeline.add(TweenLite.fromTo(planeMask, dur, {x: 0, y: 0}, {x: -_half, y: SVG.ICON_SIZE * 0.5, ease: Linear.easeNone}), 0);
-    this._timeline.add(TweenLite.fromTo(top, dur, {attr: {x2: _half, y2: _half}}, {ease: Linear.easeNone, attr: {x2: SVG.ICON_SIZE, y2: 0}}), 0);
-    this._timeline.add(TweenLite.fromTo(top, dur, {attr: {x1: _half, y1: _half, 'stroke-dashoffset': 0}}, {ease: Linear.easeNone, attr: {x1: SVG.ICON_SIZE, y1: 0, 'stroke-dashoffset': _diag}}), trailDelay);
-    this._timeline.add(TweenLite.fromTo(plane, dur, {x: SVG.ICON_SIZE * -0.5, y: _half}, {x: 0, y: 0, ease: Linear.easeNone}), dur + planeDelay);
-    this._timeline.add(TweenLite.fromTo(planeMask, dur, {x: SVG.ICON_SIZE * 0.5, y: -_half}, {x: 0, y: 0, ease: Linear.easeNone}), dur + planeDelay);
-    this._timeline.call(bottomTimeline.play, [0], bottomTimeline, dur + planeDelay);
-    this._timeline.progress(0.1);
-    this._timeline.progress(0.0);
   }
 
   componentDidUpdate(prevProps) {
@@ -77,9 +54,37 @@ class ShareIcon extends React.Component {
     }
   }
 
+  _timeline() {
+    if (!this._tl) {
+      var dur = 0.3;
+      var planeDelay = dur * 0.5;
+      var trailDelay = dur * 1.0;
+      var plane = this.refs.plane.getDOMNode();
+      var top = this.refs.top.getDOMNode();
+      var bottom = this.refs.bottom.getDOMNode();
+      var planeMask = this.refs.planeMask.getDOMNode();
+
+      var bottomTimeline = new TimelineLite({paused: true});
+      bottomTimeline.add(TweenLite.fromTo(bottom, dur, {attr: {x2: 0, y2: SVG.ICON_SIZE}}, {ease: Linear.easeNone, attr: {x2: _half, y2: _half}}), 0);
+      bottomTimeline.add(TweenLite.fromTo(bottom, dur, {attr: {x1: 0, y1: SVG.ICON_SIZE, 'stroke-dashoffset': _diag}}, {ease: Linear.easeNone, attr: {x1: _half, y1: _half, 'stroke-dashoffset': _diag * 2}}), trailDelay);
+
+      this._tl = new TimelineLite({paused: true, onComplete: this._play});
+      this._tl.add(TweenLite.fromTo(plane, dur, {x: 0, y: 0}, {x: _half, y: SVG.ICON_SIZE * -0.5, ease: Linear.easeNone}), 0);
+      this._tl.add(TweenLite.fromTo(planeMask, dur, {x: 0, y: 0}, {x: -_half, y: SVG.ICON_SIZE * 0.5, ease: Linear.easeNone}), 0);
+      this._tl.add(TweenLite.fromTo(top, dur, {attr: {x2: _half, y2: _half}}, {ease: Linear.easeNone, attr: {x2: SVG.ICON_SIZE, y2: 0}}), 0);
+      this._tl.add(TweenLite.fromTo(top, dur, {attr: {x1: _half, y1: _half, 'stroke-dashoffset': 0}}, {ease: Linear.easeNone, attr: {x1: SVG.ICON_SIZE, y1: 0, 'stroke-dashoffset': _diag}}), trailDelay);
+      this._tl.add(TweenLite.fromTo(plane, dur, {x: SVG.ICON_SIZE * -0.5, y: _half}, {x: 0, y: 0, ease: Linear.easeNone}), dur + planeDelay);
+      this._tl.add(TweenLite.fromTo(planeMask, dur, {x: SVG.ICON_SIZE * 0.5, y: -_half}, {x: 0, y: 0, ease: Linear.easeNone}), dur + planeDelay);
+      this._tl.call(bottomTimeline.play, [0], bottomTimeline, dur + planeDelay);
+      this._tl.progress(0.1);
+      this._tl.progress(0.0);
+    }
+    return this._tl;
+  }
+
   _play() {
-    if (this.props.played && !this._timeline.isActive()) {
-      this._timeline.play(0);
+    if (this.props.played && !this._timeline().isActive()) {
+      this._timeline().play(0);
     }
   }
 }

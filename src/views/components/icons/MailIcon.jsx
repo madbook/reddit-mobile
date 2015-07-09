@@ -45,16 +45,6 @@ class MailIcon extends React.Component {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    this._timeline = new TimelineLite({paused: true});
-    this._timeline.add(TweenLite.to(this.refs.flap.getDOMNode(), 0.2, {rotationX: 180, transformOrigin:"50% 0%", ease: Cubic.easeInOut}));
-    this._timeline.call(this._flipFlop.bind(this));
-    this._timeline.add(TweenLite.to(this.refs.page.getDOMNode(), 0.2, {y: '-50%', ease: Cubic.easeInOut}));
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
@@ -65,11 +55,21 @@ class MailIcon extends React.Component {
     }
   }
 
+  _timeline() {
+    if (!this._tl) {
+      this._tl = new TimelineLite({paused: true});
+      this._tl.add(TweenLite.to(this.refs.flap.getDOMNode(), 0.2, {rotationX: 180, transformOrigin:"50% 0%", ease: Cubic.easeInOut}));
+      this._tl.call(this._flipFlop.bind(this));
+      this._tl.add(TweenLite.to(this.refs.page.getDOMNode(), 0.2, {y: '-50%', ease: Cubic.easeInOut}));
+    }
+    return this._tl;
+  }
+
   _play(bool) {
     if (bool) {
-      this._timeline.play();
+      this._timeline().play();
     } else {
-      this._timeline.reverse();
+      this._timeline().reverse();
     }
   }
 

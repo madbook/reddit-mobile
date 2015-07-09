@@ -28,20 +28,6 @@ class NSFWIcon extends React.Component {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    this._timeline = new TimelineLite({paused: true});
-    var all = this.refs.all.getDOMNode();
-    var lines = all.querySelectorAll('line');
-    for(var i = 0, iLen = lines.length; i < iLen; i++)
-    {
-      var line = lines[i];
-      this._timeline.add(TweenLite.to(line, 0.2, {attr: {'stroke-width': _STROKE * 2}}), i * 0.03);
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
@@ -52,11 +38,25 @@ class NSFWIcon extends React.Component {
     }
   }
 
+  _timeline() {
+    if (!this._tl) {
+      this._tl = new TimelineLite({paused: true});
+      var all = this.refs.all.getDOMNode();
+      var lines = all.querySelectorAll('line');
+      for(var i = 0, iLen = lines.length; i < iLen; i++)
+      {
+        var line = lines[i];
+        this._tl.add(TweenLite.to(line, 0.2, {attr: {'stroke-width': _STROKE * 2}}), i * 0.03);
+      }
+    }
+    return this._tl;
+  }
+
   _play(bool) {
     if(bool) {
-      this._timeline.play();
+      this._timeline().play();
     } else {
-      this._timeline.reverse();
+      this._timeline().reverse();
     }
   }
 }

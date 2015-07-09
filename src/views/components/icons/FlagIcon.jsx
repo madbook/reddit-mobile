@@ -38,24 +38,7 @@ class FlagIcon extends React.Component {
     if (!SVG.ENABLED) {
       return;
     }
-    var flag = this.refs.flag.getDOMNode();
-    flag.setAttribute('clip-path', 'url(#' + this._maskID + ')');
-    this._timeline = new TimelineLite({paused: true, onComplete: this._play});
-    var duration = 0.6;
-    for (var i = 1; i < _LEN; i++) {
-      var next = _POINTS[i];
-      var d = (next.x - _POINTS[i - 1].x) / _X_DIFF * duration;
-      if (i === 1) {
-        var ease = Sine.easeOut;
-      } else if (i === _LEN - 1) {
-        ease = Sine.easeIn;
-      } else {
-        ease = Cubic.easeInOut;
-      }
-      this._timeline.add(TweenLite.to(flag, d, {y: SVG.perc(next.y - _START_Y), ease: ease}));
-    }
-    this._timeline.add(TweenLite.to(flag, duration, {x: SVG.perc(_X_DIFF), ease: Linear.easeNone}), 0);
-    this._timeline.add(TweenLite.to(this.refs.mask.getDOMNode(), duration, {attr: {x: _POINTS[0].x - _X_DIFF}, ease: Linear.easeNone}), 0);
+    this.refs.flag.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
   }
 
   componentDidUpdate(prevProps) {
@@ -68,9 +51,32 @@ class FlagIcon extends React.Component {
     }
   }
 
+  _timeline() {
+    if (!this._tl) {
+      var flag = this.refs.flag.getDOMNode();
+      this._tl = new TimelineLite({paused: true, onComplete: this._play});
+      var duration = 0.6;
+      for (var i = 1; i < _LEN; i++) {
+        var next = _POINTS[i];
+        var d = (next.x - _POINTS[i - 1].x) / _X_DIFF * duration;
+        if (i === 1) {
+          var ease = Sine.easeOut;
+        } else if (i === _LEN - 1) {
+          ease = Sine.easeIn;
+        } else {
+          ease = Cubic.easeInOut;
+        }
+        this._tl.add(TweenLite.to(flag, d, {y: SVG.perc(next.y - _START_Y), ease: ease}));
+      }
+      this._tl.add(TweenLite.to(flag, duration, {x: SVG.perc(_X_DIFF), ease: Linear.easeNone}), 0);
+      this._tl.add(TweenLite.to(this.refs.mask.getDOMNode(), duration, {attr: {x: _POINTS[0].x - _X_DIFF}, ease: Linear.easeNone}), 0);
+    }
+    return this._tl;
+  }
+
   _play() {
-    if (this.props.played && !this._timeline.isActive()) {
-      this._timeline.play(0);
+    if (this.props.played && !this._timeline().isActive()) {
+      this._timeline().play(0);
     }
   }
 }
