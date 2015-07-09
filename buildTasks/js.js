@@ -57,7 +57,6 @@ module.exports = function buildJS(gulp, options) {
       .require('moment')
       .require('q')
       .require('react')
-      .require('dom-serializer')
       .require('reddit-text-js')
       .require('superagent');
 
@@ -92,11 +91,10 @@ module.exports = function buildJS(gulp, options) {
 
       var stream = bundler.bundle();
 
-      // combine streams for error handling
       var error = false;
       var combined = combiner.obj([
         stream,
-        exorcist(buildjs + '/client.js.map'),
+        //exorcist(buildjs + '/client.js.map'),
         source(entryFile),
         rename('client.js'),
         gulp.dest(buildjs),
@@ -126,13 +124,13 @@ module.exports = function buildJS(gulp, options) {
 
       // only catch errors in debug mode,
       // otherwise prod builds won't fail
-      if (options.debug) {
+      //if (options.debug) {
         combined
           .on('error', function(e) {
             error = true;
             notify(e);
           });
-      }
+      //}
     }
 
     bundler.on('update', rebundle);
