@@ -70,6 +70,8 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   });
 }
 
+var referrer = document.referrer;
+
 function modifyContext (ctx) {
   ctx.loid = this.getState('loid');
   ctx.loidcreated = this.getState('loidcreated');
@@ -77,6 +79,7 @@ function modifyContext (ctx) {
   ctx.user = this.getState('user');
   ctx.useCache = true;
   ctx.experiments = this.getState('experiments');
+  ctx.headers.referer = referrer;
 
   // Is set with a client-side cookie, sometimes hitting 'back' doesn't
   // restore proper state
@@ -269,7 +272,11 @@ function initialize(bindLinks) {
   // Don't re-render tracking pixel on first load. App reads from state
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
-  app.render(app.fullPathName(), true, modifyContext);
+  app.render(app.fullPathName(), true, modifyContext, function() {
+    // Reset the referrer that ctx uses after the first load.
+    referrer = document.location.href;
+  });
+
 
   app.on('route:desktop', function(route) {
     let options = {};

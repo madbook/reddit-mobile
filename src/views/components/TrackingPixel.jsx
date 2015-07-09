@@ -9,10 +9,9 @@ class TrackingPixel extends React.Component {
   componentDidMount () {
     if (this.props.url) {
       var trackingUrl = this.props.url + '&r=' + Math.random();
-      var referrer;
 
-      if (document && document.referrer) {
-        let domain = url.parse(document.referrer).host;
+      if (this.props.referrer) {
+        let domain = url.parse(this.props.referrer).host;
         trackingUrl += '&referrer_domain=' + domain;
       }
 

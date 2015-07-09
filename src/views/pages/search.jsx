@@ -251,6 +251,7 @@ class SearchPage extends React.Component {
     if (state.data.meta) {
       tracking = (
         <TrackingPixel
+          referrer={ props.referrer }
           url={ state.data.meta.tracking }
           user={ this.props.user }
           loid={ this.props.loid }

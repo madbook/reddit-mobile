@@ -50,6 +50,7 @@ class SubredditAboutPage extends React.Component {
     if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
+          referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
           user={ this.props.user }
           loid={ this.props.loid }

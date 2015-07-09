@@ -221,6 +221,7 @@ function routes(app) {
       query: ctx.query,
       params: ctx.params,
       url: ctx.path,
+      referrer: ctx.headers.referer,
       isGoogleCrawler: ctx.isGoogleCrawler,
       apiOptions: {
         useCache: ctx.useCache,
