@@ -45,6 +45,18 @@
     overflow: hidden;
     .transition(color 0.5s);
 
+    &.placeholder {
+      background-size: 100% auto;
+      background-image: url(../img/placeholder-text.svg);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+
+      &.collapsed {
+        height: 100%;
+        max-height: 100%;
+      }
+    }
+
     &.collapsed {
       color: lighten(@gray, 20%);
       //max-height here needs to correlate with a value in ListingContent.jsx

@@ -280,7 +280,9 @@ class Listing extends React.Component {
       <article ref='root' style={ {zIndex: props.z || 1} } className={'Listing' + (compact ? ' compact' : '') + (props.listing.promoted ? ' Listing-sponsored' : '') }>
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
-          <ListingContent expand = { this.expand }
+          <ListingContent 
+                          isThumbnail={compact}
+                          expand = { this.expand }
                           expanded = { state.expanded && !expandedCompact }
                           width={ state.width }
                           tallestHeight={ state.tallestHeight }

@@ -150,8 +150,12 @@ class ListingContent extends React.Component {
         }
       } else if (props.editing && listing.selftext) {
         return this._renderEditText(listing.selftext);
-      } else if (listing.selftext && !props.compact) {
-        return this._renderTextHTML(listing.expandContent, !expanded, listing.id);
+      } else if (listing.selftext) {
+        if (props.isThumbnail) {
+          return this._renderTextPlaceholder(listing.expandContent, !expanded, listing.id);
+        } else {
+          return this._renderTextHTML(listing.expandContent, !expanded, listing.id);
+        }
       } else if (listing.domain.indexOf('self.') === 0) {
         return this._renderPlaceholder();
       } else if (preview) {
@@ -185,6 +189,14 @@ class ListingContent extends React.Component {
     }
 
     return this._renderImage(src, href, onClick);
+  }
+
+  _renderTextPlaceholder(html, collapsed, id) {
+    return (
+      <div  ref='text' key={id} className={ 'ListingContent-text placeholder' + (collapsed ? ' collapsed' : '') }
+            onClick={ this.props.expand }>
+      </div>
+    );
   }
 
   _renderTextHTML(html, collapsed, id) {
