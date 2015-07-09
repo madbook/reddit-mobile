@@ -20,11 +20,8 @@ class ListingList extends React.Component {
   }
 
   componentDidMount() {
-    this._hasListeners = true;
-    this.props.app.on(constants.SCROLL, this._lazyLoad);
-    this.props.app.on(constants.RESIZE, this._lazyLoad);
     this.props.app.on(constants.RESIZE, this._resize);
-    this._lazyLoad();
+    this._addListeners();
     this._resize();
   }
 
@@ -79,6 +76,15 @@ class ListingList extends React.Component {
     }
 
     this._removeListeners();
+  }
+
+  _addListeners() {
+    if (!this._hasListeners) {
+      this._hasListeners = true;
+      this.props.app.on(constants.SCROLL, this._lazyLoad);
+      this.props.app.on(constants.RESIZE, this._lazyLoad);
+      this._lazyLoad();
+    }
   }
 
   _removeListeners() {
@@ -167,6 +173,9 @@ class ListingList extends React.Component {
     if (prevProps.compact !== this.props.compact) {
       this._resize();
       this._lazyLoad();
+    }
+    if (prevProps.listings !== this.props.listings) {
+      this._addListeners();
     }
   }
 }
