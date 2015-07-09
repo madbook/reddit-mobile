@@ -68,7 +68,6 @@ class DefaultLayout extends React.Component {
         <head>
           <title>{ this.props.title }</title>
           <link href={ baseCSS } rel='stylesheet' />
-          <link rel='manifest' href='manifest.json' />
           { canonical }
 
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
