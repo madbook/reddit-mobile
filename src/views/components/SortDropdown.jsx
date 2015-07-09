@@ -20,9 +20,9 @@ var _LISTS = {
     {text: 'best', param: 'confidence'},
     {text: 'top', param: 'top'},
     {text: 'new', param: 'new'},
-    {text: 'hot', param: 'hot'},
     {text: 'controversial', param: 'controversial'},
     {text: 'old', param: 'old'},
+    {text: 'q&a', param: 'qa'},
   ],
 
   both: [
