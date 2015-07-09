@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import constants from '../../constants';
+import globals from '../../globals';
 import Listing from '../components/Listing';
 import CommentPreview from '../components/CommentPreview';
 import Ad from '../components/Ad';
@@ -20,14 +21,14 @@ class ListingList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.RESIZE, this._resize);
+    globals().app.on(constants.RESIZE, this._resize);
     this._addListeners();
     this._resize();
   }
 
   componentWillUnmount() {
     this._removeListeners();
-    this.props.app.off(constants.RESIZE, this._resize);
+    globals().app.off(constants.RESIZE, this._resize);
   }
 
   _getLoadedDistance () {
@@ -81,16 +82,16 @@ class ListingList extends React.Component {
   _addListeners() {
     if (!this._hasListeners) {
       this._hasListeners = true;
-      this.props.app.on(constants.SCROLL, this._lazyLoad);
-      this.props.app.on(constants.RESIZE, this._lazyLoad);
+      globals().app.on(constants.SCROLL, this._lazyLoad);
+      globals().app.on(constants.RESIZE, this._lazyLoad);
       this._lazyLoad();
     }
   }
 
   _removeListeners() {
     if (this._hasListeners) {
-      this.props.app.off(constants.SCROLL, this._lazyLoad);
-      this.props.app.off(constants.RESIZE, this._lazyLoad);
+      globals().app.off(constants.SCROLL, this._lazyLoad);
+      globals().app.off(constants.RESIZE, this._lazyLoad);
       this._hasListeners = false;
     }
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import globals from '../../globals';
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class SearchBar extends React.Component {
     if (value.length > 3) {
       var cb = this.props.inputChangedCallback || Function.prototype;
       cb({ value: value });
-      this.props.app.emit('search', value);
+      globals().app.emit('search', value);
     }
   }
 

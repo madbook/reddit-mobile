@@ -2,6 +2,7 @@ import React from 'react';
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
 import SVG from '../../components/SVG';
+import globals from '../../../globals';
 
 const _MASK_SIZE = 11.4;
 const _EYE_CENTER = 7.10293;
@@ -13,7 +14,7 @@ class SearchIcon extends React.Component {
     this.state = {};
     this._look = this._look.bind(this);
     this._lookPause = this._lookPause.bind(this);
-    this._maskID = 'mask' + global.random();
+    this._maskID = 'mask' + globals().random();
   }
 
   render() {

@@ -1,11 +1,12 @@
 import React from 'react';
 import querystring from 'querystring';
 import { models } from 'snoode';
+import globals from '../../globals';
 
 class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       inputCssClass: '',
       savedReply: props.savedReply || '',
@@ -19,7 +20,7 @@ class CommentBox extends React.Component {
       inputCssClass: textEl.value.trim().length ? 'has-content' : '',
     });
   }
-  
+
   componentDidMount () {
     if (this.props.savedReply) {
       this.setState({inputCssClass: 'has-content'});
@@ -29,7 +30,7 @@ class CommentBox extends React.Component {
   componentWillUnmount () {
     window.localStorage.clear();
   }
-  
+
   componentWillReceiveProps (nextProps) {
     this.setState({savedReply: nextProps.savedReply})
   }
@@ -46,7 +47,7 @@ class CommentBox extends React.Component {
   submitComment (thingId, text) {
     if (!this.props.token) {
       if (text) {
-        window.localStorage.setItem(this.props.thingId, text);        
+        window.localStorage.setItem(this.props.thingId, text);
       }
       window.location = this.props.loginPath
       return;
@@ -73,7 +74,7 @@ class CommentBox extends React.Component {
       this.props.onSubmit(comment.data);
     }).bind(this));
 
-    this.props.app.emit('comment', comment);
+    globals().app.emit('comment', comment);
   }
 
   render () {

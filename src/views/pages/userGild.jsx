@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
-import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -26,11 +27,11 @@ class UserGildPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render() {
@@ -44,7 +45,7 @@ class UserGildPage extends React.Component {
 
     var api = this.props.api;
     var token = this.props.token;
-    var app = this.props.app;
+    var app = globals().app;
     var user = this.props.user || {};
 
     //var userProfile = this.state.data.data || {};
@@ -67,7 +68,6 @@ class UserGildPage extends React.Component {
     return (
       <div className="user-page user-gild">
         <TopSubnav
-          app={ app }
           user={ user }
           hideSort={ true }
           baseUrl={ this.props.url }

@@ -1,4 +1,3 @@
-
 import React from 'react/addons';
 import mobilify from '../../lib/mobilify';
 
@@ -6,6 +5,7 @@ import { models } from 'snoode';
 import moment from 'moment';
 import short from '../../lib/formatDifference';
 import constants from '../../constants';
+import globals from '../../globals';
 
 import CommentBox from '../components/CommentBox';
 import ListingDropdown from '../components/ListingDropdown';
@@ -168,7 +168,7 @@ class Comment extends React.Component {
           comment: res.data,
           editing: false,
         })
-        this.props.app.emit('comment:edit');
+        globals().app.emit('comment:edit');
       }
     }.bind(this), function(err) {
       this.setState({
@@ -245,7 +245,6 @@ class Comment extends React.Component {
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
               setScore={ this.setScore }
-              app={this.props.app}
               thing={ this.props.comment }
               token={ this.props.token }
               api={ this.props.api }
@@ -264,7 +263,6 @@ class Comment extends React.Component {
                 token={ props.token }
                 apiOptions={ props.apiOptions }
                 listing={props.comment}
-                app={props.app}
                 showEdit={ showEdit }
                 onEdit={ this.toggleEdit.bind(this) }
                 showDel={ showDel }

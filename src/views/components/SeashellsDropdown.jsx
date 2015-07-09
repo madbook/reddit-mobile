@@ -1,5 +1,6 @@
 import React from 'react';
 import constants from '../../constants';
+import globals from '../../globals';
 
 import SeashellIcon from '../components/icons/SeashellIcon';
 import Dropdown from '../components/Dropdown';
@@ -21,8 +22,7 @@ class SeashellsDropdown extends React.Component {
     var opened = this.state.opened;
     var button = <button type='button' className='SeashellsDropdown-button'><SeashellIcon played={opened} /></button>;
     return (
-      <Dropdown 
-        app={ this.props.app }
+      <Dropdown
         right={ true }
         button={ button }
         id={ this._id }
@@ -34,11 +34,11 @@ class SeashellsDropdown extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   _onOpen(bool) {

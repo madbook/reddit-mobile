@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
-import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import UserProfile from '../components/UserProfile';
@@ -27,11 +28,11 @@ class UserProfilePage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render() {
@@ -42,7 +43,7 @@ class UserProfilePage extends React.Component {
     var name = this.props.userName;
     var tracking;
 
-    var app = this.props.app;
+    var app = globals().app;
     var user = this.props.user;
 
     if (!this.state.loaded) {
@@ -79,7 +80,6 @@ class UserProfilePage extends React.Component {
         { loading }
 
         <TopSubnav
-          app={ app }
           user={ user }
           hideSort={ true }
           baseUrl={ this.props.url }

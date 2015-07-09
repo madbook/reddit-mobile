@@ -1,5 +1,6 @@
 import React from 'react';
 import constants from '../../constants';
+import globals from '../../globals';
 import cookies from 'cookies-js';
 import querystring from 'querystring';
 
@@ -31,13 +32,13 @@ class SideNav extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    this.props.app.on('route:start', this._close);
+    globals().app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    globals().app.on('route:start', this._close);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    this.props.app.off('route:start', this._close);
+    globals().app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    globals().app.off('route:start', this._close);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -64,7 +65,7 @@ class SideNav extends React.Component {
       query = '?' + querystring.stringify(this.props.query || {});
     }
 
-    this.props.app.emit('route:desktop', `${url}${query}`);
+    globals().app.emit('route:desktop', `${url}${query}`);
   }
 
   _goto(e) {
@@ -76,7 +77,7 @@ class SideNav extends React.Component {
     let query = querystring.stringify({ location });
 
     let url = `/goto?${query}`;
-    this.props.app.redirect(url);
+    globals().app.redirect(url);
   }
 
   render() {
@@ -300,7 +301,7 @@ class SideNav extends React.Component {
   }
 
   _toggle() {
-    this.props.app.emit(constants.SIDE_NAV_TOGGLE, !this.state.opened);
+    globals().app.emit(constants.SIDE_NAV_TOGGLE, !this.state.opened);
     if(!this.state.opened) {
       this._top = document.body.scrollTop;
       window.addEventListener('scroll', this._onScroll);
@@ -317,7 +318,7 @@ class SideNav extends React.Component {
   _close() {
     if (this.state.opened) {
       window.removeEventListener('scroll', this._onScroll);
-      this.props.app.emit(constants.SIDE_NAV_TOGGLE, false);
+      globals().app.emit(constants.SIDE_NAV_TOGGLE, false);
       this.setState({opened: false});
     }
   }
@@ -327,7 +328,7 @@ class SideNav extends React.Component {
   }
 
   _onViewClick() {
-    var app = this.props.app;
+    var app = globals().app;
 
     var compact = this.state.compact;
 
@@ -339,7 +340,7 @@ class SideNav extends React.Component {
     } else {
       cookies.set('compact', 'true', {
         expires: date,
-        secure: this.props.app.getConfig('https') || this.props.app.getConfig('httpsProxy'),
+        secure: app.getConfig('https') || app.getConfig('httpsProxy'),
       });
     }
 

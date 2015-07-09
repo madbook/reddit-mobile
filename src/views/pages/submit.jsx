@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-
+import globals from '../../globals';
 import { models } from 'snoode';
 
 import SubredditSelectionButton from '../components/SubredditSelectionButton';
@@ -88,7 +88,7 @@ class SubmitPage extends React.Component {
         }
       });
 
-      this.props.app.emit('post:error');
+      globals().app.emit('post:error');
       return;
     }
 
@@ -145,11 +145,11 @@ class SubmitPage extends React.Component {
       if (res.data && res.data.url) {
         var url = res.data.url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
 
-        props.app.redirect(url);
-        props.app.emit('post:submit', link.sr);
+        globals().app.redirect(url);
+        globals().app.emit('post:submit', link.sr);
       } else {
         this._handleApiErrors(res);
-        props.app.emit('post:error');
+        globals().app.emit('post:error');
       }
     }.bind(this),
     function(err) {
@@ -185,7 +185,7 @@ class SubmitPage extends React.Component {
   }
 
   changeSubreddit (newSub) {
-    this.props.app.emit('post:selectSubreddit', newSub);
+    globals().app.emit('post:selectSubreddit', newSub);
     this.setState({ subreddit: newSub });
     this.setState({ subredditSelectionOpen: false });
   }
@@ -210,7 +210,7 @@ class SubmitPage extends React.Component {
   }
 
   close () {
-    this.props.app.redirect('/');
+    globals().app.redirect('/');
   }
 
   updateCaptchaInfo (info) {
@@ -234,7 +234,7 @@ class SubmitPage extends React.Component {
       global.localStorage.setItem('savedLinkContent', JSON.stringify(content));
       var url = '/r/' + subName + '/about';
 
-      props.app.redirect(url);
+      globals().app.redirect(url);
     }
   }
 
@@ -245,7 +245,7 @@ class SubmitPage extends React.Component {
     var type = this.state.kind || 'link';
     var typeLable = '';
     if (this.state.kind) {
-      var typeLable = (this.state.kind === 'self') ? 'text ' : 'link ';      
+      var typeLable = (this.state.kind === 'self') ? 'text ' : 'link ';
     }
 
     var classes = {
@@ -337,7 +337,7 @@ class SubmitPage extends React.Component {
           </div>
           { captcha }
           <div className='Submit-sendreplies-box'>
-            <SeashellsDropdown app={ props.app } random={ props.random } right={ true } reversed={ true }>
+            <SeashellsDropdown right={ true } reversed={ true }>
               <li className='Dropdown-li'>
                 <MobileButton className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
                   <span ><CheckmarkIcon played={this.state.sendReplies} /> send replies to my inbox</span>

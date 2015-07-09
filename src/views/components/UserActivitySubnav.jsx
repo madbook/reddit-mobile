@@ -1,6 +1,7 @@
 import React from 'react';
-import querystring from 'querystring';
 import constants from '../../constants';
+import globals from '../../globals';
+import querystring from 'querystring';
 
 import SortDropdown from '../components/SortDropdown';
 import Dropdown from '../components/Dropdown';
@@ -21,11 +22,11 @@ class UserActivitySubnav extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   _onOpen(bool) {
@@ -109,7 +110,7 @@ class UserActivitySubnav extends React.Component {
 
     return (
       <div className='TopSubnav'>
-        <Dropdown app={ this.props.app } id={ this._id } button={ button } className='Dropdown-inline'>
+        <Dropdown id={ this._id } button={ button } className='Dropdown-inline'>
           {
             dropdownList.map((d) => {
               return (
@@ -127,7 +128,6 @@ class UserActivitySubnav extends React.Component {
         <span className='text-muted'> sorted by </span>
 
         <SortDropdown
-          app={ this.props.app }
           sort={ this.state.sort }
           list={ sortList }
           baseUrl={ this.buildUrl(baseUrl, this.state.activity) }

@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import querystring from 'querystring';
 import titleCase from '../../lib/titleCase';
-import constants from '../../constants';
 
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import Dropdown from '../components/Dropdown';
@@ -62,11 +63,11 @@ class SortDropdown extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    globals().app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   render() {
@@ -92,7 +93,7 @@ class SortDropdown extends React.Component {
     var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
 
     return (
-      <Dropdown app={ this.props.app } id={ this._id } button={ button } className={ this.props.className }>
+      <Dropdown id={ this._id } button={ button } className={ this.props.className }>
         {
           list.map(function(map) {
             var url = baseUrl;

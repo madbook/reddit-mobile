@@ -1,5 +1,6 @@
 import React from 'react';
 import SVG from '../../components/SVG';
+import globals from '../../../globals';
 
 const _POINTS = [
   {x: 5.833,  y: 5.233},
@@ -16,7 +17,7 @@ class FlagIcon extends React.Component {
     super(props);
     this.state = {};
     this._play = this._play.bind(this);
-    this._maskID = 'mask' + global.random();
+    this._maskID = 'mask' + globals().random();
   }
 
   render() {

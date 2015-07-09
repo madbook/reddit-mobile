@@ -1,6 +1,7 @@
 import React from 'react';
 import { models } from 'snoode';
 import constants from '../../constants';
+import globals from '../../globals';
 
 import UpvoteIcon from '../components/icons/UpvoteIcon';
 import DownvoteIcon from '../components/icons/DownvoteIcon';
@@ -32,22 +33,22 @@ class Vote extends React.Component {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    globals().app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    globals().app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   _onClick(str, evt) {
     switch (str) {
       case 'upvote':
         evt.preventDefault();
-        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, 1);
+        globals().app.emit(constants.VOTE+':'+this.props.thing.id, 1);
         break;
       case 'downvote':
         evt.preventDefault();
-        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, -1);
+        globals().app.emit(constants.VOTE+':'+this.props.thing.id, -1);
         break;
     }
   }
@@ -100,7 +101,7 @@ class Vote extends React.Component {
     });
 
     this.props.api.votes.post(options);
-    this.props.app.emit('vote', vote);
+    globals().app.emit('vote', vote);
 
     return true;
   }

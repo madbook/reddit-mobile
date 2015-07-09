@@ -4,6 +4,7 @@ import superagent from 'superagent';
 import { models } from 'snoode';
 
 import constants from '../../constants';
+import globals from '../../globals';
 
 import Listing from './Listing';
 
@@ -20,7 +21,7 @@ class Ad extends React.Component {
     this._removeListeners = this._removeListeners.bind(this);
   }
 
-  checkPos () {
+  checkPos() {
     if (this.state.unavailable) {
       return true;
     }
@@ -34,7 +35,7 @@ class Ad extends React.Component {
     return listing.checkPos.apply(listing, arguments);
   }
 
-  resize () {
+  resize() {
     if (this.state.unavailable) {
       return;
     }
@@ -48,7 +49,7 @@ class Ad extends React.Component {
     listing.resize.apply(listing, arguments);
   }
 
-  getAd () {
+  getAd() {
     var srnames = this.props.srnames;
 
     // If we're not on a sub/multi, we're on the front page, so get front page
@@ -83,7 +84,7 @@ class Ad extends React.Component {
       });
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getAd().then((ad) => {
       return this.setState({
         loaded: true,
@@ -95,8 +96,8 @@ class Ad extends React.Component {
       });
     });
 
-    this.props.app.on(constants.SCROLL, this._scroll);
-    this.props.app.on(constants.RESIZE, this._scroll);
+    globals().app.on(constants.SCROLL, this._scroll);
+    globals().app.on(constants.RESIZE, this._scroll);
 
     this._hasListeners = true;
     this._scroll();
@@ -114,8 +115,8 @@ class Ad extends React.Component {
 
   _removeListeners() {
     if (this._hasListeners) {
-      this.props.app.off(constants.SCROLL, this._scroll);
-      this.props.app.off(constants.RESIZE, this._scroll);
+      globals().app.off(constants.SCROLL, this._scroll);
+      globals().app.off(constants.RESIZE, this._scroll);
       this._hasListeners = false;
     }
   }
@@ -143,7 +144,7 @@ class Ad extends React.Component {
     }
   }
 
-  render () {
+  render() {
     if (!this.state.loaded || this.state.unavailable) {
       return null;
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import globals from '../../globals';
 
 class ErrorPage extends React.Component {
   constructor(props) {
@@ -7,12 +8,12 @@ class ErrorPage extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   _desktopSite(e) {
     e.preventDefault();
-    this.props.app.emit('route:desktop', this.props.url);
+    globals().app.emit('route:desktop', this.props.url);
   }
 
   render() {

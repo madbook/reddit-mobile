@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
-import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -86,11 +87,11 @@ class SearchPage extends React.Component {
 
   componentDidMount() {
     //this._performSearch(this.props);
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, '');
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, '');
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,7 +112,7 @@ class SearchPage extends React.Component {
       type: 'sr',
     });
 
-    props.app.redirect(url);
+    globals().app.redirect(url);
   }
 
   handleInputChanged(data) {
@@ -124,7 +125,7 @@ class SearchPage extends React.Component {
         subredditName: props.subredditName
       });
 
-      props.app.redirect(url);
+      globals().app.redirect(url);
     }
   }
 
@@ -132,7 +133,7 @@ class SearchPage extends React.Component {
     var state = this.state;
     var props = this.props;
 
-    var app = props.app;
+    var app = globals().app;
     var apiOptions = props.apiOptions;
     var compact = state.compact;
 
@@ -214,7 +215,6 @@ class SearchPage extends React.Component {
           <h4 className="text-center">Posts</h4>
 
           <SearchSortSubnav
-            app={ app }
             sort={ props.sort }
             time={ props.time }
             composeSortingUrl={ this._composeSortingUrl.bind(this) }
@@ -224,7 +224,6 @@ class SearchPage extends React.Component {
             https={ props.https }
             httpsProxy={ props.httpsProxy }
             apiOptions={ apiOptions }
-            app={ app }
             user={ props.user }
             token={ props.token }
             api={ props.api }

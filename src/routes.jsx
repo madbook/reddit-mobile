@@ -320,8 +320,8 @@ function routes(app) {
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
-        <BodyLayout {...props} app={app}>
-          <IndexPage {...props} key={ key } app={app}/>
+        <BodyLayout {...props}>
+          <IndexPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -369,8 +369,8 @@ function routes(app) {
 
     try {
       page = (
-        <BodyLayout {...props} app={ app }>
-          <SubredditAboutPage {...props} key={ key } app={ app } />
+        <BodyLayout {...props}>
+          <SubredditAboutPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -413,8 +413,8 @@ function routes(app) {
     try {
       var key = 'search-results'; // <-- don't make it dynamic if you want input element doesn't get re-rendered
       page = (
-        <BodyLayout {...props} app={ app }>
-          <SearchPage {...props} key={ key } app={ app } />
+        <BodyLayout {...props}>
+          <SearchPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -460,8 +460,8 @@ function routes(app) {
 
     try {
       page = (
-        <BodyLayout {...props} app={app}>
-          <ListingPage {...props} key={ key } app={app} />
+        <BodyLayout {...props}>
+          <ListingPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -504,13 +504,13 @@ function routes(app) {
 
     try {
       page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <TextSubNav>
             <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}`}>About</a></li>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/activity`}>Activity</a></li>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/gild`}>Give gold</a></li>
           </TextSubNav>
-          <UserProfilePage {...props} key={ key } app={app} />
+          <UserProfilePage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -553,7 +553,7 @@ function routes(app) {
 
     try {
       page = (
-        <SubmitPage {...props} app={app} />
+        <SubmitPage {...props}/>
       );
     } catch (e) {
       return app.error(e, this, next);
@@ -592,13 +592,13 @@ function routes(app) {
 
     try {
       page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <TextSubNav>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}`}>About</a></li>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/activity`}>Activity</a></li>
             <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}/gild`}>Give gold</a></li>
           </TextSubNav>
-          <UserGildPage {...props} key={ key } app={app} />
+          <UserGildPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -644,13 +644,13 @@ function routes(app) {
     try {
       var key = 'index-' + (this.params.subreddit || '') + stringify(this.query);
       page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <TextSubNav>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}`}>About</a></li>
             <li className='TextSubNav-li' active={true}><a className='TextSubNav-a active' href={`/u/${props.userName}/activity`}>Activity</a></li>
             <li className='TextSubNav-li'><a className='TextSubNav-a' href={`/u/${props.userName}/gild`}>Give gold</a></li>
           </TextSubNav>
-          <UserActivityPage {...props} key={ key } app={app}/>
+          <UserActivityPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -700,8 +700,8 @@ function routes(app) {
       var key = 'saved-' + hidden.toString() + stringify(this.query);
 
       page = (
-        <BodyLayout {...props} app={app}>
-          <UserSavedPage {...props} key={ key } app={app}/>
+        <BodyLayout {...props}>
+          <UserSavedPage {...props} key={ key }/>
         </BodyLayout>
       );
     } catch (e) {
@@ -730,7 +730,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <FAQPage {...props}/>
         </BodyLayout>
       );
@@ -752,7 +752,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <LoginPage {...props}/>
         </BodyLayout>
       );
@@ -775,7 +775,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <RegisterPage {...props}/>
         </BodyLayout>
       );
@@ -813,7 +813,7 @@ function routes(app) {
 
     try {
       var page = (
-        <BodyLayout {...props} app={app}>
+        <BodyLayout {...props}>
           <ErrorPage {...props}/>
         </BodyLayout>
       );

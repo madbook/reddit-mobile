@@ -1,31 +1,22 @@
 import 'babel/polyfill';
-
 import _ from 'lodash';
-
-import querystring from 'querystring';
-
-import attachFastClick from 'fastclick';
-
 import {ClientReactApp} from 'horse-react';
+import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
-
+import querystring from 'querystring';
 import superagent from 'superagent';
 
 var App = mixin(ClientReactApp);
 
 import config from '../../src/config';
-
 import constants from '../../src/constants';
-
-import routes from '../../src/routes';
-import TweenLite from 'gsap';
-
-import getTimes from '../../src/lib/timing';
-import randomBySeed from '../../src/lib/randomBySeed';
-
-import trackingEvents from './trackingEvents';
-
 import cookies from 'cookies-js';
+import getTimes from '../../src/lib/timing';
+import globals from '../../src/globals';
+import randomBySeed from '../../src/lib/randomBySeed';
+import routes from '../../src/routes';
+import trackingEvents from './trackingEvents';
+import TweenLite from 'gsap';
 
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
@@ -153,8 +144,9 @@ function initialize(bindLinks) {
 
   config.seed = window.bootstrap.seed || Math.random();
 
-  global.random = randomBySeed(config.seed);
+  globals().random = randomBySeed(config.seed);
   var app = new App(config);
+  globals().app = app;
   app.emitter.setMaxListeners(30);
 
   if (app.getState('token')) {

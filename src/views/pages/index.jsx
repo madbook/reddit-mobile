@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
-import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -39,8 +40,8 @@ class IndexPage extends React.Component {
 
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
+    globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   _onCompactToggle (state) {
@@ -50,11 +51,11 @@ class IndexPage extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render() {
@@ -80,7 +81,7 @@ class IndexPage extends React.Component {
     var api = props.api;
     var token = props.token;
     var user = props.user;
-    var app = props.app;
+    var app = globals().app;
 
     var firstId;
     var lastId;
@@ -169,7 +170,6 @@ class IndexPage extends React.Component {
         { loading }
 
         <TopSubnav
-          app={ app }
           user={ user }
           sort={ sort }
           list='listings'
@@ -188,7 +188,6 @@ class IndexPage extends React.Component {
             https={ props.https }
             httpsProxy={ props.httpsProxy }
             apiOptions={ apiOptions }
-            app={app}
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
             user={user}

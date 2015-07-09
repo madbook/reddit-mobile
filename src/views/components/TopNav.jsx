@@ -1,5 +1,6 @@
 import React from 'react/addons';
 import constants from '../../constants';
+import globals from '../../globals';
 import { models } from 'snoode';
 
 import HamburgerIcon from '../components/icons/HamburgerIcon';
@@ -65,13 +66,13 @@ class TopNav extends React.Component {
       loadSubredditData(this);
     }
 
-    this.props.app.on(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
-    this.props.app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
+    globals().app.on(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
+    globals().app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
-    this.props.app.off(constants.SIDE_NAV_TOGGLE, this._onToggle);
+    globals().app.off(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
+    globals().app.off(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   render() {
@@ -92,7 +93,7 @@ class TopNav extends React.Component {
         props.subredditName.indexOf('+') === -1 &&
         props.subredditName !== 'all') {
       subredditMenu = (
-        <SeashellsDropdown app={ props.app } right={ true }>
+        <SeashellsDropdown right={ true }>
           <li className='Dropdown-li'>
             <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
               <InfoIcon/>
@@ -135,7 +136,7 @@ class TopNav extends React.Component {
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
-            <PostIcon random={props.random}/>
+            <PostIcon/>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <SearchIcon/>
@@ -176,11 +177,11 @@ class TopNav extends React.Component {
             this.setState({
               userIsSubscribed: !state.userIsSubscribed
             });
-            props.app.render('/400', false);
+            globals().app.render('/400', false);
           }
 
           // Reset subscriptions so they are loaded next request
-          props.app.setState('subscriptions', undefined);
+          globals().app.setState('subscriptions', undefined);
         }.bind(this));
     }
   }
@@ -212,7 +213,7 @@ class TopNav extends React.Component {
   _onClick(str) {
     switch (str) {
       case 'hamburger':
-        this.props.app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
+        globals().app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
         break;
       case 'post':
         // TODO post

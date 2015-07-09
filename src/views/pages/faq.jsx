@@ -1,4 +1,5 @@
 import React from 'react';
+import globals from '../../globals';
 
 class FAQPage extends React.Component {
   constructor(props) {
@@ -6,7 +7,7 @@ class FAQPage extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render () {

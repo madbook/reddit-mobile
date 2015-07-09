@@ -1,12 +1,13 @@
 import React from 'react';
 import SVG from '../../components/SVG';
+import globals from '../../../globals';
 
 class CheckmarkIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
     this._play = this._play.bind(this);
-    this._maskID = 'mask' + global.random();
+    this._maskID = 'mask' + globals().random();
   }
 
   render() {

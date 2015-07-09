@@ -1,5 +1,6 @@
 import React from 'react/addons';
 import constants from '../../constants';
+import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import short from '../../lib/formatDifference';
 
@@ -75,7 +76,6 @@ class Listing extends React.Component {
       <ListingDropdown
         viewComments={ props.single }
         listing={ listing }
-        app={ props.app }
         showHide={ true }
         saved={ listing.saved }
         subreddit={ listing.subreddit }
@@ -216,7 +216,6 @@ class Listing extends React.Component {
         </ul>
         <div className='Listing-vote'>
           <Vote
-            app={ props.app }
             thing={ listing }
             token={ props.token }
             api={ props.api }
@@ -306,18 +305,18 @@ class Listing extends React.Component {
   componentDidMount() {
     if (this.props.single) {
       this._loadContent();
-      this.props.app.on(constants.RESIZE, this.resize);
+      globals().app.on(constants.RESIZE, this.resize);
       this.resize();
     } else {
-      this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+      globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 
   componentWillUnmount() {
     if (this.props.single) {
-      this.props.app.off(constants.RESIZE, this.resize);
+      globals().app.off(constants.RESIZE, this.resize);
     } else {
-      this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+      globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 

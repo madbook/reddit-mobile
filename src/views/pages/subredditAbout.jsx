@@ -1,6 +1,7 @@
 import React from 'react';
-import q from 'q';
 import constants from '../../constants';
+import globals from '../../globals';
+import q from 'q';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -27,11 +28,11 @@ class SubredditAboutPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, `r/${this.props.subredditName}/about`);
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, `r/${this.props.subredditName}/about`);
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render() {
@@ -44,7 +45,7 @@ class SubredditAboutPage extends React.Component {
       );
     }
 
-    var app = this.props.app;
+    var app = globals().app;
     var user = this.props.user;
 
     if (this.state.data.meta) {
@@ -80,7 +81,6 @@ class SubredditAboutPage extends React.Component {
         { loading }
 
         <TopSubnav
-          app={ app }
           user={ user }
           hideSort={ true }
           baseUrl={ this.props.url }

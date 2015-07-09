@@ -1,5 +1,6 @@
 import React from 'react';
 import constants from '../../constants';
+import globals from '../../globals';
 
 import { models } from 'snoode';
 
@@ -180,7 +181,7 @@ class ListingDropdown extends React.Component {
     }
 
     return (
-      <SeashellsDropdown app={ props.app } right={ true }>
+      <SeashellsDropdown right={ true }>
         { editLink }
         { delLink }
         { viewComments }
@@ -215,17 +216,17 @@ class ListingDropdown extends React.Component {
   _onSaveClick(e) {
     e.preventDefault();
 
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    var options = globals().app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
     if (this.state.saved) {
-      this.props.app.api.saved.delete(options).done(() => { });
+      globals().app.api.saved.delete(options).done(() => { });
       this.setState({ saved: false });
     } else {
-      this.props.app.api.saved.post(options).done(() => { });
+      globals().app.api.saved.post(options).done(() => { });
       this.setState({ saved: true });
     }
 
@@ -237,18 +238,18 @@ class ListingDropdown extends React.Component {
   _onHideClick(e) {
     e.preventDefault();
     // api call
-    this.props.app.emit('hide', this.props.listing.id);
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    globals().app.emit('hide', this.props.listing.id);
+    var options = globals().app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
     if (this.state.hidden) {
-      this.props.app.api.hidden.delete(options).done(() => { });
+      globals().app.api.hidden.delete(options).done(() => { });
       this.setState({ hidden: false });
     } else {
-      this.props.app.api.hidden.post(options).done(() => { });
+      globals().app.api.hidden.post(options).done(() => { });
       this.setState({ hidden: true });
     }
 
@@ -277,17 +278,17 @@ class ListingDropdown extends React.Component {
       other_reason: textEl.value.trim(),
     });
 
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    var options = globals().app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: report,
     });
 
-    this.props.app.api.reports.post(options).done((comment) => {
+    globals().app.api.reports.post(options).done((comment) => {
       this._onReport();
     });
 
-    this.props.app.emit('report', this.props.listing.id);
+    globals().app.emit('report', this.props.listing.id);
   }
 
   _onReport() {

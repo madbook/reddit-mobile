@@ -112,7 +112,7 @@ class SubredditSelectionButton extends React.Component {
               <span className='sub-icon-placeholder'></span>{ sub.display_name }
             </MobileButton>
             <div className='sub-selection-menu pull-right'>
-              <SeashellsDropdown app={ props.app } random={ props.random } right={ true }>
+              <SeashellsDropdown right={ true }>
                 <li className='Dropdown-li'>
                   <MobileButton className='Dropdown-button' onClick={props.goToAboutPage.bind(null, sub.display_name)}>
                     <span

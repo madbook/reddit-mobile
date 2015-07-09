@@ -1,5 +1,7 @@
 import React from 'react';
 import SVG from '../../components/SVG';
+import globals from '../../../globals';
+
 var _diag;
 var _half;
 
@@ -8,8 +10,8 @@ class ShareIcon extends React.Component {
     super(props);
     this.state = {};
     this._play = this._play.bind(this);
-    this._planeMaskID = 'mask' + global.random();
-    this._lineMaskID = 'mask' + global.random();
+    this._planeMaskID = 'mask' + globals().random();
+    this._lineMaskID = 'mask' + globals().random();
   }
 
   render() {

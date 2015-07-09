@@ -1,7 +1,7 @@
 import React from 'react';
-import SVG from '../../components/SVG';
-
 import MyMath from '../../../lib/danehansen/utils/MyMath';
+import SVG from '../../components/SVG';
+import globals from '../../../globals';
 
 class DownvoteIcon extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class DownvoteIcon extends React.Component {
     this.state = {};
     this._alter = this._alter.bind(this);
     this._play = this._play.bind(this);
-    this._maskID = 'mask' + global.random();
+    this._maskID = 'mask' + globals().random();
   }
 
   render() {

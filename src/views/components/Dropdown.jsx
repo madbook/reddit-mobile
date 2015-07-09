@@ -1,6 +1,7 @@
 import React from 'react/addons';
 import Utils from '../../lib/danehansen/utils/Utils';
 import constants from '../../constants';
+import globals from '../../globals';
 
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -58,7 +59,7 @@ class Dropdown extends React.Component {
 
   componentWillUnmount() {
     if (this.state.touch) {
-      this.props.app.off(constants.DROPDOWN_OPEN, this._close);
+      globals().app.off(constants.DROPDOWN_OPEN, this._close);
     }
   }
 
@@ -80,19 +81,19 @@ class Dropdown extends React.Component {
 
   _open() {
     this.setState({opened: true});
-    this.props.app.emit(constants.DROPDOWN_OPEN, this.props.id);
-    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
+    globals().app.emit(constants.DROPDOWN_OPEN, this.props.id);
+    globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
     if (this.state.touch) {
-      this.props.app.on(constants.DROPDOWN_OPEN, this._close);
+      globals().app.on(constants.DROPDOWN_OPEN, this._close);
     }
   }
 
   _close() {
     this.componentWillUnmount();
     this.setState({opened: false});
-    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
+    globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
 

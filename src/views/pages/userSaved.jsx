@@ -1,7 +1,8 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
-import constants from '../../constants';
 
 import Loading from '../components/Loading';
 import ListingList from '../components/ListingList';
@@ -28,12 +29,12 @@ class UserSavedPage extends React.Component {
       });
     }).bind(this));
 
-    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
+    globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   _onCompactToggle (state) {
@@ -43,7 +44,7 @@ class UserSavedPage extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   render() {
@@ -67,7 +68,7 @@ class UserSavedPage extends React.Component {
     var api = props.api;
     var token = props.token;
 
-    var app = props.app;
+    var app = globals().app;
     var user = props.user;
 
     var activities = state.data.data || [];
@@ -117,7 +118,6 @@ class UserSavedPage extends React.Component {
               firstPage={page}
               https={ props.https }
               httpsProxy={ props.httpsProxy }
-              app={app}
               page={page}
               hideSubredditLabel={false}
               user={user}

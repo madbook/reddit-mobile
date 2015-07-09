@@ -2,11 +2,12 @@ import React from 'react';
 
 import { models } from 'snoode';
 
-import q from 'q';
-import querystring from 'querystring';
+import _ from 'lodash';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
-import _ from 'lodash';
+import globals from '../../globals';
+import q from 'q';
+import querystring from 'querystring';
 
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
@@ -47,14 +48,14 @@ class ListingPage extends React.Component {
     }).bind(this));
 
     if (this.props.subredditName) {
-      this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
+      globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
     } else {
-      this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE);
+      globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE);
     }
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   onNewComment (comment) {
@@ -93,7 +94,7 @@ class ListingPage extends React.Component {
           data: data,
         })
 
-        this.props.app.emit('post:edit');
+        globals().app.emit('post:edit');
       }
     }.bind(this), function(err) {
       this.setState({linkEditError: err});
@@ -111,12 +112,12 @@ class ListingPage extends React.Component {
     // nothing returned for this endpoint
     // so we assume success :/
     props.api.links.delete(options).then(function(){
-      var data = props.app.state.data;
+      var data = globals().app.state.data;
       _.remove(data.data, {name: id});
-      props.app.setState({
+      globals().app.setState({
         data: data,
       })
-      props.app.redirect('/r/' + props.subredditName);
+      globals().app.redirect('/r/' + props.subredditName);
     })
   }
 
@@ -146,7 +147,7 @@ class ListingPage extends React.Component {
     var token = props.token;
     var author = listing.author;
     var sort = props.sort || 'best';
-    var app = props.app;
+    var app = globals().app;
 
     var listingElement;
     var commentBoxElement;
@@ -176,7 +177,6 @@ class ListingPage extends React.Component {
           https={ props.https }
           httpsProxy={ props.httpsProxy }
           apiOptions={ apiOptions }
-          app={ app }
           listing={ listing }
           single={ true }
           user={ user }
@@ -193,7 +193,6 @@ class ListingPage extends React.Component {
 
       commentBoxElement = (
         <CommentBox
-          app={ app }
           apiOptions={ apiOptions }
           thingId={ listing.name }
           user={ user }
@@ -236,7 +235,6 @@ class ListingPage extends React.Component {
         { loading }
 
         <GoogleCarouselMetadata
-          app={ props.app }
           url={ props.url }
           origin={ props.origin }
           show={ props.isGoogleCrawler }
@@ -245,7 +243,6 @@ class ListingPage extends React.Component {
         />
 
         <TopSubnav
-          app={ app }
           user={ user }
           sort={ sort }
           list='comments'
@@ -265,7 +262,6 @@ class ListingPage extends React.Component {
                     subredditName={ props.subredditName }
                     permalinkBase={ permalink }
                     highlight={ props.commentId }
-                    app={app}
                     comment={comment}
                     index={i}
                     key={`page-comment-${comment.name}`}

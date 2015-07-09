@@ -14,7 +14,6 @@ class SearchSortSubnav extends React.Component {
         <span className="text-muted">Sorted by </span>
 
         <SortDropdown
-          app={ props.app }
           sort={ props.sort || 'relevance' }
           sortParam={ 'sort' }
           list={ 'search' }
@@ -25,7 +24,6 @@ class SearchSortSubnav extends React.Component {
         <span className="text-muted"> from </span>
 
         <SortDropdown
-          app={ props.app }
           sort={ props.time || 'all' }
           sortParam={ 'time' }
           list={ 'time' }

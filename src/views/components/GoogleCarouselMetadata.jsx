@@ -1,8 +1,8 @@
 import React from 'react';
-import moment from 'moment';
-import mobilify from '../../lib/mobilify';
-
 import cookies from 'cookies-js';
+import globals from '../../globals';
+import mobilify from '../../lib/mobilify';
+import moment from 'moment';
 
 class GoogleCarouselMetadata extends React.Component {
   constructor (props) {
@@ -105,7 +105,7 @@ class GoogleCarouselMetadata extends React.Component {
 
     let googleScript = `
       <script type='application/ld+json'>
-        ${props.app.safeStringify(baseObject)}
+        ${globals().app.safeStringify(baseObject)}
       </script>
     `;
 

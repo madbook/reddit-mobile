@@ -506,7 +506,7 @@ class ListingContent extends React.Component {
     } catch (err) {
     }
     // TODO: this doesn't work
-    // if (props.app.config.debug) {
+    // if (globals().app.config.debug) {
       // console.log('ListingContent._aspectRatio: missed a case', listing);
     // }
   }
