@@ -1,5 +1,6 @@
 import React from 'react';
 import MyMath from '../../lib/danehansen/utils/MyMath';
+import mobilify from '../../lib/mobilify';
 
 import AutoTween from '../components/AutoTween';
 import PlayIcon from '../components/icons/PlayIcon';
@@ -92,15 +93,16 @@ class ListingContent extends React.Component {
   buildContent() {
     var props = this.props;
     var listing = props.listing;
+
     if (!listing) {
       return null;
     }
+
     var expanded = this._isExpanded();
     var media = listing.media;
-    var url = listing.url;
 
     var oembed = media ? media.oembed : null;
-    var permalink = props.listing.promoted ? url : listing.cleanPermalink;
+    var url = mobilify(listing.url || listing.cleanPermalink);
 
     var preview = this._previewImageUrl();
 
@@ -113,13 +115,13 @@ class ListingContent extends React.Component {
         if (expanded) {
           return this._renderIFrame(url);
         } else {
-          return this.buildImage(preview || thumbnailUrl, permalink);
+          return this.buildImage(preview || thumbnailUrl, url);
         }
       } else if (type === 'video') {
         if (expanded) {
           return this._renderHTML(listing.expandContent);
         } else {
-          return this.buildImage(preview || thumbnailUrl, permalink, props.expand);
+          return this.buildImage(preview || thumbnailUrl, url, props.expand);
         }
       } else if (type === 'rich') {
           var findSrc = oembed.html.match(/src="([^"]*)/);
@@ -144,7 +146,7 @@ class ListingContent extends React.Component {
         if (expanded && _httpsRegex.test(url)) {
           return this.buildImage(url, url);
         } else {
-          return this.buildImage(preview, permalink, (url.match(_gifMatch) && !expanded) ? props.expand : null);
+          return this.buildImage(preview, url, (url.match(_gifMatch) && !expanded) ? props.expand : null);
         }
       } else if (props.editing && listing.selftext) {
         return this._renderEditText(listing.selftext);
@@ -153,7 +155,7 @@ class ListingContent extends React.Component {
       } else if (listing.domain.indexOf('self.') === 0) {
         return this._renderPlaceholder();
       } else if (preview) {
-        return this.buildImage(preview, permalink);
+        return this.buildImage(preview, url);
       }
 
     return this._renderPlaceholder();
@@ -328,7 +330,7 @@ class ListingContent extends React.Component {
     var props = this.props;
     if (this._isCompact()) {
       return (
-        <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')} href={ props.listing.cleanPermalink }/>
+        <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')} href={ mobilify(props.listing.url) }/>
       );
     }
   }
