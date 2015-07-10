@@ -373,11 +373,13 @@ class ListingContent extends BaseComponent {
         <div className={ errorClass } role='alert'>
           { errorText }
         </div>
-        <textarea
-          className='form-control'
-          defaultValue={text}
-          ref='updatedText'
-        ></textarea>
+        <div className='ListingContent-textarea-holder'>
+          <textarea
+            className='form-control'
+            defaultValue={text}
+            ref='updatedText'
+          ></textarea>
+        </div>
         <div className='btn-group btn-group-justified'>
           <div className='btn-group'>
             <button

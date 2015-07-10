@@ -27,13 +27,17 @@
   .stalactite {
     top: -1px;
   }
-
-  .form-control {
-    resize: none;
-    border:none;
-    height: 300px;
-  }
 }
+
+  .ListingContent-textarea-holder {
+    height: 300px;
+    overflow: auto;
+
+    .form-control {
+      resize: none;
+      min-height: 100%;
+    }
+  }
 
   .ListingContent-text {
     background-color: @body-bg-alt;

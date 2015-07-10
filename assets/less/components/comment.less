@@ -80,12 +80,6 @@
   &.comment-highlighted {
     background-color: darken(@brand-primary-bg-lightest, 2.5%);
   }
-
-  .form-control {
-    resize: none;
-    border:none;
-    height: 300px;
-  }
 }
 
 .comment-edit-box {
@@ -179,6 +173,7 @@
 
 .CommentBox {
   text-align: right;
+  padding-left: 5px;
 
   .btn-post {
     .transition(opacity .2s ease);
@@ -186,19 +181,31 @@
     visibility: hidden;
   }
 
+
+}
+
+.CommentBox-textarea-holder {
+    margin-bottom: 15px;
+    height: 4em;
+
   .form-control {
     .transition(height .2s ease);
-    height: 4em;
     resize: none;
-    border: 1px solid @light-gray;
-    border-radius: 5px;
-    margin-bottom: 15px;
+    height: 200%;
+  }
 
-    &:focus + .btn-post,
-    &.has-content + .btn-post {
-      opacity: 1;
-      visibility: visible;
-    }
+  &.has-content + .btn-post {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.comment-textarea-holder {
+  height: 300px;
+
+  .form-control {
+    resize: none;
+    min-height: 200%;
   }
 }
 

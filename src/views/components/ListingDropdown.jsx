@@ -55,9 +55,9 @@ class ListingDropdown extends BaseComponent {
     if (props.token) {
       if (this.state.reportFormOpen) {
         reportForm = (
-          <form action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
+          <form className='ListingDropdown-form' action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
             <div className='input-group'>
-              <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
+              <input type='text' className='form-control zoom-fix' placeholder='reason' ref='otherReason' />
               <span className='input-group-btn'>
                 <button className='btn btn-default' type='submit'>
                   <span className='glyphicon glyphicon-chevron-right'></span>
@@ -121,7 +121,7 @@ class ListingDropdown extends BaseComponent {
       editLink = (
         <li className='Dropdown-li'>
           <MobileButton className='Dropdown-button' onClick={ this._onEditClick }>
-            <span className='icon-post' />
+            <span className='icon-post-circled' />
             <span className='Dropdown-text'>Edit Post</span>
           </MobileButton>
         </li>

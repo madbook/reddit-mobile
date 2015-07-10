@@ -145,7 +145,7 @@ class TopNav extends BaseComponent {
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
-            <PostIcon random={props.random}/>
+            <PostIcon noCircle={ true }/>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <SearchIcon/>

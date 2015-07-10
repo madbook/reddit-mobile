@@ -277,7 +277,6 @@ class SubmitPage extends BaseComponent {
       errorClass = 'row alert alert-danger alert-bar Submit-alert-bar';
     }
 
-
     var captcha;
     var showCaptchaError = (this.state.captchaCount > 1 &&
                             error.type === 'BAD_CAPTCHA');
@@ -306,66 +305,79 @@ class SubmitPage extends BaseComponent {
       postForm = (
         <div className='Submit-main-form-wrap'>
           <div className='row Submit-header'>
-            <button type='button' className='close pull-left' onClick={ this.close.bind(this) }>
-              <span className='Submit-close' aria-hidden='true'>&times;</span>
-            </button>
-            <span className='Submit-header-text'>{'Create a new ' + typeLable + 'post'}</span>
-            <button
-              className='pull-right btn btn-primary'
-              type='submit'
-              onClick={this.submit.bind(this)}
-            >Post</button>
+            <div className='Submit-centered'>
+              <button type='button' className='close pull-left' onClick={ this.close.bind(this) }>
+                <span className='Submit-close' aria-hidden='true'>&times;</span>
+              </button>
+              <span className='Submit-header-text'>{'Create a new ' + typeLable + 'post'}</span>
+              <button
+                className='pull-right btn btn-primary'
+                type='submit'
+                onClick={this.submit.bind(this)}
+              >Post</button>
+            </div>
           </div>
           <div className={ errorClass } role='alert'>
-            { errorText }
+            <div className='Submit-centered'>
+              { errorText }
+            </div>
           </div>
-          <div className={'row Submit-title ' + classes.title}>
-            <textarea className='form-control full-screen-textarea'
-                      placeholder='Give this post a title'
-                      name='title'
-                      ref='title'
-                      maxLength='300'
-                      onChange={this.handleChange.bind(this, 'title')}
-                      value={this.state.title}
-            ></textarea>
-          </div>
-          <div className={'row Submit-body ' + classes.body}>
-            <textarea className='form-control Submit-body-text'
-                      placeholder='share something interesting'
-                      ref='body'
-                      name={type}
-                      onChange={this.handleChange.bind(this, 'body')}
-                      value={this.state.body}
-            ></textarea>
-          </div>
+            <div className={'Submit-title ' + classes.title}>
+              <div className='Submit-centered'>
+                <textarea className='form-control full-screen-textarea'
+                          placeholder='Give this post a title'
+                          name='title'
+                          ref='title'
+                          maxLength='300'
+                          onChange={this.handleChange.bind(this, 'title')}
+                          value={this.state.title}
+                ></textarea>
+              </div>
+            </div>
+            <div className={'Submit-body Submit-centered ' + classes.body}>
+              <div className='Submit-body-holder'>
+                <textarea className='form-control Submit-body-text zoom-fix'
+                          placeholder='share something interesting'
+                          ref='body'
+                          name={type}
+                          onChange={this.handleChange.bind(this, 'body')}
+                          value={this.state.body}
+                ></textarea>
+              </div>
+            </div>
+
           { captcha }
-          <div className='Submit-sendreplies-box'>
-            <SeashellsDropdown right={ true } reversed={ true }>
-              <li className='Dropdown-li'>
-                <MobileButton className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
-                  <span ><CheckmarkIcon played={this.state.sendReplies} /> send replies to my inbox</span>
-                </MobileButton>
-              </li>
-            </SeashellsDropdown>
+
+          <div className='Submit-centered'>
+            <div className='Submit-sendreplies-box'>
+              <SeashellsDropdown right={ true } reversed={ true }>
+                <li className='Dropdown-li'>
+                  <MobileButton className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
+                    <span ><CheckmarkIcon played={this.state.sendReplies} /> send replies to my inbox</span>
+                  </MobileButton>
+                </li>
+              </SeashellsDropdown>
+            </div>
           </div>
-          <input type='hidden' name='kind' value={ props.kind || 'self'} />
-          <input type='hidden' name='resubmit' value={ props.resubmit || false} />
+
+          <input type='hidden' name='kind' value={ props.kind || 'self' } />
+          <input type='hidden' name='resubmit' value={ props.resubmit || false } />
         </div>
       );
     }
 
     return (
-      <form className='container Submit-form' action={ '/submit' } method='POST' onSubmit={ this.submit.bind(this) }>
+      <form className='Submit-form' action={ '/submit' } method='POST' onSubmit={ this.submit.bind(this) }>
         { postForm }
-        <SubredditSelectionButton
-          {...props}
-          subreddit={subredditName}
-          changeSubreddit={this.changeSubreddit.bind(this)}
-          toggleOpen={this.toggleSubSelect.bind(this)}
-          open={this.state.subredditSelectionOpen}
-          goToAboutPage={this.goToAboutPage.bind(this)}
-          errorClass={classes.subreddit}
-        />
+          <SubredditSelectionButton
+            {...props}
+            subreddit={subredditName}
+            changeSubreddit={this.changeSubreddit.bind(this)}
+            toggleOpen={this.toggleSubSelect.bind(this)}
+            open={this.state.subredditSelectionOpen}
+            goToAboutPage={this.goToAboutPage.bind(this)}
+            errorClass={classes.subreddit}
+          />
       </form>
     );
   }

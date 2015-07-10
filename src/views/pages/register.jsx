@@ -49,29 +49,29 @@ class RegisterPage extends BaseComponent {
 
         <div className='container'>
           <div className='row'>
-            <div className='col-xs-12 col-sm-6'>
+            <div className='col-xs-12 col-sm-6 LoginPage'>
 
               <h1 className='title h4'>Create a New Account</h1>
 
               <form action='/register' method='POST'>
-                <div className={ usernameClass + ' form-group' }>
+                <div className={ usernameClass + ' form-group LoginPage-zoom-holder' }>
                   <label htmlFor='username' className='hidden'>Username</label>
-                  <input id='username' className='form-control' name='username' type='text' placeholder='Choose a username' required='required' />
+                  <input id='username' className='form-control zoom-fix' name='username' type='text' placeholder='Choose a username' required='required' />
                 </div>
 
-                <div className={ passwordClass + ' form-group' }>
+                <div className={ passwordClass + ' form-group LoginPage-zoom-holder' }>
                   <label htmlFor='password' className='hidden'>Password</label>
-                  <input id='password' className='form-control' name='password' type='password' placeholder='Password' required='required' />
+                  <input id='password' className='form-control zoom-fix' name='password' type='password' placeholder='Password' required='required' />
                 </div>
 
-                <div className={ passwordClass + ' form-group' }>
+                <div className={ passwordClass + ' form-group LoginPage-zoom-holder' }>
                   <label htmlFor='password2' className='hidden'>Verify password</label>
-                  <input id='password2' className='form-control' name='password2' type='password' placeholder='Verify password' required='required' />
+                  <input id='password2' className='form-control zoom-fix' name='password2' type='password' placeholder='Verify password' required='required' />
                 </div>
 
-                <div className={ emailClass + ' form-group' }>
+                <div className={ emailClass + ' form-group LoginPage-zoom-holder' }>
                   <label htmlFor='email' className='hidden'>Email (optional)</label>
-                  <input id='email' className='form-control' name='email' type='email' placeholder='Email (optional)' />
+                  <input id='email' className='form-control zoom-fix' name='email' type='email' placeholder='Email (optional)' />
                 </div>
 
                 <div className='checkbox'>

@@ -133,18 +133,21 @@ class SubredditSelectionButton extends BaseComponent {
       );
     }
 
-
     if (props.open) {
         return (
           <div>
-            <div className="Submit-header">
-              <button type='button' className='close pull-left' onClick={ this.toggle.bind(this) }>
-                <span className='Submit-close' aria-hidden='true'>&times;</span>
-              </button>
-              <span className='Submit-header-text'>Choose a community</span>
+            <div className='Submit-header'>
+              <div className='Submit-centered'>
+                <button type='button' className='close pull-left' onClick={ this.toggle.bind(this) }>
+                  <span className='Submit-close' aria-hidden='true'>&times;</span>
+                </button>
+                <span className='Submit-header-text'>Choose a community</span>
+              </div>
             </div>
-            <div className='sub-selection-wrapper'>
-              <SearchBar {...props} className='search-gray-lg' inputChangedCallback={this.handleSearchChange.bind(this)} />
+            <div className='sub-selection-wrapper Submit-centered'>
+              <div className='Submit-search-holder'>
+                <SearchBar {...props} inputChangedCallback={this.handleSearchChange.bind(this)} />
+              </div>
               { content }
             </div>
           </div>
@@ -152,13 +155,15 @@ class SubredditSelectionButton extends BaseComponent {
     } else {
       return (
         <div className="sub-selection-selected">
-          <span onClick={this.toggle.bind(this)} className='text-muted' >
-            Posting to: &nbsp;
-            <button type='button' className={ this.props.errorClass }>
-              { props.subreddit }
-              <span className='icon-caron'/>
-            </button>
-          </span>
+          <div className='Submit-centered'>
+            <span onClick={this.toggle.bind(this)} className='text-muted' >
+              Posting to: &nbsp;
+              <button type='button' className={ this.props.errorClass }>
+                { props.subreddit }
+                <span className='icon-caron'/>
+              </button>
+            </span>
+          </div>
         </div>
       );
     }

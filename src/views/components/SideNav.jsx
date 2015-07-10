@@ -200,9 +200,11 @@ class SideNav extends BaseComponent {
     return (
       <nav className={'SideNav tween shadow' + (this.state.opened?' opened':'')}>
         <ul className='list-unstyled'>
-          <li className='SideNav-li'>
+          <li className='SideNav-li SideNav-form-holder'>
             <form method='GET' action='/goto' onSubmit={ this._goto } className='form-sm form-single'>
-              <input type='text' className='form-control form-control-sm' placeholder='r/...' name='location' ref='location' />
+              <div className='SideNav-input-holder'>
+                <input type='text' className='form-control zoom-fix form-control-sm' placeholder='r/...' name='location' ref='location' />
+              </div>
               <button type='submit' className='btn btn-default'>Go</button>
             </form>
           </li>
@@ -247,7 +249,6 @@ class SideNav extends BaseComponent {
               </li>
               <li className='SideNav-li'>
                 <MobileButton className='SideNav-button' href='https://www.reddit.com/advertising/'>
-                  <span className='icon-snoo-circled icon-large' />
                   { snooIcon }
                   <span className='SideNav-text'>Advertise</span>
                 </MobileButton>

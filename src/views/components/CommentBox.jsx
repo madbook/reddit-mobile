@@ -88,17 +88,17 @@ class CommentBox extends BaseComponent {
 
     return (
       <div className='row CommentBox'>
-        <div className='col-xs-12'>
-          <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
-            <input type='hidden' name='thingId' value={ this.props.thingId } />
-            { csrf }
-            <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
+        <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
+          <input type='hidden' name='thingId' value={ this.props.thingId } />
+          { csrf }
+          <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
+          <div className={`CommentBox-textarea-holder ${this.state.inputCssClass}`}>
             <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
-                      className={ `form-control ${this.state.inputCssClass}` } name='text' ref='text'
+                      className='zoom-fix form-control' name='text' ref='text'
                       onChange={ this.handleInputChange.bind(this) } value={ this.state.savedReply } ></textarea>
-            <button type='submit' className='btn-post'>Post</button>
-          </form>
-        </div>
+          </div>
+          <button type='submit' className='btn-post'>Post</button>
+        </form>
       </div>
     );
   }

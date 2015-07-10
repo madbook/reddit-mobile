@@ -15,7 +15,7 @@ class PostIcon extends BaseComponent {
 
   render() {
     return (
-      <SVG className='PostIcon SVG-icon' fallbackIcon='icon-post'>
+      <SVG className='PostIcon SVG-icon' fallbackIcon={'icon-post' + this.props.noCircle ? '' : '-circled'}>
         <path fill='none' className='SVG-stroke' strokeWidth='2' d='M16,18.999926H3.999687C2.343006,18.999926,1,17.656919,1,16.000238V3.999926c0-1.656855,1.343146-3,3-3 h12.000313C17.656994,0.999926,19,2.342932,19,3.999614v12.000313C19,17.65678,17.656855,18.999926,16,18.999926z'/>
         <g fill='none' className='SVG-stroke' strokeWidth='2' strokeLinejoin='round'>
           <line ref='x1' x1={_X_LEFT} y1={_X_RIGHT} x2={_X_LEFT} y2={_X_RIGHT}/>

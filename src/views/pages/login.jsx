@@ -29,18 +29,18 @@ class LoginPage extends BaseComponent {
       <div>
         <div className='container'>
           <div className='row'>
-            <div className='col-xs-12 col-sm-6'>
+            <div className='col-xs-12 col-sm-6 LoginPage'>
               <h1 className='title h4'>Log in</h1>
 
               <form action='/login' method='POST'>
-                <div className='form-group'>
+                <div className='form-group LoginPage-zoom-holder'>
                   <label htmlFor='username' className='hidden'>Username</label>
-                  <input id='username' className='form-control' name='username' type='text' placeholder='Username' />
+                  <input id='username' className='form-control zoom-fix' name='username' type='text' placeholder='Username' />
                 </div>
 
-                <div className={ errorClass + ' form-group' }>
+                <div className={ errorClass + ' form-group LoginPage-zoom-holder' }>
                   <label htmlFor='password' className='hidden'>Password</label>
-                  <input id='password' className='form-control' name='password' type='password' placeholder='Password' />
+                  <input id='password' className='form-control zoom-fix' name='password' type='password' placeholder='Password' />
                 </div>
 
                 { refererTag }

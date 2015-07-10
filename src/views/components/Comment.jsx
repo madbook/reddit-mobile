@@ -344,7 +344,9 @@ class Comment extends BaseComponent {
           <div className={ errorClass } role='alert'>
             { errorText }
           </div>
-          <textarea ref='updatedText' className='form-control' defaultValue={ comment.body }></textarea>
+          <div className='comment-textarea-holder'>
+            <textarea ref='updatedText' className='form-control zoom-fix' defaultValue={ comment.body }></textarea>
+          </div>
           <div className='btn-group btn-group-justified'>
             <div className='btn-group'>
               <button className='btn btn-primary btn-block' type='button' onClick={ this.toggleEdit.bind(this) }>Cancel</button>

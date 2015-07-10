@@ -12,7 +12,7 @@ class CaptchaBox extends BaseComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (!this.state.iden) {
       this.requestCaptcha();
     } else {
@@ -27,7 +27,7 @@ class CaptchaBox extends BaseComponent {
     }
   }
 
-  requestCaptcha () {
+  requestCaptcha() {
     var api = this.props.api;
 
     var options = api.buildOptions(this.props.apiOptions);
@@ -40,7 +40,7 @@ class CaptchaBox extends BaseComponent {
 
       this.setState({
         captchaSrc: src,
-        iden: iden, 
+        iden: iden,
       });
 
       this.props.cb({
@@ -55,11 +55,11 @@ class CaptchaBox extends BaseComponent {
     return 'https://www.reddit.com/captcha/' + iden;
   }
 
-  newCaptcha () {
+  newCaptcha() {
     this.requestCaptcha();
   }
 
-  _updateCaptchaInfo () {
+  _updateCaptchaInfo() {
     var answer = this.refs.answer.getDOMNode().value
     var info = {
       answer: answer,
@@ -68,7 +68,7 @@ class CaptchaBox extends BaseComponent {
     this.props.cb(info);
   }
 
-  render () {
+  render() {
     var errorClass = this.props.error ? 'has-error' : '';
     var errorText = errorClass ? '' : 'visually hidden';
 
@@ -86,13 +86,15 @@ class CaptchaBox extends BaseComponent {
         <div className='captcha-img-wrap'>
           { img }
         </div>
-        <input
-          className='form-control'
-          ref='answer'
-          type='text'
-          onChange={this._updateCaptchaInfo.bind(this)}
-          defaultValue={this.props.answer}
-        />
+        <div className='captcha-zoom-wrapper'>
+          <input
+            className='form-control zoom-fix'
+            ref='answer'
+            type='text'
+            onChange={this._updateCaptchaInfo.bind(this)}
+            defaultValue={this.props.answer}
+          />
+        </div>
         <div className='captcha-new-link'>
           <p className={'text-danger ' + errorText }>That did not seem to match. Please try again.</p>
           <a  href='#' onClick={this.newCaptcha.bind(this)}>get a new code</a>
@@ -103,8 +105,8 @@ class CaptchaBox extends BaseComponent {
           onClick={this.props.action}
         >{ this.props.actionName }</button>
       </div>
-    );  
-    
+    );
+
   }
 
 }
