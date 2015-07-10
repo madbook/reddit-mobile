@@ -43,6 +43,7 @@ function _limitAspectRatio(aspectRatio) {
 //there are css values in aspect-ratio.less that must correlate with _INCREMENT and _HEIGHT
 const _INCREMENT = 40;
 const _HEIGHT = 1080;
+
 function _aspectRatioClass(ratio) {
   if (!ratio) {
     return  'aspect-ratio-' + 16 + 'x' + 9;
@@ -50,6 +51,15 @@ function _aspectRatioClass(ratio) {
   var w = MyMath.round(ratio * _HEIGHT, _INCREMENT);
   var euclid = MyMath.euclid(w, _HEIGHT);
   return  'aspect-ratio-' + w / euclid + 'x' + _HEIGHT / euclid;
+}
+
+// Allow links to pass through in selftext
+function _wrapSelftextExpand(fn) {
+  return function(e) {
+    if (e.target.tagName !== 'A') {
+      fn(e);
+    }
+  }
 }
 
 class ListingContent extends React.Component {
@@ -203,7 +213,7 @@ class ListingContent extends React.Component {
     return (
       <div  ref='text' key={id} className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
             dangerouslySetInnerHTML={ {__html: html} }
-            onClick={ this.props.expand }/>
+            onClick={ _wrapSelftextExpand(this.props.expand) }/>
     );
   }
 
