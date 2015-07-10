@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import mobilify from '../../lib/mobilify';
 
 import cookies from 'cookies-js';
 
@@ -82,7 +83,7 @@ class GoogleCarouselMetadata extends React.Component {
       let embed = listing.media.oembed;
 
       baseObject.sharedContent = {
-        url: embed.url || listing.url,
+        url: mobilify(embed.url || listing.url, origin),
       }
 
       if (listing.preview && listing.preview.images[0]) {
@@ -92,7 +93,7 @@ class GoogleCarouselMetadata extends React.Component {
       }
     } else {
       baseObject.sharedContent = {
-        url: listing.url,
+        url: mobilify(listing.url, origin),
       }
 
       if (listing.preview && listing.preview.images[0]) {
