@@ -30,7 +30,7 @@
     "moment": "2.9.0",
     "q": "1.2.0",
     "react": "0.13.3",
-    "reddit-text-js": "git://github.com/ajacksified/reddit-text-js.git#c736dd1884744093bdbcd7441ce5d9c443de5a0f",
+    "reddit-text-js": "0.5.5",
     "scmp": "1.0.0",
     "simple-oauth2": "0.2.1",
     "snoode": "1.7.7",
