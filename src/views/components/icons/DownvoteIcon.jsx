@@ -36,7 +36,6 @@ class DownvoteIcon extends BaseComponent {
     if (!SVG.ENABLED) {
       return;
     }
-    this.refs.arrows.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
     if (this.props.played) {
       this._play(true, true);
     }

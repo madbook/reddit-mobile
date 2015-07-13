@@ -29,7 +29,6 @@ class CheckmarkIcon extends BaseComponent {
     if (!SVG.ENABLED) {
       return;
     }
-    this.refs.line.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
     if (this.props.played) {
       this._play(true);
     }

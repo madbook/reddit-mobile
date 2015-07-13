@@ -37,13 +37,6 @@ class FlagIcon extends BaseComponent {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    this.refs.flag.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
-  }
-
   componentDidUpdate(prevProps) {
     if (!SVG.ENABLED) {
       return;
@@ -69,9 +62,9 @@ class FlagIcon extends BaseComponent {
         } else {
           ease = Cubic.easeInOut;
         }
-        this._tl.add(TweenLite.to(flag, d, {y: SVG.perc(next.y - _START_Y), ease: ease}));
+        this._tl.add(TweenLite.to(flag, d, {yPercent: SVG.perc(next.y - _START_Y), ease: ease}));
       }
-      this._tl.add(TweenLite.to(flag, duration, {x: SVG.perc(_X_DIFF), ease: Linear.easeNone}), 0);
+      this._tl.add(TweenLite.to(flag, duration, {xPercent: SVG.perc(_X_DIFF), ease: Linear.easeNone}), 0);
       this._tl.add(TweenLite.to(this.refs.mask.getDOMNode(), duration, {attr: {x: _POINTS[0].x - _X_DIFF}, ease: Linear.easeNone}), 0);
     }
     return this._tl;

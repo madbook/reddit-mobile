@@ -40,14 +40,6 @@ class ShareIcon extends BaseComponent {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    this.refs.plane.getDOMNode().setAttribute('clip-path', 'url(#' + this._planeMaskID + ')');
-    this.refs.lines.getDOMNode().setAttribute('clip-path', 'url(#' + this._lineMaskID + ')');
-  }
-
   componentDidUpdate(prevProps) {
     if (!SVG.ENABLED) {
       return;

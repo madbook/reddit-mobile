@@ -37,13 +37,6 @@ class SearchIcon extends BaseComponent {
     );
   }
 
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    this.refs.maskee.getDOMNode().setAttribute('clip-path', 'url(#' + this._maskID + ')');
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!SVG.ENABLED) {
       return;
