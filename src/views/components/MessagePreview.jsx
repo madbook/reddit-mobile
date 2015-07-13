@@ -3,6 +3,8 @@ import moment from 'moment';
 import process from 'reddit-text-js';
 import { models } from 'snoode';
 
+import globals from '../../globals';
+
 import Inbox from '../components/Inbox';
 
 import mobilify from '../../lib/mobilify';
@@ -70,7 +72,7 @@ class MessagePreview extends React.Component {
 
     }).bind(this));
 
-    this.props.app.emit('message', message);
+    globals().app.emit('message', message);
   }
 
   render () {
@@ -197,7 +199,6 @@ class MessagePreview extends React.Component {
             user={this.props.user}
             token={this.props.token}
             api={this.props.api}
-            app={this.props.app}
             apiOptions={this.props.apiOptions}
           />
         </div>

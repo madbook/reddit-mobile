@@ -1,7 +1,9 @@
 import React from 'react';
 import q from 'q';
 import querystring from 'querystring';
+
 import constants from '../../constants';
+import globals from '../../globals';
 
 import Loading from '../components/Loading';
 import Inbox from '../components/Inbox';
@@ -28,7 +30,7 @@ class MessagesPage extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.app.emit('page:update', this.props);
+    globals().app.emit('page:update', this.props);
   }
 
   render() {
@@ -37,7 +39,6 @@ class MessagesPage extends React.Component {
     var messages = (this.state.data || {}).data || {};
     var tracking;
 
-    var app = this.props.app;
     var user = this.props.user;
     var view = this.props.view.toLowerCase();
 
@@ -54,7 +55,6 @@ class MessagesPage extends React.Component {
           key={'mesages-' + view}
           user={this.props.user}
           token={this.props.token}
-          app={this.props.app}
           api={this.props.api}
           apiOptions={this.props.apiOptions}
         />

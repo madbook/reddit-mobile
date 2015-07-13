@@ -50,7 +50,6 @@ class Inbox extends React.Component {
                 key={'message-' + m.name}
                 message={m}
                 api={props.api}
-                app={props.app}
                 apiOptions={props.apiOptions}
                 onSubmit={onSubmit}
               />
