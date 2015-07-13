@@ -204,80 +204,82 @@ function initialize(bindLinks) {
   var scrollCache = {};
 
   var initialUrl = app.fullPathName();
-  attachFastClick(document.body);
 
-  if(history && bindLinks) {
-    var $body = document.body;
+  function attachEvents() {
+    attachFastClick(document.body);
 
-    $body.addEventListener('click', function(e) {
-      var $link = e.target;
+    if(history && bindLinks) {
+      var $body = document.body;
 
-      if ($link.tagName !== 'A') {
-        $link = findLinkParent($link);
+      $body.addEventListener('click', function(e) {
+        var $link = e.target;
 
-        if (!$link) {
+        if ($link.tagName !== 'A') {
+          $link = findLinkParent($link);
+
+          if (!$link) {
+            return;
+          }
+        }
+
+        var href = $link.getAttribute('href');
+        var currentUrl = app.fullPathName();
+
+        // If it has a target=_blank, or an 'external' data attribute, or it's
+        // an absolute url, let the browser route rather than forcing a capture.
+        if (
+          ($link.target === '_blank' || $link.dataset.noRoute === 'true') ||
+          href.indexOf('//') > -1
+        ) {
           return;
         }
-      }
 
-      var href = $link.getAttribute('href');
-      var currentUrl = app.fullPathName();
+        e.preventDefault();
 
-      // If it has a target=_blank, or an 'external' data attribute, or it's
-      // an absolute url, let the browser route rather than forcing a capture.
-      if (
-        ($link.target === '_blank' || $link.dataset.noRoute === 'true') ||
-        href.indexOf('//') > -1
-      ) {
-        return;
-      }
+        scrollCache[currentUrl] = window.scrollY;
 
-      e.preventDefault();
-
-      scrollCache[currentUrl] = window.scrollY;
-
-      if (href.indexOf('#') === 0) {
-        return;
-      }
-
-      initialUrl = href;
-
-      app.pushState(null, null, href);
-
-      // Set to the browser's interpretation of the current name (to make
-      // relative paths easier), and send in the old url.
-      app.render(app.fullPathName(), false, modifyContext).then(function(props) {
-        setTitle(props);
-      });
-    });
-
-    window.addEventListener('popstate', function(e) {
-      var href = app.fullPathName();
-      // Work around some browsers firing popstate on initial load
-      if (href !== initialUrl) {
-        scrollCache[initialUrl] = window.scrollY;
-
-        app.render(href, false, modifyContext).then(function(props) {
-          if(scrollCache[href]) {
-            $body.scrollTop = scrollCache[href];
-          }
-
-          setTitle(props);
-        });
+        if (href.indexOf('#') === 0) {
+          return;
+        }
 
         initialUrl = href;
-      }
-    });
+
+        app.pushState(null, null, href);
+
+        // Set to the browser's interpretation of the current name (to make
+        // relative paths easier), and send in the old url.
+        app.render(app.fullPathName(), false, modifyContext).then(function(props) {
+          setTitle(props);
+        });
+      });
+
+      window.addEventListener('popstate', function(e) {
+        var href = app.fullPathName();
+        // Work around some browsers firing popstate on initial load
+        if (href !== initialUrl) {
+          scrollCache[initialUrl] = window.scrollY;
+
+          app.render(href, false, modifyContext).then(function(props) {
+            if(scrollCache[href]) {
+              $body.scrollTop = scrollCache[href];
+            }
+
+            setTitle(props);
+          });
+
+          initialUrl = href;
+        }
+      });
+    }
   }
 
   // Don't re-render tracking pixel on first load. App reads from state
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
-  app.render(app.fullPathName(), true, modifyContext, function() {
-    // Reset the referrer that ctx uses after the first load.
+  app.render(app.fullPathName(), true, modifyContext).then(function() {
+    attachEvents();
     referrer = document.location.href;
   });
-
 
   app.on('route:desktop', function(route) {
     let options = {};
