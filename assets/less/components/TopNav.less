@@ -114,7 +114,7 @@
       height: @size;
       width: @size;
       font-size: @size;
-      line-height: @top-nav-height;
+      line-height: @size;
     });
 
     .icon-hamburger, .icon-x {
@@ -153,19 +153,21 @@
 
   .TopNav-post {
     padding-right: 11px;
+  }
 
-    .SVG-icon {
-      margin-top: 11px;
+  .TopNav-post, .TopNav-search {
+    figure.SVG-icon {
+      margin-top: 7.5px;
+    }
+
+    svg.SVG-icon {
+      margin-top: 12.5px;
     }
   }
 
   .TopNav-search {
     position: relative;
     padding-left: 1px;
-
-    .SVG-icon {
-      margin-top: 11px;
-    }
   }
 
   .TopNav-post {
