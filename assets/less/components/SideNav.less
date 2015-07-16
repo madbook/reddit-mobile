@@ -7,7 +7,8 @@
   top: @top-nav-height;
   background-color: @body-bg;
   font-size: @font-size-base + 1px;
-  height: 0;
+  height: 100%;
+  padding-bottom: @top-nav-height;
   overflow-y: auto;
 
   @media (max-width: 600px) {
@@ -22,16 +23,33 @@
     color: lighten(@text-color, 20%);
   }
 
-  &.opened {
-    // TODO: revist this after doing old android testing
-    // height: calc(100% ~'-' @top-nav-height);
-    height: 100%;
-    padding-bottom: @top-nav-height;
-  }
-
   .list-unstyled {
     margin-bottom: 0;
   }
+}
+
+.SideNav-enter {
+  .transition(0.3s);
+  height: 0;
+  padding-bottom: 0;
+}
+
+.SideNav-enter-active {
+  // TODO: revist this after doing old android testing
+  // height: calc(100% ~'-' @top-nav-height);
+  height: 100%;
+  padding-bottom: @top-nav-height;
+}
+
+.SideNav-leave {
+  .transition(0.3s);
+  height: 100%;
+  padding-bottom: @top-nav-height;
+}
+
+.SideNav-leave-active {
+  height: 0;
+  padding-bottom: 0;
 }
 
 .SideNav-form-holder {
@@ -60,22 +78,11 @@
   }
 }
 
-  .SideNav-ul {
-    height: 0;
-    overflow: hidden;
-  }
-
     .SideNav-li {
       .transform(translateZ(0));
     }
 
     .SideNav-dropdown {
-      &.opened {
-        .SideNav-ul {
-          height: auto;
-        }
-      }
-
       .SideNav-ul .SideNav-button {
         padding-left: 40px;
       }

@@ -49,11 +49,12 @@ class AutoTween extends BaseComponent {
   }
 
   render() {
-    return (
-      <div className={'AutoTween' + (this.state.tweening ? ' tweening' : '')} ref='all'>
-        { this.props.children }
-      </div>
-    );
+    var className = this.props.className;
+    var options = {
+      className: 'AutoTween' + (this.state.tweening ? ' tweening' : '') + (className ? (' ' + className) : ''),
+      ref: 'all',
+    };
+    return React.createElement(this.props.component || 'div', options, this.props.children);
   }
 
   componentWillEnter(callback) {
