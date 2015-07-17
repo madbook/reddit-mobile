@@ -46,6 +46,7 @@ class SubredditAboutPage extends BaseComponent {
       );
     }
 
+    var props = this.props;
     var app = globals().app;
     var user = this.props.user;
 
@@ -54,11 +55,11 @@ class SubredditAboutPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
-          user={ this.props.user }
-          loid={ this.props.loid }
-          loidcreated={ this.props.loidcreated }
-          compact={ this.props.compact }
-          experiments={ this.props.experiments }
+          user={ props.user }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
+          compact={ props.compact }
+          experiments={ props.experiments }
         />);
     }
 
@@ -84,8 +85,8 @@ class SubredditAboutPage extends BaseComponent {
         <TopSubnav
           user={ user }
           hideSort={ true }
-          baseUrl={ this.props.url }
-          loginPath={ this.props.loginPath } />
+          baseUrl={ props.url }
+          loginPath={ props.loginPath } />
 
         <div className='container' key='container'>
           { htmlDump }
