@@ -117,4 +117,11 @@ class UserProfilePage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+UserProfilePage.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  data: React.PropTypes.object,
+  userName: React.PropTypes.string.isRequired,
+}
+
 export default UserProfilePage;

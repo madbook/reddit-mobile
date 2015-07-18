@@ -235,4 +235,20 @@ class IndexPage extends BaseComponent {
   }
 }
 
+IndexPage.propTypes = {
+  adsPath: React.PropTypes.string.isRequired,
+  // apiOptions: React.PropTypes.object,
+  before: React.PropTypes.bool,
+  data: React.PropTypes.object,
+  multi: React.PropTypes.string,
+  multiUser: React.PropTypes.string,
+  page: React.PropTypes.number,
+  prefs: React.PropTypes.shape({
+    hide_ads: React.PropTypes.bool.isRequired,
+  }),
+  query: React.PropTypes.object.isRequired,
+  sort: React.PropTypes.string,
+  subredditName: React.PropTypes.string,
+};
+
 export default IndexPage;

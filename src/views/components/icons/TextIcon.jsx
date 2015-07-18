@@ -1,12 +1,10 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 class TextIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -47,6 +45,10 @@ class TextIcon extends BaseComponent {
 
 TextIcon.defaultProps = {
   played: false,
+};
+
+TextIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default TextIcon;

@@ -44,10 +44,11 @@ class Dropdown extends BaseComponent {
         </div>
       );
     }
+    var touch = globals().touch;
 
     return (
-      <div className={className} onMouseEnter={ globals().touch ? null : this._onMouseEnter }
-           onMouseLeave={ globals().touch ? null : this._onMouseLeave } onClick={ globals().touch ? this._onClick : null }>
+      <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter }
+           onMouseLeave={ touch ? null : this._onMouseLeave } onClick={ touch ? this._onClick : null }>
         { this.props.button }
         <CSSTransitionGroup transitionName="Dropdown-tab">
           { tab }
@@ -95,5 +96,13 @@ class Dropdown extends BaseComponent {
     globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
+
+Dropdown.propTypes = {
+  className: React.PropTypes.string,
+  button: React.PropTypes.element.isRequired,
+  id: React.PropTypes.number.isRequired,
+  right: React.PropTypes.bool,
+  reversed: React.PropTypes.bool,
+};
 
 export default Dropdown;

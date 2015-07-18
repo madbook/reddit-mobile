@@ -1,11 +1,9 @@
 import React from 'react';
+import BaseComponent from '../../components/BaseComponent';
+import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
-import DrawSVGPlugin from '../../../lib/greensock/plugins/DrawSVGPlugin.min.js';
-
 import SVG from '../../components/SVG';
-
-import BaseComponent from '../../components/BaseComponent';
 
 const _EYE_RADIUS = 1.142124;
 const _EYE_HEIGHT = 11.1461885;
@@ -75,7 +73,6 @@ function _tweenOff(callback) {
 class SnooIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this.tweenOn = this.tweenOn.bind(this);
     this.tweenOff = this.tweenOff.bind(this);
@@ -273,6 +270,11 @@ class SnooIcon extends BaseComponent {
 SnooIcon.defaultProps = {
   played: false,
   rainbow: false,
+};
+
+SnooIcon.propTypes = {
+  played: React.PropTypes.bool,
+  rainbow: React.PropTypes.bool,
 };
 
 export default SnooIcon;

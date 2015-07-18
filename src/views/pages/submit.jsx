@@ -379,4 +379,14 @@ class SubmitPage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+SubmitPage.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  kind: React.PropTypes.string,
+  resubmit: React.PropTypes.bool,
+  subredditName: React.PropTypes.string,
+  thingId: React.PropTypes.string,
+  type: React.PropTypes.string,
+}
+
 export default SubmitPage;

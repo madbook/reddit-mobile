@@ -1,6 +1,7 @@
 import React from 'react';
 import globals from '../../globals';
 import process from 'reddit-text-js';
+import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
 import Loading from '../components/Loading';
@@ -170,5 +171,16 @@ class SubredditSelectionButton extends BaseComponent {
     }
   }
 }
+
+SubredditSelectionButton.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  changeSubreddit: React.PropTypes.func.isRequired,
+  errorClass: React.PropTypes.string.isRequired,
+  goToAboutPage: React.PropTypes.func,
+  open: React.PropTypes.bool.isRequired,
+  subreddit: React.PropTypes.string.isRequired,
+  subscriptions: propTypes.subscriptions,
+  toggleOpen: React.PropTypes.func.isRequired,
+};
 
 export default SubredditSelectionButton;

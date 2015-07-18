@@ -2,6 +2,7 @@ import React from 'react/addons';
 import constants from '../../constants';
 import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
+import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 
 import AutoTween from '../components/AutoTween';
@@ -190,7 +191,7 @@ class Listing extends BaseComponent {
       var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
     }
 
-    if (props.listing.promoted) {
+    if (listing.promoted) {
       domainNode = (
         <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
       );
@@ -357,5 +358,22 @@ class Listing extends BaseComponent {
     this.setState({loaded: true}, this.resize);
   }
 }
+
+Listing.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  compact: React.PropTypes.bool,
+  editError: React.PropTypes.arrayOf(React.PropTypes.string),
+  editing: React.PropTypes.bool,
+  hideComments: React.PropTypes.bool,
+  hideDomain: React.PropTypes.bool,
+  hideSubredditLabel: React.PropTypes.bool,
+  hideWhen: React.PropTypes.bool,
+  listing: propTypes.listing.isRequired,
+  onDelete: React.PropTypes.func,
+  saveUpdatedText: React.PropTypes.func,
+  single: React.PropTypes.bool,
+  toggleEdit: React.PropTypes.func,
+  z: React.PropTypes.number,
+};
 
 export default Listing;

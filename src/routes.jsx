@@ -256,8 +256,6 @@ function routes(app) {
       globals().loginPath = props.loginPath;
     }
     globals().experiments = props.experiments;
-    globals().httpsProxy = props.httpsProxy;
-    globals().https = props.https;
     globals().referrer = props.referrer;
     globals().csrf = props.csrf;
     globals().reddit = props.reddit;

@@ -133,7 +133,6 @@ class SearchPage extends BaseComponent {
     var state = this.state;
     var props = this.props;
     var apiOptions = props.apiOptions;
-
     var controls;
     var tracking;
 
@@ -319,5 +318,19 @@ class SearchPage extends BaseComponent {
   }
 
 }
+
+//TODO: someone more familiar with this component could eventually fill this out better
+SearchPage.propTypes = {
+  after: React.PropTypes.string,
+  // apiOptions: React.PropTypes.object,
+  before: React.PropTypes.string,
+  data: React.PropTypes.object,
+  page: React.PropTypes.number.isRequired,
+  query: React.PropTypes.object.isRequired,
+  sort: React.PropTypes.string.isRequired,
+  subredditName: React.PropTypes.string,
+  subreddits: React.PropTypes.object,
+  time: React.PropTypes.string.isRequired,
+};
 
 export default SearchPage;

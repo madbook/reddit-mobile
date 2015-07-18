@@ -30,4 +30,13 @@ class SearchBar extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+SearchBar.propTypes = {
+  className: React.PropTypes.string,
+  inputChangedCallback: React.PropTypes.func.isRequired,
+  query: React.PropTypes.shape({
+    q: React.PropTypes.string,
+  }).isRequired,
+};
+
 export default SearchBar;

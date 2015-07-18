@@ -4,6 +4,7 @@ import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
 import moment from 'moment';
+import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 
 import BaseComponent from './BaseComponent';
@@ -230,7 +231,6 @@ class Comment extends BaseComponent {
           <CommentBox ref='commentBox' {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
       }
-
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
@@ -261,7 +261,7 @@ class Comment extends BaseComponent {
                 showEdit={ showEdit }
                 onEdit={ this.toggleEdit.bind(this) }
                 showDel={ showDel }
-                onDelete={ this.onDelete.bind(this, props.comment.name)}
+                onDelete={ this.onDelete.bind(this, props.comment.name) }
                 />
             </div>
           </li>
@@ -387,5 +387,19 @@ class Comment extends BaseComponent {
     );
   }
 }
+
+// TODO: someone more familiar with this component could eventually fill this out better
+Comment.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  comment: propTypes.comment.isRequired,
+  // edited: React.PropTypes.bool.isRequired,
+  // editError: React.PropTypes.array.isRequired,
+  // highlight: React.PropTypes.string.isRequired,
+  // nestingLevel: React.PropTypes.number.isRequired,
+  // op: React.PropTypes.string.isRequired,
+  // permalinkBase: React.PropTypes.string.isRequired,
+  // savedReply: React.PropTypes.string.isRequired,
+  subredditName: React.PropTypes.string.isRequired,
+};
 
 export default Comment;

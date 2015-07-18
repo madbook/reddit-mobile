@@ -2,6 +2,7 @@ import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
 import { models } from 'snoode';
+import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
 import FlagIcon from '../components/icons/FlagIcon';
@@ -311,5 +312,22 @@ class ListingDropdown extends BaseComponent {
     }
   }
 }
+
+ListingDropdown.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  listing: React.PropTypes.oneOfType([
+    propTypes.comment,
+    propTypes.listing,
+  ]).isRequired,
+  onDelete: React.PropTypes.func,
+  onEdit: React.PropTypes.func,
+  onHide: React.PropTypes.func,
+  onSave: React.PropTypes.func,
+  onReport: React.PropTypes.func.isRequired,
+  permalink: React.PropTypes.string,
+  showDel: React.PropTypes.bool,
+  showEdit: React.PropTypes.bool.isRequired,
+  showHide: React.PropTypes.bool,
+};
 
 export default ListingDropdown;

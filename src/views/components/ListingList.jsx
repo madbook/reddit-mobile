@@ -1,6 +1,7 @@
 import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
+import propTypes from '../../propTypes';
 import uniq from 'lodash/array/uniq';
 
 import Ad from '../components/Ad';
@@ -158,10 +159,10 @@ class ListingList extends BaseComponent {
           if (props.showHidden || !listing.hidden) {
             return (
               <Listing
-                ref={'listing' + i}
                 index={index}
                 key={'page-listing-' + index}
                 listing={listing}
+                ref={'listing' + i}
                 z={length - i}
                 {...props}
                 compact={ compact }
@@ -203,5 +204,16 @@ class ListingList extends BaseComponent {
     this.setState({compact: globals().compact});
   }
 }
+
+ListingList.propTypes = {
+  compact: React.PropTypes.bool,
+  firstPage: React.PropTypes.number,
+  listings: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+    propTypes.comment,
+    propTypes.listing,
+  ])).isRequired,
+  showAds: React.PropTypes.bool,
+  showHidden: React.PropTypes.bool,
+};
 
 export default ListingList;

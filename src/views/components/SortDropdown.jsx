@@ -131,4 +131,13 @@ class SortDropdown extends BaseComponent {
   }
 }
 
+SortDropdown.propTypes = {
+  baseUrl: React.PropTypes.string,
+  className: React.PropTypes.string,
+  excludedSorts: React.PropTypes.arrayOf(React.PropTypes.string),
+  list: React.PropTypes.string.isRequired,
+  sort: React.PropTypes.string.isRequired,
+  sortParam: React.PropTypes.string,
+};
+
 export default SortDropdown;

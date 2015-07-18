@@ -1,5 +1,6 @@
 import React from 'react';
 import globals from '../../globals';
+
 import BaseComponent from './BaseComponent';
 import SortDropdown from '../components/SortDropdown';
 
@@ -34,5 +35,12 @@ class TopSubnav extends BaseComponent {
     );
   }
 }
+
+TopSubnav.propTypes = {
+  exludedSorts: React.PropTypes.arrayOf(React.PropTypes.string),
+  hideSort: React.PropTypes.bool,
+  list: React.PropTypes.string,
+  sort: React.PropTypes.string,
+};
 
 export default TopSubnav;

@@ -36,4 +36,11 @@ class SearchSortSubnav extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+SearchSortSubnav.propTypes = {
+  sort: React.PropTypes.string,
+  composeSortingUrl: React.PropTypes.func,
+  time: React.PropTypes.string,
+};
+
 export default SearchSortSubnav;

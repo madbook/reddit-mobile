@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
@@ -10,7 +9,6 @@ const _YS = [7.333328, 12.666672];
 class NSFWIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -65,6 +63,10 @@ class NSFWIcon extends BaseComponent {
 
 NSFWIcon.defaultProps = {
   played: false,
+};
+
+NSFWIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default NSFWIcon;

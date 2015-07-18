@@ -114,4 +114,11 @@ class RegisterPage extends BaseComponent {
   }
 };
 
+//TODO: someone more familiar with this component could eventually fill this out better
+RegisterPage.propTypes = {
+  query: React.PropTypes.object.isRequired,
+  error: React.PropTypes.string,
+  message: React.PropTypes.string.isRequired,
+};
+
 export default RegisterPage;

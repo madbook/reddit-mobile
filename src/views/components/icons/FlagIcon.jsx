@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
@@ -17,7 +16,6 @@ const _START_Y = _POINTS[0].y;
 class FlagIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this._maskID = 'mask' + globals().random();
   }
@@ -79,6 +77,10 @@ class FlagIcon extends BaseComponent {
 
 FlagIcon.defaultProps = {
   played: false,
+};
+
+FlagIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default FlagIcon;

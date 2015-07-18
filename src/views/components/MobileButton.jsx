@@ -94,4 +94,14 @@ class MobileButton extends BaseComponent {
   }
 }
 
+MobileButton.propTypes = {
+  className: React.PropTypes.string,
+  href: React.PropTypes.string,
+  move: React.PropTypes.func,
+  noRoute: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
+  out: React.PropTypes.func,
+  over: React.PropTypes.func,
+};
+
 export default MobileButton;

@@ -131,4 +131,17 @@ class UserActivityPage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+UserActivityPage.propTypes = {
+  activity: React.PropTypes.string.isRequired,
+  after: React.PropTypes.bool,
+  // apiOptions: React.PropTypes.object,
+  before: React.PropTypes.bool,
+  data: React.PropTypes.object,
+  page: React.PropTypes.number,
+  sort: React.PropTypes.string,
+  userName: React.PropTypes.string.isRequired,
+  userProfile: React.PropTypes.object,
+}
+
 export default UserActivityPage;

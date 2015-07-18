@@ -1,10 +1,8 @@
 import React from 'react';
-import superagent from 'superagent';
-import { models } from 'snoode';
-
-
 import constants from '../../constants';
 import globals from '../../globals';
+import { models } from 'snoode';
+import superagent from 'superagent';
 
 import BaseComponent from './BaseComponent';
 import Listing from './Listing';
@@ -175,10 +173,10 @@ class Ad extends BaseComponent {
       <Listing
         ref='listing'
         {...props}
-        listing={listing}
-        hideSubredditLabel={true}
         hideDomain={true}
-        hideWhen={true} />
+        hideSubredditLabel={true}
+        hideWhen={true}
+        listing={listing} />
     );
   }
 };

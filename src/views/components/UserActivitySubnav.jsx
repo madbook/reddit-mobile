@@ -144,4 +144,10 @@ class UserActivitySubnav extends BaseComponent {
   }
 }
 
+UserActivitySubnav.propTypes = {
+  activity: React.PropTypes.string,
+  name: React.PropTypes.string.isRequired,
+  sort: React.PropTypes.string,
+};
+
 export default UserActivitySubnav;

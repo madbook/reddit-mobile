@@ -100,4 +100,15 @@ class DefaultLayout extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+DefaultLayout.propTypes = {
+  assetPath: React.PropTypes.string.isRequired,
+  liveReload: React.PropTypes.bool.isRequired,
+  manifest: React.PropTypes.object.isRequired,
+  metaDescription: React.PropTypes.string,
+  minifyAssets: React.PropTypes.bool.isRequired,
+  propertyId: React.PropTypes.string,
+  title: React.PropTypes.string.isRequired,
+};
+
 export default DefaultLayout;

@@ -238,4 +238,12 @@ class MessagePreview extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+MessagePreview.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  // lastReply: React.PropTypes.bool.isRequired,
+  // message: React.PropTypes.object.isRequired,
+  onSubmit: React.PropTypes.func.isRequired,
+};
+
 export default MessagePreview;

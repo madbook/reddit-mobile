@@ -68,4 +68,9 @@ class LoginPage extends BaseComponent {
   }
 };
 
+LoginPage.propTypes = {
+  error: React.PropTypes.string,
+  query: React.PropTypes.object.isRequired,
+};
+
 export default LoginPage;

@@ -1,12 +1,10 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 class MailIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this._flipFlop = this._flipFlop.bind(this);
     this._flipFlopped = false;
@@ -90,6 +88,10 @@ class MailIcon extends BaseComponent {
 
 MailIcon.defaultProps = {
   played: false,
+};
+
+MailIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default MailIcon;

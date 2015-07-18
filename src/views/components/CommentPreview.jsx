@@ -1,8 +1,8 @@
 import React from 'react';
-import moment from 'moment';
-
-import short from '../../lib/formatDifference';
 import mobilify from '../../lib/mobilify';
+import moment from 'moment';
+import propTypes from '../../propTypes';
+import short from '../../lib/formatDifference';
 
 import BaseComponent from './BaseComponent';
 
@@ -61,5 +61,9 @@ class CommentPreview extends BaseComponent {
     );
   }
 }
+
+CommentPreview.propTypes = {
+  comment: propTypes.comment.isRequired,
+};
 
 export default CommentPreview;

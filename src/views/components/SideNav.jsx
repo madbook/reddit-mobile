@@ -2,6 +2,7 @@ import React from 'react/addons';
 import constants from '../../constants';
 import cookies from 'cookies-js';
 import globals from '../../globals';
+import propTypes from '../../propTypes';
 import querystring from 'querystring';
 
 import AutoTween from '../components/AutoTween';
@@ -106,7 +107,7 @@ class SideNav extends BaseComponent {
                 </MobileButton>
               </li>
               <li>
-                <MobileButton className='SideNav-button' href='/logout' noRoute='true'>
+                <MobileButton className='SideNav-button' href='/logout' noRoute={ true }>
                   { snooIcon }
                   <span className='SideNav-text'>Log out</span>
                 </MobileButton>
@@ -147,7 +148,7 @@ class SideNav extends BaseComponent {
       } else {
         loginLink = (
           <li className='SideNav-li'>
-            <MobileButton className='SideNav-button' href={ globals().loginPath } noRoute='true'>
+            <MobileButton className='SideNav-button' href={ globals().loginPath } noRoute={ true }>
               { snooIcon }
               <span className='SideNav-text'>Login / Register</span>
             </MobileButton>
@@ -376,5 +377,10 @@ class SideNav extends BaseComponent {
     });
   }
 }
+
+SideNav.propTypes = {
+  query: React.PropTypes.object.isRequired,
+  subscriptions: propTypes.subscriptions,
+};
 
 export default SideNav;

@@ -1,7 +1,7 @@
 import React from 'react';
-import globals from '../../globals';
 import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
+import propTypes from '../../propTypes';
 
 import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
@@ -34,14 +34,12 @@ function _gifToHTML5(url) {
     }
   }
 }
-
 //there are css values in aspect-ratio.less that must correlate with _WIDEST and _TALLEST
 const _WIDEST = 3;
 const _TALLEST = 1 / 3;
 function _limitAspectRatio(aspectRatio) {
   return Math.min(Math.max(_TALLEST, aspectRatio), _WIDEST);
 }
-
 //there are css values in aspect-ratio.less that must correlate with _INCREMENT and _HEIGHT
 const _INCREMENT = 40;
 const _HEIGHT = 1080;
@@ -54,7 +52,6 @@ function _aspectRatioClass(ratio) {
   var euclid = MyMath.euclid(w, _HEIGHT);
   return  'aspect-ratio-' + w / euclid + 'x' + _HEIGHT / euclid;
 }
-
 // Allow links to pass through in selftext
 function _wrapSelftextExpand(fn) {
   return function(e) {
@@ -102,11 +99,6 @@ class ListingContent extends BaseComponent {
   buildContent() {
     var props = this.props;
     var listing = props.listing;
-
-    if (!listing) {
-      return null;
-    }
-
     var expanded = this._isExpanded();
     var media = listing.media;
 
@@ -177,10 +169,7 @@ class ListingContent extends BaseComponent {
   //TODO: this method should be integrated into buildContent but it hurts my brain to figure out how to do so
   buildImage(src, href, onClick) {
     var props = this.props;
-    var html5 = _gifToHTML5(src, {
-      https: globals().https,
-      httpsProxy: globals().httpsProxy,
-    });
+    var html5 = _gifToHTML5(src);
     var expanded = this._isExpanded();
 
     if (expanded) {
@@ -521,5 +510,22 @@ ListingContent.isNSFW = function(listing) {
   }
   return listing.title.match(/nsf[wl]/gi) || listing.over_18;
 }
+
+ListingContent.propTypes = {
+  compact: React.PropTypes.bool,
+  editError: React.PropTypes.arrayOf(React.PropTypes.string),
+  editing: React.PropTypes.bool,
+  expand: React.PropTypes.func.isRequired,
+  expanded: React.PropTypes.bool.isRequired,
+  expandedCompact: React.PropTypes.bool,
+  isThumbnail: React.PropTypes.bool,
+  listing: propTypes.listing.isRequired,
+  loaded: React.PropTypes.bool.isRequired,
+  saveUpdatedText: React.PropTypes.func,
+  single: React.PropTypes.bool,
+  tallestHeight: React.PropTypes.number.isRequired,
+  toggleEdit: React.PropTypes.func,
+  width: React.PropTypes.number.isRequired,
+};
 
 export default ListingContent;

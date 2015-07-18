@@ -44,4 +44,8 @@ class MessageNav extends BaseComponent {
   }
 }
 
+MessageNav.propTypes = {
+  view: React.PropTypes.string.isRequired,
+};
+
 export default MessageNav;

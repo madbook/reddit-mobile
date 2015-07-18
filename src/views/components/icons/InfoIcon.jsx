@@ -1,12 +1,10 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 class InfoIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -39,6 +37,10 @@ class InfoIcon extends BaseComponent {
 
 InfoIcon.defaultProps = {
   played: false,
+};
+
+InfoIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default InfoIcon;

@@ -55,4 +55,11 @@ class ErrorPage extends BaseComponent {
   }
 }
 
+// TODO: someone more familiar with this component could eventually fill this out
+ErrorPage.propTypes = {
+  status: React.PropTypes.number.isRequired,
+  originalUrl: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string.isRequired,
+};
+
 export default ErrorPage;

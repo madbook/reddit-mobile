@@ -243,4 +243,12 @@ class TopNav extends BaseComponent {
   }
 }
 
+TopNav.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  multi: React.PropTypes.string,
+  subredditId: React.PropTypes.string,
+  subredditName: React.PropTypes.string,
+  userIsSubscribed: React.PropTypes.bool,
+};
+
 export default TopNav;

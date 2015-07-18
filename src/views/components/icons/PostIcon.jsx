@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
@@ -9,7 +8,6 @@ const _X_RIGHT = 14.912809;
 class PostIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -64,6 +62,10 @@ class PostIcon extends BaseComponent {
 
 PostIcon.defaultProps = {
   played: false,
+};
+
+PostIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default PostIcon;

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
@@ -9,7 +8,6 @@ const _DIAMETER = 2;
 class SeashellIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -59,6 +57,10 @@ class SeashellIcon extends BaseComponent {
 
 SeashellIcon.defaultProps = {
   played: false,
+};
+
+SeashellIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default SeashellIcon;

@@ -136,11 +136,8 @@ class ListingPage extends BaseComponent {
 
     var data = this.state.data.data;
     var editing = this.state.editing;
-
     var listing = data ? data.listing : {};
     var comments = data ? data.comments : [];
-
-    var api = globals().api;
     var author = listing.author;
     var sort = props.sort || 'best';
     var listingElement;
@@ -165,13 +162,13 @@ class ListingPage extends BaseComponent {
       listingElement = (
         <Listing
           apiOptions={ apiOptions }
-          listing={ listing }
-          single={ true }
-          saveUpdatedText={ this.saveUpdatedText.bind(this) }
-          editing={ editing }
-          toggleEdit={ this.toggleEdit.bind(this) }
           editError={ this.state.linkEditError }
+          editing={ editing }
+          listing={ listing }
           onDelete={this.onDelete.bind(this, listing.name)}
+          saveUpdatedText={ this.saveUpdatedText.bind(this) }
+          single={ true }
+          toggleEdit={ this.toggleEdit.bind(this) }
           />
       );
 
@@ -303,5 +300,17 @@ class ListingPage extends BaseComponent {
     return defer.promise;
   }
 }
+
+ListingPage.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  commentId: React.PropTypes.string,
+  data: React.PropTypes.object,
+  isGoogleCrawler: React.PropTypes.bool,
+  listingId: React.PropTypes.string.isRequired,
+  origin: React.PropTypes.string.isRequired,
+  query: React.PropTypes.object.isRequired,
+  sort: React.PropTypes.string,
+  subredditName: React.PropTypes.string,
+};
 
 export default ListingPage;

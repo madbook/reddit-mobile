@@ -51,4 +51,16 @@ SVG.perc = function(num) {
   return num / SVG.ICON_SIZE * 100 + '%';
 };
 
+SVG.propTypes = {
+  className: React.PropTypes.string,
+  fallbackIcon: React.PropTypes.string,
+  fallbackText: React.PropTypes.string,
+  fallbackImg: React.PropTypes.string,
+  fallbackComponent: React.PropTypes.element,
+  height: React.PropTypes.number,
+  move: React.PropTypes.func,
+  out: React.PropTypes.func,
+  width: React.PropTypes.number,
+};
+
 export default SVG;

@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import BaseComponent from './BaseComponent';
+import propTypes from '../../propTypes';
 
 class UserProfile extends BaseComponent {
   constructor(props) {
@@ -62,5 +63,9 @@ class UserProfile extends BaseComponent {
     );
   }
 }
+
+UserProfile.propTypes = {
+  userProfile: propTypes.user.isRequired,
+};
 
 export default UserProfile;

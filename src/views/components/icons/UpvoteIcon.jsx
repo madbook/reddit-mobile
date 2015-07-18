@@ -9,7 +9,6 @@ import globals from '../../../globals';
 class UpvoteIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._alter = this._alter.bind(this);
     this._play = this._play.bind(this);
     this._maskID = 'mask' + globals().random();
@@ -86,6 +85,11 @@ class UpvoteIcon extends BaseComponent {
 UpvoteIcon.defaultProps = {
   altered: false,
   played: false,
+};
+
+UpvoteIcon.propTypes = {
+  altered: React.PropTypes.bool,
+  played: React.PropTypes.bool,
 };
 
 export default UpvoteIcon;

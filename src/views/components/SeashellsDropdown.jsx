@@ -47,4 +47,8 @@ class SeashellsDropdown extends BaseComponent {
   }
 }
 
+SeashellsDropdown.propTypes = {
+  reversed: React.PropTypes.bool,
+};
+
 export default SeashellsDropdown;

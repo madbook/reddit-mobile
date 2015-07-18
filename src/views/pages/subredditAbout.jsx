@@ -118,4 +118,11 @@ class SubredditAboutPage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+SubredditAboutPage.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  data: React.PropTypes.object,
+  subredditName: React.PropTypes.string.isRequired,
+}
+
 export default SubredditAboutPage;

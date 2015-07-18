@@ -2,6 +2,7 @@ import React from 'react';
 import { models } from 'snoode';
 import constants from '../../constants';
 import globals from '../../globals';
+import propTypes from '../../propTypes';
 
 import BaseComponent from '../components/BaseComponent';
 import DownvoteIcon from '../components/icons/DownvoteIcon';
@@ -141,5 +142,14 @@ class Vote extends BaseComponent {
     );
   }
 }
+
+Vote.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  setScore: React.PropTypes.func,
+  thing: React.PropTypes.oneOfType([
+    propTypes.comment,
+    propTypes.listing,
+  ]).isRequired,
+};
 
 export default Vote;

@@ -257,7 +257,7 @@ var oauthRoutes = function(app) {
     if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
       redirectURI = OAuth2.authCode.authorizeURL({
         redirect_uri: redirect,
-        scope: SCOPE, 
+        scope: SCOPE,
         state: `${state}|${referer}`,
         duration: 'permanent',
       });

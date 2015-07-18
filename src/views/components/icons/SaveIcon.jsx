@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
@@ -9,7 +8,6 @@ const _RIGHT = 11.7;
 class SaveIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this._alter = this._alter.bind(this);
   }
@@ -70,6 +68,11 @@ class SaveIcon extends BaseComponent {
 SaveIcon.defaultProps = {
   played: false,
   altered: false,
+};
+
+SaveIcon.propTypes = {
+  altered: React.PropTypes.bool,
+  played: React.PropTypes.bool,
 };
 
 export default SaveIcon;

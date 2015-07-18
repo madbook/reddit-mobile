@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
@@ -7,7 +6,6 @@ import globals from '../../../globals';
 class CheckmarkIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this._maskID = 'mask' + globals().random();
   }
@@ -51,6 +49,10 @@ class CheckmarkIcon extends BaseComponent {
 
 CheckmarkIcon.defaultProps = {
   played: false,
+};
+
+CheckmarkIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default CheckmarkIcon;

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 import globals from '../../../globals';
@@ -10,7 +9,6 @@ var _half;
 class ShareIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
     this._planeMaskID = 'mask' + globals().random();
     this._lineMaskID = 'mask' + globals().random();
@@ -87,6 +85,10 @@ class ShareIcon extends BaseComponent {
 
 ShareIcon.defaultProps = {
   played: false,
+};
+
+ShareIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default ShareIcon;

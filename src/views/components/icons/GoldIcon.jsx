@@ -1,12 +1,10 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 class GoldIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -38,6 +36,10 @@ class GoldIcon extends BaseComponent {
 
 GoldIcon.defaultProps = {
   played: false,
+};
+
+GoldIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default GoldIcon;

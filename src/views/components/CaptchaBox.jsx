@@ -111,4 +111,15 @@ class CaptchaBox extends BaseComponent {
 
 }
 
+// TODO: someone more familiar with this component could eventually fill this out better
+CaptchaBox.propTypes = {
+  action: React.PropTypes.func.isRequired,
+  actionName: React.PropTypes.string.isRequired,
+  answer: React.PropTypes.string.isRequired,
+  // apiOptions: React.PropTypes.object,
+  cb: React.PropTypes.func.isRequired,
+  // error: React.PropTypes.bool.isRequired,
+  // iden: React.PropTypes.string.isRequired,
+};
+
 export default CaptchaBox;

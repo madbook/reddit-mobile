@@ -1,15 +1,12 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
-
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import globals from '../../../globals';
 
 class DownvoteIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._alter = this._alter.bind(this);
     this._play = this._play.bind(this);
     this._maskID = 'mask' + globals().random();
@@ -86,6 +83,11 @@ class DownvoteIcon extends BaseComponent {
 DownvoteIcon.defaultProps = {
   altered: false,
   played: false,
+};
+
+DownvoteIcon.propTypes = {
+  altered: React.PropTypes.bool,
+  played: React.PropTypes.bool,
 };
 
 export default DownvoteIcon;

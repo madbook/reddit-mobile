@@ -45,4 +45,9 @@ class TrackingPixel extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+TrackingPixel.propTypes = {
+  url: React.PropTypes.string.isRequired,
+};
+
 export default TrackingPixel;

@@ -56,4 +56,8 @@ class Modal extends BaseComponent {
 
 }
 
+Modal.propTypes = {
+  open: React.PropTypes.bool,
+};
+
 export default Modal;

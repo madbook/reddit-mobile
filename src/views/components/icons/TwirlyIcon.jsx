@@ -6,9 +6,6 @@ import SVG from '../../components/SVG';
 class TwirlyIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      altered: false,
-    };
     this._play = this._play.bind(this);
   }
 
@@ -37,7 +34,11 @@ class TwirlyIcon extends BaseComponent {
 }
 
 TwirlyIcon.defaultProps = {
-  opened: false,
+  played: false,
+};
+
+TwirlyIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default TwirlyIcon;

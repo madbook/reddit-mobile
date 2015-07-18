@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from './BaseComponent';
 
 const _DURATION = 0.4;
@@ -102,6 +101,11 @@ AutoTween.maxWidthFrom = function(node, dest, onComplete, clearProp, ease) {
 
 AutoTween.maxHeightFrom = function(node, dest, onComplete, clearProp, ease) {
   _tween(node, dest, 'maxHeight', 'offsetHeight', 'none', false, onComplete, clearProp, ease);
+};
+
+AutoTween.propTypes = {
+  className: React.PropTypes.string,
+  component: React.PropTypes.string,
 };
 
 export default AutoTween;

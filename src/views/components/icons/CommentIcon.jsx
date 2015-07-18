@@ -1,12 +1,10 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
 class CommentIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._play = this._play.bind(this);
   }
 
@@ -63,6 +61,10 @@ class CommentIcon extends BaseComponent {
 
 CommentIcon.defaultProps = {
   played: false,
+};
+
+CommentIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default CommentIcon;

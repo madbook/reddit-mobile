@@ -3,6 +3,7 @@ import cookies from 'cookies-js';
 import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import moment from 'moment';
+import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
 
@@ -46,7 +47,6 @@ class GoogleCarouselMetadata extends BaseComponent {
 
   render () {
     let props = this.props;
-
     let listing = props.listing;
     let comments = props.comments;
 
@@ -114,5 +114,13 @@ class GoogleCarouselMetadata extends BaseComponent {
     return <div dangerouslySetInnerHTML={{ __html: googleScript }} />;
   }
 }
+
+//TODO: someone more familiar with this component could eventually fill this out better
+GoogleCarouselMetadata.propTypes = {
+  comments: React.PropTypes.arrayOf(propTypes.comment).isRequired,
+  // listing: propTypes.listing.isRequired, this one appears to be getting empty objects sometimes
+  origin: React.PropTypes.string.isRequired,
+  // show: React.PropTypes.bool.isRequired,
+};
 
 export default GoogleCarouselMetadata;

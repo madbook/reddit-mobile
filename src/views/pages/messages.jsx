@@ -113,4 +113,12 @@ class MessagesPage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+MessagesPage.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  data: React.PropTypes.object,
+  renderTracking: React.PropTypes.string,
+  view: React.PropTypes.string.isRequired,
+};
+
 export default MessagesPage;

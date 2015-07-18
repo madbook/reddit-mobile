@@ -148,4 +148,17 @@ class UserSavedPage extends BaseComponent {
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+UserSavedPage.propTypes = {
+  after: React.PropTypes.bool,
+  // apiOptions: React.PropTypes.object,
+  before: React.PropTypes.bool,
+  data: React.PropTypes.object,
+  hidden: React.PropTypes.bool.isRequired,
+  page: React.PropTypes.number,
+  sort: React.PropTypes.string,
+  userName: React.PropTypes.string.isRequired,
+  userProfile: React.PropTypes.object,
+}
+
 export default UserSavedPage;

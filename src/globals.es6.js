@@ -4,8 +4,6 @@ var globals = {
   compact: false,
   csrf: null,
   experiments: null,
-  https: null,
-  httpsProxy: null,
   loginPath: null,
   loid: null,
   loidcreated: null,
@@ -15,7 +13,7 @@ var globals = {
   touch: null,
   url: null,
   user: null,
-  // TODO 20: apiOptions: null,
+  // TODO apiOptions: null,
 };
 
 export default function() {return globals};

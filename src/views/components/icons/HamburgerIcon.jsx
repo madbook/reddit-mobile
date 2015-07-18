@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import SVG from '../../components/SVG';
 
@@ -18,7 +17,6 @@ const _BOTTOM_BUN_Y = _SIZE / 2 + _HAMBURGER_SPACING;
 class HamburgerIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {
@@ -83,6 +81,11 @@ class HamburgerIcon extends BaseComponent {
 HamburgerIcon.defaultProps = {
   played: false,
   altered: false,
+};
+
+HamburgerIcon.propTypes = {
+  altered: React.PropTypes.bool,
+  played: React.PropTypes.bool,
 };
 
 export default HamburgerIcon;

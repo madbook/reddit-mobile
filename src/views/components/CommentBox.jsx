@@ -108,4 +108,12 @@ CommentBox.defaultProps = {
   savedReply: '',
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
+CommentBox.propTypes = {
+  // apiOptions: React.PropTypes.object,
+  onSubmit: React.PropTypes.func.isRequired,
+  // thingId: React.PropTypes.string.isRequired,
+  // savedReply: React.PropTypes.string.isRequired,
+};
+
 export default CommentBox;

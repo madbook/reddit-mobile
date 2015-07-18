@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BaseComponent from '../../components/BaseComponent';
 import MyMath from '../../../lib/danehansen/utils/MyMath';
 import Point from '../../../lib/danehansen/geom/Point';
@@ -13,7 +12,6 @@ const _LOOK_DIST = 3;
 class SearchIcon extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
     this._look = this._look.bind(this);
     this._lookPause = this._lookPause.bind(this);
     this._maskID = 'mask' + globals().random();
@@ -70,6 +68,10 @@ class SearchIcon extends BaseComponent {
 
 SearchIcon.defaultProps = {
   played: false,
+};
+
+SearchIcon.propTypes = {
+  played: React.PropTypes.bool,
 };
 
 export default SearchIcon;
