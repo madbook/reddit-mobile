@@ -18,7 +18,7 @@ class Ad extends BaseComponent {
       unavailable: false,
     };
 
-    this._scroll = this._scroll.bind(this);
+    this._checkImpression = this._checkImpression.bind(this);
 
     this._removeListeners = this._removeListeners.bind(this);
   }
@@ -114,11 +114,11 @@ class Ad extends BaseComponent {
       });
     });
 
-    globals().app.on(constants.SCROLL, this._scroll);
-    globals().app.on(constants.RESIZE, this._scroll);
+    globals().app.on(constants.SCROLL, this._checkImpression);
+    globals().app.on(constants.RESIZE, this._checkImpression);
 
     this._hasListeners = true;
-    this._scroll();
+    this._checkImpression();
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -133,13 +133,13 @@ class Ad extends BaseComponent {
 
   _removeListeners() {
     if (this._hasListeners) {
-      globals().app.off(constants.SCROLL, this._scroll);
-      globals().app.off(constants.RESIZE, this._scroll);
+      globals().app.off(constants.SCROLL, this._checkImpression);
+      globals().app.off(constants.RESIZE, this._checkImpression);
       this._hasListeners = false;
     }
   }
 
-  _scroll() {
+  _checkImpression() {
     var adObject = this.state.ad;
     if (adObject) {
       var node = React.findDOMNode(this);
