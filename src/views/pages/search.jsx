@@ -205,7 +205,7 @@ class SearchPage extends BaseComponent {
                   title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
         </div>,
 
-        <div className={ `container listings-container ${noListResults ? 'hidden' : ''}` }
+        <div className={ `container listing-container ${noListResults ? 'hidden' : ''}` }
              ref="listings" key="search-listings">
 
           <h4 className="text-center">Posts</h4>
