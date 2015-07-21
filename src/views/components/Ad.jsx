@@ -124,6 +124,7 @@ class Ad extends BaseComponent {
   componentDidUpdate (prevProps, prevState) {
     if (!prevState.loaded && this.state.loaded) {
       this.props.afterLoad();
+      this._checkImpression();
     }
   }
 
