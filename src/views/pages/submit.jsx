@@ -19,8 +19,8 @@ function _removeNewLines(title) {
 
 function _determineKind(body) {
   var words = body.trim(' ').split(' ');
-  var valid = /^(http|https):\/\/[^ "]+$/.test(words[0]);
-  if (words.length === 1 && valid) {
+  var hasProtocol = /^(http|https):\/\/[^ "]+$/.test(words[0]);
+  if (words.length === 1 && hasProtocol) {
     return 'link';
   } else {
     return 'self';
@@ -86,7 +86,7 @@ class SubmitPage extends BaseComponent {
       this.setState({
         error: {
           type: 'Incomplete:',
-          message: 'all fields must be filled out.',
+          message: 'all required fields must be filled out.',
           fields: errors,
         }
       });
@@ -107,9 +107,6 @@ class SubmitPage extends BaseComponent {
     }
     if (title === '') {
       errors.push('title');
-    }
-    if (body === '') {
-      errors.push('body');
     }
     return errors;
   }
