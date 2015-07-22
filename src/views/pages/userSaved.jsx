@@ -23,7 +23,7 @@ class UserSavedPage extends BaseComponent {
   }
 
   componentDidMount() {
-    UserSavedPage.populateData(this.props.api, this.props, true).done((function(data) {
+    UserSavedPage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data,
         loaded: true,
@@ -66,7 +66,7 @@ class UserSavedPage extends BaseComponent {
     }
 
     var page = props.page || 0;
-    var api = props.api;
+    var api = globals().api;
     var token = props.token;
 
     var app = globals().app;
@@ -123,7 +123,6 @@ class UserSavedPage extends BaseComponent {
               hideSubredditLabel={false}
               user={user}
               token={token}
-              api={api}
               hideUser={ false }
               loginPath={ loginPath }
               compact={props.compact}

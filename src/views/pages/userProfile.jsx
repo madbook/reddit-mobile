@@ -22,7 +22,7 @@ class UserProfilePage extends BaseComponent {
   }
 
   componentDidMount() {
-    UserProfilePage.populateData(this.props.api, this.props, true).done((function(data) {
+    UserProfilePage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data || {},
         loaded: true,
@@ -58,7 +58,6 @@ class UserProfilePage extends BaseComponent {
           key={'user-profile-' + name}
           user={this.props.user}
           token={this.props.token}
-          api={this.props.api}
         />
       );
     }

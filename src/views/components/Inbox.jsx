@@ -50,7 +50,6 @@ class Inbox extends BaseComponent {
                 token={props.token}
                 key={'message-' + m.name}
                 message={m}
-                api={props.api}
                 apiOptions={props.apiOptions}
                 onSubmit={onSubmit}
               />

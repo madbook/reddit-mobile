@@ -52,7 +52,7 @@ class MessagePreview extends BaseComponent {
       thingId: this.props.message.parent_id || this.props.message.name,
     });
 
-    var options = this.props.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: message,
@@ -62,7 +62,7 @@ class MessagePreview extends BaseComponent {
       sending: true,
     });
 
-    this.props.api.messages.post(options).done((function(message) {
+    globals().api.messages.post(options).done((function(message) {
       if (this.props.onSubmit) {
         this.props.onSubmit(message.data);
       }
@@ -202,7 +202,6 @@ class MessagePreview extends BaseComponent {
             messages={message.replies}
             user={this.props.user}
             token={this.props.token}
-            api={this.props.api}
             apiOptions={this.props.apiOptions}
           />
         </div>

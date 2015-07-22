@@ -33,7 +33,7 @@ class ListingPage extends BaseComponent {
   }
 
   componentDidMount() {
-    ListingPage.populateData(this.props.api, this.props, true).done((function(data) {
+    ListingPage.populateData(globals().api, this.props, true).done((function(data) {
       var name = data.data.listing.name;
       var linkComment = '';
       if (localStorage.getItem(name)) {
@@ -74,14 +74,14 @@ class ListingPage extends BaseComponent {
     }
 
     var link = new models.Link(listing);
-    var options = props.api.buildOptions(props.apiOptions);
+    var options = globals().api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       model: link,
       changeSet: newText,
     });
 
-    props.api.links.patch(options).then(function(res) {
+    globals().api.links.patch(options).then(function(res) {
       if (res) {
         var data = this.state.data;
         var listing = data.data.listing;
@@ -103,7 +103,7 @@ class ListingPage extends BaseComponent {
 
   onDelete(id) {
     var props = this.props;
-    var options = props.api.buildOptions(props.apiOptions);
+    var options = globals().api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -111,7 +111,7 @@ class ListingPage extends BaseComponent {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    props.api.links.delete(options).then(function(){
+    globals().api.links.delete(options).then(function(){
       var data = globals().app.state.data;
       _.remove(data.data, {name: id});
       globals().app.setState({
@@ -142,7 +142,7 @@ class ListingPage extends BaseComponent {
     var listing = data ? data.listing : {};
     var comments = data ? data.comments : [];
 
-    var api = props.api;
+    var api = globals().api;
     var user = props.user;
     var token = props.token;
     var author = listing.author;
@@ -181,7 +181,6 @@ class ListingPage extends BaseComponent {
           single={ true }
           user={ user }
           token={ token }
-          api={ api }
           loginPath={ loginPath }
           saveUpdatedText={ this.saveUpdatedText.bind(this) }
           editing={ editing }
@@ -197,7 +196,6 @@ class ListingPage extends BaseComponent {
           thingId={ listing.name }
           user={ user }
           token={ token }
-          api={ api }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           loginPath={ loginPath }
@@ -269,7 +267,6 @@ class ListingPage extends BaseComponent {
                     op={ author }
                     user={ user }
                     token={ token }
-                    api={api}
                     loginPath={loginPath}
                     apiOptions={apiOptions}
                   />

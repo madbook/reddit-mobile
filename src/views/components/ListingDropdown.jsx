@@ -210,17 +210,17 @@ class ListingDropdown extends BaseComponent {
   _onSaveClick(e) {
     e.preventDefault();
 
-    var options = globals().app.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
     if (this.state.saved) {
-      globals().app.api.saved.delete(options).done(() => { });
+      globals().api.saved.delete(options).done(() => { });
       this.setState({ saved: false });
     } else {
-      globals().app.api.saved.post(options).done(() => { });
+      globals().api.saved.post(options).done(() => { });
       this.setState({ saved: true });
     }
 
@@ -233,17 +233,17 @@ class ListingDropdown extends BaseComponent {
     e.preventDefault();
     // api call
     globals().app.emit('hide', this.props.listing.id);
-    var options = globals().app.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
     if (this.state.hidden) {
-      globals().app.api.hidden.delete(options).done(() => { });
+      globals().api.hidden.delete(options).done(() => { });
       this.setState({ hidden: false });
     } else {
-      globals().app.api.hidden.post(options).done(() => { });
+      globals().api.hidden.post(options).done(() => { });
       this.setState({ hidden: true });
     }
 
@@ -272,13 +272,13 @@ class ListingDropdown extends BaseComponent {
       other_reason: textEl.value.trim(),
     });
 
-    var options = globals().app.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: report,
     });
 
-    globals().app.api.reports.post(options).done((comment) => {
+    globals().api.reports.post(options).done((comment) => {
       this._onReport();
     });
 

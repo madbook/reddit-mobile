@@ -22,7 +22,7 @@ class SubredditAboutPage extends BaseComponent {
   }
 
   componentDidMount() {
-    SubredditAboutPage.populateData(this.props.api, this.props, true).done((function (data) {
+    SubredditAboutPage.populateData(globals().api, this.props, true).done((function (data) {
       this.setState({
         data: data,
         loaded: true

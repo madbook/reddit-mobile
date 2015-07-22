@@ -74,7 +74,7 @@ class SearchPage extends BaseComponent {
     if (props.query && props.query.q) {
       let currentQueryKey = ctx._generateUniqueKey();
       ctx._lastQueryKey = currentQueryKey;
-      SearchPage.populateData(props.api, props, true).done(function (data) {
+      SearchPage.populateData(globals().api, props, true).done(function (data) {
         if (currentQueryKey === ctx._lastQueryKey) {
           if (!SearchPage.isNoRecordsFound(data)) {
             ctx.setState({
@@ -229,7 +229,6 @@ class SearchPage extends BaseComponent {
             apiOptions={ apiOptions }
             user={ props.user }
             token={ props.token }
-            api={ props.api }
             compact={ compact }
           />
           <div className="row pageNav">

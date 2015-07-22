@@ -24,7 +24,7 @@ class UserActivityPage extends BaseComponent {
   }
 
   componentDidMount() {
-    UserActivityPage.populateData(this.props.api, this.props, true).done((function(data) {
+    UserActivityPage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data,
         loaded: true,
@@ -61,7 +61,7 @@ class UserActivityPage extends BaseComponent {
     }
 
     var page = props.page || 0;
-    var api = props.api;
+    var api = globals().api;
     var token = props.token;
 
     var app = globals().app;
@@ -113,7 +113,6 @@ class UserActivityPage extends BaseComponent {
             hideSubredditLabel={false}
             user={user}
             token={token}
-            api={api}
             hideUser={ true }
             loginPath={ loginPath }
             apiOptions={ props.apiOptions }

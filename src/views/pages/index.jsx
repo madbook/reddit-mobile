@@ -34,7 +34,7 @@ class IndexPage extends BaseComponent {
   }
 
   componentDidMount() {
-    IndexPage.populateData(this.props.api, this.props, true).done((function(data) {
+    IndexPage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data,
         loaded: true,
@@ -80,7 +80,7 @@ class IndexPage extends BaseComponent {
                              props.subredditName !== 'all';
 
     var page = props.page || 0;
-    var api = props.api;
+    var api = globals().api;
     var token = props.token;
     var user = props.user;
     var app = globals().app;
@@ -194,7 +194,6 @@ class IndexPage extends BaseComponent {
             hideSubredditLabel={ hideSubredditLabel }
             user={user}
             token={token}
-            api={api}
             loginPath={loginPath}
             compact={compact}
             subredditTitle={subreddit}

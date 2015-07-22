@@ -32,7 +32,7 @@ class SubredditSelectionButton extends BaseComponent {
     this.setState({
       lastQuery: newVal
     });
-    var api = this.props.api;
+    var api = globals().api;
 
     var options = api.buildOptions(this.props.apiOptions);
     options.query.type = ['sr'];

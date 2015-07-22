@@ -64,7 +64,7 @@ class CommentBox extends BaseComponent {
       text: text
     });
 
-    var options = this.props.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: comment,
@@ -72,7 +72,7 @@ class CommentBox extends BaseComponent {
 
     var onSubmit = this.props.onSubmit.bind(this);
 
-    this.props.api.comments.post(options).done((function(comment) {
+    globals().api.comments.post(options).done((function(comment) {
       this.props.onSubmit(comment.data);
     }).bind(this));
 

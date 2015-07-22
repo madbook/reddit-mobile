@@ -22,7 +22,7 @@ class MessagesPage extends BaseComponent {
   }
 
   componentDidMount() {
-    MessagesPage.populateData(this.props.api, this.props, true).done((function(data) {
+    MessagesPage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data || {},
         loaded: true,
@@ -56,7 +56,6 @@ class MessagesPage extends BaseComponent {
           key={'mesages-' + view}
           user={this.props.user}
           token={this.props.token}
-          api={this.props.api}
           apiOptions={this.props.apiOptions}
         />
       );

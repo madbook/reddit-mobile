@@ -125,7 +125,7 @@ class Comment extends BaseComponent {
 
   onDelete (id) {
     var props = this.props;
-    var options = props.api.buildOptions(props.apiOptions);
+    var options = globals().api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -133,7 +133,7 @@ class Comment extends BaseComponent {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    props.api.links.delete(options).then(function(){
+    globals().api.links.delete(options).then(function(){
       var deletedComment = this.state.comment;
       deletedComment.body_html = '<p>[deleted]</p>';
       deletedComment.author = '[deleted]';
@@ -152,14 +152,14 @@ class Comment extends BaseComponent {
     }
 
     var comment = new models.Comment(this.state.comment);
-    var options = props.api.buildOptions(props.apiOptions);
+    var options = globals().api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       model: comment,
       changeSet: newText,
     });
     // update comment here
-    props.api.comments.patch(options).then(function(res) {
+    globals().api.comments.patch(options).then(function(res) {
       if (res.data) {
         this.setState({
           comment: res.data,
@@ -247,7 +247,6 @@ class Comment extends BaseComponent {
               setScore={ this.setScore }
               thing={ this.props.comment }
               token={ this.props.token }
-              api={ this.props.api }
               loginPath={ this.props.loginPath }
               apiOptions={ this.props.apiOptions }
             />

@@ -195,7 +195,7 @@ class Listing extends BaseComponent {
     if (!props.hideComments) {
       var commentsNode = (
         <li className='Listing-comments linkbar-item-no-seperator'>
-          <MobileButton 
+          <MobileButton
             className='Listing-commentsbutton'
             href={ listing.cleanPermalink }>
             <span className='icon-comments-circled listing-footer-icon' />
@@ -217,7 +217,6 @@ class Listing extends BaseComponent {
           <Vote
             thing={ listing }
             token={ props.token }
-            api={ props.api }
             apiOptions={ props.apiOptions }
             loginPath={ props.loginPath }
           />
@@ -278,7 +277,7 @@ class Listing extends BaseComponent {
       <article ref='root' style={ {zIndex: props.z || 1} } className={'Listing' + (compact ? ' compact' : '') + (props.listing.promoted ? ' Listing-sponsored' : '') }>
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
-          <ListingContent 
+          <ListingContent
                           isThumbnail={compact}
                           expand = { this.expand }
                           expanded = { state.expanded && !expandedCompact }

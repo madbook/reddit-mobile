@@ -21,7 +21,7 @@ class UserGildPage extends BaseComponent {
   }
 
   componentDidMount() {
-    UserGildPage.populateData(this.props.api, this.props, true).done((function(data) {
+    UserGildPage.populateData(globals().api, this.props, true).done((function(data) {
       this.setState({
         data: data,
         loaded: true,
@@ -44,7 +44,7 @@ class UserGildPage extends BaseComponent {
       );
     }
 
-    var api = this.props.api;
+    var api = globals().api;
     var token = this.props.token;
     var app = globals().app;
     var user = this.props.user || {};

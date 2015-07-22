@@ -133,13 +133,13 @@ class SubmitPage extends BaseComponent {
     }
 
     var link = new models.Link(newLink);
-    var options = props.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: link,
     });
 
-    var deferred = props.api.links.post(options)
+    var deferred = globals().api.links.post(options)
 
     deferred.then(function(res) {
       if (res.data && res.data.url) {

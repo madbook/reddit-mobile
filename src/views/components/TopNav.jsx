@@ -27,7 +27,7 @@ function loadSubredditData(ctx) {
       ctx.props.subredditName.indexOf('+') === -1 &&
       ctx.props.subredditName !== 'all') {
 
-    SubredditAboutPage.populateData(ctx.props.api, ctx.props, true, false).done(function (data) {
+    SubredditAboutPage.populateData(globals().api, ctx.props, true, false).done(function (data) {
       ctx.setState({
         loaded: true,
         subredditId: ((data || {}).data || {}).name,
@@ -169,7 +169,7 @@ class TopNav extends BaseComponent {
         sr: state.subredditId
       });
 
-      var options = props.api.buildOptions(props.apiOptions);
+      var options = globals().api.buildOptions(props.apiOptions);
       options = Object.assign(options, {
         model: subscription
       });
@@ -180,7 +180,7 @@ class TopNav extends BaseComponent {
       });
 
       // and send request to the server to do actual work
-      props.api.subscriptions.post(options)
+      globals().api.subscriptions.post(options)
         .done(function (data) {
           // if it fails revert back to the original state
           if (Object.keys(data.data).length) {

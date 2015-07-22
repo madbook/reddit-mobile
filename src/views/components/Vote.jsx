@@ -92,13 +92,13 @@ class Vote extends BaseComponent {
       id: this.props.thing.name,
     });
 
-    var options = this.props.api.buildOptions(this.props.apiOptions);
+    var options = globals().api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: vote,
     });
 
-    this.props.api.votes.post(options);
+    globals().api.votes.post(options);
     globals().app.emit('vote', vote);
 
     return true;

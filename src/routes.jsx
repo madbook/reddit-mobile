@@ -1,10 +1,11 @@
 // This file maps url routes to React element changes.
 
-import q from 'q';
-import { stringify } from 'querystring';
 import React from 'react';
-import superagent from 'superagent';
+import globals from './globals';
+import q from 'q';
 import querystring from 'querystring';
+import { stringify } from 'querystring';
+import superagent from 'superagent';
 
 // Load models from snoode (api lib) so we can post new ones.
 import { models } from 'snoode';
@@ -239,6 +240,7 @@ function routes(app) {
 
     props.app = app;
     props.api = app.api;
+    globals().api = app.api;
 
     if (ctx.token) {
       props.token = ctx.token;
@@ -250,7 +252,7 @@ function routes(app) {
       props.loidcreated = ctx.loidcreated;
     }
 
-    props.apiOptions = props.api.buildOptions(props.apiOptions);
+    props.apiOptions = globals().api.buildOptions(props.apiOptions);
 
     if (app.config.apiPassThroughHeaders) {
       for (var h in ctx.headers) {
@@ -295,7 +297,7 @@ function routes(app) {
     }
 
     var promises = [
-      IndexPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      IndexPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     if (props.subredditName &&
@@ -303,7 +305,7 @@ function routes(app) {
       props.subredditName !== 'all') {
 
       promises.push(
-        SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false)
+        SubredditAboutPage.populateData(globals().api, props, this.renderSynchronous, false)
       );
 
     } else {
@@ -351,7 +353,7 @@ function routes(app) {
     });
 
     var promises = [
-      SubredditAboutPage.populateData(props.api, props, this.renderSynchronous, false),
+      SubredditAboutPage.populateData(globals().api, props, this.renderSynchronous, false),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -403,7 +405,7 @@ function routes(app) {
 
     if (props.query) {
       promises.push(
-        SearchPage.populateData(props.api, props, this.renderSynchronous, this.useCache)
+        SearchPage.populateData(globals().api, props, this.renderSynchronous, this.useCache)
       );
     }
 
@@ -444,7 +446,7 @@ function routes(app) {
     });
 
     var promises = [
-      ListingPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      ListingPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -494,7 +496,7 @@ function routes(app) {
     });
 
     var promises = [
-      UserProfilePage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      UserProfilePage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -576,7 +578,7 @@ function routes(app) {
     });
 
     var promises = [
-      UserGildPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      UserGildPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -630,7 +632,7 @@ function routes(app) {
     });
 
     var promises = [
-      UserActivityPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      UserActivityPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -686,7 +688,7 @@ function routes(app) {
     });
 
     var promises = [
-      UserSavedPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      UserSavedPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
@@ -977,7 +979,7 @@ function routes(app) {
     });
 
     var promises = [
-      MessagesPage.populateData(props.api, props, this.renderSynchronous, this.useCache),
+      MessagesPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
     var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
