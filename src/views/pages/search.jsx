@@ -26,7 +26,6 @@ class SearchPage extends BaseComponent {
       data: props.data || {},
       subreddits: props.subreddits || {},
       loaded: !!(props.data && props.data.data),
-      compact: props.compact,
     };
   }
 
@@ -138,7 +137,6 @@ class SearchPage extends BaseComponent {
 
     var app = globals().app;
     var apiOptions = props.apiOptions;
-    var compact = state.compact;
 
     var controls;
     var tracking;
@@ -229,7 +227,6 @@ class SearchPage extends BaseComponent {
             apiOptions={ apiOptions }
             user={ props.user }
             token={ props.token }
-            compact={ compact }
           />
           <div className="row pageNav">
             <div className="col-xs-12">
@@ -257,7 +254,6 @@ class SearchPage extends BaseComponent {
           user={ this.props.user }
           loid={ this.props.loid }
           loidcreated={ this.props.loidcreated }
-          compact={ this.props.compact }
           experiments={ this.props.experiments }
         />);
     }

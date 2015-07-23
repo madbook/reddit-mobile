@@ -237,10 +237,10 @@ function routes(app) {
     };
 
     props = Object.assign({}, defaultProps, props, ctx.props);
-
     props.app = app;
     props.api = app.api;
     globals().api = app.api;
+    globals().compact = props.compact;
 
     if (ctx.token) {
       props.token = ctx.token;

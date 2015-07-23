@@ -25,7 +25,7 @@ class SideNav extends BaseComponent {
     this.state = {
       opened: false,
       twirly: '',
-      compact: props.compact,
+      compact: globals().compact,
     };
 
     this._onTwirlyClick = this._onTwirlyClick.bind(this);
@@ -353,9 +353,7 @@ class SideNav extends BaseComponent {
 
   _onViewClick() {
     var app = globals().app;
-
     var compact = this.state.compact;
-
     let date = new Date();
     date.setFullYear(date.getFullYear() + 2);
 
@@ -368,15 +366,13 @@ class SideNav extends BaseComponent {
       });
     }
 
-    this.setState({
-      show: false,
-    });
-
-    app.emit(constants.COMPACT_TOGGLE, !compact);
+    var newCompact = !compact;
+    globals().compact = newCompact;
+    app.emit(constants.COMPACT_TOGGLE, newCompact);
     this._close();
-
     this.setState({
-      compact: !compact,
+      compact: newCompact,
+      show: false,
     });
   }
 }

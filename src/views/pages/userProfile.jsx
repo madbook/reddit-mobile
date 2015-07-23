@@ -70,7 +70,6 @@ class UserProfilePage extends BaseComponent {
           user={ this.props.user }
           loid={ this.props.loid }
           loidcreated={ this.props.loidcreated }
-          compact={ this.props.compact }
           experiments={ this.props.experiments }
         />);
     }

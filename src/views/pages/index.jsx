@@ -26,7 +26,7 @@ class IndexPage extends BaseComponent {
     this.state = {
       data: props.data || {},
       subredditName: subredditName,
-      compact: props.compact,
+      compact: globals().compact,
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
@@ -46,9 +46,9 @@ class IndexPage extends BaseComponent {
     globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
-  _onCompactToggle (state) {
+  _onCompactToggle() {
     this.setState({
-      compact: state,
+      compact: globals().compact,
     });
   }
 
@@ -64,7 +64,6 @@ class IndexPage extends BaseComponent {
     var loading;
     var props = this.props;
     var data = this.state.data;
-
     var compact = this.state.compact;
 
     if (!this.state.loaded) {
@@ -156,7 +155,6 @@ class IndexPage extends BaseComponent {
           user={ props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
-          compact={ compact }
           experiments={ props.experiments }
         />);
     }

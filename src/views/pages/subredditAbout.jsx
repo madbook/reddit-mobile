@@ -58,7 +58,6 @@ class SubredditAboutPage extends BaseComponent {
           user={ props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
-          compact={ props.compact }
           experiments={ props.experiments }
         />);
     }

@@ -17,12 +17,16 @@ function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
 }
 
+function _isCompact(props) {
+  return props.compact && !props.single;
+}
+
 class Listing extends BaseComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      compact: props.compact && !props.single,
+      compact: _isCompact(props),
       expanded: false,
       loaded: false,
       tallestHeight: 0,
@@ -31,12 +35,17 @@ class Listing extends BaseComponent {
       width: 0,
     };
 
-    this._onCompactToggle = this._onCompactToggle.bind(this);
     this.checkPos = this.checkPos.bind(this);
     this.resize = this.resize.bind(this);
     this.onReport = this.onReport.bind(this);
     this.onHide = this.onHide.bind(this);
     this.expand = this.expand.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (typeof nextProps.compact !== 'undefined' || typeof nextProps.single !== 'undefined') {
+      this.setState({compact: _isCompact(nextProps)});
+    }
   }
 
   onReport() {
@@ -305,16 +314,12 @@ class Listing extends BaseComponent {
       this._loadContent();
       globals().app.on(constants.RESIZE, this.resize);
       this.resize();
-    } else {
-      globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 
   componentWillUnmount() {
     if (this.props.single) {
       globals().app.off(constants.RESIZE, this.resize);
-    } else {
-      globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
     }
   }
 
@@ -353,10 +358,6 @@ class Listing extends BaseComponent {
 
   _loadContent() {
     this.setState({loaded: true}, this.resize);
-  }
-
-  _onCompactToggle(state) {
-    this.setState({compact: state && !this.props.single});
   }
 }
 

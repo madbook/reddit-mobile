@@ -66,9 +66,6 @@ function _wrapSelftextExpand(fn) {
 class ListingContent extends BaseComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-    };
   }
 
   componentWillUpdate(nextProps, nextState) {

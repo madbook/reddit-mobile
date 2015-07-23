@@ -1,22 +1,22 @@
-import uniq from 'lodash/array/uniq';
 import React from 'react';
-
 import constants from '../../constants';
 import globals from '../../globals';
+import uniq from 'lodash/array/uniq';
 
-import BaseComponent from './BaseComponent';
-import Listing from '../components/Listing';
-import CommentPreview from '../components/CommentPreview';
 import Ad from '../components/Ad';
+import BaseComponent from './BaseComponent';
+import CommentPreview from '../components/CommentPreview';
+import Listing from '../components/Listing';
 
-const AD_LOCATION = 11;
+const _AD_LOCATION = 11;
 
 class ListingList extends BaseComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      adLocation: Math.min(AD_LOCATION, props.listings.length)
+      adLocation: Math.min(_AD_LOCATION, props.listings.length),
+      compact: globals().compact,
     };
 
     this._lazyLoad = this._lazyLoad.bind(this);
@@ -27,11 +27,18 @@ class ListingList extends BaseComponent {
     globals().app.on(constants.RESIZE, this._resize);
     this._addListeners();
     this._resize();
+    if (typeof this.props.compact === 'undefined') {
+      this._onCompactToggle = this._onCompactToggle.bind(this);
+      globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    }
   }
 
   componentWillUnmount() {
     this._removeListeners();
     globals().app.off(constants.RESIZE, this._resize);
+    if (typeof this.props.compact === 'undefined') {
+      globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    }
   }
 
   _getLoadedDistance () {
@@ -124,6 +131,7 @@ class ListingList extends BaseComponent {
         {...this.props}
         srnames={srnames}
         afterLoad={this._checkAdPos.bind(this)}
+        compact={ this.state.compact }
         />
     );
   }
@@ -132,7 +140,7 @@ class ListingList extends BaseComponent {
     var props = this.props;
     var page = props.firstPage || 0;
     var length = props.listings.length;
-
+    var compact = this.state.compact;
     var listings = (
       props.listings.map(function(listing, i) {
 
@@ -156,6 +164,7 @@ class ListingList extends BaseComponent {
                 listing={listing}
                 z={length - i}
                 {...props}
+                compact={ compact }
               />
             );
           }
@@ -174,13 +183,24 @@ class ListingList extends BaseComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.compact !== this.props.compact) {
+    if (prevState.compact !== this.state.compact) {
       this._resize();
       this._lazyLoad();
     }
     if (prevProps.listings !== this.props.listings) {
       this._addListeners();
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var compact = nextProps.compact;
+    if (compact !== 'undefined' && compact !==this.state.compact) {
+      this.setState({compact: compact});
+    }
+  }
+
+  _onCompactToggle() {
+    this.setState({compact: globals().compact});
   }
 }
 

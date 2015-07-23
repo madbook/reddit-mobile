@@ -15,11 +15,9 @@ class UserSavedPage extends BaseComponent {
 
     this.state = {
       data: props.data || {},
-      compact: props.compact,
     };
 
     this.state.loaded = this.state.data && this.state.data.data;
-    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
@@ -31,21 +29,10 @@ class UserSavedPage extends BaseComponent {
     }).bind(this));
 
     globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
-    globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentDidUpdate() {
     globals().app.emit('page:update', this.props);
-  }
-
-  _onCompactToggle (state) {
-    this.setState({
-      compact: state,
-    });
-  }
-
-  componentWillUnmount() {
-    globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   render() {
@@ -92,7 +79,6 @@ class UserSavedPage extends BaseComponent {
           user={ props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
-          compact={ this.props.compact }
           experiments={ this.props.experiments }
         />);
     }
@@ -125,7 +111,6 @@ class UserSavedPage extends BaseComponent {
               token={token}
               hideUser={ false }
               loginPath={ loginPath }
-              compact={props.compact}
               apiOptions={ props.apiOptions }
             />
           </div>
