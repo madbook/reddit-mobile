@@ -61,7 +61,7 @@ class Ad extends BaseComponent {
     }
 
     var app = globals().app;
-    var loggedIn = !!this.props.token;
+    var loggedIn = !!globals().token;
     var origin = (loggedIn ?
       app.config.authAPIOrigin :
         app.config.nonAuthAPIOrigin)
@@ -73,7 +73,7 @@ class Ad extends BaseComponent {
 
     // If user is not logged in, send the loid in the promo request
     if (loggedIn) {
-      headers.authorization = 'bearer ' + this.props.token;
+      headers.authorization = 'bearer ' + globals().token;
     } else {
       postData.loid = app.state.loid;
     }
@@ -186,7 +186,6 @@ class Ad extends BaseComponent {
 Ad.propTypes = {
   afterLoad: React.PropTypes.func.isRequired,
   compact: React.PropTypes.bool.isRequired,
-  token: React.PropTypes.string,
 };
 
 export default Ad;

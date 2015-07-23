@@ -89,7 +89,6 @@ class Listing extends BaseComponent {
         showDel={ showDel }
         onReport={ this.onReport }
         onHide={ this.onHide }
-        token={ props.token }
         apiOptions={ props.apiOptions }
       />
     );
@@ -225,7 +224,6 @@ class Listing extends BaseComponent {
         <div className='Listing-vote'>
           <Vote
             thing={ listing }
-            token={ props.token }
             apiOptions={ props.apiOptions }
             loginPath={ props.loginPath }
           />

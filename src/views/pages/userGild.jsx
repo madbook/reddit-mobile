@@ -45,7 +45,6 @@ class UserGildPage extends BaseComponent {
     }
 
     var api = globals().api;
-    var token = this.props.token;
     var app = globals().app;
     var user = this.props.user || {};
 

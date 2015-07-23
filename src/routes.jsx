@@ -241,6 +241,7 @@ function routes(app) {
     props.api = app.api;
     globals().api = app.api;
     globals().compact = props.compact;
+    globals().token = ctx.token;
 
     if (ctx.token) {
       props.token = ctx.token;
@@ -861,6 +862,7 @@ function routes(app) {
   router.get('/goto', function * () {
     let location = this.query.location.toLowerCase();
     let token = this.token;
+    console.log("router.get", token);
     let apiOptions;
     let result;
 

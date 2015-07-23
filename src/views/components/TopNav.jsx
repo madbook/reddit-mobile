@@ -93,6 +93,20 @@ class TopNav extends BaseComponent {
     if (props.subredditName &&
         props.subredditName.indexOf('+') === -1 &&
         props.subredditName !== 'all') {
+
+      if (globals().token) {
+        var subscriptionButton = (
+          <li className='Dropdown-li'>
+            <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
+              <SaveIcon altered={this.state.userIsSubscribed}/>
+              <span className='Dropdown-text'>
+                { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
+              </span>
+            </MobileButton>
+          </li>
+        );
+      }
+
       subredditMenu = (
         <SeashellsDropdown right={ true }>
           <li className='Dropdown-li'>
@@ -108,14 +122,7 @@ class TopNav extends BaseComponent {
               <span className='Dropdown-text'>Wiki</span>
             </MobileButton>
           </li>
-          <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
-            <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
-              <SaveIcon altered={this.state.userIsSubscribed}/>
-              <span className='Dropdown-text'>
-                { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
-              </span>
-            </MobileButton>
-          </li>
+          { subscriptionButton }
         </SeashellsDropdown>
       );
     }
@@ -205,7 +212,7 @@ class TopNav extends BaseComponent {
 
       // if it's subreddit do more work
       if (newName && newName.startsWith('r/') && newName.indexOf(currentSubredditName) !== 0) {
-        loaded = !(newName && this.props.token);
+        loaded = !(newName && globals().token);
         if (!loaded) {
           userIsSubscribed = false;
           loadSubredditData(this);

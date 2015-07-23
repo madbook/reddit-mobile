@@ -54,7 +54,6 @@ class UserSavedPage extends BaseComponent {
 
     var page = props.page || 0;
     var api = globals().api;
-    var token = props.token;
 
     var app = globals().app;
     var user = props.user;
@@ -108,7 +107,6 @@ class UserSavedPage extends BaseComponent {
               page={page}
               hideSubredditLabel={false}
               user={user}
-              token={token}
               hideUser={ false }
               loginPath={ loginPath }
               apiOptions={ props.apiOptions }

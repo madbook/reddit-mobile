@@ -49,7 +49,6 @@ class UserActivityPage extends BaseComponent {
 
     var page = props.page || 0;
     var api = globals().api;
-    var token = props.token;
 
     var app = globals().app;
     var user = props.user;
@@ -98,7 +97,6 @@ class UserActivityPage extends BaseComponent {
             page={page}
             hideSubredditLabel={false}
             user={user}
-            token={token}
             hideUser={ true }
             loginPath={ loginPath }
             apiOptions={ props.apiOptions }

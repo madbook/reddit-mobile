@@ -246,7 +246,6 @@ class Comment extends BaseComponent {
             <Vote
               setScore={ this.setScore }
               thing={ this.props.comment }
-              token={ this.props.token }
               loginPath={ this.props.loginPath }
               apiOptions={ this.props.apiOptions }
             />
@@ -259,7 +258,6 @@ class Comment extends BaseComponent {
                 subreddit={ props.subredditName }
                 permalink={ permalink }
                 onReport={ this.onReport }
-                token={ props.token }
                 apiOptions={ props.apiOptions }
                 listing={props.comment}
                 showEdit={ showEdit }

@@ -226,7 +226,6 @@ class SearchPage extends BaseComponent {
             httpsProxy={ props.httpsProxy }
             apiOptions={ apiOptions }
             user={ props.user }
-            token={ props.token }
           />
           <div className="row pageNav">
             <div className="col-xs-12">

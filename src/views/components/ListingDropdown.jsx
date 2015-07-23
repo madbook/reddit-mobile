@@ -52,7 +52,7 @@ class ListingDropdown extends BaseComponent {
     var hideLink;
     var saveLink;
 
-    if (props.token) {
+    if (globals().token) {
       if (this.state.reportFormOpen) {
         reportForm = (
           <form className='ListingDropdown-form' action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>

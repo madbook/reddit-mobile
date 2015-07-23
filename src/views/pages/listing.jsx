@@ -144,7 +144,6 @@ class ListingPage extends BaseComponent {
 
     var api = globals().api;
     var user = props.user;
-    var token = props.token;
     var author = listing.author;
     var sort = props.sort || 'best';
     var app = globals().app;
@@ -180,7 +179,6 @@ class ListingPage extends BaseComponent {
           listing={ listing }
           single={ true }
           user={ user }
-          token={ token }
           loginPath={ loginPath }
           saveUpdatedText={ this.saveUpdatedText.bind(this) }
           editing={ editing }
@@ -195,7 +193,6 @@ class ListingPage extends BaseComponent {
           apiOptions={ apiOptions }
           thingId={ listing.name }
           user={ user }
-          token={ token }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           loginPath={ loginPath }
@@ -265,7 +262,6 @@ class ListingPage extends BaseComponent {
                     nestingLevel={ 0 }
                     op={ author }
                     user={ user }
-                    token={ token }
                     loginPath={loginPath}
                     apiOptions={apiOptions}
                   />

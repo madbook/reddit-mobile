@@ -201,7 +201,6 @@ class MessagePreview extends BaseComponent {
             isReply={true}
             messages={message.replies}
             user={this.props.user}
-            token={this.props.token}
             apiOptions={this.props.apiOptions}
           />
         </div>
