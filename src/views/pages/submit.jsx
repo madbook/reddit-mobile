@@ -367,7 +367,7 @@ class SubmitPage extends BaseComponent {
     }
 
     return (
-      <form className='Submit-form' action={ '/submit' } method='POST' onSubmit={ this.submit.bind(this) }>
+      <form className='Submit-form' action={ '/submit' } method='POST' >
         { postForm }
           <SubredditSelectionButton
             {...props}
