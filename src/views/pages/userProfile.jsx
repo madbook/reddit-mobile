@@ -79,7 +79,7 @@ class UserProfilePage extends BaseComponent {
           user={ user }
           hideSort={ true }
           baseUrl={ this.props.url }
-          loginPath={ this.props.loginPath } />
+        />
 
         <div>
           { profile }

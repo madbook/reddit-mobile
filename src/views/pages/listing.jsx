@@ -147,13 +147,8 @@ class ListingPage extends BaseComponent {
     var author = listing.author;
     var sort = props.sort || 'best';
     var app = globals().app;
-
     var listingElement;
     var commentBoxElement;
-
-    var loginPath = props.loginPath + '/?' + querystring.stringify({
-      originalUrl: props.url,
-    });
     var apiOptions = props.apiOptions;
     var singleComment;
     var permalink;
@@ -179,7 +174,6 @@ class ListingPage extends BaseComponent {
           listing={ listing }
           single={ true }
           user={ user }
-          loginPath={ loginPath }
           saveUpdatedText={ this.saveUpdatedText.bind(this) }
           editing={ editing }
           toggleEdit={ this.toggleEdit.bind(this) }
@@ -195,7 +189,6 @@ class ListingPage extends BaseComponent {
           user={ user }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
-          loginPath={ loginPath }
           savedReply={ savedReply }
         />
       );
@@ -239,7 +232,6 @@ class ListingPage extends BaseComponent {
           sort={ sort }
           list='comments'
           baseUrl={ props.url }
-          loginPath={ loginPath }
         />
         <div className='container' key='container'>
           { listingElement }
@@ -260,7 +252,6 @@ class ListingPage extends BaseComponent {
                     nestingLevel={ 0 }
                     op={ author }
                     user={ user }
-                    loginPath={loginPath}
                     apiOptions={apiOptions}
                   />
                 );

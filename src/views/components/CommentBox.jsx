@@ -51,7 +51,7 @@ class CommentBox extends BaseComponent {
       if (text) {
         window.localStorage.setItem(this.props.thingId, text);
       }
-      window.location = this.props.loginPath
+      window.location = globals().loginPath;
       return;
     }
 

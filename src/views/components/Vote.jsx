@@ -79,7 +79,7 @@ class Vote extends BaseComponent {
 
   submitVote(direction) {
     if (!globals().token) {
-      window.location = this.props.loginPath;
+      window.location = globals().loginPath;
       return;
     }
 

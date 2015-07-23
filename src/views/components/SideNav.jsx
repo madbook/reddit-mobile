@@ -147,7 +147,7 @@ class SideNav extends BaseComponent {
       } else {
         loginLink = (
           <li className='SideNav-li'>
-            <MobileButton className='SideNav-button' href={ this.props.loginPath } noRoute='true'>
+            <MobileButton className='SideNav-button' href={ globals().loginPath } noRoute='true'>
               { snooIcon }
               <span className='SideNav-text'>Login / Register</span>
             </MobileButton>

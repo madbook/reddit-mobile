@@ -225,7 +225,6 @@ class Listing extends BaseComponent {
           <Vote
             thing={ listing }
             apiOptions={ props.apiOptions }
-            loginPath={ props.loginPath }
           />
         </div>
       </footer>

@@ -83,7 +83,7 @@ class SubredditAboutPage extends BaseComponent {
           user={ user }
           hideSort={ true }
           baseUrl={ props.url }
-          loginPath={ props.loginPath } />
+        />
 
         <div className='container' key='container'>
           { htmlDump }

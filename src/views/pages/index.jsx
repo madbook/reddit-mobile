@@ -82,24 +82,16 @@ class IndexPage extends BaseComponent {
     var api = globals().api;
     var user = props.user;
     var app = globals().app;
-
     var firstId;
     var lastId;
     var prevButton;
     var nextButton;
-
     var tracking;
-
-    var loginPath = props.loginPath;
     var apiOptions = props.apiOptions;
-
     var subreddit = '';
 
     if (props.subredditName) {
       subreddit = '/r/' + props.subredditName;
-      loginPath += '/?' + querystring.stringify({
-        originalUrl: props.url,
-      });
     }
 
     if (props.multi) {
@@ -172,7 +164,6 @@ class IndexPage extends BaseComponent {
           list='listings'
           excludedSorts={ excludedSorts }
           baseUrl={ props.url }
-          loginPath={ loginPath }
           apiOptions={ apiOptions }
         />
 
@@ -188,7 +179,6 @@ class IndexPage extends BaseComponent {
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
             user={user}
-            loginPath={loginPath}
             compact={compact}
             subredditTitle={subreddit}
           />

@@ -246,7 +246,6 @@ class Comment extends BaseComponent {
             <Vote
               setScore={ this.setScore }
               thing={ this.props.comment }
-              loginPath={ this.props.loginPath }
               apiOptions={ this.props.apiOptions }
             />
           </li>

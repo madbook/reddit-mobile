@@ -49,21 +49,14 @@ class UserActivityPage extends BaseComponent {
 
     var page = props.page || 0;
     var api = globals().api;
-
     var app = globals().app;
     var user = props.user;
-
     var activities = state.data.data || [];
-
     var subreddit = '';
-
     var sort = props.sort || 'hot';
-
     var userProfile = props.userProfile || {};
     var name = props.userName;
-
     var tracking;
-    var loginPath = props.loginPath;
 
     if (state.data.meta) {
       tracking = (
@@ -82,7 +75,7 @@ class UserActivityPage extends BaseComponent {
           name={ name }
           activity={ props.activity }
           user={ user }
-          loginPath={ props.loginPath } />
+        />
 
         { loading }
 
@@ -96,7 +89,6 @@ class UserActivityPage extends BaseComponent {
             hideSubredditLabel={false}
             user={user}
             hideUser={ true }
-            loginPath={ loginPath }
             apiOptions={ props.apiOptions }
           />
         </div>

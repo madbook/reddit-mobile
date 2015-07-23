@@ -244,6 +244,14 @@ function routes(app) {
     globals().token = ctx.token;
     globals().loid = ctx.loid;
     globals().loidcreated = ctx.loidcreated;
+    globals().url = props.url;
+    if (props.subredditName) {
+      globals().loginPath = props.loginPath + '/?' + querystring.stringify({
+        originalUrl: props.url,
+      });
+    } else {
+      globals().loginPath = props.loginPath;
+    }
 
     if (ctx.token) {
       props.token = ctx.token;
