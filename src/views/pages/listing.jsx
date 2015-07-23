@@ -217,8 +217,6 @@ class ListingPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
           user={ props.user }
           experiments={ props.experiments }
         />);

@@ -242,6 +242,8 @@ function routes(app) {
     globals().api = app.api;
     globals().compact = props.compact;
     globals().token = ctx.token;
+    globals().loid = ctx.loid;
+    globals().loidcreated = ctx.loidcreated;
 
     if (ctx.token) {
       props.token = ctx.token;

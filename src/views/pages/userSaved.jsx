@@ -76,8 +76,6 @@ class UserSavedPage extends BaseComponent {
           referrer={ props.referrer }
           url={ state.data.meta.tracking }
           user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
           experiments={ this.props.experiments }
         />);
     }

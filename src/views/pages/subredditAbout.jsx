@@ -56,8 +56,6 @@ class SubredditAboutPage extends BaseComponent {
           referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
           user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
           experiments={ props.experiments }
         />);
     }

@@ -67,8 +67,6 @@ class UserProfilePage extends BaseComponent {
           referrer={ this.props.referrer }
           url={ this.state.data.meta.tracking }
           user={ this.props.user }
-          loid={ this.props.loid }
-          loidcreated={ this.props.loidcreated }
           experiments={ this.props.experiments }
         />);
     }
