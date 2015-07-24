@@ -1,4 +1,5 @@
 import React from 'react';
+import globals from '../../globals';
 import querystring from 'querystring';
 
 import BaseComponent from '../components/BaseComponent';
@@ -82,7 +83,7 @@ class RegisterPage extends BaseComponent {
 
                 { refererTag }
 
-                <input type='hidden' value={ this.props.csrf } name='_csrf' />
+                <input type='hidden' value={ globals().csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Create Account</button>
               </form>

@@ -259,6 +259,7 @@ function routes(app) {
     globals().httpsProxy = props.httpsProxy;
     globals().https = props.https;
     globals().referrer = props.referrer;
+    globals().csrf = props.csrf;
 
     if (ctx.token) {
       props.token = ctx.token;

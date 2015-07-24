@@ -75,7 +75,7 @@ class DefaultLayout extends BaseComponent {
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
           <meta name='theme-color' content='#336699' />
           <meta name='apple-mobile-web-app-capable' content='yes' />
-          <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.csrf } />
+          <meta id='csrf-token-meta-tag' name='csrf-token' content={ globals().csrf } />
           { metaDescription }
 
           <link href={ `${assetPath}/favicon/64x64.png` } rel="icon shortcut" sizes="64x64" />
