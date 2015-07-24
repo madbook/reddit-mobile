@@ -137,7 +137,6 @@ class IndexPage extends BaseComponent {
     if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
-          referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
         />);
     }
