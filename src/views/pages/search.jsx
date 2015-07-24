@@ -218,8 +218,6 @@ class SearchPage extends BaseComponent {
           />
           <ListingList
             listings={ listings}
-            https={ props.https }
-            httpsProxy={ props.httpsProxy }
             apiOptions={ apiOptions }
           />
           <div className="row pageNav">

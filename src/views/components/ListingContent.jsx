@@ -1,9 +1,10 @@
 import React from 'react';
+import globals from '../../globals';
 import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
 
-import BaseComponent from './BaseComponent';
 import AutoTween from '../components/AutoTween';
+import BaseComponent from './BaseComponent';
 import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -177,8 +178,8 @@ class ListingContent extends BaseComponent {
   buildImage(src, href, onClick) {
     var props = this.props;
     var html5 = _gifToHTML5(src, {
-      https: props.https,
-      httpsProxy: props.httpsProxy,
+      https: globals().https,
+      httpsProxy: globals().httpsProxy,
     });
     var expanded = this._isExpanded();
 

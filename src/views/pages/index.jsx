@@ -165,8 +165,6 @@ class IndexPage extends BaseComponent {
             adsPath={ props.adsPath }
             listings={listings}
             firstPage={page}
-            https={ props.https }
-            httpsProxy={ props.httpsProxy }
             apiOptions={ apiOptions }
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }

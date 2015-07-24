@@ -88,8 +88,6 @@ class UserSavedPage extends BaseComponent {
               showHidden={true}
               listings={activities}
               firstPage={page}
-              https={ props.https }
-              httpsProxy={ props.httpsProxy }
               page={page}
               hideSubredditLabel={false}
               hideUser={ false }

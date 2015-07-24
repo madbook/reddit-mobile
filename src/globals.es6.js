@@ -3,6 +3,8 @@ var globals = {
   app: null,
   compact: false,
   experiments: null,
+  https: null,
+  httpsproxy: null,
   loginPath: null,
   loid: null,
   loidcreated: null,
@@ -13,8 +15,6 @@ var globals = {
 
   // TODO 20: apiOptions: null,
   // TODO  9: referrer: null,
-  // TODO  6: https: null,
-  // TODO  6: httpsproxy: null,
   // TODO  5: csrf: null,
   // TODO  4: page: null,
   // TODO  2: reddit: null,

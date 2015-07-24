@@ -77,8 +77,6 @@ class UserActivityPage extends BaseComponent {
           <ListingList
             listings={activities}
             firstPage={page}
-            https={ props.https }
-            httpsProxy={ props.httpsProxy }
             page={page}
             hideSubredditLabel={false}
             hideUser={ true }

@@ -256,6 +256,8 @@ function routes(app) {
       globals().loginPath = props.loginPath;
     }
     globals().experiments = props.experiments;
+    globals().httpsProxy = props.httpsProxy;
+    globals().https = props.https;
 
     if (ctx.token) {
       props.token = ctx.token;

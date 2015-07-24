@@ -164,8 +164,6 @@ class ListingPage extends BaseComponent {
     if (!loading) {
       listingElement = (
         <Listing
-          https={ props.https }
-          httpsProxy={ props.httpsProxy }
           apiOptions={ apiOptions }
           listing={ listing }
           single={ true }
