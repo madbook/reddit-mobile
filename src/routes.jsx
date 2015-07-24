@@ -255,6 +255,7 @@ function routes(app) {
     } else {
       globals().loginPath = props.loginPath;
     }
+    globals().experiments = props.experiments;
 
     if (ctx.token) {
       props.token = ctx.token;

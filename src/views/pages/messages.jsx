@@ -61,7 +61,6 @@ class MessagesPage extends BaseComponent {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }
-          experiments={ this.props.experiments }
         />);
     }
 

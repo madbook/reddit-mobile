@@ -65,7 +65,6 @@ class UserSavedPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ state.data.meta.tracking }
-          experiments={ this.props.experiments }
         />);
     }
 

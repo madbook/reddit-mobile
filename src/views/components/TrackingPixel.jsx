@@ -28,8 +28,9 @@ class TrackingPixel extends BaseComponent {
         trackingUrl += '&view_type=list';
       }
 
-      if (this.props.experiments && this.props.experiments.length) {
-        trackingUrl += '&exps=' + this.props.experiments.map((e) => {
+      var experiments = globals().experiments;
+      if (experiments && experiments.length) {
+        trackingUrl += '&exps=' + experiments.map((e) => {
           return e.id + ':' + e.value;
         }).join(';');
       }
