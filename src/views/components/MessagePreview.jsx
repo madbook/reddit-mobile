@@ -1,17 +1,14 @@
 import React from 'react';
+import globals from '../../globals';
+import mobilify from '../../lib/mobilify';
+import { models } from 'snoode';
 import moment from 'moment';
 import process from 'reddit-text-js';
-import { models } from 'snoode';
-
-import globals from '../../globals';
-
-import Inbox from '../components/Inbox';
-
-import mobilify from '../../lib/mobilify';
-
-const subredditRegex = /\/r\/([^/]*)/;
 
 import BaseComponent from './BaseComponent';
+import Inbox from '../components/Inbox';
+
+const subredditRegex = /\/r\/([^/]*)/;
 
 class MessagePreview extends BaseComponent {
   constructor(props) {

@@ -4,11 +4,11 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import Loading from '../components/Loading';
-import ListingList from '../components/ListingList';
-import UserActivitySubnav from '../components/UserActivitySubnav';
-import TrackingPixel from '../components/TrackingPixel';
 import BaseComponent from '../components/BaseComponent';
+import ListingList from '../components/ListingList';
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
+import UserActivitySubnav from '../components/UserActivitySubnav';
 
 class UserActivityPage extends BaseComponent {
   constructor(props) {

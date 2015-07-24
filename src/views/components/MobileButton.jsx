@@ -1,5 +1,5 @@
-import globals from '../../globals';
 import React from 'react/addons';
+import globals from '../../globals';
 import BaseComponent from './BaseComponent';
 
 class MobileButton extends BaseComponent {

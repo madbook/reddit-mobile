@@ -3,6 +3,7 @@ import constants from '../../constants';
 import globals from '../../globals';
 import { models } from 'snoode';
 
+import BaseComponent from './BaseComponent';
 import HamburgerIcon from '../components/icons/HamburgerIcon';
 import InfoIcon from '../components/icons/InfoIcon';
 import Loading from '../components/Loading';
@@ -16,7 +17,6 @@ import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';
 import TextIcon from '../components/icons/TextIcon';
-import BaseComponent from './BaseComponent';
 
 function removeR(text) {
   return text.substr(2);

@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import globals from '../../globals';
 import debounce from 'lodash/function/debounce';
+import globals from '../../globals';
 import BaseComponent from './BaseComponent';
 
 class SearchBar extends BaseComponent {

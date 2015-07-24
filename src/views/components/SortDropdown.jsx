@@ -94,7 +94,7 @@ class SortDropdown extends BaseComponent {
     var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
 
     return (
-      <Dropdown 
+      <Dropdown
         app={ this.props.app }
         id={ this._id }
         button={ button }

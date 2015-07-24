@@ -1,7 +1,7 @@
 import React from 'react';
-import querystring from 'querystring';
-import { models } from 'snoode';
 import globals from '../../globals';
+import { models } from 'snoode';
+import querystring from 'querystring';
 
 import BaseComponent from './BaseComponent';
 

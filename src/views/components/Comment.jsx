@@ -1,11 +1,10 @@
 import React from 'react/addons';
+import constants from '../../constants';
+import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
-
 import { models } from 'snoode';
 import moment from 'moment';
 import short from '../../lib/formatDifference';
-import constants from '../../constants';
-import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 import CommentBox from '../components/CommentBox';

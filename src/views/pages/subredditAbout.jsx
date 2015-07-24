@@ -1,14 +1,13 @@
-import q from 'q';
 import React from 'react';
-import process from 'reddit-text-js';
-
 import constants from '../../constants';
 import globals from '../../globals';
+import process from 'reddit-text-js';
+import q from 'q';
 
-import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
-import TopSubnav from '../components/TopSubnav';
 import BaseComponent from '../components/BaseComponent';
+import Loading from '../components/Loading';
+import TopSubnav from '../components/TopSubnav';
+import TrackingPixel from '../components/TrackingPixel';
 
 class SubredditAboutPage extends BaseComponent {
   constructor(props) {
@@ -82,7 +81,6 @@ class SubredditAboutPage extends BaseComponent {
         <TopSubnav
           user={ user }
           hideSort={ true }
-          baseUrl={ props.url }
         />
 
         <div className='container' key='container'>

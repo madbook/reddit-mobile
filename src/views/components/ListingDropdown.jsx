@@ -1,14 +1,13 @@
 import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
-
 import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
-import SeashellsDropdown from '../components/SeashellsDropdown';
+import FlagIcon from '../components/icons/FlagIcon';
 import MobileButton from '../components/MobileButton';
 import SaveIcon from '../components/icons/SaveIcon';
-import FlagIcon from '../components/icons/FlagIcon';
+import SeashellsDropdown from '../components/SeashellsDropdown';
 
 class ListingDropdown extends BaseComponent {
   constructor(props) {

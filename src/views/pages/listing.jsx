@@ -1,22 +1,20 @@
 import React from 'react';
-import q from 'q';
-import querystring from 'querystring';
 import _ from 'lodash';
-
-import { models } from 'snoode';
-
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 import globals from '../../globals';
+import { models } from 'snoode';
+import q from 'q';
+import querystring from 'querystring';
 
-import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
-import Listing from '../components/Listing';
-import CommentBox from '../components/CommentBox';
-import Comment from '../components/Comment';
-import TopSubnav from '../components/TopSubnav';
-import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
 import BaseComponent from '../components/BaseComponent';
+import Comment from '../components/Comment';
+import CommentBox from '../components/CommentBox';
+import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
+import Listing from '../components/Listing';
+import Loading from '../components/Loading';
+import TopSubnav from '../components/TopSubnav';
+import TrackingPixel from '../components/TrackingPixel';
 
 class ListingPage extends BaseComponent {
   constructor(props) {
@@ -220,7 +218,6 @@ class ListingPage extends BaseComponent {
         { loading }
 
         <GoogleCarouselMetadata
-          url={ props.url }
           origin={ props.origin }
           show={ props.isGoogleCrawler }
           listing={listing}
@@ -231,7 +228,6 @@ class ListingPage extends BaseComponent {
           user={ user }
           sort={ sort }
           list='comments'
-          baseUrl={ props.url }
         />
         <div className='container' key='container'>
           { listingElement }

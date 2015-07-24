@@ -4,10 +4,10 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
-import TopSubnav from '../components/TopSubnav';
 import BaseComponent from '../components/BaseComponent';
+import Loading from '../components/Loading';
+import TopSubnav from '../components/TopSubnav';
+import TrackingPixel from '../components/TrackingPixel';
 
 class UserGildPage extends BaseComponent {
   constructor(props) {
@@ -67,7 +67,6 @@ class UserGildPage extends BaseComponent {
         <TopSubnav
           user={ user }
           hideSort={ true }
-          baseUrl={ this.props.url }
         />
 
         { loading }

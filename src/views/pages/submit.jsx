@@ -1,17 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
 import globals from '../../globals';
+import { models } from 'snoode';
 import throttle from 'lodash/function/throttle';
 
-import { models } from 'snoode';
-
-import SubredditSelectionButton from '../components/SubredditSelectionButton';
-import SeashellsDropdown from '../components/SeashellsDropdown';
-import MobileButton from '../components/MobileButton';
-import CaptchaBox from '../components/CaptchaBox';
-import Modal from '../components/Modal';
-import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import BaseComponent from '../components/BaseComponent';
+import CaptchaBox from '../components/CaptchaBox';
+import CheckmarkIcon from '../components/icons/CheckmarkIcon';
+import MobileButton from '../components/MobileButton';
+import Modal from '../components/Modal';
+import SeashellsDropdown from '../components/SeashellsDropdown';
+import SubredditSelectionButton from '../components/SubredditSelectionButton';
 
 function _removeNewLines(title) {
   return title.replace(/(\r\n|\n|\r)/gm,' ');

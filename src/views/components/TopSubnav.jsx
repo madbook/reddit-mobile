@@ -1,7 +1,6 @@
 import React from 'react';
-
-import SortDropdown from '../components/SortDropdown';
 import BaseComponent from './BaseComponent';
+import SortDropdown from '../components/SortDropdown';
 
 class TopSubnav extends BaseComponent {
   constructor(props) {
@@ -22,7 +21,7 @@ class TopSubnav extends BaseComponent {
                sort={ this.props.sort }
                excludedSorts={ this.props.excludedSorts }
                list={ this.props.list }
-               baseUrl={ this.props.baseUrl }
+               baseUrl={ globals().url }
              />;
     }
 

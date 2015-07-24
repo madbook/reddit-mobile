@@ -3,10 +3,10 @@ import constants from '../../constants';
 import globals from '../../globals';
 import querystring from 'querystring';
 
-import SortDropdown from '../components/SortDropdown';
+import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
-import BaseComponent from './BaseComponent';
+import SortDropdown from '../components/SortDropdown';
 
 class UserActivitySubnav extends BaseComponent {
   constructor(props) {

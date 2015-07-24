@@ -4,10 +4,10 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import Loading from '../components/Loading';
-import ListingList from '../components/ListingList';
-import TrackingPixel from '../components/TrackingPixel';
 import BaseComponent from '../components/BaseComponent';
+import ListingList from '../components/ListingList';
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
 
 class UserSavedPage extends BaseComponent {
   constructor(props) {

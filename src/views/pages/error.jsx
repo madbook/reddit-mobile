@@ -15,7 +15,7 @@ class ErrorPage extends BaseComponent {
 
   _desktopSite(e) {
     e.preventDefault();
-    globals().app.emit('route:desktop', this.props.url);
+    globals().app.emit('route:desktop', globals().url);
   }
 
   render() {

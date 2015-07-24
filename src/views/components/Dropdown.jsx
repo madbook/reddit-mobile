@@ -1,7 +1,7 @@
 import React from 'react/addons';
-import Utils from '../../lib/danehansen/utils/Utils';
 import constants from '../../constants';
 import globals from '../../globals';
+import Utils from '../../lib/danehansen/utils/Utils';
 
 import BaseComponent from './BaseComponent';
 

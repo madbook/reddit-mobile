@@ -1,11 +1,12 @@
 import React from 'react';
+import globals from '../../globals';
+import process from 'reddit-text-js';
+
+import BaseComponent from './BaseComponent';
+import Loading from '../components/Loading';
+import MobileButton from '../components/MobileButton';
 import SearchBar from '../components/SearchBar';
 import SeashellsDropdown from '../components/SeashellsDropdown';
-import MobileButton from '../components/MobileButton';
-import Loading from '../components/Loading';
-
-import process from 'reddit-text-js';
-import BaseComponent from './BaseComponent';
 
 const _searchLimit = 25;
 

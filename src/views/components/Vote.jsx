@@ -4,10 +4,9 @@ import constants from '../../constants';
 import globals from '../../globals';
 
 import BaseComponent from '../components/BaseComponent';
-import UpvoteIcon from '../components/icons/UpvoteIcon';
 import DownvoteIcon from '../components/icons/DownvoteIcon';
-
 import MobileButton from '../components/MobileButton';
+import UpvoteIcon from '../components/icons/UpvoteIcon';
 
 class Vote extends BaseComponent {
   constructor(props) {

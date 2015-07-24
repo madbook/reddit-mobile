@@ -1,7 +1,7 @@
 import React from 'react';
-import LiveReload from '../components/LiveReload';
-
+import globals from '../../globals';
 import BaseComponent from '../components/BaseComponent';
+import LiveReload from '../components/LiveReload';
 
 class DefaultLayout extends BaseComponent {
   constructor(props) {
@@ -29,9 +29,9 @@ class DefaultLayout extends BaseComponent {
 
     var canonical;
 
-    if (this.props.url) {
+    if (globals().url) {
       canonical = (
-        <link rel='canonical' href={ `${this.props.reddit}${this.props.url}` } />
+        <link rel='canonical' href={ `${this.props.reddit}${globals().url}` } />
       );
     }
 

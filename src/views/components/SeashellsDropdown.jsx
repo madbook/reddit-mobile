@@ -2,9 +2,9 @@ import React from 'react';
 import constants from '../../constants';
 import globals from '../../globals';
 
-import SeashellIcon from '../components/icons/SeashellIcon';
-import Dropdown from '../components/Dropdown';
 import BaseComponent from './BaseComponent';
+import Dropdown from '../components/Dropdown';
+import SeashellIcon from '../components/icons/SeashellIcon';
 
 class SeashellsDropdown extends BaseComponent {
   constructor(props) {

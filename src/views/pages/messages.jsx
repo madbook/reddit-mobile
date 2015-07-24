@@ -1,14 +1,13 @@
 import React from 'react';
+import constants from '../../constants';
+import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import constants from '../../constants';
-import globals from '../../globals';
-
-import Loading from '../components/Loading';
-import Inbox from '../components/Inbox';
-import TrackingPixel from '../components/TrackingPixel';
 import BaseComponent from '../components/BaseComponent';
+import Inbox from '../components/Inbox';
+import Loading from '../components/Loading';
+import TrackingPixel from '../components/TrackingPixel';
 
 class MessagesPage extends BaseComponent {
   constructor(props) {

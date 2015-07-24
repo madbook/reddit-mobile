@@ -1,7 +1,7 @@
 import React from 'react/addons';
 import constants from '../../constants';
-import globals from '../../globals';
 import cookies from 'cookies-js';
+import globals from '../../globals';
 import querystring from 'querystring';
 
 import AutoTween from '../components/AutoTween';
@@ -49,7 +49,7 @@ class SideNav extends BaseComponent {
 
   _desktopSite(e) {
     e.preventDefault();
-    var url = this.props.url;
+    var url = globals().url;
     var query = '';
 
     if (Object.keys(this.props.query).length > 0) {
@@ -306,7 +306,7 @@ class SideNav extends BaseComponent {
               </TransitionGroup>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href={`https://www.reddit.com${this.props.url}`} onClick={ this._desktopSite }>
+              <MobileButton className='SideNav-button' href={`https://www.reddit.com${globals().url}`} onClick={ this._desktopSite }>
                 { snooIcon }
                 <span className='SideNav-text'>View Desktop Site</span>
               </MobileButton>

@@ -4,11 +4,11 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import Loading from '../components/Loading';
-import UserProfile from '../components/UserProfile';
-import TrackingPixel from '../components/TrackingPixel';
-import TopSubnav from '../components/TopSubnav';
 import BaseComponent from '../components/BaseComponent';
+import Loading from '../components/Loading';
+import TopSubnav from '../components/TopSubnav';
+import TrackingPixel from '../components/TrackingPixel';
+import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BaseComponent {
   constructor(props) {
@@ -78,7 +78,6 @@ class UserProfilePage extends BaseComponent {
         <TopSubnav
           user={ user }
           hideSort={ true }
-          baseUrl={ this.props.url }
         />
 
         <div>
