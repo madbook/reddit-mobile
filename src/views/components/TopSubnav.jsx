@@ -1,4 +1,5 @@
 import React from 'react';
+import globals from '../../globals';
 import BaseComponent from './BaseComponent';
 import SortDropdown from '../components/SortDropdown';
 
@@ -8,7 +9,7 @@ class TopSubnav extends BaseComponent {
   }
 
   render() {
-    var user = this.props.user;
+    var user = globals().user;
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
     } else {

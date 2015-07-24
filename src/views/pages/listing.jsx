@@ -141,10 +141,8 @@ class ListingPage extends BaseComponent {
     var comments = data ? data.comments : [];
 
     var api = globals().api;
-    var user = props.user;
     var author = listing.author;
     var sort = props.sort || 'best';
-    var app = globals().app;
     var listingElement;
     var commentBoxElement;
     var apiOptions = props.apiOptions;
@@ -171,7 +169,6 @@ class ListingPage extends BaseComponent {
           apiOptions={ apiOptions }
           listing={ listing }
           single={ true }
-          user={ user }
           saveUpdatedText={ this.saveUpdatedText.bind(this) }
           editing={ editing }
           toggleEdit={ this.toggleEdit.bind(this) }
@@ -184,7 +181,6 @@ class ListingPage extends BaseComponent {
         <CommentBox
           apiOptions={ apiOptions }
           thingId={ listing.name }
-          user={ user }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           savedReply={ savedReply }
@@ -208,7 +204,6 @@ class ListingPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
-          user={ props.user }
           experiments={ props.experiments }
         />);
     }
@@ -225,7 +220,6 @@ class ListingPage extends BaseComponent {
         />
 
         <TopSubnav
-          user={ user }
           sort={ sort }
           list='comments'
         />
@@ -247,7 +241,6 @@ class ListingPage extends BaseComponent {
                     key={`page-comment-${comment.name}`}
                     nestingLevel={ 0 }
                     op={ author }
-                    user={ user }
                     apiOptions={apiOptions}
                   />
                 );

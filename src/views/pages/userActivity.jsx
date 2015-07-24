@@ -48,9 +48,6 @@ class UserActivityPage extends BaseComponent {
     }
 
     var page = props.page || 0;
-    var api = globals().api;
-    var app = globals().app;
-    var user = props.user;
     var activities = state.data.data || [];
     var subreddit = '';
     var sort = props.sort || 'hot';
@@ -63,7 +60,6 @@ class UserActivityPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ state.data.meta.tracking }
-          user={ props.user }
           experiments={ this.props.experiments }
         />);
     }
@@ -74,7 +70,6 @@ class UserActivityPage extends BaseComponent {
           sort={ sort }
           name={ name }
           activity={ props.activity }
-          user={ user }
         />
 
         { loading }
@@ -87,7 +82,6 @@ class UserActivityPage extends BaseComponent {
             httpsProxy={ props.httpsProxy }
             page={page}
             hideSubredditLabel={false}
-            user={user}
             hideUser={ true }
             apiOptions={ props.apiOptions }
           />

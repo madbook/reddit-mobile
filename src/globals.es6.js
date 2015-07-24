@@ -8,9 +8,9 @@ var globals = {
   random: null,
   touch: null,
   url: null,
+  user: null,
 
   // TODO 20: apiOptions: null,
-  // TODO 19: user: null,
   // TODO 10: experiments: null,
   // TODO  9: referrer: null,
   // TODO  6: https: null,

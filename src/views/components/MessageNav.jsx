@@ -12,7 +12,7 @@ class MessageNav extends BaseComponent {
     var modMailLink;
     var view = this.props.view;
 
-    if (this.props.user.is_mod) {
+    if (globals().user.is_mod) {
       modMailLink= (
         <li className='TextSubNav-li' active={view === 'moderator'}>
           <a className={'TextSubNav-a ' + (view === 'moderator' ? 'active' : '') } href='/message/moderator'>Mod Mail</a>

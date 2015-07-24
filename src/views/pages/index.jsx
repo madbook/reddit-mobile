@@ -78,9 +78,6 @@ class IndexPage extends BaseComponent {
                              props.subredditName !== 'all';
 
     var page = props.page || 0;
-    var api = globals().api;
-    var user = props.user;
-    var app = globals().app;
     var firstId;
     var lastId;
     var prevButton;
@@ -142,7 +139,6 @@ class IndexPage extends BaseComponent {
         <TrackingPixel
           referrer={ props.referrer }
           url={ this.state.data.meta.tracking }
-          user={ props.user }
           experiments={ props.experiments }
         />);
     }
@@ -158,7 +154,6 @@ class IndexPage extends BaseComponent {
         { loading }
 
         <TopSubnav
-          user={ user }
           sort={ sort }
           list='listings'
           excludedSorts={ excludedSorts }
@@ -176,7 +171,6 @@ class IndexPage extends BaseComponent {
             apiOptions={ apiOptions }
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
-            user={user}
             compact={compact}
             subredditTitle={subreddit}
           />

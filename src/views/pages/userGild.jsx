@@ -44,10 +44,6 @@ class UserGildPage extends BaseComponent {
       );
     }
 
-    var api = globals().api;
-    var app = globals().app;
-    var user = this.props.user || {};
-
     //var userProfile = this.state.data.data || {};
     //var name = this.props.userName;
     var tracking;
@@ -57,7 +53,6 @@ class UserGildPage extends BaseComponent {
         <TrackingPixel
           referrer={ this.props.referrer }
           url={ this.state.data.meta.tracking }
-          user={ this.props.user }
           experiments={ this.props.experiments }
         />);
     }
@@ -65,7 +60,6 @@ class UserGildPage extends BaseComponent {
     return (
       <div className="user-page user-gild">
         <TopSubnav
-          user={ user }
           hideSort={ true }
         />
 

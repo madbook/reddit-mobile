@@ -44,9 +44,6 @@ class UserProfilePage extends BaseComponent {
     var name = this.props.userName;
     var tracking;
 
-    var app = globals().app;
-    var user = this.props.user;
-
     if (!this.state.loaded) {
       loading = (
         <Loading />
@@ -56,7 +53,6 @@ class UserProfilePage extends BaseComponent {
         <UserProfile
           userProfile={userProfile}
           key={'user-profile-' + name}
-          user={this.props.user}
         />
       );
     }
@@ -66,7 +62,6 @@ class UserProfilePage extends BaseComponent {
         <TrackingPixel
           referrer={ this.props.referrer }
           url={ this.state.data.meta.tracking }
-          user={ this.props.user }
           experiments={ this.props.experiments }
         />);
     }
@@ -76,7 +71,6 @@ class UserProfilePage extends BaseComponent {
         { loading }
 
         <TopSubnav
-          user={ user }
           hideSort={ true }
         />
 

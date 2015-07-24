@@ -128,9 +128,9 @@ class TopNav extends BaseComponent {
     }
 
     let notificationsCount;
-    if (props.user && props.user.inbox_count) {
+    if (globals().user && globals().user.inbox_count) {
       notificationsCount = (
-        <span className='badge badge-xs badge-orangered'>{ props.user.inbox_count }</span>
+        <span className='badge badge-xs badge-orangered'>{ globals().user.inbox_count }</span>
       );
     }
 

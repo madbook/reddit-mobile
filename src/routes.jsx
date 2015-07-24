@@ -103,7 +103,8 @@ function routes(app) {
     if (token) {
       if (app.getState && app.getState('user')) {
         return new Promise(function(resolve) {
-          resolve(app.getState('user'));
+          globals().user = app.getState('user');;
+          resolve(globals().user);
         });
       } else {
         return new Promise(function(resolve, reject) {
@@ -120,7 +121,8 @@ function routes(app) {
 
           try {
             app.api.users.get(options).then(function(user) {
-              resolve(user.data);
+              globals().user = user.data;
+              resolve(globals().user);
             }, function(error) {
               reject(error);
             });
@@ -130,6 +132,7 @@ function routes(app) {
         });
       }
     } else {
+      globals().user = null;
       return noop();
     }
   }
@@ -958,7 +961,7 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
-          <MessageNav user={ props.user } view='compose' />
+          <MessageNav view='compose' />
           <MessageComposePage {...props} key={ key } app={app} />
         </BodyLayout>
       );
@@ -1004,7 +1007,7 @@ function routes(app) {
     try {
       page = (
         <BodyLayout {...props} app={app}>
-          <MessageNav user={ props.user } view={ props.view } />
+          <MessageNav view={ props.view } />
           <MessagesPage {...props} key={ key } app={app} />
         </BodyLayout>
       );

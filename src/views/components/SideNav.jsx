@@ -73,7 +73,7 @@ class SideNav extends BaseComponent {
 
   render() {
     if (this.state.opened) {
-      var user = this.props.user;
+      var user = globals().user;
       var loginLink;
       var inboxLink;
       var compact = this.state.compact;
