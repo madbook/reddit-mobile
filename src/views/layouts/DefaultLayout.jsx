@@ -31,7 +31,7 @@ class DefaultLayout extends BaseComponent {
 
     if (globals().url) {
       canonical = (
-        <link rel='canonical' href={ `${this.props.reddit}${globals().url}` } />
+        <link rel='canonical' href={ `${globals().reddit}${globals().url}` } />
       );
     }
 

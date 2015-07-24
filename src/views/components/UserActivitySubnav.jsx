@@ -112,7 +112,6 @@ class UserActivitySubnav extends BaseComponent {
     return (
       <div className='TopSubnav'>
         <Dropdown
-          app={ this.props.app }
           id={ this._id }
           button={ button }
           className='Dropdown-inline'>

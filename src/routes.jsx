@@ -260,6 +260,7 @@ function routes(app) {
     globals().https = props.https;
     globals().referrer = props.referrer;
     globals().csrf = props.csrf;
+    globals().reddit = props.reddit;
 
     if (ctx.token) {
       props.token = ctx.token;

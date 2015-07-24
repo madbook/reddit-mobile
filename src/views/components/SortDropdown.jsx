@@ -95,7 +95,6 @@ class SortDropdown extends BaseComponent {
 
     return (
       <Dropdown
-        app={ this.props.app }
         id={ this._id }
         button={ button }
         className={ this.props.className }>
