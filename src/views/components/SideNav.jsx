@@ -162,7 +162,7 @@ class SideNav extends BaseComponent {
           if(d.icon) {
             var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
           } else {
-            icon = { snooIcon }
+            icon = snooIcon;
           }
           return (
             <li className='SideNav-li' key={`SideNav-li-${d.url}`}>
@@ -174,7 +174,7 @@ class SideNav extends BaseComponent {
           );
         });
         var subredditButtons = (
-          <AutoTween key='subreddits' className='SideNav-ul list-unstyled'>
+          <AutoTween component='ul' key='subreddits' className='SideNav-ul list-unstyled'>
             { subredditNodeList }
           </AutoTween>
         );
