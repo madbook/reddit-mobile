@@ -264,7 +264,7 @@ class ListingContent extends BaseComponent {
     }
 
     return (
-      <a  className={'ListingContent-image ' + _aspectRatioClass(aspectRatio) + (!src && loaded ? ' placeholder' : '')}
+      <a  className={'ListingContent-image ' + (props.isThumbnail ? '' : _aspectRatioClass(aspectRatio)) + (!src && loaded ? ' placeholder' : '')}
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }
