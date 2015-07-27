@@ -74,6 +74,14 @@ var events = {
   'post:error': function() {
     ga('send', 'event', 'post', 'captcha');
   },
+
+  'message:submit': function() {
+    ga('send', 'event', 'messages', 'submit');
+  },
+
+  'message:reply': function(message) {
+    ga('send', 'event', 'messages', 'reply', message.get('text').match(/\S+/g).length);
+  }
 };
 
 function trackingEvents(app) {

@@ -71,7 +71,7 @@ class MessagePreview extends BaseComponent {
 
     }).bind(this));
 
-    globals().app.emit('message', message);
+    globals().app.emit('message:reply', message);
   }
 
   render () {
