@@ -44,8 +44,6 @@ class UserGildPage extends BaseComponent {
       );
     }
 
-    //var userProfile = this.state.data.data || {};
-    //var name = this.props.userName;
     var tracking;
 
     if (this.state.data.meta) {
