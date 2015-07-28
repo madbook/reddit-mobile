@@ -26,14 +26,15 @@ class Listing extends BaseComponent {
   constructor(props) {
     super(props);
 
+    var compact = _isCompact(props);
     this.state = {
-      compact: _isCompact(props),
+      compact: compact,
       expanded: false,
       loaded: false,
       tallestHeight: 0,
       reported: false,
       hidden: false,
-      width: 0,
+      width: (globals().winWidth || 300) - 10,
     };
 
     this.checkPos = this.checkPos.bind(this);

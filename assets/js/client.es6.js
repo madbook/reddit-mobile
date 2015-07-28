@@ -23,6 +23,8 @@ import Utils from '../../src/lib/danehansen/utils/Utils';
 import trackingEvents from './trackingEvents';
 import TweenLite from 'gsap';
 
+var _lastWinWidth = 0;
+
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
 
@@ -312,14 +314,15 @@ function initialize(bindLinks) {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 
-  var startingWidth = window.innerWidth;
+  globals().winWidth = window.innerWidth;
   window.addEventListener('resize', throttle(function(e) {
     // Prevent resize from firing when chrome shows/hides nav bar
-    if (window.innerWidth !== startingWidth) {
+    globals().winWidth = window.innerWidth;
+    if (globals().winWidth !== _lastWinWidth) {
+      _lastWinWidth = globals().winWidth;
       app.emit(constants.RESIZE);
     }
   }.bind(app), 100));
-
 
   // Send the timings during the next cycle.
   setTimeout(function() {

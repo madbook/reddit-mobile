@@ -13,6 +13,7 @@ var globals = {
   touch: null,
   url: null,
   user: null,
+  winWidth: null,
   // TODO apiOptions: null,
 };
 
