@@ -18,7 +18,7 @@
     "cookies-js": "1.2.1",
     "es5-shim": "4.1.0",
     "gsap": "1.17.0",
-    "horse": "1.2.6",
+    "horse": "1.3.0",
     "horse-react": "0.3.0",
     "koa": "0.18.1",
     "koa-bodyparser": "1.5.0",

@@ -1,7 +1,11 @@
 import React from 'react';
 import globals from '../../globals';
+import url from 'url';
 
 import BaseComponent from '../components/BaseComponent';
+
+const TRANSIENT_ERROR_MESSAGE = 'Try again?';
+const IDEMPOTENT_ERROR_MESSAGE = 'Go back?';
 
 class ErrorPage extends BaseComponent {
   constructor(props) {
@@ -16,21 +20,44 @@ class ErrorPage extends BaseComponent {
   _desktopSite(e) {
     e.preventDefault();
     globals().app.emit('route:desktop', globals().url);
+
+    global.location = `https://www.reddit.com${globals().app.fullPathName()}`;
+  }
+
+  _reload(e) {
+    global.location.reload();
   }
 
   render() {
-    var link = this.props.referrer || '/';
-    var desktop;
+    var referrer = this.props.referrer
+    var parsedReferrer = referrer ? url.parse(referrer) : {};
+    var sameOrigin = referrer && parsedReferrer.host === url.parse(this.props.origin).host;
+    var back = sameOrigin ? parsedReferrer.path : '/';
+    var status = this.props.status;
+    var callToAction;
 
-    if (this.props.status === 404) {
-      desktop = (
-        <h3>
-          <a href={`https://www.reddit.com${this.props.originalUrl}`}
-            onClick={ this._desktopSite } >
-            Try the desktop site instead?
-          </a>
-        </h3>
+    if (this.props.originalUrl === back) {
+      back = '/';
+    }
+
+    if (status === 404) {
+      callToAction = (
+        <div>
+          <h3>
+            <a href="javascript: void 0;"
+              onClick={ this._desktopSite } >
+              Try the desktop site instead?
+            </a>
+          </h3>
+          <h3>
+            <a href={ back }>{ IDEMPOTENT_ERROR_MESSAGE }</a>
+          </h3>
+        </div>
       );
+    } else if (status === 403 || status === 401) {
+      callToAction = <h3><a href={ back }>{ IDEMPOTENT_ERROR_MESSAGE }</a></h3>;
+    } else {
+      callToAction = <h3><a href="javascript: void 0;" onClick={ this._reload }>{ TRANSIENT_ERROR_MESSAGE }</a></h3>;
     }
 
     return (
@@ -39,8 +66,7 @@ class ErrorPage extends BaseComponent {
           <div className='row'>
             <div className='col-xs-12'>
               <h1>{ this.props.title }</h1>
-              <h3><a href={ link }>Go back?</a></h3>
-              {desktop}
+              { callToAction }
             </div>
           </div>
         </div>
@@ -60,6 +86,7 @@ ErrorPage.propTypes = {
   status: React.PropTypes.number.isRequired,
   originalUrl: React.PropTypes.string.isRequired,
   title: React.PropTypes.string.isRequired,
+  referrer: React.PropTypes.string,
 };
 
 export default ErrorPage;

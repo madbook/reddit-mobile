@@ -816,15 +816,10 @@ function routes(app) {
     ctx.status = parseInt(statusCode);
 
     var props = buildProps(this, {
-      referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
       title: `${statusCode} - ${statusMsg}`,
       status: ctx.status,
-      originalUrl: decodeURIComponent(ctx.query.originalUrl) || '/',
+      originalUrl: ctx.originalUrl || '/',
     });
-
-    if (statusCode.match(/^5.*/) && app.getConfig('debug')) {
-      props.error = ctx.error;
-    }
 
     try {
       var page = (
