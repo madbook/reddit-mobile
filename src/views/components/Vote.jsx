@@ -125,7 +125,7 @@ class Vote extends BaseComponent {
           </li>
           <li className='vote-score-container'>
             <span className='vote-score' data-vote-score={this.state.score } data-thingid={ this.props.thing.name }>
-              { this.state.score }
+              { this.props.thing.hide_score || this.props.thing.score_hidden ? '●' : this.state.score }
             </span>
           </li>
           <li>

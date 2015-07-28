@@ -374,7 +374,9 @@ class Comment extends BaseComponent {
                   </li>
                   <li className='comment-timestamp-score'>
                     <span className='comment-timestamp'>{ submitted }</span>
-                    <span className='comment-title-score'>{ this.state.score }</span>
+                    <span className='comment-title-score'>
+                      { comment.score_hidden ? '[score hidden]' : this.state.score }
+                    </span>
                   </li>
                 </ul>
               </a>
