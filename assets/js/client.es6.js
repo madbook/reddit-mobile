@@ -278,7 +278,7 @@ function initialize(bindLinks) {
   // Don't re-render tracking pixel on first load. App reads from state
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
-  app.render(app.fullPathName(), true, modifyContext).then(function() {
+  app.render(app.state.url, true, modifyContext).then(function() {
     attachEvents();
     referrer = document.location.href;
   });
