@@ -158,7 +158,7 @@ class SubredditSelectionButton extends BaseComponent {
       return (
         <div className="sub-selection-selected">
           <div className='Submit-centered'>
-            <span onClick={this.toggle.bind(this)} className='text-muted' >
+            <span onClick={this.toggle.bind(this)} className='text-muted submit-posting-to' >
               Posting to: &nbsp;
               <button type='button' className={ this.props.errorClass }>
                 { props.subreddit }

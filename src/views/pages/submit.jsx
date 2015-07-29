@@ -309,7 +309,7 @@ class SubmitPage extends BasePage {
               </button>
               <span className='Submit-header-text'>{'Create a new ' + typeLable + 'post'}</span>
               <button
-                className='pull-right btn btn-primary'
+                className='pull-right btn btn-primary submit-send-btn'
                 type='submit'
                 onClick={this.submit.bind(this)}
               >Post</button>

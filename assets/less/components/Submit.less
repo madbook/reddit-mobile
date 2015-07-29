@@ -1,9 +1,12 @@
 .Submit-form {
   .display-flex();
+  -webkit-box-orient: vertical;
   .flex-direction(column);
   .flex-wrap(nowrap);
   height: 100%;
   min-height: 400px;
+  margin-bottom: 0;
+  overflow: hidden;
 }
 
 .Submit-centered {
@@ -37,6 +40,11 @@
   top: 2px;
 }
 
+.submit-send-btn {
+  position: relative;
+  top: -2px;
+}
+
 .Submit-close {
   font-size: 1.3em;
 }
@@ -58,11 +66,15 @@
 
 .Submit-body {
   .display-flex();
+  -webkit-box-flex: 1;
   .flex(1, 1, 200px);
+  -webkit-box-orient: vertical;
   .flex-direction(column);
 }
 
 .Submit-body-holder {
+  .display-flex();
+  -webkit-box-flex: 1;
   .flex(1, 1, 200px);
   position: relative;
   overflow: hidden;
@@ -83,8 +95,10 @@
 
 .Submit-main-form-wrap {
   position: relative;
+  -webkit-box-flex: 1;
   .flex(1, 1, 300px);
   .display-flex();
+  -webkit-box-orient: vertical;
   .flex-direction(column);
 }
 
@@ -104,6 +118,10 @@
 }
 
 // subreddit-selection
+.submit-posting-to {
+  position: relative;
+  top: -2px;
+}
 
 .sub-selection-wrapper {
   padding: @grid-gutter-width;
@@ -132,6 +150,7 @@
 }
 
 .Submit-search-holder {
+  width: 100%;
   height: 32px;
   overflow: hidden;
   margin-bottom: 10px;

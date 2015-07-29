@@ -45,6 +45,7 @@
 }
 
 .flex(@grow, @shrink, @minHeight) {
+  -webkit-box-flex: @grow @shrink @minHeight;
   -webkit-flex: @grow @shrink @minHeight;
           flex: @grow @shrink @minHeight;
  }
@@ -73,4 +74,8 @@ input.zoom-fix, textarea.zoom-fix {
   border: 2px solid #e7e7e7 !important;
   width: 200% !important;
   height: 64px;
+}
+
+.visually-hidden {
+  display: none;
 }
