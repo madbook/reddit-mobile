@@ -32,16 +32,10 @@ class ListingPage extends BaseComponent {
 
   componentDidMount() {
     ListingPage.populateData(globals().api, this.props, true).done((function(data) {
-      var name = data.data.listing.name;
-      var linkComment = '';
-      if (localStorage.getItem(name)) {
-        linkComment = window.localStorage.getItem(name);
-      }
 
       this.setState({
         data: data,
         loaded: true,
-        linkComment: linkComment,
       });
     }).bind(this));
 
@@ -161,7 +155,6 @@ class ListingPage extends BaseComponent {
       }
     }
     var savedCommentKeys = keys;
-    var savedReply = this.state.linkComment;
     if (!loading) {
       listingElement = (
         <Listing
@@ -186,7 +179,6 @@ class ListingPage extends BaseComponent {
           token={ token }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
-          savedReply={ savedReply }
         />
       );
 

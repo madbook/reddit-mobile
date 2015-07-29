@@ -6,6 +6,7 @@ import { models } from 'snoode';
 import moment from 'moment';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
+import savedReply from '../../lib/savedReply';
 
 import BaseComponent from './BaseComponent';
 import CommentBox from '../components/CommentBox';
@@ -27,7 +28,6 @@ class Comment extends BaseComponent {
       favorited: false,
       optionsOpen: false,
       reported: false,
-      savedReply: '',
       hidden: false,
       score: this.props.comment.score,
       editing: false,
@@ -37,15 +37,15 @@ class Comment extends BaseComponent {
   }
 
   componentDidMount () {
-    var savedReply = window.localStorage.getItem(this.props.comment.name);
-    if (savedReply) {
+    var hasSavedReply = !!savedReply.get(this.props.comment.name);
+
+    if (hasSavedReply) {
       this.setState({
-        savedReply: savedReply,
-        showReplyBox: true,
-        showTools: true,
+        showReplyBox: hasSavedReply,
+        showTools: hasSavedReply,
       });
-      var domNode = React.findDOMNode(this);
-      domNode.scrollIntoView();
+
+      React.findDOMNode(this).scrollIntoView();
     }
 
     this.onReport = this.onReport.bind(this);
@@ -224,9 +224,6 @@ class Comment extends BaseComponent {
       highlighted = 'comment-highlighted';
 
       if (this.state.showReplyBox) {
-        if (this.state.savedReply) {
-          props.savedReply = this.state.savedReply;
-        }
         commentBox = (
           <CommentBox ref='commentBox' {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
         );
@@ -402,7 +399,6 @@ Comment.propTypes = {
   // nestingLevel: React.PropTypes.number.isRequired,
   // op: React.PropTypes.string.isRequired,
   // permalinkBase: React.PropTypes.string.isRequired,
-  // savedReply: React.PropTypes.string.isRequired,
   subredditName: React.PropTypes.string.isRequired,
 };
 
