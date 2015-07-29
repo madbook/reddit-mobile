@@ -4,7 +4,7 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import SearchBar from '../components/SearchBar';
@@ -14,7 +14,7 @@ import TrackingPixel from '../components/TrackingPixel';
 const _searchMinLength = 3;
 const _searchLimit = 25;
 
-class SearchPage extends BaseComponent {
+class SearchPage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -86,13 +86,13 @@ class SearchPage extends BaseComponent {
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     //this._performSearch(this.props);
     globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, '');
   }
 
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
-  }
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query) {

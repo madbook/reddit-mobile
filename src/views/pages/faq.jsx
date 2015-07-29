@@ -1,16 +1,14 @@
 import React from 'react';
 import globals from '../../globals';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 
-class FAQPage extends BaseComponent {
+class FAQPage extends BasePage {
   constructor(props) {
     super(props);
   }
 
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
-  }
+
 
   render () {
     return (

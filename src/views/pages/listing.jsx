@@ -7,7 +7,7 @@ import { models } from 'snoode';
 import q from 'q';
 import querystring from 'querystring';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import Comment from '../components/Comment';
 import CommentBox from '../components/CommentBox';
 import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
@@ -16,7 +16,7 @@ import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import TrackingPixel from '../components/TrackingPixel';
 
-class ListingPage extends BaseComponent {
+class ListingPage extends BasePage {
   constructor(props) {
     super(props);
     this.props = props;
@@ -27,11 +27,17 @@ class ListingPage extends BaseComponent {
       linkEditError: null,
     };
 
-    this.state.loaded = this.state.data && this.state.data.data;
+    this.state.loaded = !!(this.state.data && this.state.data.data);
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     ListingPage.populateData(globals().api, this.props, true).done((function(data) {
+      // Resolved with the same data, return early.
+      if (this.state.loaded && data === this.state.data) {
+        return;
+      }
 
       this.setState({
         data: data,
@@ -44,10 +50,6 @@ class ListingPage extends BaseComponent {
     } else {
       globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE);
     }
-  }
-
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
   }
 
   onNewComment (comment) {

@@ -2,19 +2,15 @@ import React from 'react';
 import globals from '../../globals';
 import url from 'url';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 
 const TRANSIENT_ERROR_MESSAGE = 'Try again?';
 const IDEMPOTENT_ERROR_MESSAGE = 'Go back?';
 
-class ErrorPage extends BaseComponent {
+class ErrorPage extends BasePage {
   constructor(props) {
     super(props);
     this._desktopSite = this._desktopSite.bind(this);
-  }
-
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
   }
 
   _desktopSite(e) {

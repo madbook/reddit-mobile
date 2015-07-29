@@ -4,12 +4,12 @@ import globals from '../../globals';
 import process from 'reddit-text-js';
 import q from 'q';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import TrackingPixel from '../components/TrackingPixel';
 
-class SubredditAboutPage extends BaseComponent {
+class SubredditAboutPage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -21,7 +21,14 @@ class SubredditAboutPage extends BaseComponent {
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     SubredditAboutPage.populateData(globals().api, this.props, true).done((function (data) {
+      // Resolved with the same data, return early.
+      if (this.state.loaded && data === this.state.data) {
+        return;
+      }
+
       this.setState({
         data: data,
         loaded: true
@@ -31,9 +38,7 @@ class SubredditAboutPage extends BaseComponent {
     globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, `r/${this.props.subredditName}/about`);
   }
 
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
-  }
+
 
   render() {
     var loading;

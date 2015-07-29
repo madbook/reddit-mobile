@@ -4,12 +4,12 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import Inbox from '../components/Inbox';
 import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 
-class MessagesPage extends BaseComponent {
+class MessagesPage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -17,11 +17,18 @@ class MessagesPage extends BaseComponent {
       data: props.data || {},
     };
 
-    this.state.loaded = this.state.data && this.state.data.data;
+    this.state.loaded = !!(this.state.data && this.state.data.data);
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     MessagesPage.populateData(globals().api, this.props, true).done((function(data) {
+      // Resolved with the same data, return early.
+      if (this.state.loaded && data === this.state.data) {
+        return;
+      }
+
       this.setState({
         data: data || {},
         loaded: true,
@@ -29,9 +36,7 @@ class MessagesPage extends BaseComponent {
     }).bind(this));
   }
 
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
-  }
+
 
   render() {
     var loading;

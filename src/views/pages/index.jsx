@@ -4,13 +4,13 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import TrackingPixel from '../components/TrackingPixel';
 
-class IndexPage extends BaseComponent {
+class IndexPage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -28,12 +28,19 @@ class IndexPage extends BaseComponent {
       compact: globals().compact,
     };
 
-    this.state.loaded = this.state.data && this.state.data.data;
+    this.state.loaded = !!(this.state.data && this.state.data.data);
     this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     IndexPage.populateData(globals().api, this.props, true).done((function(data) {
+      // Resolved with the same data, return early.
+      if (this.state.loaded && data === this.state.data) {
+        return;
+      }
+
       this.setState({
         data: data,
         loaded: true,
@@ -53,10 +60,6 @@ class IndexPage extends BaseComponent {
 
   componentWillUnmount() {
     globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
-  }
-
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
   }
 
   render() {

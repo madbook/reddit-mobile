@@ -4,7 +4,7 @@ import globals from '../../globals';
 import { models } from 'snoode';
 import throttle from 'lodash/function/throttle';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import CaptchaBox from '../components/CaptchaBox';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import MobileButton from '../components/MobileButton';
@@ -29,7 +29,7 @@ function _determineKind(body) {
 var debouncedDetermineKind = throttle(_determineKind, 1000);
 
 
-class SubmitPage extends BaseComponent {
+class SubmitPage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -53,6 +53,8 @@ class SubmitPage extends BaseComponent {
   }
 
   componentDidMount () {
+    super.componentDidMount();
+
     var saved = global.localStorage.getItem('savedLinkContent');
     if (saved) {
       var parsed = JSON.parse(saved);

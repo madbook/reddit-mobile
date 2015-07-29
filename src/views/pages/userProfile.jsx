@@ -4,13 +4,13 @@ import globals from '../../globals';
 import q from 'q';
 import querystring from 'querystring';
 
-import BaseComponent from '../components/BaseComponent';
+import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import TrackingPixel from '../components/TrackingPixel';
 import UserProfile from '../components/UserProfile';
 
-class UserProfilePage extends BaseComponent {
+class UserProfilePage extends BasePage {
   constructor(props) {
     super(props);
 
@@ -18,11 +18,18 @@ class UserProfilePage extends BaseComponent {
       data: props.data || {},
     };
 
-    this.state.loaded = this.state.data && this.state.data.data;
+    this.state.loaded = !!(this.state.data && this.state.data.data);
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     UserProfilePage.populateData(globals().api, this.props, true).done((function(data) {
+      // Resolved with the same data, return early.
+      if (this.state.loaded && data === this.state.data) {
+        return;
+      }
+
       this.setState({
         data: data || {},
         loaded: true,
@@ -32,9 +39,7 @@ class UserProfilePage extends BaseComponent {
     globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
   }
 
-  componentDidUpdate() {
-    globals().app.emit('page:update', this.props);
-  }
+
 
   render() {
     var loading;
