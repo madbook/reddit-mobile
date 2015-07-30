@@ -100,7 +100,12 @@
     }
 
 
-    .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
+    .TopNav-floaty, .TopNav .Dropdown {
+      margin-left: 8px;
+    }
+    // this can't be nested with the above rules
+    // will break on android browser.
+    .TopNav-padding {
       margin-left: 8px;
     }
 
@@ -188,6 +193,8 @@
     line-height: 12px;
     top: 5px;
     left: -17px;
+    // android browser fix
+    -webkit-backface-visibility: hidden;
   }
 
 .TopNav-headline {
