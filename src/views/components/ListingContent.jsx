@@ -143,7 +143,7 @@ class ListingContent extends BaseComponent {
             return this.buildImage(preview || thumbnailUrl, url, props.expand);
           }
         }
-      } else if (url.match(ListingContent.imgMatch)) {
+      } else if (url.match(ListingContent.imgMatch) && !listing.promoted) {
         if (expanded && _httpsRegex.test(url)) {
           return this.buildImage(url, url);
         } else {
@@ -407,7 +407,7 @@ class ListingContent extends BaseComponent {
     var expanded = this._isExpanded();
 
 
-    if (imgMatch && expanded) {
+    if (imgMatch && expanded && !listing.promoted) {
       return url;
     }
 
