@@ -70,7 +70,7 @@ class CaptchaBox extends BaseComponent {
 
   render() {
     var errorClass = this.props.error ? 'has-error' : '';
-    var errorText = errorClass ? '' : 'visually hidden';
+    var errorText = errorClass ? '' : 'visually-hidden';
 
     var img = (
       <span className='captcha-loading-text'>Loading...</span>
