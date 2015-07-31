@@ -215,7 +215,7 @@ class ListingPage extends BaseComponent {
           sort={ sort }
           list='comments'
         />
-        <div className='container' key='container'>
+      <div className='container listing-content' key='container'>
           { listingElement }
           { commentBoxElement }
           { singleComment }
