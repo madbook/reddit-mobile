@@ -47,7 +47,7 @@ function routes(app) {
     }
   }
 
-  function loadUserSubscriptions (app, ctx, token) {
+  function loadUserSubscriptions (app, ctx, token, apiOptions) {
     if (app.getState && app.getState('subscriptions')) {
       return new Promise(function(resolve) {
         resolve(app.getState('subscriptions'));
@@ -57,18 +57,7 @@ function routes(app) {
         var sort = 'default';
 
         if (token) {
-          var apiOptions =  {
-            origin: app.getConfig('authAPIOrigin'),
-            headers: {
-              'Authorization': `bearer ${token}`,
-            }
-          };
-
           sort = 'mine/subscriber';
-        } else {
-          var apiOptions =  {
-            origin: app.getConfig('nonAuthAPIOrigin'),
-          };
         }
 
         var options = app.api.buildOptions(apiOptions);
@@ -99,7 +88,7 @@ function routes(app) {
     }
   }
 
-  function loadUserData (app, ctx, token) {
+  function loadUserData (app, ctx, token, apiOptions) {
     if (token) {
       if (app.getState && app.getState('user')) {
         return new Promise(function(resolve) {
@@ -107,13 +96,6 @@ function routes(app) {
         });
       } else {
         return new Promise(function(resolve, reject) {
-          var apiOptions =  {
-            origin: app.getConfig('authAPIOrigin'),
-            headers: {
-              'Authorization': `bearer ${token}`,
-              'user-agent': ctx.headers['user-agent'],
-            }
-          };
 
           var options = app.api.buildOptions(apiOptions);
           options.user = 'me';
@@ -134,7 +116,7 @@ function routes(app) {
     }
   }
 
-  function loadUserPrefs (app, ctx, token) {
+  function loadUserPrefs (app, ctx, token, apiOptions) {
     if (token) {
       if (app.getState && app.getState('prefs')) {
         return new Promise(function(resolve) {
@@ -142,13 +124,6 @@ function routes(app) {
         });
       } else {
         return new Promise(function(resolve, reject) {
-          var apiOptions =  {
-            origin: app.getConfig('authAPIOrigin'),
-            headers: {
-              'Authorization': `bearer ${token}`,
-              'user-agent': ctx.headers['user-agent'],
-            }
-          };
 
           var options = app.api.buildOptions(apiOptions);
 
@@ -168,10 +143,10 @@ function routes(app) {
     }
   }
 
-  function populateData(app, ctx, token, promises=[]) {
-    promises.push(loadUserData(app, ctx, token));
-    promises.push(loadUserPrefs(app, ctx, token));
-    promises.push(loadUserSubscriptions(app, ctx, token));
+  function populateData(app, ctx, token, apiOptions, promises=[]) {
+    promises.push(loadUserData(app, ctx, token, apiOptions));
+    promises.push(loadUserPrefs(app, ctx, token, apiOptions));
+    promises.push(loadUserSubscriptions(app, ctx, token, apiOptions));
 
     return new Promise(function(resolve, reject) {
       q.allSettled(promises).then(function(results) {
@@ -256,7 +231,7 @@ function routes(app) {
       props.token = ctx.token;
       props.tokenExpires = ctx.tokenExpires;
       props.apiOptions.origin = app.getConfig('authAPIOrigin');
-      props.apiOptions.headers['Authorization'] = `bearer ${props.token}`
+      props.apiOptions.headers['Authorization'] = `bearer ${props.token}`;
     } else {
       props.loid = ctx.loid;
       props.loidcreated = ctx.loidcreated;
@@ -322,7 +297,7 @@ function routes(app) {
       promises.push(noop());
     }
 
-    var [data, subredditData, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, subredditData, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
 
     props.subredditId = ((subredditData || {}).data || {}).name;
@@ -366,7 +341,7 @@ function routes(app) {
       SubredditAboutPage.populateData(globals().api, props, this.renderSynchronous, false),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
     props.user = user;
     props.prefs = prefs;
@@ -419,7 +394,7 @@ function routes(app) {
       );
     }
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
     props.user = user;
     props.prefs = prefs;
@@ -459,7 +434,7 @@ function routes(app) {
       ListingPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
     props.user = user;
     props.prefs = prefs;
@@ -509,7 +484,7 @@ function routes(app) {
       UserProfilePage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
     props.user = user;
     props.prefs = prefs;
@@ -562,7 +537,7 @@ function routes(app) {
     var promises = [
     ];
 
-    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.user = user;
     props.subscriptions = subscriptions;
 
@@ -591,7 +566,7 @@ function routes(app) {
       UserGildPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
 
     Object.assign(props, {
@@ -645,7 +620,7 @@ function routes(app) {
       UserActivityPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
 
     Object.assign(props, {
       data: data,
@@ -701,7 +676,7 @@ function routes(app) {
       UserSavedPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
 
     Object.assign(props, {
       data: data,
@@ -942,7 +917,7 @@ function routes(app) {
       metaDescription: `user messages reddit.com`,
     });
 
-    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token);
+    var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions);
     props.user = user;
     props.prefs = prefs;
     props.subscriptions = subscriptions;
@@ -987,7 +962,7 @@ function routes(app) {
       MessagesPage.populateData(globals().api, props, this.renderSynchronous, this.useCache),
     ];
 
-    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, promises);
+    var [data, user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
     props.data = data;
     props.user = user;
     props.prefs = prefs;
