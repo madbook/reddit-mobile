@@ -236,6 +236,11 @@ function initialize(bindLinks) {
           return;
         }
 
+        // If the href contains script ignore it
+        if (/^javascript:/.test(href)) {
+          return;
+        }
+
         e.preventDefault();
 
         scrollCache[currentUrl] = window.scrollY;
