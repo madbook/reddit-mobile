@@ -251,6 +251,11 @@ function initialize(bindLinks) {
 
         initialUrl = href;
 
+        // Update the referrer before navigation
+        var a = document.createElement('a');
+        a.href = currentUrl;
+        referrer = a.href;
+
         app.pushState(null, null, href);
 
         // Set to the browser's interpretation of the current name (to make
