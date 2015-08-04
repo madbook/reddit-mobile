@@ -67,6 +67,7 @@ class Ad extends BaseComponent {
     var postData = {
       srnames: srnames,
       is_mobile_web: true,
+      raw_json: '1',
     };
 
     // If user is not logged in, send the loid in the promo request
@@ -88,10 +89,8 @@ class Ad extends BaseComponent {
 
           if (res && res.status === 200 && res.body) {
             var link = res.body.data;
-            link.url = link.href_url.replace(/&amp;/g, '&');
+            link.url = link.href_url;
 
-            link.imp_pixel = link.imp_pixel.replace(/&amp;/g, '&');
-            link.adserver_imp_pixel = link.adserver_imp_pixel.replace(/&amp;/g, '&');
             return resolve(new models.Link(link).toJSON());
           } else {
             return reject(res);
