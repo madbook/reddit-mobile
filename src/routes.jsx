@@ -538,7 +538,9 @@ function routes(app) {
     ];
 
     var [user, prefs, subscriptions] = yield populateData(app, ctx, ctx.token, props.apiOptions, promises);
+
     props.user = user;
+    props.prefs = prefs;
     props.subscriptions = subscriptions;
 
     try {
