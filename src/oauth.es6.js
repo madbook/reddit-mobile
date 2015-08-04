@@ -18,6 +18,19 @@ var oauthRoutes = function(app) {
     maxAge: 1000 * 60 * 60,
   };
 
+  function getPassthroughHeaders(ctx, app) {
+    return app.getConfig('apiPassThroughHeaders').reduce(function(headers, key){
+      if (ctx.headers[key]) {
+        headers[key] = ctx.headers[key];
+      }
+      return headers;
+    }, {});
+  }
+
+  function assignPassThroughHeaders(obj, ctx, app) {
+    return Object.assign(obj, getPassthroughHeaders(ctx, app));
+  }
+
   if (app.getConfig('cookieDomain')) {
     cookieOptions.domain = app.getConfig('cookieDomain');
   }
@@ -95,6 +108,8 @@ var oauthRoutes = function(app) {
         'Authorization': basicAuth,
       };
 
+      assignPassThroughHeaders(headers, ctx, app);
+
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
@@ -132,6 +147,8 @@ var oauthRoutes = function(app) {
         'accept-encoding': ctx.headers['accept-encoding'],
         'accept-language': ctx.headers['accept-language'],
       };
+
+      assignPassThroughHeaders(headers, ctx, app);
 
       Object.assign(headers, app.config.apiHeaders || {});
 
@@ -171,7 +188,7 @@ var oauthRoutes = function(app) {
             state: modhash,
             duration: 'permanent',
             authorize: 'yes',
-          }
+          };
 
           headers['x-modhash'] = modhash;
 
@@ -212,6 +229,8 @@ var oauthRoutes = function(app) {
                 'User-Agent': ctx.headers['user-agent'],
                 'Authorization': basicAuth,
               };
+
+              assignPassThroughHeaders(headers, ctx, app);
 
               Object.assign(headers, app.config.apiHeaders || {});
 
@@ -357,6 +376,8 @@ var oauthRoutes = function(app) {
         'Authorization': basicAuth,
       };
 
+      assignPassThroughHeaders(headers, ctx, app);
+
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
@@ -433,9 +454,12 @@ var oauthRoutes = function(app) {
     }
 
     var p = new Promise(function(resolve, reject) {
+
       var headers = Object.assign({
         'User-Agent': ctx.headers['user-agent'],
       }, app.config.apiHeaders || {});
+
+      assignPassThroughHeaders(headers, ctx, app);
 
       superagent
         .post(endpoint)
