@@ -44,7 +44,7 @@ function routes(app) {
       display_name: s.display_name,
       url: s.url,
       submit_text: s.submit_text,
-    }
+    };
   }
 
   function loadUserSubscriptions (app, ctx, token, apiOptions) {
@@ -385,7 +385,6 @@ function routes(app) {
       time: ctx.query.time || 'all',
     });
 
-    var data = {};
     var promises = [];
 
     if (props.query) {
@@ -527,7 +526,7 @@ function routes(app) {
         subreddit = '?subreddit=' + sub;
       }
 
-      return ctx.redirect('/login?originalUrl=%2Fsubmit' + subreddit)
+      return ctx.redirect('/login?originalUrl=%2Fsubmit' + subreddit);
     }
 
     var props = buildProps(this, {
@@ -715,13 +714,14 @@ function routes(app) {
 
   router.get('static.faq', '/faq', function * () {
     var ctx = this;
+    var page;
 
     var props = buildProps(this, {
       referrer: ctx.headers.referer === ctx.path ? '/' : ctx.headers.referer,
     });
 
     try {
-      var page = (
+      page = (
         <BodyLayout {...props}>
           <FAQPage {...props}/>
         </BodyLayout>
@@ -737,13 +737,14 @@ function routes(app) {
 
   router.get('user.login', '/login', function * () {
     var ctx = this;
+    var page;
 
     var props = buildProps(this, {
       error: ctx.query.error,
     });
 
     try {
-      var page = (
+      page = (
         <BodyLayout {...props}>
           <LoginPage {...props}/>
         </BodyLayout>
@@ -759,6 +760,7 @@ function routes(app) {
 
   router.get('user.register', '/register', function * () {
     var ctx = this;
+    var page;
 
     var props = buildProps(this, {
       error: ctx.query.error,
@@ -766,7 +768,7 @@ function routes(app) {
     });
 
     try {
-      var page = (
+      page = (
         <BodyLayout {...props}>
           <RegisterPage {...props}/>
         </BodyLayout>
@@ -788,6 +790,7 @@ function routes(app) {
 
   router.get('static.error', /^\/([45]\d\d)$/, function * () {
     var ctx = this;
+    var page;
     var statusCode = ctx.captures[0];
     var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];
     ctx.status = parseInt(statusCode);
@@ -799,7 +802,7 @@ function routes(app) {
     });
 
     try {
-      var page = (
+      page = (
         <BodyLayout {...props}>
           <ErrorPage {...props}/>
         </BodyLayout>
@@ -906,7 +909,7 @@ function routes(app) {
     if (!this.token) {
       let query = {
         originalUrl: this.url,
-      }
+      };
 
       return this.redirect('/login?' + querystring.stringify(query));
     }
@@ -946,7 +949,7 @@ function routes(app) {
     if (!this.token) {
       let query = {
         originalUrl: this.url,
-      }
+      };
 
       return this.redirect('/login?' + querystring.stringify(query));
     }
