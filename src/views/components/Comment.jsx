@@ -245,6 +245,7 @@ class Comment extends BaseComponent {
             <Vote
               setScore={ this.setScore }
               thing={ this.props.comment }
+              token={ this.props.token }
               apiOptions={ this.props.apiOptions }
             />
           </li>
@@ -256,6 +257,7 @@ class Comment extends BaseComponent {
                 subreddit={ props.subredditName }
                 permalink={ permalink }
                 onReport={ this.onReport }
+                token={ props.token }
                 apiOptions={ props.apiOptions }
                 listing={props.comment}
                 showEdit={ showEdit }

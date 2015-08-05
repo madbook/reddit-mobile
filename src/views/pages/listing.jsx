@@ -140,6 +140,7 @@ class ListingPage extends BaseComponent {
     var comments = data ? data.comments : [];
     var api = globals().api;
     var user = props.user;
+    var token = props.token;
     var author = listing.author;
     var sort = props.sort || 'best';
     var app = globals().app;
@@ -170,6 +171,7 @@ class ListingPage extends BaseComponent {
           listing={ listing }
           onDelete={this.onDelete.bind(this, listing.name)}
           user={ user }
+          token={ token }
           saveUpdatedText={ this.saveUpdatedText.bind(this) }
           single={ true }
           toggleEdit={ this.toggleEdit.bind(this) }
@@ -181,6 +183,7 @@ class ListingPage extends BaseComponent {
           apiOptions={ apiOptions }
           thingId={ listing.name }
           user={ user }
+          token={ token }
           csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           savedReply={ savedReply }
@@ -242,6 +245,7 @@ class ListingPage extends BaseComponent {
                     nestingLevel={ 0 }
                     op={ author }
                     user={ user }
+                    token={ token }
                     apiOptions={apiOptions}
                   />
                 );

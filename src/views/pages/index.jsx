@@ -79,6 +79,7 @@ class IndexPage extends BaseComponent {
 
     var page = props.page || 0;
     var api = globals().api;
+    var token = props.token;
     var user = props.user;
     var app = globals().app;
     var firstId;
@@ -173,6 +174,7 @@ class IndexPage extends BaseComponent {
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
             user={user}
+            token={token}
             compact={compact}
             subredditTitle={subreddit}
           />

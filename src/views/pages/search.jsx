@@ -220,6 +220,7 @@ class SearchPage extends BaseComponent {
             listings={ listings}
             apiOptions={ apiOptions }
             user={ props.user }
+            token={ props.token }
           />
           <div className="row pageNav">
             <div className="col-xs-12">

@@ -54,6 +54,7 @@ class MessagesPage extends BaseComponent {
           messages={messages}
           key={'mesages-' + view}
           user={this.props.user}
+          token={this.props.token}
           apiOptions={this.props.apiOptions}
         />
       );

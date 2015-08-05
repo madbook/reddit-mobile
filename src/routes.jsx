@@ -241,7 +241,6 @@ function routes(app) {
     props.api = app.api;
     globals().api = app.api;
     globals().compact = props.compact;
-    globals().token = ctx.token;
     globals().loid = ctx.loid;
     globals().loidcreated = ctx.loidcreated;
     globals().url = props.url;

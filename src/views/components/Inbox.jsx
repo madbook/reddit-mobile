@@ -47,6 +47,7 @@ class Inbox extends BaseComponent {
               <MessagePreview
                 lastReply={isLastReply}
                 user={props.user}
+                token={props.token}
                 key={'message-' + m.name}
                 message={m}
                 apiOptions={props.apiOptions}

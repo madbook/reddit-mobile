@@ -57,6 +57,7 @@ class UserProfilePage extends BaseComponent {
           userProfile={userProfile}
           key={'user-profile-' + name}
           user={this.props.user}
+          token={this.props.token}
         />
       );
     }

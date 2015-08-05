@@ -47,7 +47,7 @@ class CommentBox extends BaseComponent {
   }
 
   submitComment (thingId, text) {
-    if (!globals().token) {
+    if (!this.props.token) {
       if (text) {
         window.localStorage.setItem(this.props.thingId, text);
       }
