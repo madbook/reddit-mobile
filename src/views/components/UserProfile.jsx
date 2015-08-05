@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import moment from 'moment';
 import BaseComponent from './BaseComponent';
 import propTypes from '../../propTypes';
@@ -11,7 +10,8 @@ class UserProfile extends BaseComponent {
 
   render() {
     var props = this.props;
-    var created = moment(globals().user.created * 1000);
+    var userProfile = props.userProfile;
+    var created = moment(userProfile.created * 1000);
       //TODO trophy case items can look like this when we get that data
               /*<li className='UserProfile-trophy clearfix'>
                 <span className='icon-crown-circled'/>
@@ -46,7 +46,7 @@ class UserProfile extends BaseComponent {
         <ul className='UserProfile-ul list-unstyled'>
           <li className='UserProfile-li h1'>
             <span className='icon-crown-circled'/>
-            { globals().user.link_karma } Karma
+            { userProfile.link_karma } Karma
           </li>
           <li className='UserProfile-li h1'>
             <span className='icon-crown-circled'/>
@@ -63,5 +63,9 @@ class UserProfile extends BaseComponent {
     );
   }
 }
+
+UserProfile.propTypes = {
+  userProfile: propTypes.user.isRequired,
+};
 
 export default UserProfile;

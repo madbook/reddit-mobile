@@ -39,6 +39,8 @@ class UserProfilePage extends BaseComponent {
   render() {
     var loading;
     var profile;
+
+    var userProfile = (this.state.data || {}).data || {};
     var name = this.props.userName;
     var tracking;
 
@@ -49,6 +51,7 @@ class UserProfilePage extends BaseComponent {
     } else {
       profile = (
         <UserProfile
+          userProfile={userProfile}
           key={'user-profile-' + name}
         />
       );

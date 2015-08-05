@@ -56,6 +56,7 @@ class UserSavedPage extends BaseComponent {
     var activities = state.data.data || [];
     var subreddit = '';
     var sort = props.sort || 'hot';
+    var userProfile = props.userProfile || {};
     var name = props.userName;
     var tracking;
 
@@ -157,6 +158,7 @@ UserSavedPage.propTypes = {
   page: React.PropTypes.number,
   sort: React.PropTypes.string,
   userName: React.PropTypes.string.isRequired,
+  userProfile: React.PropTypes.object,
 }
 
 export default UserSavedPage;
