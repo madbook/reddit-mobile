@@ -72,9 +72,9 @@ class Listing extends BaseComponent {
     var showEdit = false;
     var showDel = false;
 
-    if (globals().user && props.single) {
-      showEdit = (globals().user.name === listing.author) && listing.is_self;
-      showDel = globals().user.name === listing.author;
+    if (props.user && props.single) {
+      showEdit = (props.user.name === listing.author) && listing.is_self;
+      showDel = props.user.name === listing.author;
     }
 
 

@@ -88,7 +88,7 @@ class MessagePreview extends BaseComponent {
     }
 
     let readClass = message.new ? ' message-unread' : '';
-    let isMine = message.author === globals().user.name;
+    let isMine = message.author === props.user.name;
 
     let authorClass = isMine ? ' message-mine' : '';
 
@@ -197,6 +197,7 @@ class MessagePreview extends BaseComponent {
           <Inbox
             isReply={true}
             messages={message.replies}
+            user={this.props.user}
             apiOptions={this.props.apiOptions}
           />
         </div>

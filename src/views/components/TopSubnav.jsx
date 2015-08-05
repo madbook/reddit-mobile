@@ -10,7 +10,7 @@ class TopSubnav extends BaseComponent {
   }
 
   render() {
-    var user = globals().user;
+    var user = this.props.user;
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
     } else {

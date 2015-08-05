@@ -17,7 +17,7 @@ class TrackingPixel extends BaseComponent {
         trackingUrl += '&referrer_domain=' + domain;
       }
 
-      if (!globals().user && globals().loid) {
+      if (!this.props.user && globals().loid) {
         trackingUrl += '&loid=' + globals().loid;
         trackingUrl += '&loidcreated=' + globals().loidcreated;
       }

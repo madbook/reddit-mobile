@@ -100,7 +100,7 @@ class UserActivitySubnav extends BaseComponent {
     var opened = this.state.opened;
 
     // add user to the bar as well
-    var user = globals().user;
+    var user = this.props.user;
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
     } else {

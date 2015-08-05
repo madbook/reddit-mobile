@@ -53,6 +53,9 @@ class UserSavedPage extends BaseComponent {
     }
 
     var page = props.page || 0;
+    var api = globals().api;
+    var app = globals().app;
+    var user = props.user;
     var activities = state.data.data || [];
     var subreddit = '';
     var sort = props.sort || 'hot';
@@ -64,6 +67,7 @@ class UserSavedPage extends BaseComponent {
       tracking = (
         <TrackingPixel
           url={ state.data.meta.tracking }
+          user={ props.user }
         />);
     }
 
@@ -89,6 +93,7 @@ class UserSavedPage extends BaseComponent {
               firstPage={page}
               page={page}
               hideSubredditLabel={false}
+              user={user}
               hideUser={ false }
               apiOptions={ props.apiOptions }
             />

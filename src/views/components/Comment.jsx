@@ -215,8 +215,8 @@ class Comment extends BaseComponent {
 
     var showEdit = false;
     var showDel;
-    if (globals().user) {
-      showEdit = globals().user.name === comment.author;
+    if (props.user) {
+      showEdit = props.user.name === comment.author;
       showDel = showEdit;
     }
 

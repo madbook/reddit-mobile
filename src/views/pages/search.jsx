@@ -132,6 +132,7 @@ class SearchPage extends BaseComponent {
   render() {
     var state = this.state;
     var props = this.props;
+    var app = globals().app;
     var apiOptions = props.apiOptions;
     var controls;
     var tracking;
@@ -218,6 +219,7 @@ class SearchPage extends BaseComponent {
           <ListingList
             listings={ listings}
             apiOptions={ apiOptions }
+            user={ props.user }
           />
           <div className="row pageNav">
             <div className="col-xs-12">
@@ -241,6 +243,7 @@ class SearchPage extends BaseComponent {
       tracking = (
         <TrackingPixel
           url={ state.data.meta.tracking }
+          user={ this.props.user }
         />);
     }
 

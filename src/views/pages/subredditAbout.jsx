@@ -46,11 +46,14 @@ class SubredditAboutPage extends BaseComponent {
     }
 
     var props = this.props;
+    var app = globals().app;
+    var user = this.props.user;
 
     if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }
+          user={ props.user }
         />);
     }
 
@@ -74,6 +77,7 @@ class SubredditAboutPage extends BaseComponent {
         { loading }
 
         <TopSubnav
+          user={ user }
           hideSort={ true }
         />
 

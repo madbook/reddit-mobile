@@ -11,7 +11,6 @@ var globals = {
   referrer: null,
   touch: null,
   url: null,
-  user: null,
   winWidth: null,
   // TODO apiOptions: null,
 };

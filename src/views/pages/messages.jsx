@@ -39,6 +39,7 @@ class MessagesPage extends BaseComponent {
     var messages = (this.state.data || {}).data || {};
     var tracking;
 
+    var user = this.props.user;
     var view = this.props.view.toLowerCase();
 
     var inbox;
@@ -52,6 +53,7 @@ class MessagesPage extends BaseComponent {
         <Inbox
           messages={messages}
           key={'mesages-' + view}
+          user={this.props.user}
           apiOptions={this.props.apiOptions}
         />
       );
@@ -61,6 +63,7 @@ class MessagesPage extends BaseComponent {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }
+          user={ this.props.user }
         />);
     }
 
