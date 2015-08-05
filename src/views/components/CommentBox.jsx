@@ -82,8 +82,8 @@ class CommentBox extends BaseComponent {
   render () {
     var csrf;
 
-    if(globals().csrf) {
-      csrf = (<input type='hidden' name='_csrf' value={ globals().csrf } />);
+    if(this.props.csrf) {
+      csrf = (<input type='hidden' name='_csrf' value={ this.props.csrf } />);
     }
 
     return (

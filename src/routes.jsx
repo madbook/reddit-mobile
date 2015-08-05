@@ -257,7 +257,6 @@ function routes(app) {
     }
     globals().experiments = props.experiments;
     globals().referrer = props.referrer;
-    globals().csrf = props.csrf;
     globals().reddit = props.reddit;
 
     if (ctx.token) {

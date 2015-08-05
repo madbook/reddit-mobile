@@ -2,7 +2,6 @@ var globals = {
   api: null,
   app: null,
   compact: false,
-  csrf: null,
   experiments: null,
   loginPath: null,
   loid: null,

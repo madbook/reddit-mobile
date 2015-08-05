@@ -176,6 +176,7 @@ class ListingPage extends BaseComponent {
         <CommentBox
           apiOptions={ apiOptions }
           thingId={ listing.name }
+          csrf={ props.csrf }
           onSubmit={ this.onNewComment.bind(this) }
           savedReply={ savedReply }
         />
