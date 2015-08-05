@@ -6,7 +6,6 @@ var globals = {
   loginPath: null,
   random: null,
   reddit: null,
-  referrer: null,
   touch: null,
   url: null,
   winWidth: null,

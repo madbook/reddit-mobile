@@ -250,7 +250,6 @@ function routes(app) {
       globals().loginPath = props.loginPath;
     }
     globals().experiments = props.experiments;
-    globals().referrer = props.referrer;
     globals().reddit = props.reddit;
 
     if (ctx.token) {

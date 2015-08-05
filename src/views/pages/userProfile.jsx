@@ -65,6 +65,7 @@ class UserProfilePage extends BaseComponent {
     if (this.state.data.meta) {
       tracking = (
         <TrackingPixel
+          referrer={ this.props.referrer }
           url={ this.state.data.meta.tracking }
           user={ this.props.user }
           loid={ this.props.loid }

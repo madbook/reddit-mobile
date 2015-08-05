@@ -67,6 +67,7 @@ class UserSavedPage extends BaseComponent {
     if (state.data.meta) {
       tracking = (
         <TrackingPixel
+          referrer={ props.referrer }
           url={ state.data.meta.tracking }
           user={ props.user }
           loid={ props.loid }

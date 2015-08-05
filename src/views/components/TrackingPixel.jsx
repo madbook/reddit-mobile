@@ -4,16 +4,16 @@ import url from 'url';
 import BaseComponent from './BaseComponent';
 
 class TrackingPixel extends BaseComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.url) {
       var trackingUrl = this.props.url + '&r=' + Math.random();
 
-      if (globals().referrer) {
-        let domain = url.parse(globals().referrer).host;
+      if (this.props.referrer) {
+        let domain = url.parse(this.props.referrer).host;
         trackingUrl += '&referrer_domain=' + domain;
       }
 
@@ -40,7 +40,7 @@ class TrackingPixel extends BaseComponent {
     }
   }
 
-  render() {
+  render () {
     return null;
   }
 }

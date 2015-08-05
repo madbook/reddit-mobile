@@ -19,7 +19,7 @@ class ErrorPage extends BaseComponent {
   }
 
   render() {
-    var link = globals().referrer || '/';
+    var link = this.props.referrer || '/';
     var desktop;
 
     if (this.props.status === 404) {
