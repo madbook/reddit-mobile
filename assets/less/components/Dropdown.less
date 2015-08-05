@@ -9,6 +9,11 @@
     line-height: 20px;
   }
 
+  .icon-seashells {
+    display: inline-block;
+    font-size: 2em;
+  }
+
   .icon-caron {
     vertical-align: text-top;
     font-size: 12px;
@@ -40,16 +45,12 @@
     z-index: 10;
     line-height: 25px;
     border: @gray-border;
-    top: calc(~'100% + 10px');
+    top: calc(~'100% + 15px');
 
-        svg {
-          margin-right: 5px;
-          vertical-align: middle;
-        }
-
-    .icon-font({
+    svg {
       margin-right: 5px;
-    });
+      vertical-align: middle;
+    }
   }
 
   .Dropdown-tab-enter {
@@ -71,22 +72,22 @@
   }
 
   .Dropdown-reverse-tab {
-    top: -50px;
+    top: -56px;
     right: 0;
   }
 
   .Dropdown.pull-right .Dropdown-tab {
-    right: -5px;
+    right: -3px;
   }
 
-    .Dropdown-ul {
-      padding-left: 0;
-      margin-bottom: 0;
-    }
+  .Dropdown-ul {
+    padding-left: 0;
+    margin-bottom: 0;
+  }
 
-      .Dropdown-li {
-        white-space: nowrap;
-      }
+  .Dropdown-li {
+    white-space: nowrap;
+  }
 
         .Dropdown-button {
           padding: 0;
@@ -115,4 +116,8 @@
 
 .Dropdown-menu-text {
   color: @gray;
+}
+
+.rotate90 {
+  .rotate(90deg);
 }

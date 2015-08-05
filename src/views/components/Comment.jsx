@@ -315,7 +315,7 @@ class Comment extends BaseComponent {
             }}
             onClick={this.showTools.bind(this)} />
 
-          <footer>
+          <footer className='comment-footer'>
             { toolbox }
             { commentBox }
           </footer>

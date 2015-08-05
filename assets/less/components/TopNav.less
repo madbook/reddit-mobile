@@ -1,3 +1,5 @@
+@hamburger-width: 45px;
+
 .TopNav {
   height: @top-nav-height;
   background-color: @body-bg;
@@ -10,12 +12,8 @@
   .Dropdown {
     float: left !important;
 
-    .SeashellsDropdown-button {
-      padding-top: 12px;
-    }
-
     &.pull-right .Dropdown-tab {
-      right: 1px;
+      right: 5px;
     }
   }
 
@@ -32,15 +30,10 @@
   }
 
   &.opened:after {
-    right: @top-nav-height;
+    right: @hamburger-width;
   }
 
-  [class^="icon-"] {
-    font-size: 30px;
-    height: 30px;
-    width: 30px;
-    line-height: inherit;
-  }
+
 }
 
   .TopNav-left {
@@ -93,15 +86,26 @@
       display: block;
       height: 100%;
       left: 0;
-      right: @top-nav-height;
+      right: @hamburger-width;
       position: absolute;
 
       #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
     }
 
+    .MobileButton {
+      padding-right: 0px;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
 
     .TopNav-floaty, .TopNav .Dropdown {
       margin-left: 8px;
+
+      &.TopNav-hamburger {
+        margin-left: 0px;
+      }
     }
     // this can't be nested with the above rules
     // will break on android browser.
@@ -122,13 +126,20 @@
       line-height: @size;
     });
 
+    [class^="icon-"] {
+      position: relative;
+      top: 8px;
+      font-size: 2.5em;
+    }
+
+    .icon-post {
+      font-size: 3em;
+    }
+
     .icon-hamburger, .icon-x {
       line-height: @size;
+      top: 0;
     }
-  }
-
-  .TopNav-hamburger {
-    margin-left: 0px;
   }
 
   .TopNav-floaty {

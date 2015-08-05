@@ -105,8 +105,9 @@ class Vote extends BaseComponent {
   }
 
   render() {
+    var voteClass = '';
     if (this.state.localScore > 0) {
-      var voteClass = ' upvoted';
+      voteClass = ' upvoted';
     } else if (this.state.localScore < 0) {
       voteClass = ' downvoted';
     }
@@ -119,7 +120,7 @@ class Vote extends BaseComponent {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
-                <UpvoteIcon altered={this.state.localScore > 0}/>
+              <span className='icon-upvote-circled'></span>
               </MobileButton>
             </form>
           </li>
@@ -134,7 +135,7 @@ class Vote extends BaseComponent {
               <MobileButton type='submit'
                 className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
                 data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
-                <DownvoteIcon altered={this.state.localScore < 0}/>
+                <span className='icon-downvote-circled'></span>
               </MobileButton>
             </form>
           </li>

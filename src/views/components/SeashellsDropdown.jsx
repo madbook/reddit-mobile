@@ -21,7 +21,12 @@ class SeashellsDropdown extends BaseComponent {
   render() {
     var reversed = this.props.reversed || false;
     var opened = this.state.opened;
-    var button = <button type='button' className='SeashellsDropdown-button'><SeashellIcon played={opened} /></button>;
+    var openedClass = opened ? 'rotate90' : '';
+    var button = (
+      <button type='button' className='SeashellsDropdown-button'>
+        <span className={'icon-seashells ' + openedClass}></span>
+      </button>
+    );
     return (
       <Dropdown
         right={ true }

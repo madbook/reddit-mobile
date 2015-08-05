@@ -127,6 +127,11 @@ class TopNav extends BaseComponent {
       );
     }
 
+    var sideNavIcon = 'icon-hamburger';
+    if (this.state.sideNavOpen) {
+      sideNavIcon = 'icon-x';
+    }
+
     return (
       <nav className={'TopNav' + (this.state.sideNavOpen ? ' opened' : '')}>
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
@@ -145,13 +150,13 @@ class TopNav extends BaseComponent {
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
           <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
-            <PostIcon noCircle={ true }/>
+            <span className='icon-post'></span>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
-            <SearchIcon/>
+            <span className='icon-search'></span>
           </MobileButton>
           <MobileButton className='TopNav-floaty TopNav-hamburger' onClick={this._onClick.bind(this, 'hamburger')}>
-            <HamburgerIcon altered={this.state.sideNavOpen}/>
+            <span className={sideNavIcon}></span>
             { notificationsCount }
           </MobileButton>
         </div>
