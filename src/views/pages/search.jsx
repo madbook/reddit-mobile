@@ -245,6 +245,8 @@ class SearchPage extends BaseComponent {
         <TrackingPixel
           url={ state.data.meta.tracking }
           user={ this.props.user }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
         />);
     }
 

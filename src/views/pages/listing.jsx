@@ -206,6 +206,8 @@ class ListingPage extends BaseComponent {
       tracking = (
         <TrackingPixel
           url={ this.state.data.meta.tracking }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
           user={ props.user }
         />);
     }

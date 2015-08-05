@@ -54,6 +54,8 @@ class SubredditAboutPage extends BaseComponent {
         <TrackingPixel
           url={ this.state.data.meta.tracking }
           user={ props.user }
+          loid={ props.loid }
+          loidcreated={ props.loidcreated }
         />);
     }
 

@@ -241,8 +241,6 @@ function routes(app) {
     props.api = app.api;
     globals().api = app.api;
     globals().compact = props.compact;
-    globals().loid = ctx.loid;
-    globals().loidcreated = ctx.loidcreated;
     globals().url = props.url;
     if (props.subredditName) {
       globals().loginPath = props.loginPath + '/?' + querystring.stringify({

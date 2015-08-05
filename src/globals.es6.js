@@ -4,8 +4,6 @@ var globals = {
   compact: false,
   experiments: null,
   loginPath: null,
-  loid: null,
-  loidcreated: null,
   random: null,
   reddit: null,
   referrer: null,
