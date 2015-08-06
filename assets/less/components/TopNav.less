@@ -10,7 +10,7 @@
   top: 0;
 
   .Dropdown {
-    float: left !important;
+    float: left;
 
     &.pull-right .Dropdown-tab {
       right: 5px;
@@ -32,181 +32,179 @@
   &.opened:after {
     right: @hamburger-width;
   }
-
-
 }
 
-  .TopNav-left {
-    max-width: calc(100% ~'-' @top-nav-height);
-    overflow: hidden;
-    position: relative;
-    white-space: nowrap;
+.TopNav-left {
+  max-width: calc(100% ~'-' @top-nav-height);
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
 
-    .Logo {
-      line-height: @top-nav-height;
-    }
+  .Logo {
+    line-height: @top-nav-height;
   }
+}
 
-  .TopNav-snoo {
-    display: inline-block;
-    height: 100%;
-    vertical-align: bottom;
+.TopNav-snoo {
+  display: inline-block;
+  height: 100%;
+  vertical-align: bottom;
 
-    .SnooIcon {
-      @size: 30px;
-      width: @size;
-      height: @size;
-      margin-top: 7px;
-      color: @orangered;
-      line-height: @size;
-      font-size: @size;
-
-      .SVG-fill {
-        fill: @orangered !important;
-      }
-
-        .mouth {
-        stroke: @black !important;
-      }
-    }
-  }
-
-  .TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
-    padding: 0 6px;
-  }
-
-  .TopNav-right {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    padding-left: 30px;
-
-    &:before {
-      content: '';
-      display: block;
-      height: 100%;
-      left: 0;
-      right: @hamburger-width;
-      position: absolute;
-
-      #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
-    }
-
-    .MobileButton {
-      padding-right: 0px;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
-    .TopNav-floaty, .TopNav .Dropdown {
-      margin-left: 8px;
-
-      &.TopNav-hamburger {
-        margin-left: 0px;
-      }
-    }
-    // this can't be nested with the above rules
-    // will break on android browser.
-    .TopNav-padding {
-      margin-left: 8px;
-    }
-
-    .SVG-icon {
-      width: 20px;
-      height: 20px;
-    }
-
+  .SnooIcon {
     @size: 30px;
-    .icon-font({
-      height: @size;
-      width: @size;
-      font-size: @size;
-      line-height: @size;
-    });
+    width: @size;
+    height: @size;
+    margin-top: 7px;
+    color: @orangered;
+    line-height: @size;
+    font-size: @size;
 
-    [class^="icon-"] {
-      position: relative;
-      top: 8px;
-      font-size: 2.5em;
+    .SVG-fill {
+      fill: @orangered !important;
     }
 
-    .icon-post {
-      font-size: 3em;
-    }
-
-    .icon-hamburger, .icon-x {
-      line-height: @size;
-      top: 0;
+      .mouth {
+      stroke: @black !important;
     }
   }
+}
 
-  .TopNav-floaty {
+.TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
+  padding: 0 6px;
+}
+
+.TopNav-right {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-left: 30px;
+
+  &:before {
+    content: '';
     display: block;
-    float: left;
     height: 100%;
-  }
-
-  .TopNav-text {
-    font-size: @font-size-base + 7px;
-    color: @black;
-    margin: 0;
-    line-height: 46px;
-    display: inline-block;
-  }
-
-    .TopNav-a, .TopNav-a:hover, .TopNav-a:visited {
-      color: inherit;
-      text-decoration: none;
-      display: inline-block;
-      height: 100%;
-    }
-
-    .TopNav-a:active {
-      color: lighten(@text-color, 20%);
-    }
-
-  .TopNav-post {
-    padding-right: 11px;
-  }
-
-  .TopNav-post, .TopNav-search {
-    figure.SVG-icon {
-      margin-top: 7.5px;
-    }
-
-    svg.SVG-icon {
-      margin-top: 12.5px;
-    }
-  }
-
-  .TopNav-search {
-    position: relative;
-    padding-left: 1px;
-  }
-
-  .TopNav-post {
-    position: relative;
-  }
-
-  .TopNav-beta {
-    pointer-events: none;
+    left: 0;
+    right: @hamburger-width;
     position: absolute;
-    width: 60px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.66);
-    color: @white;
-    font-size: 9px;
-    text-transform: uppercase;
-    .rotate(-45deg);
-    padding-top: 2px;
-    line-height: 12px;
-    top: 5px;
-    left: -17px;
-    // android browser fix
-    -webkit-backface-visibility: hidden;
+
+    #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
   }
+
+  .MobileButton {
+    padding-right: 0px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .TopNav-floaty, .TopNav .Dropdown {
+    margin-left: 8px;
+
+    &.TopNav-hamburger {
+      margin-left: 0px;
+    }
+  }
+  // this can't be nested with the above rules
+  // will break on android browser.
+  .TopNav-padding {
+    margin-left: 8px;
+  }
+
+  .SVG-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  @size: 30px;
+  .icon-font({
+    height: @size;
+    width: @size;
+    font-size: @size;
+    line-height: @size;
+  });
+
+  [class^="icon-"] {
+    position: relative;
+    top: 8px;
+    font-size: 2.5em;
+  }
+
+  .icon-post {
+    font-size: 3em;
+  }
+
+  .icon-hamburger, .icon-x {
+    line-height: @size;
+    top: 0;
+  }
+}
+
+.TopNav-floaty {
+  display: block;
+  float: left;
+  height: 100%;
+}
+
+.TopNav-text {
+  font-size: @font-size-base + 7px;
+  color: @black;
+  margin: 0;
+  line-height: 46px;
+  display: inline-block;
+}
+
+.TopNav-a, .TopNav-a:hover, .TopNav-a:visited {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  height: 100%;
+}
+
+.TopNav-a:active {
+  color: lighten(@text-color, 20%);
+}
+
+.TopNav-post {
+  padding-right: 11px;
+}
+
+.TopNav-post, .TopNav-search {
+  figure.SVG-icon {
+    margin-top: 7.5px;
+  }
+
+  svg.SVG-icon {
+    margin-top: 12.5px;
+  }
+}
+
+.TopNav-search {
+  position: relative;
+  padding-left: 1px;
+}
+
+.TopNav-post {
+  position: relative;
+}
+
+.TopNav-beta {
+  pointer-events: none;
+  position: absolute;
+  width: 60px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.66);
+  color: @white;
+  font-size: 9px;
+  text-transform: uppercase;
+  .rotate(-45deg);
+  padding-top: 2px;
+  line-height: 12px;
+  top: 5px;
+  left: -17px;
+  // android browser fix
+  -webkit-backface-visibility: hidden;
+}
 
 .TopNav-headline {
   height: 100%;
