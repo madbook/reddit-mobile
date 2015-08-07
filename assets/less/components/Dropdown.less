@@ -31,88 +31,88 @@
   overflow: hidden;
 }
 
-  .Dropdown.Dropdown-inline {
-    float: none;
-    display: inline-block;
-    margin-right: 1em;
+.Dropdown.Dropdown-inline {
+  float: none;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.Dropdown-tab {
+  padding: none;
+  position: absolute;
+  background: @white;
+  padding: 10px 10px 5px;
+  z-index: 10;
+  line-height: 25px;
+  border: @gray-border;
+  top: calc(~'100% + 15px');
+
+  svg {
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+}
+
+.Dropdown-tab-enter {
+  .transition(0.3s);
+  opacity: 0;
+}
+
+.Dropdown-tab-enter-active {
+  opacity: 1;
+}
+
+.Dropdown-tab-leave {
+  .transition(0.3s);
+  opacity: 1
+}
+
+.Dropdown-tab-leave-active {
+  opacity: 0;
+}
+
+.Dropdown-reverse-tab {
+  top: -56px;
+  right: 0;
+}
+
+.Dropdown.pull-right .Dropdown-tab {
+  right: -3px;
+}
+
+.Dropdown-ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.Dropdown-li {
+  white-space: nowrap;
+}
+
+.Dropdown-button {
+  padding: 0;
+  vertical-align: middle;
+  display: inline-block;
+  color: @gray;
+  text-decoration: none;
+
+  &:hover {
+    color: @gray;
+    text-decoration: none;
   }
 
-  .Dropdown-tab {
-    padding: none;
-    position: absolute;
-    background: @white;
-    padding: 10px 10px 5px;
-    z-index: 10;
-    line-height: 25px;
-    border: @gray-border;
-    top: calc(~'100% + 15px');
-
-    svg {
-      margin-right: 5px;
-      vertical-align: middle;
-    }
+  &:visited {
+    color: @gray;
   }
+}
 
-  .Dropdown-tab-enter {
-    .transition(0.3s);
-    opacity: 0;
-  }
+.Dropdown-text {
+  vertical-align: sub;
+}
 
-  .Dropdown-tab-enter-active {
-    opacity: 1;
-  }
-
-  .Dropdown-tab-leave {
-    .transition(0.3s);
-    opacity: 1
-  }
-
-  .Dropdown-tab-leave-active {
-    opacity: 0;
-  }
-
-  .Dropdown-reverse-tab {
-    top: -56px;
-    right: 0;
-  }
-
-  .Dropdown.pull-right .Dropdown-tab {
-    right: -3px;
-  }
-
-  .Dropdown-ul {
-    padding-left: 0;
-    margin-bottom: 0;
-  }
-
-  .Dropdown-li {
-    white-space: nowrap;
-  }
-
-        .Dropdown-button {
-          padding: 0;
-          vertical-align: middle;
-          display: inline-block;
-          color: @gray;
-          text-decoration: none;
-
-          &:hover {
-            color: @gray;
-            text-decoration: none;
-          }
-
-          &:visited {
-            color: @gray;
-          }
-        }
-
-          .Dropdown-text {
-            vertical-align: sub;
-          }
-
-          .Dropdown-form {
-            margin: 0;
-          }
+.Dropdown-form {
+  margin: 0;
+}
 
 .Dropdown-menu-text {
   color: @gray;
