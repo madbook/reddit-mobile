@@ -140,7 +140,7 @@ class TopNav extends BaseComponent {
             <SnooIcon rainbow={ false }/>
           </MobileButton>
           <h1 className='TopNav-text TopNav-padding'>
-            <span className='TopNav-headline'>
+            <span>
               <MobileButton className='TopNav-a' href={breadcrumbLink}>
                 {breadcrumbContents}
               </MobileButton>
@@ -149,13 +149,13 @@ class TopNav extends BaseComponent {
         </div>
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
-          <MobileButton className='TopNav-floaty TopNav-post' href={'/submit' + currentSub }>
+          <MobileButton className='TopNav-floaty' href={'/submit' + currentSub }>
             <span className='icon-post'></span>
           </MobileButton>
-          <MobileButton className='TopNav-floaty TopNav-search' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
+          <MobileButton className='TopNav-floaty' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <span className='icon-search'></span>
           </MobileButton>
-          <MobileButton className='TopNav-floaty TopNav-hamburger' onClick={this._onClick.bind(this, 'hamburger')}>
+          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
             <span className={sideNavIcon}></span>
             { notificationsCount }
           </MobileButton>

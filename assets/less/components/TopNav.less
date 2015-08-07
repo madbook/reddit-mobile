@@ -9,14 +9,6 @@
   -webkit-user-select: none;
   top: 0;
 
-  .Dropdown {
-    float: left;
-
-    &.pull-right .Dropdown-tab {
-      right: 5px;
-    }
-  }
-
   &:after {
     content:'';
     position: absolute;
@@ -69,8 +61,33 @@
   }
 }
 
-.TopNav-padding, .TopNav-floaty, .TopNav .Dropdown {
+.TopNav-beta {
+  pointer-events: none;
+  position: absolute;
+  width: 60px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.66);
+  color: @white;
+  font-size: 9px;
+  text-transform: uppercase;
+  .rotate(-45deg);
+  padding-top: 2px;
+  line-height: 12px;
+  top: 5px;
+  left: -17px;
+  // android browser fix
+  -webkit-backface-visibility: hidden;
+}
+
+.TopNav-padding, .TopNav .Dropdown {
   padding: 0 6px;
+}
+
+.TopNav-floaty {
+  // display: block;
+  float: left;
+  height: 100%;
+  margin-left: 5px;
 }
 
 .TopNav-right {
@@ -98,35 +115,9 @@
     }
   }
 
-  .TopNav-floaty, .TopNav .Dropdown {
-    margin-left: 8px;
-
-    &.TopNav-hamburger {
-      margin-left: 0px;
-    }
-  }
-  // this can't be nested with the above rules
-  // will break on android browser.
-  .TopNav-padding {
-    margin-left: 8px;
-  }
-
-  .SVG-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  @size: 30px;
-  .icon-font({
-    height: @size;
-    width: @size;
-    font-size: @size;
-    line-height: @size;
-  });
-
   [class^="icon-"] {
-    position: relative;
-    top: 8px;
+    // position: relative;
+    // top: 8px;
     font-size: 2.5em;
   }
 
@@ -134,16 +125,25 @@
     font-size: 3em;
   }
 
+  .icon-search, .icon-post {
+    position: relative;
+    top: 15px;
+  }
+
   .icon-hamburger, .icon-x {
-    line-height: @size;
+    line-height: 30px;
     top: 0;
   }
-}
 
-.TopNav-floaty {
-  display: block;
-  float: left;
-  height: 100%;
+  .Dropdown {
+    float:left !important;
+    position: relative;
+    top: 15px;
+
+    .Dropdown-tab {
+      right: 5px;
+    }
+  }
 }
 
 .TopNav-text {
@@ -152,6 +152,12 @@
   margin: 0;
   line-height: 46px;
   display: inline-block;
+
+  svg {
+    position: relative;
+    top: 50%;
+    margin-top: -12px;
+  }
 }
 
 .TopNav-a, .TopNav-a:hover, .TopNav-a:visited {
@@ -163,55 +169,4 @@
 
 .TopNav-a:active {
   color: lighten(@text-color, 20%);
-}
-
-.TopNav-post {
-  padding-right: 11px;
-}
-
-.TopNav-post, .TopNav-search {
-  figure.SVG-icon {
-    margin-top: 7.5px;
-  }
-
-  svg.SVG-icon {
-    margin-top: 12.5px;
-  }
-}
-
-.TopNav-search {
-  position: relative;
-  padding-left: 1px;
-}
-
-.TopNav-post {
-  position: relative;
-}
-
-.TopNav-beta {
-  pointer-events: none;
-  position: absolute;
-  width: 60px;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.66);
-  color: @white;
-  font-size: 9px;
-  text-transform: uppercase;
-  .rotate(-45deg);
-  padding-top: 2px;
-  line-height: 12px;
-  top: 5px;
-  left: -17px;
-  // android browser fix
-  -webkit-backface-visibility: hidden;
-}
-
-.TopNav-headline {
-  height: 100%;
-
-  svg {
-    position: relative;
-    top: 50%;
-    margin-top: -12px;
-  }
 }
