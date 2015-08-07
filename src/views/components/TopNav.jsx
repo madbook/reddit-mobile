@@ -4,15 +4,11 @@ import globals from '../../globals';
 import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
-import HamburgerIcon from '../components/icons/HamburgerIcon';
 import InfoIcon from '../components/icons/InfoIcon';
 import Loading from '../components/Loading';
 import Logo from '../components/Logo';
 import MobileButton from '../components/MobileButton';
-import PostIcon from '../components/icons/PostIcon';
 import SaveIcon from '../components/icons/SaveIcon';
-import SearchIcon from '../components/icons/SearchIcon';
-import SeashellIcon from '../components/icons/SeashellIcon';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';

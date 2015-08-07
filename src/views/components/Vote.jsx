@@ -5,9 +5,7 @@ import globals from '../../globals';
 import propTypes from '../../propTypes';
 
 import BaseComponent from '../components/BaseComponent';
-import DownvoteIcon from '../components/icons/DownvoteIcon';
 import MobileButton from '../components/MobileButton';
-import UpvoteIcon from '../components/icons/UpvoteIcon';
 
 class Vote extends BaseComponent {
   constructor(props) {

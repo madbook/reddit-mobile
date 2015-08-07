@@ -4,7 +4,6 @@ import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
-import SeashellIcon from '../components/icons/SeashellIcon';
 
 class SeashellsDropdown extends BaseComponent {
   constructor(props) {
