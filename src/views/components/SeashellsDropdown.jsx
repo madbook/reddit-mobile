@@ -29,7 +29,7 @@ class SeashellsDropdown extends BaseComponent {
     );
     return (
       <Dropdown
-        right={ true }
+        right={ this.props.right }
         button={ button }
         id={ this._id }
         reversed={ reversed }
