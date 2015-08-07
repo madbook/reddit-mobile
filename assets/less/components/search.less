@@ -18,10 +18,21 @@
   }
 
   .container .TopSubnav {
+    height: 30px;
     .Dropdown-inline button,
     .Dropdown-button {
       text-transform: lowercase;
     }
+
+    .text-muted {
+      float: left;
+      margin-right: 5px;
+    }
+  }
+
+  .TopSubnav + div {
+    z-index: 1;
+    position: relative;
   }
 
   .container h4 {
