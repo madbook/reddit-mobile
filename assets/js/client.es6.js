@@ -137,6 +137,27 @@ function findLinkParent(el) {
   }
 }
 
+function sendTimings() {
+  // Send the timings during the next cycle.
+  if (window.bootstrap.actionName) {
+    var timings = Object.assign({
+      actionName: 'm.server.' + window.bootstrap.actionName,
+    }, getTimes());
+
+    timings.mountTiming = Date.now() / 1000;
+
+    var $csrf = document.getElementById('csrf-token-meta-tag');
+
+    superagent
+      .post('/timings')
+      .send({
+        rum: timings,
+        _csrf: $csrf.content,
+      })
+      .end(function(){});
+  }
+}
+
 function initialize(bindLinks) {
   var plugin;
   var p;
@@ -291,6 +312,7 @@ function initialize(bindLinks) {
   app.render(app.state.url, true, modifyContext).then(function() {
     attachEvents();
     referrer = document.location.href;
+    sendTimings();
   });
 
   app.on('route:desktop', function(route) {
@@ -333,25 +355,6 @@ function initialize(bindLinks) {
       app.emit(constants.RESIZE);
     }
   }.bind(app), 100));
-
-  // Send the timings during the next cycle.
-  setTimeout(function() {
-    if (window.bootstrap.actionName) {
-      var timings = Object.assign({
-        actionName: 'm.server.' + window.bootstrap.actionName,
-      }, getTimes());
-
-      var $csrf = document.getElementById('csrf-token-meta-tag');
-
-      superagent
-        .post('/timings')
-        .send({
-          rum: timings,
-          _csrf: $csrf.content,
-        })
-        .end(function(){});
-    }
-  }, 1);
 
   if (window.bootstrap.propertyId) {
     trackingEvents(app);
