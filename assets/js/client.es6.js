@@ -24,6 +24,7 @@ import trackingEvents from './trackingEvents';
 import TweenLite from 'gsap';
 
 var _lastWinWidth = 0;
+var beginRender = 0;
 
 function loadShim() {
   var head = document.head || document.getElementsByTagName('head')[0];
@@ -144,7 +145,7 @@ function sendTimings() {
       actionName: 'm.server.' + window.bootstrap.actionName,
     }, getTimes());
 
-    timings.mountTiming = Date.now() / 1000;
+    timings.mountTiming = (Date.now() - beginRender) / 1000;
 
     var $csrf = document.getElementById('csrf-token-meta-tag');
 
@@ -309,6 +310,7 @@ function initialize(bindLinks) {
   // Don't re-render tracking pixel on first load. App reads from state
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
+  beginRender = Date.now();
   app.render(app.state.url, true, modifyContext).then(function() {
     attachEvents();
     referrer = document.location.href;
