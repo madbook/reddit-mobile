@@ -20,6 +20,7 @@ class SeashellsDropdown extends BaseComponent {
   render() {
     var reversed = this.props.reversed || false;
     var opened = this.state.opened;
+    var content = opened ? this.props.children : undefined; 
     var openedClass = opened ? 'rotate90' : '';
     var button = (
       <button type='button' className='SeashellsDropdown-button'>
@@ -33,7 +34,7 @@ class SeashellsDropdown extends BaseComponent {
         id={ this._id }
         reversed={ reversed }
       >
-        {this.props.children}
+        {content}
       </Dropdown>
     );
   }
