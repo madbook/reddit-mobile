@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/lang/isEqual';
 
 class BaseComponent extends React.Component {
   constructor(props) {
@@ -6,7 +7,7 @@ class BaseComponent extends React.Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    return (nextProps !== this.props || nextState !== this.state);
+    return (!isEqual(nextProps, this.props) || !isEqual(nextState, this.state));
   }
 }
 
