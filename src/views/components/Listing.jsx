@@ -80,7 +80,7 @@ class Listing extends BaseComponent {
 
     var listingDropdownNode = (
       <ListingDropdown
-        viewComments={ props.single }
+        viewComments={ !props.single }
         listing={ listing }
         showHide={ true }
         saved={ listing.saved }
