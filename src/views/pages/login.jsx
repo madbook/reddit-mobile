@@ -4,24 +4,22 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 
 class LoginPage extends BasePage {
-  constructor(props) {
-    super(props);
-  }
-
   render () {
     var errorClass = '';
 
-    if (this.props.error) {
+    if (this.props.ctx.query.error) {
       errorClass = 'has-error';
     }
 
-    var dest = this.props.query.originalUrl;
+    var dest = this.props.ctx.query.originalUrl;
     var linkDest = '';
     var refererTag = '';
+
     if (dest) {
       linkDest = '/?' + querystring.stringify({
         originalUrl: dest,
       });
+
       refererTag = <input type='hidden' name='originalUrl' value={dest} />;
     }
 
@@ -45,7 +43,7 @@ class LoginPage extends BasePage {
 
                 { refererTag }
 
-                <input type='hidden' value={ this.props.csrf } name='_csrf' />
+                <input type='hidden' value={ this.props.ctx.csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Log In</button>
               </form>
@@ -59,17 +57,6 @@ class LoginPage extends BasePage {
       </div>
     );
   }
-
-  static populateData (api, props, synchronous) {
-    var defer = q.defer();
-    defer.resolve();
-    return defer.promise;
-  }
-};
-
-LoginPage.propTypes = {
-  error: React.PropTypes.string,
-  query: React.PropTypes.object.isRequired,
 };
 
 export default LoginPage;

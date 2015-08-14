@@ -79,6 +79,10 @@ class Listing extends BaseComponent {
 
     var listingDropdownNode = (
       <ListingDropdown
+        apiOptions={ props.apiOptions }
+        app={ props.app }
+        user={ props.user }
+        token={ props.token }
         viewComments={ !props.single }
         listing={ listing }
         showHide={ true }
@@ -90,8 +94,6 @@ class Listing extends BaseComponent {
         showDel={ showDel }
         onReport={ this.onReport }
         onHide={ this.onHide }
-        token={ props.token }
-        apiOptions={ props.apiOptions }
       />
     );
 
@@ -220,6 +222,7 @@ class Listing extends BaseComponent {
         </ul>
         <div className='Listing-vote'>
           <Vote
+            app={ this.props.app }
             thing={ listing }
             token={ props.token }
             apiOptions={ props.apiOptions }
@@ -307,14 +310,14 @@ class Listing extends BaseComponent {
   componentDidMount() {
     if (this.props.single) {
       this._loadContent();
-      globals().app.on(constants.RESIZE, this.resize);
+      this.props.app.on(constants.RESIZE, this.resize);
       this.resize();
     }
   }
 
   componentWillUnmount() {
     if (this.props.single) {
-      globals().app.off(constants.RESIZE, this.resize);
+      this.props.app.off(constants.RESIZE, this.resize);
     }
   }
 

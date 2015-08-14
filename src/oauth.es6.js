@@ -19,12 +19,16 @@ var oauthRoutes = function(app) {
   };
 
   function getPassthroughHeaders(ctx, app) {
-    return app.getConfig('apiPassThroughHeaders').reduce(function(headers, key){
-      if (ctx.headers[key]) {
-        headers[key] = ctx.headers[key];
-      }
-      return headers;
-    }, {});
+    if (app.getConfig('apiPassThroughHeaders')) {
+      return app.getConfig('apiPassThroughHeaders').reduce(function(headers, key){
+        if (ctx.headers[key]) {
+          headers[key] = ctx.headers[key];
+        }
+        return headers;
+      }, {});
+    }
+
+    return {};
   }
 
   function assignPassThroughHeaders(obj, ctx, app) {
@@ -294,7 +298,7 @@ var oauthRoutes = function(app) {
     this.cookies.set('reddit_session', undefined, {
       domain: '.reddit.com',
     });
-    this.redirect('/');
+    return this.redirect('/');
   });
 
   router.get('/oauth2/error', function *() {

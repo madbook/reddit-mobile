@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 import { models } from 'snoode';
 import superagent from 'superagent';
 
@@ -29,7 +28,7 @@ class Ad extends BaseComponent {
     var listing = this.refs.listing;
 
     if (!listing) {
-      return false;
+      return true;
     }
 
     return listing.checkPos.apply(listing, arguments);
@@ -58,7 +57,7 @@ class Ad extends BaseComponent {
       srnames = ' reddit.com';
     }
 
-    var app = globals().app;
+    var app = this.props.app;
     var loggedIn = !!this.props.token;
     var origin = (loggedIn ?
       app.config.authAPIOrigin :
@@ -78,7 +77,7 @@ class Ad extends BaseComponent {
     }
 
     return new Promise((resolve, reject) => {
-      superagent.post(origin + this.props.adsPath)
+      superagent.post(origin + this.props.config.adsPath)
         .set(headers)
         .type('form')
         .send(postData)
@@ -111,8 +110,8 @@ class Ad extends BaseComponent {
       });
     });
 
-    globals().app.on(constants.SCROLL, this._checkImpression);
-    globals().app.on(constants.RESIZE, this._checkImpression);
+    this.props.app.on(constants.SCROLL, this._checkImpression);
+    this.props.app.on(constants.RESIZE, this._checkImpression);
 
     this._hasListeners = true;
     this._checkImpression();
@@ -131,8 +130,8 @@ class Ad extends BaseComponent {
 
   _removeListeners() {
     if (this._hasListeners) {
-      globals().app.off(constants.SCROLL, this._checkImpression);
-      globals().app.off(constants.RESIZE, this._checkImpression);
+      this.props.app.off(constants.SCROLL, this._checkImpression);
+      this.props.app.off(constants.RESIZE, this._checkImpression);
       this._hasListeners = false;
     }
   }

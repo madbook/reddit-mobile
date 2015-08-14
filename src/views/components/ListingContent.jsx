@@ -495,7 +495,7 @@ class ListingContent extends BaseComponent {
     } catch (err) {
     }
     // TODO: this doesn't work
-    // if (globals().app.config.debug) {
+    // if (this.props.app.config.debug) {
       // console.log('ListingContent._aspectRatio: missed a case', listing);
     // }
   }

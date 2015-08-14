@@ -80,9 +80,7 @@ Allow: /
       if (vote.get('direction') !== undefined && vote.get('id')) {
         var options = app.api.buildOptions(props.apiOptions);
         options.model = vote;
-
-        api.votes.post(options).done(function() {
-        });
+        api.votes.post(options).then(function() { });
       }
     });
 
@@ -101,7 +99,7 @@ Allow: /
     var options = app.api.buildOptions(props.apiOptions);
     options.model = comment;
 
-    api.comments.post(options).done(function() {
+    api.comments.post(options).then(function() {
       this.redirect(this.headers.referer || '/');
     });
   });

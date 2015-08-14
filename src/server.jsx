@@ -27,6 +27,8 @@ import serverRoutes from './serverRoutes';
 import randomBySeed from './lib/randomBySeed'
 import setLoggedOutCookies from './lib/loid';
 
+import defaultConfig from './config';
+
 function getBucket(loid, choices, controlSize) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
 }
@@ -94,15 +96,27 @@ function setCompact(ctx, app) {
   ctx.compact = compact;
 }
 
+function formatBootstrap(props) {
+  var config = defaultConfig();
+
+  for (var p in props.config) {
+    if (!config.hasOwnProperty(p)){
+      delete props.config[p];
+    }
+  }
+
+  return props;
+}
+
 class Server {
   constructor (config) {
     // Intantiate a new App instance (React middleware)
     config.seed = Math.random();
     config.staticMarkup = true;
     config.experiments = config.experiments || [];
+    config.formatBootstrap = formatBootstrap;
 
     var app = new App(config);
-    globals().app = app;
 
     oauthRoutes(app);
     serverRoutes(app);

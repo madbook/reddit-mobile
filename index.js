@@ -15,7 +15,8 @@ var cluster = require('cluster');
 var numCPUs = process.env.PROCESSES || require('os').cpus().length;
 
 // App config
-var config = require('./src/config');
+var defaultConfig = require('./src/config');
+var config = defaultConfig();
 
 // Import built-asset manifests for passing to layouts
 var jsManifest = require('./build/js/client-manifest.json');

@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 import propTypes from '../../propTypes';
 import uniq from 'lodash/array/uniq';
 
@@ -17,7 +16,7 @@ class ListingList extends BaseComponent {
 
     this.state = {
       adLocation: Math.min(_AD_LOCATION, props.listings.length),
-      compact: globals().compact,
+      compact: this.props.compact,
     };
 
     this._lazyLoad = this._lazyLoad.bind(this);
@@ -25,32 +24,30 @@ class ListingList extends BaseComponent {
   }
 
   componentDidMount() {
-    globals().app.on(constants.RESIZE, this._resize);
+    this.props.app.on(constants.RESIZE, this._resize);
     this._addListeners();
     this._resize();
-    if (typeof this.props.compact === 'undefined') {
-      this._onCompactToggle = this._onCompactToggle.bind(this);
-      globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
-    }
+
+    this._onCompactToggle = this._onCompactToggle.bind(this);
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentWillUnmount() {
     this._removeListeners();
-    globals().app.off(constants.RESIZE, this._resize);
-    if (typeof this.props.compact === 'undefined') {
-      globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
-    }
+    this.props.app.off(constants.RESIZE, this._resize);
+
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   _getLoadedDistance () {
-    return window.innerHeight * 2;
+    return document.body.scrollTop + window.innerHeight * 2;
   }
 
   _checkAdPos() {
     var loadedDistance = this._getLoadedDistance();
 
     if (!this.refs.ad) {
-      return false;
+      return true;
     }
 
     return this.refs.ad.checkPos(loadedDistance);
@@ -93,16 +90,16 @@ class ListingList extends BaseComponent {
   _addListeners() {
     if (!this._hasListeners) {
       this._hasListeners = true;
-      globals().app.on(constants.SCROLL, this._lazyLoad);
-      globals().app.on(constants.RESIZE, this._lazyLoad);
+      this.props.app.on(constants.SCROLL, this._lazyLoad);
+      this.props.app.on(constants.RESIZE, this._lazyLoad);
       this._lazyLoad();
     }
   }
 
   _removeListeners() {
     if (this._hasListeners) {
-      globals().app.off(constants.SCROLL, this._lazyLoad);
-      globals().app.off(constants.RESIZE, this._lazyLoad);
+      this.props.app.off(constants.SCROLL, this._lazyLoad);
+      this.props.app.off(constants.RESIZE, this._lazyLoad);
       this._hasListeners = false;
     }
   }
@@ -201,8 +198,8 @@ class ListingList extends BaseComponent {
     }
   }
 
-  _onCompactToggle() {
-    this.setState({compact: globals().compact});
+  _onCompactToggle(compact) {
+    this.setState({ compact });
   }
 }
 

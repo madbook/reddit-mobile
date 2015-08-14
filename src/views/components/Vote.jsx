@@ -1,7 +1,6 @@
 import React from 'react';
 import { models } from 'snoode';
 import constants from '../../constants';
-import globals from '../../globals';
 import propTypes from '../../propTypes';
 
 import BaseComponent from '../components/BaseComponent';
@@ -28,40 +27,45 @@ class Vote extends BaseComponent {
   }
 
   componentDidMount() {
-    globals().app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    this.props.app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    this.props.app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
   }
 
   _onClick(str, evt) {
     switch (str) {
       case 'upvote':
         evt.preventDefault();
-        globals().app.emit(constants.VOTE+':'+this.props.thing.id, 1);
+        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, 1);
         break;
       case 'downvote':
         evt.preventDefault();
-        globals().app.emit(constants.VOTE+':'+this.props.thing.id, -1);
+        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, -1);
         break;
     }
   }
 
+  _getScore(dir) {
+    var diff;
+    var localScore;
+
+    if (this.state.localScore === dir) {
+      diff = dir * -1;
+      localScore = 0;
+    } else {
+      diff = dir - this.state.localScore;
+      localScore = dir;
+    }
+
+    var newScore = this.state.score + diff
+    return [newScore, localScore];
+  }
+
   _onVote(dir) {
     if (this.submitVote(dir)) {
-      var diff;
-      var localScore;
-
-      if (this.state.localScore === dir) {
-        diff = dir * -1;
-        localScore = 0;
-      } else {
-        diff = dir - this.state.localScore;
-        localScore = dir;
-      }
-
-      var newScore = this.state.score + diff;
+      var [newScore, localScore] = this._getScore(dir);
 
       this.setState({
         localScore: localScore,
@@ -76,7 +80,7 @@ class Vote extends BaseComponent {
 
   submitVote(direction) {
     if (!this.props.token) {
-      window.location = globals().loginPath;
+      window.location = this.props.app.config.loginPath;
       return;
     }
 
@@ -89,14 +93,17 @@ class Vote extends BaseComponent {
       id: this.props.thing.name,
     });
 
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: vote,
     });
 
-    globals().api.votes.post(options);
-    globals().app.emit('vote', vote);
+    options.type = this.props.thing._type;
+    options.score = this._getScore(direction)[0];
+
+    this.props.app.api.votes.post(options);
+    this.props.app.emit('vote', vote);
 
     return true;
   }

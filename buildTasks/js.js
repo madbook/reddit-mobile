@@ -41,7 +41,6 @@ module.exports = function buildJS(gulp, options) {
       debug: options.debug,
       extensions: ['.js', '.es6.js', '.jsx'],
       ignore: [
-        'q',
         'moment',
       ],
     });
@@ -55,7 +54,6 @@ module.exports = function buildJS(gulp, options) {
     // times
     bundler
       .require('moment')
-      .require('q')
       .require('react')
       .require('reddit-text-js')
       .require('superagent');

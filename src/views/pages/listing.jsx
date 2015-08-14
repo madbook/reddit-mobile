@@ -2,10 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
-import globals from '../../globals';
 import { models } from 'snoode';
-import q from 'q';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import Comment from '../components/Comment';
@@ -19,67 +16,42 @@ import TrackingPixel from '../components/TrackingPixel';
 class ListingPage extends BasePage {
   constructor(props) {
     super(props);
-    this.props = props;
-    this.state = {
-      data: props.data || {},
-      linkComment: '',
-      editing: false,
-      linkEditError: null,
-    };
 
-    this.state.loaded = !!(this.state.data && this.state.data.data);
-  }
-
-  componentDidMount() {
-    super.componentDidMount();
-
-    ListingPage.populateData(globals().api, this.props, true).done((function(data) {
-      // Resolved with the same data, return early.
-      if (this.state.loaded && data === this.state.data) {
-        return;
-      }
-
-      this.setState({
-        data: data,
-        loaded: true,
-      });
-    }).bind(this));
-
-    if (this.props.subredditName) {
-      globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'r/' + this.props.subredditName);
-    } else {
-      globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE);
-    }
+    this.state.editing = false;
   }
 
   onNewComment (comment) {
-    this.state.data.data.comments.splice(0, 0, comment);
+    // make a shallow copy so we can append to it
+    var comments = this.state.data.comments.slice();
+    comments.splice(0, 0, comment);
 
     this.setState({
-      data: this.state.data,
+      data: Object.assign({}, this.state.data, { comments }),
     });
   }
 
   saveUpdatedText(newText) {
     var props = this.props;
-    var listing = this.state.data.data.listing;
+    var listing = this.state.data.listing;
+
     if (newText === listing.selftext) {
       return;
     }
 
     var link = new models.Link(listing);
-    var options = globals().api.buildOptions(props.apiOptions);
+    var options = this.props.app.api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       model: link,
       changeSet: newText,
     });
 
-    globals().api.links.patch(options).then(function(res) {
+    this.props.app.api.links.patch(options).then(function(res) {
       if (res) {
         var data = this.state.data;
-        var listing = data.data.listing;
-        var newListing = res.data;
+        var listing = data.listing;
+        var newListing = res;
+
         listing.selftext = newListing.selftext;
         listing.expandContent = newListing.expandContent;
 
@@ -88,16 +60,16 @@ class ListingPage extends BasePage {
           data: data,
         })
 
-        globals().app.emit('post:edit');
+        this.props.app.emit('post:edit');
       }
     }.bind(this), function(err) {
-      this.setState({linkEditError: err});
+      this.setState({ linkEditError: err });
     }.bind(this))
   }
 
   onDelete(id) {
     var props = this.props;
-    var options = globals().api.buildOptions(props.apiOptions);
+    var options = this.props.app.api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -105,18 +77,22 @@ class ListingPage extends BasePage {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    globals().api.links.delete(options).then(function(){
-      var data = globals().app.state.data;
-      _.remove(data.data, {name: id});
-      globals().app.setState({
+    this.props.app.api.links.delete(options).then(function(){
+      var data = this.state.data.listing;
+      _.remove(data, {name: id});
+
+      this.props.app.setState({
         data: data,
       })
-      globals().app.redirect('/r/' + props.subredditName);
-    })
+
+      this.props.app.redirect('/r/' + props.subredditName);
+    }.bind(this))
   }
 
   toggleEdit() {
-    this.setState({editing: !this.state.editing});
+    this.setState({
+      editing: !this.state.editing
+    });
   }
 
   render() {
@@ -124,22 +100,20 @@ class ListingPage extends BasePage {
     var tracking;
     var props = this.props;
 
-    if (!this.state.loaded) {
-      loading = (
-        <Loading />
-      );
+    if (!this.state.data || !this.state.data.listing) {
+      return (<Loading />);
     }
 
-    var data = this.state.data.data;
     var editing = this.state.editing;
-    var listing = data ? data.listing : {};
-    var comments = data ? data.comments : [];
-    var api = globals().api;
-    var user = props.user;
+
+    var listing = this.state.data.listing;
+
+    var api = this.props.app.api;
+    var user = this.state.data.user;
     var token = props.token;
     var author = listing.author;
     var sort = props.sort || 'best';
-    var app = globals().app;
+    var app = this.props.app;
     var listingElement;
     var commentBoxElement;
     var apiOptions = props.apiOptions;
@@ -156,10 +130,13 @@ class ListingPage extends BasePage {
         keys.push(key);
       }
     }
+
     var savedCommentKeys = keys;
     if (!loading) {
       listingElement = (
         <Listing
+          app={ props.app }
+          ctx={ props.ctx }
           apiOptions={ apiOptions }
           editError={ this.state.linkEditError }
           editing={ editing }
@@ -179,7 +156,8 @@ class ListingPage extends BasePage {
           thingId={ listing.name }
           user={ user }
           token={ token }
-          csrf={ props.csrf }
+          app={ props.app }
+          ctx={ props.ctx }
           onSubmit={ this.onNewComment.bind(this) }
         />
       );
@@ -196,15 +174,49 @@ class ListingPage extends BasePage {
       }
     }
 
-    if (this.state.data.meta) {
+    if (this.state.data.comments && this.state.data.comments.meta) {
       tracking = (
         <TrackingPixel
           referrer={ props.referrer }
-          url={ this.state.data.meta.tracking }
+          url={ this.state.data.comments.meta.tracking }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
           user={ props.user }
         />);
+    }
+
+    let commentsList = [];
+
+    var comments = this.state.data.comments;
+    if (comments) {
+      commentsList = comments.map(function(comment, i) {
+        if (comment) {
+          comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
+          return (
+            <Comment
+              ctx={ props.ctx }
+              app={ props.app }
+              subredditName={ props.subredditName }
+              permalinkBase={ permalink }
+              highlight={ props.commentId }
+              comment={comment}
+              index={i}
+              key={`page-comment-${comment.name}`}
+              nestingLevel={ 0 }
+              op={ author }
+              user={ user }
+              token={ token }
+              apiOptions={apiOptions}
+            />
+          );
+        }
+        });
+    } else {
+      commentsList = (
+        <div className='Loading-Container'>
+          <Loading />
+        </div>
+      );
     }
 
     return (
@@ -219,106 +231,30 @@ class ListingPage extends BasePage {
         />
 
         <TopSubnav
-          user={ user }
+          { ...props }
+          user={ this.state.data.user }
           sort={ sort }
           list='comments'
         />
-      <div className='container listing-content' key='container'>
+
+        <div className='container listing-content' key='container'>
           { listingElement }
           { commentBoxElement }
           { singleComment }
-          {
-            comments.map(function(comment, i) {
-              if (comment) {
-                comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
-                return (
-                  <Comment
-                    subredditName={ props.subredditName }
-                    permalinkBase={ permalink }
-                    highlight={ props.commentId }
-                    comment={comment}
-                    index={i}
-                    key={`page-comment-${comment.name}`}
-                    nestingLevel={ 0 }
-                    op={ author }
-                    user={ user }
-                    token={ token }
-                    apiOptions={apiOptions}
-                  />
-                );
-              }
-            })
-          }
+          { commentsList }
         </div>
 
         { tracking }
       </div>
     );
   }
-
-  static populateData(api, props, synchronous) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-
-    function mapComment(comment) {
-      if (comment && comment.body) {
-        comment.body_html = comment.body_html;
-
-        if (comment.replies) {
-          comment.replies = comment.replies.map(mapComment) || [];
-        }
-
-        return comment;
-      }
-    }
-
-    options.linkId = props.listingId;
-
-    if (props.commentId) {
-      options.query.comment = props.commentId;
-      options.query.context = props.query.context || 1;
-    }
-
-    options.sort = props.sort || 'confidence';
-
-    // Initialized with data already.
-    if (props.data && typeof props.data.data !== 'undefined') {
-      api.hydrate('comments', options, props.data);
-
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    api.comments.get(options).then(function(data){
-      data.data.comments = data.data.comments.map(function(comment){
-        return mapComment(comment);
-      });
-
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
-  }
 }
 
 ListingPage.propTypes = {
-  // apiOptions: React.PropTypes.object,
   commentId: React.PropTypes.string,
   data: React.PropTypes.object,
   isGoogleCrawler: React.PropTypes.bool,
   listingId: React.PropTypes.string.isRequired,
-  origin: React.PropTypes.string.isRequired,
-  query: React.PropTypes.object.isRequired,
   sort: React.PropTypes.string,
   subredditName: React.PropTypes.string,
 };

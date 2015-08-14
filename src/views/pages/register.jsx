@@ -4,10 +4,6 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 
 class RegisterPage extends BasePage {
-  constructor(props) {
-    super(props);
-  }
-
   render () {
     var usernameClass = '';
     var passwordClass = '';
@@ -15,9 +11,11 @@ class RegisterPage extends BasePage {
 
     var errorClass = 'visually-hidden';
 
-    var dest = this.props.query.originalUrl;
+    var dest = this.props.ctx.query.originalUrl;
     var linkDest = '';
     var refererTag = '';
+    var message;
+
     if (dest) {
       linkDest = '/?' + querystring.stringify({
         originalUrl: dest,
@@ -25,17 +23,24 @@ class RegisterPage extends BasePage {
       refererTag = <input type='hidden' name='originalUrl' value={dest} />;
     }
 
-    if (this.props.error) {
-      switch (this.props.error) {
+    if (this.props.ctx.query.error) {
+      switch (this.props.ctx.query.error) {
         case 'EMAIL_NEWSLETTER':
           emailClass = 'has-error';
+          message = 'Please enter an email if you wish to sign up to the newsletter.';
           break;
         case 'PASSWORD_MATCH':
           passwordClass = 'has-error';
+          message = 'Passwords do not match.';
           break;
         case 'USERNAME_TAKEN':
           usernameClass = 'has-error';
+          message = 'Your username has already been taken.'
           break;
+        default:
+          message = 'An error occured.';
+          break;
+
       }
 
       errorClass = 'alert alert-danger alert-bar';
@@ -44,7 +49,7 @@ class RegisterPage extends BasePage {
     return (
       <main>
         <div className={ errorClass } role='alert'>
-          { this.props.message }
+          { message }
         </div>
 
         <div className='container'>
@@ -82,7 +87,7 @@ class RegisterPage extends BasePage {
 
                 { refererTag }
 
-                <input type='hidden' value={ this.props.csrf } name='_csrf' />
+                <input type='hidden' value={ this.props.ctx.csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Create Account</button>
               </form>
@@ -105,19 +110,6 @@ class RegisterPage extends BasePage {
       </main>
     );
   }
-
-  static populateData (api, props, synchronous) {
-    var defer = q.defer();
-    defer.resolve();
-    return defer.promise;
-  }
-};
-
-//TODO: someone more familiar with this component could eventually fill this out better
-RegisterPage.propTypes = {
-  query: React.PropTypes.object.isRequired,
-  error: React.PropTypes.string,
-  message: React.PropTypes.string.isRequired,
 };
 
 export default RegisterPage;

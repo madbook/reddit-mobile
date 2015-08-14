@@ -4,6 +4,7 @@ import isEqual from 'lodash/lang/isEqual';
 class BaseComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   shouldComponentUpdate (nextProps, nextState) {

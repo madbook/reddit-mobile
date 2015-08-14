@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import { models } from 'snoode';
 import querystring from 'querystring';
 import savedReply from '../../lib/savedReply';
@@ -44,10 +43,8 @@ class CommentBox extends BaseComponent {
       return;
     }
 
-    var g = globals();
-
     if (!this.props.token) {
-      g.app.redirect(g.loginPath);
+      this.props.app.requireLogin(this.props.app.config.loginPath);
 
       return;
     }
@@ -57,19 +54,19 @@ class CommentBox extends BaseComponent {
       text: text
     });
 
-    var options = g.api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: comment,
     });
 
-    g.api.comments.post(options).done((function(comment) {
+    this.props.app.api.comments.post(options).then((function(comment) {
       savedReply.clear();
       this.setState({ reply: '' });
-      this.props.onSubmit(comment.data);
+      this.props.onSubmit(comment);
     }).bind(this));
 
-    g.app.emit('comment', comment);
+    this.props.app.emit('comment', comment);
   }
 
   render () {
@@ -77,8 +74,8 @@ class CommentBox extends BaseComponent {
     var className = value && value.trim() ? 'has-content' : '';
     var csrf;
 
-    if(this.props.csrf) {
-      csrf = (<input type='hidden' name='_csrf' value={ this.props.csrf } />);
+    if(this.props.ctx.csrf) {
+      csrf = (<input type='hidden' name='_csrf' value={ this.props.ctx.csrf } />);
     }
 
     return (

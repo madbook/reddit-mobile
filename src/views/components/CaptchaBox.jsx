@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import BaseComponent from './BaseComponent';
 
 class CaptchaBox extends BaseComponent {
@@ -28,14 +27,14 @@ class CaptchaBox extends BaseComponent {
   }
 
   requestCaptcha() {
-    var api = globals().api;
+    var api = this.props.app.api;
 
     var options = api.buildOptions(this.props.apiOptions);
     options.form = {};
     options.form.api_type = 'json'
 
-    api.captcha.post(options).done(function(data) {
-      var iden = data.data.iden;
+    api.captcha.post(options).then(function(data) {
+      var iden = data.iden;
       var src = this._makeCaptchaUrl(iden);
 
       this.setState({

@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import globals from '../../globals';
 import { models } from 'snoode';
 import throttle from 'lodash/function/throttle';
 
@@ -26,12 +25,11 @@ function _determineKind(body) {
 
 var debouncedDetermineKind = throttle(_determineKind, 1000);
 
-
 class SubmitPage extends BasePage {
   constructor(props) {
     super(props);
 
-    this.state = {
+    Object.assign(this.state, {
       subreddit: props.subredditName || 'choose a subreddit',
       subredditSelectionOpen: false,
       title: '',
@@ -47,7 +45,7 @@ class SubmitPage extends BasePage {
         message: '',
         fields: [],
       },
-    };
+    });
   }
 
   componentDidMount () {
@@ -90,7 +88,7 @@ class SubmitPage extends BasePage {
         }
       });
 
-      globals().app.emit('post:error');
+      this.props.app.emit('post:error');
       return;
     }
 
@@ -132,23 +130,23 @@ class SubmitPage extends BasePage {
     }
 
     var link = new models.Link(newLink);
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: link,
     });
 
-    var deferred = globals().api.links.post(options)
+    var deferred = this.props.app.api.links.post(options)
 
     deferred.then(function(res) {
-      if (res.data && res.data.url) {
-        var url = res.data.url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
+      if (res && res.url) {
+        var url = res.url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
 
-        globals().app.redirect(url);
-        globals().app.emit('post:submit', link.sr);
+        this.props.app.redirect(url);
+        this.props.app.emit('post:submit', link.sr);
       } else {
         this._handleApiErrors(res);
-        globals().app.emit('post:error');
+        this.props.app.emit('post:error');
       }
     }.bind(this),
     function(err) {
@@ -184,7 +182,7 @@ class SubmitPage extends BasePage {
   }
 
   changeSubreddit (newSub) {
-    globals().app.emit('post:selectSubreddit', newSub);
+    this.props.app.emit('post:selectSubreddit', newSub);
     this.setState({ subreddit: newSub });
     this.setState({ subredditSelectionOpen: false });
   }
@@ -209,7 +207,7 @@ class SubmitPage extends BasePage {
   }
 
   close () {
-    globals().app.redirect('/');
+    this.props.app.redirect('/');
   }
 
   updateCaptchaInfo (info) {
@@ -233,7 +231,7 @@ class SubmitPage extends BasePage {
       global.localStorage.setItem('savedLinkContent', JSON.stringify(content));
       var url = '/r/' + subName + '/about';
 
-      globals().app.redirect(url);
+      this.props.app.redirect(url);
     }
   }
 
@@ -347,7 +345,7 @@ class SubmitPage extends BasePage {
 
           <div className='Submit-centered'>
             <div className='Submit-sendreplies-box'>
-              <SeashellsDropdown right={ true } reversed={ true }>
+              <SeashellsDropdown right={ true } reversed={ true } app={ props.app }>
                 <li className='Dropdown-li'>
                   <button type='button' className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
                     <span ><span className={'icon-check ' + iconClass }>{' '}</span> send replies to my inbox</span>

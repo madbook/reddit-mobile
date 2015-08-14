@@ -1,7 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
-import q from 'q';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -11,67 +9,22 @@ import TrackingPixel from '../components/TrackingPixel';
 import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BasePage {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: props.data || {},
-    };
-
-    this.state.loaded = !!(this.state.data && this.state.data.data);
-  }
-
-  componentDidMount() {
-    super.componentDidMount();
-
-    UserProfilePage.populateData(globals().api, this.props, true).done((function(data) {
-      // Resolved with the same data, return early.
-      if (this.state.loaded && data === this.state.data) {
-        return;
-      }
-
-      this.setState({
-        data: data || {},
-        loaded: true,
-      });
-    }).bind(this));
-
-    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
-  }
-
-
-
   render() {
-    var loading;
-    var profile;
-
-    var userProfile = (this.state.data || {}).data || {};
-    var name = this.props.userName;
-    var tracking;
-
-    var app = globals().app;
-    var user = this.props.user;
-
-    if (!this.state.loaded) {
-      loading = (
+    if (!this.state.data || !this.state.data.userProfile) {
+      return (
         <Loading />
-      );
-    } else {
-      profile = (
-        <UserProfile
-          userProfile={userProfile}
-          key={'user-profile-' + name}
-          user={this.props.user}
-          token={this.props.token}
-        />
       );
     }
 
-    if (this.state.data.meta) {
+    var userProfile = this.state.data.userProfile;
+    var name = this.props.userName;
+    var tracking;
+
+    if (this.state.data.userProfile.meta) {
       tracking = (
         <TrackingPixel
           referrer={ this.props.referrer }
-          url={ this.state.data.meta.tracking }
+          url={ this.state.data.userProfile.meta.tracking }
           user={ this.props.user }
           loid={ this.props.loid }
           loidcreated={ this.props.loidcreated }
@@ -80,62 +33,27 @@ class UserProfilePage extends BasePage {
 
     return (
       <div className="user-page user-profile">
-        { loading }
-
         <TopSubnav
-          user={ user }
+          app={ this.props.app }
+          user={ this.state.data.user }
           hideSort={ true }
         />
 
-        <div>
-          { profile }
-        </div>
+        <UserProfile
+          userProfile={userProfile}
+          key={'user-profile-' + name}
+          user={this.props.user}
+          token={this.props.token}
+          app={ this.props.app }
+        />
 
         { tracking }
       </div>
     );
   }
-
-  static populateData(api, props, synchronous) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-
-    if (props.userName) {
-      options.user = props.userName;
-    } else {
-      defer.reject('No user name passed in');
-    }
-
-    // Initialized with data already.
-    if ((props.data || {}).data) {
-      api.hydrate('users', options, props.data);
-
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    api.users.get(options).then(function(data) {
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
-  }
 }
 
-//TODO: someone more familiar with this component could eventually fill this out better
 UserProfilePage.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  data: React.PropTypes.object,
   userName: React.PropTypes.string.isRequired,
 }
 

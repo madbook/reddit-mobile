@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 import { models } from 'snoode';
 import propTypes from '../../propTypes';
 
@@ -173,7 +172,7 @@ class ListingDropdown extends BaseComponent {
     }
 
     return (
-      <SeashellsDropdown right={ true }>
+      <SeashellsDropdown app={ props.app } right={ true }>
         { editLink }
         { delLink }
         { viewComments }
@@ -208,17 +207,19 @@ class ListingDropdown extends BaseComponent {
   _onSaveClick(e) {
     e.preventDefault();
 
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
+    options.type = this.props.listing._type.toLowerCase();
+
     if (this.state.saved) {
-      globals().api.saved.delete(options).done(() => { });
+      this.props.app.api.saved.delete(options).then(() => { });
       this.setState({ saved: false });
     } else {
-      globals().api.saved.post(options).done(() => { });
+      this.props.app.api.saved.post(options).then(() => { });
       this.setState({ saved: true });
     }
 
@@ -230,18 +231,20 @@ class ListingDropdown extends BaseComponent {
   _onHideClick(e) {
     e.preventDefault();
     // api call
-    globals().app.emit('hide', this.props.listing.id);
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    this.props.app.emit('hide', this.props.listing.id);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
     });
 
+    options.type = this.props.listing._type.toLowerCase();
+
     if (this.state.hidden) {
-      globals().api.hidden.delete(options).done(() => { });
+      this.props.app.api.hidden.delete(options).then(() => { });
       this.setState({ hidden: false });
     } else {
-      globals().api.hidden.post(options).done(() => { });
+      this.props.app.api.hidden.post(options).then(() => { });
       this.setState({ hidden: true });
     }
 
@@ -270,17 +273,17 @@ class ListingDropdown extends BaseComponent {
       other_reason: textEl.value.trim(),
     });
 
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: report,
     });
 
-    globals().api.reports.post(options).done((comment) => {
+    this.props.app.api.reports.post(options).then((comment) => {
       this._onReport();
     });
 
-    globals().app.emit('report', this.props.listing.id);
+    this.props.app.emit('report', this.props.listing.id);
   }
 
   _onReport() {

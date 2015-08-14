@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
@@ -29,6 +28,7 @@ class SeashellsDropdown extends BaseComponent {
     );
     return (
       <Dropdown
+        app={ this.props.app }
         right={ this.props.right }
         button={ button }
         id={ this._id }
@@ -40,11 +40,11 @@ class SeashellsDropdown extends BaseComponent {
   }
 
   componentDidMount() {
-    globals().app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   _onOpen(bool) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import debounce from 'lodash/function/debounce';
-import globals from '../../globals';
 import BaseComponent from './BaseComponent';
 
 class SearchBar extends BaseComponent {
@@ -16,16 +15,16 @@ class SearchBar extends BaseComponent {
     if (value.length > 3) {
       var cb = this.props.inputChangedCallback || Function.prototype;
       cb({ value: value });
-      globals().app.emit('search', value);
+      this.props.app.emit('search', value);
     }
   }
 
   render() {
     var customClass = this.props.className || '';
     return (
-      <input type="text" className={"form-control zoom-fix" + customClass} maxLength="512" name="q" ref="search"
-             placeholder="Search..." onChange={ debounce(this.handleInputChange, 500).bind(this) }
-             defaultValue={this.props.query.q} />
+      <input type='text' className={'form-control zoom-fix' + customClass} maxLength='512' name='q' ref='search'
+             placeholder='Search...' onChange={ debounce(this.handleInputChange, 500).bind(this) }
+             defaultValue={this.props.ctx.query.q} />
     );
   }
 }
@@ -34,9 +33,6 @@ class SearchBar extends BaseComponent {
 SearchBar.propTypes = {
   className: React.PropTypes.string,
   inputChangedCallback: React.PropTypes.func.isRequired,
-  query: React.PropTypes.shape({
-    q: React.PropTypes.string,
-  }).isRequired,
 };
 
 export default SearchBar;

@@ -59,7 +59,7 @@ class Dropdown extends BaseComponent {
 
   componentWillUnmount() {
     if (globals().touch) {
-      globals().app.off(constants.DROPDOWN_OPEN, this._close);
+      this.props.app.off(constants.DROPDOWN_OPEN, this._close);
     }
   }
 
@@ -81,19 +81,19 @@ class Dropdown extends BaseComponent {
 
   _open() {
     this.setState({opened: true});
-    globals().app.emit(constants.DROPDOWN_OPEN, this.props.id);
-    globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
+    this.props.app.emit(constants.DROPDOWN_OPEN, this.props.id);
+    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
     if (globals().touch) {
-      globals().app.on(constants.DROPDOWN_OPEN, this._close);
+      this.props.app.on(constants.DROPDOWN_OPEN, this._close);
     }
   }
 
   _close() {
     this.componentWillUnmount();
     this.setState({opened: false});
-    globals().app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
+    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
 

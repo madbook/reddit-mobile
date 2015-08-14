@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/addons';
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 import SnooIcon from '../components/icons/SnooIcon';

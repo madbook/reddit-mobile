@@ -1,7 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
-import q from 'q';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -11,64 +9,32 @@ import TrackingPixel from '../components/TrackingPixel';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 
 class UserActivityPage extends BasePage {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: props.data || {},
-    };
-
-    this.state.loaded = !!(this.state.data && this.state.data.data);
-  }
-
-  componentDidMount() {
-    super.componentDidMount();
-
-    UserActivityPage.populateData(globals().api, this.props, true).done((function(data) {
-      // Resolved with the same data, return early.
-      if (this.state.loaded && data === this.state.data) {
-        return;
-      }
-
-      this.setState({
-        data: data,
-        loaded: true,
-      });
-    }).bind(this));
-
-    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
-  }
-
-
-
   render() {
-    var loading;
-    var props = this.props;
-    var state = this.state;
-
-    if (!state.loaded) {
-      loading = (
+    if (!this.state.data || !this.state.data.activities) {
+      return (
         <Loading />
       );
     }
 
+    var props = this.props;
+    var state = this.state;
+
     var page = props.page || 0;
-    var api = globals().api;
     var token = props.token;
-    var app = globals().app;
-    var user = props.user;
-    var activities = state.data.data || [];
+    var app = props.app;
+    var user = state.data.user;
+    var activities = state.data.activities;
     var subreddit = '';
     var sort = props.sort || 'hot';
     var userProfile = props.userProfile || {};
     var name = props.userName;
     var tracking;
 
-    if (state.data.meta) {
+    if (state.data.activities.meta) {
       tracking = (
         <TrackingPixel
           referrer={ props.referrer }
-          url={ state.data.meta.tracking }
+          url={ state.data.activities.meta.tracking }
           user={ props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
@@ -78,16 +44,16 @@ class UserActivityPage extends BasePage {
     return (
       <div className="user-page user-activity">
         <UserActivitySubnav
+          app={ app }
           sort={ sort }
           name={ name }
           activity={ props.activity }
           user={ user }
         />
 
-        { loading }
-
         <div className={'container Listing-container'} >
           <ListingList
+            app={ app }
             listings={activities}
             firstPage={page}
             page={page}
@@ -102,48 +68,6 @@ class UserActivityPage extends BasePage {
         { tracking }
       </div>
     );
-  }
-
-  static populateData(api, props, synchronous) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-    options.activity = props.activity || 'comments';
-
-    if (props.after) {
-      options.query.after = props.after;
-    }
-
-    if (props.before) {
-      options.query.before = props.before;
-    }
-
-    if (props.sort) {
-      options.query.sort = props.sort;
-    }
-
-    options.user = props.userName;
-
-    // Initialized with data already.
-    if (props.data && typeof props.data.data !== 'undefined') {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    api.activities.get(options).then(function(data) {
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
   }
 }
 

@@ -1,30 +1,33 @@
 // This configuration is shared with the client. Any hidden, server-only config
 // belongs in ./server instead.
 
-var config = {
-  https: process.env.HTTPS === 'true',
-  httpsProxy: process.env.HTTPS_PROXY === 'true',
+function config() {
+  return {
+    https: process.env.HTTPS === 'true',
+    httpsProxy: process.env.HTTPS_PROXY === 'true',
 
-  debug: process.env.SWITCHAROO_DEBUG === 'true',
-  minifyAssets: process.env.MINIFY_ASSETS === 'true',
-  liveReload: process.env.LIVERELOAD === 'true',
+    debug: process.env.SWITCHAROO_DEBUG === 'true',
+    minifyAssets: process.env.MINIFY_ASSETS === 'true',
+    liveReload: process.env.LIVERELOAD === 'true',
 
-  assetPath: process.env.STATIC_BASE || '',
+    assetPath: process.env.STATIC_BASE || '',
 
-  origin: process.env.ORIGIN || 'http://localhost:4444',
-  port: process.env.PORT || 4444,
-  env: process.env.NODE_ENV || 'development',
+    origin: process.env.ORIGIN || 'http://localhost:4444',
+    port: process.env.PORT || 4444,
+    env: process.env.NODE_ENV || 'development',
 
-  nonAuthAPIOrigin: process.env.NON_AUTH_API_ORIGIN || 'https://ssl.reddit.com',
-  authAPIOrigin: process.env.AUTH_API_ORIGIN || 'https://oauth.reddit.com',
+    nonAuthAPIOrigin: process.env.NON_AUTH_API_ORIGIN || 'https://www.reddit.com',
+    authAPIOrigin: process.env.AUTH_API_ORIGIN || 'https://oauth.reddit.com',
 
-  reddit: process.env.REDDIT || 'https://www.reddit.com',
+    reddit: process.env.REDDIT || 'https://www.reddit.com',
 
-  googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
+    googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
 
-  loginPath: process.env.LOGIN_PATH || '/oauth2/login',
+    loginPath: process.env.LOGIN_PATH || '/oauth2/login',
 
-  adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
+    adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
+    manifest: {},
+  };
 };
 
 export default config;

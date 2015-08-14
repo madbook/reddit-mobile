@@ -1,7 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
-import q from 'q';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -10,43 +8,18 @@ import Loading from '../components/Loading';
 import TrackingPixel from '../components/TrackingPixel';
 
 class UserSavedPage extends BasePage {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      data: props.data || {},
-    };
-
-    this.state.loaded = !!(this.state.data && this.state.data.data);
-  }
-
   componentDidMount() {
     super.componentDidMount();
-    
-    UserSavedPage.populateData(globals().api, this.props, true).done((function(data) {
-      // Resolved with the same data, return early.
-      if (this.state.loaded && data === this.state.data) {
-        return;
-      }
 
-      this.setState({
-        data: data,
-        loaded: true,
-      });
-    }).bind(this));
-
-    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
+    this.props.app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + this.props.userName);
   }
 
-
-
   render() {
-    var loading;
     var props = this.props;
     var state = this.state;
 
-    if (!state.loaded) {
-      loading = (
+    if (!state.loaded || typeof state.data.activities === 'undefined') {
+      return (
         <Loading />
       );
     }
@@ -58,30 +31,17 @@ class UserSavedPage extends BasePage {
     }
 
     var page = props.page || 0;
-    var api = globals().api;
     var token = props.token;
-    var app = globals().app;
-    var user = props.user;
-    var activities = state.data.data || [];
+    var app = this.props.app;
+    var activities = state.data.activities || [];
     var subreddit = '';
     var sort = props.sort || 'hot';
     var userProfile = props.userProfile || {};
     var name = props.userName;
     var tracking;
 
-    if (state.data.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ state.data.meta.tracking }
-          user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-        />);
-    }
-
     var noLinks;
-    if (this.state.loaded && activities.length === 0) {
+    if (typeof activities !== 'undefined' && activities.length === 0) {
       noLinks = (
         <div className='alert alert-info vertical-spacing-top'>
           <p>{ `You have no ${title.toLowerCase()} links or comments.` }</p>
@@ -91,18 +51,16 @@ class UserSavedPage extends BasePage {
 
     return (
       <div className='user-page user-saved'>
-        { loading }
-
         <div className='container Listing-container' >
           <div className='vertical-spacing-top'>
             { noLinks }
             <ListingList
+              app={app}
               showHidden={true}
               listings={activities}
               firstPage={page}
               page={page}
               hideSubredditLabel={false}
-              user={user}
               token={token}
               hideUser={ false }
               apiOptions={ props.apiOptions }
@@ -113,54 +71,7 @@ class UserSavedPage extends BasePage {
         { tracking }
       </div>
     );
-  }
-
-  static populateData(api, props, synchronous) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-
-    if (props.after) {
-      options.query.after = props.after;
-    }
-
-    if (props.before) {
-      options.query.before = props.before;
-    }
-
-    if (props.sort) {
-      options.query.sort = props.sort;
-    }
-
-    options.user = props.userName;
-
-    // Initialized with data already.
-    if (props.data && typeof props.data.data !== 'undefined') {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var saved = api.saved;
-
-    if (props.hidden) {
-      saved = api.hidden;
-    }
-
-    saved.get(options).then(function(data) {
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
-  }
+  } 
 }
 
 //TODO: someone more familiar with this component could eventually fill this out better

@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
@@ -10,104 +9,96 @@ import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';
 
-function removeR(text) {
-  return text.substr(2);
-}
-
-function loadSubredditData(ctx) {
-  if (ctx.props.subredditName &&
-      ctx.props.subredditName.indexOf('+') === -1 &&
-      ctx.props.subredditName !== 'all') {
-
-    SubredditAboutPage.populateData(globals().api, ctx.props, true, false).done(function (data) {
-      ctx.setState({
-        loaded: true,
-        subredditId: ((data || {}).data || {}).name,
-        userIsSubscribed: ((data || {}).data || {}).user_is_subscriber
-      });
-    });
-  }
-}
-
 class TopNav extends BaseComponent {
   constructor(props) {
     super(props);
 
-    var subredditName;
-
-    if (props.multi) {
-      subredditName = 'm/' + props.multi;
-    } else if (props.subredditName) {
-      subredditName = 'r/' + props.subredditName;
-    }
-
     this.state = {
-      subredditName: subredditName,
+      title: props.topNavTitle,
+      link: props.topNavLink,
+      subreddit: props.subreddit || props.dataCache.subreddit,
       loaded: true,
-      subredditId: props.subredditId,
-      userIsSubscribed: props.userIsSubscribed,
       sideNavOpen: false,
+      data: props.data,
     };
 
-    this._changeSubredditName = this._changeSubredditName.bind(this);
+    this._updateNavLink = this._updateNavLink.bind(this);
     this._onToggle = this._onToggle.bind(this);
     this._onSubscribeClick = this._onSubscribeClick.bind(this);
   }
 
-  componentDidMount() {
-    if (!this.state.loaded) {
-      loadSubredditData(this);
-    }
+  loadSubreddit(data) {
+    if (data) {
+      console.log(data);
 
-    globals().app.on(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
-    globals().app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
+      this.setState({
+        loaded: false,
+      });
+
+      data.then(function(data) {
+        console.log(data);
+        this.setState({
+          title: data.body.display_name,
+          link: data.body.url,
+          subreddit: data.body,
+          loaded: true,
+        });
+      }.bind(this));
+    }
+  }
+
+  componentDidMount() {
+    this.loadSubreddit(this.state.data.get('subreddit'));
+    this.props.app.on(constants.TOP_NAV_CHANGE, this._updateNavLink);
+    this.props.app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.TOP_NAV_SUBREDDIT_CHANGE, this._changeSubredditName);
-    globals().app.off(constants.SIDE_NAV_TOGGLE, this._onToggle);
+    this.props.app.off(constants.TOP_NAV_CHANGE, this._updateNavLink);
+    this.props.app.off(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   render() {
     var props = this.props;
-    var subredditName = removeR(this.state.subredditName || '', 9);
+    var breadcrumbContents = this.state.title;
+    var link = this.state.link;
     var currentSub = '';
-    if (subredditName) {
-      var breadcrumbLink = '/' + this.state.subredditName;
-      var breadcrumbContents = subredditName;
-      currentSub = '?subreddit=' + this.state.subredditName;
+
+    if (this.state.title) {
+      if (this.state.subreddit) {
+        currentSub = '?subreddit=' + this.state.title;
+      }
     } else {
-      breadcrumbLink = '/';
+      link = '/';
       breadcrumbContents = <Logo />;
     }
 
-    var subredditMenu = null;
-    if (props.subredditName &&
-        props.subredditName.indexOf('+') === -1 &&
-        props.subredditName !== 'all') {
-      var isSubscribed = this.state.userIsSubscribed;
-      var subscribedClass = isSubscribed ? 'saved' : '';
+    var isSubscribed = this.state.userIsSubscribed;
+    var subscribedClass = isSubscribed ? 'saved' : '';
+
+    var subredditMenu;
+
+    if (this.state.subreddit) {
       subredditMenu = (
-        <SeashellsDropdown right={ true }>
+        <SeashellsDropdown right={ true } app={ props.app }>
           <li className='Dropdown-li'>
             <a className='MobileButton Dropdown-button' href={ `/r/${props.subredditName}/about` }>
-              <span className='icon-info-circled' > </span>
+              <span className='icon-info-circled'> </span>
               <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
             </a>
           </li>
           <li className='Dropdown-li'>
-            <a className='MobileButton Dropdown-button' href={ `${globals().reddit}/r/${props.subredditName}/wiki` }
+            <a className='MobileButton Dropdown-button' href={ `${props.config.reddit}/r/${props.subredditName}/wiki` }
                           data-no-route='true'>
               <span className='icon-text-circled' > </span>
               <span className='Dropdown-text'>Wiki</span>
             </a>
           </li>
           <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
-            <button className='MobileButton Dropdown-button' onClick={ this._onSubscribeClick }>
-
+            <button className='Mobilebutton Dropdown-button' onClick={ this._onSubscribeClick }>
               <span className={'icon-save-circled ' + subscribedClass}> </span>
               <span className='Dropdown-text'>
-                { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
+                { this.state.subreddit.user_is_subscriber ? 'Unsubscribe' : 'Subscribe' }
               </span>
             </button>
           </li>
@@ -136,8 +127,8 @@ class TopNav extends BaseComponent {
           </a>
           <h1 className='TopNav-text TopNav-padding'>
             <span>
-              <a className='TopNav-a' href={ breadcrumbLink }>
-                { breadcrumbContents }
+              <a className='TopNav-a' href={link}>
+                {breadcrumbContents}
               </a>
             </span>
           </h1>
@@ -161,69 +152,64 @@ class TopNav extends BaseComponent {
 
   _onSubscribeClick(event) {
     var state = this.state;
-    if (state.subredditId) {
+
+    if (state.subreddit) {
       var props = this.props;
 
       var subscription = new models.Subscription({
-        action: state.userIsSubscribed ? 'unsub' : 'sub',
-        sr: state.subredditId
+        action: state.subreddit.user_is_subscriber ? 'unsub' : 'sub',
+        sr: state.subreddit.name
       });
 
-      var options = globals().api.buildOptions(props.apiOptions);
-      options = Object.assign(options, {
-        model: subscription
+      var options = Object.assign({}, this.props.apiOptions, {
+        model: subscription,
       });
 
-      // react immediately and assuming everything goes well,
       this.setState({
-        userIsSubscribed: !state.userIsSubscribed
+        subreddit: Object.assign(subreddit, {
+          user_is_subscriber: !state.subreddit.user_is_subscriber,
+        })
       });
 
       // and send request to the server to do actual work
-      globals().api.subscriptions.post(options)
-        .done(function (data) {
+      this.props.app.api.subscriptions.post(options)
+        .then(function (data) {
           // if it fails revert back to the original state
           if (Object.keys(data.data).length) {
             this.setState({
-              userIsSubscribed: !state.userIsSubscribed
+              subreddit: Object.assign(subreddit, {
+                user_is_subscriber: !state.subreddit.user_is_subscriber,
+              })
             });
-            globals().app.render('/400', false);
-          }
 
-          // Reset subscriptions so they are loaded next request
-          globals().app.setState('subscriptions', undefined);
+            this.props.app.render('/400', false);
+          }
         }.bind(this));
     }
   }
 
-  _changeSubredditName(newName) {
+  _updateNavLink(title, link, dataPromise) {
     var state = this.state;
-    var currentSubredditName = state.subredditName;
-    if (currentSubredditName !== newName) {
-      var loaded = true;
-      var userIsSubscribed = state.userIsSubscribed;
 
-      // if it's subreddit do more work
-      if (newName && newName.startsWith('r/') && newName.indexOf(currentSubredditName) !== 0) {
-        loaded = !(newName && this.props.token);
-        if (!loaded) {
-          userIsSubscribed = false;
-          loadSubredditData(this);
-        }
-      }
-
-      this.setState({
-        subredditName: newName,
-        loaded: loaded,
-        userIsSubscribed: userIsSubscribed
-      });
+    if (title === state.title) {
+      return;
     }
+
+    if (dataPromise) {
+      return this.loadSubreddit(dataPromise);
+    }
+
+    this.setState({
+      subreddit: undefined,
+      title: title,
+      link: link,
+    });
   }
 
   _onClick(str) {
     switch (str) {
       case 'hamburger':
-        globals().app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
+        this.props.app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
         break;
       case 'post':
         // TODO post
@@ -232,14 +218,14 @@ class TopNav extends BaseComponent {
   }
 
   _onToggle(bool) {
-    this.setState({sideNavOpen: bool});
+    this.setState({
+      sideNavOpen: bool,
+    });
   }
 }
 
 TopNav.propTypes = {
-  // apiOptions: React.PropTypes.object,
   multi: React.PropTypes.string,
-  subredditId: React.PropTypes.string,
   subredditName: React.PropTypes.string,
   userIsSubscribed: React.PropTypes.bool,
 };

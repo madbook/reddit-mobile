@@ -11,7 +11,7 @@ import superagent from 'superagent';
 
 var App = mixin(ClientReactApp);
 
-import config from '../../src/config';
+import defaultConfig from '../../src/config';
 import constants from '../../src/constants';
 import cookies from 'cookies-js';
 import getTimes from '../../src/lib/timing';
@@ -26,18 +26,21 @@ import TweenLite from 'gsap';
 var _lastWinWidth = 0;
 var beginRender = 0;
 
-function loadShim() {
-  var head = document.head || document.getElementsByTagName('head')[0];
+var $body = document.body || document.getElementsByTagName('body')[0];
+var $head = document.head || document.getElementsByTagName('head')[0];
 
+var config = defaultConfig();
+
+function loadShim() {
   var shimScript = document.createElement('script');
   shimScript.type = 'text\/javascript';
   shimScript.onload = function() {
     initialize(false);
   }
 
-  head.appendChild(shimScript, document.currentScript);
+  $head.appendChild(shimScript, document.currentScript);
 
-  shimScript.src = window.bootstrap.assetPath + '/js/es5-shims.js';
+  shimScript.src = window.bootstrap.config.assetPath + '/js/es5-shims.js';
 }
 
 function onLoad(fn) {
@@ -72,23 +75,22 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
 var referrer = document.referrer;
 
 function modifyContext (ctx) {
-  ctx.token = this.getState('token');
+  let baseCtx = this.getState('ctx');
+  let app = this;
+
+  ctx = Object.assign({}, baseCtx, ctx, {
+    dataCache: app.getState('dataCache') || {},
+    compact: (cookies.get('compact') || '').toString() === 'true',
+    redirect: redirect.bind(app),
+    env: 'CLIENT',
+  });
 
   if (!ctx.token) {
     ctx.loid = cookies.get('loid');
     ctx.loidcreated = cookies.get('loidcreated');
   }
 
-  ctx.user = this.getState('user');
-  ctx.useCache = true;
-  ctx.experiments = this.getState('experiments');
   ctx.headers.referer = referrer;
-
-  // Is set with a client-side cookie, sometimes hitting 'back' doesn't
-  // restore proper state
-  ctx.compact = (cookies.get('compact') || '').toString() === 'true';
-
-  ctx.redirect = redirect.bind(this);
 
   return ctx;
 }
@@ -171,8 +173,8 @@ function initialize(bindLinks) {
   config.touch = true;
 
   forOwn(config, function(val, key) {
-    if (bootstrap[key]) {
-      config[key] = bootstrap[key];
+    if (window.bootstrap.config[key]) {
+      config[key] = window.bootstrap.config[key];
     }
   });
 
@@ -182,7 +184,13 @@ function initialize(bindLinks) {
   globals().random = randomBySeed(config.seed);
 
   var app = new App(config);
-  globals().app = app;
+
+  app.setState('userSubscriptions', window.bootstrap.dataCache.userSubscriptions);
+
+  if (window.bootstrap.dataCache.user) {
+    app.setState('user', window.bootstrap.dataCache.user);
+    app.setState('userPrefs', window.bootstrap.dataCache.userPrefs);
+  }
 
   app.emitter.setMaxListeners(30);
 
@@ -233,11 +241,22 @@ function initialize(bindLinks) {
 
   var initialUrl = app.fullPathName();
 
+  function postRender(href) {
+    return function(props) {
+      if(scrollCache[href]) {
+        $body.scrollTop = scrollCache[href];
+      } else {
+        $body.scrollTop = 0;
+      }
+
+      setTitle(props);
+    }
+  }
+
   function attachEvents() {
     attachFastClick(document.body);
 
     if(history && bindLinks) {
-      var $body = document.body;
 
       $body.addEventListener('click', function(e) {
         var $link = e.target;
@@ -286,22 +305,14 @@ function initialize(bindLinks) {
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        app.render(app.fullPathName(), false, modifyContext).then(function(props) {
-          setTitle(props);
-        });
+        app.render(app.fullPathName(), false, modifyContext).then(postRender(href));
       });
 
       window.addEventListener('popstate', function(e) {
         var href = app.fullPathName();
         scrollCache[initialUrl] = window.scrollY;
 
-        app.render(href, false, modifyContext).then(function(props) {
-          if(scrollCache[href]) {
-            $body.scrollTop = scrollCache[href];
-          }
-
-          setTitle(props);
-        });
+        app.render(href, false, modifyContext).then(postRender(href));
 
         initialUrl = href;
       });
@@ -312,7 +323,15 @@ function initialize(bindLinks) {
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
   beginRender = Date.now();
-  app.render(app.state.url, true, modifyContext).then(function() {
+
+  // If we're using an old render cache from a restore, nuke it
+  if ((beginRender - window.bootstrap.render) > 1000 * 60 * 5) {
+    app.setState('dataCache');
+  }
+
+  app.render(app.fullPathName(), true, modifyContext).then(function() {
+    app.setState('dataCache');
+
     attachEvents();
     referrer = document.location.href;
     sendTimings();
@@ -326,7 +345,7 @@ function initialize(bindLinks) {
     options.expire = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
-      var domain = '.' + bootstrap.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
+      var domain = '.' + window.bootstrap.config.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
       options.domain = domain;
     }
 
@@ -359,7 +378,7 @@ function initialize(bindLinks) {
     }
   }.bind(app), 100));
 
-  if (window.bootstrap.propertyId) {
+  if (window.bootstrap.config.propertyId) {
     trackingEvents(app);
   }
 }

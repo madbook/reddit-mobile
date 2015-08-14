@@ -1,6 +1,5 @@
 import React from 'react';
 import cookies from 'cookies-js';
-import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import moment from 'moment';
 import propTypes from '../../propTypes';
@@ -61,7 +60,7 @@ class GoogleCarouselMetadata extends BaseComponent {
     let baseObject = {
       '@context': 'http://schema.org',
       '@type': 'DiscussionForumPosting',
-      url: origin + globals().url,
+      url: origin + props.ctx.url,
       headline: listing.title,
       datePublished: published.format(),
       author: {
@@ -107,7 +106,7 @@ class GoogleCarouselMetadata extends BaseComponent {
 
     let googleScript = `
       <script type='application/ld+json'>
-        ${globals().app.safeStringify(baseObject)}
+        ${props.app.safeStringify(baseObject)}
       </script>
     `;
 

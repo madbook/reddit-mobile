@@ -45,6 +45,7 @@ class Inbox extends BaseComponent {
             var isLastReply = !props.isReply || props.isReply && (props.messages.length - 1) === i;
             return (
               <MessagePreview
+                app={props.app}
                 lastReply={isLastReply}
                 user={props.user}
                 token={props.token}

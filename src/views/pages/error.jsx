@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import url from 'url';
 
 import BasePage from './BasePage';
@@ -15,9 +14,9 @@ class ErrorPage extends BasePage {
 
   _desktopSite(e) {
     e.preventDefault();
-    globals().app.emit('route:desktop', globals().url);
+    this.props.app.emit('route:desktop', this.props.ctx.url);
 
-    global.location = `https://www.reddit.com${globals().app.fullPathName()}`;
+    global.location = `https://www.reddit.com${this.props.app.fullPathName()}`;
   }
 
   _reload(e) {
@@ -53,7 +52,7 @@ class ErrorPage extends BasePage {
     } else if (status === 403 || status === 401) {
       callToAction = <h3><a href={ back }>{ IDEMPOTENT_ERROR_MESSAGE }</a></h3>;
     } else {
-      callToAction = <h3><a href="javascript: void 0;" onClick={ this._reload }>{ TRANSIENT_ERROR_MESSAGE }</a></h3>;
+      callToAction = <h3><a href='javascript: void 0;' onClick={ this._reload }>{ TRANSIENT_ERROR_MESSAGE }</a></h3>;
     }
 
     return (
@@ -68,12 +67,6 @@ class ErrorPage extends BasePage {
         </div>
       </div>
     );
-  }
-
-  static populateData (api, props, synchronous) {
-    var defer = q.defer();
-    defer.resolve();
-    return defer.promise;
   }
 }
 

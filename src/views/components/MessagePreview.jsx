@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
 import moment from 'moment';
@@ -49,7 +48,7 @@ class MessagePreview extends BaseComponent {
       thingId: this.props.message.parent_id || this.props.message.name,
     });
 
-    var options = globals().api.buildOptions(this.props.apiOptions);
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: message,
@@ -59,9 +58,9 @@ class MessagePreview extends BaseComponent {
       sending: true,
     });
 
-    globals().api.messages.post(options).done((function(message) {
+    this.props.app.api.messages.post(options).then((function(message) {
       if (this.props.onSubmit) {
-        this.props.onSubmit(message.data);
+        this.props.onSubmit(message);
       }
 
       this.setState({
@@ -71,7 +70,7 @@ class MessagePreview extends BaseComponent {
 
     }).bind(this));
 
-    globals().app.emit('message:reply', message);
+    this.props.app.emit('message:reply', message);
   }
 
   render () {
@@ -195,6 +194,7 @@ class MessagePreview extends BaseComponent {
       replies = (
         <div className='col-xs-11 col-xs-offset-1'>
           <Inbox
+            app={this.props.app}
             isReply={true}
             messages={message.replies}
             user={this.props.user}

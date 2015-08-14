@@ -1,7 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
-import q from 'q';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -14,52 +12,22 @@ class IndexPage extends BasePage {
   constructor(props) {
     super(props);
 
-    var subredditName;
+    this.state.compact = props.compact;
 
-    if (props.subredditName) {
-      subredditName = 'r/' + props.subredditName;
-    } else if (props.multi) {
-      subredditName = 'm/' + props.multi;
-    }
-
-    this.state = {
-      data: props.data || {},
-      subredditName: subredditName,
-      compact: globals().compact,
-    };
-
-    this.state.loaded = !!(this.state.data && this.state.data.data);
     this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
     super.componentDidMount();
-
-    IndexPage.populateData(globals().api, this.props, true).done((function(data) {
-      // Resolved with the same data, return early.
-      if (this.state.loaded && data === this.state.data) {
-        return;
-      }
-
-      this.setState({
-        data: data,
-        loaded: true,
-      });
-
-    }).bind(this));
-
-    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, this.state.subredditName);
-    globals().app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
-  _onCompactToggle() {
-    this.setState({
-      compact: globals().compact,
-    });
+  _onCompactToggle(compact) {
+    this.setState({ compact });
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   render() {
@@ -68,23 +36,25 @@ class IndexPage extends BasePage {
     var data = this.state.data;
     var compact = this.state.compact;
 
-    if (!this.state.loaded) {
+    if (!this.state.data || !this.state.data.listings) {
       return (
         <Loading />
       );
     }
 
-    var listings = data.data || [];
+    var listings = this.state.data.listings;
 
     var hideSubredditLabel = props.subredditName &&
                              props.subredditName.indexOf('+') === -1 &&
                              props.subredditName !== 'all';
 
+    var app = props.app;
     var page = props.page || 0;
-    var api = globals().api;
+    var api = app.api;
     var token = props.token;
-    var user = props.user;
-    var app = globals().app;
+
+    var user = this.state.data.user;
+
     var firstId;
     var lastId;
     var prevButton;
@@ -113,7 +83,7 @@ class IndexPage extends BasePage {
       lastId = listings[listings.length - 1].name;
 
       if (page > 0) {
-        var prevQuery = Object.assign({}, props.query, {
+        var prevQuery = Object.assign({}, props.ctx.query, {
           count: 25,
           page: page - 1,
           before: firstId,
@@ -127,7 +97,7 @@ class IndexPage extends BasePage {
         );
       }
 
-      var nextQuery = Object.assign({}, props.query, {
+      var nextQuery = Object.assign({}, props.ctx.query, {
         count: 25,
         page: page + 1,
         after: lastId,
@@ -141,49 +111,35 @@ class IndexPage extends BasePage {
       );
     }
 
-    if (this.state.data.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ this.state.data.meta.tracking }
-          user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-        />);
-    }
-
-    var showAds = !!props.adsPath;
+    var showAds = !!props.config.adsPath;
 
     if (props.prefs && props.prefs.hide_ads === true) {
       showAds = false;
     }
+
 
     return (
       <div>
         { loading }
 
         <TopSubnav
-          user={ user }
+          { ...props }
+          user={ this.state.data.user }
           sort={ sort }
           list='listings'
           excludedSorts={ excludedSorts }
-          apiOptions={ apiOptions }
         />
 
         <div className={'container Listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
-            loid={ props.loid }
+            { ...props }
+            user={ user }
             showAds={ showAds }
-            adsPath={ props.adsPath }
-            listings={listings}
-            firstPage={page}
-            apiOptions={ apiOptions }
+            listings={ listings }
+            firstPage={ page }
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
-            user={user}
-            token={token}
-            compact={compact}
-            subredditTitle={subreddit}
+            subredditTitle={ subreddit }
           />
           <div className='pageNav IndexPage-buttons-holder-holder'>
             <div className='col-xs-12 IndexPage-buttons-holder'>
@@ -198,62 +154,11 @@ class IndexPage extends BasePage {
       </div>
     );
   }
-
-  static populateData(api, props, synchronous) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-
-    if (props.after) {
-      options.query.after = props.after;
-    }
-
-    if (props.before) {
-      options.query.before = props.before;
-    }
-
-    if (props.subredditName) {
-      options.query.subredditName = props.subredditName;
-    }
-
-    if (props.multi) {
-      options.query.multi = props.multi;
-      options.query.multiUser = props.multiUser;
-    }
-
-    if (props.sort) {
-      options.query.sort = props.sort;
-    }
-
-    // Initialized with data already.
-    if (props.data && typeof props.data.data !== 'undefined') {
-      api.hydrate('links', options, props.data);
-
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    api.links.get(options).then(function(data) {
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
-  }
 }
 
 IndexPage.propTypes = {
-  adsPath: React.PropTypes.string.isRequired,
-  // apiOptions: React.PropTypes.object,
-  before: React.PropTypes.bool,
+  before: React.PropTypes.string,
+  after: React.PropTypes.string,
   data: React.PropTypes.object,
   multi: React.PropTypes.string,
   multiUser: React.PropTypes.string,
@@ -261,7 +166,6 @@ IndexPage.propTypes = {
   prefs: React.PropTypes.shape({
     hide_ads: React.PropTypes.bool.isRequired,
   }),
-  query: React.PropTypes.object.isRequired,
   sort: React.PropTypes.string,
   subredditName: React.PropTypes.string,
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import process from 'reddit-text-js';
 import propTypes from '../../propTypes';
 
@@ -33,7 +32,7 @@ class SubredditSelectionButton extends BaseComponent {
     this.setState({
       lastQuery: newVal
     });
-    var api = globals().api;
+    var api = this.props.app.api;
 
     var options = api.buildOptions(this.props.apiOptions);
     options.query.type = ['sr'];
@@ -41,19 +40,20 @@ class SubredditSelectionButton extends BaseComponent {
     options.query.q = newVal;
 
 
-    api.search.get(options).done(function (data) {
-      data = data || {};
-      if (data.data && data.data.subreddits) {
-        var newSubs = data.data.subreddits.map((sub) => {
+    api.search.get(options).then(function (data={}) {
+      if (data.body && data.body.subreddits) {
+        var newSubs = data.body.subreddits.map((sub) => {
           return {
             display_name: sub.display_name,
             icon_img: sub.icon_img,
             icon_size: sub.icon_size,
             submit_text: sub.submit_text,
-
           };
         });
-        this.setState({subs: newSubs, loaded: true});
+
+        this.setState({
+          subs: newSubs, loaded: true
+        });
       }
     }.bind(this));
     this.setState({loaded: false});
@@ -114,7 +114,7 @@ class SubredditSelectionButton extends BaseComponent {
               <span className='sub-icon-placeholder'></span>{ sub.display_name }
             </button>
             <div className='sub-selection-menu pull-right'>
-              <SeashellsDropdown right={ true }>
+              <SeashellsDropdown right={ true } app={ props.app }>
                 <li className='Dropdown-li'>
                   <button type='button' className='Dropdown-button' onClick={props.goToAboutPage.bind(null, sub.display_name)}>
                     <span

@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import BaseComponent from '../components/BaseComponent';
 import LiveReload from '../components/LiveReload';
 
@@ -9,19 +8,20 @@ class DefaultLayout extends BaseComponent {
   }
 
   render () {
-    var assetPath = this.props.assetPath;
+    var assetPath = this.props.config.assetPath;
+    var manifest = this.props.config.manifest;
 
     var baseCSS = assetPath + '/css/';
     var clientJS = assetPath + '/js/';
 
     var liveReload;
-    if (this.props.liveReload) {
+    if (this.props.config.liveReload) {
       liveReload = (<LiveReload />);
     }
 
-    if (this.props.minifyAssets) {
-      baseCSS += this.props.manifest['base.css'];
-      clientJS += this.props.manifest['client.min.js'];
+    if (this.props.config.minifyAssets) {
+      baseCSS += manifest['base.css'];
+      clientJS += manifest['client.min.js'];
     } else {
       baseCSS += 'base.css';
       clientJS += 'client.js';
@@ -29,9 +29,9 @@ class DefaultLayout extends BaseComponent {
 
     var canonical;
 
-    if (globals().url) {
+    if (this.props.config.url) {
       canonical = (
-        <link rel='canonical' href={ `${globals().reddit}${globals().url}` } />
+        <link rel='canonical' href={ `${this.props.config.reddit}${this.props.ctx.url}` } />
       );
     }
 
@@ -102,11 +102,7 @@ class DefaultLayout extends BaseComponent {
 
 //TODO: someone more familiar with this component could eventually fill this out better
 DefaultLayout.propTypes = {
-  assetPath: React.PropTypes.string.isRequired,
-  liveReload: React.PropTypes.bool.isRequired,
-  manifest: React.PropTypes.object.isRequired,
   metaDescription: React.PropTypes.string,
-  minifyAssets: React.PropTypes.bool.isRequired,
   propertyId: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,
 };

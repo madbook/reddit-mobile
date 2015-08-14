@@ -1,7 +1,6 @@
 import React from 'react/addons';
 import constants from '../../constants';
 import cookies from 'cookies-js';
-import globals from '../../globals';
 import propTypes from '../../propTypes';
 import querystring from 'querystring';
 
@@ -32,7 +31,8 @@ class SideNav extends BaseComponent {
     this.state = {
       opened: false,
       twirly: '',
-      compact: globals().compact,
+      compact: props.compact,
+      subscriptions: props.dataCache.userSubscriptions || [],
     };
 
     this._onTwirlyClick = this._onTwirlyClick.bind(this);
@@ -42,28 +42,37 @@ class SideNav extends BaseComponent {
     this._onScroll = this._onScroll.bind(this);
     this._desktopSite = this._desktopSite.bind(this);
     this._goto = this._goto.bind(this);
+
   }
 
   componentDidMount() {
-    globals().app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    globals().app.on('route:start', this._close);
+    this.props.app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    this.props.app.on('route:start', this._close);
+
+    if (!this.state.subscriptions) {
+      this.props.data.get('subscriptions').then(function(s) {
+        this.setState({
+          subscriptions: s.data,
+        });
+      });
+    }
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    globals().app.off('route:start', this._close);
+    this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    this.props.app.off('route:start', this._close);
   }
 
   _desktopSite(e) {
     e.preventDefault();
-    var url = globals().url;
+    var url = this.props.ctx.url;
     var query = '';
 
-    if (Object.keys(this.props.query).length > 0) {
-      query = '?' + querystring.stringify(this.props.query || {});
+    if (Object.keys(this.props.ctx.query).length > 0) {
+      query = '?' + querystring.stringify(this.props.ctx.query || {});
     }
 
-    globals().app.emit('route:desktop', `${url}${query}`);
+    this.props.app.emit('route:desktop', `${url}${query}`);
   }
 
   _goto(e) {
@@ -75,7 +84,7 @@ class SideNav extends BaseComponent {
     let query = querystring.stringify({ location });
 
     let url = `/goto?${query}`;
-    globals().app.redirect(url);
+    this.props.app.redirect(url);
   }
 
   render() {
@@ -153,7 +162,7 @@ class SideNav extends BaseComponent {
       } else {
         loginLink = (
           <li className='SideNav-li'>
-            <a className='MobileButton SideNav-button' href={ globals().loginPath } data-no-route={ true }>
+            <a className='MobileButton SideNav-button' href={ this.props.app.config.loginPath } data-no-route={ true }>
               { snooIcon }
               <span className='SideNav-text'>Login / Register</span>
             </a>
@@ -162,7 +171,7 @@ class SideNav extends BaseComponent {
       }
 
       if (twirly === 'subreddits') {
-        var subreddits = this.props.subscriptions || [];
+        var subreddits = this.state.subscriptions || [];
         var subredditNodeList = subreddits.map((d) => {
           if(d.icon) {
             var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
@@ -316,7 +325,7 @@ class SideNav extends BaseComponent {
               </TransitionGroup>
             </li>
             <li className='SideNav-li'>
-              <a className='SideNav-button' href={`https://www.reddit.com${globals().url}`} onClick={ this._desktopSite }>
+              <a className='SideNav-button' href={`https://www.reddit.com${this.props.ctx.url}`} onClick={ this._desktopSite }>
                 { snooIcon }
                 <span className='SideNav-text'>View Desktop Site</span>
               </a>
@@ -335,7 +344,7 @@ class SideNav extends BaseComponent {
 
   _toggle() {
     var opened = this.state.opened;
-    globals().app.emit(constants.SIDE_NAV_TOGGLE, !opened);
+    this.props.app.emit(constants.SIDE_NAV_TOGGLE, !opened);
     if(!opened) {
       this._top = document.body.scrollTop;
       window.addEventListener('scroll', this._onScroll);
@@ -352,7 +361,7 @@ class SideNav extends BaseComponent {
   _close() {
     if (this.state.opened) {
       window.removeEventListener('scroll', this._onScroll);
-      globals().app.emit(constants.SIDE_NAV_TOGGLE, false);
+      this.props.app.emit(constants.SIDE_NAV_TOGGLE, false);
       this.setState({opened: false});
     }
   }
@@ -362,7 +371,8 @@ class SideNav extends BaseComponent {
   }
 
   _onViewClick() {
-    var app = globals().app;
+    var app = this.props.app;
+    var config = this.props.config;
     var compact = this.state.compact;
     let date = new Date();
     date.setFullYear(date.getFullYear() + 2);
@@ -372,13 +382,13 @@ class SideNav extends BaseComponent {
     } else {
       cookies.set('compact', 'true', {
         expires: date,
-        secure: app.getConfig('https') || app.getConfig('httpsProxy'),
+        secure: config.https || config.httpsProxy,
       });
     }
 
     var newCompact = !compact;
-    globals().compact = newCompact;
     app.emit(constants.COMPACT_TOGGLE, newCompact);
+
     this._close();
     this.setState({
       compact: newCompact,
@@ -388,7 +398,6 @@ class SideNav extends BaseComponent {
 }
 
 SideNav.propTypes = {
-  query: React.PropTypes.object.isRequired,
   subscriptions: propTypes.subscriptions,
 };
 

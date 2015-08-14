@@ -1,7 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
-import q from 'q';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -18,13 +16,25 @@ class SearchPage extends BasePage {
   constructor(props) {
     super(props);
 
-    this._lastQueryKey = null;
+    if ((!this.state.data || !this.state.data.search) && props.ctx.query.q) {
+      this.state.loaded = false;
+      this._loadSearchResults();
+    }
 
-    this.state = {
-      data: props.data || {},
-      subreddits: props.subreddits || {},
-      loaded: !!(props.data && props.data.data),
-    };
+    this._lastQueryKey = null;
+  }
+
+  _loadSearchResults() {
+    this.props.data.get('search').then(function(results) {
+      var oldData = this.state.data;
+
+      this.setState({
+        data: Object.assign({}, oldData, {
+          search: results,
+        }),
+        loaded: true,
+      });
+    }.bind(this));
   }
 
   _onSubmitSearchForm(e) {
@@ -47,7 +57,7 @@ class SearchPage extends BasePage {
 
   _composeSortingUrl(data) {
     var props = this.props;
-    var qs = { q: props.query.q };
+    var qs = { q: props.ctx.query.q };
     if (props.after) { qs.after = props.after; }
     if (props.before) { qs.before = props.before; }
     if (props.page) { qs.page = props.page; }
@@ -66,98 +76,67 @@ class SearchPage extends BasePage {
     return Math.random().toString(36).substr(2, 9);
   }
 
-  _performSearch(props) {
-    var ctx = this;
-    if (props.query && props.query.q) {
-      let currentQueryKey = ctx._generateUniqueKey();
-      ctx._lastQueryKey = currentQueryKey;
-      SearchPage.populateData(globals().api, props, true).done(function (data) {
-        if (currentQueryKey === ctx._lastQueryKey) {
-          if (!SearchPage.isNoRecordsFound(data)) {
-            ctx.setState({
-              data: data || {},
-              subreddits: {},
-              loaded: true
-            });
-          }
-        }
-      });
-    }
-  }
-
-  componentDidMount() {
-    super.componentDidMount();
-
-    //this._performSearch(this.props);
-    globals().app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, '');
-  }
-
-
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.query) {
-      this.setState({
-        loaded: false
-      });
-    }
-
-    this._performSearch(nextProps);
-  }
-
   handleShowMoreClick(e) {
     var props = this.props;
 
     var url = this._composeUrl({
-      query: props.query.q,
+      query: props.ctx.query.q,
       type: 'sr',
     });
 
-    globals().app.redirect(url);
+    this.props.app.redirect(url);
   }
 
   handleInputChanged(data) {
     var props = this.props;
     var value = data.value || '';
 
-    if (value !== props.query.q && (value || value.length >= _searchMinLength)) {
+    if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
       var url = this._composeUrl({
         query: value,
         subredditName: props.subredditName
       });
 
-      globals().app.redirect(url);
+      this.props.app.redirect(url);
     }
   }
 
   render() {
     var state = this.state;
     var props = this.props;
-    var app = globals().app;
+    var app = this.props.app;
     var apiOptions = props.apiOptions;
     var controls;
     var tracking;
 
-    if (!state.loaded && props.query && props.query.q) {
+    if (!state.loaded && props.ctx.query && props.ctx.query.q) {
       controls = (
         <Loading />
       );
+    } else if (!this.state.data.search) {
+      controls = (
+        <div className={ `container no-results text-right text-special ${noResult &&props.ctx.query.q ? '' : 'hidden'}` } key="search-no-results">
+          Sorry, we couldn't find anything.
+        </div>
+      );
     } else {
       // to make life easier
-      state.data.data = state.data.data || {};
+      var searchResults = this.state.data.search;
 
-      var subreddits = state.data.data.subreddits || [];
-      var listings = state.data.data.links || [];
+      var subreddits = searchResults.subreddits || [];
+      var listings = searchResults.links || [];
       var noListResults = listings.length === 0;
       var noSubResults = subreddits.length === 0;
       var noResult = noSubResults && noListResults;
-      var subredditResultsOnly = props.subredditName && props.query.q;
+      var subredditResultsOnly = props.subredditName && props.ctx.query.q;
 
       var page = props.page || 0;
-      var meta = state.data.data.meta || {};
+
+      var meta = state.data.subreddits ? state.data.subreddits.meta : {};
 
       // API is messed up, so we have to do our own detection for the prev..
       var prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
-        query: props.query.q,
+        query: props.ctx.query.q,
         subredditName: props.subredditName,
         before: meta.before || listings[0].name,
         page: page - 1,
@@ -167,7 +146,7 @@ class SearchPage extends BasePage {
 
       // ..and of course for the next too :-\
       var nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
-        query: props.query.q,
+        query: props.ctx.query.q,
         subredditName: props.subredditName,
         after: meta.after || listings[listings.length - 1].name,
         page: page + 1,
@@ -176,13 +155,10 @@ class SearchPage extends BasePage {
       }) : null;
 
       controls = [
-        <div className={ `container no-results text-right text-special ${noResult &&props.query.q ? '' : 'hidden'}` } key="search-no-results">
-          Sorry, we couldn't find anything.
-        </div>,
 
         <div className={ `container subreddit-only text-left ${subredditResultsOnly ? '' : 'hidden'}` } key="search-subreddit-only">
           <span>{ `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }</span>
-          <a href={ this._composeUrl({ query: props.query.q }) }>Search all of reddit?</a>
+          <a href={ this._composeUrl({ query: props.ctx.query.q }) }>Search all of reddit?</a>
         </div>,
 
         <div className={ `container summary-container ${noSubResults || (!noListResults && subredditResultsOnly) ? 'hidden' : ''}` }
@@ -212,11 +188,13 @@ class SearchPage extends BasePage {
           <h4 className="text-center">Posts</h4>
 
           <SearchSortSubnav
+            app={ app }
             sort={ props.sort }
             time={ props.time }
             composeSortingUrl={ this._composeSortingUrl.bind(this) }
           />
           <ListingList
+            app={ app }
             listings={ listings}
             apiOptions={ apiOptions }
             user={ props.user }
@@ -240,11 +218,11 @@ class SearchPage extends BasePage {
       ];
     }
 
-    if (state.data.meta) {
+    if (meta && meta.tracking) {
       tracking = (
         <TrackingPixel
           referrer={ props.referrer }
-          url={ state.data.meta.tracking }
+          url={ meta.tracking }
           user={ this.props.user }
           loid={ props.loid }
           loidcreated={ props.loidcreated }
@@ -275,55 +253,9 @@ class SearchPage extends BasePage {
   }
 
   static isNoRecordsFound(data) {
-    return (((data || {}).data || {}).links || []).length === 0 &&
-           (((data || {}).data || {}).subreddits || []).length === 0
+    return ((data || {}).links || []).length === 0 &&
+           ((data || {}).subreddits || []).length === 0
   }
-
-  static populateData(api, props, synchronous, useCache = true) {
-    var defer = q.defer();
-
-    // Only used for server-side rendering. Client-side, call when
-    // componentedMounted instead.
-    if (!synchronous) {
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    if (!props.query.q) {
-      return defer.resolve();
-    }
-
-    var options = api.buildOptions(props.apiOptions);
-
-    options.query.q = props.query.q;
-    options.query.limit = _searchLimit;
-    options.query.before = props.before;
-    options.query.after = props.after;
-    options.query.subreddit = props.subredditName;
-    options.query.sort = props.sort;
-    options.query.t = props.time;
-    options.query.include_facets = 'off';
-    options.useCache = useCache;
-    options.query.type = props.query.type || ['sr','link'];
-
-    // Initialized with data already.
-    if (useCache && (props.data || {}).data) {
-      api.hydrate('search', options, props.data);
-
-      defer.resolve(props.data);
-      return defer.promise;
-    }
-
-    api.search.get(options).then(function (data) {
-      data = data || {};
-      defer.resolve(data);
-    }, function(error) {
-      defer.reject(error);
-    });
-
-    return defer.promise;
-  }
-
 }
 
 //TODO: someone more familiar with this component could eventually fill this out better

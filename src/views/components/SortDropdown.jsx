@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 import querystring from 'querystring';
 import titleCase from '../../lib/titleCase';
 
@@ -63,11 +62,11 @@ class SortDropdown extends BaseComponent {
   }
 
   componentDidMount() {
-    globals().app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   componentWillUnmount() {
-    globals().app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
   }
 
   render() {
@@ -96,6 +95,7 @@ class SortDropdown extends BaseComponent {
       <Dropdown
         id={ this._id }
         button={ button }
+        app={ this.props.app }
         className={ this.props.className }>
         {
           list.map(function(map) {

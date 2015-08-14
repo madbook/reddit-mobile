@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 import url from 'url';
 import BaseComponent from './BaseComponent';
 
@@ -22,13 +21,13 @@ class TrackingPixel extends BaseComponent {
         trackingUrl += '&loidcreated=' + this.props.loidcreated;
       }
 
-      if (globals().compact) {
+      if (this.props.compact) {
         trackingUrl += '&view_type=compact';
       } else {
         trackingUrl += '&view_type=list';
       }
 
-      var experiments = globals().experiments;
+      var experiments = this.props.experiments;
       if (experiments && experiments.length) {
         trackingUrl += '&exps=' + experiments.map((e) => {
           return e.id + ':' + e.value;

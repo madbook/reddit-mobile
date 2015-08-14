@@ -1,6 +1,5 @@
 import React from 'react/addons';
 import constants from '../../constants';
-import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
 import moment from 'moment';
@@ -127,7 +126,7 @@ class Comment extends BaseComponent {
 
   onDelete (id) {
     var props = this.props;
-    var options = globals().api.buildOptions(props.apiOptions);
+    var options = this.props.app.api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -135,7 +134,7 @@ class Comment extends BaseComponent {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    globals().api.links.delete(options).then(function(){
+    this.props.app.api.comments.delete(options).then(function(){
       var deletedComment = this.state.comment;
       deletedComment.body_html = '<p>[deleted]</p>';
       deletedComment.author = '[deleted]';
@@ -154,20 +153,20 @@ class Comment extends BaseComponent {
     }
 
     var comment = new models.Comment(this.state.comment);
-    var options = globals().api.buildOptions(props.apiOptions);
+    var options = this.props.app.api.buildOptions(props.apiOptions);
 
     options = Object.assign(options, {
       model: comment,
       changeSet: newText,
     });
     // update comment here
-    globals().api.comments.patch(options).then(function(res) {
+    this.props.app.api.comments.patch(options).then(function(res) {
       if (res.data) {
         this.setState({
           comment: res.data,
           editing: false,
         })
-        globals().app.emit('comment:edit');
+        this.props.app.emit('comment:edit');
       }
     }.bind(this), function(err) {
       this.setState({
@@ -227,7 +226,12 @@ class Comment extends BaseComponent {
 
       if (this.state.showReplyBox) {
         commentBox = (
-          <CommentBox ref='commentBox' {...props} thingId={ comment.name } onSubmit={ this.onNewComment.bind(this) }  />
+          <CommentBox
+            {...props}
+            ref='commentBox'
+            thingId={ comment.name }
+            onSubmit={ this.onNewComment.bind(this) }
+          />
         );
       }
       toolbox = (
@@ -237,6 +241,7 @@ class Comment extends BaseComponent {
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
+              app={ this.props.app }
               setScore={ this.setScore }
               thing={ this.props.comment }
               token={ this.props.token }
@@ -246,6 +251,7 @@ class Comment extends BaseComponent {
           <li>
             <div className="encircle-icon encircle-options-icon">
               <ListingDropdown
+                app={ props.app }
                 viewComments={ false }
                 saved={ props.comment.saved }
                 subreddit={ props.subredditName }
@@ -293,7 +299,15 @@ class Comment extends BaseComponent {
               if (c) {
                 var key = 'page-comment-' + c.name + '-' + i;
 
-                return <Comment {...props} comment={c} key={key} nestingLevel={level + 1} op={op}/>;
+                return (
+                  <Comment
+                    {...props}
+                    comment={c}
+                    key={key}
+                    nestingLevel={level + 1}
+                    op={op}
+                  />
+                );
               }
             })
           }

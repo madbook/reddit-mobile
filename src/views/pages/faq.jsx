@@ -1,15 +1,8 @@
 import React from 'react';
-import globals from '../../globals';
 
 import BasePage from './BasePage';
 
 class FAQPage extends BasePage {
-  constructor(props) {
-    super(props);
-  }
-
-
-
   render () {
     return (
       <div>
@@ -114,12 +107,6 @@ class FAQPage extends BasePage {
         </div>
       </div>
     );
-  }
-
-  static populateData (api, props, synchronous) {
-    var defer = q.defer();
-    defer.resolve();
-    return defer.promise;
   }
 };
 

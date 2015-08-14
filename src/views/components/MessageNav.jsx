@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 import TextSubNav from './TextSubNav';
@@ -12,8 +11,13 @@ class MessageNav extends BaseComponent {
   render () {
     var modMailLink;
     var view = this.props.view;
+    var user = this.props.user;
 
-    if (this.props.user.is_mod) {
+    if (!user) {
+      return (<div />);
+    }
+
+    if (user.is_mod) {
       modMailLink= (
         <li className='TextSubNav-li' active={view === 'moderator'}>
           <a className={'TextSubNav-a ' + (view === 'moderator' ? 'active' : '') } href='/message/moderator'>Mod Mail</a>

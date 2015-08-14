@@ -1,5 +1,4 @@
 import React from 'react';
-import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 import SortDropdown from '../components/SortDropdown';
@@ -11,19 +10,21 @@ class TopSubnav extends BaseComponent {
 
   render() {
     var user = this.props.user;
+
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
     } else {
-      loginLink = <a className='TopSubnav-a' href={ globals().loginPath } data-no-route='true'>Log in / Register</a>;
+      loginLink = <a className='TopSubnav-a' href={ this.props.app.config.loginPath } data-no-route='true'>Log in / Register</a>;
     }
 
     var sort = null;
     if (!this.props.hideSort){
       sort = <SortDropdown
+               app={ this.props.app }
                sort={ this.props.sort }
                excludedSorts={ this.props.excludedSorts }
                list={ this.props.list }
-               baseUrl={ globals().url }
+               baseUrl={ this.props.ctx.url }
              />;
     }
 
