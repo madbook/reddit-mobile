@@ -5,7 +5,6 @@ import globals from '../../globals';
 import propTypes from '../../propTypes';
 
 import BaseComponent from '../components/BaseComponent';
-import MobileButton from '../components/MobileButton';
 
 class Vote extends BaseComponent {
   constructor(props) {
@@ -115,11 +114,15 @@ class Vote extends BaseComponent {
           <li>
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='1'/>
-              <MobileButton type='submit'
-                className={'vote text-muted ' + (voteClass || '')} data-vote='up' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={this._onClick.bind(this, 'upvote')}>
-              <span className='icon-upvote-circled'></span>
-              </MobileButton>
+              <button
+                type='submit'
+                className={'vote text-muted ' + (voteClass || '')}
+                data-vote='up'
+                data-thingid={ this.props.thing.name }
+                data-no-route='true'
+                onClick={this._onClick.bind(this, 'upvote')}>
+                <span className='icon-upvote-circled'></span>
+              </button>
             </form>
           </li>
           <li className='vote-score-container'>
@@ -130,11 +133,15 @@ class Vote extends BaseComponent {
           <li>
             <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
               <input type='hidden' name='direction' value='-1'/>
-              <MobileButton type='submit'
-                className={'vote text-muted ' + (voteClass || '')} data-vote='down' data-thingid={ this.props.thing.name }
-                data-no-route='true' onClick={this._onClick.bind(this, 'downvote')}>
+              <button
+                type='submit'
+                className={'vote text-muted ' + (voteClass || '')}
+                data-vote='down'
+                data-thingid={ this.props.thing.name }
+                data-no-route='true'
+                onClick={this._onClick.bind(this, 'downvote')}>
                 <span className='icon-downvote-circled'></span>
-              </MobileButton>
+              </button>
             </form>
           </li>
         </ul>

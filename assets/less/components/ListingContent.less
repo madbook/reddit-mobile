@@ -8,6 +8,9 @@
     .ListingContent-image {
       height: 100%;
     }
+    .icon-play-circled {
+      font-size: 2em;
+    }
   }
 
   &:not(.compact) {
@@ -78,34 +81,34 @@
       top: 0;
     }
 
-  .ListingContent-image {
-    display: block;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: cover;
-    background-color: @light-gray;
+.ListingContent-image {
+  display: block;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-color: @light-gray;
 
-    &.placeholder {
-      background-size: 100% auto;
-      background-image: url(../img/placeholder.svg);
-    }
-
-    .PlayIcon {
-      opacity: 0.5;
-      .tween;
-      height: 30%;
-      width: 30%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      .translate(-50%, -50%);
-    }
-
-    &:hover .PlayIcon {
-      opacity: 1;
-    }
+  &.placeholder {
+    background-size: 100% auto;
+    background-image: url(../img/placeholder.svg);
   }
+
+  &:hover .icon-play-circled {
+    opacity: 1;
+    color: @white;
+  }
+}
+
+.icon-play-circled {
+  opacity: 0.5;
+  .tween;
+  font-size: 5em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, -50%);
+}
 
     .ListingContent-image-img {
       width: 100%;

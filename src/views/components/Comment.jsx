@@ -11,10 +11,12 @@ import savedReply from '../../lib/savedReply';
 import BaseComponent from './BaseComponent';
 import CommentBox from '../components/CommentBox';
 import ListingDropdown from '../components/ListingDropdown';
-import MobileButton from '../components/MobileButton';
-import ReplyIcon from '../components/icons/ReplyIcon';
 import ReportPlaceholder from '../components/ReportPlaceholder';
 import Vote from '../components/Vote';
+
+var replyIcon = (
+  <span className='icon-reply-circled'>{' '}</span>
+);
 
 class Comment extends BaseComponent {
   constructor(props) {
@@ -231,12 +233,7 @@ class Comment extends BaseComponent {
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
-            <MobileButton
-              href='#'
-              onClick={this.showReplyBox.bind(this)}
-              className='comment-svg'>
-              <ReplyIcon altered={this.state.showReplyBox}/>
-            </MobileButton>
+            <a className='MobileButton comment-svg' onClick={this.showReplyBox.bind(this)} href='#' >{ replyIcon }</a>
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote

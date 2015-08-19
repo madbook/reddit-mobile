@@ -5,7 +5,6 @@ import propTypes from '../../propTypes';
 
 import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
-import PlayIcon from '../components/icons/PlayIcon';
 
 var _gifMatch = /\.(?:gif)/gi;
 var _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
@@ -214,7 +213,7 @@ class ListingContent extends BaseComponent {
     var loaded = props.loaded;
     if (loaded) {
       if (onClick) {
-        var playIconNode = <PlayIcon/>;
+        var playIconNode = <span className='icon-play-circled'>{' '}</span>;
       }
       if (isNSFW && !expanded) {
         if (compact) {

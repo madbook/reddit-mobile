@@ -105,17 +105,7 @@
     #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
   }
 
-  .MobileButton {
-    padding-right: 0px;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  [class^="icon-"] {
-    // position: relative;
-    // top: 8px;
+  .icon-search, .icon-hamburger, .icon-x {
     font-size: 2.5em;
   }
 
@@ -141,6 +131,14 @@
     .Dropdown-tab {
       right: 5px;
     }
+  }
+}
+
+.MobileButton {
+  padding-right: 0px;
+
+  &:hover, &:focus {
+    text-decoration: none;
   }
 }
 

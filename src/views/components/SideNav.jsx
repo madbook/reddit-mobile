@@ -8,15 +8,23 @@ import querystring from 'querystring';
 import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
 import MailIcon from '../components/icons/MailIcon';
-import MobileButton from '../components/MobileButton';
-import SaveIcon from '../components/icons/SaveIcon';
 import SettingsIcon from '../components/icons/SettingsIcon';
-import TwirlyIcon from '../components/icons/TwirlyIcon';
+
 
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var TransitionGroup = React.addons.TransitionGroup;
+
 var snooIcon = (
   <span className='icon-snoo-circled icon-large'>{' '}</span>
+);
+var settingsIcon = (
+  <span className='icon-settings-circled icon-large'>{' '}</span>
+);
+var saveIcon = (
+  <span className='icon-save-circled icon-large'>{' '}</span>
+);
+var mailIcon = (
+  <span className='icon-mail-circled icon-large'>{' '}</span>
 );
 
 class SideNav extends BaseComponent {
@@ -80,37 +88,34 @@ class SideNav extends BaseComponent {
       var compact = this.state.compact;
 
       var twirly = this.state.twirly;
-      var isAbout = twirly === 'about';
-      var isSubreddits = twirly === 'subreddits';
-      var isUser = twirly === 'user';
 
       if (user) {
-        if (isUser) {
+        if (twirly === 'user') {
           var userButtons = (
             <AutoTween component='ul' key='user' className='SideNav-ul list-unstyled'>
-              <li className='SideNav-li'>
-                <MobileButton className='SideNav-button' href={ `/u/${user.name}` }>
+              <li className='MobileButton SideNav-li'>
+                <a className='SideNav-button' href={ `/u/${user.name}` }>
                   { snooIcon }
                   <span className='SideNav-text'>My Profile</span>
-                </MobileButton>
+                </a>
               </li>
               <li className='SideNav-li'>
-                <MobileButton className='SideNav-button' href={ `/u/${user.name}/saved` }>
-                  <SaveIcon/>
+                <a className='MobileButton SideNav-button' href={ `/u/${user.name}/saved` }>
+                  { saveIcon }
                   <span className='SideNav-text'>Saved</span>
-                </MobileButton>
+                </a>
               </li>
               <li className='SideNav-li'>
-                <MobileButton className='SideNav-button' href={ `/u/${user.name}/hidden` }>
-                  <SettingsIcon/>
+                <a className='MobileButton SideNav-button' href={ `/u/${user.name}/hidden` }>
+                  { settingsIcon }
                   <span className='SideNav-text'>Hidden</span>
-                </MobileButton>
+                </a>
               </li>
               <li>
-                <MobileButton className='SideNav-button' href='/logout' noRoute={ true }>
+                <a className='MobileButton SideNav-button' href='/logout' noRoute={ true }>
                   { snooIcon }
                   <span className='SideNav-text'>Log out</span>
-                </MobileButton>
+                </a>
               </li>
             </AutoTween>
           );
@@ -118,10 +123,12 @@ class SideNav extends BaseComponent {
 
         loginLink = (
           <li className='SideNav-dropdown SideNav-li'>
-            <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'user')}>
-              <TwirlyIcon altered={isUser}/>
+            <button type='button' className='MobileButton SideNav-button' onClick={this._onTwirlyClick.bind(this, 'user')}>
+              <span className={ twirly === 'user' ? 'twirlyIcon-open' : 'twirlyIcon-closed'}>
+                <span className='icon-twirly-circled icon-large'>{' '}</span>
+              </span>
               <span className='SideNav-text'>{ user.name }</span>
-            </MobileButton>
+            </button>
             <TransitionGroup>
               { userButtons }
             </TransitionGroup>
@@ -139,24 +146,24 @@ class SideNav extends BaseComponent {
 
         inboxLink = (
           <li className='SideNav-li'>
-            <MobileButton className={`SideNav-button ${newClass}`} href='/message/inbox/'>
-              <MailIcon/>
+            <a className={`MobileButton SideNav-button ${newClass}`} href='/message/inbox/'>
+              { mailIcon }
               <span className='SideNav-text'>Inbox{newMail}</span>
-            </MobileButton>
+            </a>
           </li>
         );
       } else {
         loginLink = (
           <li className='SideNav-li'>
-            <MobileButton className='SideNav-button' href={ globals().loginPath } noRoute={ true }>
+            <a className='MobileButton SideNav-button' href={ globals().loginPath } noRoute={ true }>
               { snooIcon }
               <span className='SideNav-text'>Login / Register</span>
-            </MobileButton>
+            </a>
           </li>
         );
       }
 
-      if (isSubreddits) {
+      if (twirly === 'subreddits') {
         var subreddits = this.props.subscriptions || [];
         var subredditNodeList = subreddits.map((d) => {
           if(d.icon) {
@@ -166,10 +173,10 @@ class SideNav extends BaseComponent {
           }
           return (
             <li className='SideNav-li' key={`SideNav-li-${d.url}`}>
-              <MobileButton className='SideNav-button' href={ d.url }>
+              <a className='MobileButton SideNav-button' href={ d.url }>
                 {icon}
                 <span className='SideNav-text'>{d.display_name}</span>
-              </MobileButton>
+              </a>
             </li>
           );
         });
@@ -182,96 +189,98 @@ class SideNav extends BaseComponent {
 
       var subredditLinks = (
         <li className='SideNav-dropdown SideNav-li'>
-          <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'subreddits')}>
-            <TwirlyIcon altered={isSubreddits}/>
+          <button type='button' className='MobileButton SideNav-button' onClick={this._onTwirlyClick.bind(this, 'subreddits')}>
+            <span className={ twirly === 'subreddits' ? 'twirlyIcon-open' : 'twirlyIcon-closed'}>
+              <span className='icon-twirly-circled icon-large'>{' '}</span>
+            </span>
             <span className='SideNav-text'>My Subreddits</span>
-          </MobileButton>
+          </button>
           <TransitionGroup>
             { subredditButtons }
           </TransitionGroup>
         </li>
       );
 
-      if (isAbout) {
+      if (twirly === 'about') {
         var aboutButtons = (
           <AutoTween key='about' component='ul' className='SideNav-ul list-unstyled'>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/blog/'>
+              <a className='SideNav-button' href='https://www.reddit.com/blog/'>
                 { snooIcon }
                 <span className='SideNav-text'>Blog</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/about/'>
+              <a className='SideNav-button' href='https://www.reddit.com/about/'>
                 { snooIcon }
                 <span className='SideNav-text'>About</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/about/team/'>
+              <a className='SideNav-button' href='https://www.reddit.com/about/team/'>
                 { snooIcon }
                 <span className='SideNav-text'>Team</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/code/'>
+              <a className='SideNav-button' href='https://www.reddit.com/code/'>
                 { snooIcon }
                 <span className='SideNav-text'>Source Code</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/advertising/'>
+              <a className='SideNav-button' href='https://www.reddit.com/advertising/'>
                 { snooIcon }
                 <span className='SideNav-text'>Advertise</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>
+              <a className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>
                 { snooIcon }
                 <span className='SideNav-text'>Jobs</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/'>
+              <a className='SideNav-button' href='https://www.reddit.com/wiki/'>
                 { snooIcon }
                 <span className='SideNav-text'>Wiki</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/faq'>
+              <a className='SideNav-button' href='https://www.reddit.com/wiki/faq'>
                 { snooIcon }
                 <span className='SideNav-text'>FAQ</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>
+              <a className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>
                 { snooIcon }
                 <span className='SideNav-text'>Reddiquette</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/rules/'>
+              <a className='SideNav-button' href='https://www.reddit.com/rules/'>
                 { snooIcon }
                 <span className='SideNav-text'>Rules</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/help/useragreement'>
+              <a className='SideNav-button' href='https://www.reddit.com/help/useragreement'>
                 { snooIcon }
                 <span className='SideNav-text'>User Agreement</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>
+              <a className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>
                 { snooIcon }
                 <span className='SideNav-text'>Privacy Policy</span>
-              </MobileButton>
+              </a>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href='https://www.reddit.com/contact/'>
+              <a className='SideNav-button' href='https://www.reddit.com/contact/'>
                 { snooIcon }
                 <span className='SideNav-text'>Contact Us</span>
-              </MobileButton>
+              </a>
             </li>
           </AutoTween>
         );
@@ -291,26 +300,28 @@ class SideNav extends BaseComponent {
             { loginLink }
             { inboxLink }
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' onClick={this._onViewClick}>
-                <SettingsIcon/>
+              <button type='button' className='SideNav-button' onClick={this._onViewClick}>
+                { settingsIcon }
                 <span className='SideNav-text'>Switch to { compact ? 'list' : 'compact' } view</span>
-              </MobileButton>
+              </button>
             </li>
             { subredditLinks }
             <li className='SideNav-dropdown SideNav-li'>
-              <MobileButton className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'about')}>
-                <TwirlyIcon altered={isAbout}/>
+              <button type='button' className='SideNav-button' onClick={this._onTwirlyClick.bind(this, 'about')}>
+                <span className={ twirly === 'about' ? 'twirlyIcon-open' : 'twirlyIcon-closed'}>
+                  <span className='icon-twirly-circled icon-large'>{' '}</span>
+                </span>
                 <span className='SideNav-text'>About reddit</span>
-              </MobileButton>
+              </button>
               <TransitionGroup>
                 { aboutButtons }
               </TransitionGroup>
             </li>
             <li className='SideNav-li'>
-              <MobileButton className='SideNav-button' href={`https://www.reddit.com${globals().url}`} onClick={ this._desktopSite }>
+              <a className='SideNav-button' href={`https://www.reddit.com${globals().url}`} onClick={ this._desktopSite }>
                 { snooIcon }
                 <span className='SideNav-text'>View Desktop Site</span>
-              </MobileButton>
+              </a>
             </li>
           </ul>
         </nav>

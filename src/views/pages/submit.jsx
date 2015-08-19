@@ -7,7 +7,6 @@ import throttle from 'lodash/function/throttle';
 import BasePage from './BasePage';
 import CaptchaBox from '../components/CaptchaBox';
 import CheckmarkIcon from '../components/icons/CheckmarkIcon';
-import MobileButton from '../components/MobileButton';
 import Modal from '../components/Modal';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SubredditSelectionButton from '../components/SubredditSelectionButton';
@@ -350,9 +349,9 @@ class SubmitPage extends BasePage {
             <div className='Submit-sendreplies-box'>
               <SeashellsDropdown right={ true } reversed={ true }>
                 <li className='Dropdown-li'>
-                  <MobileButton className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
+                  <button type='button' className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
                     <span ><CheckmarkIcon played={this.state.sendReplies} /> send replies to my inbox</span>
-                  </MobileButton>
+                  </button>
                 </li>
               </SeashellsDropdown>
             </div>

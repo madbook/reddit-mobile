@@ -66,26 +66,6 @@
       stroke: @white;
     }
 
-//icons inside buttons
-  .MobileButton {
-    .SVG-fill {
-      .transition(fill 0.2s);
-    }
-
-    .SVG-stroke {
-      .transition(stroke 0.2s);
-    }
-
-    &.hover {
-      .SVG-fill {
-        fill: @gray;
-      }
-      .SVG-stroke {
-        stroke: @gray;
-      }
-    }
-  }
-
 //specific to certain icons
   .Logo {
     @size: 20px;
@@ -93,45 +73,4 @@
     height: @size;
     width: 55px;
     color: @black;
-  }
-
-  .DownvoteIcon.altered .SVG-fill {
-    fill: @periwinkle;
-  }
-
-
-  .GoldIcon.altered .SVG-fill {
-    fill: @gold;
-  }
-
-  .SaveIcon.altered {
-    .SVG-stroke {
-      stroke: @brand-success;
-    }
-
-    .SVG-fill {
-      fill: @brand-success;
-    }
-  }
-
-  .SettingsIcon.altered .SVG-fill {
-      fill: @brand-danger;
-    }
-
-  .NSFWIcon {
-    .SVG-stroke-bg {
-      .transition(stroke 0.4s);
-    }
-
-    &.played .SVG-stroke-bg {
-      stroke: @orangered;
-    }
-  }
-
-  .TwirlyIcon {
-    .transition(transform 0.2s);
-
-    &.altered {
-      .rotate(90deg);
-    }
   }

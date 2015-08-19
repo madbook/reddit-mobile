@@ -9,7 +9,6 @@ import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
 import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
-import MobileButton from '../components/MobileButton';
 import Vote from '../components/Vote';
 
 var TransitionGroup = React.addons.TransitionGroup;
@@ -141,12 +140,7 @@ class Listing extends BaseComponent {
       }
 
       var subredditNode = subreddit ? (
-        <MobileButton
-          className='Listing-subreddit'
-          href={`/r/${subreddit}`}>
-          { iconNode }
-          <span style={ style }>r/{ subreddit }</span>
-        </MobileButton>
+        <a className='Listing-subreddit' href={`/r/${subreddit}`}><span style={ style }>r/{ subreddit }</span></a>
       ) : null;
     }
 
@@ -206,14 +200,14 @@ class Listing extends BaseComponent {
     if (!props.hideComments) {
       var commentsNode = (
         <li className='Listing-comments linkbar-item-no-seperator'>
-          <MobileButton
+          <a
             className='Listing-commentsbutton'
             href={ listing.cleanPermalink }>
             <span className='icon-comments-circled listing-footer-icon' />
             <span className='Listing-numcomments'>{ numComments }</span>
             { whenNode }
             { domainNode }
-          </MobileButton>
+          </a>
         </li>
       );
     }

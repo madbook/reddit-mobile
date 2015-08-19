@@ -5,7 +5,6 @@ import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
 import Loading from '../components/Loading';
-import MobileButton from '../components/MobileButton';
 import SearchBar from '../components/SearchBar';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 
@@ -108,20 +107,20 @@ class SubredditSelectionButton extends BaseComponent {
 
         return (
           <div className='sub-selection-option' key={sub.display_name}>
-            <MobileButton
+            <button type='button'
               className='sub-selection-btn'
               onClick={this.openSubmitRules.bind(this, sub.submit_text, sub.display_name)}
             >
               <span className='sub-icon-placeholder'></span>{ sub.display_name }
-            </MobileButton>
+            </button>
             <div className='sub-selection-menu pull-right'>
               <SeashellsDropdown right={ true }>
                 <li className='Dropdown-li'>
-                  <MobileButton className='Dropdown-button' onClick={props.goToAboutPage.bind(null, sub.display_name)}>
+                  <button type='button' className='Dropdown-button' onClick={props.goToAboutPage.bind(null, sub.display_name)}>
                     <span
                       className='Dropdown-text'
                     >About this community</span>
-                  </MobileButton>
+                </button>
                 </li>
               </SeashellsDropdown>
             </div>

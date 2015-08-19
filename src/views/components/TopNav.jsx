@@ -4,15 +4,11 @@ import globals from '../../globals';
 import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
-import InfoIcon from '../components/icons/InfoIcon';
 import Loading from '../components/Loading';
 import Logo from '../components/Logo';
-import MobileButton from '../components/MobileButton';
-import SaveIcon from '../components/icons/SaveIcon';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';
-import TextIcon from '../components/icons/TextIcon';
 
 function removeR(text) {
   return text.substr(2);
@@ -89,28 +85,31 @@ class TopNav extends BaseComponent {
     if (props.subredditName &&
         props.subredditName.indexOf('+') === -1 &&
         props.subredditName !== 'all') {
+      var isSubscribed = this.state.userIsSubscribed;
+      var subscribedClass = isSubscribed ? 'saved' : '';
       subredditMenu = (
         <SeashellsDropdown right={ true }>
           <li className='Dropdown-li'>
-            <MobileButton className='Dropdown-button' href={ `/r/${props.subredditName}/about` }>
-              <InfoIcon/>
+            <a className='MobileButton Dropdown-button' href={ `/r/${props.subredditName}/about` }>
+              <span className='icon-info-circled' > </span>
               <span className='Dropdown-text'>{ `About ${props.subredditName}` }</span>
-            </MobileButton>
+            </a>
           </li>
           <li className='Dropdown-li'>
-            <MobileButton className='Dropdown-button' href={ `${globals().reddit}/r/${props.subredditName}/wiki` }
+            <a className='MobileButton Dropdown-button' href={ `${globals().reddit}/r/${props.subredditName}/wiki` }
                           data-no-route='true'>
-              <TextIcon/>
+              <span className='icon-text-circled' > </span>
               <span className='Dropdown-text'>Wiki</span>
-            </MobileButton>
+            </a>
           </li>
           <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
-            <MobileButton className='Dropdown-button' onClick={ this._onSubscribeClick }>
-              <SaveIcon altered={this.state.userIsSubscribed}/>
+            <button className='MobileButton Dropdown-button' onClick={ this._onSubscribeClick }>
+
+              <span className={'icon-save-circled ' + subscribedClass}> </span>
               <span className='Dropdown-text'>
-                { this.state.userIsSubscribed ? 'Unsubscribe' : 'Subscribe' }
+                { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
               </span>
-            </MobileButton>
+            </button>
           </li>
         </SeashellsDropdown>
       );
@@ -132,29 +131,29 @@ class TopNav extends BaseComponent {
       <nav className={'TopNav' + (this.state.sideNavOpen ? ' opened' : '')}>
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
-          <MobileButton className='TopNav-padding TopNav-snoo' href='/'>
+          <a className='MobileButton TopNav-padding TopNav-snoo' href='/'>
             <SnooIcon rainbow={ false }/>
-          </MobileButton>
+          </a>
           <h1 className='TopNav-text TopNav-padding'>
             <span>
-              <MobileButton className='TopNav-a' href={breadcrumbLink}>
-                {breadcrumbContents}
-              </MobileButton>
+              <a className='TopNav-a' href={ breadcrumbLink }>
+                { breadcrumbContents }
+              </a>
             </span>
           </h1>
         </div>
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
-          <MobileButton className='TopNav-floaty' href={'/submit' + currentSub }>
-            <span className='icon-post'></span>
-          </MobileButton>
-          <MobileButton className='TopNav-floaty' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
+          <a className='MobileButton TopNav-floaty' href={'/submit' + currentSub }>
+            <span className='icon-post'>{' '}</span>
+          </a>
+          <a className='MobileButton TopNav-floaty' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
             <span className='icon-search'></span>
-          </MobileButton>
-          <MobileButton className='TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
+          </a>
+          <button className='MobileButton TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
             <span className={sideNavIcon}></span>
             { notificationsCount }
-          </MobileButton>
+          </button>
         </div>
       </nav>
    );

@@ -5,9 +5,6 @@ import { models } from 'snoode';
 import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
-import FlagIcon from '../components/icons/FlagIcon';
-import MobileButton from '../components/MobileButton';
-import SaveIcon from '../components/icons/SaveIcon';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 
 class ListingDropdown extends BaseComponent {
@@ -70,33 +67,34 @@ class ListingDropdown extends BaseComponent {
 
       reportLink = (
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={ this._onReportClick }>
-            <FlagIcon/>
+          <button className='Dropdown-button' onClick={ this._onReportClick }>
+            <span className='icon-flag-circled'>{' '}</span>
             <span className='Dropdown-text'>Report this</span>
-          </MobileButton>
+          </button>
           { reportForm }
         </li>
       );
 
       var saved = this.state.saved;
       var hidden = this.state.hidden;
+      var isSavedClass = saved ? 'saved' : '';
 
       saveLink = (
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={ this._onSaveClick }>
-            <SaveIcon altered={ saved }/>
+          <button className='Dropdown-button' onClick={ this._onSaveClick }>
+            <span className={'icon-save-circled ' + isSavedClass }>{' '}</span>
             <span className='Dropdown-text'>{ saved ? 'Saved' : 'Save' }</span>
-          </MobileButton>
+          </button>
         </li>
       );
 
       if (this.props.showHide) {
         hideLink = (
           <li className='Dropdown-li'>
-            <MobileButton className='Dropdown-button' onClick={ this._onHideClick }>
+            <button className='Dropdown-button' onClick={ this._onHideClick }>
               <span className='icon-settings-circled'>{' '}</span>
               <span className='Dropdown-text'>{ hidden ? 'Hidden' : 'Hide' }</span>
-            </MobileButton>
+            </button>
           </li>
         );
       }
@@ -107,10 +105,10 @@ class ListingDropdown extends BaseComponent {
     if (props.permalink) {
       permalink = (
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ props.permalink }>
+          <a className='Dropdown-button' href={ props.permalink }>
             <span className='icon-link-circled' />
             <span className='Dropdown-text'>Permalink</span>
-          </MobileButton>
+          </a>
         </li>
       );
     }
@@ -120,10 +118,10 @@ class ListingDropdown extends BaseComponent {
     if (props.showEdit) {
       editLink = (
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' onClick={ this._onEditClick }>
+          <button className='Dropdown-button' onClick={ this._onEditClick }>
             <span className='icon-post-circled' />
             <span className='Dropdown-text'>Edit Post</span>
-          </MobileButton>
+          </button>
         </li>
       );
     }
@@ -133,10 +131,10 @@ class ListingDropdown extends BaseComponent {
     if (props.showDel) {
       var confirmClass = 'hidden';
       var toggleDelBtn = (
-        <MobileButton className='Dropdown-button' onClick={ this._onDelToggle }>
+        <button type='button' className='Dropdown-button' onClick={ this._onDelToggle }>
           <span className='icon-x' />
           <span className='Dropdown-text'>Delete Post</span>
-        </MobileButton>
+        </button>
       );
       if (this.state.showDelPrompt) {
         confirmClass = '';
@@ -166,10 +164,10 @@ class ListingDropdown extends BaseComponent {
     if (props.viewComments && props.listing._type === "Link") {
       viewComments = (
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={listing.permalink}>
+          <a className='MobileButton Dropdown-button' href={ listing.permalink }>
             <span className='icon-comments-circled'/>
             <span className='Dropdown-text'>View comments</span>
-          </MobileButton>
+          </a>
         </li>
       );
     }
@@ -181,16 +179,16 @@ class ListingDropdown extends BaseComponent {
         { viewComments }
         { permalink }
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/r/' + listing.subreddit }>
+          <a className='Dropdown-button' href={ '/r/' + listing.subreddit }>
             <span className='icon-snoo-circled' />
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
-          </MobileButton>
+          </a>
         </li>
         <li className='Dropdown-li'>
-          <MobileButton className='Dropdown-button' href={ '/u/' + listing.author }>
+          <a className='Dropdown-button' href={ '/u/' + listing.author }>
             <span className='icon-info-circled' />
             <span className='Dropdown-text'>About { listing.author }</span>
-          </MobileButton>
+          </a>
         </li>
         { saveLink }
         { hideLink }

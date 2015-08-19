@@ -4,7 +4,6 @@ import globals from '../../globals';
 import querystring from 'querystring';
 import titleCase from '../../lib/titleCase';
 
-import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import Dropdown from '../components/Dropdown';
 import BaseComponent from './BaseComponent';
 
@@ -111,11 +110,11 @@ class SortDropdown extends BaseComponent {
                 [sortParam]: map.param.toLowerCase(),
               });
             }
-
+            var iconClass = opened && map.text === sortTitle.toLowerCase() ? 'icon-check-shown' : 'icon-check-hidden';
             return (
               <li className='Dropdown-li' key={ url }>
                 <a className='Dropdown-button' href={ url }>
-                  <CheckmarkIcon played={opened && map.text === sortTitle.toLowerCase()}/>
+                  <span className={'icon-check ' + iconClass }>{' '}</span>
                   <span className='Dropdown-text'>{ titleCase(map.text) }</span>
                 </a>
               </li>

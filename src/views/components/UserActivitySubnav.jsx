@@ -117,10 +117,11 @@ class UserActivitySubnav extends BaseComponent {
           className='Dropdown-inline'>
           {
             dropdownList.map((d) => {
+              var iconClass = opened && activity === d.activity ? 'icon-check-shown' : 'icon-check-hidden';
               return (
                 <li className='Dropdown-li' key={`ua-subnav-${d.text}`}>
                   <a className='Dropdown-button' href={ this.buildUrl(baseUrl, d.activity, this.state.sort, this.state.page) }>
-                    <CheckmarkIcon played={ opened && activity === d.activity }/>
+                    <span className={'icon-check ' + iconClass }>{' '}</span>
                     <span className='Dropdown-text'>{ d.text }</span>
                   </a>
                 </li>
