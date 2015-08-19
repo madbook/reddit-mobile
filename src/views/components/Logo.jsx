@@ -5,8 +5,6 @@ import BaseComponent from './BaseComponent';
 class Logo extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
-    this._play = this._play.bind(this);
   }
 
   render() {
@@ -24,37 +22,6 @@ class Logo extends BaseComponent {
       </SVG>
     );
   }
-
-  componentDidMount() {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    if (this.props.played) {
-      this._play(true, true);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!SVG.ENABLED) {
-      return;
-    }
-    var played = nextProps.played;
-    if (typeof played !== 'undefined' && played !== this.props.played) {
-      this._play(played);
-    }
-  }
-
-  _play(bool, instant) {
-    // TODO
-  }
 }
-
-Logo.defaultProps = {
-  played: false,
-};
-
-Logo.propTypes = {
-  played: React.PropTypes.bool,
-};
 
 export default Logo;
