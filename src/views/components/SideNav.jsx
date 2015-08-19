@@ -7,8 +7,6 @@ import querystring from 'querystring';
 
 import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
-import MailIcon from '../components/icons/MailIcon';
-import SettingsIcon from '../components/icons/SettingsIcon';
 
 
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;

@@ -6,7 +6,6 @@ import throttle from 'lodash/function/throttle';
 
 import BasePage from './BasePage';
 import CaptchaBox from '../components/CaptchaBox';
-import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import Modal from '../components/Modal';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SubredditSelectionButton from '../components/SubredditSelectionButton';
@@ -297,6 +296,7 @@ class SubmitPage extends BasePage {
       );
     }
 
+    var iconClass = this.state.sendReplies ? 'icon-check-shown' : 'icon-check-hidden';
     var postForm;
     if (!this.state.subredditSelectionOpen) {
       postForm = (
@@ -350,7 +350,7 @@ class SubmitPage extends BasePage {
               <SeashellsDropdown right={ true } reversed={ true }>
                 <li className='Dropdown-li'>
                   <button type='button' className='Dropdown-button' onClick={ this.changeSendReplies.bind(this) }>
-                    <span ><CheckmarkIcon played={this.state.sendReplies} /> send replies to my inbox</span>
+                    <span ><span className={'icon-check ' + iconClass }>{' '}</span> send replies to my inbox</span>
                   </button>
                 </li>
               </SeashellsDropdown>

@@ -5,7 +5,7 @@ import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
 import Loading from '../components/Loading';
-import Logo from '../components/Logo';
+import Logo from '../components/icons/Logo';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
 import SubredditAboutPage from '../pages/subredditAbout';

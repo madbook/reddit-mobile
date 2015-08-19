@@ -1,6 +1,6 @@
 import React from 'react';
-import SVG from '../components/SVG';
-import BaseComponent from './BaseComponent';
+import BaseComponent from '../../components/BaseComponent';
+import SVG from '../../components/SVG';
 
 class Logo extends BaseComponent {
   constructor(props) {

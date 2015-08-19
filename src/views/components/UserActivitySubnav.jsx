@@ -5,7 +5,6 @@ import querystring from 'querystring';
 
 import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
-import CheckmarkIcon from '../components/icons/CheckmarkIcon';
 import SortDropdown from '../components/SortDropdown';
 
 class UserActivitySubnav extends BaseComponent {
