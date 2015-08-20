@@ -20,24 +20,6 @@
     border-left: @gray-border;
   }
 
-  .comment-svg {
-    .SVG-fill-bg {
-      fill: darken(@brand-primary-bg-lightest, 2.5%);
-    }
-
-    .SVG-stroke-bg {
-      stroke: darken(@brand-primary-bg-lightest, 2.5%);
-    }
-
-    .SVG-fill {
-      fill: @light-gray;
-    }
-
-    .SVG-stroke {
-      stroke: @light-gray;
-    }
-  }
-
   .Dropdown {
     top: -2px;
   }
@@ -77,13 +59,7 @@
 }
 
 .comment-content, footer {
-  margin-left: 1em;
-}
-
-.comment-content {
-  // Fix for safari mobile side scrolling on deeply
-  // nested comments.
-  overflow: hidden;
+  margin-left: .4em;
 }
 
 .linkbar.comment-title-list {
@@ -104,8 +80,8 @@
   }
 }
 
-.comment-toolbar {
-  padding: 15px 0;
+.linkbar-spread.comment-toolbar {
+  padding-top: 5px;
   list-style: none;
 }
 
