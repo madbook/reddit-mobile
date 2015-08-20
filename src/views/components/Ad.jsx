@@ -74,7 +74,7 @@ class Ad extends BaseComponent {
     if (loggedIn) {
       headers.authorization = 'bearer ' + this.props.token;
     } else {
-      postData.loid = app.state.loid;
+      postData.loid = this.props.loid;
     }
 
     return new Promise((resolve, reject) => {

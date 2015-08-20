@@ -172,6 +172,7 @@ class IndexPage extends BasePage {
 
         <div className={'container Listing-container' + (compact ? ' compact' : '')} ref='listings'>
           <ListingList
+            loid={ props.loid }
             showAds={ showAds }
             adsPath={ props.adsPath }
             listings={listings}

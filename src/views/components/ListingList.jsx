@@ -127,6 +127,7 @@ class ListingList extends BaseComponent {
 
     return (
       <Ad
+        loid={this.props.loid}
         key='ad'
         ref='ad'
         {...this.props}
