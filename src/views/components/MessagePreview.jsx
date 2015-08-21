@@ -149,7 +149,7 @@ class MessagePreview extends BaseComponent {
       reply = (
         <form action='/mesage' method='POST' onSubmit={ this._onReplySubmit }>
           <div className='message-preivew-texarea-holder'>
-            <textarea ref='replyText' name='reply' placeholder='Message...' className={ 'form-control zoom-fix ' + submitClass} />
+            <textarea ref='replyText' name='reply' placeholder='Message...' className={ 'form-control ' + submitClass} />
           </div>
           <button type='submit' className={'btn btn-primary btn-post btn-block ' + submitClass} disabled={ submitDisabled }>Send</button>
           <p>

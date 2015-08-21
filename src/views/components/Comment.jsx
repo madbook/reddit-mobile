@@ -350,7 +350,7 @@ class Comment extends BaseComponent {
             { errorText }
           </div>
           <div className='comment-textarea-holder'>
-            <textarea ref='updatedText' className='form-control zoom-fix' defaultValue={ comment.body }></textarea>
+            <textarea ref='updatedText' className='form-control' defaultValue={ comment.body }></textarea>
           </div>
           <div className='btn-group btn-group-justified'>
             <div className='btn-group'>

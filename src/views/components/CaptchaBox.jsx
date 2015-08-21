@@ -85,9 +85,9 @@ class CaptchaBox extends BaseComponent {
         <div className='captcha-img-wrap'>
           { img }
         </div>
-        <div className='captcha-zoom-wrapper'>
+        <div >
           <input
-            className='form-control zoom-fix'
+            className='form-control'
             ref='answer'
             type='text'
             onChange={this._updateCaptchaInfo.bind(this)}

@@ -72,7 +72,7 @@ class DefaultLayout extends BaseComponent {
           <link href={ baseCSS } rel='stylesheet' />
           { canonical }
 
-          <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+          <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
           <meta name='theme-color' content='#336699' />
           <meta name='apple-mobile-web-app-capable' content='yes' />
           <meta id='csrf-token-meta-tag' name='csrf-token' content={ this.props.ctx.csrf } />

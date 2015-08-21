@@ -22,8 +22,8 @@ class SearchBar extends BaseComponent {
   render() {
     var customClass = this.props.className || '';
     return (
-      <input type='text' className={'form-control zoom-fix' + customClass} maxLength='512' name='q' ref='search'
-             placeholder='Search...' onChange={ debounce(this.handleInputChange, 500).bind(this) }
+      <input type="text" className={"form-control" + customClass} maxLength="512" name="q" ref="search"
+             placeholder="Search..." onChange={ debounce(this.handleInputChange, 500).bind(this) }
              defaultValue={this.props.ctx.query.q} />
     );
   }

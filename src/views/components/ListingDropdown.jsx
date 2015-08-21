@@ -53,7 +53,7 @@ class ListingDropdown extends BaseComponent {
         reportForm = (
           <form className='ListingDropdown-form' action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
             <div className='input-group'>
-              <input type='text' className='form-control zoom-fix' placeholder='reason' ref='otherReason' />
+              <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
               <span className='input-group-btn'>
                 <button className='btn btn-default' type='submit'>
                   <span className='glyphicon glyphicon-chevron-right'></span>

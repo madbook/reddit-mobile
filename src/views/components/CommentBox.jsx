@@ -86,7 +86,7 @@ class CommentBox extends BaseComponent {
           <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
           <div className={`CommentBox-textarea-holder ${className}`}>
             <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
-                      className='zoom-fix form-control' name='text' ref='text'
+                      className='form-control' name='text' ref='text'
                       onChange={ this.handleInputChange.bind(this) } value={ value } ></textarea>
           </div>
           <button type='submit' className='btn-post'>Post</button>

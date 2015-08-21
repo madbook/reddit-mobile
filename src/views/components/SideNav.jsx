@@ -294,12 +294,14 @@ class SideNav extends BaseComponent {
       var node = (
         <nav key='root' className='SideNav tween shadow'>
           <ul className='list-unstyled'>
-            <li className='SideNav-li SideNav-form-holder'>
-              <form method='GET' action='/goto' onSubmit={ this._goto } className='form-sm form-single'>
-                <div className='SideNav-input-holder'>
-                  <input type='text' className='form-control zoom-fix form-control-sm' placeholder='r/...' name='location' ref='location' />
+            <li className='SideNav-li '>
+              <form method='GET' action='/goto' onSubmit={ this._goto } className='form-sm'>
+                <div className='input-group'>
+                  <input type='text' className='form-control form-control-sm' placeholder='r/...' name='location' ref='location' />
+                  <span className='input-group-btn'>
+                    <button type='submit' className='btn btn-default go-btn'>Go</button>
+                  </span>
                 </div>
-                <button type='submit' className='btn btn-default'>Go</button>
               </form>
             </li>
             { loginLink }
