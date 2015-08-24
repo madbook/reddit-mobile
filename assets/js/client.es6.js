@@ -72,9 +72,13 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
 var referrer = document.referrer;
 
 function modifyContext (ctx) {
-  ctx.loid = this.getState('loid');
-  ctx.loidcreated = this.getState('loidcreated');
   ctx.token = this.getState('token');
+
+  if (!ctx.token) {
+    ctx.loid = cookies.get('loid');
+    ctx.loidcreated = cookies.get('loidcreated');
+  }
+
   ctx.user = this.getState('user');
   ctx.useCache = true;
   ctx.experiments = this.getState('experiments');
