@@ -232,6 +232,9 @@ function routes(app) {
       props.tokenExpires = ctx.tokenExpires;
       props.apiOptions.origin = app.getConfig('authAPIOrigin');
       props.apiOptions.headers['Authorization'] = `bearer ${props.token}`;
+    } else {
+      props.loid = ctx.loid;
+      props.loidcreated = ctx.loidcreated;
     }
 
     props.apiOptions = globals().api.buildOptions(props.apiOptions);

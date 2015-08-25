@@ -18,6 +18,7 @@ import getTimes from '../../src/lib/timing';
 import globals from '../../src/globals';
 import randomBySeed from '../../src/lib/randomBySeed';
 import routes from '../../src/routes';
+import setLoggedOutCookies from '../../src/lib/loid';
 import Utils from '../../src/lib/danehansen/utils/Utils';
 
 import trackingEvents from './trackingEvents';
@@ -201,7 +202,9 @@ function initialize(bindLinks) {
     window.setTimeout(function() {
       refreshToken(app);
     }, refreshMS);
-  };
+  } else if (!cookies.get('loid')) {
+    setLoggedOutCookies(cookies, app);
+  }
 
   app.router.get('/oauth2/login', function * () {
     window.location = '/oauth2/login';
