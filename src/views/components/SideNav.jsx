@@ -110,7 +110,7 @@ class SideNav extends BaseComponent {
                 </a>
               </li>
               <li>
-                <a className='MobileButton SideNav-button' href='/logout' noRoute={ true }>
+                <a className='MobileButton SideNav-button' href='/logout' data-no-route={ true }>
                   { snooIcon }
                   <span className='SideNav-text'>Log out</span>
                 </a>
@@ -153,7 +153,7 @@ class SideNav extends BaseComponent {
       } else {
         loginLink = (
           <li className='SideNav-li'>
-            <a className='MobileButton SideNav-button' href={ globals().loginPath } noRoute={ true }>
+            <a className='MobileButton SideNav-button' href={ globals().loginPath } data-no-route={ true }>
               { snooIcon }
               <span className='SideNav-text'>Login / Register</span>
             </a>
