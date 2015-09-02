@@ -17,7 +17,6 @@ import cookies from 'cookies-js';
 import getTimes from '../../src/lib/timing';
 import globals from '../../src/globals';
 import randomBySeed from '../../src/lib/randomBySeed';
-import routes from '../../src/routes';
 import setLoggedOutCookies from '../../src/lib/loid';
 import Utils from '../../src/lib/danehansen/utils/Utils';
 
@@ -209,8 +208,6 @@ function initialize(bindLinks) {
   app.router.get('/oauth2/login', function * () {
     window.location = '/oauth2/login';
   });
-
-  routes(app);
 
   modifyContext = modifyContext.bind(app);
   app.modifyContext = modifyContext;
