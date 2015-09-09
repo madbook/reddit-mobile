@@ -1,23 +1,30 @@
 // Redirect desktop urls to mobile-web urls.
 const SORTS = ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'];
 
+function redirectSort (ctx, sort, subreddit) {
+  var url = `?sort=${sort}`;
+
+  if (subreddit) {
+    url = `/r/${subreddit}${url}`;
+  } else {
+    url = `/${url}`;
+  }
+
+  ctx.redirect(url);
+}
+
 function routes(app) {
   app.router
     .param('sort', function *(sort, next) {
-      if (SORTS.indexOf(sort) !== -1) {
-        var url = `?sort=${sort}`;
-
-        if (this.params.subreddit) {
-          url = `/r/${this.params.subreddit}${url}`;
-        }
-
-        return this.redirect(url);
-      }
-
-      yield next;
+      redirectSort(this, sort, this.params.subreddit);
     })
-    .get('/:sort')
     .get('/r/:subreddit/:sort');
+
+  SORTS.forEach(function(sort) {
+    app.router.get(`/${sort}`, function *(next) {
+      redirectSort(this, 'hot', this.params.subreddit);
+    });
+  });
 
   app.router.get('/user/:user', function *(next) {
     return this.redirect(`/u/${this.params.user}`);
