@@ -1,27 +1,38 @@
 // Redirect desktop urls to mobile-web urls.
-function routes(app) {
-  app.router.get(/^\/(hot|new|rising|controversial|top|gilded)\b/, function *(next) {
-    this.redirect('/?sort=' + this.params[0]);
-  });
+const SORTS = ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'];
 
-  app.router.get(/^\/r\/(\w+)\/(hot|new|rising|controversial|top|gilded)\b/, function *(next) {
-    this.redirect('/r/' + this.params[0] + '/?sort=' + this.params[1]);
-  });
+function routes(app) {
+  app.router
+    .param('sort', function *(sort, next) {
+      if (SORTS.indexOf(sort) !== -1) {
+        var url = `?sort=${sort}`;
+
+        if (this.params.subreddit) {
+          url = `/r/${this.params.subreddit}${url}`;
+        }
+
+        return this.redirect(url);
+      }
+
+      yield next;
+    })
+    .get('/:sort')
+    .get('/r/:subreddit/:sort');
 
   app.router.get('/user/:user', function *(next) {
-    this.redirect('/u/' + this.params.user);
+    return this.redirect(`/u/${this.params.user}`);
   });
 
   app.router.get('/user/:user/m/:multi', function *(next) {
-    this.redirect('/u/' + this.params.user + '/m/' + this.params.multi);
+    return this.redirect(`/u/${this.params.user}/m/${this.params.multi}`);
   });
 
   app.router.get('/search/:query', function*(next) {
-    this.redirect(`/search?q=${this.params.query}`);
+    return this.redirect(`/search?q=${this.params.query}`);
   });
 
   app.router.get('/r/:subreddit/search/:query', function*(next) {
-    this.redirect(`/r/${this.params.subreddit}/search?q=${this.params.query}`);
+    return this.redirect(`/r/${this.params.subreddit}/search?q=${this.params.query}`);
   });
 }
 

@@ -18,8 +18,8 @@ function mixin (App) {
         defaultHeaders: this.config.apiHeaders,
       });
 
-      routes(this);
       redirects(this);
+      routes(this);
     }
 
     error (e, ctx, app) {
