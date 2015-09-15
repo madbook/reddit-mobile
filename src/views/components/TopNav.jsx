@@ -29,14 +29,11 @@ class TopNav extends BaseComponent {
 
   loadSubreddit(data) {
     if (data) {
-      console.log(data);
-
       this.setState({
         loaded: false,
       });
 
       data.then(function(data) {
-        console.log(data);
         this.setState({
           title: data.body.display_name,
           link: data.body.url,

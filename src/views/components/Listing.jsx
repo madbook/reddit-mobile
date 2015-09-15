@@ -30,8 +30,8 @@ class Listing extends BaseComponent {
       expanded: false,
       loaded: false,
       tallestHeight: 0,
-      reported: false,
-      hidden: false,
+      reported: props.listing.reported,
+      hidden: props.listing.hidden,
       width: (globals().winWidth || 300) - 10,
     };
 
@@ -49,6 +49,7 @@ class Listing extends BaseComponent {
   }
 
   onReport() {
+    console.log('setting reported state');
     this.setState({ reported: true });
   }
 
@@ -253,7 +254,7 @@ class Listing extends BaseComponent {
 
   render() {
     var state = this.state;
-    if (state.hidden) {
+    if (state.hidden || state.reported) {
       return null;
     }
 

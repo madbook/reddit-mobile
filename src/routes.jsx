@@ -117,6 +117,7 @@ function routes(app) {
         token: ctx.token,
         tokenExpires: ctx.tokenExpires,
         config: clientConfig,
+        render: Date.now(),
       };
 
       this.props.apiOptions = buildAPIOptions(this);
