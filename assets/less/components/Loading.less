@@ -17,6 +17,18 @@
   left: 50%;
   top: 47%;
 
+  &:before {
+    content: '';
+    position: absolute;
+    width: @size;
+    height: @size;
+    background-color: @orangered;
+    opacity: .75;
+    border-radius: 100%;
+    -webkit-animation: scaleout 1.5s infinite ease-in-out;
+    animation: scaleout 1.5s infinite ease-in-out;
+  }
+
   .SVG-icon {
     position: absolute;
     width: 100%;
@@ -45,4 +57,26 @@
 
 .loading-appear.loading-appear-active {
   opacity: 1;
+}
+
+
+
+@-webkit-keyframes scaleout {
+  0% { -webkit-transform: scale(1) }
+  100% {
+    -webkit-transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
