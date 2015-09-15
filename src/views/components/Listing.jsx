@@ -5,7 +5,6 @@ import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 
-import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
 import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
@@ -266,17 +265,15 @@ class Listing extends BaseComponent {
         this.key = Math.random();
       }
       var expandedCompact = (
-        <AutoTween key = { this.key }>
-          <ListingContent expand = { this.expand }
-                          expanded = { true }
-                          width={ state.width }
-                          tallestHeight={ state.tallestHeight }
-                          loaded={ state.loaded }
-                          { ...props }
-                          expandedCompact={ true }
-                          compact={ compact }
-                          />
-        </AutoTween>
+        <ListingContent expand = { this.expand }
+                        expanded = { true }
+                        width={ state.width }
+                        tallestHeight={ state.tallestHeight }
+                        loaded={ state.loaded }
+                        { ...props }
+                        expandedCompact={ true }
+                        compact={ compact }
+                        />
       );
     }
 

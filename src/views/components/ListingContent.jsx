@@ -3,7 +3,6 @@ import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
-import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
 
 var _gifMatch = /\.(?:gif)/gi;
@@ -63,18 +62,6 @@ function _wrapSelftextExpand(fn) {
 class ListingContent extends BaseComponent {
   constructor(props) {
     super(props);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    var last = this._isExpanded();
-    var next = nextProps.expanded || nextProps.single;
-    if (last !== next) {
-      var ref = this.refs.text;
-      if (ref) {
-        //105 corresponds with a css value in ListingContent.less
-        AutoTween.maxHeight(ref.getDOMNode(), next ? 'none' : 105, false);
-      }
-    }
   }
 
   render() {

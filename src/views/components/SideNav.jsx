@@ -4,9 +4,7 @@ import cookies from 'cookies-js';
 import propTypes from '../../propTypes';
 import querystring from 'querystring';
 
-import AutoTween from '../components/AutoTween';
 import BaseComponent from './BaseComponent';
-
 
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 var TransitionGroup = React.addons.TransitionGroup;
@@ -99,7 +97,7 @@ class SideNav extends BaseComponent {
       if (user) {
         if (twirly === 'user') {
           var userButtons = (
-            <AutoTween component='ul' key='user' className='SideNav-ul list-unstyled'>
+            <ul key='user' className='SideNav-ul list-unstyled'>
               <li className='MobileButton SideNav-li'>
                 <a className='SideNav-button' href={ `/u/${user.name}` }>
                   { snooIcon }
@@ -124,7 +122,7 @@ class SideNav extends BaseComponent {
                   <span className='SideNav-text'>Log out</span>
                 </a>
               </li>
-            </AutoTween>
+            </ul>
           );
         }
 
@@ -188,9 +186,9 @@ class SideNav extends BaseComponent {
           );
         });
         var subredditButtons = (
-          <AutoTween component='ul' key='subreddits' className='SideNav-ul list-unstyled'>
+          <ul key='subreddits' className='SideNav-ul list-unstyled'>
             { subredditNodeList }
-          </AutoTween>
+          </ul>
         );
       }
 
@@ -210,7 +208,7 @@ class SideNav extends BaseComponent {
 
       if (twirly === 'about') {
         var aboutButtons = (
-          <AutoTween key='about' component='ul' className='SideNav-ul list-unstyled'>
+          <ul key='about' className='SideNav-ul list-unstyled'>
             <li className='SideNav-li'>
               <a className='SideNav-button' href='https://www.reddit.com/blog/'>
                 { snooIcon }
@@ -289,7 +287,7 @@ class SideNav extends BaseComponent {
                 <span className='SideNav-text'>Contact Us</span>
               </a>
             </li>
-          </AutoTween>
+          </ul>
         );
       }
 

@@ -21,7 +21,6 @@ import setLoggedOutCookies from '../../src/lib/loid';
 import Utils from '../../src/lib/danehansen/utils/Utils';
 
 import trackingEvents from './trackingEvents';
-import TweenLite from 'gsap';
 
 var _lastWinWidth = 0;
 var beginRender = 0;
