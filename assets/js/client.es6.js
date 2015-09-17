@@ -293,20 +293,17 @@ function initialize(bindLinks) {
 
       window.addEventListener('popstate', function(e) {
         var href = app.fullPathName();
-        // Work around some browsers firing popstate on initial load
-        if (href !== initialUrl) {
-          scrollCache[initialUrl] = window.scrollY;
+        scrollCache[initialUrl] = window.scrollY;
 
-          app.render(href, false, modifyContext).then(function(props) {
-            if(scrollCache[href]) {
-              $body.scrollTop = scrollCache[href];
-            }
+        app.render(href, false, modifyContext).then(function(props) {
+          if(scrollCache[href]) {
+            $body.scrollTop = scrollCache[href];
+          }
 
-            setTitle(props);
-          });
+          setTitle(props);
+        });
 
-          initialUrl = href;
-        }
+        initialUrl = href;
       });
     }
   }
