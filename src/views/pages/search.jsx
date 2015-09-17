@@ -27,10 +27,14 @@ class SearchPage extends BasePage {
   _loadSearchResults() {
     this.props.data.get('search').then(function(results) {
       var oldData = this.state.data;
+      var oldMeta = this.state.meta;
 
       this.setState({
         data: Object.assign({}, oldData, {
-          search: results,
+          search: results.body,
+        }),
+        meta: Object.assign({}, oldMeta, {
+          search: results.headers,
         }),
         loaded: true,
       });

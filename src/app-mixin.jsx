@@ -96,7 +96,7 @@ function mixin (App) {
         try {
           app.api.users.get(options).then(function(user) {
             if (app.setState) {
-              app.setState('user', user);
+              app.setState('user', user.body);
             }
 
             resolve(user);
@@ -149,8 +149,8 @@ function mixin (App) {
 
         try {
           app.api.subreddits.get(options).then(function(subreddits) {
-            if (subreddits.length > 0) {
-              var subs = subreddits.map(formatSubreddit);
+            if (subreddits.body.length > 0) {
+              var subs = subreddits.body.map(formatSubreddit);
 
               if (app.setState) {
                 app.setState('userSubscriptions', subs);
@@ -198,7 +198,7 @@ function mixin (App) {
               app.setState('userPrefs', prefs);
             }
 
-            resolve(prefs);
+            resolve(prefs.body);
           }, function(error) {
             reject(error);
           });

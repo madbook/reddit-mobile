@@ -8,15 +8,23 @@ class BasePage extends BaseComponent {
     super(props);
 
     this.props = props;
-    this.state = {};
+    this.state = {
+      data: {},
+      meta: {},
+      loaded: !!props.dataCache,
+    };
 
     if (props.dataCache) {
       for (var k in props.dataCache) {
         props.data.set(k, Promise.resolve(props.dataCache[k]));
-      }
 
-      this.state.data = props.dataCache;
-      this.state.loaded = !!props.dataCache;
+        if (props.dataCache[k].body) {
+          this.state.data[k] = props.dataCache[k].body;
+          this.state.meta[k] = props.dataCache[k].headers;
+        } else {
+          this.state.data[k] = props.dataCache[k];
+        }
+      }
     }
 
     for (var key of this.props.data.keys()) {
@@ -28,12 +36,26 @@ class BasePage extends BaseComponent {
 
   watch (property) {
     this.props.data.get(property).then(function(p) {
-      var data = Object.assign({}, this.state.data );
-      data[property] = p;
+      if (p.body) {
+        var data = Object.assign({}, this.state.data);
+        var meta = Object.assign({}, this.state.meta);
 
-      this.setState({
-        data: data,
-      });
+        data[property] = p.body;
+        meta[property] = p.headers;
+
+        this.setState({
+          data: data,
+          meta: meta,
+        });
+      } else {
+        var data = Object.assign({}, this.state.data);
+
+        data[property] = p;
+
+        this.setState({
+          data: data,
+        });
+      }
     }.bind(this));
   }
 
