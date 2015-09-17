@@ -2,6 +2,7 @@ import React from 'react';
 import isEqual from 'lodash/lang/isEqual';
 
 import BaseComponent from '../components/BaseComponent';
+import TrackingPixel from '../../lib/TrackingPixel';
 
 class BasePage extends BaseComponent {
   constructor (props) {
@@ -21,6 +22,10 @@ class BasePage extends BaseComponent {
         if (props.dataCache[k].body) {
           this.state.data[k] = props.dataCache[k].body;
           this.state.meta[k] = props.dataCache[k].headers;
+
+          if (this.state.meta[k].tracking && this.props.track === k) {
+            this.fireTrackingPixel(this.state.meta[k].tracking);
+          }
         } else {
           this.state.data[k] = props.dataCache[k];
         }
@@ -43,6 +48,10 @@ class BasePage extends BaseComponent {
         data[property] = p.body;
         meta[property] = p.headers;
 
+        if (p.headers.tracking && this.props.track === property) {
+          this.fireTrackingPixel(p.headers.tracking);
+        }
+
         this.setState({
           data: data,
           meta: meta,
@@ -57,6 +66,22 @@ class BasePage extends BaseComponent {
         });
       }
     }.bind(this));
+  }
+
+  buildTrackingPixelProps(url, props) {
+    return {
+      url: url,
+      referrer: props.referrer,
+      loid: props.loid,
+      loidcreated: props.loidcreated,
+      user: props.user,
+    };
+  }
+
+  fireTrackingPixel(url) {
+    let trackingProps = this.buildTrackingPixelProps(url, this.props);
+    let pixel = new TrackingPixel(trackingProps);
+    pixel.fire();
   }
 
   componentDidMount() {

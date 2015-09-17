@@ -5,7 +5,6 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 
 class UserGildPage extends BasePage {
   render() {

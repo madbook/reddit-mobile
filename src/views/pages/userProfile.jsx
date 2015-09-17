@@ -5,7 +5,6 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BasePage {
@@ -18,18 +17,6 @@ class UserProfilePage extends BasePage {
 
     var userProfile = this.state.data.userProfile;
     var name = this.props.userName;
-    var tracking;
-
-    if (this.state.data.userProfile.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ this.props.referrer }
-          url={ this.state.data.userProfile.meta.tracking }
-          user={ this.props.user }
-          loid={ this.props.loid }
-          loidcreated={ this.props.loidcreated }
-        />);
-    }
 
     return (
       <div className="user-page user-profile">
@@ -46,8 +33,6 @@ class UserProfilePage extends BasePage {
           token={this.props.token}
           app={ this.props.app }
         />
-
-        { tracking }
       </div>
     );
   }

@@ -6,7 +6,6 @@ import BasePage from './BasePage';
 import MessageNav from '../components/MessageNav';
 import Inbox from '../components/Inbox';
 import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
 
 class MessagesPage extends BasePage {
   render() {
@@ -18,19 +17,8 @@ class MessagesPage extends BasePage {
       );
     } else {
       var messages = this.state.data.messages;
-      var tracking;
 
       var view = this.props.view.toLowerCase();
-
-      if (this.state.data.messages.meta && this.props.renderTracking) {
-        tracking = (
-          <TrackingPixel
-            url={ this.state.data.messages.meta.tracking }
-            user={ this.props.user }
-            loid={ props.loid }
-            loidcreated={ props.loidcreated }
-          />);
-      }
 
       content = (
         <Inbox
@@ -50,8 +38,6 @@ class MessagesPage extends BasePage {
           <MessageNav {...this.props} user={ this.state.data.user } />
           { content }
         </div>
-
-        { tracking }
       </div>
     );
   }
@@ -61,7 +47,6 @@ class MessagesPage extends BasePage {
 MessagesPage.propTypes = {
   // apiOptions: React.PropTypes.object,
   data: React.PropTypes.object,
-  renderTracking: React.PropTypes.string,
   view: React.PropTypes.string.isRequired,
 };
 

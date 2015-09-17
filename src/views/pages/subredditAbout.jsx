@@ -5,12 +5,10 @@ import process from 'reddit-text-js';
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 
 class SubredditAboutPage extends BasePage {
   render() {
     var loading;
-    var tracking;
 
     if (!this.state.loaded || !this.state.data.subreddit) {
       return (
@@ -21,17 +19,6 @@ class SubredditAboutPage extends BasePage {
     var props = this.props;
     var app = props.app;
     var user = this.props.user;
-
-    if (this.state.data.subreddit.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ this.state.data.meta.tracking }
-          user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-        />);
-    }
 
     var htmlDump;
     var data = this.state.data.subreddit;
@@ -58,8 +45,6 @@ class SubredditAboutPage extends BasePage {
         <div className='container' key='container'>
           { htmlDump }
         </div>
-
-        { tracking }
       </div>
     );
   }

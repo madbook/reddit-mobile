@@ -5,7 +5,6 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
 
 class UserSavedPage extends BasePage {
   componentDidMount() {
@@ -38,7 +37,6 @@ class UserSavedPage extends BasePage {
     var sort = props.sort || 'hot';
     var userProfile = props.userProfile || {};
     var name = props.userName;
-    var tracking;
 
     var noLinks;
     if (typeof activities !== 'undefined' && activities.length === 0) {
@@ -67,8 +65,6 @@ class UserSavedPage extends BasePage {
             />
           </div>
         </div>
-
-        { tracking }
       </div>
     );
   } 

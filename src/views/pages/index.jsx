@@ -6,14 +6,11 @@ import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 
 class IndexPage extends BasePage {
   constructor(props) {
     super(props);
-
     this.state.compact = props.compact;
-
     this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
@@ -59,7 +56,6 @@ class IndexPage extends BasePage {
     var lastId;
     var prevButton;
     var nextButton;
-    var tracking;
     var apiOptions = props.apiOptions;
     var subreddit = '';
 
@@ -149,8 +145,6 @@ class IndexPage extends BasePage {
             </div>
           </div>
         </div>
-
-        { tracking }
       </div>
     );
   }

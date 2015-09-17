@@ -5,7 +5,6 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
-import TrackingPixel from '../components/TrackingPixel';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 
 class UserActivityPage extends BasePage {
@@ -28,18 +27,6 @@ class UserActivityPage extends BasePage {
     var sort = props.sort || 'hot';
     var userProfile = props.userProfile || {};
     var name = props.userName;
-    var tracking;
-
-    if (state.data.activities.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ state.data.activities.meta.tracking }
-          user={ props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-        />);
-    }
 
     return (
       <div className="user-page user-activity">
@@ -64,8 +51,6 @@ class UserActivityPage extends BasePage {
             apiOptions={ props.apiOptions }
           />
         </div>
-
-        { tracking }
       </div>
     );
   }

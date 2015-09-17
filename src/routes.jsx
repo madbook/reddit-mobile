@@ -115,6 +115,8 @@ function routes(app) {
         experiments: ctx.experiments,
         user: ctx.user,
         token: ctx.token,
+        loid: ctx.loid,
+        loidcreated: ctx.loidcreated,
         tokenExpires: ctx.tokenExpires,
         config: clientConfig,
         render: Date.now(),
@@ -227,7 +229,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout { ...props }>
-          <IndexPage { ...props } key={ key }/>
+          <IndexPage { ...props } key={ key } track='listings' />
         </BodyLayout>
       );
     };
@@ -274,7 +276,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <ListingPage {...props} key={ key }/>
+          <ListingPage {...props} key={ key } track='comments' />
         </BodyLayout>
       );
     }
@@ -309,7 +311,7 @@ function routes(app) {
 
       return (
         <BodyLayout {...props}>
-          <SubredditAboutPage {...props} key={ key }/>
+          <SubredditAboutPage {...props} key={ key } track='subreddit' />
         </BodyLayout>
       );
     }
@@ -351,7 +353,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <SearchPage {...props} key={ key }/>
+          <SearchPage {...props} key={ key } track='search' />
         </BodyLayout>
       );
     }
@@ -399,7 +401,7 @@ function routes(app) {
       return (
         <BodyLayout {...props}>
           { userProfileSubnav('about', ctx.params.user) }
-          <UserProfilePage {...props} key={ key }/>
+          <UserProfilePage {...props} key={ key } track='userProfile' />
         </BodyLayout>
       );
     }
@@ -464,7 +466,7 @@ function routes(app) {
       return (
         <BodyLayout {...props}>
           { userProfileSubnav('activity', ctx.params.user) }
-          <UserActivityPage {...props} key={ key }/>
+          <UserActivityPage {...props} key={ key } track='activities' />
         </BodyLayout>
       );
     }
@@ -540,7 +542,7 @@ function routes(app) {
 
       return (
         <BodyLayout {...props}>
-          <UserSavedPage {...props} key={ key }/>
+          <UserSavedPage {...props} key={ key } track='activities' />
         </BodyLayout>
       );
     }
@@ -558,7 +560,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <FAQPage {...props}/>
+          <FAQPage {...props} />
         </BodyLayout>
       );
     }
@@ -571,7 +573,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <LoginPage {...props}/>
+          <LoginPage {...props} />
         </BodyLayout>
       );
     };
@@ -581,7 +583,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <RegisterPage {...props}/>
+          <RegisterPage {...props} />
         </BodyLayout>
       );
     }
@@ -734,7 +736,7 @@ function routes(app) {
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
-          <MessagesPage {...props} key={ key } />
+          <MessagesPage {...props} key={ key } track='messages' />
         </BodyLayout>
       );
     }

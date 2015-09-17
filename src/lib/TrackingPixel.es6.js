@@ -1,13 +1,15 @@
-import React from 'react';
 import url from 'url';
-import BaseComponent from './BaseComponent';
 
-class TrackingPixel extends BaseComponent {
+class TrackingPixel {
   constructor (props) {
-    super(props);
+    this.props = props;
   }
 
-  componentDidMount () {
+  fire () {
+    if (typeof Image === 'undefined') {
+      return;
+    }
+
     if (this.props.url) {
       var trackingUrl = this.props.url + '&r=' + Math.random();
 
@@ -38,15 +40,6 @@ class TrackingPixel extends BaseComponent {
       img.src = trackingUrl;
     }
   }
-
-  render () {
-    return null;
-  }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-TrackingPixel.propTypes = {
-  url: React.PropTypes.string.isRequired,
-};
 
 export default TrackingPixel;

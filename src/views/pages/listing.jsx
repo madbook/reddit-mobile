@@ -11,7 +11,6 @@ import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
 import Listing from '../components/Listing';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 
 class ListingPage extends BasePage {
   constructor(props) {
@@ -97,7 +96,6 @@ class ListingPage extends BasePage {
 
   render() {
     var loading;
-    var tracking;
     var props = this.props;
 
     if (!this.state.data || !this.state.data.listing) {
@@ -174,17 +172,6 @@ class ListingPage extends BasePage {
       }
     }
 
-    if (this.state.data.comments && this.state.data.comments.meta) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ this.state.data.comments.meta.tracking }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-          user={ props.user }
-        />);
-    }
-
     let commentsList = [];
 
     var comments = this.state.data.comments;
@@ -243,8 +230,6 @@ class ListingPage extends BasePage {
           { singleComment }
           { commentsList }
         </div>
-
-        { tracking }
       </div>
     );
   }

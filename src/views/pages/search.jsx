@@ -7,7 +7,6 @@ import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import SearchBar from '../components/SearchBar';
 import SearchSortSubnav from '../components/SearchSortSubnav';
-import TrackingPixel from '../components/TrackingPixel';
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
@@ -111,7 +110,6 @@ class SearchPage extends BasePage {
     var app = this.props.app;
     var apiOptions = props.apiOptions;
     var controls;
-    var tracking;
 
     if (!state.loaded && props.ctx.query && props.ctx.query.q) {
       controls = (
@@ -222,17 +220,6 @@ class SearchPage extends BasePage {
       ];
     }
 
-    if (meta && meta.tracking) {
-      tracking = (
-        <TrackingPixel
-          referrer={ props.referrer }
-          url={ meta.tracking }
-          user={ this.props.user }
-          loid={ props.loid }
-          loidcreated={ props.loidcreated }
-        />);
-    }
-
     return (
       <div className='search-main'>
         <div className="container search-bar-container">
@@ -250,8 +237,6 @@ class SearchPage extends BasePage {
         </div>
 
         { controls }
-
-        { tracking }
       </div>
     );
   }
