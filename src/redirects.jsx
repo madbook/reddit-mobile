@@ -14,15 +14,13 @@ function redirectSort (ctx, sort, subreddit) {
 }
 
 function routes(app) {
-  app.router
-    .param('sort', function *(sort, next) {
-      redirectSort(this, sort, this.params.subreddit);
-    })
-    .get('/r/:subreddit/:sort');
-
   SORTS.forEach(function(sort) {
     app.router.get(`/${sort}`, function *(next) {
       redirectSort(this, 'hot', this.params.subreddit);
+    });
+
+    app.router.get('/r/:subreddit/' + sort, function *(next) {
+      redirectSort(this, sort, this.params.subreddit);
     });
   });
 
