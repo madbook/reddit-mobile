@@ -65,6 +65,8 @@ class BasePage extends BaseComponent {
           data: data,
         });
       }
+    }.bind(this), function(e) {
+      this.props.app.error(e, this.props.ctx, this.props.app);
     }.bind(this));
   }
 
