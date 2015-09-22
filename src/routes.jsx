@@ -4,6 +4,8 @@ import React from 'react';
 import querystring from 'querystring';
 import superagent from 'superagent';
 
+import merge from 'lodash/object/merge';
+
 // Load models from snoode (api lib) so we can post new ones.
 import { models } from 'snoode';
 
@@ -53,16 +55,16 @@ function routes(app) {
   function buildAPIOptions(ctx, options={}) {
     let apiOrigin = ctx.token ? 'authAPIOrigin' : 'nonAuthAPIOrigin';
 
-    let apiOptions = {
+    let apiOptions = merge({
       origin: app.getConfig(apiOrigin),
       headers: {
         'user-agent': ctx.headers['user-agent'],
       },
       env: ctx.env || 'SERVER',
-    };
+    }, options);
 
     if (ctx.token) {
-      apiOptions.headers['Authorization'] = `bearer ${ctx.token}`
+      apiOptions.headers['Authorization'] = `bearer ${ctx.token}`;
     }
 
     if (app.config.apiPassThroughHeaders) {
@@ -73,7 +75,7 @@ function routes(app) {
       }
     }
 
-    return Object.assign(app.api.buildOptions(apiOptions), options);
+    return app.api.buildOptions(apiOptions);
   }
 
   // Filter the props we want to expose to the react elements.
