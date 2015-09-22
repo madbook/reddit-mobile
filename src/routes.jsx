@@ -120,6 +120,7 @@ function routes(app) {
         tokenExpires: ctx.tokenExpires,
         config: clientConfig,
         render: Date.now(),
+        actionName: ctx.route.name,
       };
 
       this.props.apiOptions = buildAPIOptions(this);
