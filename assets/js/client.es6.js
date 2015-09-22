@@ -377,7 +377,7 @@ function initialize(bindLinks) {
     }
   }.bind(app), 100));
 
-  if (window.bootstrap.config.propertyId) {
+  if (window.bootstrap.config.googleAnalyticsId) {
     trackingEvents(app);
   }
 }

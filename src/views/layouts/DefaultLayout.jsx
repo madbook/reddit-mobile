@@ -45,8 +45,8 @@ class DefaultLayout extends BaseComponent {
 
     var gaTracking;
 
-    if (this.props.propertyId) {
-      let propertyId = this.props.propertyId;
+    if (this.props.config.googleAnalyticsId) {
+      let googleAnalyticsId = this.props.config.googleAnalyticsId;
 
       let trackingCode = `
         <script>
@@ -55,7 +55,7 @@ class DefaultLayout extends BaseComponent {
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', '${propertyId}', 'auto', {'sampleRate': 50});
+        ga('create', '${googleAnalyticsId}', 'auto', {'sampleRate': 50});
         ga('send', 'pageview');
         </script>
       `;
@@ -103,7 +103,6 @@ class DefaultLayout extends BaseComponent {
 //TODO: someone more familiar with this component could eventually fill this out better
 DefaultLayout.propTypes = {
   metaDescription: React.PropTypes.string,
-  propertyId: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,
 };
 
