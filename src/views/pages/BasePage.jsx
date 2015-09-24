@@ -77,6 +77,7 @@ class BasePage extends BaseComponent {
       loid: props.loid,
       loidcreated: props.loidcreated,
       user: props.user,
+      compact: props.compact,
     };
   }
 
