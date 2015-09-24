@@ -49,13 +49,7 @@ function mixin (App) {
 
       // API error
       if (e.status) {
-        if (ctx.token && e.status === 401) {
-          // Improper token or does not have access.
-          // Should be a refresh token instead of a login redirect, but this
-          // will at least fix issues for currently logged-in users.
-          // TODO: change to refresh
-          return ctx.redirect(app.config.loginPath);
-        } else if (e.status === 403) {
+        if (!ctx.token && e.status === 403) {
           // Missing authorization
           return ctx.redirect(app.config.loginPath);
         }
@@ -230,6 +224,12 @@ function mixin (App) {
           </BodyLayout>
         );
       }
+    }
+
+    loadingpage (props) {
+      return (
+        <Loading />
+      );
     }
   }
 

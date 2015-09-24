@@ -1,5 +1,6 @@
 import 'babel/polyfill';
 
+import React from 'react';
 import throttle from 'lodash/function/throttle';
 import forOwn from 'lodash/object/forOwn';
 
@@ -106,31 +107,43 @@ function setTitle(props={}) {
   }
 }
 
-function refreshToken (app, tries=0) {
-  if (tries >= 3) {
-    window.location = '/logout';
-  }
+function refreshToken (app) {
+  app.setState('refreshingToken', true);
 
-  superagent
-    .get('/oauth2/refresh')
-    .end(function(err, res) {
-      if (err) {
-        return window.setTimeout(function() {
-            refreshToken(app, tries + 1);
-        }, 1000 * 10);
-      }
+  return new Promise(function(resolve, reject) {
+    superagent
+      .get('/oauth2/refresh')
+      .end(function(err, res) {
+        if (err) {
+          reject(err);
+        }
 
-      var token = res.body;
-      app.setState('token', token.token);
-      app.setState('tokenExpires', token.tokenExpires);
+        var token = res.body;
 
-      var now = new Date();
-      var expires = new Date(token.tokenExpires);
+        var now = new Date();
+        var expires = new Date(token.tokenExpires);
 
-      window.setTimeout(function() {
-        refreshToken(app);
-      }, (expires - now) * .9);
-    });
+        Object.assign(app.getState('ctx'), {
+          token: token.token,
+          tokenExpires: token.tokenExpires
+        });
+
+        app.setState('refreshingToken', false);
+        app.emit('token:refresh', token);
+
+        window.setTimeout(function() {
+          refreshToken(app).then(function(){
+            Object.assign(app.getState('ctx'), {
+              token: token.token,
+              tokenExpires: token.tokenExpires
+            });
+
+            app.setState('refreshingToken', false);
+            app.emit('token:refresh', token);
+          });
+        }, (expires - now) * .9);
+      });
+  })
 }
 
 function findLinkParent(el) {
@@ -162,6 +175,21 @@ function sendTimings() {
       })
       .end(function(){});
   }
+}
+
+function render (app, ...args) {
+  return new Promise(function(resolve, reject) {
+    if (app.getState('refreshingToken')) {
+
+      React.render(app.loadingpage(), app.config.mountPoint);
+
+      app.on('token:refresh', function() {
+        app.render(...args).then(resolve, reject);
+      });
+    } else {
+      app.render(...args).then(resolve, reject);
+    }
+  });
 }
 
 function initialize(bindLinks) {
@@ -206,7 +234,7 @@ function initialize(bindLinks) {
     refreshMS = Math.max(refreshMS - (1000 * 60), 0);
 
     window.setTimeout(function() {
-      refreshToken(app);
+      refreshToken(app).then(function(){});
     }, refreshMS);
   } else if (!cookies.get('loid')) {
     setLoggedOutCookies(cookies, app);
@@ -231,7 +259,7 @@ function initialize(bindLinks) {
 
     // Set to the browser's interpretation of the current name (to make
     // relative paths easier), and send in the old url.
-    app.render(app.fullPathName(), false, modifyContext).then(function(props) {
+    render(app, app.fullPathName(), false, modifyContext).then(function(props) {
       setTitle(props);
     });
   }
@@ -304,14 +332,14 @@ function initialize(bindLinks) {
 
         // Set to the browser's interpretation of the current name (to make
         // relative paths easier), and send in the old url.
-        app.render(app.fullPathName(), false, modifyContext).then(postRender(href));
+        render(app, app.fullPathName(), false, modifyContext).then(postRender(href));
       });
 
       window.addEventListener('popstate', function(e) {
         var href = app.fullPathName();
         scrollCache[initialUrl] = window.scrollY;
 
-        app.render(href, false, modifyContext).then(postRender(href));
+        render(app, href, false, modifyContext).then(postRender(href));
 
         initialUrl = href;
       });
@@ -328,7 +356,7 @@ function initialize(bindLinks) {
     app.setState('dataCache');
   }
 
-  app.render(app.fullPathName(), true, modifyContext).then(function() {
+  render(app, app.fullPathName(), true, modifyContext).then(function() {
     app.setState('dataCache');
 
     attachEvents();
