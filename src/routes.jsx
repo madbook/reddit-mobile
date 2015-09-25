@@ -184,12 +184,12 @@ function routes(app) {
       sort: sort,
     });
 
-    this.props.topNavTitle = this.props.subredditName;
+    this.props.topNavTitle = this.props.subredditName || this.props.multi;
 
     if (this.props.subredditName) {
-      this.props.topNavLink = "/r/${props.subredditName}";
+      this.props.topNavLink = `/r/${this.props.subredditName}`;
     } else if (this.props.multi) {
-      this.props.topNavLink = "/u/${props.multiUser}/m/${props.multi}";
+      this.props.topNavLink = `/u/${this.props.multiUser}/m/${this.props.multi}`;
     }
 
     if (this.props.multi) {
@@ -244,14 +244,17 @@ function routes(app) {
 
   function * commentsPage(next) {
     var ctx = this;
+    var props = this.props;
 
-
-    Object.assign(this.props, {
+    Object.assign(props, {
       sort: ctx.query.sort,
       subredditName: ctx.params.subreddit,
       listingId: ctx.params.listingId,
       commentId: ctx.params.commentId,
     });
+
+    props.topNavTitle = props.subredditName;
+    props.topNavLink = `/r/${this.props.subredditName}`;
 
     let commentsOpts = buildAPIOptions(ctx, {
       linkId: ctx.params.listingId,
@@ -259,18 +262,26 @@ function routes(app) {
       query: {},
     });
 
-    if (this.props.commentId) {
-      commentsOpts.query.comment = this.props.commentId;
+    if (props.commentId) {
+      commentsOpts.query.comment = props.commentId;
       commentsOpts.query.context = this.query.context || 1;
     }
 
-    this.props.data.set('comments', app.api.comments.get(commentsOpts));
+    props.data.set('comments', app.api.comments.get(commentsOpts));
 
     let listingOpts = buildAPIOptions(ctx, {
       id: 't3_' + ctx.params.listingId,
     });
 
-    this.props.data.set('listing', app.api.links.get(listingOpts));
+    props.data.set('listing', app.api.links.get(listingOpts));
+
+    if (props.subredditName) {
+      let subredditOpts = buildAPIOptions(ctx, {
+        id: props.subredditName.toLowerCase(),
+      });
+
+      props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
+    }
 
     var key = `listing-${this.props.listingId}-${this.props.commentId || ''}${querystring.stringify(this.query)}`;
 

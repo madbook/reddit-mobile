@@ -10,14 +10,6 @@ class BodyLayout extends BasePage {
     super(props);
   }
 
-  componentDidUpdate() {
-    this.props.app.emit(constants.TOP_NAV_CHANGE,
-                        this.props.topNavTitle,
-                        this.props.topNavLink,
-                        this.props.data.get('subreddit')
-                       );
-  }
-
   render () {
     return (
       <div className='container-with-betabanner'>

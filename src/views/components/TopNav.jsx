@@ -14,68 +14,77 @@ class TopNav extends BaseComponent {
     super(props);
 
     this.state = {
-      title: props.topNavTitle,
-      link: props.topNavLink,
-      subreddit: props.subreddit || props.dataCache.subreddit,
+      subreddit: null,
       loaded: true,
       sideNavOpen: false,
-      data: props.data,
     };
 
-    this._updateNavLink = this._updateNavLink.bind(this);
     this._onToggle = this._onToggle.bind(this);
     this._onSubscribeClick = this._onSubscribeClick.bind(this);
   }
 
   loadSubreddit(data) {
-    if (data) {
-      this.setState({
-        loaded: false,
-      });
+    this.setState({
+      loaded: false,
+    });
 
-      data.then(function(data) {
-        this.setState({
-          title: data.display_name,
-          link: data.url,
-          subreddit: data,
-          loaded: true,
-        });
-      }.bind(this));
+    data.then(function(data) {
+      this.setState({
+        subreddit: data,
+        loaded: true,
+      });
+    }.bind(this));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var {data, subredditName} = nextProps;
+    var subPromise = data.get('subreddit')
+
+    if (subredditName && subPromise && subredditName !== this.props.subredditName) {
+      this.loadSubreddit(subPromise);
+    } else if (!subredditName && this.state.subreddit){
+      this.setState({
+        subreddit: null
+      });
     }
   }
 
   componentDidMount() {
-    this.loadSubreddit(this.state.data.get('subreddit'));
-    this.props.app.on(constants.TOP_NAV_CHANGE, this._updateNavLink);
-    this.props.app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
+    var {app, data, subredditName} = this.props;
+    var subPromise = data.get('subreddit');
+    if (subredditName && subPromise) {
+      this.loadSubreddit(subPromise);
+    }
+
+    app.on(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.TOP_NAV_CHANGE, this._updateNavLink);
     this.props.app.off(constants.SIDE_NAV_TOGGLE, this._onToggle);
   }
 
   render() {
     var props = this.props;
-    var breadcrumbContents = this.state.title;
-    var link = this.state.link;
+    var breadcrumbContents = props.topNavTitle;
+    var link = props.topNavLink;
+    var {subreddit} = this.state;
     var currentSub = '';
 
-    if (this.state.title) {
-      if (this.state.subreddit) {
-        currentSub = '?subreddit=' + this.state.title;
-      }
-    } else {
+    if (props.subredditName) {
+      currentSub = '?subreddit=' + props.subredditName;
+    }
+
+    if (!breadcrumbContents) {
       link = '/';
       breadcrumbContents = <Logo />;
     }
 
-    var isSubscribed = this.state.userIsSubscribed;
-    var subscribedClass = isSubscribed ? 'saved' : '';
-
     var subredditMenu;
 
-    if (this.state.subreddit) {
+    if (subreddit) {
+      var isSubscribed = subreddit.user_is_subscriber;
+      var subscribedClass = isSubscribed ? 'saved' : '';
+
       subredditMenu = (
         <SeashellsDropdown right={ true } app={ props.app }>
           <li className='Dropdown-li'>
@@ -95,7 +104,7 @@ class TopNav extends BaseComponent {
             <button className='Mobilebutton Dropdown-button' onClick={ this._onSubscribeClick }>
               <span className={'icon-save-circled ' + subscribedClass}> </span>
               <span className='Dropdown-text'>
-                { this.state.subreddit.user_is_subscriber ? 'Unsubscribe' : 'Subscribe' }
+                { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
               </span>
             </button>
           </li>
@@ -163,18 +172,18 @@ class TopNav extends BaseComponent {
       });
 
       this.setState({
-        subreddit: Object.assign(subreddit, {
+        subreddit: Object.assign({}, state.subreddit, {
           user_is_subscriber: !state.subreddit.user_is_subscriber,
         })
       });
 
       // and send request to the server to do actual work
-      this.props.app.api.subscriptions.post(options)
+      props.app.api.subscriptions.post(options)
         .then(function (data) {
           // if it fails revert back to the original state
-          if (Object.keys(data.data).length) {
+          if (Object.keys(data).length) {
             this.setState({
-              subreddit: Object.assign(subreddit, {
+              subreddit: Object.assign(state.subreddit, {
                 user_is_subscriber: !state.subreddit.user_is_subscriber,
               })
             });
@@ -185,31 +194,10 @@ class TopNav extends BaseComponent {
     }
   }
 
-  _updateNavLink(title, link, dataPromise) {
-    var state = this.state;
-
-    if (title === state.title) {
-      return;
-    }
-
-    if (dataPromise) {
-      return this.loadSubreddit(dataPromise);
-    }
-
-    this.setState({
-      subreddit: undefined,
-      title: title,
-      link: link,
-    });
-  }
-
   _onClick(str) {
     switch (str) {
       case 'hamburger':
         this.props.app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
-        break;
-      case 'post':
-        // TODO post
         break;
     }
   }
@@ -224,7 +212,6 @@ class TopNav extends BaseComponent {
 TopNav.propTypes = {
   multi: React.PropTypes.string,
   subredditName: React.PropTypes.string,
-  userIsSubscribed: React.PropTypes.bool,
 };
 
 export default TopNav;
