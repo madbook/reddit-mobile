@@ -76,16 +76,9 @@ function mixin (App) {
       return new Promise(function(resolve, reject) {
         var origin = app.getConfig('authAPIOrigin');
 
-        var apiOptions =  {
-          origin: origin,
-          headers: {
-            'Authorization': `bearer ${ctx.token}`,
-            'user-agent': ctx.headers['user-agent'],
-          }
-        };
-
-        var options = app.api.buildOptions(apiOptions);
-        options.user = 'me';
+        var options =  Object.assign({
+          user: 'me',
+        }, ctx.props.apiOptions);
 
         try {
           app.api.users.get(options).then(function(user) {
@@ -105,6 +98,7 @@ function mixin (App) {
 
     getUserSubscriptions (ctx, getDefaults) {
       var app = this;
+      var options =  Object.assign({}, ctx.props.apiOptions);
 
       if (this.getState && this.getState('userSubscriptions')){
         return Promise.resolve(this.getState('userSubscriptions'));
@@ -114,25 +108,11 @@ function mixin (App) {
         var sort = 'default';
 
         if (ctx.token && !getDefaults) {
-          var origin = app.getConfig('authAPIOrigin');
-
-          var apiOptions =  {
-            origin: origin,
-            headers: {
-              'Authorization': `bearer ${ctx.token}`,
-            }
-          };
-
           sort = 'mine/subscriber';
-        } else {
-          var origin = app.getConfig('nonAuthAPIOrigin');
-
-          var apiOptions =  {
-            origin: origin,
-          };
+        } else if (getDefaults) {
+          options.origin = app.getConfig('nonAuthAPIOrigin');
+          delete options.headers.Authorization;
         }
-
-        var options = app.api.buildOptions(apiOptions);
 
         options.headers['user-agent'] = ctx.headers['user-agent'];
 
@@ -174,17 +154,7 @@ function mixin (App) {
       }
 
       return new Promise(function(resolve, reject) {
-        var origin = app.getConfig('authAPIOrigin');
-
-        var apiOptions =  {
-          origin: origin,
-          headers: {
-            'Authorization': `bearer ${ctx.token}`,
-            'user-agent': ctx.headers['user-agent'],
-          }
-        };
-
-        var options = app.api.buildOptions(apiOptions);
+        var options = Object.assign({}, ctx.props.apiOptions);
 
         try {
           app.api.preferences.get(options).then(function(prefs) {
