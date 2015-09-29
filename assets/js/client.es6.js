@@ -72,7 +72,7 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   });
 }
 
-var referrer = document.referrer;
+var referrer;
 
 function modifyContext (ctx) {
   let baseCtx = this.getState('ctx');
@@ -195,6 +195,8 @@ function render (app, ...args) {
 function initialize(bindLinks) {
   var plugin;
   var p;
+
+  referrer = document.referrer;
 
   config.mountPoint = document.getElementById('app-container');
   config.touch = true;
