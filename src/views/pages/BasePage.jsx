@@ -73,7 +73,7 @@ class BasePage extends BaseComponent {
   buildTrackingPixelProps(url, props) {
     return {
       url: url,
-      referrer: props.referrer,
+      referrer: props.ctx.referrer,
       loid: props.loid,
       loidcreated: props.loidcreated,
       user: props.user,
