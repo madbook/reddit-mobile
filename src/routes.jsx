@@ -744,6 +744,11 @@ function routes(app) {
       );
     }
   });
+
+  router.get('404', '*', function *(next) {
+    this.props.status = 404;
+    this.body = app.errorPage(this, 404);
+  });
 }
 
 export default routes;
