@@ -103,6 +103,19 @@ Allow: /
       this.redirect(this.headers.referer || '/');
     });
   });
+
+  app.router.get('/routes', function* () {
+    this.body = app.router.stack.routes
+      .filter(function(r) {
+        return r.methods.indexOf('GET') > -1;
+      })
+      .map(function(r) {
+        return {
+          regexp: r.regexp.toString(),
+          path: r.path,
+        }
+      });
+  });
 }
 
 export default serverRoutes;
