@@ -23,6 +23,7 @@ import constants from './constants';
 import globals from './globals';
 import oauthRoutes from './oauth';
 import serverRoutes from './serverRoutes';
+import routes from './routes';
 
 import randomBySeed from './lib/randomBySeed'
 import setLoggedOutCookies from './lib/loid';
@@ -120,6 +121,7 @@ class Server {
 
     oauthRoutes(app);
     serverRoutes(app);
+    routes(app);
 
     var server = koa();
     server.keys = config.keys;

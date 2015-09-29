@@ -1,7 +1,6 @@
 import React from 'react';
 
 // The base routes
-import routes from './routes';
 import redirects from './redirects';
 
 // Import the api instance; we're going to share an instance between the
@@ -38,7 +37,6 @@ function mixin (App) {
         defaultHeaders: this.config.apiHeaders,
       });
 
-      routes(this);
       redirects(this);
     }
 

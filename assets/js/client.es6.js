@@ -20,6 +20,7 @@ import globals from '../../src/globals';
 import randomBySeed from '../../src/lib/randomBySeed';
 import setLoggedOutCookies from '../../src/lib/loid';
 import Utils from '../../src/lib/danehansen/utils/Utils';
+import routes from '../../src/routes';
 
 import trackingEvents from './trackingEvents';
 
@@ -213,6 +214,7 @@ function initialize(bindLinks) {
   globals().random = randomBySeed(config.seed);
 
   var app = new App(config);
+  routes(app);
 
   app.setState('userSubscriptions', window.bootstrap.dataCache.userSubscriptions);
 
