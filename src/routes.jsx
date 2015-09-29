@@ -219,9 +219,7 @@ function routes(app) {
       this.props.subredditName !== 'all') {
 
       let subredditOpts = buildAPIOptions(ctx, {
-        query: {
-          subreddit: props.subredditName,
-        },
+        id: props.subredditName.toLowerCase(),
       });
 
       setData(this, 'subreddit', 'subreddits', subredditOpts);
@@ -302,9 +300,7 @@ function routes(app) {
     });
 
     let subredditOpts = buildAPIOptions(ctx, {
-      query: {
-        subreddit: ctx.params.subreddit,
-      }
+      id: props.subredditName.toLowerCase(),
     });
 
     this.props.data.set('subreddit', app.api.subreddits.get(subredditOpts));

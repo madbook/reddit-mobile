@@ -35,9 +35,9 @@ class TopNav extends BaseComponent {
 
       data.then(function(data) {
         this.setState({
-          title: data.body.display_name,
-          link: data.body.url,
-          subreddit: data.body,
+          title: data.display_name,
+          link: data.url,
+          subreddit: data,
           loaded: true,
         });
       }.bind(this));
