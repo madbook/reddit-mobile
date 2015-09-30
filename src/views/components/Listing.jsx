@@ -68,12 +68,10 @@ class Listing extends BaseComponent {
     var linkFlairText = listing.link_flair_text;
     var subreddit = listing.subreddit;
 
-    var showEdit = false;
-    var showDel = false;
+    var showEditAndDel = false;
 
     if (props.user && props.single) {
-      showEdit = (props.user.name === listing.author) && listing.is_self;
-      showDel = props.user.name === listing.author;
+      showEditAndDel = (props.user.name === listing.author);
     }
 
 
@@ -88,10 +86,9 @@ class Listing extends BaseComponent {
         showHide={ true }
         saved={ listing.saved }
         subreddit={ listing.subreddit }
-        showEdit={ showEdit }
+        showEditAndDel={ showEditAndDel }
         onEdit={ props.toggleEdit }
         onDelete={ props.onDelete }
-        showDel={ showDel }
         onReport={ this.onReport }
         onHide={ this.onHide }
       />

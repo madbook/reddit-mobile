@@ -114,16 +114,26 @@ class ListingDropdown extends BaseComponent {
 
     var editLink;
 
+<<<<<<< HEAD
     if (props.showEdit) {
       editLink = (
+=======
+    if (props.showEditAndDel) {
+      let thing = listing._type === 'Comment'? 'Comment' : 'Post';
+      editLink = (listing.is_self || thing !== 'Post') ? (
+>>>>>>> 2d8a638... fixup to origin comment
         <li className='Dropdown-li'>
           <button className='Dropdown-button' onClick={ this._onEditClick }>
             <span className='icon-post-circled' />
-            <span className='Dropdown-text'>Edit Post</span>
+            <span className='Dropdown-text'>Edit {thing}</span>
           </button>
         </li>
+<<<<<<< HEAD
       );
     }
+=======
+      ): null;
+>>>>>>> 2d8a638... fixup to origin comment
 
     var delLink;
 
@@ -132,7 +142,7 @@ class ListingDropdown extends BaseComponent {
       var toggleDelBtn = (
         <button type='button' className='Dropdown-button' onClick={ this._onDelToggle }>
           <span className='icon-x' />
-          <span className='Dropdown-text'>Delete Post</span>
+          <span className='Dropdown-text'>Delete {thing}</span>
         </button>
       );
       if (this.state.showDelPrompt) {

@@ -101,9 +101,10 @@ class Comment extends BaseComponent {
     });
   }
 
-  onNewComment (comment) {
-    this.state.comment.replies = this.state.comment.replies || [];
-    this.state.comment.replies.splice(0, 0, comment);
+  onNewComment (newComment) {
+    var comment = Object.assign({}, this.state.comment);
+    comment.replies = comment.replies || [];
+    comment.replies.splice(0, 0, newComment);
 
     this.setState({
       comment: this.state.comment,
@@ -125,8 +126,8 @@ class Comment extends BaseComponent {
   }
 
   onDelete (id) {
-    var props = this.props;
-    var options = this.props.app.api.buildOptions(props.apiOptions);
+    var {app, apiOptions} = this.props;
+    var options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -134,49 +135,48 @@ class Comment extends BaseComponent {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    this.props.app.api.comments.delete(options).then(function(){
+    app.api.comments.delete(options).then(() => {
       var deletedComment = this.state.comment;
       deletedComment.body_html = '<p>[deleted]</p>';
       deletedComment.author = '[deleted]';
       this.setState({
         comment: deletedComment
       })
-    }.bind(this))
+    })
   }
 
   updateComment () {
-    var props = this.props;
+    var {app, apiOptions} = this.props;
     var newText = this.refs.updatedText.getDOMNode().value;
-    var comment = this.state.comment;
-    if (comment.body === newText) {
+    var oldComment = this.state.comment;
+    if (oldComment.body === newText) {
       return;
     }
 
-    var comment = new models.Comment(this.state.comment);
-    var options = this.props.app.api.buildOptions(props.apiOptions);
+    var comment = new models.Comment(oldComment);
+    var options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       model: comment,
       changeSet: newText,
     });
     // update comment here
-    this.props.app.api.comments.patch(options).then(function(res) {
-      if (res.data) {
+    app.api.comments.patch(options).then((data) => {
+      if (data) {
         this.setState({
-          comment: res.data,
+          comment: data,
           editing: false,
         })
-        this.props.app.emit('comment:edit');
+        app.emit('comment:edit');
+      } else {
+        throw 'data was undefined'
       }
-    }.bind(this), function(err) {
+    }).catch((err) => {
       this.setState({
         editError: err,
-      }.bind(this))
+      })
     })
-  }
 
-  preventPropagation (e) {
-    e.stopPropagation();
   }
 
   render () {
