@@ -225,7 +225,7 @@ function routes(app) {
       setData(this, 'subreddit', 'subreddits', subredditOpts);
     }
 
-    var key = 'index-' + (this.params.subreddit || '') + querystring.stringify(this.query);
+    var key = 'index-' + (this.props.title || '') + querystring.stringify(this.query);
 
     this.body = function(props) {
       return (
