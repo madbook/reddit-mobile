@@ -113,31 +113,23 @@ class ListingDropdown extends BaseComponent {
     }
 
     var editLink;
-
-<<<<<<< HEAD
-    if (props.showEdit) {
-      editLink = (
-=======
-    if (props.showEditAndDel) {
-      let thing = listing._type === 'Comment'? 'Comment' : 'Post';
-      editLink = (listing.is_self || thing !== 'Post') ? (
->>>>>>> 2d8a638... fixup to origin comment
-        <li className='Dropdown-li'>
-          <button className='Dropdown-button' onClick={ this._onEditClick }>
-            <span className='icon-post-circled' />
-            <span className='Dropdown-text'>Edit {thing}</span>
-          </button>
-        </li>
-<<<<<<< HEAD
-      );
-    }
-=======
-      ): null;
->>>>>>> 2d8a638... fixup to origin comment
-
     var delLink;
 
-    if (props.showDel) {
+    if (props.showEditAndDel) {
+      let thing = listing._type === 'Comment'? 'Comment' : 'Post';
+
+      if (listing.is_self || thing !== 'Post') {
+        editLink = (
+          <li className='Dropdown-li'>
+            <button className='Dropdown-button' onClick={ this._onEditClick }>
+              <span className='icon-post-circled' />
+              <span className='Dropdown-text'>Edit {thing}</span>
+            </button>
+          </li>
+        );
+      } 
+
+
       var confirmClass = 'hidden';
       var toggleDelBtn = (
         <button type='button' className='Dropdown-button' onClick={ this._onDelToggle }>
@@ -145,11 +137,11 @@ class ListingDropdown extends BaseComponent {
           <span className='Dropdown-text'>Delete {thing}</span>
         </button>
       );
+
       if (this.state.showDelPrompt) {
         confirmClass = '';
         toggleDelBtn = null;
       }
-
 
       delLink = (
         <li className='Dropdown-li'>
@@ -336,8 +328,7 @@ ListingDropdown.propTypes = {
   onSave: React.PropTypes.func,
   onReport: React.PropTypes.func.isRequired,
   permalink: React.PropTypes.string,
-  showDel: React.PropTypes.bool,
-  showEdit: React.PropTypes.bool.isRequired,
+  showEditAndDel: React.PropTypes.bool,
   showHide: React.PropTypes.bool,
 };
 
