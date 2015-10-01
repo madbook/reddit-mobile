@@ -9,6 +9,7 @@ import { v1 as V1Api } from 'snoode';
 
 import BodyLayout from './views/layouts/BodyLayout';
 import ErrorPage from './views/pages/error';
+import Loading from './views/components/Loading';
 
 const errorMsgMap = {
   '404': 'Sorry, that page doesn\'t seem to exist.',
