@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import remove from 'lodash/array/remove';
 import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 import { models } from 'snoode';
@@ -30,45 +30,41 @@ class ListingPage extends BasePage {
   }
 
   saveUpdatedText(newText) {
-    var props = this.props;
-    var listing = this.state.data.listing;
+    const {app, apiOptions} = this.props;
+    let listing = this.state.data.listing;
 
     if (newText === listing.selftext) {
       return;
     }
 
-    var link = new models.Link(listing);
-    var options = this.props.app.api.buildOptions(props.apiOptions);
+    let link = new models.Link(listing);
+    let options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       model: link,
       changeSet: newText,
     });
 
-    this.props.app.api.links.patch(options).then(function(res) {
-      if (res) {
-        var data = this.state.data;
-        var listing = data.listing;
-        var newListing = res;
-
-        listing.selftext = newListing.selftext;
-        listing.expandContent = newListing.expandContent;
+    app.api.links.patch(options).then((newListing) => {
+      if (newListing) {
+        var data = Object.assign({}, this.state.data);
+        data.listing = newListing;
 
         this.setState({
           editing: false,
           data: data,
-        })
+        });
 
-        this.props.app.emit('post:edit');
+        app.emit('post:edit');
       }
-    }.bind(this), function(err) {
+    }).catch((err) => {
       this.setState({ linkEditError: err });
-    }.bind(this))
+    })
   }
 
   onDelete(id) {
-    var props = this.props;
-    var options = this.props.app.api.buildOptions(props.apiOptions);
+    var {app, subredditName, apiOptions} = this.props;
+    var options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       id: id,
@@ -76,16 +72,16 @@ class ListingPage extends BasePage {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    this.props.app.api.links.delete(options).then(function(){
+    app.api.links.delete(options).then(() => {
       var data = this.state.data.listing;
-      _.remove(data, {name: id});
+      remove(data, {name: id});
 
-      this.props.app.setState({
+      app.setState({
         data: data,
-      })
+      });
 
-      this.props.app.redirect('/r/' + props.subredditName);
-    }.bind(this))
+      app.redirect('/r/' + subredditName);
+    });
   }
 
   toggleEdit() {
@@ -94,110 +90,73 @@ class ListingPage extends BasePage {
     });
   }
 
-  render() {
-    var loading;
-    var props = this.props;
-
-    if (!this.state.data || !this.state.data.listing) {
-      return (<Loading />);
-    }
-
-    var editing = this.state.editing;
-
-    var listing = this.state.data.listing;
-
-    var api = this.props.app.api;
-    var user = this.state.data.user;
-    var token = props.token;
-    var author = listing.author;
-    var sort = props.sort || 'best';
-    var app = this.props.app;
-    var listingElement;
-    var commentBoxElement;
-    var apiOptions = props.apiOptions;
-    var singleComment;
-    var permalink;
-
-    if (listing) {
-      permalink = listing.cleanPermalink;
-    }
-
+  _getLocalStorageKeys() {
     var keys = [];
     if (global.localStorage) {
       for (var key in localStorage) {
         keys.push(key);
       }
     }
+    return keys;
+  }
 
-    var savedCommentKeys = keys;
-    if (!loading) {
-      listingElement = (
-        <Listing
-          app={ props.app }
-          ctx={ props.ctx }
-          apiOptions={ apiOptions }
-          editError={ this.state.linkEditError }
-          editing={ editing }
-          listing={ listing }
-          onDelete={this.onDelete.bind(this, listing.name)}
-          user={ user }
-          token={ token }
-          saveUpdatedText={ this.saveUpdatedText.bind(this) }
-          single={ true }
-          toggleEdit={ this.toggleEdit.bind(this) }
-          />
-      );
+  render() {
+    let state = this.state,
+        {data, editing} = this.state,
+        props = this.props,
+        {app, apiOptions, commentId, ctx, token, sort, subredditName} = props;
+        
+    sort = sort || 'best';
 
-      commentBoxElement = (
-        <CommentBox
-          apiOptions={ apiOptions }
-          thingId={ listing.name }
-          user={ user }
-          token={ token }
-          app={ props.app }
-          ctx={ props.ctx }
-          onSubmit={ this.onNewComment.bind(this) }
-        />
-      );
-
-      if (props.commentId) {
-        singleComment = (
-          <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
-            <p>
-              <span>You are viewing a single comment's thread. </span>
-              <a href={permalink}>View the rest of the comments</a>
-            </p>
-          </div>
-        );
-      }
+    if (!data || !data.listing) {
+      return (<Loading />);
     }
 
-    let commentsList = [];
+    let user = data.user,
+        listing = data.listing,
+        comments = data.comments,
+        author = listing.author,
+        permalink = listing.cleanPermalink;
 
-    var comments = this.state.data.comments;
+
+    let singleComment;
+    if (commentId) {
+      singleComment = (
+        <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
+          <p>
+            <span>You are viewing a single comment's thread. </span>
+            <a href={ permalink }>View the rest of the comments</a>
+          </p>
+        </div>
+      );
+    }
+
+    let savedCommentKeys = this._getLocalStorageKeys();
+
+    let commentsList;
     if (comments) {
-      commentsList = comments.map(function(comment, i) {
+      commentsList = comments.map((comment, i) => {
         if (comment) {
           comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
           return (
             <Comment
-              ctx={ props.ctx }
-              app={ props.app }
-              subredditName={ props.subredditName }
+              ctx={ ctx }
+              app={ app }
+              subredditName={ subredditName }
               permalinkBase={ permalink }
-              highlight={ props.commentId }
-              comment={comment}
-              index={i}
+              highlight={ commentId }
+              comment={ comment }
+              index={ i }
               key={`page-comment-${comment.name}`}
               nestingLevel={ 0 }
               op={ author }
               user={ user }
               token={ token }
-              apiOptions={apiOptions}
+              apiOptions={ apiOptions }
             />
           );
         }
-        });
+      })
     } else {
       commentsList = (
         <div className='Loading-Container'>
@@ -208,25 +167,44 @@ class ListingPage extends BasePage {
 
     return (
       <div className='listing-main'>
-        { loading }
-
         <GoogleCarouselMetadata
           origin={ props.origin }
           show={ props.isGoogleCrawler }
-          listing={listing}
-          comments={comments}
+          listing={ listing }
+          comments={ comments }
         />
 
         <TopSubnav
           { ...props }
-          user={ this.state.data.user }
+          user={ user }
           sort={ sort }
           list='comments'
         />
 
         <div className='container listing-content' key='container'>
-          { listingElement }
-          { commentBoxElement }
+          <Listing
+            app={ app }
+            ctx={ ctx }
+            apiOptions={ apiOptions }
+            editError={ this.state.linkEditError }
+            editing={ editing }
+            listing={ listing }
+            onDelete={this.onDelete.bind(this, listing.name)}
+            user={ user }
+            token={ token }
+            saveUpdatedText={ this.saveUpdatedText.bind(this) }
+            single={ true }
+            toggleEdit={ this.toggleEdit.bind(this) }
+          />
+          <CommentBox
+            apiOptions={ apiOptions }
+            thingId={ listing.name }
+            user={ user }
+            token={ token }
+            app={ app }
+            ctx={ ctx }
+            onSubmit={ this.onNewComment.bind(this) }
+          />
           { singleComment }
           { commentsList }
         </div>
