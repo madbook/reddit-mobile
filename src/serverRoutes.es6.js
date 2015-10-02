@@ -107,7 +107,10 @@ Allow: /
   app.router.get('/routes', function* () {
     this.body = app.router.stack.routes
       .filter(function(r) {
-        return r.methods.indexOf('GET') > -1;
+        return (
+          r.methods.indexOf('GET') > -1 && // only map GET requests
+          r.path !== '*' // ignore the 404 catch-all route
+        );
       })
       .map(function(r) {
         return {
