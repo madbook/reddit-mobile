@@ -29,6 +29,7 @@ class Comment extends BaseComponent {
       reported: false,
       score: props.comment.score,
       editing: false,
+      loadingMoreComments: false,
     }
 
     this.setScore = this.setScore.bind(this);
@@ -128,7 +129,7 @@ class Comment extends BaseComponent {
     })
   }
 
-  updateComment () {
+  async updateComment () {
     var {app, apiOptions} = this.props;
     var newText = this.refs.updatedText.getDOMNode().value;
     var oldComment = this.state.comment;
@@ -143,23 +144,59 @@ class Comment extends BaseComponent {
       model: comment,
       changeSet: newText,
     });
-    // update comment here
-    app.api.comments.patch(options).then((data) => {
+
+    try {
+      let data = app.api.comments.patch(options);
       if (data) {
         this.setState({
           comment: data,
           editing: false,
-        })
+        });
         app.emit('comment:edit');
       } else {
         throw [['Sorry', 'There was a problem']];
       }
-    }).catch((err) => {
+    } catch (e) {
       this.setState({
-        editError: err,
-      })
-    })
+        editError: e,
+      });
+    }
+  }
 
+  async loadMore(loadMore, e) {
+    e.preventDefault();
+    let { app, apiOptions, sort } = this.props;
+
+    let children = loadMore.children;
+    let comment = Object.assign({}, this.state.comment);
+
+    let options = app.api.buildOptions(apiOptions);
+    options = Object.assign(options, {
+      query: {
+        ids: loadMore.children,
+      },
+      linkId: comment.link_id,
+      sort: sort,
+    });
+
+    this.setState({loadingMoreComments: true})
+
+    try {
+      let data = await app.api.comments.get(options);
+      comment.replies = comment.replies
+        .slice(0, comment.replies.length - 1)
+        .concat(data.body);
+
+      this.setState({
+         comment: comment,
+         loadingMoreComments: false,
+      });
+    } catch (e) {
+      if (this.props.config.debug) {
+        console.log(e);
+      }
+      this.setState({loadingMoreComments: false});
+    }
   }
 
   render () {
@@ -167,7 +204,7 @@ class Comment extends BaseComponent {
          highlight, subredditName} = this.props;
          
     let {comment, showReplyBox, editing, editError, showTools, collapsed,
-         score, reported} = this.state;
+         score, reported, loadingMoreComments} = this.state;
 
     if (reported) {
       return (<ReportPlaceholder />);
@@ -257,7 +294,7 @@ class Comment extends BaseComponent {
         <div className='comment-children comment-content'>
           {
             comment.replies.map((c, i) => {
-              if (c) {
+              if (c && c.bodyHtml !== undefined) {
                 var key = 'page-comment-' + c.name + '-' + i;
 
                 return (
@@ -268,6 +305,18 @@ class Comment extends BaseComponent {
                     nestingLevel={nestingLevel + 1}
                     op={op}
                   />
+                ) 
+              } else {
+                let numChildren = c.children.length;
+                let word = numChildren > 1 ? 'replies' : 'reply';
+                let permalink = permalinkBase + c.parent_id.substring(3) + '?context=0';
+                let text = loadingMoreComments ? 'Loading...' : `load more comments (${numChildren} ${word})`;
+                return (
+                  <a
+                    href={permalink}
+                    data-no-route='true'
+                    onClick={this.loadMore.bind(this, c)}
+                  >{ text }</a>
                 );
               }
             })
@@ -331,7 +380,7 @@ class Comment extends BaseComponent {
                 <li className={`comment-title-collapse-container twirly before ${(collapsed ? '' : 'opened')}`}>
                 </li>
                 <li className="comment-title-username">
-                  <span className={`opClass ${distinguishedClass}`}>
+                  <span className={`${opClass} ${distinguishedClass}`}>
                     { comment.author }
                   </span>
 

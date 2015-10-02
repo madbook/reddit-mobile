@@ -17,6 +17,7 @@ class ListingPage extends BasePage {
     super(props);
 
     this.state.editing = false;
+    this.state.loadingMoreComments = false;
   }
 
   onNewComment (comment) {
@@ -100,11 +101,44 @@ class ListingPage extends BasePage {
     return keys;
   }
 
+  async loadMore(loadMore, e) {
+    e.preventDefault();
+    let { app, apiOptions, sort } = this.props;
+
+    let options = app.api.buildOptions(apiOptions);
+    options = Object.assign(options, {
+      query: {
+        ids: loadMore.children,
+      },
+      linkId: this.state.data.listing.name,
+      sort: sort || 'best',
+    });
+
+    this.setState({loadingMoreComments: true})
+
+    try {
+      let res = await app.api.comments.get(options);
+      let data = Object.assign({},this.state.data);
+      data.comments = data.comments
+        .slice(0, data.comments.length - 1)
+        .concat(res.body);
+
+      this.setState({
+         data: data,
+         loadingMoreComments: false,
+      });
+    } catch (e) {
+      if (this.props.config.debug) {
+        console.log(e);
+      }
+      this.setState({loadingMoreComments: false});
+    }
+  }
+
   render() {
-    let state = this.state,
-        {data, editing} = this.state,
-        props = this.props,
-        {app, apiOptions, commentId, ctx, token, sort, subredditName} = props;
+    let { data, editing, loadingMoreComments, linkEditError } = this.state;
+    let { app, apiOptions, commentId, ctx, token, sort, subredditName,
+         isGoogleCrawler, origin } = this.props;
         
     sort = sort || 'best';
 
@@ -136,7 +170,7 @@ class ListingPage extends BasePage {
     let commentsList;
     if (comments) {
       commentsList = comments.map((comment, i) => {
-        if (comment) {
+        if (comment && comment.bodyHtml !== undefined) {
           comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
           return (
             <Comment
@@ -153,21 +187,23 @@ class ListingPage extends BasePage {
               user={ user }
               token={ token }
               apiOptions={ apiOptions }
+              sort={ sort }
             />
+          );
+        } else {
+          let numChildren = comment.children.length;
+          let word = numChildren > 1 ? 'replies' : 'reply';
+          let permalink = permalink + comment.parent_id.substring(3) + '?context=0';
+          let text = loadingMoreComments ? 'Loading...' : `load more comments (${numChildren} ${word})`;
+          return (
+            <a 
+              href={ permalink }
+              data-no-route='true'
+              onClick={this.loadMore.bind(this, comment)}
+            >{ text }</a>
           );
         }
       })
-
-      var googleCarouselMetadata = (
-        <GoogleCarouselMetadata
-          origin={ props.config.origin }
-          show={ props.ctx.isGoogleCrawler }
-          url={ props.ctx.url }
-          listing={ listing }
-          comments={ comments }
-          app={ app }
-        />
-      );
     } else {
       commentsList = (
         <div className='Loading-Container'>
@@ -178,21 +214,24 @@ class ListingPage extends BasePage {
 
     return (
       <div className='listing-main'>
+        <GoogleCarouselMetadata
+          origin={ origin }
+          show={ isGoogleCrawler }
+          listing={ listing }
+          comments={ comments }
+        />
         <TopSubnav
-          { ...props }
+          { ...this.props }
           user={ user }
           sort={ sort }
           list='comments'
         />
-
-      {googleCarouselMetadata}
-
         <div className='container listing-content' key='container'>
           <Listing
             app={ app }
             ctx={ ctx }
             apiOptions={ apiOptions }
-            editError={ this.state.linkEditError }
+            editError={ linkEditError }
             editing={ editing }
             listing={ listing }
             onDelete={this.onDelete.bind(this, listing.name)}
