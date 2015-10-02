@@ -157,6 +157,17 @@ class ListingPage extends BasePage {
           );
         }
       })
+
+      var googleCarouselMetadata = (
+        <GoogleCarouselMetadata
+          origin={ props.config.origin }
+          show={ props.ctx.isGoogleCrawler }
+          url={ props.ctx.url }
+          listing={ listing }
+          comments={ comments }
+          app={ app }
+        />
+      );
     } else {
       commentsList = (
         <div className='Loading-Container'>
@@ -167,19 +178,14 @@ class ListingPage extends BasePage {
 
     return (
       <div className='listing-main'>
-        <GoogleCarouselMetadata
-          origin={ props.origin }
-          show={ props.isGoogleCrawler }
-          listing={ listing }
-          comments={ comments }
-        />
-
         <TopSubnav
           { ...props }
           user={ user }
           sort={ sort }
           list='comments'
         />
+
+      {googleCarouselMetadata}
 
         <div className='container listing-content' key='container'>
           <Listing

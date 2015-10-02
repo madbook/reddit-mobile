@@ -60,7 +60,7 @@ class GoogleCarouselMetadata extends BaseComponent {
     let baseObject = {
       '@context': 'http://schema.org',
       '@type': 'DiscussionForumPosting',
-      url: origin + props.ctx.url,
+      url: origin + props.url,
       headline: listing.title,
       datePublished: published.format(),
       author: {
