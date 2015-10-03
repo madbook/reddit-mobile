@@ -280,7 +280,7 @@ class Comment extends BaseComponent {
       var body = (
         <div className='comment-body'>
           <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-              __html: comment.body_html
+              __html: mobilify(comment.body_html)
             }}
             onClick={this.showTools} />
 
