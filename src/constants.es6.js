@@ -1,4 +1,5 @@
 export default {
+  TOGGLE_OVER_18: 'toggleOver18',
   SIDE_NAV_TOGGLE: 'sideNavToggle',
   TOP_NAV_HAMBURGER_CLICK: 'topNavHamburgerClick',
   VOTE: 'vote',

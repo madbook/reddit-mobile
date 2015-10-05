@@ -22,28 +22,29 @@ module.exports = function(gulp, options) {
           normalize: true,
           fontHeight: 1000,
       }))
-        .on('codepoints', function(codepoints, options) {
-          for (var i = 0, iLen = codepoints.length; i<iLen; i++) {
-            var item = codepoints[i];
-            item.codePoint = item.codepoint.toString(16);
+      .on('glyphs', function(glyphs, options) {
+        for (var i = 0, iLen = glyphs.length; i<iLen; i++) {
+            var item = glyphs[i];
+            item.codePoint = item.unicode[0].charCodeAt(0).toString(16).toUpperCase();
             item.fileName = item.name;
           }
-          gulp.src('node_modules/gulp-iconfont-css/templates/_icons.less')
-            .pipe(consolidate('lodash', {
-              glyphs: codepoints,
-              fontName: 'icons-' + r,
-              fontPath: assetPath,
-              className: 's',
-            }))
-            .pipe(gulp.dest('assets/less'));
-        })
-        .pipe(rename({
-          suffix: '-' + r,
-        }))
-        .pipe(gulp.dest('assets/fonts/'))
-        .on('finish', function() {
-          cb();
-        });
+
+        gulp.src('node_modules/gulp-iconfont-css/templates/_icons.less')
+          .pipe(consolidate('lodash', {
+            glyphs: glyphs,
+            fontPath: assetPath,
+            fontName: 'icons-' + r,
+            className: 's'
+          }))
+          .pipe(gulp.dest('assets/less'));
+      })
+      .pipe(rename({
+        suffix: '-' + r,
+      }))
+      .pipe(gulp.dest('assets/fonts/'))
+      .on('finish', function() {
+        cb();
+      });
     });
   });
 };

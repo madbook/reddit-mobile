@@ -115,6 +115,7 @@ function buildProps(ctx, app) {
     config: clientConfig,
     render: Date.now(),
     actionName: ctx.route.name,
+    showOver18Interstitial: ctx.showOver18Interstitial,
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
@@ -223,7 +224,7 @@ function routes(app) {
         id: props.subredditName.toLowerCase(),
       });
 
-      setData(this, 'subreddit', 'subreddits', subredditOpts);
+      setData(this, 'subreddits', 'subreddits', subredditOpts);
     }
 
     var key = 'index-' + (this.props.title || '') + querystring.stringify(this.query);

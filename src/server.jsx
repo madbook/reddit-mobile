@@ -296,6 +296,8 @@ class Server {
         this.tokenExpires = this.cookies.get('tokenExpires');
       }
 
+      this.showOver18Interstitial = !this.cookies.get('over18') || this.cookies.get('over18') === 'false';
+
       this.renderSynchronous = true;
       this.useCache = false;
 

@@ -82,6 +82,7 @@ function modifyContext (ctx) {
   ctx = Object.assign({}, baseCtx, ctx, {
     dataCache: app.getState('dataCache') || {},
     compact: (cookies.get('compact') || '').toString() === 'true',
+    showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
     redirect: redirect.bind(app),
     env: 'CLIENT',
   });
@@ -221,6 +222,8 @@ function initialize(bindLinks) {
   if (window.bootstrap.dataCache.user) {
     app.setState('user', window.bootstrap.dataCache.user);
     app.setState('userPrefs', window.bootstrap.dataCache.userPrefs);
+
+    cookies.set('over18', window.bootstrap.dataCache.userPrefs.over_18);
   }
 
   app.emitter.setMaxListeners(30);
@@ -393,6 +396,10 @@ function initialize(bindLinks) {
 
   app.on(constants.COMPACT_TOGGLE, function(compact) {
     app.setState('compact', compact);
+  });
+
+  app.on(constants.TOGGLE_OVER_18, function(val) {
+    cookies.set('over18', val)
   });
 
   window.addEventListener('scroll', throttle(function() {

@@ -1,11 +1,13 @@
 import React from 'react';
 import constants from '../../constants';
 import querystring from 'querystring';
+import cookies from 'cookies-js';
 
 import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
+import Interstitial from '../components/Interstitial';
 
 class IndexPage extends BasePage {
   constructor(props) {
@@ -33,12 +35,18 @@ class IndexPage extends BasePage {
     var data = this.state.data;
     var compact = this.state.compact;
 
-    if (!this.state.data || !this.state.data.listings) {
+    if (!data || !data.listings || (props.subredditName && !data.subreddits)) {
       return (
         <Loading />
       );
     }
 
+    let bypassInterstitial = data.userPrefs && data.userPrefs.over_18;
+    if (!bypassInterstitial) {
+      if (data.subreddits && data.subreddits.over18 && props.showOver18Interstitial) {
+        return (<Interstitial  {...props} loggedIn={data.userPrefs} type='over18' />);
+      }
+    }
     var listings = this.state.data.listings;
 
     var hideSubredditLabel = props.subredditName &&
