@@ -5,8 +5,8 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
-import SearchBar from '../components/SearchBar';
 import SearchSortSubnav from '../components/SearchSortSubnav';
+import SearchBar from '../components/SearchBar';
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
@@ -40,9 +40,18 @@ class SearchPage extends BasePage {
     }.bind(this));
   }
 
-  _onSubmitSearchForm(e) {
+  onSearch(value) {
     // Let the input change handle submission
-    e.preventDefault();
+    var props = this.props;
+
+    if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
+      var url = this._composeUrl({
+        query: value,
+        subredditName: props.subredditName
+      });
+
+      this.props.app.redirect(url);
+    }
   }
 
   _composeUrl(data) {
@@ -88,20 +97,6 @@ class SearchPage extends BasePage {
     });
 
     this.props.app.redirect(url);
-  }
-
-  handleInputChanged(data) {
-    var props = this.props;
-    var value = data.value || '';
-
-    if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
-      var url = this._composeUrl({
-        query: value,
-        subredditName: props.subredditName
-      });
-
-      this.props.app.redirect(url);
-    }
   }
 
   render() {
@@ -223,17 +218,9 @@ class SearchPage extends BasePage {
     return (
       <div className='search-main'>
         <div className="container search-bar-container">
-          <form action='/search' method='GET' ref='searchForm' onSubmit={ this._onSubmitSearchForm }>
-            <div className='input-group vertical-spacing-top'>
-              <SearchBar
-                {...this.props}
-                inputChangedCallback={ this.handleInputChanged.bind(this) }
-              />
-              <span className='input-group-btn'>
-                <button className='btn btn-default' type='submit'>Search!</button>
-              </span>
-            </div>
-          </form>
+          <SearchBar action='/search'
+            onSearch={ this.onSearch.bind(this) }
+            defaultValue={ this.props.ctx.query.q } />
         </div>
 
         { controls }
@@ -254,7 +241,6 @@ SearchPage.propTypes = {
   before: React.PropTypes.string,
   data: React.PropTypes.object,
   page: React.PropTypes.number.isRequired,
-  query: React.PropTypes.object.isRequired,
   sort: React.PropTypes.string.isRequired,
   subredditName: React.PropTypes.string,
   subreddits: React.PropTypes.object,

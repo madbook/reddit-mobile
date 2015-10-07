@@ -24,21 +24,21 @@ class SubredditSelectionButton extends BaseComponent {
     };
   }
 
-  handleSearchChange (data) {
-    var newVal = data.value;
+  onSearch (newVal) {
     if (newVal === this.state.lastQuery) {
       return;
     }
+
     this.setState({
       lastQuery: newVal
     });
+
     var api = this.props.app.api;
 
     var options = api.buildOptions(this.props.apiOptions);
     options.query.type = ['sr'];
     options.query.limit = _searchLimit;
     options.query.q = newVal;
-
 
     api.search.get(options).then(function (data={}) {
       if (data.body && data.body.subreddits) {
@@ -147,7 +147,9 @@ class SubredditSelectionButton extends BaseComponent {
             </div>
             <div className='sub-selection-wrapper Submit-centered'>
               <div className='Submit-search-holder'>
-                <SearchBar {...props} inputChangedCallback={this.handleSearchChange.bind(this)} />
+                <SearchBar
+                  onSearch={ this.onSearch.bind(this) }
+                  defaultValue={ this.props.ctx.query.q } />
               </div>
               { content }
             </div>
