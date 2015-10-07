@@ -8,6 +8,11 @@ require('babel/register')({
   sourceMap: true,
 });
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+  process.exit();
+});
+
 // Require in the express server.
 var Server = require('./src/server');
 
@@ -84,6 +89,7 @@ if (cluster.isMaster) {
   }
 
   Server.info(config);
+
 
   cluster.on('exit', function(worker, code, signal) {
     if (failedProcesses < 20) {
