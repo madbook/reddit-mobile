@@ -3,6 +3,7 @@
 import React from 'react';
 import querystring from 'querystring';
 import superagent from 'superagent';
+import globals from './globals';
 
 import merge from 'lodash/object/merge';
 
@@ -155,6 +156,11 @@ function routes(app) {
     }
   }
 
+  function * setPageKey(next) {
+    this.key = globals().random();
+    yield next;
+  }
+
   function * defaultLayout(next) {
     this.layout = Layout;
     yield next;
@@ -168,6 +174,7 @@ function routes(app) {
       buildProps(this, app);
       yield next;
    });
+  router.use(setPageKey);
   router.use(userData());
   router.use(defaultLayout);
 
@@ -227,7 +234,7 @@ function routes(app) {
       setData(this, 'subreddits', 'subreddits', subredditOpts);
     }
 
-    var key = 'index-' + (this.props.title || '') + querystring.stringify(this.query);
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -285,7 +292,7 @@ function routes(app) {
       props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
     }
 
-    var key = `listing-${this.props.listingId}-${this.props.commentId || ''}${querystring.stringify(this.query)}`;
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -318,9 +325,9 @@ function routes(app) {
 
     this.props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
 
-    this.body = function(props) {
-      var key = `subreddit-about-${props.subredditName}`;
+    var key = this.key;
 
+    this.body = function(props) {
       return (
         <BodyLayout {...props}>
           <SubredditAboutPage {...props} key={ key } track='subreddit' />
@@ -361,7 +368,8 @@ function routes(app) {
       this.props.data.set('search', app.api.search.get(searchOpts));
     }
 
-    var key = 'search-results-' + JSON.stringify(searchOpts.query || {});
+    var key = this.key;
+
     this.body = function(props) {
       return (
         <BodyLayout {...props}>
@@ -407,7 +415,7 @@ function routes(app) {
 
     this.props.data.set('userProfile', app.api.users.get(userOpts));
 
-    var key = `user-profile-${ctx.params.user}`;
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -429,7 +437,7 @@ function routes(app) {
     this.props.topNavTitle = `u/${ctx.params.user}`;
     this.props.topNavLink = `/u/${ctx.params.user}`;
 
-    var key = `user-gild-${ctx.params.user}`;
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -472,7 +480,7 @@ function routes(app) {
 
     this.props.data.set('activities', app.api.activities.get(activitiesOpts));
 
-    var key = 'user-activity-' + ctx.params.user + '-' + querystring.stringify(this.query);
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -503,9 +511,11 @@ function routes(app) {
 
     this.props.subredditName = sub;
 
+    var key = this.key;
+
     this.body = function(props) {
       return (
-        <SubmitPage {...props}/>
+        <SubmitPage key={ key } {...props}/>
       );
     }
   });
@@ -548,10 +558,10 @@ function routes(app) {
     });
 
     this.props.data.set('activities', saved.get(savedOpts))
+    
+    var key = this.key;
 
     this.body = function(props) {
-      var key = 'saved-' + hidden.toString() + querystring.stringify(this.query);
-
       return (
         <BodyLayout {...props}>
           <UserSavedPage {...props} key={ key } track='activities' />
@@ -708,7 +718,7 @@ function routes(app) {
       view: 'compose',
     });
 
-    var key = `user-messages-compose`;
+    var key = this.key;
 
     this.body = function(props) {
       return (
@@ -743,7 +753,7 @@ function routes(app) {
 
     this.props.data.set('messages', app.api.messages.get(listingOpts));
 
-    var key = `user-messages-${ctx.params.view}`;
+    var key = this.key;
 
     this.body = function(props) {
       return (
