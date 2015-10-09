@@ -71,7 +71,7 @@ class TopNav extends BaseComponent {
     var currentSub = '';
 
     if (props.subredditName) {
-      currentSub = '?subreddit=' + props.subredditName;
+      currentSub = '/r/' + props.subredditName;
     }
 
     if (!title) {
@@ -141,7 +141,7 @@ class TopNav extends BaseComponent {
         </div>
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
-          <a className='MobileButton TopNav-floaty' href={'/submit' + currentSub }>
+          <a className='MobileButton TopNav-floaty' href={`${currentSub}/submit`}>
             <span className='icon-post'>{' '}</span>
           </a>
           <a className='MobileButton TopNav-floaty' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>

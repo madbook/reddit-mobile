@@ -32,9 +32,9 @@ class SubmitPage extends BasePage {
     Object.assign(this.state, {
       subreddit: props.subredditName || 'choose a subreddit',
       subredditSelectionOpen: false,
-      title: '',
-      body: '',
-      kind: props.type || '',
+      title: props.postTitle || '',
+      body: props.body || '',
+      kind: props.type || 'link',
       sendReplies: true,
       captchaIden: '',
       captchaAnswer: '',
@@ -207,7 +207,9 @@ class SubmitPage extends BasePage {
   }
 
   close () {
-    this.props.app.redirect('/');
+    let { subredditName, app } = this.props;
+    let path = subredditName ? `/r/${subredditName}` : '/';
+    this.props.app.redirect(path);
   }
 
   updateCaptchaInfo (info) {

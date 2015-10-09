@@ -502,24 +502,33 @@ function routes(app) {
     }
   });
 
-  router.get('submit', '/submit', function *(next) {
-    var ctx = this;
-    var sub;
+  function * submitPage(next) {
+    let { query, props } = this;
 
-    if (ctx.query) {
-      sub = ctx.query.subreddit || '';
-    }
-
-    if (!ctx.token) {
-      var subreddit = '';
-      if (sub) {
-        subreddit = '?subreddit=' + sub;
+    if (query) {
+      if (query.selftext) {
+        props.type = 'self';
       }
 
-      return ctx.redirect('/login?originalUrl=%2Fsubmit' + subreddit)
+      if (query.title) {
+        props.postTitle = query.title;
+      }
+
+      if (query.url) {
+        props.body = query.url;
+      } else if (query.text) {
+        props.body = query.text;
+        props.type = 'self';
+      }
     }
 
-    this.props.subredditName = sub;
+    if (!this.token) {
+      let submitUrl = this.path;
+      let submitQuery = querystring.stringify(query);
+      submitUrl += submitQuery ? `?${submitQuery}` : '';
+
+      return this.redirect('/login?originalUrl=' + submitUrl)
+    }
 
     var key = this.key;
 
@@ -528,7 +537,10 @@ function routes(app) {
         <SubmitPage key={ key } {...props}/>
       );
     }
-  });
+  }
+
+  router.get('submit', '/submit', submitPage);
+  router.get('submit', '/r/:subreddit/submit', submitPage);
 
   function * saved (hidden=false) {
     let ctx = this;
