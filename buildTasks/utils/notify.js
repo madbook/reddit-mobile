@@ -21,7 +21,7 @@ module.exports = function(error, options) {
 
   options = _.defaults({}, options, {
     title: 'Gulp notification',
-    sound: true,
+    sound: false,
     icon: isError ?
       path.join(__dirname, '../assets/gulp-error.png') :
       path.join(__dirname, '../assets/gulp.png'),
