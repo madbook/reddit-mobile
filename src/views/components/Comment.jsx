@@ -107,7 +107,7 @@ class Comment extends BaseComponent {
     })
   }
 
-  onDelete () {
+  async onDelete () {
     const {app, apiOptions} = this.props;
     let id = this.state.comment.name;
     var options = app.api.buildOptions(apiOptions);
@@ -118,15 +118,21 @@ class Comment extends BaseComponent {
 
     // nothing returned for this endpoint
     // so we assume success :/
-    app.api.comments.delete(options).then(() => {
-      var deletedComment = Object.assign({}, this.state.comment);
+    try {
+      let res = await app.api.comments.delete(options);
+
+      let deletedComment = Object.assign({}, this.state.comment);
       deletedComment.body_html = '<p>[deleted]</p>';
       deletedComment.author = '[deleted]';
       this.setState({
         comment: deletedComment,
         showTools: false,
-      })
-    })
+      });
+    } catch(e) {
+      if (this.props.config.debug) {
+        console.log(e);
+      }
+    }
   }
 
   async updateComment () {
@@ -146,7 +152,7 @@ class Comment extends BaseComponent {
     });
 
     try {
-      let data = app.api.comments.patch(options);
+      let data = await app.api.comments.patch(options);
       if (data) {
         this.setState({
           comment: data,
