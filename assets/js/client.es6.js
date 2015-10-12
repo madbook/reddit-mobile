@@ -222,7 +222,7 @@ function initialize(bindLinks) {
     app.setState('user', window.bootstrap.dataCache.user);
     app.setState('userPrefs', window.bootstrap.dataCache.userPrefs);
 
-    cookies.set('over18', window.bootstrap.dataCache.userPrefs.over_18);
+    cookies.set('over18', window.bootstrap.dataCache.preferences.over_18);
   }
 
   app.emitter.setMaxListeners(30);

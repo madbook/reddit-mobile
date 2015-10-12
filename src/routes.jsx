@@ -144,13 +144,43 @@ function routes(app) {
          yield next;
          return;
        }
+      let { apiOptions, data} = this.props;
+      let { preferences, users, subreddits } = app.api;
 
-      if (this.token) {
-        this.props.data.set('user', app.getUser(this));
-        this.props.data.set('userPrefs', app.getUserPrefs(this));
+      if (this.token) {        
+        let userOptions =  Object.assign({}, apiOptions, {
+          user: 'me'
+        });
+        setData(this, 'user', 'users', userOptions);
+
+        let prefOptions = Object.assign({}, apiOptions);
+        setData(this, 'preferences', 'preferences', prefOptions);
+
+        let subOptions = Object.assign({}, apiOptions, {
+          query: {
+            sort: 'mine/subscriber',
+            sr_detail: true,
+            feature: 'mobile_settings',
+            limit: 250,
+          },
+        });
+        subOptions.headers['user-agent'] = this.headers['user-agent'];
+        setData(this, 'userSubscriptions', 'subreddits', subOptions);
+
+      } else {
+
+        let subOptions = Object.assign({}, apiOptions, {
+          query: {
+            sort: 'default',
+            sr_detail: true,
+            feature: 'mobile_settings',
+            limit: 250, 
+          },
+          origin: app.getConfig('nonAuthAPIOrigin'),
+        });
+        delete subOptions.headers.Authorization;
+        setData(this, 'userSubscriptions', 'subreddits', subOptions);
       }
-
-      this.props.data.set('userSubscriptions', app.getUserSubscriptions(this));
 
       yield next;
     }
