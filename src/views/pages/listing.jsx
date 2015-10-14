@@ -1,6 +1,5 @@
 import React from 'react';
 import remove from 'lodash/array/remove';
-import commentsMap from '../../lib/commentsMap';
 import constants from '../../constants';
 import { models } from 'snoode';
 
@@ -171,7 +170,6 @@ class ListingPage extends BasePage {
     if (comments) {
       commentsList = comments.map((comment, i) => {
         if (comment && comment.bodyHtml !== undefined) {
-          comment = commentsMap(comment, null, author, 4, 0, 0, false, savedCommentKeys);
           return (
             <Comment
               ctx={ ctx }
