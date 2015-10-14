@@ -6,24 +6,28 @@ class Modal extends BaseComponent {
     super(props);
 
     this.state = {
-      open: this.props.open || false,
+      open: props.open || false,
     }
+
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentWillRecieveProps (nextProps) {
     if (nextProps.open) {
-      this.setState({open: true})
+      this.setState({open: nextProps.open});
     }
   }
 
   closeModal () {
-    this.setState({open: false})
+    this.setState({open: false});
   }
 
   render () {
-    var close = this.closeModal.bind(this);
 
-    var style = {display: 'none'};
+    var style = { 
+      display: 'none'
+    };
+
     var openClass = '';
     if (this.state.open) {
       openClass = 'in';
@@ -32,14 +36,14 @@ class Modal extends BaseComponent {
 
     return (
       <section>
-        <div className={'modal fade ' + openClass} style={style}>
+        <div className={ `modal fade ${openClass}` } style={ style }>
           <div className='modal-dialog modal-sm Modal-small'>
             <div className='modal-content'>
               <div className='modal-tiny-header clearfix' >
                 <button
                   type='button'
                   className='close'
-                  onClick={close}
+                  onClick={ this.closeModal }
                   aria-label='Close'
                 ><span aria-hidden='true'>&times;</span></button>
               </div>
@@ -49,7 +53,7 @@ class Modal extends BaseComponent {
             </div>
           </div>
         </div>
-        <div className={'modal-backdrop fade ' + openClass } style={style}></div>
+        <div className={ `modal-backdrop fade ${openClass}` } style={ style }></div>
       </section>
     );
   }
