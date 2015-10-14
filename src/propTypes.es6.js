@@ -1,83 +1,87 @@
 import React from 'react';
 
-var _listingSource = React.PropTypes.shape({
-  url: React.PropTypes.string.isRequired,
+let { array, string, number, object, bool, shape, oneOfType, arrayOf } = React.PropTypes;
+
+var _listingSource = shape({
+  url: string.isRequired,
 });
 
-var _listingResolutions = React.PropTypes.arrayOf(React.PropTypes.shape({
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  url: React.PropTypes.string.isRequired,
+var _listingResolutions = arrayOf(shape({
+  width: number.isRequired,
+  height: number.isRequired,
+  url: string.isRequired,
 }));
 
-var _listingVariants = React.PropTypes.shape({
-  nsfw: React.PropTypes.shape({
+var _listingVariants = shape({
+  nsfw: shape({
     resolutions: _listingResolutions.isRequired,
     source: _listingSource,
   })
 });
 
 export default {
-  comment: React.PropTypes.shape({
-    author: React.PropTypes.string.isRequired,
-    author_flair_text: React.PropTypes.string,
-    author_flair_css_class: React.PropTypes.string,
-    body: React.PropTypes.string.isRequired,
-    body_html: React.PropTypes.string.isRequired,
-    created_utc: React.PropTypes.number.isRequired,
-    distinguished: React.PropTypes.bool,
-    gilded: React.PropTypes.number.isRequired,
-    hidden: React.PropTypes.bool,
-    id: React.PropTypes.string.isRequired,
-    likes: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
-      React.PropTypes.number,
+
+  comment: shape({
+    author: string.isRequired,
+    author_flair_text: string,
+    author_flair_css_class: string,
+    body: string.isRequired,
+    body_html: string.isRequired,
+    created_utc: number.isRequired,
+    distinguished: bool,
+    gilded: number.isRequired,
+    hidden: bool,
+    id: string.isRequired,
+    likes: oneOfType([
+      bool,
+      number,
     ]),
-    link_title: React.PropTypes.string,
-    link_url: React.PropTypes.string,
-    name: React.PropTypes.string.isRequired,
-    replies: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.string,
+    link_title: string,
+    link_url: string,
+    name: string.isRequired,
+    replies: oneOfType([
+      array,
+      string,
     ]).isRequired,
-    saved: React.PropTypes.bool.isRequired,
-    score: React.PropTypes.number.isRequired,
+    saved: bool.isRequired,
+    score: number.isRequired,
   }),
-  listing: React.PropTypes.shape({
-    _type: React.PropTypes.string.isRequired,
-    author: React.PropTypes.string.isRequired,
-    cleanPermalink: React.PropTypes.string.isRequired,
-    created_utc: React.PropTypes.number.isRequired,
-    distinguished: React.PropTypes.string,
-    domain: React.PropTypes.string.isRequired,
-    edited: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
-      React.PropTypes.number,
+
+  listing: shape({
+    _type: string.isRequired,
+    author: string.isRequired,
+    cleanPermalink: string.isRequired,
+    created_utc: number.isRequired,
+    distinguished: string,
+    domain: string.isRequired,
+    edited: oneOfType([
+      bool,
+      number,
     ]).isRequired,
-    expandContent: React.PropTypes.string,
-    gilded: React.PropTypes.number.isRequired,
-    hidden: React.PropTypes.bool.isRequired,
-    id: React.PropTypes.string.isRequired,
-    is_self: React.PropTypes.bool.isRequired,
-    likes: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
-      React.PropTypes.number,
+    expandContent: string,
+    gilded: number.isRequired,
+    hidden: bool.isRequired,
+    id: string.isRequired,
+    is_self: bool.isRequired,
+    likes: oneOfType([
+      bool,
+      number,
     ]),
-    link_flair_css_class: React.PropTypes.string,
-    link_flair_text: React.PropTypes.string,
-    media: React.PropTypes.shape({
-      oembed: React.PropTypes.shape({
-        height: React.PropTypes.number.isRequired,
-        html: React.PropTypes.string.isRequired,
-        thumbnail_url: React.PropTypes.string.isRequired,
-        type: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
+    link_flair_css_class: string,
+    link_flair_text: string,
+    media: shape({
+      oembed: shape({
+        height: number.isRequired,
+        html: string.isRequired,
+        thumbnail_url: string.isRequired,
+        type: string.isRequired,
+        width: number.isRequired,
       }),
     }),
-    name: React.PropTypes.string.isRequired,
-    num_comments: React.PropTypes.number.isRequired,
-    preview: React.PropTypes.shape({
-      images: React.PropTypes.arrayOf(React.PropTypes.shape({
+    name: string.isRequired,
+    num_comments: number.isRequired,
+    preview: shape({
+      images: arrayOf(shape({
         source: _listingSource,
         variants: _listingVariants,
       })).isRequired,
@@ -85,30 +89,32 @@ export default {
       resolutions: _listingResolutions,
       source: _listingSource,
     }),
-    over_18: React.PropTypes.bool.isRequired,
-    promoted: React.PropTypes.bool,
-    saved: React.PropTypes.bool.isRequired,
-    selftext: React.PropTypes.string.isRequired,
-    sr_detail: React.PropTypes.shape({
-      icon_img: React.PropTypes.string,
-      key_color: React.PropTypes.string,
+    over_18: bool.isRequired,
+    promoted: bool,
+    saved: bool.isRequired,
+    selftext: string.isRequired,
+    sr_detail: shape({
+      icon_img: string,
+      key_color: string,
     }),
-    subreddit: React.PropTypes.string,
-    thumbnail: React.PropTypes.string,
-    title: React.PropTypes.string.isRequired,
-    token: React.PropTypes.string,
-    url: React.PropTypes.string.isRequired,
+    subreddit: string,
+    thumbnail: string,
+    title: string.isRequired,
+    token: string,
+    url: string.isRequired,
   }),
-  subscriptions: React.PropTypes.arrayOf(React.PropTypes.shape({
-    display_name: React.PropTypes.string.isRequired,
-    icon: React.PropTypes.string,
-    url: React.PropTypes.string.isRequired,
+
+  subscriptions: arrayOf(shape({
+    display_name: string.isRequired,
+    icon: string,
+    url: string.isRequired,
   })),
-  user: React.PropTypes.shape({
-    created: React.PropTypes.number.isRequired,
-    is_mod: React.PropTypes.bool.isRequired,
-    inbox_count: React.PropTypes.number,
-    link_karma: React.PropTypes.number.isRequired,
-    name: React.PropTypes.string.isRequired,
+
+  user: shape({
+    created: number.isRequired,
+    is_mod: bool.isRequired,
+    inbox_count: number,
+    link_karma: number.isRequired,
+    name: string.isRequired,
   }),
 };
