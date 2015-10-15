@@ -47,89 +47,86 @@ function setData(ctx, key, endpoint, options) {
   }
 }
 
+function buildAPIOptions(ctx, options={}) {
+  let apiOrigin = ctx.token ? 'authAPIOrigin' : 'nonAuthAPIOrigin';
+  let app = ctx.props.app;
+
+  let apiOptions = merge({
+    origin: app.getConfig(apiOrigin),
+    headers: {
+      'user-agent': ctx.headers['user-agent'],
+    },
+    env: ctx.env || 'SERVER',
+  }, options);
+
+  if (ctx.token) {
+    apiOptions.headers['Authorization'] = `bearer ${ctx.token}`;
+  }
+
+  if (app.config.apiPassThroughHeaders) {
+    for (var h in ctx.headers) {
+      if (app.config.apiPassThroughHeaders.indexOf(h) > -1) {
+        apiOptions.headers[h] = ctx.headers[h];
+      }
+    }
+  }
+
+  return app.api.buildOptions(apiOptions);
+}
+
+// Filter the props we want to expose to the react elements.
+function filterContextProps(ctx) {
+  return {
+    path: ctx.path,
+    query: ctx.query,
+    params: ctx.params,
+    url: ctx.path,
+    userAgent: ctx.userAgent,
+    csrf: ctx.csrf,
+    referrer: ctx.headers.referer,
+    isGoogleCrawler: ctx.isGoogleCrawler,
+    token: ctx.token,
+    tokenExpires: ctx.tokenExpires,
+    redirect: ctx.redirect,
+  }
+}
+
+function buildProps(ctx, app) {
+  var clientConfig = {};
+
+  for (let c in config) {
+    clientConfig[c] = app.getConfig(c);
+  }
+
+  ctx.props = {
+    app: app,
+    title: 'reddit: the front page of the internet',
+    metaDescription: 'reddit: the front page of the internet',
+    data: new Map(),
+    dataCache: ctx.dataCache,
+    ctx: filterContextProps(ctx),
+    compact: ctx.compact,
+    experiments: ctx.experiments,
+    user: ctx.user,
+    token: ctx.token,
+    loid: ctx.loid,
+    loidcreated: ctx.loidcreated,
+    tokenExpires: ctx.tokenExpires,
+    config: clientConfig,
+    render: Date.now(),
+    actionName: ctx.route.name,
+  };
+
+  ctx.props.apiOptions = buildAPIOptions(ctx);
+
+  return ctx.props;
+}
+
+
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
   let router = app.router;
-
-  function buildAPIOptions(ctx, options={}) {
-    let apiOrigin = ctx.token ? 'authAPIOrigin' : 'nonAuthAPIOrigin';
-
-    let apiOptions = merge({
-      origin: app.getConfig(apiOrigin),
-      headers: {
-        'user-agent': ctx.headers['user-agent'],
-      },
-      env: ctx.env || 'SERVER',
-    }, options);
-
-    if (ctx.token) {
-      apiOptions.headers['Authorization'] = `bearer ${ctx.token}`;
-    }
-
-    if (app.config.apiPassThroughHeaders) {
-      for (var h in ctx.headers) {
-        if (app.config.apiPassThroughHeaders.indexOf(h) > -1) {
-          apiOptions.headers[h] = ctx.headers[h];
-        }
-      }
-    }
-
-    return app.api.buildOptions(apiOptions);
-  }
-
-  // Filter the props we want to expose to the react elements.
-  function filterContextProps(ctx) {
-    return {
-      path: ctx.path,
-      query: ctx.query,
-      params: ctx.params,
-      url: ctx.path,
-      userAgent: ctx.userAgent,
-      csrf: ctx.csrf,
-      referrer: ctx.headers.referer,
-      isGoogleCrawler: ctx.isGoogleCrawler,
-      token: ctx.token,
-      tokenExpires: ctx.tokenExpires,
-      redirect: ctx.redirect,
-    }
-  }
-
-  // Build all the standard properties used to render layouts. This may move
-  // higher up (into reddit-mobile) at some point.
-  function buildProps() {
-    return function * (next) {
-      var ctx = this;
-      var clientConfig = {};
-
-      for (let c in config) {
-        clientConfig[c] = app.getConfig(c);
-      }
-
-      this.props = {
-        app: app,
-        title: 'reddit: the front page of the internet',
-        metaDescription: 'reddit: the front page of the internet',
-        data: new Map(),
-        dataCache: ctx.dataCache,
-        ctx: filterContextProps(ctx),
-        compact: ctx.compact,
-        experiments: ctx.experiments,
-        user: ctx.user,
-        token: ctx.token,
-        loid: ctx.loid,
-        loidcreated: ctx.loidcreated,
-        tokenExpires: ctx.tokenExpires,
-        config: clientConfig,
-        render: Date.now(),
-        actionName: ctx.route.name,
-      };
-
-      this.props.apiOptions = buildAPIOptions(this);
-
-      yield next;
-    }
-  }
 
   function userData() {
     return function * (next) {
@@ -166,9 +163,13 @@ function routes(app) {
     this.body = 'OK';
   });
 
-  router.use(buildProps());
+  router.use(function * (next) {
+      buildProps(this, app);
+      yield next;
+   });
   router.use(userData());
   router.use(defaultLayout);
+
 
   function * indexPage (next) {
     var ctx = this;
@@ -759,3 +760,4 @@ function routes(app) {
 }
 
 export default routes;
+export var buildProps = buildProps;
