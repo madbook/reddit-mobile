@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import React from 'react/addons';
 import shallowHelpers from 'react-shallow-renderer-helpers';
+import buildProps from '../../helpers/buildProps';
 
 import BodyLayout from '../../../src/views/layouts/BodyLayout'
 
@@ -20,11 +21,7 @@ describe('BodyLayout', () => {
 
   before('render and find element', () => {
 
-    var props = {};
-    props.data = new Map();
-    props.dataCache = {};
-    props.ctx = {};
-    props.app = {};
+    var props = buildProps();
     props.children='hello world';
 
     renderer.render(<BodyLayout {...props} ></BodyLayout>);

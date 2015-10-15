@@ -1,5 +1,8 @@
 require('babel/register')({
-    extensions: ['.js', '.es6.js', '.jsx'],
+  ignore: false,
+  only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
+  extensions: ['.js', '.es6.js', '.jsx' ],
+  sourceMap: true,
 });
 
 // lib
