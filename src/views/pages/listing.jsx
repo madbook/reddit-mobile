@@ -169,9 +169,12 @@ class ListingPage extends BasePage {
     let commentsList;
     if (comments) {
       commentsList = comments.map((comment, i) => {
+        var key = `comment-${i}`
+
         if (comment && comment.bodyHtml !== undefined) {
           return (
             <Comment
+              key={key}
               ctx={ ctx }
               app={ app }
               subredditName={ subredditName }
@@ -195,6 +198,7 @@ class ListingPage extends BasePage {
           let text = loadingMoreComments ? 'Loading...' : `load more comments (${numChildren} ${word})`;
           return (
             <a 
+              key={key}
               href={ permalink }
               data-no-route='true'
               onClick={this.loadMore.bind(this, comment)}

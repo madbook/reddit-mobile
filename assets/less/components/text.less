@@ -1,23 +1,32 @@
 a {
   color: @blue;
+  [class*=" icon-"] { color: @blue; }
 
   &:active {
     color: lighten(@blue, 20%);
+    [class*=" icon-"] { color: lighten(@blue, 20%); }
   }
 
   &:visited {
     color: lighten(@blue, 40%);
+    [class*=" icon-"] { color: lighten(@blue, 40%); }
   }
+}
+
+.text-muted:hover [class*="icon-"] {
+  color: @light-gray;
 }
 
 a.voted.text-upvote:hover,
 a.voted.text-upvote:focus,
+button.upvoted:hover .icon-upvote-circled,
 .text-upvote {
   color: @orangered;
 }
 
 a.voted.text-downvote:hover,
 a.voted.text-downvote:focus,
+button.downvoted:hover .icon-downvote-circled,
 .text-downvote {
   color: @periwinkle;
 }
@@ -140,7 +149,8 @@ a.voted.text-downvote:focus,
 
 .text-muted a,
 .text-muted a:visited,
-.text-muted a:hover {
+.text-muted a:hover,
+{
   &:extend(.text-muted);
 }
 
@@ -198,6 +208,14 @@ blockquote {
 p {
   word-wrap: break-word;
   word-break: keep-all;
+}
+
+.text-small {
+  font-size: 12px;
+
+  [class*=" icon-"] {
+    line-height: 13px;
+  }
 }
 
 .text-super-large {

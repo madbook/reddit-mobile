@@ -300,9 +300,9 @@ class Comment extends BaseComponent {
         <div className='comment-children comment-content'>
           {
             comment.replies.map((c, i) => {
-              if (c && c.bodyHtml !== undefined) {
-                var key = 'page-comment-' + c.name + '-' + i;
+              var key = 'page-comment-' + c.name + '-' + i;
 
+              if (c && c.bodyHtml !== undefined) {
                 return (
                   <Comment
                     {...this.props}
@@ -316,13 +316,15 @@ class Comment extends BaseComponent {
                 let numChildren = c.children.length;
                 let word = numChildren > 1 ? 'replies' : 'reply';
                 let permalink = permalinkBase + c.parent_id.substring(3) + '?context=0';
-                let text = loadingMoreComments ? 'Loading...' : `load more comments (${numChildren} ${word})`;
+                let text = loadingMoreComments ? 'Loading...' : `Load ${numChildren}  ${word}`;
                 return (
-                  <a
-                    href={permalink}
-                    data-no-route='true'
-                    onClick={this.loadMore.bind(this, c)}
-                  >{ text }</a>
+                  <div className='comment-content comment-loadmore text-small' key={key}>
+                    <a
+                      href={permalink}
+                      data-no-route='true'
+                      onClick={this.loadMore.bind(this, c)}
+                      ><span className='icon icon-comments' />{ text }</a>
+                  </div>
                 );
               }
             })
@@ -397,7 +399,7 @@ class Comment extends BaseComponent {
                 <li className='comment-timestamp-score'>
                   <span className='comment-timestamp'>{ submitted }</span>
                   <span className='comment-title-score'>
-                    { comment.score_hidden ? '[score hidden]' : score }
+                    { comment.score_hidden ? '' : score }
                   </span>
                 </li>
               </ul>

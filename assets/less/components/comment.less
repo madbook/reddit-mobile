@@ -50,8 +50,7 @@
 }
 
 .comment-article {
-  .transition(.2s all ease);
-  padding-left: .5em;
+  padding-left: 3px;
 
   &.comment-highlighted {
     background-color: darken(@brand-primary-bg-lightest, 2.5%);
@@ -66,15 +65,23 @@
   margin-left: .4em;
 }
 
+.comment-loadmore {
+  margin-bottom: 1em;
+
+  a:active, a:hover {
+    text-decoration: none;
+  }
+}
+
 .linkbar.comment-title-list {
   width: 100%;
 
   &.linkbar-compact li.twirly {
-    left: -14px;
-    width: 19px;
+    left: -10px;
+    width: 12px;
     padding-bottom: 0;
     margin-right: 0;
-    height: 17px;
+    height: 18px;
 
     &:before {
       display: inline-block;
@@ -99,7 +106,11 @@
 }
 
 .comment-timestamp {
-  margin-right: 1em;
+  &:after {
+    content: "•";
+    color: @light-gray;
+    padding: 0 .5em;
+  }
 }
 
 .comment-title-vote-icon.glyphicon {
@@ -129,7 +140,10 @@
 .comment-submitted {
   color: @gray;
   font-size: @font-size-small;
-  margin-bottom: 5px;
+}
+
+.comment-body {
+  padding: .5em 0;
 }
 
 .comment-vote {
@@ -161,8 +175,7 @@
 }
 
 .CommentBox-textarea-holder {
-    margin-bottom: 15px;
-    height: 4em;
+  height: 4em;
 
   .form-control {
     .transition(height .2s ease);
@@ -172,15 +185,6 @@
   &.has-content + .btn-post {
     opacity: 1;
     visibility: visible;
-  }
-}
-
-.comment-textarea-holder {
-  height: 300px;
-
-  .form-control {
-    resize: none;
-    height: 100%;
   }
 }
 
