@@ -10,12 +10,12 @@ let App = mixin(ServerReactApp);
 export default function () {
   let config = {};
   var app = new App(config);
-  
+
   let ctx = {
     dataCache: {},
     route: {},
     headers: {},
-  };  
+  };
 
-  return buildProps(ctx, app); 
+  return buildProps(ctx, app);
 }

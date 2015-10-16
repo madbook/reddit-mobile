@@ -14,8 +14,11 @@ require('./lib/formatDifference');
 global.document = {};
 
 // components
-require('./views/components/Modal.jsx');
+require('./views/components/Modal');
 
 
 //Layouts
-require('./views/layouts/BodyLayout.jsx');
+require('./views/layouts/BodyLayout');
+
+// pages
+require('./views/pages/Index');
