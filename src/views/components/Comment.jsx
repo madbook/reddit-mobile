@@ -234,7 +234,7 @@ class Comment extends BaseComponent {
     if (showTools || highlight === comment.id) {
       highlighted = 'comment-highlighted';
 
-      if (showReplyBox) {
+      if (showReplyBox && this.props.token) {
         commentBox = (
           <CommentBox
             {...this.props}
