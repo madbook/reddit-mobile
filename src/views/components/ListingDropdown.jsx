@@ -127,7 +127,7 @@ class ListingDropdown extends BaseComponent {
             </button>
           </li>
         );
-      } 
+      }
 
 
       var confirmClass = 'hidden';
@@ -173,18 +173,26 @@ class ListingDropdown extends BaseComponent {
       );
     }
 
-    return (
-      <SeashellsDropdown app={ props.app } right={ true }>
-        { editLink }
-        { delLink }
-        { viewComments }
-        { permalink }
+    var moreFrom;
+    if (listing.subreddit) {
+      moreFrom = (
         <li className='Dropdown-li'>
           <a className='Dropdown-button' href={ '/r/' + listing.subreddit }>
             <span className='icon-snoo-circled' />
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </a>
         </li>
+      );
+    }
+
+
+    return (
+      <SeashellsDropdown app={ props.app } right={ true }>
+        { editLink }
+        { delLink }
+        { viewComments }
+        { permalink }
+        { moreFrom }
         <li className='Dropdown-li'>
           <a className='Dropdown-button' href={ '/u/' + listing.author }>
             <span className='icon-info-circled' />
