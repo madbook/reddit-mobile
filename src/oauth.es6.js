@@ -5,10 +5,20 @@ import uuid from 'uuid';
 import url from 'url';
 import querystring from 'querystring';
 
-var SCOPE = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+
+function nukeTokens(ctx) {
+  ctx.cookies.set('token');
+  ctx.cookies.set('tokenScopes');
+  ctx.cookies.set('tokenExpires');
+  ctx.cookies.set('refreshToken');
+}
 
 // set up oauth routes
 var oauthRoutes = function(app) {
+  app.oauthScopes = SCOPES;
+  app.nukeTokens = nukeTokens;
+
   var router = app.router;
 
   var cookieOptions = {
@@ -45,6 +55,7 @@ var oauthRoutes = function(app) {
 
   function setTokenCookie(ctx, token) {
     ctx.cookies.set('token', token.token.access_token, longCookieOptions);
+    ctx.cookies.set('tokenScopes', SCOPES, longCookieOptions);
     ctx.cookies.set('tokenExpires', token.token.expires_at.toString(), longCookieOptions);
 
     if (token.token.refresh_token) {
@@ -188,7 +199,7 @@ var oauthRoutes = function(app) {
           let postParams = {
             client_id: clientId,
             redirect_uri: redirect_uri,
-            scope: SCOPE,
+            scope: SCOPES,
             state: modhash,
             duration: 'permanent',
             authorize: 'yes',
@@ -280,7 +291,7 @@ var oauthRoutes = function(app) {
     if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
       redirectURI = OAuth2.authCode.authorizeURL({
         redirect_uri: redirect,
-        scope: SCOPE,
+        scope: SCOPES,
         state: `${state}|${referer}`,
         duration: 'permanent',
       });
@@ -292,9 +303,7 @@ var oauthRoutes = function(app) {
   });
 
   router.get('/logout', function * () {
-    this.cookies.set('token');
-    this.cookies.set('tokenExpires');
-    this.cookies.set('refreshToken');
+    nukeTokens(this);
     this.cookies.set('reddit_session', undefined, {
       domain: '.reddit.com',
     });
@@ -323,9 +332,7 @@ var oauthRoutes = function(app) {
         tokenExpires: result.token.expires_at.toString(),
       };
     } catch (e) {
-      this.cookies.set('tokenExpires');
-      this.cookies.set('token');
-      this.cookies.set('refreshToken');
+      nukeTokens(this);
     }
   });
 

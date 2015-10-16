@@ -341,9 +341,14 @@ class Server {
 
   checkToken (app) {
     return function * (next) {
-
       var now = new Date();
       var expires = this.cookies.get('tokenExpires');
+
+      if (this.cookies.get('tokenScopes') !== app.oauthScopes) {
+        app.nukeTokens(this);
+        yield next;
+        return;
+      }
 
       if (!expires) {
         yield next;
@@ -372,10 +377,9 @@ class Server {
             console.log(e, e.stack);
           }
 
-          this.cookies.set('tokenExpires');
-          this.cookies.set('token');
-          this.cookies.set('refreshToken');
+          app.nukeTokens(this);
           this.redirect('/');
+
           return;
         }
       }
