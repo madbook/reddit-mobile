@@ -154,6 +154,7 @@ class Comment extends BaseComponent {
     try {
       let data = await app.api.comments.patch(options);
       if (data) {
+        data.replies = oldComment.replies;
         this.setState({
           comment: data,
           editing: false,
@@ -208,7 +209,7 @@ class Comment extends BaseComponent {
   render () {
     let {app, apiOptions, token, nestingLevel, permalinkBase, user, op,
          highlight, subredditName} = this.props;
-         
+
     let {comment, showReplyBox, editing, editError, showTools, collapsed,
          score, reported, loadingMoreComments} = this.state;
 
@@ -286,14 +287,14 @@ class Comment extends BaseComponent {
           { comment.author_flair_text }
         </span>
       );
-    } 
+    }
 
     let gilded;
     if (comment.gilded) {
       let gilded = (
         <span className='icon-gold-circled'/>
       );
-    }  
+    }
 
     if (comment.replies && !collapsed) {
       var children = (
@@ -311,7 +312,7 @@ class Comment extends BaseComponent {
                     nestingLevel={nestingLevel + 1}
                     op={op}
                   />
-                ) 
+                )
               } else {
                 let numChildren = c.children.length;
                 let word = numChildren > 1 ? 'replies' : 'reply';
