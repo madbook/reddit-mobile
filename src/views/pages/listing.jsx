@@ -242,15 +242,19 @@ class ListingPage extends BasePage {
             single={ true }
             toggleEdit={ this.toggleEdit.bind(this) }
           />
-          <CommentBox
-            apiOptions={ apiOptions }
-            thingId={ listing.name }
-            user={ user }
-            token={ token }
-            app={ app }
-            ctx={ ctx }
-            onSubmit={ this.onNewComment.bind(this) }
-          />
+
+          { token ? (
+            <CommentBox
+              apiOptions={ apiOptions }
+              thingId={ listing.name }
+              user={ user }
+              token={ token }
+              app={ app }
+              ctx={ ctx }
+              onSubmit={ this.onNewComment.bind(this) }
+            />
+          ) : null }
+
           { singleComment }
           { commentsList }
         </div>
