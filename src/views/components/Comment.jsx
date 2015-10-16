@@ -79,6 +79,10 @@ class Comment extends BaseComponent {
   showReplyBox (e) {
     e.preventDefault();
 
+    if (!this.props.token) {
+      window.location = this.props.app.config.loginPath;
+    }
+
     this.setState({
       showReplyBox: !this.state.showReplyBox,
     });
