@@ -341,21 +341,16 @@ class Server {
 
   checkToken (app) {
     return function * (next) {
+      if (skipAuth(app, this.url)) {
+        yield next;
+        return;
+      }
+
       var now = new Date();
       var expires = this.cookies.get('tokenExpires');
 
       if (this.cookies.get('tokenScopes') !== app.oauthScopes) {
         app.nukeTokens(this);
-        yield next;
-        return;
-      }
-
-      if (!expires) {
-        yield next;
-        return;
-      }
-
-      if (skipAuth(app, this.url)) {
         yield next;
         return;
       }
