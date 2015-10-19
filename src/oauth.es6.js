@@ -5,18 +5,16 @@ import uuid from 'uuid';
 import url from 'url';
 import querystring from 'querystring';
 
-const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+const SCOPES = '*';
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
-  ctx.cookies.set('tokenScopes');
   ctx.cookies.set('tokenExpires');
   ctx.cookies.set('refreshToken');
 }
 
 // set up oauth routes
 var oauthRoutes = function(app) {
-  app.oauthScopes = SCOPES;
   app.nukeTokens = nukeTokens;
 
   var router = app.router;
@@ -55,7 +53,6 @@ var oauthRoutes = function(app) {
 
   function setTokenCookie(ctx, token) {
     ctx.cookies.set('token', token.token.access_token, longCookieOptions);
-    ctx.cookies.set('tokenScopes', SCOPES, longCookieOptions);
     ctx.cookies.set('tokenExpires', token.token.expires_at.toString(), longCookieOptions);
 
     if (token.token.refresh_token) {

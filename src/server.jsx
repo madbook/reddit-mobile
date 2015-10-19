@@ -351,12 +351,6 @@ class Server {
       var now = new Date();
       var expires = this.cookies.get('tokenExpires');
 
-      if (this.cookies.get('tokenScopes') !== app.oauthScopes) {
-        app.nukeTokens(this);
-        yield next;
-        return;
-      }
-
       expires = new Date(expires);
 
       if (now > expires) {
