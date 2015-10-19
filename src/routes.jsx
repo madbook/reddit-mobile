@@ -531,9 +531,9 @@ function routes(app) {
   });
 
   function * saved (hidden=false) {
-    var ctx = this;
-    var sort = this.query.sort || 'hot';
-    var savedText = 'saved';
+    let ctx = this;
+    let props = this.props;
+    let sort = this.query.sort || 'hot';
 
     Object.assign(this.props, {
       userName: ctx.params.user,
@@ -541,22 +541,15 @@ function routes(app) {
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
       sort: sort,
-      hidden: hidden,
-      title: `${savedText} links`,
+      title: `${props.actionName} links`,
       metaDescription: `u/${ctx.params.user}'s saved links on reddit.com`,
     });
 
-    if (hidden) {
-      savedText = 'hidden';
-    }
-
-    var saved = app.api.saved;
+    let saved = app.api.saved;
 
     if (hidden) {
       saved = app.api.hidden;
     }
-
-    let props = this.props;
 
     let savedOpts = buildAPIOptions(ctx, {
       query: {

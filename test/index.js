@@ -22,3 +22,4 @@ require('./views/layouts/BodyLayout');
 
 // pages
 require('./views/pages/Index');
+require('./views/pages/userSaved');
