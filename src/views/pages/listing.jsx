@@ -182,7 +182,6 @@ class ListingPage extends BasePage {
               highlight={ commentId }
               comment={ comment }
               index={ i }
-              key={`page-comment-${comment.name}`}
               nestingLevel={ 0 }
               op={ author }
               user={ user }
