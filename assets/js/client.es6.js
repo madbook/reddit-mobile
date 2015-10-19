@@ -167,13 +167,10 @@ function sendTimings() {
 
     timings.mountTiming = (Date.now() - beginRender) / 1000;
 
-    var $csrf = document.getElementById('csrf-token-meta-tag');
-
     superagent
       .post('/timings')
       .send({
         rum: timings,
-        _csrf: $csrf.content,
       })
       .end(function(){});
   }

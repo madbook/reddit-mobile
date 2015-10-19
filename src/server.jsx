@@ -30,6 +30,8 @@ import setLoggedOutCookies from './lib/loid';
 
 import defaultConfig from './config';
 
+const ignoreCSRF = ['/timings'];
+
 function getBucket(loid, choices, controlSize) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
 }
@@ -162,6 +164,10 @@ class Server {
   csrf (app) {
     return function * (next) {
       if (['GET', 'HEAD', 'OPTIONS'].includes(this.method)) {
+        return yield* next;
+      }
+
+      if (ignoreCSRF.includes(this.url)) {
         return yield* next;
       }
 
