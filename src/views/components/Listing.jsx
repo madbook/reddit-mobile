@@ -10,7 +10,8 @@ import ListingContent from '../components/ListingContent';
 import ListingDropdown from '../components/ListingDropdown';
 import Vote from '../components/Vote';
 
-var TransitionGroup = React.addons.TransitionGroup;
+const PropTypes = React.PropTypes;
+const TransitionGroup = React.addons.TransitionGroup;
 
 function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
@@ -59,36 +60,32 @@ class Listing extends BaseComponent {
 
   //build headline
   _renderHeadline() {
-    var props = this.props;
+    let { app, apiOptions, user, token, single, toggleEdit, onDelete,
+          listing, hideSubredditLabel } = this.props;
 
-    var listing = props.listing;
-    var hideSubredditLabel = props.hideSubredditLabel;
-
-    var distinguished = listing.distinguished;
+    let { distinguished, subreddit, author } = listing;
     var linkFlairText = listing.link_flair_text;
-    var subreddit = listing.subreddit;
 
-    var showEditAndDel = false;
-
-    if (props.user && props.single) {
-      showEditAndDel = (props.user.name === listing.author);
+    let showEditAndDel = false;
+    if (user && single) {
+      showEditAndDel = (user.name === author);
     }
 
 
     var listingDropdownNode = (
       <ListingDropdown
-        apiOptions={ props.apiOptions }
-        app={ props.app }
-        user={ props.user }
-        token={ props.token }
-        viewComments={ !props.single }
+        apiOptions={ apiOptions }
+        app={ app }
+        user={ user }
+        token={ token }
+        viewComments={ !single }
         listing={ listing }
         showHide={ true }
         saved={ listing.saved }
         subreddit={ listing.subreddit }
         showEditAndDel={ showEditAndDel }
-        onEdit={ props.toggleEdit }
-        onDelete={ props.onDelete }
+        onEdit={ toggleEdit }
+        onDelete={ onDelete }
         onReport={ this.onReport }
         onHide={ this.onHide }
       />
@@ -169,41 +166,40 @@ class Listing extends BaseComponent {
   }
 
   _renderFooter() {
-    var props = this.props;
+    let { listing, single, hideWhen, hideDomain, hideComments,
+          app, token, apiOptions } = this.props;
 
-    var listing = props.listing;
+    let { domain, promoted, gilded, cleanPermalink, num_comments,
+          created_utc } = listing;
 
-    var domain = listing.domain;
-    var numComments = listing.num_comments;
-
-    if (listing.gilded && props.single) {
+    if (gilded && single) {
       var gildedNode = (
         <li><span className='icon-gold-circled'/></li>
       );
     }
 
-    if (!props.hideWhen) {
-      var whenNode = (<span className='Listing-when'>{ short(listing.created_utc * 1000) }</span>);
+    if (!hideWhen) {
+      var whenNode = (<span className='Listing-when'>{ short(created_utc * 1000) }</span>);
     }
 
-    if (listing.promoted) {
+    if (promoted) {
       domainNode = (
         <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
       );
-    } else if (domain.indexOf('self.') !== 0 && !props.hideDomain) {
+    } else if (domain.indexOf('self.') !== 0 && !hideDomain) {
       var domainNode = (
         <span className='Listing-domain'>{ domain }</span>
       );
     }
 
-    if (!props.hideComments) {
+    if (!hideComments) {
       var commentsNode = (
         <li className='Listing-comments linkbar-item-no-seperator'>
           <a
             className='Listing-commentsbutton'
             href={ listing.cleanPermalink }>
             <span className='icon-comments-circled listing-footer-icon' />
-            <span className='Listing-numcomments'>{ numComments }</span>
+            <span className='Listing-numcomments'>{ num_comments }</span>
             { whenNode }
             { domainNode }
           </a>
@@ -219,10 +215,10 @@ class Listing extends BaseComponent {
         </ul>
         <div className='Listing-vote'>
           <Vote
-            app={ this.props.app }
+            app={ app }
             thing={ listing }
-            token={ props.token }
-            apiOptions={ props.apiOptions }
+            token={ token }
+            apiOptions={ apiOptions }
           />
         </div>
       </footer>
@@ -250,49 +246,57 @@ class Listing extends BaseComponent {
     }*/
 
   render() {
-    var state = this.state;
-    if (state.hidden || state.reported) {
+    var { width, compact, tallestHeight, loaded, expanded,
+          hidden, reported } = this.state;
+    var { showHidden, single, editing, listing, toggleEdit, saveUpdatedText,
+          editError, z} = this.props;
+
+    if ((!showHidden && hidden) || reported) {
       return null;
     }
 
-    var compact = state.compact;
-    var props = this.props;
-
-    if (compact && state.expanded && !props.single) {
+    var expandedCompact;
+    if (compact && expanded && !single) {
       if (!this.key) {
         this.key = Math.random();
       }
-      var expandedCompact = (
+      expandedCompact = (
         <ListingContent expand = { this.expand }
                         expanded = { true }
-                        width={ state.width }
-                        tallestHeight={ state.tallestHeight }
-                        loaded={ state.loaded }
-                        { ...props }
+                        width={ width }
+                        tallestHeight={ tallestHeight }
+                        loaded={ loaded }
+                        { ...this.props }
                         expandedCompact={ true }
                         compact={ compact }
                         />
       );
     }
 
+    var listingClass = `Listing ${(compact ? 'compact' : '')}` +
+      `${(listing.promoted ? ' Listing-sponsored' : '')}`;
+
     return (
-      <article ref='root' style={ {zIndex: props.z || 1} } className={'Listing' + (compact ? ' compact' : '') + (props.listing.promoted ? ' Listing-sponsored' : '') }>
+      <article
+        ref='root'
+        style={ {zIndex: z || 1} }
+        className={ listingClass }>
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
           <ListingContent
-                          isThumbnail={compact}
-                          expand = { this.expand }
-                          expanded = { state.expanded && !expandedCompact }
-                          width={ state.width }
-                          tallestHeight={ state.tallestHeight }
-                          loaded={ state.loaded }
-                          editing={this.props.editing}
-                          toggleEdit={this.props.toggleEdit}
-                          saveUpdatedText={this.props.saveUpdatedText}
-                          editError={ this.props.editError }
-                          { ...props }
-                          compact={ compact }
-                          />
+            isThumbnail={ compact }
+            expand = { this.expand }
+            expanded = { expanded && !expandedCompact }
+            width={ width }
+            tallestHeight={ tallestHeight }
+            loaded={ loaded }
+            editing={ editing }
+            toggleEdit={ toggleEdit }
+            saveUpdatedText={ saveUpdatedText }
+            editError={ editError }
+            { ...this.props }
+            compact={ compact }
+            />
           { this._renderFooter() }
         </div>
         <TransitionGroup>
@@ -352,23 +356,23 @@ class Listing extends BaseComponent {
   _loadContent() {
     this.setState({loaded: true}, this.resize);
   }
-}
 
-Listing.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  compact: React.PropTypes.bool,
-  editError: React.PropTypes.arrayOf(React.PropTypes.string),
-  editing: React.PropTypes.bool,
-  hideComments: React.PropTypes.bool,
-  hideDomain: React.PropTypes.bool,
-  hideSubredditLabel: React.PropTypes.bool,
-  hideWhen: React.PropTypes.bool,
-  listing: propTypes.listing.isRequired,
-  onDelete: React.PropTypes.func,
-  saveUpdatedText: React.PropTypes.func,
-  single: React.PropTypes.bool,
-  toggleEdit: React.PropTypes.func,
-  z: React.PropTypes.number,
-};
+  static propTypes = {
+    apiOptions: PropTypes.object,
+    compact: PropTypes.bool,
+    editError: PropTypes.arrayOf(PropTypes.string),
+    editing: PropTypes.bool,
+    hideComments: PropTypes.bool,
+    hideDomain: PropTypes.bool,
+    hideSubredditLabel: PropTypes.bool,
+    hideWhen: PropTypes.bool,
+    listing: propTypes.listing.isRequired,
+    onDelete: PropTypes.func,
+    saveUpdatedText: PropTypes.func,
+    single: PropTypes.bool,
+    toggleEdit: PropTypes.func,
+    z: PropTypes.number,
+  }
+}
 
 export default Listing;
