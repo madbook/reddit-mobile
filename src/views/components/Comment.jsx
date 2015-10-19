@@ -324,7 +324,7 @@ class Comment extends BaseComponent {
                       href={permalink}
                       data-no-route='true'
                       onClick={this.loadMore.bind(this, c)}
-                      ><span className='icon icon-comments' />{ text }</a>
+                      ><span className='icon icon-comments icon-inline' />{ text }</a>
                   </div>
                 );
               }

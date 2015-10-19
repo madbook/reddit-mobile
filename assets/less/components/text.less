@@ -1,15 +1,15 @@
 a {
   color: @blue;
-  [class*=" icon-"] { color: @blue; }
+  .icon-inline { color: @blue; }
 
   &:active {
     color: lighten(@blue, 20%);
-    [class*=" icon-"] { color: lighten(@blue, 20%); }
+    .icon-inline { color: lighten(@blue, 20%); }
   }
 
   &:visited {
     color: lighten(@blue, 40%);
-    [class*=" icon-"] { color: lighten(@blue, 40%); }
+    .icon-inline { color: lighten(@blue, 40%); }
   }
 }
 
