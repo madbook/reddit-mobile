@@ -11,6 +11,36 @@ import BodyLayout from './views/layouts/BodyLayout';
 import ErrorPage from './views/pages/error';
 import Loading from './views/components/Loading';
 
+import errorLog from './lib/errorLog';
+
+function logError(err, ctx, config) {
+  var userAgent;
+  var url;
+  var line;
+
+  if (err.stack) {
+    url = err.stack.split('\n')[1];
+  }
+
+  if (ctx && ctx.env === 'SERVER' || process) {
+    userAgent = 'SERVER';
+  } else if (ctx) {
+    userAgent = ctx.headers['user-agent'];
+  }
+
+  errorLog({
+    error: err,
+    userAgent: userAgent,
+    message: err.message,
+    line: line,
+    url: url,
+  }, {
+    hivemind: config.statsDomain,
+  }, {
+    level: config.debugLevel || 'error',
+  });
+}
+
 const errorMsgMap = {
   '404': 'Sorry, that page doesn\'t seem to exist.',
   '403': 'Sorry, you don\'t have access to this.',
@@ -41,20 +71,22 @@ function mixin (App) {
       redirects(this);
     }
 
-    error (e, ctx, app) {
-      if (app.config.debug) {
-        console.log(e, e.stack);
-      }
+    error (e, ctx, app, options={}) {
 
       // API error
       if (e.status) {
-        if (!ctx.token && e.status === 403) {
+        // Don't redirect if abort === false
+        if (!ctx.token && e.status === 403 && options.redirect !== false) {
           // Missing authorization
           return ctx.redirect(app.config.loginPath);
         }
       }
 
-      ctx.body = this.errorPage(ctx, e.status);
+      logError(e, ctx, app.config);
+
+      if (options.replaceBody !== false) {
+        ctx.body = this.errorPage(ctx, e.status);
+      }
     }
 
     safeStringify (obj) {

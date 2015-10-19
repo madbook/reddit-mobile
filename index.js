@@ -8,7 +8,31 @@ require('babel/register')({
   sourceMap: true,
 });
 
+var config;
+var errorLog = require('./src/lib/errorLog');
+
 process.on('uncaughtException', function (err) {
+  var url;
+  var line;
+
+  if (err.stack) {
+    var location = err.stack.split('\n')[1];
+    url = location.split(':')[0];
+    line = location.split(':')[1];
+  }
+
+  if (config) {
+    errorLog({
+      error: err,
+      userAgent: 'SERVER',
+      message: err.message,
+      line: line,
+      url: url,
+    }, {
+      hivemind: config.statsDomain,
+    });
+  }
+
   console.log('Caught exception: ' + err);
   process.exit();
 });
@@ -61,7 +85,6 @@ function parseList (list) {
 
 config.apiHeaders = parseObject(process.env.API_HEADERS);
 config.apiPassThroughHeaders = parseList(process.env.API_PASS_THROUGH_HEADERS);
-config.statsDomain = process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/';
 config.actionNameSecret = process.env.ACTION_NAME_SECRET;
 
 config.experiments = parseObject(process.env.EXPERIMENTS);

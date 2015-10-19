@@ -6,7 +6,8 @@ function config() {
     https: process.env.HTTPS === 'true',
     httpsProxy: process.env.HTTPS_PROXY === 'true',
 
-    debug: process.env.SWITCHAROO_DEBUG === 'true',
+    debugLevel: process.env.DEBUG_LEVEL === 'true',
+
     minifyAssets: process.env.MINIFY_ASSETS === 'true',
     liveReload: process.env.LIVERELOAD === 'true',
 
@@ -25,6 +26,7 @@ function config() {
 
     loginPath: process.env.LOGIN_PATH || '/oauth2/login',
 
+    statsDomain: process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/',
     adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
     manifest: {},
   };

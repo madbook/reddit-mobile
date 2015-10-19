@@ -1,5 +1,22 @@
 import 'babel/polyfill';
 
+import errorLog from '../../src/lib/errorLog';
+
+function onError(message, url, line, column) {
+  errorLog({
+    userAgent: window.navigator.userAgent,
+    message,
+    url,
+    line,
+    column,
+  }, {
+    hivemind: window.bootstrap && window.bootstrap.config ? window.bootstrap.config.statsDomain : undefined,
+  });
+}
+
+// Register as early as possible
+window.onerror = onError;
+
 import React from 'react';
 import throttle from 'lodash/function/throttle';
 import forOwn from 'lodash/object/forOwn';

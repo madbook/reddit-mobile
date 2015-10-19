@@ -334,10 +334,7 @@ class Server {
 
           app.setTokenCookie(this, token);
         } catch (e) {
-          // server errored, continue as logged out for now
-          if (app.config.debug) {
-            console.log(e, e.stack);
-          }
+          app.error(e, this, app, { redirect: false, replaceBody: false });
         }
 
         yield next;
@@ -370,9 +367,7 @@ class Server {
 
           app.setTokenCookie(this, token);
         } catch (e) {
-          if (app.config.debug) {
-            console.log(e, e.stack);
-          }
+          app.error(e, this, app, { redirect: false, replaceBody: false });
 
           app.nukeTokens(this);
           this.redirect('/');

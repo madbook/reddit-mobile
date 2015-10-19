@@ -36,9 +36,7 @@ class Interstitial extends BaseComponent {
         app.emit(constants.TOGGLE_OVER_18, 'true');
         app.redirect(topNavLink);
       } catch(e) {
-        if (this.props.config.debug) {
-          console.log(e);
-        }
+        app.error(e, this, app, { redirect: false, replaceBody: false });
       }  
     } else {
       app.emit(constants.TOGGLE_OVER_18, 'true');

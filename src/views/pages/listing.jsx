@@ -127,9 +127,7 @@ class ListingPage extends BasePage {
          loadingMoreComments: false,
       });
     } catch (e) {
-      if (this.props.config.debug) {
-        console.log(e);
-      }
+      app.error(e, this, app, { redirect: false, replaceBody: false });
       this.setState({loadingMoreComments: false});
     }
   }
