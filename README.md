@@ -61,7 +61,7 @@ Plugins register themselves via two interfaces:
 Getting Up and Running
 ----------------------
 
-0. Install [node.js](https://nodejs.org/download/) v0.12+ or [io.js](https://iojs.org) v1.8.1+.
+0. Install [node.js](https://nodejs.org/download/) v4.1+ or iojs 3.0+
 1. [Fork](https://github.com/reddit/reddit-mobile/fork) and clone
   this project.
 2. Run `npm install` to install other dependencies.
