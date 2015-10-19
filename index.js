@@ -13,6 +13,9 @@ process.on('uncaughtException', function (err) {
   process.exit();
 });
 
+// Check node version
+require('./version');
+
 // Require in the express server.
 var Server = require('./src/server');
 

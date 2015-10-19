@@ -13,6 +13,10 @@ var gutil = require('gulp-util');
 var sequence = require('gulp-sequence').use(gulp);
 var util = require('util');
 
+
+// Check node version
+require('./version');
+
 var options = {
   debug: true,
   watch: false,
