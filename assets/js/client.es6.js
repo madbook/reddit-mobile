@@ -161,18 +161,20 @@ function findLinkParent(el) {
 function sendTimings() {
   // Send the timings during the next cycle.
   if (window.bootstrap.actionName) {
-    var timings = Object.assign({
-      actionName: 'm.server.' + window.bootstrap.actionName,
-    }, getTimes());
+    if (Math.random() < .1) { // 10% of requests
+      var timings = Object.assign({
+        actionName: 'm.server.' + window.bootstrap.actionName,
+      }, getTimes());
 
-    timings.mountTiming = (Date.now() - beginRender) / 1000;
+      timings.mountTiming = (Date.now() - beginRender) / 1000;
 
-    superagent
-      .post('/timings')
-      .send({
-        rum: timings,
-      })
-      .end(function(){});
+      superagent
+        .post('/timings')
+        .send({
+          rum: timings,
+        })
+        .end(function(){});
+    }
   }
 }
 
