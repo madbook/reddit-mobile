@@ -3,6 +3,8 @@ import constants from '../../constants';
 import cookies from 'cookies-js';
 import propTypes from '../../propTypes';
 import querystring from 'querystring';
+import aboutItems from '../../sideNavAboutMenuItems'
+import titleCase from '../../lib/titleCase';
 
 import BaseComponent from './BaseComponent';
 
@@ -30,12 +32,10 @@ class SideNav extends BaseComponent {
       opened: false,
       twirly: '',
       compact: props.compact,
-      subscriptions: props.dataCache.userSubscriptions || [],
     };
 
     this._onTwirlyClick = this._onTwirlyClick.bind(this);
     this._toggle = this._toggle.bind(this);
-    this._close = this._close.bind(this);
     this._onViewClick = this._onViewClick.bind(this);
     this._onScroll = this._onScroll.bind(this);
     this._desktopSite = this._desktopSite.bind(this);
@@ -45,20 +45,10 @@ class SideNav extends BaseComponent {
 
   componentDidMount() {
     this.props.app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    this.props.app.on('route:start', this._close);
-
-    if (!this.state.subscriptions) {
-      this.props.data.get('subscriptions').then(function(s) {
-        this.setState({
-          subscriptions: s.data,
-        });
-      });
-    }
   }
 
   componentWillUnmount() {
     this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
-    this.props.app.off('route:start', this._close);
   }
 
   _desktopSite(e) {
@@ -87,12 +77,10 @@ class SideNav extends BaseComponent {
 
   render() {
     if (this.state.opened) {
-      var user = this.props.user;
-      var loginLink;
-      var inboxLink;
-      var compact = this.state.compact;
-
-      var twirly = this.state.twirly;
+      let { user, subscriptions, config } = this.props;
+      let { compact, twirly } = this.state;
+      let loginLink;
+      let inboxLink;
 
       if (user) {
         if (twirly === 'user') {
@@ -169,8 +157,7 @@ class SideNav extends BaseComponent {
       }
 
       if (twirly === 'subreddits') {
-        var subreddits = this.state.subscriptions || [];
-        var subredditNodeList = subreddits.map((d) => {
+        var subredditNodeList = subscriptions.map((d) => {
           if(d.icon) {
             var icon = <figure className='SideNav-icon' style={{backgroundImage: 'url(' + d.icon + ')'}}/>;
           } else {
@@ -207,86 +194,19 @@ class SideNav extends BaseComponent {
       );
 
       if (twirly === 'about') {
+        let itemsList = aboutItems.map((i) => {
+          return (
+            <li className='SideNav-li'>
+              <a className='SideNav-button' href={`${config.reddit}${i.url}`}>
+                { snooIcon }
+                <span className='SideNav-text'>{titleCase(i.title)}</span>
+              </a>
+            </li>
+          );
+        });
         var aboutButtons = (
           <ul key='about' className='SideNav-ul list-unstyled'>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/blog/'>
-                { snooIcon }
-                <span className='SideNav-text'>Blog</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/about/'>
-                { snooIcon }
-                <span className='SideNav-text'>About</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/about/team/'>
-                { snooIcon }
-                <span className='SideNav-text'>Team</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/code/'>
-                { snooIcon }
-                <span className='SideNav-text'>Source Code</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/advertising/'>
-                { snooIcon }
-                <span className='SideNav-text'>Advertise</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/r/redditjobs/'>
-                { snooIcon }
-                <span className='SideNav-text'>Jobs</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/wiki/'>
-                { snooIcon }
-                <span className='SideNav-text'>Wiki</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/wiki/faq'>
-                { snooIcon }
-                <span className='SideNav-text'>FAQ</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/wiki/reddiquette'>
-                { snooIcon }
-                <span className='SideNav-text'>Reddiquette</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/rules/'>
-                { snooIcon }
-                <span className='SideNav-text'>Rules</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/help/useragreement'>
-                { snooIcon }
-                <span className='SideNav-text'>User Agreement</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/help/privacypolicy'>
-                { snooIcon }
-                <span className='SideNav-text'>Privacy Policy</span>
-              </a>
-            </li>
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href='https://www.reddit.com/contact/'>
-                { snooIcon }
-                <span className='SideNav-text'>Contact Us</span>
-              </a>
-            </li>
+            { itemsList }
           </ul>
         );
       }
@@ -358,14 +278,6 @@ class SideNav extends BaseComponent {
     document.body.scrollTop = this._top;
   }
 
-  _close() {
-    if (this.state.opened) {
-      window.removeEventListener('scroll', this._onScroll);
-      this.props.app.emit(constants.SIDE_NAV_TOGGLE, false);
-      this.setState({opened: false});
-    }
-  }
-
   _onTwirlyClick(str) {
     this.setState({twirly: this.state.twirly === str ? '' : str});
   }
@@ -389,16 +301,16 @@ class SideNav extends BaseComponent {
     var newCompact = !compact;
     app.emit(constants.COMPACT_TOGGLE, newCompact);
 
-    this._close();
+    this._toggle();
     this.setState({
       compact: newCompact,
-      show: false,
     });
   }
 }
 
 SideNav.propTypes = {
   subscriptions: propTypes.subscriptions,
+  user: propTypes.user,
 };
 
 export default SideNav;

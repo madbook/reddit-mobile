@@ -11,9 +11,11 @@ class BodyLayout extends BasePage {
   }
 
   render () {
+    let { user, userSubscriptions } = this.state.data;
+
     return (
       <div className='container-with-betabanner'>
-        <SideNav {...this.props} user={ this.state.data.user || this.props.dataCache.user } />
+        <SideNav {...this.props} user={ user} subscriptions={ userSubscriptions } />
         <TopNav {...this.props}/>
         <main>
           { this.props.children }
