@@ -201,7 +201,7 @@ class Comment extends BaseComponent {
 
   render () {
     let {app, apiOptions, token, nestingLevel, permalinkBase, user, op,
-         highlight, subredditName} = this.props;
+         highlight, subredditName, ctx} = this.props;
 
     let {comment, showReplyBox, editing, editError, showTools, collapsed,
          score, reported, loadingMoreComments} = this.state;
@@ -230,10 +230,13 @@ class Comment extends BaseComponent {
       if (showReplyBox && this.props.token) {
         commentBox = (
           <CommentBox
-            {...this.props}
-            ref='commentBox'
+            apiOptions={ apiOptions }
+            app={ app }
+            ctx={ ctx }
             thingId={ comment.name }
             onSubmit={ this.onNewComment }
+            token={ token }
+            ref='commentBox'
           />
         );
       }

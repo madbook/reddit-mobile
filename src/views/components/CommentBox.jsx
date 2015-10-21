@@ -4,94 +4,123 @@ import querystring from 'querystring';
 
 import BaseComponent from './BaseComponent';
 
+const { PropTypes } = React;
+
 class CommentBox extends BaseComponent {
-  constructor(props) {
-    super(props);
+  handleInputChange = (e) => {
+    let content = this._getTextContent();
+    let hasContent = !!content;
 
-    this.state = {};
+    this.setState({hasContent});
   }
 
-  handleInputChange (e) {
-    var el = React.findDOMNode(this.refs.text);
-    var value = el.value;
-
-    this.setState({
-      reply: value,
-    });
-  }
-
-  submit (e) {
+  submit = (e) => {
     e.preventDefault();
 
-    var el = React.findDOMNode(this.refs.text);
-    var text = el.value.trim();
+    let text = this._getTextContent();
 
     this.submitComment(text);
   }
 
-  submitComment (text) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasContent: false,
+    };
+  }
+
+  _getTextContent() {
+    let el = React.findDOMNode(this.refs.text);
+
+    return el.value.trim();
+  }
+
+  submitComment(text) {
     if (!text) {
       return;
     }
 
-    if (!this.props.token) {
-      this.props.app.requireLogin(this.props.app.config.loginPath);
+    const {
+      apiOptions,
+      app,
+      onSubmit,
+      thingId,
+      token,
+    } = this.props;
+
+    if (!token) {
+      app.requireLogin(app.config.loginPath);
 
       return;
     }
 
-    var comment = new models.Comment({
-      thingId: this.props.thingId,
-      text: text
+    let comment = new models.Comment({
+      text,
+      thingId,
     });
-
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    let options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       model: comment,
     });
 
-    this.props.app.api.comments.post(options).then((function(comment) {
-      this.setState({ reply: '' });
-      this.props.onSubmit(comment);
-    }).bind(this));
+    app.api.comments.post(options).then((comment) => {
+      let el = React.findDOMNode(this.refs.text);
 
-    this.props.app.emit('comment', comment);
+      el.value = '';
+
+      this.setState({
+        hasContent: false
+      });
+
+      onSubmit(comment);
+    });
+
+    app.emit('comment', comment);
   }
 
-  render () {
-    var value = this.state.reply;
-    var className = value && value.trim() ? 'has-content' : '';
-    var csrf;
+  render() {
+    const { hasContent } = this.state;
+    const { ctx, thingId } = this.props;
 
-    if(this.props.ctx.csrf) {
-      csrf = (<input type='hidden' name='_csrf' value={ this.props.ctx.csrf } />);
-    }
+    let className = hasContent ? 'has-content' : '';
 
     return (
       <div className='row CommentBox'>
-        <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
-          <input type='hidden' name='thingId' value={ this.props.thingId } />
-          { csrf }
-          <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
-          <div className={`CommentBox-textarea-holder ${className}`}>
-            <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
-                      className='form-control' name='text' ref='text'
-                      onChange={ this.handleInputChange.bind(this) } value={ value } ></textarea>
+        <form action='/comment' method='POST' onSubmit={ this.submit }>
+          <input type='hidden' name='thingId' value={ thingId } />
+
+          { ctx.csrf ? (
+            <input type='hidden' name='_csrf' value={ ctx.csrf } />
+          ) : null }
+
+          <label className='sr-only' htmlFor={ `textarea-${thingId}` }>Comment</label>
+          <div className={ `CommentBox-textarea-holder ${className}` }>
+            <textarea
+              id={ `textarea-${thingId}` }
+              className='form-control'
+              ref='text'
+              name='text'
+              onChange={ this.handleInputChange }
+              placeholder='Add your comment!'
+              rows='2'
+            ></textarea>
           </div>
           <button type='submit' className='btn-post'>Post</button>
         </form>
       </div>
     );
   }
-}
 
-//TODO: someone more familiar with this component could eventually fill this out better
-CommentBox.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  onSubmit: React.PropTypes.func.isRequired,
-  thingId: React.PropTypes.string.isRequired,
-  token: React.PropTypes.string,
-};
+  static propTypes = {
+    apiOptions: PropTypes.object.isRequired,
+    app: PropTypes.object.isRequired,
+    ctx: PropTypes.object.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    thingId: PropTypes.string.isRequired,
+    token: PropTypes.string,
+  };
+}
 
 export default CommentBox;

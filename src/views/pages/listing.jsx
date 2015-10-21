@@ -234,12 +234,11 @@ class ListingPage extends BasePage {
           { token ? (
             <CommentBox
               apiOptions={ apiOptions }
-              thingId={ listing.name }
-              user={ user }
-              token={ token }
               app={ app }
               ctx={ ctx }
               onSubmit={ this.onNewComment.bind(this) }
+              thingId={ listing.name }
+              token={ token }
             />
           ) : null }
 
