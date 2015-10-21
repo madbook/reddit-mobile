@@ -1,7 +1,6 @@
 import React from 'react';
 import { models } from 'snoode';
 import querystring from 'querystring';
-import savedReply from '../../lib/savedReply';
 
 import BaseComponent from './BaseComponent';
 
@@ -12,12 +11,6 @@ class CommentBox extends BaseComponent {
     this.state = {};
   }
 
-  componentDidMount () {
-    this.setState({
-      reply: savedReply.get(this.props.thingId),
-    });
-  }
-
   handleInputChange (e) {
     var el = React.findDOMNode(this.refs.text);
     var value = el.value;
@@ -25,8 +18,6 @@ class CommentBox extends BaseComponent {
     this.setState({
       reply: value,
     });
-
-    savedReply.set(this.props.thingId, value);
   }
 
   submit (e) {
@@ -61,7 +52,6 @@ class CommentBox extends BaseComponent {
     });
 
     this.props.app.api.comments.post(options).then((function(comment) {
-      savedReply.clear();
       this.setState({ reply: '' });
       this.props.onSubmit(comment);
     }).bind(this));

@@ -5,7 +5,6 @@ import { models } from 'snoode';
 import moment from 'moment';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
-import savedReply from '../../lib/savedReply';
 
 import BaseComponent from './BaseComponent';
 import CommentBox from '../components/CommentBox';
@@ -41,19 +40,6 @@ class Comment extends BaseComponent {
     this.updateComment = this.updateComment.bind(this);
     this.onNewComment = this.onNewComment.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
-  }
-
-  componentDidMount () {
-    var hasSavedReply = !!savedReply.get(this.props.comment.name);
-
-    if (hasSavedReply) {
-      this.setState({
-        showReplyBox: hasSavedReply,
-        showTools: hasSavedReply,
-      });
-
-      React.findDOMNode(this).scrollIntoView();
-    }
   }
 
   setScore (score) {

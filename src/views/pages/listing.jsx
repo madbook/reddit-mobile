@@ -90,16 +90,6 @@ class ListingPage extends BasePage {
     });
   }
 
-  _getLocalStorageKeys() {
-    var keys = [];
-    if (global.localStorage) {
-      for (var key in localStorage) {
-        keys.push(key);
-      }
-    }
-    return keys;
-  }
-
   async loadMore(loadMore, e) {
     e.preventDefault();
     let { app, apiOptions, sort } = this.props;
@@ -163,8 +153,6 @@ class ListingPage extends BasePage {
         </div>
       );
     }
-
-    let savedCommentKeys = this._getLocalStorageKeys();
 
     let commentsList;
     if (comments) {
