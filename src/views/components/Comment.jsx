@@ -80,7 +80,10 @@ class Comment extends BaseComponent {
     e.preventDefault();
 
     if (!this.props.token) {
-      window.location = this.props.app.config.loginPath;
+      let {ctx, app} = this.props;
+      let {loginPath} = this.props.app.config;
+
+      ctx.redirect(app.config.loginPath);
     }
 
     this.setState({
