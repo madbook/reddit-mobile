@@ -40,15 +40,25 @@ class SideNav extends BaseComponent {
     this._onScroll = this._onScroll.bind(this);
     this._desktopSite = this._desktopSite.bind(this);
     this._goto = this._goto.bind(this);
-
+    this._close = this._close.bind(this);
   }
 
   componentDidMount() {
     this.props.app.on(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    this.props.app.on('route:start', this._close);
   }
 
   componentWillUnmount() {
     this.props.app.off(constants.TOP_NAV_HAMBURGER_CLICK, this._toggle);
+    this.props.app.off('route:start', this._close);
+  }
+
+  _close() {
+    if (this.state.opened) {
+      window.removeEventListener('scroll', this._onScroll);
+      this.props.app.emit(constants.SIDE_NAV_TOGGLE, false);
+      this.setState({opened: false});
+    }
   }
 
   _desktopSite(e) {
