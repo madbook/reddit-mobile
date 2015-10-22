@@ -227,7 +227,7 @@ class Comment extends BaseComponent {
     if (showTools || highlight === comment.id) {
       highlighted = 'comment-highlighted';
 
-      if (showReplyBox && this.props.token) {
+      if (this.props.token) {
         commentBox = (
           <CommentBox
             apiOptions={ apiOptions }
@@ -237,6 +237,7 @@ class Comment extends BaseComponent {
             onSubmit={ this.onNewComment }
             token={ token }
             ref='commentBox'
+            visible={ showReplyBox }
           />
         );
       }

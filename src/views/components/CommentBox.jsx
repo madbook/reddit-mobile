@@ -82,12 +82,13 @@ class CommentBox extends BaseComponent {
 
   render() {
     const { hasContent } = this.state;
-    const { ctx, thingId } = this.props;
+    const { ctx, thingId, visible } = this.props;
 
-    let className = hasContent ? 'has-content' : '';
+    let isVisibleStyle = { display: visible ? 'block' : 'none' };
+    let hasContentClass = hasContent ? 'has-content' : '';
 
     return (
-      <div className='row CommentBox'>
+      <div className='row CommentBox' style={ isVisibleStyle }>
         <form action='/comment' method='POST' onSubmit={ this.submit }>
           <input type='hidden' name='thingId' value={ thingId } />
 
@@ -96,7 +97,7 @@ class CommentBox extends BaseComponent {
           ) : null }
 
           <label className='sr-only' htmlFor={ `textarea-${thingId}` }>Comment</label>
-          <div className={ `CommentBox-textarea-holder ${className}` }>
+          <div className={ `CommentBox-textarea-holder ${hasContentClass}` }>
             <textarea
               id={ `textarea-${thingId}` }
               className='form-control'
@@ -120,7 +121,14 @@ class CommentBox extends BaseComponent {
     onSubmit: PropTypes.func.isRequired,
     thingId: PropTypes.string.isRequired,
     token: PropTypes.string,
+    visible: PropTypes.boolean,
   };
+
+  static get defaultProps() {
+    return {
+      visible: true,
+    };
+  }
 }
 
 export default CommentBox;
