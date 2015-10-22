@@ -3,11 +3,13 @@ import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
+const PropTypes = React.PropTypes;
+
 import BaseComponent from './BaseComponent';
 
-var _gifMatch = /\.(?:gif)/gi;
-var _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
-var _httpsRegex = /^https:\/\//;
+const _gifMatch = /\.(?:gif)/gi;
+const _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
+const _httpsRegex = /^https:\/\//;
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
 
 function _gifToHTML5(url) {
@@ -465,53 +467,48 @@ class ListingContent extends BaseComponent {
   }
 
   _aspectRatio() {
-    var props = this.props;
-    var listing = props.listing;
+    let { listing, single } = this.props;
 
-    try {
-      var oembed = listing.media.oembed;
-      var ratio = oembed.width / oembed.height;
-      return props.single ? ratio : _limitAspectRatio(ratio);
-    } catch (err) {
+    if (listing.media) {
+      let oembed = listing.media.oembed;
+      let ratio = oembed.width / oembed.height;
+      return single ? ratio : _limitAspectRatio(ratio);
+    } else if (listing.preview && (listing.preview.images || []).length) {
+      let source = listing.preview.images[0].source || 
+        listing.preview.images[0].resolutions[0];
+      let ratio = source.width / source.height;
+      return single ? ratio : _limitAspectRatio(ratio);
+    } else {
+      return false;
     }
 
-    try {
-      var source = listing.preview.images[0].source;
-      ratio = source.width / source.height;
-      return props.single ? ratio : _limitAspectRatio(ratio);
-    } catch (err) {
+  }
+
+  static isNSFW(listing) {
+    if (!listing) {
+      return;
     }
-    // TODO: this doesn't work
-    // if (this.props.app.config.debug) {
-      // console.log('ListingContent._aspectRatio: missed a case', listing);
-    // }
+    return listing.title.match(/nsf[wl]/gi) || listing.over_18;
+  }
+
+  static imgMatch = /\.(?:gif|jpe?g|png)/gi
+
+  static propTypes = {
+    compact: PropTypes.bool,
+    editError: PropTypes.arrayOf(PropTypes.string),
+    editing: PropTypes.bool,
+    expand: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired,
+    expandedCompact: PropTypes.bool,
+    isThumbnail: PropTypes.bool,
+    listing: propTypes.listing.isRequired,
+    loaded: PropTypes.bool.isRequired,
+    saveUpdatedText: PropTypes.func,
+    single: PropTypes.bool,
+    tallestHeight: PropTypes.number.isRequired,
+    toggleEdit: PropTypes.func,
+    width: PropTypes.number.isRequired,
   }
 }
-
-ListingContent.imgMatch = /\.(?:gif|jpe?g|png)/gi;
-
-ListingContent.isNSFW = function(listing) {
-  if (!listing) {
-    return;
-  }
-  return listing.title.match(/nsf[wl]/gi) || listing.over_18;
-}
-
-ListingContent.propTypes = {
-  compact: React.PropTypes.bool,
-  editError: React.PropTypes.arrayOf(React.PropTypes.string),
-  editing: React.PropTypes.bool,
-  expand: React.PropTypes.func.isRequired,
-  expanded: React.PropTypes.bool.isRequired,
-  expandedCompact: React.PropTypes.bool,
-  isThumbnail: React.PropTypes.bool,
-  listing: propTypes.listing.isRequired,
-  loaded: React.PropTypes.bool.isRequired,
-  saveUpdatedText: React.PropTypes.func,
-  single: React.PropTypes.bool,
-  tallestHeight: React.PropTypes.number.isRequired,
-  toggleEdit: React.PropTypes.func,
-  width: React.PropTypes.number.isRequired,
-};
 
 export default ListingContent;

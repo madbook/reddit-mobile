@@ -328,11 +328,11 @@ class Listing extends BaseComponent {
     return false;
   }
 
-  resize(width) {
+  resize() {
     var state = this.state;
     var node = this.refs.root.getDOMNode();
     var newState = {};
-    newState.width = width || node.offsetWidth;
+    newState.width = node.offsetWidth;
     if (state.compact && state.loaded) {
       var height = node.offsetHeight;
       if (height > this.state.tallestHeight) {

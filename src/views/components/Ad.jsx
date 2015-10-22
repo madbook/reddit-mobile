@@ -34,20 +34,6 @@ class Ad extends BaseComponent {
     return listing.checkPos.apply(listing, arguments);
   }
 
-  resize() {
-    if (this.state.unavailable) {
-      return;
-    }
-
-    var listing = this.refs.listing;
-
-    if (!listing) {
-      return;
-    }
-
-    listing.resize.apply(listing, arguments);
-  }
-
   getAd() {
     var srnames = this.props.srnames;
 

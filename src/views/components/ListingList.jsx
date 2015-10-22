@@ -8,6 +8,8 @@ import BaseComponent from './BaseComponent';
 import CommentPreview from '../components/CommentPreview';
 import Listing from '../components/Listing';
 
+const Proptypes = React.PropTypes;
+
 const _AD_LOCATION = 11;
 
 class ListingList extends BaseComponent {
@@ -20,21 +22,17 @@ class ListingList extends BaseComponent {
     };
 
     this._lazyLoad = this._lazyLoad.bind(this);
-    this._resize = this._resize.bind(this);
+    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
-    this.props.app.on(constants.RESIZE, this._resize);
     this._addListeners();
-    this._resize();
 
-    this._onCompactToggle = this._onCompactToggle.bind(this);
     this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentWillUnmount() {
     this._removeListeners();
-    this.props.app.off(constants.RESIZE, this._resize);
 
     this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
@@ -104,19 +102,6 @@ class ListingList extends BaseComponent {
     }
   }
 
-  _resize() {
-    var width = this.refs.root.getDOMNode().offsetWidth;
-    for (var i = 0; i < this.props.listings.length; i++) {
-      var ref = this.refs['listing' + i];
-
-      ref.resize && ref.resize(width);
-    }
-
-    if (this.refs.ad) {
-      this.refs.ad.resize(width);
-    }
-  }
-
   buildAd() {
     var srnames = uniq(this.props.listings.map(function(l) {
       return l.subreddit;
@@ -183,7 +168,6 @@ class ListingList extends BaseComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.compact !== this.state.compact) {
-      this._resize();
       this._lazyLoad();
     }
     if (prevProps.listings !== this.props.listings) {
@@ -201,17 +185,17 @@ class ListingList extends BaseComponent {
   _onCompactToggle(compact) {
     this.setState({ compact });
   }
-}
 
-ListingList.propTypes = {
-  compact: React.PropTypes.bool,
-  firstPage: React.PropTypes.number,
-  listings: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-    propTypes.comment,
-    propTypes.listing,
-  ])).isRequired,
-  showAds: React.PropTypes.bool,
-  showHidden: React.PropTypes.bool,
-};
+  static propTypes = {
+    compact: Proptypes.bool,
+    firstPage: Proptypes.number,
+    listings: Proptypes.arrayOf(Proptypes.oneOfType([
+      propTypes.comment,
+      propTypes.listing,
+    ])).isRequired,
+    showAds: Proptypes.bool,
+    showHidden: Proptypes.bool,
+  }
+}
 
 export default ListingList;
