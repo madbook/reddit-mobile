@@ -1,93 +1,111 @@
 import querystring from 'querystring';
 
-var events = {
-  'route:start': function(ctx) {
-    var fullUrl = ctx.path;
-    var query = querystring.stringify(ctx.query);
+function gaSend () {
+  if (global && global.ga) {
+    global.ga.apply(null, [...arguments]);
+  }
+}
+
+function trackingEvents(app) {
+  let tracker = new EventTracker(
+    app.config.trackerKey,
+    postData,
+    app.config.trackerEndpoint,
+    app.config.trackerClientName,
+    calculateHash
+  );
+
+  function eventSend(topic, type, payload) {
+    if (tracker) {
+      tracker.track(topic, type, payload);
+    }
+  }
+
+  function gaSend () {
+    if (global && global.ga) {
+      global.ga.apply(null, [...arguments]);
+    }
+  }
+
+  app.on('route:start', function(ctx) {
+    let fullUrl = ctx.path;
+    let query = querystring.stringify(ctx.query);
 
     if (query) {
       fullUrl += '?' + query;
     }
 
-    if (global && global.ga) {
-      ga('set', 'page', fullUrl);
-      ga('send', 'pageview');
+    gaSend('set', 'page', fullUrl);
+    gaSend('send', 'pageview');
 
-      var loggedIn = !!window.bootstrap.user;
+    let loggedIn = !!window.bootstrap.user;
 
-      var compactCookieValue = document.cookie.match(/\bcompact=(\w+)\b/);
-      var compact = !!(compactCookieValue &&
-                      compactCookieValue.length > 1 &&
-                      compactCookieValue[1] === 'true');
+    let compactCookieValue = document.cookie.match(/\bcompact=(\w+)\b/);
+    let compact = !!(compactCookieValue &&
+                    compactCookieValue.length > 1 &&
+                    compactCookieValue[1] === 'true');
 
-      var compactTestCookieValue = document.cookie.match(/\bcompactTest=(\w+)\b/);
-      var compactTest = compactTestCookieValue ? compactTestCookieValue[1] : 'undefined';
+    let compactTestCookieValue = document.cookie.match(/\bcompactTest=(\w+)\b/);
+    let compactTest = compactTestCookieValue ? compactTestCookieValue[1] : 'undefined';
 
 
-      ga('set', 'dimension2', loggedIn.toString());
-      ga('set', 'dimension3', compact.toString());
-      ga('set', 'dimension4', compactTest.toString());
-    }
-  },
+    gaSend('set', 'dimension2', loggedIn.toString());
+    gaSend('set', 'dimension3', compact.toString());
+    gaSend('set', 'dimension4', compactTest.toString());
+  });
 
-  'compactToggle': function (compact) {
-    ga('send', 'event', 'compactToggle', compact.toString());
-    ga('set', 'dimension3', compact.toString());
-  },
+  app.on('compactToggle', function (compact) {
+    gaSend('send', 'event', 'compactToggle', compact.toString());
+    gaSend('set', 'dimension3', compact.toString());
+  });
 
-  'vote': function (vote) {
-    ga('send', 'event', 'vote', vote.get('direction'));
-  },
+  app.on('vote', function (vote) {
+    gaSend('send', 'event', 'vote', vote.get('direction'));
+  });
 
-  'comment': function (comment) {
-    ga('send', 'event', 'comment', 'words', comment.get('text').match(/\S+/g).length);
-  },
+  app.on('comment', function (comment) {
+    gaSend('send', 'event', 'comment', 'words', comment.get('text').match(/\S+/g).length);
+  });
 
-  'comment:edit': function() {
-    ga('send', 'event', 'comment', 'edit');
-  },
+  app.on('comment:edit', function() {
+    gaSend('send', 'event', 'comment', 'edit');
+  });
 
-  'search': function (query) {
-    ga('send', 'event', 'search');
-  },
+  app.on('search', function (query) {
+    gaSend('send', 'event', 'search');
+  });
 
-  'goto': function (query) {
-    ga('send', 'event', 'goto', query);
-  },
+  app.on('goto', function (query) {
+    gaSend('send', 'event', 'goto', query);
+  });
 
-  'report': function (query) {
-    ga('send', 'event', 'report');
-  },
+  app.on('report', function (query) {
+    gaSend('send', 'event', 'report');
+  });
 
-  'post:submit': function(subreddit) {
-    ga('send', 'event', 'post', 'submit', subreddit);
-  },
+  app.on('post:submit', function(subreddit) {
+    gaSend('send', 'event', 'post', 'submit', subreddit);
+  });
 
-  'post:edit': function() {
-    ga('send', 'event', 'post', 'edit');
-  },
+  app.on('post:edit', function() {
+    gaSend('send', 'event', 'post', 'edit');
+  });
 
-  'post:selectSubreddit': function(subreddit) {
-    ga('send', 'event', 'post', 'selectSubreddit', subreddit);
-  },
+  app.on('post:selectSubreddit', function(subreddit) {
+    gaSend('send', 'event', 'post', 'selectSubreddit', subreddit);
+  });
 
-  'post:error': function() {
-    ga('send', 'event', 'post', 'captcha');
-  },
+  app.on('post:error', function() {
+    gaSend('send', 'event', 'post', 'captcha');
+  });
 
-  'message:submit': function() {
-    ga('send', 'event', 'messages', 'submit');
-  },
+  app.on('message:submit', function() {
+    gaSend('send', 'event', 'messages', 'submit');
+  });
 
-  'message:reply': function(message) {
-    ga('send', 'event', 'messages', 'reply', message.get('text').match(/\S+/g).length);
-  }
-};
-
-function trackingEvents(app) {
-  for (var e in events) {
-    app.on(e, events[e]);
-  }
+  app.on('message:reply', function(message) {
+    gaSend('send', 'event', 'messages', 'reply', message.get('text').match(/\S+/g).length);
+  });
 }
 
 export default trackingEvents;
