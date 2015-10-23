@@ -66,7 +66,7 @@ Getting Up and Running
   this project.
 2. Run `npm install` to install other dependencies.
 3. Run `git submodule update --init` to download this project's submodules.
-4. Run `gulp` to build the assets (`gulp watch` to set up a filesystem watcher.)
+4. Run `npm run build` to build the assets (`npm run watch` to set up a filesystem watcher.)
 5. Register a new [oauth application](https://www.reddit.com/prefs/apps/) and
   set up your [environment variables](./CONFIG.md). Redirect URI should be
   `http://localhost:4444/oauth2/token`.
@@ -78,6 +78,6 @@ Getting Up and Running
     2. Fork and clone the dependencies somewhere
     3. Run `npm link` within the dependency that you cloned
     4. Repeat recursively if you need to work on a dependency's dependency
-    5. Re-run the build and restart your server (`gulp watch` *will* watch
+    5. Re-run the build and restart your server (`npm run watch` *will* watch
       linked files)
 
