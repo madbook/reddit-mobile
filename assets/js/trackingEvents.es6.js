@@ -1,13 +1,30 @@
 import querystring from 'querystring';
+import crypto from 'crypto'
+import superagent from 'superagent';
+import EventTracker from 'event-tracker';
 
-function gaSend () {
-  if (global && global.ga) {
-    global.ga.apply(null, [...arguments]);
-  }
+function calculateHash (key, string) {
+  let hmac = crypto.createHmac('sha1', key);
+  hmac.setEncoding('hex');
+  hmac.write(string);
+  hmac.end();
+
+  return hmac.read();
+}
+
+function postData(eventInfo) {
+  const { url, data, query, headers } = eventInfo;
+
+  superagent
+    .post(url)
+    .set(headers)
+    .query(query)
+    .send(data)
+    .end(function(){});
 }
 
 function trackingEvents(app) {
-  let tracker = new EventTracker(
+  const tracker = new EventTracker(
     app.config.trackerKey,
     postData,
     app.config.trackerEndpoint,
@@ -28,8 +45,8 @@ function trackingEvents(app) {
   }
 
   app.on('route:start', function(ctx) {
+    const query = querystring.stringify(ctx.query);
     let fullUrl = ctx.path;
-    let query = querystring.stringify(ctx.query);
 
     if (query) {
       fullUrl += '?' + query;
@@ -38,15 +55,15 @@ function trackingEvents(app) {
     gaSend('set', 'page', fullUrl);
     gaSend('send', 'pageview');
 
-    let loggedIn = !!window.bootstrap.user;
+    const loggedIn = !!window.bootstrap.user;
 
-    let compactCookieValue = document.cookie.match(/\bcompact=(\w+)\b/);
-    let compact = !!(compactCookieValue &&
+    const compactCookieValue = document.cookie.match(/\bcompact=(\w+)\b/);
+    const compact = !!(compactCookieValue &&
                     compactCookieValue.length > 1 &&
                     compactCookieValue[1] === 'true');
 
-    let compactTestCookieValue = document.cookie.match(/\bcompactTest=(\w+)\b/);
-    let compactTest = compactTestCookieValue ? compactTestCookieValue[1] : 'undefined';
+    const compactTestCookieValue = document.cookie.match(/\bcompactTest=(\w+)\b/);
+    const compactTest = compactTestCookieValue ? compactTestCookieValue[1] : 'undefined';
 
 
     gaSend('set', 'dimension2', loggedIn.toString());

@@ -28,6 +28,10 @@ function config() {
     statsDomain: process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/',
     adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
     manifest: {},
+
+    trackerKey: process.env.TRACKER_KEY,
+    trackerEndpoint: process.env.TRACKER_ENDPOINT,
+    trackerClientName: process.env.TRACKER_CLIENT_NAME
   };
 };
 
