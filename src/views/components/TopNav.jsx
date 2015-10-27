@@ -65,7 +65,7 @@ class TopNav extends BaseComponent {
 
   render() {
     var props = this.props;
-    var breadcrumbContents = props.topNavTitle;
+    var title = props.subredditName || props.multi || props.userName;
     var link = props.topNavLink;
     var {subreddit} = this.state;
     var currentSub = '';
@@ -74,9 +74,9 @@ class TopNav extends BaseComponent {
       currentSub = '?subreddit=' + props.subredditName;
     }
 
-    if (!breadcrumbContents) {
+    if (!title) {
       link = '/';
-      breadcrumbContents = <Logo />;
+      title = <Logo />;
     }
 
     var subredditMenu;
@@ -134,7 +134,7 @@ class TopNav extends BaseComponent {
           <h1 className='TopNav-text TopNav-padding'>
             <span>
               <a className='TopNav-a' href={link}>
-                {breadcrumbContents}
+                {title}
               </a>
             </span>
           </h1>

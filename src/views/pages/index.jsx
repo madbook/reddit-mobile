@@ -32,10 +32,14 @@ class IndexPage extends BasePage {
   render() {
     var loading;
     var props = this.props;
-    var data = this.state.data;
-    var compact = this.state.compact;
+    var { data, compact } = this.state;
 
-    if (!data || !data.listings || (props.subredditName && !data.subreddits)) {
+    var subredditName = props.subredditName;
+    var fakeSubs = ['mod', 'all', 'friends'];
+    var isFakeSub = fakeSubs.indexOf(subredditName) !== -1;
+
+    if (!data || !data.listings ||
+        (subredditName && (!data.subreddit && !isFakeSub ))) {
       return (
         <Loading />
       );
@@ -43,7 +47,7 @@ class IndexPage extends BasePage {
 
     let bypassInterstitial = data.userPrefs && data.userPrefs.over_18;
     if (!bypassInterstitial) {
-      if (data.subreddits && data.subreddits.over18 && props.showOver18Interstitial) {
+      if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
         return (<Interstitial  {...props} loggedIn={data.userPrefs} type='over18' />);
       }
     }

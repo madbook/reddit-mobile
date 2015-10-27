@@ -124,6 +124,29 @@ function buildProps(ctx, app) {
   return ctx.props;
 }
 
+function getSubreddit(ctx, app) {
+  let { subreddit, multi } = ctx.params;
+
+  if (subreddit) {
+    Object.assign(ctx.props, {
+      subredditName: subreddit,
+      topNavLink: `/r/${subreddit}`,
+      title: `r/${subreddit}`,
+      metaDescription: `r/${subreddit} at reddit.com`,
+    });
+
+    const fakeSubs = ['all', 'mod', 'friends', 'random', 'randnsfw', 'myrandom'];
+    if (subreddit.indexOf('+') === -1 && !fakeSubs.includes(subreddit)) {
+
+      let subredditOpts = buildAPIOptions(ctx, {
+        id: subreddit.toLowerCase(),
+      });
+
+      setData(ctx, 'subreddit', 'subreddits', subredditOpts);
+    }
+  }
+}
+
 
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
@@ -204,43 +227,38 @@ function routes(app) {
       buildProps(this, app);
       yield next;
    });
+
+  router.use(function * (next) {
+      getSubreddit(this, app);
+      yield next;
+   });
+  
   router.use(setPageKey);
   router.use(userData());
   router.use(defaultLayout);
 
 
   function * indexPage (next) {
-    var ctx = this;
+    let props = this.props;
     var sort = this.query.sort || 'hot';
 
     Object.assign(this.props, {
-      subredditName: ctx.params.subreddit,
-      multi: ctx.params.multi,
-      multiUser: ctx.params.user,
-      after: ctx.query.after,
-      before: ctx.query.before,
-      page: parseInt(ctx.query.page) || 0,
+      multi: this.params.multi,
+      multiUser: this.params.user,
+      after: this.query.after,
+      before: this.query.before,
+      page: parseInt(this.query.page) || 0,
       sort: sort,
     });
 
-    this.props.topNavTitle = this.props.subredditName || this.props.multi;
-
-    if (this.props.subredditName) {
-      this.props.topNavLink = `/r/${this.props.subredditName}`;
-    } else if (this.props.multi) {
-      this.props.topNavLink = `/u/${this.props.multiUser}/m/${this.props.multi}`;
-    }
 
     if (this.props.multi) {
-      this.props.title = `m/${this.props.multi}`;
-      this.props.metaDescription = `u/${this.props.multiUser}'s m/${this.props.multi} multireddit at reddit.com`;
-    } else if (this.props.subredditName) {
-      this.props.title = `r/${this.props.subredditName}`;
-      this.props.metaDescription = `r/${this.props.subredditName} at reddit.com`;
+      props.title = `m/${props.multi}`;
+      props.metaDescription = `u/${props.multiUser}'s m/${props.multi} multireddit at reddit.com`;
+      props.topNavLink = `/u/${props.multiUser}/m/${props.multi}`;
     }
-
-    let props = this.props;
-    let listingOpts = buildAPIOptions(ctx, {
+    
+    let listingOpts = buildAPIOptions(this, {
       query: {
         after: props.after,
         before: props.before,
@@ -252,17 +270,6 @@ function routes(app) {
     });
 
     setData(this, 'listings', 'links', listingOpts);
-
-    if (this.props.subredditName &&
-      this.props.subredditName.indexOf('+') === -1 &&
-      this.props.subredditName !== 'all') {
-
-      let subredditOpts = buildAPIOptions(ctx, {
-        id: props.subredditName.toLowerCase(),
-      });
-
-      setData(this, 'subreddits', 'subreddits', subredditOpts);
-    }
 
     var key = this.key;
 
@@ -287,13 +294,9 @@ function routes(app) {
 
     Object.assign(props, {
       sort: ctx.query.sort,
-      subredditName: ctx.params.subreddit,
       listingId: ctx.params.listingId,
       commentId: ctx.params.commentId,
     });
-
-    props.topNavTitle = props.subredditName;
-    props.topNavLink = `/r/${this.props.subredditName}`;
 
     let commentsOpts = buildAPIOptions(ctx, {
       linkId: ctx.params.listingId,
@@ -314,14 +317,6 @@ function routes(app) {
 
     props.data.set('listing', app.api.links.get(listingOpts));
 
-    if (props.subredditName) {
-      let subredditOpts = buildAPIOptions(ctx, {
-        id: props.subredditName.toLowerCase(),
-      });
-
-      props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
-    }
-
     var key = this.key;
 
     this.body = function(props) {
@@ -340,24 +335,10 @@ function routes(app) {
   router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
 
   router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
-    var page;
-    var ctx = this;
+    let props = this.props
+    let key = this.key;
 
-    Object.assign(this.props, {
-      subredditName: ctx.params.subreddit,
-      title: `about r/${ctx.params.subreddit}`,
-      metaDescription: `about r/${ctx.params.subreddit} at reddit.com`,
-    });
-
-    let subredditOpts = buildAPIOptions(ctx, {
-      id: ctx.props.subredditName.toLowerCase(),
-    });
-
-    ctx.props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
-
-    var key = ctx.key;
-
-    ctx.body = function(props) {
+    this.body = function(props) {
       return (
         <BodyLayout {...props}>
           <SubredditAboutPage {...props} key={ key } track='subreddit' />
@@ -464,7 +445,6 @@ function routes(app) {
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
 
-    this.props.topNavTitle = `u/${ctx.params.user}`;
     this.props.topNavLink = `/u/${ctx.params.user}`;
 
     var key = this.key;
