@@ -9,7 +9,6 @@ function config() {
     debugLevel: process.env.DEBUG_LEVEL === 'true',
 
     minifyAssets: process.env.MINIFY_ASSETS === 'true',
-    liveReload: process.env.LIVERELOAD === 'true',
 
     assetPath: process.env.STATIC_BASE || '',
 
