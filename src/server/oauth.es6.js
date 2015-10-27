@@ -17,9 +17,9 @@ function nukeTokens(ctx) {
 var oauthRoutes = function(app) {
   app.nukeTokens = nukeTokens;
 
-  var router = app.router;
+  const router = app.router;
 
-  var cookieOptions = {
+  let cookieOptions = {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: true,
@@ -47,7 +47,7 @@ var oauthRoutes = function(app) {
     cookieOptions.domain = app.getConfig('cookieDomain');
   }
 
-  var longCookieOptions = Object.assign({}, cookieOptions, {
+  const longCookieOptions = Object.assign({}, cookieOptions, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 
@@ -63,12 +63,10 @@ var oauthRoutes = function(app) {
   app.setTokenCookie = setTokenCookie;
 
   function hmac (key, data) {
-    var secret = new Buffer(key, 'base64').toString();
-    var algorithm = 'sha1';
-    var hash;
-    var hmac;
+    const secret = new Buffer(key, 'base64').toString();
+    const algorithm = 'sha1';
 
-    hmac = crypto.createHmac(algorithm, secret);
+    let hmac = crypto.createHmac(algorithm, secret);
     hmac.setEncoding('hex');
     hmac.write(data);
     hmac.end();
@@ -93,8 +91,8 @@ var oauthRoutes = function(app) {
 
   function refreshToken (ctx, rToken) {
     return new Promise(function(resolve, reject) {
-      var endpoint = app.config.nonAuthAPIOrigin + '/api/v1/access_token';
-      var b;
+      const endpoint = app.config.nonAuthAPIOrigin + '/api/v1/access_token';
+      let b;
 
       if (app.config.oauth.secretClientId) {
         b = new Buffer(
@@ -106,16 +104,16 @@ var oauthRoutes = function(app) {
         );
       }
 
-      var s = b.toString('base64');
+      let s = b.toString('base64');
 
-      var basicAuth = 'Basic ' + s;
+      const basicAuth = 'Basic ' + s;
 
-      var data = {
+      let data = {
         grant_type: 'refresh_token',
         refresh_token: rToken,
       };
 
-      var headers = {
+      const headers = {
         'User-Agent': ctx.headers['user-agent'],
         'Authorization': basicAuth,
       };
@@ -149,7 +147,7 @@ var oauthRoutes = function(app) {
 
   function convertSession(ctx, session) {
     return new Promise(function(resolve, reject) {
-      let endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
+      const endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
 
       let cookie = ctx.headers['cookie'].replace(/__cf_mob_redir=1/, '__cf_mob_redir=0');
 
@@ -266,7 +264,7 @@ var oauthRoutes = function(app) {
 
   app.convertSession = convertSession;
 
-  var OAuth2 = require('simple-oauth2')({
+  const OAuth2 = require('simple-oauth2')({
     clientID: app.config.oauth.clientId,
     clientSecret: app.config.oauth.secret,
     site: app.config.nonAuthAPIOrigin,
@@ -274,16 +272,16 @@ var oauthRoutes = function(app) {
     tokenPath: '/api/v1/access_token',
   });
 
-  var redirect = app.config.origin + '/oauth2/token';
+  const redirect = app.config.origin + '/oauth2/token';
 
   router.get('/oauth2/login', function * () {
-    var origin = app.getConfig('origin') + '/';
+    const origin = app.getConfig('origin') + '/';
 
     // referer spelled wrong according to spec.
-    var referer = this.get('Referer') || '/';
-    var key = app.getConfig('keys')[0];
-    var state = hmac(key, referer);
-    var redirectURI = referer;
+    let referer = this.get('Referer') || '/';
+    const key = app.getConfig('keys')[0];
+    let state = hmac(key, referer);
+    let redirectURI = referer;
 
     if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
       redirectURI = OAuth2.authCode.authorizeURL({
@@ -312,8 +310,8 @@ var oauthRoutes = function(app) {
   });
 
   router.get('/oauth2/refresh', function * () {
-    var token = this.cookies.get('token');
-    var rToken = this.cookies.get('refreshToken');
+    let token = this.cookies.get('token');
+    let rToken = this.cookies.get('refreshToken');
 
     if (!this.cookies.get('token')) {
       this.body = undefined;
@@ -321,7 +319,7 @@ var oauthRoutes = function(app) {
     }
 
     try {
-      var result = yield refreshToken(this, rToken);
+      let result = yield refreshToken(this, rToken);
       setTokenCookie(this, result);
 
       this.body = {
@@ -334,24 +332,24 @@ var oauthRoutes = function(app) {
   });
 
   router.get('/oauth2/token', function * () {
-    var code = this.query.code;
-    var error = this.query.error;
-    var ctx = this;
+    let code = this.query.code;
+    let error = this.query.error;
+    let ctx = this;
 
     if (error) {
       return this.redirect('/oauth2/error?message=' + this.query.error);
     }
 
-    var [state, referer] = this.query.state.split('|');
-    var key = app.getConfig('keys')[0];
+    let [state, referer] = this.query.state.split('|');
+    const key = app.getConfig('keys')[0];
 
     if (!scmp(state, hmac(key, referer))) {
       return this.redirect('/403');
     }
 
-    var result = yield getToken(this, code, redirect);
+    let result = yield getToken(this, code, redirect);
 
-    var token = OAuth2.accessToken.create(result);
+    let token = OAuth2.accessToken.create(result);
 
     setTokenCookie(this, token);
 
@@ -359,18 +357,18 @@ var oauthRoutes = function(app) {
   });
 
   function login(username, password, ctx) {
-    var id = uuid.v4();
-    var endpoint = app.config.nonAuthAPIOrigin + '/api/fp/1/auth/access_token';
+    let id = uuid.v4();
+    const endpoint = app.config.nonAuthAPIOrigin + '/api/fp/1/auth/access_token';
 
-    var b = new Buffer(
+    let b = new Buffer(
       app.config.oauth.secretClientId + ':' + app.config.oauth.secretSecret
     );
 
-    var s = b.toString('base64');
+    let s = b.toString('base64');
 
-    var basicAuth = 'Basic ' + s;
+    let basicAuth = 'Basic ' + s;
 
-    var data = {
+    let data = {
       grant_type: 'password',
       username: username,
       password: password,
@@ -378,8 +376,8 @@ var oauthRoutes = function(app) {
       duration: 'permanent',
     };
 
-    var p = new Promise(function(resolve, reject) {
-      var headers = {
+    let p = new Promise(function(resolve, reject) {
+      let headers = {
         'User-Agent': ctx.headers['user-agent'],
         'Authorization': basicAuth,
       };
@@ -403,7 +401,7 @@ var oauthRoutes = function(app) {
             return resolve(401);
           }
 
-          var token = OAuth2.accessToken.create(res.body);
+          let token = OAuth2.accessToken.create(res.body);
 
           setTokenCookie(ctx, token);
           resolve(200);
@@ -419,8 +417,8 @@ var oauthRoutes = function(app) {
    * set the LOGIN_PATH env variable to nothing or '/oauth2/login' (default).
    */
   router.post('/login', function * () {
-    var status = yield login(this.body.username, this.body.password, this);
-    var dest = this.body.originalUrl || '';
+    let status = yield login(this.body.username, this.body.password, this);
+    const dest = this.body.originalUrl || '';
 
     if (status === 200) {
       if (dest) {
@@ -434,11 +432,11 @@ var oauthRoutes = function(app) {
   });
 
   router.post('/register', function * () {
-    var ctx = this;
-    var endpoint = app.config.nonAuthAPIOrigin + '/api/register';
-    var dest = this.body.originalUrl || '';
+    let ctx = this;
+    const endpoint = app.config.nonAuthAPIOrigin + '/api/register';
+    const dest = this.body.originalUrl || '';
 
-    var data = {
+    let data = {
       user: ctx.body.username,
       passwd: ctx.body.password,
       passwd2: ctx.body.password2,
@@ -461,9 +459,9 @@ var oauthRoutes = function(app) {
       return ctx.redirect('/register?error=EMAIL_NEWSLETTER&message=please+enter+an+email+to+sign+up+for+the+newsletter');
     }
 
-    var p = new Promise(function(resolve, reject) {
+    let p = new Promise(function(resolve, reject) {
 
-      var headers = Object.assign({
+      let headers = Object.assign({
         'User-Agent': ctx.headers['user-agent'],
       }, app.config.apiHeaders || {});
 

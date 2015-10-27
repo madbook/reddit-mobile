@@ -1,14 +1,11 @@
-
 function parseObject (list) {
   if (!list) { return; }
-  var obj = {};
-  var key;
-  var value;
-  var split;
+  let obj = {};
+  let split;
 
   list.split(';').forEach(function (l) {
     if (l && l.indexOf('=')) {
-      var split = l.split('=');
+      let split = l.split('=');
       obj[split[0].trim()] = split[1].trim();
     }
   });
@@ -24,14 +21,14 @@ function parseList (list) {
 
 function serverConfig(numCPUs) {
   let env = process.env;
-  let config = require('./config')();
+  let config = require('../config')();
   config.processes = numCPUs;
 
 
   if (config.minifyAssets) {
     // Import built-asset manifests for passing to layouts
-    var jsManifest = require('./build/js/client-manifest.json');
-    var cssManifest = require('./build/css/css-manifest.json');
+    const jsManifest = require('./build/js/client-manifest.json');
+    const cssManifest = require('./build/css/css-manifest.json');
     // Then merge them into a single object for ease of use later
     config.manifest = {};
     Object.assign(config.manifest, jsManifest, cssManifest);

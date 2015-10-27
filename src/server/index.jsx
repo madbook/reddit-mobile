@@ -14,21 +14,21 @@ import compress from 'koa-compress';
 import session from 'koa-session';
 
 import { ServerReactApp } from 'horse-react';
-import mixin from './app-mixin';
+import mixin from '../app-mixin';
 
 var App = mixin(ServerReactApp);
 
 // The core
-import constants from './constants';
-import globals from './globals';
+import constants from '../constants';
+import globals from '../globals';
 import oauthRoutes from './oauth';
-import serverRoutes from './serverRoutes';
-import routes from './routes';
+import serverRoutes from './routes';
+import routes from '../routes';
 
-import randomBySeed from './lib/randomBySeed'
-import setLoggedOutCookies from './lib/loid';
+import randomBySeed from '../lib/randomBySeed'
+import setLoggedOutCookies from '../lib/loid';
 
-import defaultConfig from './config';
+import defaultConfig from '../config';
 
 const ignoreCSRF = ['/timings'];
 
@@ -146,7 +146,7 @@ class Server {
     server.use(this.csrf(app));
 
     // Set up static routes for built (and unbuilt, static) files
-    server.use(koaStatic(__dirname + '/../build'));
+    server.use(koaStatic(__dirname + '/../../build'));
 
     server.use(this.checkToken(app));
     server.use(this.convertSession(app));
