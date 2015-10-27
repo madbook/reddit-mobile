@@ -350,14 +350,14 @@ function routes(app) {
     });
 
     let subredditOpts = buildAPIOptions(ctx, {
-      id: props.subredditName.toLowerCase(),
+      id: ctx.props.subredditName.toLowerCase(),
     });
 
-    this.props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
+    ctx.props.data.set('subreddit', app.api.subreddits.get(subredditOpts));
 
-    var key = this.key;
+    var key = ctx.key;
 
-    this.body = function(props) {
+    ctx.body = function(props) {
       return (
         <BodyLayout {...props}>
           <SubredditAboutPage {...props} key={ key } track='subreddit' />
