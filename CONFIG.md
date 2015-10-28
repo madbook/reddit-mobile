@@ -33,6 +33,9 @@ These configuration options are shared between the server and client.
 * `GOOGLE_ANALYTICS_ID` (default null) - if you want to use GA, add your id.
 * `ADS_PATH` (default  'https://www.reddit.com/api/request_promo.json') - the
   url to hit to load ads. *Set to empty if you do not wish to load ads.*
+* `TRACKER_KEY` (default null) - the key to use to send events to the [event collector](https://github.com/reddit/event-collector)
+* `TRACKER_ENDPOINT` (default null) - the url to send events to the [event collector](https://github.com/reddit/event-collector)
+* `TRACKER_CLIENT_NAME` (default null) - the name of the client to send to the [event collector](https://github.com/reddit/event-collector)
 
 Secret Server Config
 --------------------
