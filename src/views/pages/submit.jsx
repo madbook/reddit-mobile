@@ -150,18 +150,19 @@ class SubmitPage extends BasePage {
       }
     }.bind(this),
     function(err) {
-      this._handleApiErrors(err[0])
+      this._handleApiErrors(err);
     }.bind(this));
   }
 
   _handleApiErrors (err) {
-    if (Array.isArray(err)) {
-      var type = err[0];
-      var message = err[1];
+    if (Array.isArray(err.errors)) {
+      let currentError = err.errors[0]
+      let type = currentError[0];
+      let message = currentError[1];
 
       if (type === 'BAD_CAPTCHA') {
         this.setState({
-          captchaIden: '',
+          captchaIden: err.captcha,
           captchaAnswer: '',
           requiresCaptcha: true,
           captchaCount: this.state.captchaCount + 1,
