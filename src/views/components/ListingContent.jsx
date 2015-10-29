@@ -485,9 +485,10 @@ class ListingContent extends BaseComponent {
   }
 
   static isNSFW(listing) {
-    if (!listing) {
+    if (!listing || !listing.title) {
       return;
     }
+
     return listing.title.match(/nsf[wl]/gi) || listing.over_18;
   }
 
