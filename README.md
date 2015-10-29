@@ -47,7 +47,7 @@ code.
 
 Plugins register themselves via two interfaces:
 
-1. Route handlers that take two paramaters, `req` and `res`. `res` is a promise
+1. Route handlers that take two parameters, `req` and `res`. `res` is a promise
   interface that should be called using
   `res.resolve({ body: reactElement, status: 200})` or
   `res.reject({ body: error, status: 400})`. (Body and status are optional in

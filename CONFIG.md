@@ -45,7 +45,7 @@ These options are never shared with the client.
 * `OAUTH_CLIENT_ID` - your oauth client id.
 * `OAUTH_SECRET` - take a wild guess.
 * `SECRET_OAUTH_CLIENT_ID` and `SECRET_OAUTH_SECRET` - if you have a
-  priveleged client that can use the password authentication flow (unlikely
+  privileged client that can use the password authentication flow (unlikely
   unless you host your own reddit instance), this is what you use for that flow.
 * `SERVER_SIGNED_COOKIE_KEY` - you should set this to something long and
   complicated, so you can protect your cookies.
