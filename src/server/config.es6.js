@@ -28,7 +28,7 @@ function serverConfig(numCPUs) {
   if (config.minifyAssets) {
     // Import built-asset manifests for passing to layouts
     const jsManifest = require('../../build/js/client-manifest.json');
-    const cssManifest = require('../build/css/css-manifest.json');
+    const cssManifest = require('../../build/css/css-manifest.json');
     // Then merge them into a single object for ease of use later
     config.manifest = {};
     Object.assign(config.manifest, jsManifest, cssManifest);
