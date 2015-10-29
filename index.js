@@ -13,6 +13,8 @@ require('babel/register')({
 const errorLog = require('./src/lib/errorLog');
 
 process.on('uncaughtException', function (err) {
+  console.log('Caught exception', err);
+
   let url;
   let line;
 
@@ -34,7 +36,6 @@ process.on('uncaughtException', function (err) {
     });
   }
 
-  console.log('Caught exception: ' + err);
   process.exit();
 });
 
