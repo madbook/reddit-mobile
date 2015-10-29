@@ -115,9 +115,10 @@ function modifyContext (ctx) {
   return ctx;
 }
 
-var $title = document.getElementsByTagName('title')[0];
+
 
 function setTitle(props={}) {
+  let $title = document.getElementsByTagName('title')[0];
   if (props.title) {
     if ($title.textContent) {
       $title.textContent = props.title;
