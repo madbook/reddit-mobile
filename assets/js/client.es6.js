@@ -9,6 +9,7 @@ function onError(message, url, line, column) {
     url,
     line,
     column,
+    requestUrl: window.location.toString()
   }, {
     hivemind: window.bootstrap && window.bootstrap.config ? window.bootstrap.config.statsDomain : undefined,
   });
@@ -232,6 +233,10 @@ function initialize(bindLinks) {
 
   var app = new App(config);
   routes(app);
+
+  app.on('error:body', function(ctx) {
+    React.render(ctx.body(ctx.props), app.config.mountPoint);
+  });
 
   app.setState('userSubscriptions', window.bootstrap.dataCache.userSubscriptions);
 

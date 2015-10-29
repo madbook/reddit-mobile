@@ -11,10 +11,11 @@ function simpleUA(agent) {
 function formatLog(details) {
   if (!details) { return; }
 
-  let {userAgent, message, url, line, column} = details;
+  let {userAgent, message, url, line, column, requestUrl} = details;
   let errorString = [userAgent || 'UNKNOWN'];
 
   errorString.push(message || 'NO MESSAGE');
+  errorString.push(requestUrl || 'NO REQUEST URL');
 
   if (url) {
     errorString.push(url);
@@ -29,7 +30,6 @@ function formatLog(details) {
 
 function errorLog(details, errorEndpoints, config={}) {
   let formattedLog = formatLog(details);
-
   console.log(formattedLog);
 
   if (config.debugLevel === 'info') {

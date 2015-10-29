@@ -257,7 +257,7 @@ function routes(app) {
       props.metaDescription = `u/${props.multiUser}'s m/${props.multi} multireddit at reddit.com`;
       props.topNavLink = `/u/${props.multiUser}/m/${props.multi}`;
     }
-    
+
     let listingOpts = buildAPIOptions(this, {
       query: {
         after: props.after,

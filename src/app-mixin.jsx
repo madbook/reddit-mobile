@@ -34,6 +34,7 @@ function logError(err, ctx, config) {
     message: err.message,
     line: line,
     url: url,
+    requestUrl: ctx ? ctx.path : null,
   }, {
     hivemind: config.statsDomain,
   }, {
@@ -72,7 +73,6 @@ function mixin (App) {
     }
 
     error (e, ctx, app, options={}) {
-
       // API error
       if (e.status) {
         // Don't redirect if abort === false
@@ -86,6 +86,7 @@ function mixin (App) {
 
       if (options.replaceBody !== false) {
         ctx.body = this.errorPage(ctx, e.status);
+        app.emit('error:body', ctx);
       }
     }
 
@@ -113,7 +114,7 @@ function mixin (App) {
 
       return function(props) {
         return (
-          <BodyLayout {...props}>
+          <BodyLayout {...props} key='error'>
             <ErrorPage {...props}/>
           </BodyLayout>
         );
