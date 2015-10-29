@@ -469,7 +469,7 @@ class ListingContent extends BaseComponent {
   _aspectRatio() {
     let { listing, single } = this.props;
 
-    if (listing.media && oembed) {
+    if (listing.media && listing.media.oembed) {
       let oembed = listing.media.oembed;
       let ratio = oembed.width / oembed.height;
       return single ? ratio : _limitAspectRatio(ratio);
