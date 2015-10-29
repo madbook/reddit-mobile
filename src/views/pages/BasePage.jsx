@@ -67,7 +67,11 @@ class BasePage extends BaseComponent {
       }
     }.bind(this), function(e) {
       // circular, so we can render the error page
-      this.props.ctx.props = this.props;
+      if (!this.props.ctx.props) {
+        this.props.ctx.props = this.props;
+        delete this.props.ctx.props.ctx.props;
+      }
+
       this.props.app.error(e, this.props.ctx, this.props.app);
     }.bind(this));
   }
