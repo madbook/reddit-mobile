@@ -125,8 +125,12 @@ class ListingList extends BaseComponent {
     var page = props.firstPage || 0;
     var length = props.listings.length;
     var compact = this.state.compact;
-    var listings = (
-      props.listings.map(function(listing, i) {
+    var listings;
+
+    var listingsMap = props.listings.map ? props.listings.map : props.listings.body.map;
+
+    listings = (
+      listingsMap(function(listing, i) {
 
         var index = (page * 25) + i;
         if (listing._type === 'Comment') {
