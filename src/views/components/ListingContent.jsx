@@ -474,8 +474,11 @@ class ListingContent extends BaseComponent {
       let ratio = oembed.width / oembed.height;
       return single ? ratio : _limitAspectRatio(ratio);
     } else if (listing.preview && (listing.preview.images || []).length) {
-      let source = listing.preview.images[0].source || 
-        listing.preview.images[0].resolutions[0];
+      let images = listing.preview.images;
+      // we use the second item in resolutions if it exists because for ads
+      // the first item is a thumbnail with 1x1 aspect ratio.
+      let source = images[0].source || 
+        (images[0].resolutions[1] || images[0].resolutions[0]);
       let ratio = source.width / source.height;
       return single ? ratio : _limitAspectRatio(ratio);
     } else {
