@@ -2,7 +2,8 @@ import React from 'react';
 
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
-
+import has from 'lodash/object/has';
+import URL from 'url';
 const PropTypes = React.PropTypes;
 
 import BaseComponent from './BaseComponent';
@@ -48,7 +49,7 @@ const _HEIGHT = 1080;
 
 // Calculate the lowest common denominator
 function euclid (a, b) {
-  if(b == 0) {
+  if(b === 0) {
     return a;
   }
 
@@ -65,8 +66,8 @@ function _aspectRatioClass(ratio) {
     return  'aspect-ratio-16x9';
   }
 
-  var w = incrRound(ratio * _HEIGHT, _INCREMENT);
-  var lcd = euclid(w, _HEIGHT);
+  const w = incrRound(ratio * _HEIGHT, _INCREMENT);
+  const lcd = euclid(w, _HEIGHT);
 
   return `aspect-ratio-${(w / lcd)}x${(_HEIGHT / lcd)}`;
 }
@@ -77,123 +78,113 @@ function _wrapSelftextExpand(fn) {
     if (e.target.tagName !== 'A') {
       fn(e);
     }
+  };
+}
+
+function _isPlayable(listing) {
+  let media = listing.media;
+  if (listing.url.indexOf('.gif') > -1 ||
+      (media && media.oembed && media.oembed.type !== 'image')
+     ) {
+    return true;
   }
+
+  return false;
+}
+
+function forceProtocol(url, https) {
+  let urlObj = URL.parse(url);
+  urlObj.protocol = https ? 'https:' : urlObj.protocol;
+  return URL.format(urlObj);
 }
 
 class ListingContent extends BaseComponent {
   constructor(props) {
     super(props);
+
+    // we want things to autoplay in expanded compact mode
+    this.state.playing = props.expandedCompact ? true : false;
+
+    this._togglePlaying = this._togglePlaying.bind(this);
   }
 
   render() {
-    var contentNode = this.buildContent();
+    const contentNode = this.buildContent();
     if (contentNode) {
-      var props = this.props;
-      if (!props.compact && !props.expandedCompact) {
-        var stalactiteNode = <div className='stalactite'/>;
+      const {compact, expandedCompact} = this.props;
+
+      let stalactiteNode;
+      if (!compact && !expandedCompact) {
+        stalactiteNode = <div className='stalactite'/>;
       }
+
       return (
         <div ref='all' className={ 'ListingContent' + (this._isCompact() ? ' compact' : '')}>
           { stalactiteNode }
           { contentNode }
         </div>
       );
+      
     } else {
       return null;
     }
   }
 
   buildContent() {
-    var props = this.props;
-    var listing = props.listing;
-    var expanded = this._isExpanded();
-    var media = listing.media;
+    let props = this.props;
+    let listing = props.listing;
 
-    var oembed = media ? media.oembed : null;
-    var url = mobilify(listing.url || listing.cleanPermalink);
+    let expanded = this._isExpanded();
+    let isNSFW = ListingContent.isNSFW(listing);
+    let urlIsImage = listing.url.match(ListingContent.imgMatch) && !listing.preview;
+    let isPlayable = _isPlayable(listing);
 
-    var preview = this._previewImageUrl();
+    let oembed = listing.media ? listing.media.oembed : null;
+    let url = mobilify(listing.url || listing.cleanPermalink);
+    let preview = (listing.preview || oembed) ? this._previewImage(isNSFW, oembed, props.showNSFW) : null;
 
-    if (media && oembed) {
-      if (expanded || !ListingContent.isNSFW(listing)) {
-        var thumbnailUrl = oembed.thumbnail_url;
-      }
-      var type = oembed.type;
-      if (type === 'image') {
-        if (expanded) {
-          return this._renderIFrame(url);
-        } else {
-          return this.buildImage(preview || thumbnailUrl, url);
-        }
-      } else if (type === 'video') {
-        if (expanded) {
-          return this._renderHTML(listing.expandContent);
-        } else {
-          return this.buildImage(preview || thumbnailUrl, url, props.expand);
-        }
-      } else if (type === 'rich') {
-          var findSrc = oembed.html.match(/src="([^"]*)/);
-          var frameUrl;
+    // build thumbnails for all listings
+    if (props.isThumbnail) {
+      return this._buildThumbnail(listing, props.expand, urlIsImage, isNSFW, isPlayable, preview);
+    }
 
-          if (findSrc && findSrc[1]) {
-            frameUrl = findSrc[1].replace('&amp;', '&');
-          }
+    // this only applies to self posts
+    if (props.editing && listing.selftext) {
+      return this._renderEditText(listing.selftext);
+    } else if (listing.selftext) {
+      return this._renderTextHTML(listing.expandContent, !expanded, listing.id);    
+    }
 
-          if (expanded && frameUrl) {
-            return (
-              this._renderIFrame(
-                frameUrl,
-                oembed.height / oembed.width
-              )
-            );
-          } else {
-            return this.buildImage(preview || thumbnailUrl, url, props.expand);
-          }
-        }
-      } else if (url.match(ListingContent.imgMatch) && !listing.promoted) {
-        if (expanded && _httpsRegex.test(url)) {
-          return this.buildImage(url, url);
-        } else {
-          return this.buildImage(preview, url, (url.match(_gifMatch) && !expanded) ? props.expand : null);
-        }
-      } else if (props.editing && listing.selftext) {
-        return this._renderEditText(listing.selftext);
-      } else if (listing.selftext) {
-        if (props.isThumbnail) {
-          return this._renderTextPlaceholder(listing.expandContent, !expanded, listing.id);
-        } else {
-          return this._renderTextHTML(listing.expandContent, !expanded, listing.id);
-        }
-      } else if (listing.domain.indexOf('self.') === 0) {
-        return this._renderPlaceholder();
-      } else if (preview) {
-        return this.buildImage(preview, url);
-      }
+    // this case catches any 'playable' gif or video and displays the preview image
+    // so we don't get annoying auto play.
+    if (isPlayable && !this.state.playing) {
+      return this.buildImage(preview || { url }, url, this._togglePlaying, urlIsImage, isPlayable);
+    } 
 
-    return this._renderPlaceholder();
+    if (oembed) {
+      return this._buildMedia(listing, url, oembed);
+    }
+    
+    if (preview || urlIsImage) {
+      let cb = isNSFW ? props.toggleShowNSFW : null;
+      return this.buildImage(preview || { url }, url, cb, urlIsImage);
+    }
+
+    return this._renderPlaceholder(isNSFW);
   }
 
-  //TODO: this method should be integrated into buildContent but it hurts my brain to figure out how to do so
-  buildImage(src, href, onClick) {
-    var props = this.props;
-    var html5 = _gifToHTML5(src);
-    var expanded = this._isExpanded();
-
-    if (expanded) {
-      if (html5) {
+  buildImage(src, href, onClick, urlIsImage, playable=false) {
+    // this handles only direct links to gifs. 
+    let html5 = _gifToHTML5(href);
+    if (this.state.playing && html5) {
         if (html5.iframe) {
-          return this._renderIFrame(html5.iframe, this._aspectRatio() || _DEFAULT_ASPECT_RATIO);
+          return this._renderIFrame(html5.iframe, _DEFAULT_ASPECT_RATIO);
         } else {
           return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
         }
-      }
     }
 
-    if (html5 && html5.poster) {
-      return this._renderImage(html5.poster, href, onClick);
-    }
-
-    return this._renderImage(src, href, onClick);
+    return this._renderImage(src, href, onClick, playable, urlIsImage);
   }
 
   _renderTextPlaceholder(html, collapsed, id) {
@@ -212,50 +203,46 @@ class ListingContent extends BaseComponent {
     );
   }
 
-  _renderImage(src, href, onClick) {
-    var props = this.props;
-    var compact = this._isCompact();
-    var style = {};
-    var isNSFW = ListingContent.isNSFW(props.listing);
-    var expanded = this._isExpanded();
-    var loaded = props.loaded;
-    if (loaded) {
-      if (onClick) {
-        var playIconNode = <span className='icon-play-circled'>{' '}</span>;
-      }
-      if (isNSFW && !expanded) {
-        if (compact) {
-          var nsfwNode = (
-            <div className='ListingContent-nsfw'>
-              <p className='ListingContent-nsfw-p'>NSFW</p>
-            </div>
-          );
-        } else {
-          nsfwNode = (
-            <div className='ListingContent-nsfw'>
-              <p className='ListingContent-nsfw-p'>This post is marked as NSFW</p>
-              <p className='ListingContent-nsfw-p outlined'>Show post?</p>
-            </div>
-          );
-        }
-      }
-      if (src) {
-        var a = document.createElement('a');
-        a.href = src;
-        a.protocol = location.protocol;
+  _renderImage(src, href, onClick, playable, urlIsImage=false) {
+    let props = this.props;
 
-        style.backgroundImage = 'url(' + a.href + ')';
-      }
+    let compact = this._isCompact();
+    let isNSFW = ListingContent.isNSFW(props.listing);
+
+    let style = {};
+    let loaded = props.loaded;
+
+    let playIconNode;
+    if (playable && !(isNSFW && !props.showNSFW)) {
+      playIconNode = <span className='icon-play-circled'>{' '}</span>;
     }
-    var aspectRatio = this._aspectRatio();
+
+    if (src.url) {
+      style.backgroundImage = 'url(' + forceProtocol(src.url, props.app.config.https) + ')';
+    }
+
+    let nsfwNode;
+    if (isNSFW && !props.showNSFW) {
+      nsfwNode = this._buildNSFW(props.compact);
+      style.backgroundImage = '';
+    }
+
+    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) || _DEFAULT_ASPECT_RATIO;
+    if (urlIsImage && props.showNSFW) {
+      // uggh edge cases. we don't want the image displayed with an img tag
+      // so we can use the background image. should probably change this anyways.
+      aspectRatio = null;
+    }
+
     if (props.single && aspectRatio) {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
-    onClick = (isNSFW && !expanded) ? props.expand : onClick;
+
     if (!onClick && compact) {
       onClick = props.expand;
     }
-    var noRoute = !!onClick;
+
+    let noRoute = !!onClick;
 
     if (src && !aspectRatio) {
       return (
@@ -263,15 +250,18 @@ class ListingContent extends BaseComponent {
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }>
-          <img className='ListingContent-image-img' src={ src }/>
+          <img className='ListingContent-image-img' src={ src.url }/>
           { playIconNode }
           { nsfwNode }
         </a>
       );
     }
 
+    let linkClass = 'ListingContent-image ' + (props.isThumbnail ? '' :
+      _aspectRatioClass(aspectRatio)) + (isNSFW && !props.showNSFW ? ' placeholder' : '');
+
     return (
-      <a  className={'ListingContent-image ' + (props.isThumbnail ? '' : _aspectRatioClass(aspectRatio)) + (!src && loaded ? ' placeholder' : '')}
+      <a  className={ linkClass }
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }
@@ -283,16 +273,18 @@ class ListingContent extends BaseComponent {
   }
 
   _renderVideo(src, poster) {
-    var sources = [];
-    for (var i in src) {
+    let sources = [];
+    for (let i in src) {
       sources.push(<source type={ 'video/' + i } src={ src[i] } key={ 'video-src' + i } />);
     }
-    var props = this.props;
-    var aspectRatio = this._aspectRatio() || _DEFAULT_ASPECT_RATIO;
-    var style = {};
+
+    let props = this.props;
+    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) || _DEFAULT_ASPECT_RATIO;
+    let style = {};
     if (props.single) {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
+
     return (
       <div className={'ListingContent-video ' + _aspectRatioClass(aspectRatio)} style={ style }>
         <video  className='ListingContent-videovideo'
@@ -310,13 +302,14 @@ class ListingContent extends BaseComponent {
   }
 
   _renderIFrame(src, aspectRatio) {
-    var style = {};
+    let style = {};
 
     if (this.props.single && aspectRatio) {
       style.height = 1 / aspectRatio * this.props.width + 'px';
     }
 
-    var className = 'ListingContent-iframe ' + (aspectRatio ? _aspectRatioClass(aspectRatio) : 'set-height');
+    let className = 'ListingContent-iframe ' + (aspectRatio ?
+      _aspectRatioClass(aspectRatio) : 'set-height');
     return (
       <div  className={ className } style={ style }>
         <iframe className='ListingContent-iframeiframe'
@@ -330,35 +323,34 @@ class ListingContent extends BaseComponent {
     );
   }
 
-  _renderHTML(html) {
-    var props = this.props;
-    var aspectRatio = this._aspectRatio() || _DEFAULT_ASPECT_RATIO;
-    if (props.single) {
-      var style = {height: 1 / aspectRatio * props.width + 'px'};
-    }
+  _renderHTML(content, aspectRatio) {
     return (
       <div  className={'ListingContent-html ' + _aspectRatioClass(aspectRatio)}
-            dangerouslySetInnerHTML={ {__html: html} }
-            style={ style }/>
+            dangerouslySetInnerHTML={ {__html: content} } />
     );
   }
 
-  _renderPlaceholder() {
-    var props = this.props;
-    if (this._isCompact()) {
+  _renderPlaceholder(isNSFW, urlIsImage=false) {
+    let props = this.props;
+    let nsfwNode;
+    if (isNSFW) {
+      nsfwNode = this._buildNSFW(props.compact);
+    }
+    if (this._isCompact() || urlIsImage) {
       return (
-        <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')} href={ mobilify(props.listing.url) }/>
+        <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')}
+          href={ mobilify(props.listing.url) }>{nsfwNode}</a>
       );
     }
   }
 
   _renderEditText(text) {
-    var props = this.props;
-    var errorClass = 'visually-hidden';
-    var errorText = '';
+    let props = this.props;
+    let errorClass = 'visually-hidden';
+    let errorText = '';
 
     if (props.editError) {
-      var err = props.editError[0];
+      let err = props.editError[0];
       errorClass = 'alert alert-danger alert-bar';
       errorText = err[0] + ': ' + err[1];
     }
@@ -401,109 +393,148 @@ class ListingContent extends BaseComponent {
     this.props.saveUpdatedText(val);
   }
 
-  _previewImageUrl() {
-    var props = this.props;
-    var listing = props.listing;
-    var compact = this._isCompact();
-
-    var url = listing.url;
-    var width = compact ? 80 : props.width;
-
-    var imgMatch = url.match(ListingContent.imgMatch);
-    var isNSFW = ListingContent.isNSFW(listing);
-    var expanded = this._isExpanded();
-
-
-    if (imgMatch && expanded && !listing.promoted) {
-      return url;
+  _buildNSFW(compact) {
+    if (compact) {
+      return (
+        <div className='ListingContent-nsfw'>
+          <p className='ListingContent-nsfw-p'>NSFW</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className='ListingContent-nsfw'>
+          <p className='ListingContent-nsfw-p'>This post is marked as NSFW</p>
+          <p className='ListingContent-nsfw-p outlined'>Show post?</p>
+        </div>
+      );
     }
+  }
 
+  _buildMedia(listing, url, oembed) {
+    let aspectRatio = this._getAspectRatio(this.props.single,
+                        oembed.width, oembed.height) || _DEFAULT_ASPECT_RATIO;
 
-    var preview = listing.preview;
+    switch (oembed.type) {
+      case 'image':
+        return this._renderIFrame(url, aspectRatio);
+        break;
+      case 'video':
+        return this._renderHTML(listing.expandContent, aspectRatio);
+        break;
+      case 'rich':
+        let findSrc = oembed.html.match(/src="([^"]*)/);
+        let frameUrl;
+
+        if (findSrc && findSrc[1]) {
+          frameUrl = findSrc[1].replace('&amp;', '&');
+        }
+
+        if (frameUrl) {
+          return this._renderIFrame(frameUrl, aspectRatio);
+        }
+        break;
+      default:
+        return null;
+    }
+  }
+
+  _buildThumbnail(listing, expand, urlIsImage, isNSFW, playable, preview) {
+    let https = this.props.app.config.https;
+
+    if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
+      let imgUrl = listing.preview.images[0].resolutions[0].url;
+      let url = listing.cleanUrl;
+      return this._renderImage({url: forceProtocol(imgUrl, https)}, url, expand, playable );
+
+    } else if (listing.thumbnail) {
+      // if it is nsfw the preview function will have returned the blurry image.
+      let url = isNSFW && preview ? preview : {url: forceProtocol(listing.thumbnail, https)};
+      return this._renderImage(url, listing.cleanUrl, expand, playable );
+    // for direct links to .jpg or .png files
+    } else if (urlIsImage && !listing.url.match(_gifMatch)) {
+
+      return this._renderImage({url: listing.cleanUrl}, listing.cleanUrl, expand, playable);
+
+    } else if (listing.selftext) {
+
+      return this._renderTextPlaceholder(listing.expandContent, true, listing.id);
+
+    } else {
+      return this._renderPlaceholder(isNSFW);
+    }
+  }
+
+  _previewImage(isNSFW, oembed, showNSFW) {
+    let { listing, width, tallestHeight } = this.props;
+    let compact = this._isCompact();
+
+    let url = listing.url;
+    width = compact ? 80 : width;
+
+    let preview = listing.preview;
 
     if (preview) {
-      var images = preview.images;
-      if (images) {
-        preview = images[0];
+      preview = (preview.images || [])[0];
+
+      if (!showNSFW && isNSFW && has(preview, 'variants.nsfw.resolutions')) {
+        preview = preview.variants.nsfw;
       }
 
-      if (!expanded && isNSFW) {
-        try {
-          if (preview.variants.nsfw.resolutions) {
-            preview = preview.variants.nsfw;
-          }
-        } catch (err) {
-        }
-      }
-
-      var resolutions = preview.resolutions;
-      var source = preview.source;
+      let resolutions = preview.resolutions;
+      let source = preview.source;
 
       if (resolutions) {
-        var bestFit = resolutions
+        let bestFit = resolutions
           .sort((a, b) => {
             return a.width - b.width;
           })
           .find((r) => {
             if (compact) {
-              return r.width >= width && r.height >= props.tallestHeight;
+              return r.width >= width && r.height >= tallestHeight;
             } else {
               return r.width >= width;
             }
           });
 
         if (bestFit) {
-          return bestFit.url;
+          return bestFit;
         }
       }
 
       if (source) {
-         return source.url;
+         return source;
       }
-    } else if (!expanded && isNSFW) {
-      return null;
     }
 
-    var thumbnail = listing.thumbnail;
-    if (compact && thumbnail && thumbnail.indexOf('http') === 0) {
-      return thumbnail;
+    if (oembed) {
+      return {
+        url: oembed.thumbnail_url,
+        width: oembed.thumbnail_width,
+        height: oembed.thumbnail_height,
+      };
     }
 
-    var media = listing.media;
-    if (media && media.oembed) {
-      return media.oembed.thumbnail_url;
-    }
   }
 
   _isExpanded() {
-    var props = this.props;
-    return (props.single && !ListingContent.isNSFW(props.listing)) ? true : props.expanded;
+    let { expanded, listing, single } = this.props;
+    return (single && !ListingContent.isNSFW(listing)) ? true : expanded;
   }
 
   _isCompact() {
-    var props = this.props;
+    let props = this.props;
     return props.compact && !props.expandedCompact;
   }
 
-  _aspectRatio() {
-    let { listing, single } = this.props;
-
-    if (listing.media && listing.media.oembed) {
-      let oembed = listing.media.oembed;
-      let ratio = oembed.width / oembed.height;
-      return single ? ratio : _limitAspectRatio(ratio);
-    } else if (listing.preview && (listing.preview.images || []).length) {
-      let images = listing.preview.images;
-      // we use the second item in resolutions if it exists because for ads
-      // the first item is a thumbnail with 1x1 aspect ratio.
-      let source = images[0].source || 
-        (images[0].resolutions[1] || images[0].resolutions[0]);
-      let ratio = source.width / source.height;
-      return single ? ratio : _limitAspectRatio(ratio);
-    } else {
-      return false;
+  _getAspectRatio(single, width, height) {
+    if (width && height) {
+      return single ? width / height : _limitAspectRatio(width / height);
     }
+  }
 
+  _togglePlaying(e) {
+    e.preventDefault();
+    this.setState({playing: !this.state.playing});
   }
 
   static isNSFW(listing) {

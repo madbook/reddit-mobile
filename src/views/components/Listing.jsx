@@ -29,6 +29,7 @@ class Listing extends BaseComponent {
     this.state = {
       compact: compact,
       expanded: false,
+      showNSFW: !props.showOver18Interstitial || false,
       loaded: false,
       tallestHeight: 0,
       reported: props.listing.reported,
@@ -40,7 +41,8 @@ class Listing extends BaseComponent {
     this.resize = this.resize.bind(this);
     this.onReport = this.onReport.bind(this);
     this.onHide = this.onHide.bind(this);
-    this.expand = this.expand.bind(this);
+    this.toggleExpanded = this.toggleExpanded.bind(this);
+    this.toggleShowNSFW = this.toggleShowNSFW.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -249,7 +251,7 @@ class Listing extends BaseComponent {
 
   render() {
     var { width, compact, tallestHeight, loaded, expanded,
-          hidden, reported } = this.state;
+          hidden, reported, showNSFW } = this.state;
     var { showHidden, single, editing, listing, toggleEdit, saveUpdatedText,
           editError, z} = this.props;
 
@@ -263,9 +265,10 @@ class Listing extends BaseComponent {
         this.key = Math.random();
       }
       expandedCompact = (
-        <ListingContent expand = { this.expand }
+        <ListingContent expand = { this.toggleExpanded }
                         expanded = { true }
                         width={ width }
+                        showNSFW={ true }
                         tallestHeight={ tallestHeight }
                         loaded={ loaded }
                         { ...this.props }
@@ -286,8 +289,10 @@ class Listing extends BaseComponent {
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
           <ListingContent
+            showNSFW={ showNSFW }
+            toggleShowNSFW={ this.toggleShowNSFW }
             isThumbnail={ compact }
-            expand = { this.expand }
+            expand = { this.toggleExpanded }
             expanded = { expanded && !expandedCompact }
             width={ width }
             tallestHeight={ tallestHeight }
@@ -353,10 +358,17 @@ class Listing extends BaseComponent {
     this.setState(newState);
   }
 
-  expand(e) {
+  toggleExpanded(e) {
     e.preventDefault();
     this.setState({
       expanded: !this.state.expanded,
+    });
+  }
+
+  toggleShowNSFW(e) {
+    e.preventDefault();
+    this.setState({
+      showNSFW: !this.state.showNSFW,
     });
   }
 
