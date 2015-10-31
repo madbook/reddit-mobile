@@ -36,6 +36,20 @@ class Ad extends BaseComponent {
 
   getAd() {
     var srnames = this.props.srnames;
+    const specificAd = this.props.ctx.query.ad;
+
+    if (specificAd) {
+      return new Promise(function (resolve, reject) {
+        const options = Object.assign({}, this.props.apiOptions, { id: specificAd });
+
+        this.props.app.api.links.get(options)
+          .then((link) => {
+            resolve(new models.Link(link).toJSON());
+          }, (err) => {
+            reject(err);
+          });
+      }.bind(this));
+    }
 
     // If we're not on a sub/multi, we're on the front page, so get front page
     // ads
