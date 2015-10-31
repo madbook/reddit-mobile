@@ -182,12 +182,14 @@ class Listing extends BaseComponent {
       var whenNode = (<span className='Listing-when'>{ short(created_utc * 1000) }</span>);
     }
 
+    var domainNode;
+
     if (promoted) {
       domainNode = (
         <span className='Listing-domain text-primary sponsored-label'>Sponsored</span>
       );
-    } else if (domain.indexOf('self.') !== 0 && !hideDomain) {
-      var domainNode = (
+    } else if (domain && !hideDomain && domain.indexOf('self.') !== 0) {
+      domainNode = (
         <span className='Listing-domain'>{ domain }</span>
       );
     }
