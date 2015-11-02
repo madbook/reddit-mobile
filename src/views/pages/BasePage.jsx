@@ -32,11 +32,14 @@ class BasePage extends BaseComponent {
       }
     }
 
-    for (var key of this.props.data.keys()) {
-      if (!props.dataCache[key]) {
-        this.watch(key);
+    // Handle no-data error-page case
+    if (this.props.data) {
+      for (var key of this.props.data.keys()) {
+        if (!props.dataCache[key]) {
+          this.watch(key);
+        }
       }
-    };
+    }
   }
 
   watch (property) {

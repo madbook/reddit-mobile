@@ -25,10 +25,10 @@ function logError(err, ctx, config) {
   if (ctx && ctx.env === 'SERVER' || process) {
     userAgent = 'SERVER';
 
-    if (ctx && ctx.headers['user-agent']) {
+    if (ctx && ctx.headers && ctx.headers['user-agent']) {
       userAgent += '-' + ctx.headers['user-agent'];
     }
-  } else if (ctx) {
+  } else if (ctx && ctx.headers) {
     userAgent = ctx.headers['user-agent'];
   }
 
