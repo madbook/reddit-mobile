@@ -157,8 +157,25 @@ class Server {
 
     server.use(App.serverRender(app, formatProps));
 
+    server.use(this.fatalError(app));
+
     this.server = server;
     this.app = app;
+  }
+
+  fatalError(app) {
+    return function * (next) {
+      // If there is no body and it's not a redirect, log out an error
+      if (!this.body && !(parseInt(this.status / 100) === 3)) {
+        app.error('Fatal error', this, app, {
+          replaceBody: false,
+          redirect: false,
+        });
+
+        this.body = 'Internal server error.';
+        this.status = 500;
+      }
+    }
   }
 
   csrf (app) {
