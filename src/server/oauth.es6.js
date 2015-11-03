@@ -171,7 +171,7 @@ var oauthRoutes = function(app) {
           }
 
           if (res.body.error || !res.body.data) {
-            app.error(`Invalid modhash:${JSON.stringify(res.body.data)}`, this, app, { redirect: false, replaceBody: false });
+            app.error('Invalid modhash', this, app, { redirect: false, replaceBody: false });
             return reject(401);
           }
 
