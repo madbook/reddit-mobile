@@ -24,11 +24,14 @@ class CommentPreview extends BaseComponent {
     var submitted = short(comment.created_utc * 1000);
 
     // such hack wow many fragile code
-    var match = comment.link_url.match(subredditRegex);
-    var subreddit;
+    var subreddit = comment.subreddit;
 
-    if (match) {
-      subreddit = match[1];
+    if (!subreddit) {
+      var match = comment.link_url.match(subredditRegex);
+
+      if (match) {
+        subreddit = match[1];
+      }
     }
 
     return (
