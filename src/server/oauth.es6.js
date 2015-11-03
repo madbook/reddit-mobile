@@ -5,7 +5,7 @@ import uuid from 'uuid';
 import url from 'url';
 import querystring from 'querystring';
 
-const SCOPES = '*';
+const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
