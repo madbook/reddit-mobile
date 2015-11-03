@@ -402,14 +402,6 @@ class Server {
     // Listen to a port and shout it to the world.
     this.server.listen(this.app.config.port);
   }
-
-  static info (config) {
-    console.log(`listening on ${config.port} on ${config.processes} processes.`);
-
-    if (config.keys.length === 1 && config.keys[0] === 'lambeosaurus') {
-      console.warn('WARNING: Using default security keys.');
-    }
-  }
 }
 
 export default Server;

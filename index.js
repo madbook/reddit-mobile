@@ -62,12 +62,18 @@ function start(config) {
 }
 
 if (cluster.isMaster) {
+  let processes = [];
+
   for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
+    let fork = cluster.fork();
+    processes.push(fork.process.pid);
   }
 
-  Server.info(config);
+  console.log(`listening on ${config.port} on ${config.processes} processes (pids: master: ${process.pid}, workers: ${processes.join(',')}).`);
 
+  if (config.keys.length === 1 && config.keys[0] === 'lambeosaurus') {
+    console.warn('WARNING: Using default security keys.');
+  }
 
   cluster.on('exit', function(worker, code, signal) {
     if (failedProcesses < 20) {
