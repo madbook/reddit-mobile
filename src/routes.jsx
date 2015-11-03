@@ -118,6 +118,7 @@ function buildProps(ctx, app) {
     render: Date.now(),
     actionName: ctx.route.name,
     showOver18Interstitial: ctx.showOver18Interstitial,
+    key: globals().random(),
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
@@ -188,15 +189,30 @@ function userData(ctx, app) {
   }
 }
 
+function makeBody() {
+  return (props) => {
+    let content = Array.prototype.map.call(arguments, (comp) => {
+      if (Array.isArray(comp)) {
+        const [Component, propOveride] = comp;
+        return <Component {...(propOveride || props)}  />;  
+      } else {
+        const Component = comp;
+        return <Component {... props}  />;  
+      }
+    });
+
+    return (
+      <BodyLayout { ...props }>
+        { content }
+      </BodyLayout>
+    );
+  }
+};
+
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
   let router = app.router;
-
-  function * setPageKey(next) {
-    this.key = globals().random();
-    yield next;
-  }
 
   function * defaultLayout(next) {
     this.layout = Layout;
@@ -233,7 +249,6 @@ function routes(app) {
   });
 
   router.use(loadData);
-  router.use(setPageKey);
   router.use(defaultLayout);
 
   function * indexPage (next) {
@@ -247,6 +262,7 @@ function routes(app) {
       before: this.query.before,
       page: parseInt(this.query.page) || 0,
       sort: sort,
+      track: 'listings',
     });
 
 
@@ -269,15 +285,7 @@ function routes(app) {
 
     setData(this, 'listings', 'links', listingOpts);
 
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout { ...props }>
-          <IndexPage { ...props } key={ key } track='listings' />
-        </BodyLayout>
-      );
-    };
+    this.body = makeBody(IndexPage);
   }
 
   // The homepage route.
@@ -294,6 +302,7 @@ function routes(app) {
       sort: ctx.query.sort,
       listingId: ctx.params.listingId,
       commentId: ctx.params.commentId,
+      track: 'comments',
     });
 
     let commentsOpts = buildAPIOptions(ctx, {
@@ -315,15 +324,7 @@ function routes(app) {
 
     props.data.set('listing', app.api.links.get(listingOpts));
 
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <ListingPage {...props} key={ key } track='comments' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(ListingPage);
   }
 
   router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
@@ -333,16 +334,9 @@ function routes(app) {
   router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
 
   router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
-    let props = this.props
-    let key = this.key;
+    this.props.track = 'subreddit';
 
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <SubredditAboutPage {...props} key={ key } track='subreddit' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(SubredditAboutPage);
   });
 
   function * searchPage(next) {
@@ -356,6 +350,7 @@ function routes(app) {
       sort: ctx.query.sort || 'relevance',
       time: ctx.query.time || 'all',
       query: ctx.query.q,
+      track: 'search',
     });
 
     var searchOpts = {};
@@ -377,15 +372,7 @@ function routes(app) {
       this.props.data.set('search', app.api.search.get(searchOpts));
     }
 
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <SearchPage {...props} key={ key } track='search' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(SearchPag);
   }
 
   router.get('search.index', '/search', searchPage);
@@ -396,19 +383,17 @@ function routes(app) {
     var activityActive = active === 'activity' ? 'active' : false;
     var gildActive = active === 'gild' ? 'active' : false;
 
-    return (
-      <TextSubNav>
-        <li className='TextSubNav-li' active={aboutActive}>
-          <a className={`TextSubNav-a ${aboutActive}`} href={`/u/${userName}`}>About</a>
-        </li>
-        <li className='TextSubNav-li' active={activityActive}>
-          <a className={`TextSubNav-a ${activityActive}`} href={`/u/${userName}/activity`}>Activity</a>
-        </li>
-        <li className='TextSubNav-li' active={gildActive}>
-          <a className={`TextSubNav-a ${gildActive}`} href={`/u/${userName}/gild`}>Give gold</a>
-        </li>
-      </TextSubNav>
-    );
+    return [
+      <li className='TextSubNav-li' active={aboutActive} key={`about-${aboutActive.toString()}`}>
+        <a className={`TextSubNav-a ${aboutActive}`} href={`/u/${userName}`}>About</a>
+      </li>,
+      <li className='TextSubNav-li' active={activityActive} key={`activity-${activityActive.toString()}`}>
+        <a className={`TextSubNav-a ${activityActive}`} href={`/u/${userName}/activity`}>Activity</a>
+      </li>,
+      <li className='TextSubNav-li' active={gildActive} key={`gild-${gildActive.toString()}`}>
+        <a className={`TextSubNav-a ${gildActive}`} href={`/u/${userName}/gild`}>Give gold</a>
+      </li>,
+    ];
   }
 
   router.get('user.profile', '/u/:user', function *(next) {
@@ -417,6 +402,7 @@ function routes(app) {
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
+    this.props.track = 'userProfile';
 
     let userOpts = buildAPIOptions(ctx, {
       user: ctx.params.user,
@@ -424,16 +410,11 @@ function routes(app) {
 
     this.props.data.set('userProfile', app.api.users.get(userOpts));
 
-    var key = this.key;
+    let subNavProps = {
+      children: userProfileSubnav('about', ctx.params.user)
+    };
 
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          { userProfileSubnav('about', ctx.params.user) }
-          <UserProfilePage {...props} key={ key } track='userProfile' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody([TextSubNav, subNavProps], UserProfilePage);
   });
 
   router.get('user.gild', '/u/:user/gild', function *(next) {
@@ -442,19 +423,14 @@ function routes(app) {
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
-
     this.props.topNavLink = `/u/${ctx.params.user}`;
+    this.props.track = 'gild';
 
-    var key = this.key;
+    let subNavProps = {
+      children: userProfileSubnav('gild', ctx.params.user)
+    };
 
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          { userProfileSubnav('gild', ctx.params.user) }
-          <UserGildPage {...props} key={ key }/>
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody([TextSubNav, subNavProps], UserGildPage);
   });
 
   router.get('user.activity', '/u/:user/activity', function *(next) {
@@ -472,6 +448,7 @@ function routes(app) {
       sort: sort,
       title: `about u/${ctx.params.user}`,
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
+      track: 'activity',
     });
 
     let props = this.props;
@@ -488,16 +465,11 @@ function routes(app) {
 
     this.props.data.set('activities', app.api.activities.get(activitiesOpts));
 
-    var key = this.key;
+    let subNavProps = {
+      children: userProfileSubnav('activity', ctx.params.user)
+    };
 
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          { userProfileSubnav('activity', ctx.params.user) }
-          <UserActivityPage {...props} key={ key } track='activities' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody([TextSubNav, subNavProps], UserActivityPage);
   });
 
   function * submitPage(next) {
@@ -528,11 +500,9 @@ function routes(app) {
       return this.redirect('/login?originalUrl=' + submitUrl)
     }
 
-    var key = this.key;
-
     this.body = function(props) {
       return (
-        <SubmitPage key={ key } {...props}/>
+        <SubmitPage key={ this.key } {...props}/>
       );
     }
   }
@@ -553,6 +523,7 @@ function routes(app) {
       sort: sort,
       title: `${props.actionName} links`,
       metaDescription: `u/${ctx.params.user}'s saved links on reddit.com`,
+      track: 'activities',
     });
 
     let saved = app.api.saved;
@@ -572,15 +543,7 @@ function routes(app) {
 
     this.props.data.set('activities', saved.get(savedOpts))
     
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <UserSavedPage {...props} key={ key } track='activities' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(UserSavedPage);
   }
 
   router.get('saved', '/u/:user/saved', function * () {
@@ -592,36 +555,16 @@ function routes(app) {
   });
 
   router.get('static.faq', '/faq', function * () {
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <FAQPage {...props} />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(FAQPage);
   });
 
   router.get('user.login', '/login', function * () {
-    var ctx = this;
-    this.props.error = ctx.query.error;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <LoginPage {...props} />
-        </BodyLayout>
-      );
-    };
+    this.props.error = this.query.error;
+    this.body = makeBody(LoginPage);
   });
 
   router.get('user.register', '/register', function * () {
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <RegisterPage {...props} />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(RegisterPage);
   });
 
   function tryLoad (url, options) {
@@ -732,15 +675,7 @@ function routes(app) {
       view: 'compose',
     });
 
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props} app={app}>
-          <MessageComposePage {...props} key={ key } app={app} />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(MessageComposePage);
   });
 
   router.get('messages', '/message/:view', function *(next) {
@@ -759,6 +694,7 @@ function routes(app) {
       title: 'Messages',
       view: ctx.params.view,
       metaDescription: 'user messages at reddit.com',
+      track: 'messages'
     });
 
     let listingOpts = buildAPIOptions(ctx, {
@@ -767,15 +703,7 @@ function routes(app) {
 
     this.props.data.set('messages', app.api.messages.get(listingOpts));
 
-    var key = this.key;
-
-    this.body = function(props) {
-      return (
-        <BodyLayout {...props}>
-          <MessagesPage {...props} key={ key } track='messages' />
-        </BodyLayout>
-      );
-    }
+    this.body = makeBody(MessagesPage);
   });
 
   router.get('404', '*', function *(next) {
