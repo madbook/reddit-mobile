@@ -66,14 +66,21 @@ function formatSubreddit(s) {
 function mixin (App) {
   class MixedInApp extends App {
     constructor (config={}) {
-      super(config)
+      super(config);
 
+      let app = this;
       // Set up two APIs (until we get non-authed oauth working).
       this.api = new V1Api({
-        defaultHeaders: this.config.apiHeaders,
+        defaultHeaders: config.apiHeaders,
+        debugLevel: config.debugLevel,
+        log: app.logRequests.bind(app),
       });
 
       redirects(this);
+    }
+
+    logRequests () {
+      this.emit('log:request', ...arguments);
     }
 
     error (e, ctx, app, options={}) {

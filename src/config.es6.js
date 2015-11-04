@@ -6,7 +6,7 @@ function config() {
     https: process.env.HTTPS === 'true',
     httpsProxy: process.env.HTTPS_PROXY === 'true',
 
-    debugLevel: process.env.DEBUG_LEVEL === 'true',
+    debugLevel: process.env.DEBUG_LEVEL,
 
     minifyAssets: process.env.MINIFY_ASSETS === 'true',
 

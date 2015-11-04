@@ -113,6 +113,8 @@ function formatBootstrap(props) {
 
 class Server {
   constructor (config) {
+    this.activeRequests = 0;
+
     // Intantiate a new App instance (React middleware)
     config.seed = Math.random();
     config.staticMarkup = true;
@@ -133,6 +135,13 @@ class Server {
         secure: config.https,
         secureProxy: config.httpsProxy
     };
+
+    let that = this;
+    server.use(function * (next) {
+      that.activeRequests++;
+      yield next;
+      that.activeRequests--;
+    });
 
     // Runs after everything else, making sure private
     // responses don't get cached.
@@ -161,6 +170,15 @@ class Server {
 
     this.server = server;
     this.app = app;
+
+    this.logStats();
+  }
+
+  logStats () {
+    setTimeout(() => {
+      this.app.emit('log:activeRequests', this.activeRequests);
+      this.logStats();
+    }, 1000);
   }
 
   fatalError(app) {
