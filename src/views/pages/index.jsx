@@ -45,10 +45,10 @@ class IndexPage extends BasePage {
       );
     }
 
-    let bypassInterstitial = data.userPrefs && data.userPrefs.over_18;
+    let bypassInterstitial = data.preferences && data.preferences.over_18;
     if (!bypassInterstitial) {
       if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
-        return (<Interstitial  {...props} loggedIn={data.userPrefs} type='over18' />);
+        return (<Interstitial  {...props} loggedIn={data.preferences} type='over18' />);
       }
     }
     var listings = this.state.data.listings;

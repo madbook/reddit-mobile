@@ -238,7 +238,7 @@ function initialize(bindLinks) {
 
   if (window.bootstrap.dataCache.user) {
     app.setState('user', window.bootstrap.dataCache.user);
-    app.setState('userPrefs', window.bootstrap.dataCache.userPrefs);
+    app.setState('preferences', window.bootstrap.dataCache.preferences);
 
     cookies.set('over18', window.bootstrap.dataCache.preferences.over_18);
   }

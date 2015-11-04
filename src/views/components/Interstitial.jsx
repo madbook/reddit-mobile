@@ -32,7 +32,6 @@ class Interstitial extends BaseComponent {
     
       try {
         let res = await app.api.preferences.patch(options);
-        app.setState('userPrefs', res);
         app.emit(constants.TOGGLE_OVER_18, 'true');
         app.redirect(topNavLink);
       } catch(e) {
