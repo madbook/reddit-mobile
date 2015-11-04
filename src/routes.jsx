@@ -147,67 +147,50 @@ function getSubreddit(ctx, app) {
   }
 }
 
+function userData(ctx, app) {
+  let { apiOptions, data} = ctx.props;
+  let { preferences, users, subreddits } = app.api;
+
+  if (ctx.token) {
+    let userOptions =  Object.assign({}, apiOptions, {
+      user: 'me'
+    });
+    setData(ctx, 'user', 'users', userOptions);
+
+    let prefOptions = Object.assign({}, apiOptions);
+    setData(ctx, 'preferences', 'preferences', prefOptions);
+
+    let subOptions = Object.assign({}, apiOptions, {
+      query: {
+        sort: 'mine/subscriber',
+        sr_detail: true,
+        feature: 'mobile_settings',
+        limit: 250,
+      },
+    });
+    subOptions.headers['user-agent'] = ctx.headers['user-agent'];
+    setData(ctx, 'userSubscriptions', 'subreddits', subOptions);
+
+  } else {
+
+    let subOptions = Object.assign({}, apiOptions, {
+      query: {
+        sort: 'default',
+        sr_detail: true,
+        feature: 'mobile_settings',
+        limit: 250, 
+      },
+      origin: app.getConfig('nonAuthAPIOrigin'),
+    });
+    delete subOptions.headers.Authorization;
+    setData(ctx, 'userSubscriptions', 'subreddits', subOptions);
+  }
+}
 
 // The main entry point to this file is the routes function. It will call the
 // React factories to get at the mutated react elements, and map routes.
 function routes(app) {
   let router = app.router;
-
-  function userData() {
-    return function * (next) {
-      if (
-        this.params.error ||
-        this.url.indexOf('/logout') === 0 ||
-        this.url.indexOf('/login') === 0 ||
-        this.url.indexOf('/register') === 0 ||
-        this.url.indexOf('/oauth2') === 0 ||
-        this.url.indexOf('/timings') === 0 ||
-        this.url.indexOf('/goto') === 0
-       ){
-         yield next;
-         return;
-       }
-      let { apiOptions, data} = this.props;
-      let { preferences, users, subreddits } = app.api;
-
-      if (this.token) {        
-        let userOptions =  Object.assign({}, apiOptions, {
-          user: 'me'
-        });
-        setData(this, 'user', 'users', userOptions);
-
-        let prefOptions = Object.assign({}, apiOptions);
-        setData(this, 'preferences', 'preferences', prefOptions);
-
-        let subOptions = Object.assign({}, apiOptions, {
-          query: {
-            sort: 'mine/subscriber',
-            sr_detail: true,
-            feature: 'mobile_settings',
-            limit: 250,
-          },
-        });
-        subOptions.headers['user-agent'] = this.headers['user-agent'];
-        setData(this, 'userSubscriptions', 'subreddits', subOptions);
-
-      } else {
-
-        let subOptions = Object.assign({}, apiOptions, {
-          query: {
-            sort: 'default',
-            sr_detail: true,
-            feature: 'mobile_settings',
-            limit: 250, 
-          },
-          origin: app.getConfig('nonAuthAPIOrigin'),
-        });
-        delete subOptions.headers.Authorization;
-        setData(this, 'userSubscriptions', 'subreddits', subOptions);
-      }
-
-      yield next;
-    }
-  }
 
   function * setPageKey(next) {
     this.key = globals().random();
@@ -219,24 +202,38 @@ function routes(app) {
     yield next;
   }
 
+  function * loadData (next) {
+    if (
+      this.url.indexOf('/robots') === 0 ||
+      this.url.indexOf('/logout') === 0 ||
+      this.url.indexOf('/login') === 0 ||
+      this.url.indexOf('/register') === 0 ||
+      this.url.indexOf('/oauth2') === 0 ||
+      this.url.indexOf('/timings') === 0 ||
+      this.url.indexOf('/goto') === 0 ||
+      this.url.indexOf('/health') === 0
+    ){
+      return yield next;
+    } else {
+      getSubreddit(this, app);
+      userData(this, app);
+      return yield next;
+    }
+  }
+
   router.get('health', '/health', function * () {
     this.body = 'OK';
+    return;
   });
 
   router.use(function * (next) {
-      buildProps(this, app);
-      yield next;
-   });
+    buildProps(this, app);
+    yield next;
+  });
 
-  router.use(function * (next) {
-      getSubreddit(this, app);
-      yield next;
-   });
-  
+  router.use(loadData);
   router.use(setPageKey);
-  router.use(userData());
   router.use(defaultLayout);
-
 
   function * indexPage (next) {
     let props = this.props;
