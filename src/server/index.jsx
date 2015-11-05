@@ -12,6 +12,7 @@ import csrf from 'koa-csrf';
 import compress from 'koa-compress';
 
 import session from 'koa-session';
+import StatsdClient from 'statsd-client';
 
 import { ServerReactApp } from 'horse-react';
 import mixin from '../app-mixin';
@@ -136,11 +137,36 @@ class Server {
         secureProxy: config.httpsProxy
     };
 
+    this.statsd = new StatsdClient(config.statsd || {
+      _socket:  { send: ()=>{}, close: ()=>{}  }
+    });
+
     let that = this;
     server.use(function * (next) {
+      let statsd = that.statsd;
+
       that.activeRequests++;
+
+      statsd.increment('request');
+
       yield next;
       that.activeRequests--;
+
+      statsd.increment(`response.${this.status}`);
+
+      if (this.props && this.props.timings) {
+        if (this.props.timings.route) {
+          statsd.timing('timings.route', this.props.timings.route);
+        }
+
+        if (this.props.timings.render) {
+          statsd.timing('timings.render',  this.props.timings.render);
+        }
+
+        if (this.props.timings.data) {
+          statsd.timing('timings.data',  this.props.timings.data);
+        }
+      }
     });
 
     // Runs after everything else, making sure private

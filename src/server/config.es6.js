@@ -52,6 +52,16 @@ function serverConfig(numCPUs) {
 
   config.keys = [ env.SERVER_SIGNED_COOKIE_KEY || 'lambeosaurus' ];
 
+  if (env.STATSD_HOST) {
+    config.statsd = {
+      host: env.STATSD_HOST,
+      port: env.STATSD_PORT,
+      debug: env.STATSD_DEBUG,
+      prefix: env.STATSD_PREFIX || 'mweb.server',
+      socketTimeout: env.STATSD_TIMEOUT || 100,
+    }
+  }
+
   return config;
 }
 

@@ -46,6 +46,8 @@ require('babel/register')({
   stage: 0,
 });
 
+const throttle = require('lodash/function/throttle');
+
 const numCPUs = process.env.PROCESSES || require('os').cpus().length;
 
 // App config
@@ -107,6 +109,12 @@ if (cluster.isMaster) {
     silent: true
   });
 
+  const StatsdClient = require('statsd-client');
+
+  const statsd = new StatsdClient(config.statsd || {
+    _socket:  { send: ()=>{}, close: ()=>{}  }
+  });
+
   let processes = [];
 
   // If we used `node index.js --console`, instantiate a dashboard.
@@ -157,6 +165,12 @@ if (cluster.isMaster) {
 
   let activeRequests = {};
 
+  let sendRequests = throttle(function(requests) {
+    if (requests) {
+      statsd.increment('activeRequests', requests);
+    }
+  }, 10000);
+
   // To communicate between worker threads and the master thread, specifically
   // for the dashboard, we have to send messages; so we bind to `Server` events
   // below, and fire them through the process to here. The dashboard, if running,
@@ -173,17 +187,25 @@ if (cluster.isMaster) {
           break;
 
         case 'log:activeRequests':
+          if (!activeRequests[message.pid]) {
+            activeRequests[message.pid] = [];
+          }
+
+          activeRequests[message.pid].push(message.requests);
+
+          if (activeRequests[message.pid].length > 40) {
+            activeRequests[message.pid] = activeRequests[message.pid].slice(-40);
+          }
+
+          let latestTotal = 0;
+
+          for (let a in activeRequests) {
+            latestTotal += activeRequests[a][activeRequests[a].length - 1];
+          }
+
+          sendRequests(latestTotal);
+
           if (dashboard) {
-            if (!activeRequests[message.pid]) {
-              activeRequests[message.pid] = [];
-            }
-
-            activeRequests[message.pid].push(message.requests);
-
-            if (activeRequests[message.pid].length > 40) {
-              activeRequests[message.pid] = activeRequests[message.pid].slice(-40);
-            }
-
             dashboard.updateActiveRequests(activeRequests);
           }
 
