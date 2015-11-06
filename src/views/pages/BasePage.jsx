@@ -19,7 +19,7 @@ class BasePage extends BaseComponent {
       for (var k in props.dataCache) {
         props.data.set(k, Promise.resolve(props.dataCache[k]));
 
-        if (props.dataCache[k].body) {
+        if (props.dataCache[k] && props.dataCache[k].body) {
           this.state.data[k] = props.dataCache[k].body;
           this.state.meta[k] = props.dataCache[k].headers;
 
