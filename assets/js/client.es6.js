@@ -105,6 +105,7 @@ function modifyContext (ctx) {
     env: 'CLIENT',
   });
 
+
   if (!ctx.token) {
     ctx.loid = cookies.get('loid');
     ctx.loidcreated = cookies.get('loidcreated');
@@ -114,8 +115,6 @@ function modifyContext (ctx) {
 
   return ctx;
 }
-
-
 
 function setTitle(props={}) {
   let $title = document.getElementsByTagName('title')[0];
@@ -235,10 +234,6 @@ function initialize(bindLinks) {
   var app = new App(config);
   routes(app);
 
-  app.on('error:body', function(ctx) {
-    React.render(ctx.body(ctx.props), app.config.mountPoint);
-  });
-
   app.setState('userSubscriptions', window.bootstrap.dataCache.userSubscriptions);
 
   if (window.bootstrap.dataCache.user) {
@@ -291,6 +286,10 @@ function initialize(bindLinks) {
     render(app, app.fullPathName(), false, modifyContext).then(function(props) {
       setTitle(props);
     });
+  }
+
+  app.forceRender = function (view, props) {
+    React.render(view(props), app.config.mountPoint);
   }
 
   var scrollCache = {};

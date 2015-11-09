@@ -89,6 +89,7 @@ function filterContextProps(ctx) {
     token: ctx.token,
     tokenExpires: ctx.tokenExpires,
     redirect: ctx.redirect,
+    env: ctx.env,
   }
 }
 

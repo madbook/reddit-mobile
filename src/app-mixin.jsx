@@ -97,7 +97,6 @@ function mixin (App) {
 
       if (options.replaceBody !== false) {
         ctx.body = this.errorPage(ctx, e.status);
-        app.emit('error:body', ctx);
       }
     }
 

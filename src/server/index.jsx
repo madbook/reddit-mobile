@@ -356,6 +356,7 @@ class Server {
 
       globals().random = randomBySeed(app.config.seed);
       this.staticMarkup = true;
+      this.env = 'SERVER';
 
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'];

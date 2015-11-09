@@ -43,7 +43,7 @@ class BasePage extends BaseComponent {
   }
 
   watch (property) {
-    this.props.data.get(property).then(function(p) {
+    this.props.data.get(property).then((p) => {
       if (p.body) {
         var data = Object.assign({}, this.state.data);
         var meta = Object.assign({}, this.state.meta);
@@ -68,15 +68,10 @@ class BasePage extends BaseComponent {
           data: data,
         });
       }
-    }.bind(this), function(e) {
-      // circular, so we can render the error page
-      if (!this.props.ctx.props) {
-        this.props.ctx.props = this.props;
-        delete this.props.ctx.props.ctx.props;
-      }
-
+    }, (e) => {
       this.props.app.error(e, this.props.ctx, this.props.app);
-    }.bind(this));
+      this.props.app.forceRender(this.props.ctx.body, this.props);
+    });
   }
 
   buildTrackingPixelProps(url, props) {
