@@ -180,8 +180,10 @@ class Server {
     csrf(server);
     server.use(this.csrf(app));
 
-    // Set up static routes for built (and unbuilt, static) files
-    server.use(koaStatic(__dirname + '/../../build'));
+    if (!config.assetPath) {
+      // Set up static routes for built (and unbuilt, static) files
+      server.use(koaStatic(__dirname + '/../../build'));
+    }
 
     server.use(this.checkToken(app));
     server.use(this.convertSession(app));
