@@ -149,7 +149,15 @@ class Server {
 
       statsd.increment('request');
 
-      yield next;
+      try {
+        yield next;
+      } catch (e) {
+        app.error(e, this, app, {
+          replaceBody: false,
+          redirect: false,
+        });
+      }
+
       that.activeRequests--;
 
       statsd.increment(`response.${this.status}`);
