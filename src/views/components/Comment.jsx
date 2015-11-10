@@ -278,7 +278,7 @@ class Comment extends BaseComponent {
 
     let authorFlair;
     if (comment.author_flair_text) {
-      let authorFlair = (
+      authorFlair = (
         <span className={`label label-default ${comment.author_flair_css_class}`}>
           { comment.author_flair_text }
         </span>
@@ -389,10 +389,9 @@ class Comment extends BaseComponent {
                     { comment.author }
                   </span>
 
-                  { authorFlair }
-
                   { gilded }
                 </li>
+
                 <li className='comment-timestamp-score'>
                   <span className='comment-timestamp'>{ submitted }</span>
                   <span className='comment-title-score'>
@@ -400,6 +399,7 @@ class Comment extends BaseComponent {
                   </span>
                 </li>
               </ul>
+              { authorFlair }
             </a>
           </div>
           { body }

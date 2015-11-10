@@ -75,6 +75,7 @@
 
 .linkbar.comment-title-list {
   width: 100%;
+  margin-bottom: 4px;
 
   &.linkbar-compact li.twirly {
     left: -10px;
@@ -140,6 +141,14 @@
 .comment-submitted {
   color: @gray;
   font-size: @font-size-small;
+
+  a:hover, a:active, a:focus {
+    text-decoration: none;
+  }
+
+  .label.label-default {
+    background-color: darken(@light-gray, 7%);
+  }
 }
 
 .comment-body {
