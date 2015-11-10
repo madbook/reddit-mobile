@@ -25,6 +25,7 @@ class TopSubnav extends BaseComponent {
                excludedSorts={ this.props.excludedSorts }
                list={ this.props.list }
                baseUrl={ this.props.ctx.url }
+               className='pull-left'
              />;
     }
 
