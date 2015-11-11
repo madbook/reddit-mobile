@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import constants from '../../constants';
 import cookies from 'cookies-js';
 import propTypes from '../../propTypes';
@@ -7,9 +7,6 @@ import aboutItems from '../../sideNavAboutMenuItems'
 import titleCase from '../../lib/titleCase';
 
 import BaseComponent from './BaseComponent';
-
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-var TransitionGroup = React.addons.TransitionGroup;
 
 var snooIcon = (
   <span className='icon-snoo-circled icon-large'>{' '}</span>
@@ -131,9 +128,7 @@ class SideNav extends BaseComponent {
               </span>
               <span className='SideNav-text'>{ user.name }</span>
             </button>
-            <TransitionGroup>
-              { userButtons }
-            </TransitionGroup>
+            { userButtons }
           </li>
         );
 
@@ -248,9 +243,7 @@ class SideNav extends BaseComponent {
                 </span>
                 <span className='SideNav-text'>About reddit</span>
               </button>
-              <TransitionGroup>
-                { aboutButtons }
-              </TransitionGroup>
+              { aboutButtons }
             </li>
             <li className='SideNav-li'>
               <a className='SideNav-button' href={`https://www.reddit.com${this.props.ctx.url}`} onClick={ this._desktopSite }>

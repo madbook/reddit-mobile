@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 
 import constants from '../../constants';
 import globals from '../../globals';
@@ -48,9 +48,7 @@ class Dropdown extends BaseComponent {
       <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter }
            onMouseLeave={ touch ? null : this._onMouseLeave } onClick={ touch ? this._onClick : null }>
         { this.props.button }
-        <CSSTransitionGroup transitionName="Dropdown-tab">
-          { tab }
-        </CSSTransitionGroup>
+        { tab }
       </div>
     );
   }

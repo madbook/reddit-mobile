@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 
 import constants from '../../constants';
 import globals from '../../globals';
@@ -12,7 +12,6 @@ import ListingDropdown from '../components/ListingDropdown';
 import Vote from '../components/Vote';
 
 const PropTypes = React.PropTypes;
-const TransitionGroup = React.addons.TransitionGroup;
 
 function isImgurDomain(domain) {
   return (domain || '').indexOf('imgur.com') >= 0;
@@ -302,9 +301,7 @@ class Listing extends BaseComponent {
             />
           { this._renderFooter() }
         </div>
-        <TransitionGroup>
-          { expandedCompact }
-        </TransitionGroup>
+        { expandedCompact }
       </article>
     );
   }

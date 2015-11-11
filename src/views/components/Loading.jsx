@@ -1,5 +1,4 @@
-import React from 'react/addons';
-const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import React from 'react';
 
 import SnooIcon from '../components/icons/SnooIcon';
 import BaseComponent from './BaseComponent';
@@ -12,13 +11,7 @@ class Loading extends BaseComponent {
   render() {
     return (
       <div className='Loading'>
-        <ReactCSSTransitionGroup
-          transitionName="loading"
-          transitionAppear={ true }
-          transitionLeave={ false }
-        >
-          <SnooIcon key='1' />
-        </ReactCSSTransitionGroup>
+        <SnooIcon key='1' />
       </div>
     );
   }
