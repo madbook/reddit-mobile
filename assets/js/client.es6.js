@@ -219,7 +219,6 @@ function initialize(bindLinks) {
   referrer = document.referrer;
 
   config.mountPoint = document.getElementById('app-container');
-  config.touch = true;
 
   forOwn(config, function(val, key) {
     if (window.bootstrap.config[key]) {
