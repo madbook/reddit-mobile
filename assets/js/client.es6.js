@@ -37,7 +37,6 @@ import getTimes from '../../src/lib/timing';
 import globals from '../../src/globals';
 import randomBySeed from '../../src/lib/randomBySeed';
 import setLoggedOutCookies from '../../src/lib/loid';
-import Utils from '../../src/lib/danehansen/utils/Utils';
 import routes from '../../src/routes';
 
 import trackingEvents from './trackingEvents';
@@ -228,7 +227,6 @@ function initialize(bindLinks) {
 
   config.seed = window.bootstrap.seed || Math.random();
 
-  globals().touch = Utils.touch();
   globals().random = randomBySeed(config.seed);
 
   var app = new App(config);

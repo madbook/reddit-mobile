@@ -1,5 +1,4 @@
 import React from 'react';
-import MyMath from '../../lib/danehansen/utils/MyMath';
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
@@ -34,24 +33,43 @@ function _gifToHTML5(url) {
     }
   }
 }
+
 //there are css values in aspect-ratio.less that must correlate with _WIDEST and _TALLEST
 const _WIDEST = 3;
 const _TALLEST = 1 / 3;
 function _limitAspectRatio(aspectRatio) {
   return Math.min(Math.max(_TALLEST, aspectRatio), _WIDEST);
 }
+
 //there are css values in aspect-ratio.less that must correlate with _INCREMENT and _HEIGHT
 const _INCREMENT = 40;
 const _HEIGHT = 1080;
 
+// Calculate the lowest common denominator
+function euclid (a, b) {
+  if(b == 0) {
+    return a;
+  }
+
+  return euclid(b, a % b);
+}
+
+// Get a number rounded to the nearest increment
+function incrRound (n, incr) {
+  return Math.round(n / incr) * incr;
+}
+
 function _aspectRatioClass(ratio) {
   if (!ratio) {
-    return  'aspect-ratio-' + 16 + 'x' + 9;
+    return  'aspect-ratio-16x9';
   }
-  var w = MyMath.round(ratio * _HEIGHT, _INCREMENT);
-  var euclid = MyMath.euclid(w, _HEIGHT);
-  return  'aspect-ratio-' + w / euclid + 'x' + _HEIGHT / euclid;
+
+  var w = incrRound(ratio * _HEIGHT, _INCREMENT);
+  var lcd = euclid(w, _HEIGHT);
+
+  return `aspect-ratio-${(w / lcd)}x${(_HEIGHT / lcd)}`;
 }
+
 // Allow links to pass through in selftext
 function _wrapSelftextExpand(fn) {
   return function(e) {
