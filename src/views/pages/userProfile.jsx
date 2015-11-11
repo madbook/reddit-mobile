@@ -9,13 +9,13 @@ import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BasePage {
   render() {
-    if (!this.state.data || !this.state.data.userProfile) {
+    if (!this.state.data || !this.state.data.user) {
       return (
         <Loading />
       );
     }
 
-    var userProfile = this.state.data.userProfile;
+    var userProfile = this.state.data.user;
     var name = this.props.userName;
 
     return (
