@@ -59,11 +59,14 @@ class CaptchaBox extends BaseComponent {
   }
 
   _updateCaptchaInfo() {
-    var answer = this.refs.answer.value
-    var info = {
+    const answer = this.refs.answer.value;
+    const { iden } = this.state;
+
+    const info = {
       answer: answer,
-      iden: this.state.iden,
-    }
+      iden: iden,
+    };
+
     this.props.cb(info);
   }
 

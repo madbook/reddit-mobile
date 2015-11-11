@@ -1,6 +1,7 @@
 import React from 'react';
-import constants from '../../constants';
 import cookies from 'cookies-js';
+
+import constants from '../../constants';
 import propTypes from '../../propTypes';
 import querystring from 'querystring';
 import aboutItems from '../../sideNavAboutMenuItems'

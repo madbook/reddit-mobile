@@ -1,51 +1,43 @@
 import React from 'react';
 
-import BaseComponent from './BaseComponent';
 import TextSubNav from './TextSubNav';
 
-class MessageNav extends BaseComponent {
-  constructor (props) {
-    super(props);
+function MessageNav (props) {
+  let modMailLink;
+  const { view, user } = props;
+
+  if (!user) {
+    return (<div />);
   }
 
-  render () {
-    var modMailLink;
-    var view = this.props.view;
-    var user = this.props.user;
-
-    if (!user) {
-      return (<div />);
-    }
-
-    if (user.is_mod) {
-      modMailLink= (
-        <li className='TextSubNav-li' active={view === 'moderator'}>
-          <a className={'TextSubNav-a ' + (view === 'moderator' ? 'active' : '') } href='/message/moderator'>Mod Mail</a>
-        </li>
-      );
-    }
-
-    return (
-      <TextSubNav>
-        <li className='TextSubNav-li' active={view === 'inbox'}>
-          <a className={'TextSubNav-a ' + (view === 'inbox' ? 'active' : '') } href='/message/inbox'>All</a>
-        </li>
-
-        <li className='TextSubNav-li' active={view === 'messages'}>
-          <a className={'TextSubNav-a ' + (view === 'messages' ? 'active' : '') } href='/message/messages'>Messages</a>
-        </li>
-
-        { modMailLink }
-        <li className='TextSubNav-li' active={view === 'mentions'}>
-          <a className={'TextSubNav-a ' + (view === 'mentions' ? 'active' : '') } href='/message/mentions'>Mentions</a>
-        </li>
-
-        <li className='TextSubNav-li' active={view === 'compose'}>
-          <a className={'TextSubNav-a ' + (view === 'compose' ? 'active' : '') } href='/message/compose'><span className='icon-post' /></a>
-        </li>
-      </TextSubNav>
+  if (user.is_mod) {
+    modMailLink= (
+      <li className='TextSubNav-li' active={view === 'moderator'}>
+        <a className={'TextSubNav-a ' + (view === 'moderator' ? 'active' : '') } href='/message/moderator'>Mod Mail</a>
+      </li>
     );
   }
+
+  return (
+    <TextSubNav>
+      <li className='TextSubNav-li' active={view === 'inbox'}>
+        <a className={'TextSubNav-a ' + (view === 'inbox' ? 'active' : '') } href='/message/inbox'>All</a>
+      </li>
+
+      <li className='TextSubNav-li' active={view === 'messages'}>
+        <a className={'TextSubNav-a ' + (view === 'messages' ? 'active' : '') } href='/message/messages'>Messages</a>
+      </li>
+
+      { modMailLink }
+      <li className='TextSubNav-li' active={view === 'mentions'}>
+        <a className={'TextSubNav-a ' + (view === 'mentions' ? 'active' : '') } href='/message/mentions'>Mentions</a>
+      </li>
+
+      <li className='TextSubNav-li' active={view === 'compose'}>
+        <a className={'TextSubNav-a ' + (view === 'compose' ? 'active' : '') } href='/message/compose'><span className='icon-post' /></a>
+      </li>
+    </TextSubNav>
+  );
 }
 
 MessageNav.propTypes = {

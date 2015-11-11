@@ -397,7 +397,7 @@ class ListingContent extends BaseComponent {
   saveText(e) {
     e.preventDefault();
 
-    const val = this.refs.updatedText.value;
+    const val = this.refs.updatedText.value.trim();
     this.props.saveUpdatedText(val);
   }
 

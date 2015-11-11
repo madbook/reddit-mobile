@@ -135,15 +135,16 @@ class Comment extends BaseComponent {
   }
 
   async updateComment () {
-    var {app, apiOptions} = this.props;
-    var newText = this.refs.updatedText.value;
-    var oldComment = this.state.comment;
+    const { app, apiOptions } = this.props;
+    const newText = this.refs.updatedText.value;
+    let oldComment = this.state.comment;
+
     if (oldComment.body === newText) {
       return;
     }
 
-    var comment = new models.Comment(oldComment);
-    var options = app.api.buildOptions(apiOptions);
+    const comment = new models.Comment(oldComment);
+    let options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       model: comment,
