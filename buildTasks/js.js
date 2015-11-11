@@ -61,12 +61,18 @@ module.exports = function buildJS(gulp, options) {
 
     bundler.add(entryFile);
 
+    var optional = [];
+    if (!options.debug) {
+      optional = ['optimisation.react.inlineElements', 'optimisation.react.constantElements'];
+    }
+
     bundler
       .transform(babelify.configure({
         ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|lodash)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: options.debug,
         stage: 0,
+        optional: optional,
       }), {
         global: true,
       })

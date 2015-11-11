@@ -44,6 +44,7 @@ require('babel/register')({
   extensions: ['.js', '.es6.js', '.jsx' ],
   sourceMap: true,
   stage: 0,
+  optional: ['optimisation.react.inlineElements', 'optimisation.react.constantElements'],
 });
 
 const throttle = require('lodash/function/throttle');
