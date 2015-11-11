@@ -1,6 +1,7 @@
 import React from 'react';
-import constants from '../../constants';
 import { models } from 'snoode';
+
+import constants from '../../constants';
 import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
@@ -274,16 +275,16 @@ class ListingDropdown extends BaseComponent {
   _onReportSubmit(e) {
     e.preventDefault();
 
-    var id = this.props.listing.name;
-    var textEl = this.refs.otherReason.getDOMNode();
+    let id = this.props.listing.name;
+    const reason = this.refs.otherReason.value.trim();
 
-    var report = new models.Report({
+    let report = new models.Report({
       thing_id: id,
       reason: 'other',
-      other_reason: textEl.value.trim(),
+      other_reason: reason,
     });
 
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    let options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: report,

@@ -37,7 +37,7 @@ class MessagePreview extends BaseComponent {
   _onReplySubmit (e) {
     e.preventDefault();
 
-    let text = this.refs.replyText.getDOMNode().value;
+    const text = this.refs.replyText.value.trim();
 
     if (!text) {
       return;

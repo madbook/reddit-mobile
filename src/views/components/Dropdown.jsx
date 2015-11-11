@@ -1,10 +1,9 @@
 import React from 'react/addons';
+
 import constants from '../../constants';
 import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
-
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 class Dropdown extends BaseComponent {
   constructor(props) {

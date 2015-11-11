@@ -76,8 +76,7 @@ class SideNav extends BaseComponent {
   _goto(e) {
     e.preventDefault();
 
-    let textEl = this.refs.location.getDOMNode();
-    let location = textEl.value.trim();
+    const location = this.refs.location.value.trim();
 
     let query = querystring.stringify({ location });
 
@@ -197,31 +196,30 @@ class SideNav extends BaseComponent {
             </span>
             <span className='SideNav-text'>My Subreddits</span>
           </button>
-          <TransitionGroup>
-            { subredditButtons }
-          </TransitionGroup>
+          { subredditButtons }
         </li>
       );
 
+      let aboutButtons;
+
       if (twirly === 'about') {
-        let itemsList = aboutItems.map((i) => {
-          return (
-            <li className='SideNav-li'>
-              <a className='SideNav-button' href={`${config.reddit}${i.url}`}>
-                { snooIcon }
-                <span className='SideNav-text'>{titleCase(i.title)}</span>
-              </a>
-            </li>
-          );
-        });
-        var aboutButtons = (
+        aboutButtons = (
           <ul key='about' className='SideNav-ul list-unstyled'>
-            { itemsList }
+            {aboutItems.map((i) => {
+              return (
+                <li className='SideNav-li'>
+                  <a className='SideNav-button' href={`${config.reddit}${i.url}`}>
+                    { snooIcon }
+                    <span className='SideNav-text'>{titleCase(i.title)}</span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         );
       }
 
-      var node = (
+      return (
         <nav key='root' className='SideNav tween shadow'>
           <ul className='list-unstyled'>
             <li className='SideNav-li '>
@@ -265,11 +263,7 @@ class SideNav extends BaseComponent {
       );
     }
 
-    return (
-      <CSSTransitionGroup transitionName="SideNav">
-        { node }
-      </CSSTransitionGroup>
-    );
+    return (<div />);
   }
 
   _toggle() {

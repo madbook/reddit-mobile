@@ -1,4 +1,5 @@
-import React from 'react/addons';
+import React from 'react';
+
 import constants from '../../constants';
 import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
@@ -44,7 +45,7 @@ class Comment extends BaseComponent {
   }
 
   componentDidMount () {
-    var hasSavedReply = !!savedReply.get(this.props.comment.name);
+    const hasSavedReply = !!savedReply.get(this.props.comment.name);
 
     if (hasSavedReply) {
       this.setState({
@@ -52,7 +53,7 @@ class Comment extends BaseComponent {
         showTools: hasSavedReply,
       });
 
-      React.findDOMNode(this).scrollIntoView();
+      this.domNode.scrollIntoView();
     }
   }
 
@@ -135,7 +136,7 @@ class Comment extends BaseComponent {
 
   async updateComment () {
     var {app, apiOptions} = this.props;
-    var newText = this.refs.updatedText.getDOMNode().value;
+    var newText = this.refs.updatedText.value;
     var oldComment = this.state.comment;
     if (oldComment.body === newText) {
       return;

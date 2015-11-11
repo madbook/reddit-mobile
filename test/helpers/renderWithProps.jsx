@@ -1,7 +1,5 @@
-import React from 'react/addons';
+import TestUtils from 'react-addons-test-utils';
 import buildProps from './buildProps';
-
-var TestUtils = React.addons.TestUtils;
 
 export default function(extraProps, Component) {
   var props = Object.assign(buildProps(), extraProps);

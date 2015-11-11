@@ -1,4 +1,5 @@
 import React from 'react';
+
 import constants from '../../constants';
 import { models } from 'snoode';
 import superagent from 'superagent';
@@ -138,23 +139,27 @@ class Ad extends BaseComponent {
   }
 
   _checkImpression() {
-    var adObject = this.state.ad;
+    const adObject = this.state.ad;
+
     if (adObject) {
-      var node = React.findDOMNode(this);
-      var winHeight = window.innerHeight;
-      var rect = node.getBoundingClientRect();
-      var top = rect.top;
-      var height = rect.height;
-      var bottom = top + rect.height;
-      var middle = (top + bottom) / 2;
-      var middleIsAboveBottom = middle < winHeight;
-      var middleIsBelowTop = bottom > constants.TOP_NAV_HEIGHT + height / 2;
+      const node = this.domNode;
+      const winHeight = window.innerHeight;
+      const rect = node.getBoundingClientRect();
+      const top = rect.top;
+      const height = rect.height;
+      const bottom = top + rect.height;
+      const middle = (top + bottom) / 2;
+      const middleIsAboveBottom = middle < winHeight;
+      const middleIsBelowTop = bottom > constants.TOP_NAV_HEIGHT + height / 2;
+
       if(middleIsAboveBottom && middleIsBelowTop) {
-        var srcs=['imp_pixel', 'adserver_imp_pixel'];
+        const srcs=['imp_pixel', 'adserver_imp_pixel'];
+
         for (var i = 0, iLen = srcs.length; i < iLen; i++) {
-          var pixel = new Image();
+          let pixel = new Image();
           pixel.src = adObject[srcs[i]];
         }
+
         this._removeListeners();
       }
     }

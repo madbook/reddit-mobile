@@ -19,10 +19,11 @@ function onError(message, url, line, column) {
 window.onerror = onError;
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import throttle from 'lodash/function/throttle';
 import forOwn from 'lodash/object/forOwn';
 
-import {ClientReactApp} from 'horse-react';
+import ClientReactApp from 'horse-react/src/client';
 import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
 import querystring from 'querystring';
@@ -200,7 +201,7 @@ function render (app, ...args) {
   return new Promise(function(resolve, reject) {
     if (app.getState('refreshingToken')) {
 
-      React.render(app.loadingpage(), app.config.mountPoint);
+      ReactDOM.render(app.loadingpage(), app.config.mountPoint);
 
       app.on('token:refresh', function() {
         app.render(...args).then(resolve, reject);
@@ -288,7 +289,7 @@ function initialize(bindLinks) {
   }
 
   app.forceRender = function (view, props) {
-    React.render(view(props), app.config.mountPoint);
+    ReactDOM.render(view(props), app.config.mountPoint);
   }
 
   var scrollCache = {};

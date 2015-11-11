@@ -55,6 +55,7 @@ module.exports = function buildJS(gulp, options) {
     bundler
       .require('moment')
       .require('react')
+      .require('react-dom')
       .require('reddit-text-js')
       .require('superagent');
 

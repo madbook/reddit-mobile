@@ -69,15 +69,12 @@ class SubmitPage extends BasePage {
       }
     });
 
-    var sub = this.state.subreddit;
-    var titleEl = this.refs.title.getDOMNode();
-    var title = titleEl.value.trim();
-    var bodyEl = this.refs.body.getDOMNode();
-    var body = bodyEl.value.trim();
+    let title = this.refs.title.value.trim();
+    const sub = this.state.subreddit;
+    const body = this.refs.body.value.trim();
 
-    var kind = _determineKind(body);
-
-    var errors = this._validateContent(sub, title, body);
+    const kind = _determineKind(body);
+    const errors = this._validateContent(sub, title, body);
 
     if (errors.length) {
       this.setState({

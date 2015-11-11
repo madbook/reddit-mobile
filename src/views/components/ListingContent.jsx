@@ -1,4 +1,5 @@
 import React from 'react';
+
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
@@ -396,7 +397,7 @@ class ListingContent extends BaseComponent {
   saveText(e) {
     e.preventDefault();
 
-    var val = this.refs.updatedText.getDOMNode().value
+    const val = this.refs.updatedText.value;
     this.props.saveUpdatedText(val);
   }
 

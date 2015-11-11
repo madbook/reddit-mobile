@@ -1,4 +1,5 @@
 import React from 'react/addons';
+
 import constants from '../../constants';
 import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
@@ -326,25 +327,32 @@ class Listing extends BaseComponent {
     if (this.state.loaded) {
       return true;
     }
-    var top = React.findDOMNode(this).getBoundingClientRect().top;
+
+    const top = this.domNode.getBoundingClientRect().top;
+
     if (top < winHeight) {
       this._loadContent();
       return true;
     }
+
     return false;
   }
 
   resize() {
-    var state = this.state;
-    var node = this.refs.root.getDOMNode();
-    var newState = {};
+    const state = this.state;
+    const node = this.refs.root;
+
+    let newState = {};
+    let height;
+
     newState.width = node.offsetWidth;
     if (state.compact && state.loaded) {
-      var height = node.offsetHeight;
+      height = node.offsetHeight;
       if (height > this.state.tallestHeight) {
         newState.tallestHeight = height;
       }
     }
+
     this.setState(newState);
   }
 

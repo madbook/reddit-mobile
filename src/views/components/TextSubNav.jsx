@@ -33,13 +33,14 @@ class TextSubNav extends BaseComponent {
   }
 
   _moveIndicator() {
-    var ul = this.refs.ul.getDOMNode();
-    var active = ul.querySelector('.active');
+    const active = this.refs.ul.querySelector('.active');
+
     if (active) {
-      var ulWidth = ul.getBoundingClientRect().width;
-      var rect = active.getBoundingClientRect();
-      var width = Math.round(rect.width) + _INDICATOR_PADDING * 2 + 'px';
-      var left = Math.round(rect.left - ulWidth / 2) - _INDICATOR_PADDING + 'px';
+      const ulWidth = ul.getBoundingClientRect().width;
+      const rect = active.getBoundingClientRect();
+      const width = Math.round(rect.width) + _INDICATOR_PADDING * 2 + 'px';
+      const left = Math.round(rect.left - ulWidth / 2) - _INDICATOR_PADDING + 'px';
+
       if (width != this.state.indicatorWidth || left != this.state.indicatorLeft) {
         this.setState({indicatorWidth: width, indicatorLeft: left});
       }

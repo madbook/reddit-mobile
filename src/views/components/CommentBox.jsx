@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { models } from 'snoode';
 import querystring from 'querystring';
 import savedReply from '../../lib/savedReply';
@@ -19,8 +20,7 @@ class CommentBox extends BaseComponent {
   }
 
   handleInputChange (e) {
-    var el = React.findDOMNode(this.refs.text);
-    var value = el.value;
+    const value = this.refs.text.value;
 
     this.setState({
       reply: value,
@@ -32,8 +32,7 @@ class CommentBox extends BaseComponent {
   submit (e) {
     e.preventDefault();
 
-    var el = React.findDOMNode(this.refs.text);
-    var text = el.value.trim();
+    const text = this.refs.text.value.trim();
 
     this.submitComment(text);
   }

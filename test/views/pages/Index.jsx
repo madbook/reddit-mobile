@@ -1,8 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import React from 'react/addons';
-var { TestUtils } = React.addons;
+import TestUtils from 'react-addons-test-utils';
 
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
