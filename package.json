@@ -8,7 +8,8 @@
     "build": "gulp",
     "watch": "gulp watch",
     "dev": "gulp dev",
-    "test": "mocha test/index.js"
+    "test": "mocha test/index.js",
+    "lint": "eslint src --ext .js,.jsx"
   },
   "author": "reddit <jack@reddit.com>",
   "license": "MIT",
@@ -44,6 +45,7 @@
     "uuid": "2.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^4.1.5",
     "babelify": "6.1.2",
     "blessed": "^0.1.81",
     "blessed-contrib": "^2.5.1",
@@ -53,6 +55,9 @@
     "del": "1.1.1",
     "dom-serializer": "git://github.com/ajacksified/dom-serializer.git#c999b029caa6d4a9f1fbeb512b48ec7c75c1dddb",
     "envify": "3.4.0",
+    "eslint": "^1.9.0",
+    "eslint-plugin-babel": "^2.1.1",
+    "eslint-plugin-react": "^3.8.0",
     "exorcist": "0.4.0",
     "fastclick": "1.0.6",
     "filesize": "^3.1.3",
