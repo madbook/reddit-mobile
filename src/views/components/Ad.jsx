@@ -78,6 +78,7 @@ class Ad extends BaseComponent {
 
     return new Promise((resolve, reject) => {
       superagent.post(origin + this.props.config.adsPath)
+        .timeout(5000)
         .set(headers)
         .type('form')
         .send(postData)

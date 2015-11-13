@@ -16,6 +16,7 @@ function postData(eventInfo) {
   const { url, data, query, headers } = eventInfo;
 
   superagent
+    .timeout(5000)
     .post(url)
     .set(headers)
     .query(query)

@@ -6,6 +6,7 @@ import url from 'url';
 import querystring from 'querystring';
 
 const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+const DEFAULT_TIMEOUT = 5000;
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
@@ -123,12 +124,14 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
+        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
         .end((err, res) => {
           if (err || !res.ok) {
+            if (err.timeout) { err.status = 504; }
             return reject(err || res);
           }
 
@@ -163,10 +166,12 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
+        .timeout(DEFAULT_TIMEOUT)
         .get(endpoint)
         .set(headers)
         .end((err, res) => {
           if (err || !res.ok) {
+            if (err.timeout) { err.status = 504; }
             return reject(err || res);
           }
 
@@ -246,12 +251,14 @@ var oauthRoutes = function(app) {
               Object.assign(headers, app.config.apiHeaders || {});
 
               superagent
+                .timeout(DEFAULT_TIMEOUT)
                 .post(endpoint)
                 .set(headers)
                 .send(postData)
                 .type('form')
                 .end(function(err, res) {
-                  if (!res.ok) {
+                  if (err || !res.ok) {
+                    if (err.timeout) { err.status = 504; }
                     reject(err);
                   }
 
@@ -388,12 +395,14 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
+        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
         .end((err, res) => {
           if (err || !res.ok) {
+            if (err.timeout) { res.status = 504; }
             return resolve(res.status || 500);
           }
 
@@ -469,12 +478,14 @@ var oauthRoutes = function(app) {
       assignPassThroughHeaders(headers, ctx, app);
 
       superagent
+        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
         .end((err, res) => {
           if (err || !res.ok) {
+            if (err.timeout) { res.status = 504; }
             return resolve(ctx.redirect('/register?error=' + (res.status || 500)));
           }
 
