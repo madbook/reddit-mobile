@@ -93,7 +93,7 @@ function mixin (App) {
         }
       }
 
-      if (!e.status || (e.status !== 429 && e.status !== 'timeout')) {
+      if (!e.status || (e.status !== 429 && e.status !== 504)) {
         logError(e, ctx, app.config);
       }
 
