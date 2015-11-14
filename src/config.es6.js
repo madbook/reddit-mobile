@@ -31,7 +31,16 @@ function config() {
 
     trackerKey: process.env.TRACKER_KEY,
     trackerEndpoint: process.env.TRACKER_ENDPOINT,
-    trackerClientName: process.env.TRACKER_CLIENT_NAME
+    trackerClientName: process.env.TRACKER_CLIENT_NAME,
+
+    // hack for now for global messages displayed with the infobar component.
+    GlobalMessage: null,
+    // example message
+    // {
+    //   frontPageOnly: true, 
+    //   html: '<p>hello world</p>',
+    //   expires: 'Nov 20, 2015'
+    // },
   };
 };
 

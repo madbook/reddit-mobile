@@ -101,6 +101,7 @@ function modifyContext (ctx) {
     dataCache: app.getState('dataCache') || {},
     compact: (cookies.get('compact') || '').toString() === 'true',
     showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
+    hideGlobalMessage: !!cookies.get('hide_global_message'),
     redirect: redirect.bind(app),
     env: 'CLIENT',
     winWidth: window.innerWidth,
@@ -395,7 +396,7 @@ function initialize(bindLinks) {
 
     let date = new Date();
     date.setFullYear(date.getFullYear() + 2);
-    options.expire = date;
+    options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
       var domain = '.' + window.bootstrap.config.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
@@ -419,6 +420,13 @@ function initialize(bindLinks) {
 
   app.on(constants.TOGGLE_OVER_18, function(val) {
     cookies.set('over18', val)
+  });
+
+  app.on(constants.HIDE_GLOBAL_MESSAGE, function(expires) {
+    let options = {
+      expires
+    };
+    cookies.set('hide_global_message', true, options);
   });
 
   window.addEventListener('scroll', throttle(function() {

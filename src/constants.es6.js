@@ -11,4 +11,8 @@ export default {
   ICON_SHRUNK_SIZE: 16,
   CACHEABLE_COOKIES: ['compact'],
   DEFAULT_API_TIMEOUT: 10000,
+  HIDE_GLOBAL_MESSAGE: 'hideGlobalMessage',
+  messageTypes: {
+    GLOBAL: 'global'
+  }
 };

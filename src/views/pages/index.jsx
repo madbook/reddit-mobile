@@ -8,6 +8,7 @@ import ListingList from '../components/ListingList';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
+import InfoBar from '../components/InfoBar';
 
 class IndexPage extends BasePage {
   constructor(props) {
@@ -32,7 +33,7 @@ class IndexPage extends BasePage {
   render() {
     var loading;
     var props = this.props;
-    var { data, compact } = this.state;
+    var { data, compact, showInfoBar} = this.state;
 
     var subredditName = props.subredditName;
     var fakeSubs = ['mod', 'all', 'friends'];
@@ -124,7 +125,6 @@ class IndexPage extends BasePage {
     if (props.prefs && props.prefs.hide_ads === true) {
       showAds = false;
     }
-
 
     return (
       <div>

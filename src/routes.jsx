@@ -9,9 +9,7 @@ import merge from 'lodash/object/merge';
 // Load models from snoode (api lib) so we can post new ones.
 import { models } from 'snoode';
 
-// Load up the main react elements. Because of the way we define mutators, we
-// need to use factories that take an app instance (with registered mutators)
-// instead of requiring the elements directly. Womp womp
+// components
 import BodyLayout from './views/layouts/BodyLayout';
 import Layout from './views/layouts/DefaultLayout';
 
@@ -34,6 +32,8 @@ import SubmitPage from './views/pages/submit';
 import constants from './constants';
 
 import defaultConfig from './config';
+
+import constants from './constants';
 
 const config = defaultConfig();
 
@@ -109,7 +109,6 @@ function buildProps(ctx, app) {
     ctx: filterContextProps(ctx),
     compact: ctx.compact,
     experiments: ctx.experiments,
-    user: ctx.user,
     token: ctx.token,
     loid: ctx.loid,
     loidcreated: ctx.loidcreated,
@@ -120,6 +119,7 @@ function buildProps(ctx, app) {
     showOver18Interstitial: ctx.showOver18Interstitial,
     random: app.randomBySeed,
     key: app.randomBySeed(),
+    hideGlobalMessage: ctx.hideGlobalMessage,
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
@@ -181,7 +181,7 @@ function userData(ctx, app) {
         sort: 'default',
         sr_detail: true,
         feature: 'mobile_settings',
-        limit: 250, 
+        limit: 250,
       },
       origin: app.getConfig('nonAuthAPIOrigin'),
     });
@@ -195,10 +195,10 @@ function makeBody() {
     let content = Array.prototype.map.call(arguments, (comp) => {
       if (Array.isArray(comp)) {
         const [Component, propOveride] = comp;
-        return <Component {...(propOveride || props)}  />;  
+        return <Component {...(propOveride || props)}  />;
       } else {
         const Component = comp;
-        return <Component {... props}  />;  
+        return <Component {... props}  />;
       }
     });
 
@@ -210,8 +210,25 @@ function makeBody() {
   }
 };
 
-// The main entry point to this file is the routes function. It will call the
-// React factories to get at the mutated react elements, and map routes.
+
+function globalMessage(ctx) {
+  let message = config.GlobalMessage ? Object.assign({}, config.GlobalMessage): null;
+  const routeName = ctx.route.name;
+
+  if (message && !ctx.props.hideGlobalMessage) {
+    if (message.frontPageOnly && routeName !== 'index') {
+      return;
+    }
+
+    const isOngoing = new Date(message.expires) > Date.now();
+    if (isOngoing) {
+      message.type = constants.messageTypes.GLOBAL;
+      ctx.props.globalMessage = message;
+    }
+  }
+}
+
+// The main entry point to this file is the routes function.
 function routes(app) {
   let router = app.router;
 
@@ -251,6 +268,11 @@ function routes(app) {
 
   router.use(loadData);
   router.use(defaultLayout);
+
+  router.use(function * (next) {
+    globalMessage(this);
+    yield next;
+  });
 
   function * indexPage (next) {
     let props = this.props;
@@ -543,7 +565,7 @@ function routes(app) {
     });
 
     this.props.data.set('activities', saved.get(savedOpts))
-    
+
     this.body = makeBody(UserSavedPage);
   }
 
