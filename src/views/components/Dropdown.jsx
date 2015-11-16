@@ -13,8 +13,6 @@ class Dropdown extends BaseComponent {
       opened: false,
     };
 
-    this._onMouseEnter = this._onMouseEnter.bind(this);
-    this._onMouseLeave = this._onMouseLeave.bind(this);
     this._onClick = this._onClick.bind(this);
     this._open = this._open.bind(this);
     this._close = this._close.bind(this);
@@ -45,8 +43,7 @@ class Dropdown extends BaseComponent {
     var touch = globals().touch;
 
     return (
-      <div className={className} onMouseEnter={ touch ? null : this._onMouseEnter }
-           onMouseLeave={ touch ? null : this._onMouseLeave } onClick={ touch ? this._onClick : null }>
+      <div className={className} onClick={ this._onClick }>
         { this.props.button }
         { tab }
       </div>
@@ -57,14 +54,6 @@ class Dropdown extends BaseComponent {
     if (globals().touch) {
       this.props.app.off(constants.DROPDOWN_OPEN, this._close);
     }
-  }
-
-  _onMouseEnter() {
-    this._open();
-  }
-
-  _onMouseLeave() {
-    this._close();
   }
 
   _onClick() {
