@@ -186,8 +186,8 @@ function sendTimings() {
       timings.mountTiming = (Date.now() - beginRender) / 1000;
 
       superagent
-        .timeout(5000)
         .post('/timings')
+        .timeout(5000)
         .send({
           rum: timings,
         })

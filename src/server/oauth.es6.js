@@ -124,11 +124,11 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
-        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
+        .timeout(DEFAULT_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { err.status = 504; }
@@ -166,9 +166,9 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
-        .timeout(DEFAULT_TIMEOUT)
         .get(endpoint)
         .set(headers)
+        .timeout(DEFAULT_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { err.status = 504; }
@@ -251,11 +251,11 @@ var oauthRoutes = function(app) {
               Object.assign(headers, app.config.apiHeaders || {});
 
               superagent
-                .timeout(DEFAULT_TIMEOUT)
                 .post(endpoint)
                 .set(headers)
                 .send(postData)
                 .type('form')
+                .timeout(DEFAULT_TIMEOUT)
                 .end(function(err, res) {
                   if (err || !res.ok) {
                     if (err.timeout) { err.status = 504; }
@@ -395,11 +395,11 @@ var oauthRoutes = function(app) {
       Object.assign(headers, app.config.apiHeaders || {});
 
       superagent
-        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
+        .timeout(DEFAULT_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { res.status = 504; }
@@ -478,11 +478,11 @@ var oauthRoutes = function(app) {
       assignPassThroughHeaders(headers, ctx, app);
 
       superagent
-        .timeout(DEFAULT_TIMEOUT)
         .post(endpoint)
         .set(headers)
         .type('form')
         .send(data)
+        .timeout(DEFAULT_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { res.status = 504; }

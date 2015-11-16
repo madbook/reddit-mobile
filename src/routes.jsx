@@ -630,9 +630,9 @@ function routes(app) {
     return new Promise(function(resolve, reject) {
       try {
         let sa = superagent
-                  .timeout(5000)
                   .head(endpoint)
-                  .set(options.headers);
+                  .set(options.headers)
+                  .timeout(5000);
 
         // bombs in browser
         if (sa.redirects) {

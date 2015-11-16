@@ -55,10 +55,10 @@ function hivemind(ua, endpoint) {
   data.mwebError[ua] = 1;
 
   superagent
-    .timeout(3000)
     .post(endpoint)
     .type('json')
     .send(data)
+    .timeout(3000)
     .end(function(){ });
 }
 
