@@ -54,10 +54,10 @@ let serverRoutes = function(app) {
     timings.verification = hash;
 
     superagent
-        .timeout(5000)
         .post(statsDomain)
         .type('json')
         .send({ rum: timings })
+        .timeout(5000)
         .end(function(){ });
   });
 
