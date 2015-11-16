@@ -33,6 +33,7 @@ class TextSubNav extends BaseComponent {
   }
 
   _moveIndicator() {
+    const ul = this.refs.ul;
     const active = this.refs.ul.querySelector('.active');
 
     if (active) {

@@ -67,6 +67,11 @@ class ListingList extends BaseComponent {
     for (var i = 0; i < listings.length; i++) {
       var listing = this.refs['listing' + i];
 
+      // commentpreviews are stateless, so the ref won't exist.
+      if (!listing) {
+        return;
+      }
+
       // Check ad first since it'll be before the `i`th listing.
       if (this._isIndexOfAd(i) && !this._checkAdPos()) {
         return;
@@ -135,7 +140,6 @@ class ListingList extends BaseComponent {
               comment={listing}
               key={'page-comment-' + index}
               page={page}
-              ref={'listing' + i}
             />
           );
         } else {
