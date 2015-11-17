@@ -12,7 +12,7 @@ class Modal extends BaseComponent {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  componentWillRecieveProps (nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.open) {
       this.setState({open: nextProps.open});
     }
