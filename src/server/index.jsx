@@ -100,9 +100,9 @@ function setCompact(ctx, app) {
   ctx.compact = compact;
 }
 
+// Save a static reference to the config object at startup
+const config = defaultConfig();
 function formatBootstrap(props) {
-  var config = defaultConfig();
-
   for (var p in props.config) {
     if (!config.hasOwnProperty(p)){
       delete props.config[p];
