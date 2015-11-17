@@ -13,19 +13,23 @@ class BodyLayout extends BasePage {
   }
 
   render () {
-    let { user, userSubscriptions } = this.state.data;
-    let { globalMessage, app } = this.props;
+    const { user, userSubscriptions } = this.state.data;
+    const { app, globalMessage, showEUCookieMessage } = this.props;
 
-    let info = [];
+    let messages = [];
+    if (showEUCookieMessage) {
+      messages.push({type: constants.messageTypes.EU_COOKIE});
+    }
+
     if (globalMessage) {
-      info.push(globalMessage);
+      messages.push(globalMessage);
     }
 
     return (
       <div className='container-with-betabanner'>
         <SideNav {...this.props} user={ user} subscriptions={ userSubscriptions } />
         <TopNav {...this.props}/>
-        <InfoBar info={ info } app={ app }/>
+        <InfoBar messages={ messages } app={ app } showEUCookieMessage={ showEUCookieMessage }/>
         <main>
           { this.props.children }
         </main>

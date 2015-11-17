@@ -40,6 +40,8 @@ import routes from '../../src/routes';
 
 import trackingEvents from './trackingEvents';
 
+import EUCountries from '../../src/EUCountries';
+
 let _lastWinWidth = 0;
 let winWidth = window.innerWidth;
 
@@ -97,11 +99,15 @@ function modifyContext (ctx) {
   let baseCtx = this.getState('ctx');
   let app = this;
 
+  const EUCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
+  const isEUCountry = EUCountries.indexOf(this.getState('country')) !== -1;
+
   ctx = Object.assign({}, baseCtx, ctx, {
     dataCache: app.getState('dataCache') || {},
     compact: (cookies.get('compact') || '').toString() === 'true',
     showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
-    hideGlobalMessage: !!cookies.get('hide_global_message'),
+    showEUCookieMessage: (EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
+    showGlobalMessage: cookies.get((config.globalMessage || {}).key) === undefined,
     redirect: redirect.bind(app),
     env: 'CLIENT',
     winWidth: window.innerWidth,
@@ -422,11 +428,28 @@ function initialize(bindLinks) {
     cookies.set('over18', val)
   });
 
-  app.on(constants.HIDE_GLOBAL_MESSAGE, function(expires) {
+  app.on(constants.HIDE_GLOBAL_MESSAGE, function(message) {
     let options = {
-      expires
+      expires: new Date(message.expires),
     };
-    cookies.set('hide_global_message', true, options);
+    cookies.set(message.key, 'globalMessageSeen', options);
+  });
+
+  app.on(constants.EU_COOKIE_NOTICE_SEEN, function(num) {
+    let options = {};
+
+    let date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+    options.expires = date;
+
+    let oldCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
+    // view count is incremented by 1 or, when a user closes dialog
+    // by 3.
+    if (num !== constants.EU_COOKIE_HIDE_AFTER_VIEWS) {
+      cookies.set('EUCookieNotice', oldCookie + 1, options);
+    } else {
+      cookies.set('EUCookieNotice', num, options);
+    }
   });
 
   window.addEventListener('scroll', throttle(function() {

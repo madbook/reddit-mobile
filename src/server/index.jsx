@@ -363,13 +363,18 @@ class Server {
 
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'];
+      this.country = this.headers['cf-ipcountry'];
 
       if (!this.token) {
         this.token = this.cookies.get('token');
         this.tokenExpires = this.cookies.get('tokenExpires');
       }
 
-      this.showOver18Interstitial = !this.cookies.get('over18') || this.cookies.get('over18') === 'false';
+      // default to false so we only render this on the client.
+      this.showGlobalMessage = false;
+      this.showEUCookieMessage = false;
+      this.showOver18Interstitial = !this.cookies.get('over18') ||
+                                    this.cookies.get('over18') === 'false';
 
       this.renderSynchronous = true;
       this.useCache = false;

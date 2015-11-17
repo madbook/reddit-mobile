@@ -33,8 +33,6 @@ import constants from './constants';
 
 import defaultConfig from './config';
 
-import constants from './constants';
-
 const config = defaultConfig();
 
 function setData(ctx, key, endpoint, options) {
@@ -119,7 +117,9 @@ function buildProps(ctx, app) {
     showOver18Interstitial: ctx.showOver18Interstitial,
     random: app.randomBySeed,
     key: app.randomBySeed(),
-    hideGlobalMessage: ctx.hideGlobalMessage,
+    showEUCookieMessage: ctx.showEUCookieMessage,
+    showGlobalMessage: ctx.showGlobalMessage,
+    country: ctx.country,
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
@@ -211,21 +211,23 @@ function makeBody() {
 };
 
 
-function globalMessage(ctx) {
-  let message = config.GlobalMessage ? Object.assign({}, config.GlobalMessage): null;
-  const routeName = ctx.route.name;
+function * globalMessage(next) {
+  let message = config.globalMessage ? Object.assign({}, config.globalMessage): null;
+  const routeName = this.route.name;
 
-  if (message && !ctx.props.hideGlobalMessage) {
+  if (message && this.props.showGlobalMessage) {
     if (message.frontPageOnly && routeName !== 'index') {
-      return;
+      return yield next;
     }
 
     const isOngoing = new Date(message.expires) > Date.now();
     if (isOngoing) {
       message.type = constants.messageTypes.GLOBAL;
-      ctx.props.globalMessage = message;
+
+      this.props.globalMessage = message;
     }
   }
+  yield next;
 }
 
 // The main entry point to this file is the routes function.
@@ -268,11 +270,7 @@ function routes(app) {
 
   router.use(loadData);
   router.use(defaultLayout);
-
-  router.use(function * (next) {
-    globalMessage(this);
-    yield next;
-  });
+  router.use(globalMessage);
 
   function * indexPage (next) {
     let props = this.props;

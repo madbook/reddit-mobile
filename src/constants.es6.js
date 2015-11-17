@@ -12,7 +12,13 @@ export default {
   CACHEABLE_COOKIES: ['compact'],
   DEFAULT_API_TIMEOUT: 10000,
   HIDE_GLOBAL_MESSAGE: 'hideGlobalMessage',
+  EU_COOKIE_NOTICE_SEEN: 'euCookieNoticeSeen',
+  // number of views before we hide stop showing EU cookie notice,
+  // or when user clicks close.
+  EU_COOKIE_HIDE_AFTER_VIEWS: 2,
+  NEW_INFOBAR_MESSAGE: 'newInfoBarMessage',
   messageTypes: {
-    GLOBAL: 'global'
-  }
+    GLOBAL: 'global',
+    EU_COOKIE: 'euCookie',
+  },
 };
