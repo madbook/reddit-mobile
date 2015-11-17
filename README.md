@@ -80,4 +80,6 @@ Getting Up and Running
     4. Repeat recursively if you need to work on a dependency's dependency
     5. Re-run the build and restart your server (`npm run watch` *will* watch
       linked files)
+8. Commit hooks - symlink `hooks` into `.git/hooks` (`ln -s -f ../hooks .git/hooks`), which
+  will run some safety checks before committing and pushing code.
 
