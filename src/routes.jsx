@@ -100,6 +100,8 @@ function buildProps(ctx, app) {
     clientConfig[c] = app.getConfig(c);
   }
 
+  let random = globals().random ? globals().random : Math.random;
+
   ctx.props = {
     app: app,
     title: 'reddit: the front page of the internet',
@@ -118,7 +120,7 @@ function buildProps(ctx, app) {
     render: Date.now(),
     actionName: ctx.route.name,
     showOver18Interstitial: ctx.showOver18Interstitial,
-    key: globals().random(),
+    key: random(),
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
