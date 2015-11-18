@@ -10,5 +10,5 @@ export default {
   SCROLL: 'scroll',
   ICON_SHRUNK_SIZE: 16,
   CACHEABLE_COOKIES: ['compact'],
-  DEFAULT_API_TIMEOUT: 5000,
+  DEFAULT_API_TIMEOUT: 10000,
 };
