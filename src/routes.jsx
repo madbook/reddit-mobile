@@ -372,7 +372,7 @@ function routes(app) {
       this.props.data.set('search', app.api.search.get(searchOpts));
     }
 
-    this.body = makeBody(SearchPag);
+    this.body = makeBody(SearchPage);
   }
 
   router.get('search.index', '/search', searchPage);
