@@ -2,6 +2,7 @@ import querystring from 'querystring';
 import crypto from 'crypto'
 import superagent from 'superagent';
 import EventTracker from 'event-tracker';
+import constants from '../../src/constants';
 
 function calculateHash (key, string) {
   let hmac = crypto.createHmac('sha1', key);
@@ -19,7 +20,7 @@ function postData(eventInfo) {
     .post(url)
     .set(headers)
     .query(query)
-    .timeout(5000)
+    .timeout(constants.DEFAULT_API_TIMEOUT)
     .send(data)
     .end(function(){});
 }

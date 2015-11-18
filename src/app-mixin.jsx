@@ -12,6 +12,7 @@ import ErrorPage from './views/pages/error';
 import Loading from './views/components/Loading';
 
 import errorLog from './lib/errorLog';
+import constants from './constants';
 
 function logError(err, ctx, config) {
   var userAgent;
@@ -71,6 +72,7 @@ function mixin (App) {
       let app = this;
       // Set up two APIs (until we get non-authed oauth working).
       this.api = new V1Api({
+        timeout: constants.DEFAULT_API_TIMEOUT,
         defaultHeaders: config.apiHeaders,
         debugLevel: config.debugLevel,
         log: app.logRequests.bind(app),

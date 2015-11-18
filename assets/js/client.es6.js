@@ -188,7 +188,7 @@ function sendTimings() {
 
       superagent
         .post('/timings')
-        .timeout(5000)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .send({
           rum: timings,
         })

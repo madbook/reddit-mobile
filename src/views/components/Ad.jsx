@@ -82,7 +82,7 @@ class Ad extends BaseComponent {
         .set(headers)
         .type('form')
         .send(postData)
-        .timeout(5000)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end(function(err, res) {
           if (err) {
             return reject(err);

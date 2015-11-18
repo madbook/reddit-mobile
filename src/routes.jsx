@@ -32,6 +32,7 @@ import RegisterPage from './views/pages/register';
 import MessagesPage from './views/pages/messages';
 import MessageComposePage from './views/pages/messageCompose';
 import SubmitPage from './views/pages/submit';
+import constants from './constants';
 
 import defaultConfig from './config';
 
@@ -577,7 +578,7 @@ function routes(app) {
         let sa = superagent
                   .head(endpoint)
                   .set(options.headers)
-                  .timeout(5000);
+                  .timeout(constants.DEFAULT_API_TIMEOUT);
 
         // bombs in browser
         if (sa.redirects) {

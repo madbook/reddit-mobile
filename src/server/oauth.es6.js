@@ -4,9 +4,9 @@ import superagent from 'superagent';
 import uuid from 'uuid';
 import url from 'url';
 import querystring from 'querystring';
+import constants from '../constants';
 
 const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
-const DEFAULT_TIMEOUT = 5000;
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
@@ -128,7 +128,7 @@ var oauthRoutes = function(app) {
         .set(headers)
         .type('form')
         .send(data)
-        .timeout(DEFAULT_TIMEOUT)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { err.status = 504; }
@@ -168,7 +168,7 @@ var oauthRoutes = function(app) {
       superagent
         .get(endpoint)
         .set(headers)
-        .timeout(DEFAULT_TIMEOUT)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { err.status = 504; }
@@ -255,7 +255,7 @@ var oauthRoutes = function(app) {
                 .set(headers)
                 .send(postData)
                 .type('form')
-                .timeout(DEFAULT_TIMEOUT)
+                .timeout(constants.DEFAULT_API_TIMEOUT)
                 .end(function(err, res) {
                   if (err || !res.ok) {
                     if (err.timeout) { err.status = 504; }
@@ -399,7 +399,7 @@ var oauthRoutes = function(app) {
         .set(headers)
         .type('form')
         .send(data)
-        .timeout(DEFAULT_TIMEOUT)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { res.status = 504; }
@@ -482,7 +482,7 @@ var oauthRoutes = function(app) {
         .set(headers)
         .type('form')
         .send(data)
-        .timeout(DEFAULT_TIMEOUT)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end((err, res) => {
           if (err || !res.ok) {
             if (err.timeout) { res.status = 504; }

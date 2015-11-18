@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import crypto from 'crypto'
+import constants from '../constants';
 
 // set up server-only routes
 let serverRoutes = function(app) {
@@ -57,7 +58,7 @@ let serverRoutes = function(app) {
         .post(statsDomain)
         .type('json')
         .send({ rum: timings })
-        .timeout(5000)
+        .timeout(constants.DEFAULT_API_TIMEOUT)
         .end(function(){ });
   });
 
