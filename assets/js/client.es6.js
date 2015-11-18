@@ -35,14 +35,14 @@ import defaultConfig from '../../src/config';
 import constants from '../../src/constants';
 import cookies from 'cookies-js';
 import getTimes from '../../src/lib/timing';
-import globals from '../../src/globals';
-import randomBySeed from '../../src/lib/randomBySeed';
 import setLoggedOutCookies from '../../src/lib/loid';
 import routes from '../../src/routes';
 
 import trackingEvents from './trackingEvents';
 
-var _lastWinWidth = 0;
+let _lastWinWidth = 0;
+let winWidth = window.innerWidth;
+
 var beginRender = 0;
 
 var $body = document.body || document.getElementsByTagName('body')[0];
@@ -103,6 +103,7 @@ function modifyContext (ctx) {
     showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
     redirect: redirect.bind(app),
     env: 'CLIENT',
+    winWidth: window.innerWidth,
   });
 
 
@@ -227,8 +228,6 @@ function initialize(bindLinks) {
   });
 
   config.seed = window.bootstrap.seed || Math.random();
-
-  globals().random = randomBySeed(config.seed);
 
   var app = new App(config);
   routes(app);
@@ -426,12 +425,10 @@ function initialize(bindLinks) {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 
-  globals().winWidth = window.innerWidth;
   window.addEventListener('resize', throttle(function(e) {
     // Prevent resize from firing when chrome shows/hides nav bar
-    globals().winWidth = window.innerWidth;
-    if (globals().winWidth !== _lastWinWidth) {
-      _lastWinWidth = globals().winWidth;
+    if (winWidth !== _lastWinWidth) {
+      _lastWinWidth = winWidth;
       app.emit(constants.RESIZE);
     }
   }.bind(app), 100));

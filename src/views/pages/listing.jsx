@@ -239,6 +239,7 @@ class ListingPage extends BasePage {
             saveUpdatedText={ this.saveUpdatedText.bind(this) }
             single={ true }
             toggleEdit={ this.toggleEdit.bind(this) }
+            winWidth={ this.props.ctx.winWidth }
           />
           <CommentBox
             apiOptions={ apiOptions }

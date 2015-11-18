@@ -1,5 +1,7 @@
 import React from 'react';
 
+import randomBySeed from './lib/randomBySeed';
+
 // The base routes
 import redirects from './redirects';
 
@@ -77,6 +79,8 @@ function mixin (App) {
         debugLevel: config.debugLevel,
         log: app.logRequests.bind(app),
       });
+
+      this.randomBySeed = randomBySeed(config.seed);
 
       redirects(this);
     }

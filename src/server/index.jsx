@@ -21,12 +21,10 @@ var App = mixin(ServerReactApp);
 
 // The core
 import constants from '../constants';
-import globals from '../globals';
 import oauthRoutes from './oauth';
 import serverRoutes from './routes';
 import routes from '../routes';
 
-import randomBySeed from '../lib/randomBySeed'
 import setLoggedOutCookies from '../lib/loid';
 
 import defaultConfig from '../config';
@@ -356,13 +354,10 @@ class Server {
     }
   }
 
-
-
   modifyRequest (app) {
     return function * (next) {
       setCompact(this, app);
 
-      globals().random = randomBySeed(app.config.seed);
       this.staticMarkup = true;
       this.env = 'SERVER';
 

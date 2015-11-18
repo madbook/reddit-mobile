@@ -196,6 +196,7 @@ class SearchPage extends BasePage {
             apiOptions={ apiOptions }
             user={ props.user }
             token={ props.token }
+            winWidth={ props.ctx.winWidth }
           />
           <div className="row pageNav">
             <div className="col-xs-12">

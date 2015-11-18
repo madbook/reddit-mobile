@@ -17,7 +17,18 @@ class UserSavedPage extends BasePage {
   }
 
   render() {
-    let { actionName, page, token, app, sort, userName, apiOptions, hidden } = this.props;
+    let {
+      actionName,
+      page, 
+      token,
+      app,
+      sort,
+      userName,
+      apiOptions,
+      hidden,
+      ctx
+    } = this.props;
+
     let { activities, user } = this.state.data;
     let loaded = this.state.loaded;
 
@@ -51,6 +62,7 @@ class UserSavedPage extends BasePage {
                 token={ token }
                 hideUser={ false }
                 apiOptions={ apiOptions }
+                winWidth={ ctx.winWidth }
               />
             </div>
           </div>

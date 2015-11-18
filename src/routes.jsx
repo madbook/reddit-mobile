@@ -3,7 +3,6 @@
 import React from 'react';
 import querystring from 'querystring';
 import superagent from 'superagent';
-import globals from './globals';
 
 import merge from 'lodash/object/merge';
 
@@ -101,8 +100,6 @@ function buildProps(ctx, app) {
     clientConfig[c] = app.getConfig(c);
   }
 
-  let random = globals().random ? globals().random : Math.random;
-
   ctx.props = {
     app: app,
     title: 'reddit: the front page of the internet',
@@ -121,7 +118,8 @@ function buildProps(ctx, app) {
     render: Date.now(),
     actionName: ctx.route.name,
     showOver18Interstitial: ctx.showOver18Interstitial,
-    key: random(),
+    random: app.randomBySeed,
+    key: app.randomBySeed(),
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);

@@ -14,7 +14,7 @@ class SearchBar extends BaseComponent {
     }
 
     e.preventDefault();
-    var val = this.refs.search.getDOMNode().value.trim();
+    var val = this.refs.search.value.trim();
 
     if (val !== this.props.defaultValue) {
       this.props.onSearch(val);

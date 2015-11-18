@@ -49,6 +49,7 @@ class UserActivityPage extends BasePage {
             token={token}
             hideUser={ true }
             apiOptions={ props.apiOptions }
+            winWidth={ props.ctx.winWidth }
           />
         </div>
       </div>

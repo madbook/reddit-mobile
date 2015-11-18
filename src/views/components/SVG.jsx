@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import globals from '../../globals';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
@@ -17,8 +16,8 @@ function SVG (props) {
     const out = props.out;
 
     return (
-      <svg className={props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height} onMouseMove={globals().touch ? null : move}
-        onTouchMove={globals().touch ? move : null} onMouseLeave={globals().touch ? null : out} onTouchEnd={globals().touch ? out : null}>
+      <svg className={props.className} version='1.1' xmlns={_NS} x='0px' y='0px' width={width+'px'} height={height+'px'} viewBox={'0 0 '+width+' '+height} onMouseMove={move}
+        onMouseLeave={out}>
         {props.children}
       </svg>
     );

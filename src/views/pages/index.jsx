@@ -148,6 +148,7 @@ class IndexPage extends BasePage {
             page={ page }
             hideSubredditLabel={ hideSubredditLabel }
             subredditTitle={ subreddit }
+            winWidth={ this.props.ctx.winWidth }
           />
           <div className='pageNav IndexPage-buttons-holder-holder'>
             <div className='col-xs-12 IndexPage-buttons-holder'>

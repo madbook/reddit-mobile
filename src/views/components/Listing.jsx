@@ -1,7 +1,6 @@
 import React from 'react';
 
 import constants from '../../constants';
-import globals from '../../globals';
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
@@ -26,6 +25,7 @@ class Listing extends BaseComponent {
     super(props);
 
     var compact = _isCompact(props);
+
     this.state = {
       compact: compact,
       expanded: false,
@@ -34,7 +34,7 @@ class Listing extends BaseComponent {
       tallestHeight: 0,
       reported: props.listing.reported,
       hidden: props.listing.hidden,
-      width: (globals().winWidth || 300) - 10,
+      width: (props.winWidth || 300) - 10,
     };
 
     this.checkPos = this.checkPos.bind(this);

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import constants from '../../constants';
-import globals from '../../globals';
 
 import BaseComponent from './BaseComponent';
 
@@ -40,7 +39,6 @@ class Dropdown extends BaseComponent {
         </div>
       );
     }
-    var touch = globals().touch;
 
     return (
       <div className={className} onClick={ this._onClick }>
@@ -51,9 +49,7 @@ class Dropdown extends BaseComponent {
   }
 
   componentWillUnmount() {
-    if (globals().touch) {
-      this.props.app.off(constants.DROPDOWN_OPEN, this._close);
-    }
+    this.props.app.off(constants.DROPDOWN_OPEN, this._close);
   }
 
   _onClick() {
@@ -70,9 +66,7 @@ class Dropdown extends BaseComponent {
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
 
     // Close once another dropdown opens
-    if (globals().touch) {
-      this.props.app.on(constants.DROPDOWN_OPEN, this._close);
-    }
+    this.props.app.on(constants.DROPDOWN_OPEN, this._close);
   }
 
   _close() {
