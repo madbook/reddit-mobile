@@ -33,8 +33,7 @@ class SubredditAboutPage extends BasePage {
         <li>{ `${data.accounts_active} users here now` }</li>
       </ul>,
       <div className='subreddit-about-rules' key='subreddit-about-rules'
-        dangerouslySetInnerHTML={{ __html: process(data.description) }}>
-      </div>
+        dangerouslySetInnerHTML={{ __html: process(data.description) }} />
     ];
 
     return (
