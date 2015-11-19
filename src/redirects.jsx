@@ -39,6 +39,11 @@ function routes(app) {
   app.router.get('/r/:subreddit/search/:query', function*() {
     return this.redirect(`/r/${this.params.subreddit}/search?q=${this.params.query}`);
   });
+
+  app.router.get('/help/*', function*() {
+    const url = this.params[0];
+    return this.redirect(`/wiki/${url}`);
+  });
 }
 
 export default routes;

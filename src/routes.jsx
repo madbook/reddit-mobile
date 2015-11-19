@@ -26,8 +26,9 @@ import RegisterPage from './views/pages/register';
 import MessagesPage from './views/pages/messages';
 import MessageComposePage from './views/pages/messageCompose';
 import SubmitPage from './views/pages/submit';
-import constants from './constants';
+import WikiPage from './views/pages/wikiPage';
 
+import constants from './constants';
 import defaultConfig from './config';
 
 const config = defaultConfig();
@@ -621,14 +622,8 @@ function routes(app) {
     });
   }
 
-  router.get('/goto', function * () {
-    let location = this.query.location.toLowerCase();
-    let token = this.token;
+  function makeOptions(token, app) {
     let apiOptions;
-    let result;
-
-    app.emit('goto', location);
-
     if (token) {
       apiOptions =  {
         origin: app.getConfig('authAPIOrigin'),
@@ -642,7 +637,17 @@ function routes(app) {
       };
     }
 
-    let options = app.api.buildOptions(apiOptions);
+    return app.api.buildOptions(apiOptions);
+  }
+
+  router.get('/goto', function * () {
+    let location = this.query.location.toLowerCase();
+    const token = this.token;
+    let result;
+
+    app.emit('goto', location);
+
+    let options = makeOptions(token, app);
 
     if (this.headers['user-agent']) {
       options.headers['user-agent'] = this.headers['user-agent'];
@@ -727,6 +732,34 @@ function routes(app) {
 
     this.body = makeBody(MessagesPage);
   });
+
+  function * wikiPage() {
+    const path = this.params[0].substr(1) || 'index';
+
+    let options = buildAPIOptions(this, {
+      query: {
+        raw_json: 1,
+      },
+      subreddit: this.params.subreddit || null,
+      path,
+    });
+
+    const wikiGet = new Promise(function(resolve, reject) {
+      app.api.wiki.get(options).then(resolve, function(e) {
+        // handle api crap. otherwise user gets redirected to auth if loggedout and wiki is disabled.
+        if (e.status === 403) {
+          e.status = 404;
+        }
+        reject(e);
+      });
+    });
+
+    this.props.data.set('wikiPage', wikiGet);
+    this.body = makeBody(WikiPage);
+  }
+
+  router.get('wiki', '/wiki*', wikiPage);
+  router.get('wiki.subreddit', '/r/:subreddit/wiki*', wikiPage);
 
   router.get('404', '*', function *() {
     this.props.status = 404;

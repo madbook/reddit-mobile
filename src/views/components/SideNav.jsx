@@ -203,9 +203,14 @@ class SideNav extends BaseComponent {
         aboutButtons = (
           <ul key='about' className='SideNav-ul list-unstyled'>
             {aboutItems.map((i) => {
+              let url = `${config.reddit}${i.url}`
+              if (i.url.indexOf('/help') !== -1 || i.url.indexOf('/wiki') !== -1) {
+                url = i.url;
+              }
+
               return (
                 <li className='SideNav-li'>
-                  <a className='SideNav-button' href={`${config.reddit}${i.url}`}>
+                  <a className='SideNav-button' href={ url } >
                     { snooIcon }
                     <span className='SideNav-text'>{titleCase(i.title)}</span>
                   </a>

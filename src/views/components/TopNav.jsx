@@ -95,8 +95,7 @@ class TopNav extends BaseComponent {
           <li className='Dropdown-li'>
             <a
               className='MobileButton Dropdown-button'
-              href={ `${props.config.reddit}/r/${props.subredditName}/wiki` }
-              data-no-route='true'
+              href={ `/r/${props.subredditName}/wiki` }
             >
               <span className='icon-text-circled' > </span>
               <span className='Dropdown-text'>Wiki</span>
