@@ -2,12 +2,11 @@
 // belongs in ./server instead.
 import crypto from 'crypto'
 
-let globalMessage = null;
-// {
-//   frontPageOnly: true,
-//   text: 'hello world',
-//   expires: 'Nov 20, 2015'
-// };
+let globalMessage = {
+  frontPageOnly: true,
+  text: 'We’re [updating our privacy policy](https://www.reddit.com/r/announcements/comments/3tlcil/we_are_updating_our_privacy_policy_effective_jan/), to take effect on January 1, 2016. By continuing to use m.reddit.com, you agree to the [new privacy policy](https://www.reddit.com/help/privacypolicy)',
+  expires: 'Jan 01, 2016'
+};
 
 if (globalMessage) {
   const sha = crypto.createHash('sha1');
