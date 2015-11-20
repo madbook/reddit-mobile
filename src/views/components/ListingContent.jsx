@@ -124,7 +124,7 @@ class ListingContent extends BaseComponent {
           { contentNode }
         </div>
       );
-      
+
     } else {
       return null;
     }
@@ -136,7 +136,6 @@ class ListingContent extends BaseComponent {
 
     let expanded = this._isExpanded();
     let isNSFW = ListingContent.isNSFW(listing);
-    let urlIsImage = listing.url.match(ListingContent.imgMatch) && !listing.preview;
     let isPlayable = _isPlayable(listing);
 
     let oembed = listing.media ? listing.media.oembed : null;
@@ -145,36 +144,36 @@ class ListingContent extends BaseComponent {
 
     // build thumbnails for all listings
     if (props.isThumbnail) {
-      return this._buildThumbnail(listing, props.expand, urlIsImage, isNSFW, isPlayable, preview);
+      return this._buildThumbnail(listing, props.expand, isNSFW, isPlayable, preview);
     }
 
     // this only applies to self posts
     if (props.editing && listing.selftext) {
       return this._renderEditText(listing.selftext);
     } else if (listing.selftext) {
-      return this._renderTextHTML(listing.expandContent, !expanded, listing.id);    
+      return this._renderTextHTML(listing.expandContent, !expanded, listing.id);
     }
 
     // this case catches any 'playable' gif or video and displays the preview image
     // so we don't get annoying auto play.
-    if (isPlayable && !this.state.playing) {
-      return this.buildImage(preview || { url }, url, this._togglePlaying, urlIsImage, isPlayable);
-    } 
+    if (isPlayable && preview && !this.state.playing) {
+      return this.buildImage(preview, url, this._togglePlaying, isPlayable);
+    }
 
     if (oembed) {
       return this._buildMedia(listing, url, oembed);
     }
-    
-    if (preview || urlIsImage) {
+
+    if (preview) {
       let cb = isNSFW ? props.toggleShowNSFW : null;
-      return this.buildImage(preview || { url }, url, cb, urlIsImage);
+      return this.buildImage(preview, url, cb);
     }
 
     return this._renderPlaceholder(isNSFW);
   }
 
-  buildImage(src, href, onClick, urlIsImage, playable=false) {
-    // this handles only direct links to gifs. 
+  buildImage(src, href, onClick, playable=false) {
+    // this handles only direct links to gifs.
     let html5 = _gifToHTML5(href);
     if (this.state.playing && html5) {
         if (html5.iframe) {
@@ -184,7 +183,7 @@ class ListingContent extends BaseComponent {
         }
     }
 
-    return this._renderImage(src, href, onClick, playable, urlIsImage);
+    return this._renderImage(src, href, onClick, playable);
   }
 
   _renderTextPlaceholder(html, collapsed, id) {
@@ -203,7 +202,7 @@ class ListingContent extends BaseComponent {
     );
   }
 
-  _renderImage(src, href, onClick, playable, urlIsImage=false) {
+  _renderImage(src, href, onClick, playable) {
     let props = this.props;
 
     let compact = this._isCompact();
@@ -228,11 +227,6 @@ class ListingContent extends BaseComponent {
     }
 
     let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) || _DEFAULT_ASPECT_RATIO;
-    if (urlIsImage && props.showNSFW) {
-      // uggh edge cases. we don't want the image displayed with an img tag
-      // so we can use the background image. should probably change this anyways.
-      aspectRatio = null;
-    }
 
     if (props.single && aspectRatio) {
       style.height = 1 / aspectRatio * props.width  + 'px';
@@ -330,13 +324,13 @@ class ListingContent extends BaseComponent {
     );
   }
 
-  _renderPlaceholder(isNSFW, urlIsImage=false) {
+  _renderPlaceholder(isNSFW) {
     let props = this.props;
     let nsfwNode;
     if (isNSFW) {
       nsfwNode = this._buildNSFW(props.compact);
     }
-    if (this._isCompact() || urlIsImage) {
+    if (this._isCompact()) {
       return (
         <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')}
           href={ mobilify(props.listing.url) }>{nsfwNode}</a>
@@ -438,7 +432,7 @@ class ListingContent extends BaseComponent {
     }
   }
 
-  _buildThumbnail(listing, expand, urlIsImage, isNSFW, playable, preview) {
+  _buildThumbnail(listing, expand, isNSFW, playable, preview) {
     let https = this.props.app.config.https;
 
     if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
@@ -451,10 +445,6 @@ class ListingContent extends BaseComponent {
       let url = isNSFW && preview ? preview : {url: forceProtocol(listing.thumbnail, https)};
       return this._renderImage(url, listing.cleanUrl, expand, playable );
     // for direct links to .jpg or .png files
-    } else if (urlIsImage && !listing.url.match(_gifMatch)) {
-
-      return this._renderImage({url: listing.cleanUrl}, listing.cleanUrl, expand, playable);
-
     } else if (listing.selftext) {
 
       return this._renderTextPlaceholder(listing.expandContent, true, listing.id);
@@ -544,8 +534,6 @@ class ListingContent extends BaseComponent {
 
     return listing.title.match(/nsf[wl]/gi) || listing.over_18;
   }
-
-  static imgMatch = /\.(?:gif|jpe?g|png)/gi
 
   static propTypes = {
     compact: PropTypes.bool,
