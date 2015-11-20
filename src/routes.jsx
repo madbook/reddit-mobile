@@ -212,6 +212,7 @@ function makeBody() {
 
 
 function * globalMessage(next) {
+  const config = this.props.config;
   let message = config.globalMessage ? Object.assign({}, config.globalMessage): null;
   const routeName = this.route.name;
 
