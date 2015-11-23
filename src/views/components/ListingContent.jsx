@@ -212,7 +212,7 @@ class ListingContent extends BaseComponent {
     let loaded = props.loaded;
 
     const config = this.props.app.config
-    const https = (config.https || config.httpsProxy) && !urlIsImage;
+    const https = (config.https || config.httpsProxy);
 
     let playIconNode;
     if (playable && !(isNSFW && !props.showNSFW)) {
