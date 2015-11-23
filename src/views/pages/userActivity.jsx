@@ -8,6 +8,10 @@ import Loading from '../components/Loading';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 
 class UserActivityPage extends BasePage {
+  get track() {
+    return 'activity';
+  }
+
   render() {
     if (!this.state.data || !this.state.data.activities) {
       return (

@@ -9,6 +9,10 @@ import Loading from '../components/Loading';
 const PropTypes = React.PropTypes;
 
 class UserSavedPage extends BasePage {
+  get track () {
+    return 'activities';
+  }
+
   componentDidMount() {
     super.componentDidMount();
 

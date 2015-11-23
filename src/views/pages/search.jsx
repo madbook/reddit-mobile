@@ -23,6 +23,10 @@ class SearchPage extends BasePage {
     this._lastQueryKey = null;
   }
 
+  get track () {
+    return 'search';
+  }
+
   _loadSearchResults() {
     this.props.data.get('search').then(function(results) {
       var oldData = this.state.data;

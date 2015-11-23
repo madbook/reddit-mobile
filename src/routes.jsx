@@ -284,7 +284,6 @@ function routes(app) {
       before: this.query.before,
       page: parseInt(this.query.page) || 0,
       sort: sort,
-      track: 'listings',
     });
 
 
@@ -324,7 +323,6 @@ function routes(app) {
       sort: ctx.query.sort,
       listingId: ctx.params.listingId,
       commentId: ctx.params.commentId,
-      track: 'comments',
     });
 
     let commentsOpts = buildAPIOptions(ctx, {
@@ -356,8 +354,6 @@ function routes(app) {
   router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
 
   router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
-    this.props.track = 'subreddit';
-
     this.body = makeBody(SubredditAboutPage);
   });
 
@@ -372,7 +368,6 @@ function routes(app) {
       sort: ctx.query.sort || 'relevance',
       time: ctx.query.time || 'all',
       query: ctx.query.q,
-      track: 'search',
     });
 
     var searchOpts = {};
@@ -424,7 +419,6 @@ function routes(app) {
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
-    this.props.track = 'userProfile';
 
     let userOpts = buildAPIOptions(ctx, {
       user: ctx.params.user,
@@ -446,7 +440,6 @@ function routes(app) {
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
     this.props.topNavLink = `/u/${ctx.params.user}`;
-    this.props.track = 'gild';
 
     let subNavProps = {
       children: userProfileSubnav('gild', ctx.params.user)
@@ -470,7 +463,6 @@ function routes(app) {
       sort: sort,
       title: `about u/${ctx.params.user}`,
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
-      track: 'activity',
     });
 
     let props = this.props;
@@ -545,7 +537,6 @@ function routes(app) {
       sort: sort,
       title: `${props.actionName} links`,
       metaDescription: `u/${ctx.params.user}'s saved links on reddit.com`,
-      track: 'activities',
     });
 
     let saved = app.api.saved;
@@ -716,7 +707,6 @@ function routes(app) {
       title: 'Messages',
       view: ctx.params.view,
       metaDescription: 'user messages at reddit.com',
-      track: 'messages'
     });
 
     let listingOpts = buildAPIOptions(ctx, {

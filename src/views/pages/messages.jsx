@@ -8,6 +8,10 @@ import Inbox from '../components/Inbox';
 import Loading from '../components/Loading';
 
 class MessagesPage extends BasePage {
+  get track () {
+    return 'messages';
+  }
+
   render() {
     var content;
 

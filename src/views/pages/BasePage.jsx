@@ -23,7 +23,7 @@ class BasePage extends BaseComponent {
           this.state.data[k] = props.dataCache[k].body;
           this.state.meta[k] = props.dataCache[k].headers;
 
-          if (this.state.meta[k].tracking && this.props.track === k) {
+          if (this.state.meta[k].tracking && this.track === k) {
             this.fireTrackingPixel(this.state.meta[k].tracking);
           }
         } else {
@@ -51,7 +51,7 @@ class BasePage extends BaseComponent {
         data[property] = p.body;
         meta[property] = p.headers;
 
-        if (p.headers.tracking && this.props.track === property) {
+        if (p.headers.tracking && this.track === property) {
           this.fireTrackingPixel(p.headers.tracking);
         }
 

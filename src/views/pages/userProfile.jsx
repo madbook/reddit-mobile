@@ -8,6 +8,10 @@ import TopSubnav from '../components/TopSubnav';
 import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BasePage {
+  get track () {
+    return 'userProfile';
+  }
+
   render() {
     if (!this.state.data || !this.state.data.userProfile) {
       return (

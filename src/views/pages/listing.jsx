@@ -19,6 +19,10 @@ class ListingPage extends BasePage {
     this.state.loadingMoreComments = false;
   }
 
+  get track () {
+    return 'comments';
+  }
+
   onNewComment (comment) {
     // make a shallow copy so we can append to it
     var comments = this.state.data.comments.slice();

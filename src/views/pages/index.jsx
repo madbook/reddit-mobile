@@ -29,6 +29,10 @@ class IndexPage extends BasePage {
     this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
+  get track () {
+    return 'listings';
+  }
+
   render() {
     var loading;
     var props = this.props;

@@ -7,6 +7,10 @@ import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
 class SubredditAboutPage extends BasePage {
+  get track () {
+    return 'subreddit';
+  }
+
   render() {
     var loading;
 
