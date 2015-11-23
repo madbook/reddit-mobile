@@ -192,13 +192,13 @@ function userData(ctx, app) {
 
 function makeBody() {
   return (props) => {
-    let content = Array.prototype.map.call(arguments, (comp) => {
+    let content = Array.prototype.map.call(arguments, (comp, i) => {
       if (Array.isArray(comp)) {
         const [Component, propOveride] = comp;
-        return <Component {...(propOveride || props)}  />;
+        return <Component {...(propOveride || props)} key={`${props.key}-${i}`} />;
       } else {
         const Component = comp;
-        return <Component {... props}  />;
+        return <Component {... props} key={`${props.key}-${i}`} />;
       }
     });
 
