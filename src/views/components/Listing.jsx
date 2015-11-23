@@ -29,7 +29,7 @@ class Listing extends BaseComponent {
     this.state = {
       compact: compact,
       expanded: false,
-      showNSFW: !props.showOver18Interstitial || false,
+      showNSFW: !props.showOver18Interstitial && props.subredditIsNSFW,
       loaded: false,
       tallestHeight: 0,
       reported: props.listing.reported,
