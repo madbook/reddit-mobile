@@ -99,12 +99,9 @@ class RegisterPage extends BasePage {
           </div>
 
           <div className='text-muted text-small'>
-            We care about your privacy, and we never spam. By creating an
-            account, you agree to reddit's
-            <a href='http://reddit.com/help/useragreement' className='text-link'> User Agreement </a>
-            and
-            <a href='http://reddit.com/help/privacypolicy' className='text-link'> Privacy Policy</a>.
-            We're proud of them, and you should read them.
+            By signing up, you agree to our <a href='https://reddit.com/help/useragreement' className='text-link' target='_blank'>Terms </a>
+            and that you have read our <a href='https://reddit.com/help/privacypolicy' className='text-link' target='_blank'>Privacy Policy </a>
+            and <a href='https://www.reddit.com/help/contentpolicy/' className='text-link' target='_blank'>Content Policy</a>.
           </div>
         </div>
       </main>
