@@ -211,16 +211,13 @@ class ListingContent extends BaseComponent {
     let style = {};
     let loaded = props.loaded;
 
-    const config = this.props.app.config
-    const https = (config.https || config.httpsProxy) && !urlIsImage;
-
     let playIconNode;
     if (playable && !(isNSFW && !props.showNSFW)) {
       playIconNode = <span className='icon-play-circled'>{' '}</span>;
     }
 
     if (src.url) {
-      style.backgroundImage = 'url(' + forceProtocol(src.url, https) + ')';
+      style.backgroundImage = 'url(' + forceProtocol(src.url, props.app.config.https) + ')';
     }
 
     let nsfwNode;
@@ -436,8 +433,7 @@ class ListingContent extends BaseComponent {
   }
 
   _buildThumbnail(listing, expand, isNSFW, playable, preview) {
-    const config = this.props.app.config
-    const https = config.https || config.httpsProxy;
+    let https = this.props.app.config.https;
 
     if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
       let imgUrl = listing.preview.images[0].resolutions[0].url;
