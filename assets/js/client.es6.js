@@ -51,6 +51,7 @@ var $body = document.body || document.getElementsByTagName('body')[0];
 var $head = document.head || document.getElementsByTagName('head')[0];
 
 var config = defaultConfig();
+const dataCache = window.bootstrap.dataCache;
 
 function loadShim() {
   var shimScript = document.createElement('script');
@@ -231,6 +232,7 @@ function render (app, ...args) {
 }
 
 function initialize(bindLinks) {
+  const dataCache = window.bootstrap.dataCache;
   var plugin;
   var p;
 
@@ -249,13 +251,13 @@ function initialize(bindLinks) {
   var app = new App(config);
   routes(app);
 
-  app.setState('userSubscriptions', window.bootstrap.dataCache.userSubscriptions);
+  app.setState('userSubscriptions', dataCache.userSubscriptions);
 
-  if (window.bootstrap.dataCache.user) {
-    app.setState('user', window.bootstrap.dataCache.user);
-    app.setState('preferences', window.bootstrap.dataCache.preferences);
+  if (dataCache.user) {
+    app.setState('user', dataCache.user);
+    app.setState('preferences', dataCache.preferences);
 
-    cookies.set('over18', window.bootstrap.dataCache.preferences.over_18);
+    cookies.set('over18', dataCache.preferences.body.over_18);
   }
 
   app.emitter.setMaxListeners(30);

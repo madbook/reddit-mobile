@@ -3,6 +3,7 @@ import isEqual from 'lodash/lang/isEqual';
 
 import BaseComponent from '../components/BaseComponent';
 import TrackingPixel from '../../lib/TrackingPixel';
+import constants from '../../constants';
 
 class BasePage extends BaseComponent {
   constructor (props) {
@@ -59,6 +60,10 @@ class BasePage extends BaseComponent {
           data: data,
           meta: meta,
         });
+
+        if (property === 'preferences') {
+          this.props.app.emit(constants.TOGGLE_OVER_18, p.body.over_18);
+        }
       } else {
         var data = Object.assign({}, this.state.data);
 

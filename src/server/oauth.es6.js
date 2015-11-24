@@ -307,6 +307,7 @@ var oauthRoutes = function(app) {
 
   router.get('/logout', function * () {
     nukeTokens(this);
+    this.cookies.set('over18', false);
     this.cookies.set('reddit_session', undefined, {
       domain: '.reddit.com',
     });
