@@ -106,7 +106,7 @@ function modifyContext (ctx) {
     dataCache: app.getState('dataCache') || {},
     compact: (cookies.get('compact') || '').toString() === 'true',
     showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
-    showEUCookieMessage: false, //(EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
+    showEUCookieMessage: (EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
     showGlobalMessage: cookies.get((app.config.globalMessage || {}).key) === undefined,
     redirect: redirect.bind(app),
     env: 'CLIENT',

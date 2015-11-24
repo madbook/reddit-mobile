@@ -30,4 +30,5 @@ export default [
     "ES",
     "SE",
     "UK",
+    "GB",
 ];
