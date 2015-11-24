@@ -5,58 +5,8 @@ reddit-mobile is a web server and build system for building polymorphic
 React applications in node or io.js. It is part of a larger series of plugins that,
 together, form frontend applications for reddit.
 
-A Brief Overview
-----------------
-This application provides the core to set up an Express web server and html5
-history api, and have these send a request object (containing path, data, etc)
-and a callback (a promise interface) to the App.
-
-This application also provides a build system and a base css framework, shared
-across plugins.
-
-```
- +---------+          +---------------+
- | express |          | html5 history |
- +---------+          |     api       |
-    |                 +---------------+
- req, cb                   req, cb
-    |                        |
-    \                        /
-     ------------------------
-                |
-                v
-            +--------+
-            | App.js |
-            +--------+
-                |
-             (router)
-                |
-                v
-            +--------+
-            | plugin | -> cb.resolve({ body: reactElement })
-            |        | -> cb.reject({ status: 401 })
-            +--------+ 
-```
-
-
-
-The App has an instance of an Express-like request router that it uses to map
-requests to the appropriate handling function, and is run on both the client-
-and server- side. The React lifecycle can be used to control client-specific
-code.
-
-Plugins register themselves via two interfaces:
-
-1. Route handlers that take two parameters, `req` and `res`. `res` is a promise
-  interface that should be called using
-  `res.resolve({ body: reactElement, status: 200})` or
-  `res.reject({ body: error, status: 400})`. (Body and status are optional in
-  both cases, but should generally be added.)
-  A complete example of route handling can be seen at
-  [routes.jsx](./src/routes.jsx).
-2. Mutators that modify the rendering of react components. An element query
-  syntax is provided, documentation forthcoming.
-
+See [the wiki](https://github.com/reddit/reddit-mobile/wiki) for an in-depth
+explanation of how everything fits together.
 
 Getting Up and Running
 ----------------------
