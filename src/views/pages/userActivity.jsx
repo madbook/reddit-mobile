@@ -19,18 +19,16 @@ class UserActivityPage extends BasePage {
       );
     }
 
-    var props = this.props;
-    var state = this.state;
+    const props = this.props;
+    const state = this.state;
 
-    var page = props.page || 0;
-    var token = props.token;
-    var app = props.app;
-    var user = state.data.user;
-    var activities = state.data.activities;
-    var subreddit = '';
-    var sort = props.sort || 'hot';
-    var userProfile = props.userProfile || {};
-    var name = props.userName;
+    const page = props.page || 0;
+    const token = props.token;
+    const app = props.app;
+    const user = state.data.user;
+    const activities = state.data.activities;
+    const sort = props.sort || 'hot';
+    const name = props.userName;
 
     return (
       <div className="user-page user-activity">
@@ -71,7 +69,6 @@ UserActivityPage.propTypes = {
   page: React.PropTypes.number,
   sort: React.PropTypes.string,
   userName: React.PropTypes.string.isRequired,
-  userProfile: React.PropTypes.object,
 }
 
 export default UserActivityPage;
