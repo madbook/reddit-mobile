@@ -25,6 +25,14 @@ var _LISTS = {
     {text: 'q&a', param: 'qa'},
   ],
 
+  userComments: [
+    {text: 'best', param: 'confidence'},
+    {text: 'top', param: 'top'},
+    {text: 'new', param: 'new'},
+    {text: 'controversial', param: 'controversial'},
+    {text: 'q&a', param: 'qa'},
+  ],
+
   both: [
     {text: 'hot', param: 'hot'},
     {text: 'top', param: 'top'},

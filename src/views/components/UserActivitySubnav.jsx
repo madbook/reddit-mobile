@@ -55,7 +55,7 @@ class UserActivitySubnav extends BaseComponent {
   render() {
     var baseUrl = `/u/${this.props.name}/activity`;
     var activity = this.state.activity;
-    var sortList = 'comments';
+    var sortList = 'userComments';
 
     switch (activity) {
       case 'listings':
