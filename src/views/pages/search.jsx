@@ -27,11 +27,11 @@ class SearchPage extends BasePage {
   }
 
   componentDidMount() {
-      this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentWillUnmount() {
-      this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
+    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   get track () {
@@ -124,6 +124,7 @@ class SearchPage extends BasePage {
     const app = this.props.app;
     const apiOptions = props.apiOptions;
     let controls;
+    let noResult;
 
     if (!state.loaded && props.ctx.query && props.ctx.query.q) {
       controls = (
@@ -143,7 +144,7 @@ class SearchPage extends BasePage {
       const listings = searchResults.links || [];
       const noListResults = listings.length === 0;
       const noSubResults = subreddits.length === 0;
-      const noResult = noSubResults && noListResults;
+      noResult = noSubResults && noListResults;
       const subredditResultsOnly = props.subredditName && props.ctx.query.q;
       const compact = this.state.compact;
 
