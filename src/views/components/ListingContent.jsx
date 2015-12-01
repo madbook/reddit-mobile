@@ -226,10 +226,9 @@ class ListingContent extends BaseComponent {
     let nsfwNode;
     if (isNSFW && !props.showNSFW) {
       nsfwNode = this._buildNSFW(props.compact);
-      style.backgroundImage = '';
     }
 
-    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) || _DEFAULT_ASPECT_RATIO;
+    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height);
 
     if (props.single && aspectRatio) {
       style.height = 1 / aspectRatio * props.width  + 'px';
@@ -241,7 +240,7 @@ class ListingContent extends BaseComponent {
 
     let noRoute = !!onClick;
 
-    if (src && !aspectRatio) {
+    if (src && src.url && !aspectRatio) {
       return (
         <a  className='ListingContent-image'
           href={ href }
@@ -254,8 +253,10 @@ class ListingContent extends BaseComponent {
       );
     }
 
+    let showPlaceholder = isNSFW && !props.showNSFW && !src.url;
+
     let linkClass = 'ListingContent-image ' + (props.isThumbnail ? '' :
-      _aspectRatioClass(aspectRatio)) + (isNSFW && !props.showNSFW ? ' placeholder' : '');
+      _aspectRatioClass(aspectRatio)) + (showPlaceholder ? ' placeholder' : '');
 
     return (
       <a  className={ linkClass }
@@ -440,17 +441,14 @@ class ListingContent extends BaseComponent {
     const https = config.https || config.httpsProxy;
 
     if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
-      let imgUrl = listing.preview.images[0].resolutions[0].url;
+      let ad = listing.preview.images[0].resolutions[0];
       let url = listing.cleanUrl;
-      return this._renderImage({url: forceProtocol(imgUrl, https)}, url, expand, playable );
+      return this._renderImage(preview, url, expand, playable );
 
-    } else if (listing.thumbnail) {
-      // if it is nsfw the preview function will have returned the blurry image.
-      let url = isNSFW && preview ? preview : {url: forceProtocol(listing.thumbnail, https)};
-      return this._renderImage(url, listing.cleanUrl, expand, playable );
-    // for direct links to .jpg or .png files
+    } else if (preview) {
+      return this._renderImage(preview, listing.cleanUrl, expand, playable );
+
     } else if (listing.selftext) {
-
       return this._renderTextPlaceholder(listing.expandContent, true, listing.id);
 
     } else {
@@ -470,8 +468,14 @@ class ListingContent extends BaseComponent {
     if (preview) {
       preview = (preview.images || [])[0];
 
-      if (!showNSFW && isNSFW && has(preview, 'variants.nsfw.resolutions')) {
-        preview = preview.variants.nsfw;
+      if (!showNSFW && isNSFW) {
+        // for logged out users and users who have the 'make safer for work'
+        // option enabled there will be no nsfw variants returned.
+        if (has(preview, 'variants.nsfw.resolutions')) {
+          preview = preview.variants.nsfw;
+        } else {
+          return {};
+        }
       }
 
       let resolutions = preview.resolutions;
@@ -501,13 +505,16 @@ class ListingContent extends BaseComponent {
     }
 
     if (oembed) {
-      return {
-        url: oembed.thumbnail_url,
-        width: oembed.thumbnail_width,
-        height: oembed.thumbnail_height,
-      };
+      if (isNSFW && showNSFW ||!isNSFW) {
+        return {
+          url: oembed.thumbnail_url,
+          width: oembed.thumbnail_width,
+          height: oembed.thumbnail_height,
+        };
+      } else {
+        return {};
+      }
     }
-
   }
 
   _isExpanded() {

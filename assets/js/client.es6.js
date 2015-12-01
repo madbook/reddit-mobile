@@ -51,7 +51,6 @@ var $body = document.body || document.getElementsByTagName('body')[0];
 var $head = document.head || document.getElementsByTagName('head')[0];
 
 var config = defaultConfig();
-const dataCache = window.bootstrap.dataCache;
 
 function loadShim() {
   var shimScript = document.createElement('script');
