@@ -40,8 +40,8 @@ class SearchPage extends BasePage {
 
   _loadSearchResults() {
     this.props.data.get('search').then(function(results) {
-      var oldData = this.state.data;
-      var oldMeta = this.state.meta;
+      const oldData = this.state.data;
+      const oldMeta = this.state.meta;
 
       this.setState({
         data: Object.assign({}, oldData, {
@@ -57,10 +57,10 @@ class SearchPage extends BasePage {
 
   onSearch(value) {
     // Let the input change handle submission
-    var props = this.props;
+    const props = this.props;
 
     if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
-      var url = this._composeUrl({
+      const url = this._composeUrl({
         query: value,
         subredditName: props.subredditName
       });
@@ -70,7 +70,7 @@ class SearchPage extends BasePage {
   }
 
   _composeUrl(data) {
-    var qs = { q: data.query };
+    let qs = { q: data.query };
     if (data.after) { qs.after = data.after; }
     if (data.before) { qs.before = data.before; }
     if (data.page) { qs.page = data.page; }
@@ -83,8 +83,8 @@ class SearchPage extends BasePage {
   }
 
   _composeSortingUrl(data) {
-    var props = this.props;
-    var qs = { q: props.ctx.query.q };
+    const props = this.props;
+    let qs = { q: props.ctx.query.q };
     if (props.after) { qs.after = props.after; }
     if (props.before) { qs.before = props.before; }
     if (props.page) { qs.page = props.page; }
@@ -104,9 +104,9 @@ class SearchPage extends BasePage {
   }
 
   handleShowMoreClick(e) {
-    var props = this.props;
+    const props = this.props;
 
-    var url = this._composeUrl({
+    const url = this._composeUrl({
       query: props.ctx.query.q,
       type: 'sr',
     });
@@ -119,11 +119,11 @@ class SearchPage extends BasePage {
   }
 
   render() {
-    var state = this.state;
-    var props = this.props;
-    var app = this.props.app;
-    var apiOptions = props.apiOptions;
-    var controls;
+    const state = this.state;
+    const props = this.props;
+    const app = this.props.app;
+    const apiOptions = props.apiOptions;
+    let controls;
 
     if (!state.loaded && props.ctx.query && props.ctx.query.q) {
       controls = (
@@ -137,22 +137,22 @@ class SearchPage extends BasePage {
       );
     } else {
       // to make life easier
-      var searchResults = this.state.data.search;
+      const searchResults = this.state.data.search;
 
-      var subreddits = searchResults.subreddits || [];
-      var listings = searchResults.links || [];
-      var noListResults = listings.length === 0;
-      var noSubResults = subreddits.length === 0;
-      var noResult = noSubResults && noListResults;
-      var subredditResultsOnly = props.subredditName && props.ctx.query.q;
+      const subreddits = searchResults.subreddits || [];
+      const listings = searchResults.links || [];
+      const noListResults = listings.length === 0;
+      const noSubResults = subreddits.length === 0;
+      const noResult = noSubResults && noListResults;
+      const subredditResultsOnly = props.subredditName && props.ctx.query.q;
       const compact = this.state.compact;
 
-      var page = props.page || 0;
+      const page = props.page || 0;
 
-      var meta = state.data.subreddits ? state.data.subreddits.meta : {};
+      const meta = state.data.subreddits ? state.data.subreddits.meta : {};
 
       // API is messed up, so we have to do our own detection for the prev..
-      var prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
+      const prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
         query: props.ctx.query.q,
         subredditName: props.subredditName,
         before: meta.before || listings[0].name,
@@ -162,7 +162,7 @@ class SearchPage extends BasePage {
       }) : null;
 
       // ..and of course for the next too :-\
-      var nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
+      const nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
         query: props.ctx.query.q,
         subredditName: props.subredditName,
         after: meta.after || listings[listings.length - 1].name,
