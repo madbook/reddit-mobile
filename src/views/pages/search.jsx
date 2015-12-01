@@ -20,7 +20,18 @@ class SearchPage extends BasePage {
       this._loadSearchResults();
     }
 
+    this.state.compact = props.compact;
+
     this._lastQueryKey = null;
+    this._onCompactToggle = this._onCompactToggle.bind(this);
+  }
+
+  componentDidMount() {
+      this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
+  }
+
+  componentWillUnmount() {
+      this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   get track () {
@@ -103,6 +114,10 @@ class SearchPage extends BasePage {
     this.props.app.redirect(url);
   }
 
+  _onCompactToggle(compact) {
+    this.setState({ compact });
+  }
+
   render() {
     var state = this.state;
     var props = this.props;
@@ -130,6 +145,7 @@ class SearchPage extends BasePage {
       var noSubResults = subreddits.length === 0;
       var noResult = noSubResults && noListResults;
       var subredditResultsOnly = props.subredditName && props.ctx.query.q;
+      const compact = this.state.compact;
 
       var page = props.page || 0;
 
@@ -183,7 +199,7 @@ class SearchPage extends BasePage {
                   title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
         </div>,
 
-        <div className={ `container listing-container ${noListResults ? 'hidden' : ''}` }
+        <div className={ `container listing-container ${compact ? 'compact' : ''} ${noListResults ? 'hidden' : ''}` }
              ref="listings" key="search-listings">
 
           <h4 className="text-center">Posts</h4>
@@ -201,6 +217,7 @@ class SearchPage extends BasePage {
             user={ props.user }
             token={ props.token }
             winWidth={ props.ctx.winWidth }
+            compact={ compact }
           />
           <div className="row pageNav">
             <div className="col-xs-12">
