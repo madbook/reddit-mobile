@@ -184,6 +184,16 @@ function findLinkParent(el) {
   }
 }
 
+function elementInDropdown(el) {
+  if (el.classList && el.classList.contains(constants.DROPDOWN_CSS_CLASS)) {
+    return true;
+  } else if (el.parentNode) {
+    return elementInDropdown(el.parentNode);
+  } else {
+    return false;
+  }
+}
+
 function sendTimings() {
   // Send the timings during the next cycle.
   if (window.bootstrap.actionName) {
@@ -435,7 +445,18 @@ function initialize(bindLinks) {
     cookies.set(message.key, 'globalMessageSeen', options);
   });
 
-  window.addEventListener('scroll', throttle(function() {
+  function closeDropdowns() {
+    // close any opened dropdown by faking another dropdown opening
+    app.emit(constants.DROPDOWN_OPEN);
+  }
+
+  window.addEventListener('click', function(e) {
+    if (!elementInDropdown(e.target)) {
+      closeDropdowns();
+    }
+  });
+
+  window.addEventListener('scroll', throttle(function(e) {
       app.emit(constants.SCROLL);
     }.bind(app), 100));
 

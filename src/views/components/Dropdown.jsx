@@ -19,7 +19,7 @@ class Dropdown extends BaseComponent {
   }
 
   render() {
-    var className = 'Dropdown ' + (this.props.className || '');
+    var className = constants.DROPDOWN_CSS_CLASS + ' ' + (this.props.className || '');
     className += (this.props.right ? ' pull-right' : '');
 
     if (this.state.opened) {

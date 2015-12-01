@@ -3,6 +3,7 @@ export default {
   SIDE_NAV_TOGGLE: 'sideNavToggle',
   TOP_NAV_HAMBURGER_CLICK: 'topNavHamburgerClick',
   VOTE: 'vote',
+  DROPDOWN_CSS_CLASS: 'Dropdown',
   DROPDOWN_OPEN: 'dropdownOpen',
   COMPACT_TOGGLE: 'compactToggle',
   TOP_NAV_HEIGHT: 45,
