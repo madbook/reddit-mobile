@@ -3,7 +3,7 @@ import constants from '../../constants';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
-import ListingList from '../components/ListingList';
+import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
 
 const PropTypes = React.PropTypes;
@@ -23,14 +23,15 @@ class UserSavedPage extends BasePage {
   render() {
     let {
       actionName,
-      page, 
+      page,
       token,
       app,
       sort,
       userName,
       apiOptions,
       hidden,
-      ctx
+      ctx,
+      compact
     } = this.props;
 
     let { activities, user } = this.state.data;
@@ -54,22 +55,20 @@ class UserSavedPage extends BasePage {
 
       return (
         <div className='user-page user-saved'>
-          <div className='container Listing-container' >
-            <div className='vertical-spacing-top'>
-              <ListingList
-                user={ user }
-                app={ app }
-                showHidden={ true }
-                listings={ activities }
-                firstPage={ page }
-                hideSubredditLabel={ false }
-                token={ token }
-                hideUser={ false }
-                apiOptions={ apiOptions }
-                winWidth={ ctx.winWidth }
-              />
-            </div>
-          </div>
+          <ListingContainer
+            user={ user }
+            app={ app }
+            showHidden={ true }
+            listings={ activities }
+            firstPage={ page }
+            hideSubredditLabel={ false }
+            token={ token }
+            hideUser={ false }
+            apiOptions={ apiOptions }
+            winWidth={ ctx.winWidth }
+            compact={ compact }
+            listingClassName={ 'vertical-spacing-top' }
+          />
         </div>
       );
 

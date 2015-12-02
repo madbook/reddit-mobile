@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 
-import { IndexPage, Loading, TopSubNav } from '../../helpers/components';
+import { IndexPage, Loading, TopSubNav, ListingContainer } from '../../helpers/components';
 
 var expect = chai.expect;
 chai.use(sinonChai);
@@ -38,7 +38,7 @@ describe('index page', () => {
     });
 
     it('renders a ListingList copmonent when listings are loaded', () => {
-      let listingContainer = shallowHelpers.findClass(ctx.result, 'Listing-container');
+      let listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
       expect(listingContainer).to.not.equal(undefined);
     })
 

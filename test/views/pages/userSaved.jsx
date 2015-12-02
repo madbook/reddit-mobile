@@ -6,7 +6,7 @@ import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 import { models } from 'snoode';
 
-import { UserSavedPage, Loading, ListingList } from '../../helpers/components';
+import { UserSavedPage, Loading, ListingContainer } from '../../helpers/components';
 
 var expect = chai.expect;
 chai.use(sinonChai);
@@ -57,8 +57,8 @@ describe('UserSaved page', () => {
     });
 
     it('should render ListingList', () => {
-      let ListWrapper = shallowHelpers.findClass(ctx.result, 'vertical-spacing-top');
-      expect(ListWrapper.props.children.type).to.equal(ListingList);
+      let listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
+      expect(listingContainer).to.not.equal(undefined);
     });
   });
 

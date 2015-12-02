@@ -4,7 +4,7 @@ import querystring from 'querystring';
 import cookies from 'cookies-js';
 
 import BasePage from './BasePage';
-import ListingList from '../components/ListingList';
+import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
@@ -142,18 +142,18 @@ class IndexPage extends BasePage {
           excludedSorts={ excludedSorts }
         />
 
-        <div className={'container Listing-container' + (compact ? ' compact' : '')} ref='listings'>
-          <ListingList
-            { ...props }
-            user={ user }
-            showAds={ showAds }
-            listings={ listings }
-            firstPage={ page }
-            page={ page }
-            hideSubredditLabel={ hideSubredditLabel }
-            subredditTitle={ subreddit }
-            winWidth={ this.props.ctx.winWidth }
-          />
+        <ListingContainer
+          { ...props }
+          user={ user }
+          showAds={ showAds }
+          listings={ listings }
+          firstPage={ page }
+          page={ page }
+          hideSubredditLabel={ hideSubredditLabel }
+          subredditTitle={ subreddit }
+          winWidth={ this.props.ctx.winWidth }
+          compact={ compact }
+        >
           <div className='pageNav IndexPage-buttons-holder-holder'>
             <div className='col-xs-12 IndexPage-buttons-holder'>
               <p className={'IndexPage-buttons' + (compact ? ' compact' : '')}>
@@ -161,7 +161,7 @@ class IndexPage extends BasePage {
               </p>
             </div>
           </div>
-        </div>
+        </ListingContainer>
       </div>
     );
   }

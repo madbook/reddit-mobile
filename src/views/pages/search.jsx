@@ -3,7 +3,7 @@ import constants from '../../constants';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
-import ListingList from '../components/ListingList';
+import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
 import SearchSortSubnav from '../components/SearchSortSubnav';
 import SearchBar from '../components/SearchBar';
@@ -23,15 +23,6 @@ class SearchPage extends BasePage {
     this.state.compact = props.compact;
 
     this._lastQueryKey = null;
-    this._onCompactToggle = this._onCompactToggle.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
-  }
-
-  componentWillUnmount() {
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   get track () {
@@ -112,10 +103,6 @@ class SearchPage extends BasePage {
     });
 
     this.props.app.redirect(url);
-  }
-
-  _onCompactToggle(compact) {
-    this.setState({ compact });
   }
 
   render() {
@@ -200,41 +187,40 @@ class SearchPage extends BasePage {
                   title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
         </div>,
 
-        <div className={ `container listing-container ${compact ? 'compact' : ''} ${noListResults ? 'hidden' : ''}` }
-             ref="listings" key="search-listings">
-
-          <h4 className="text-center">Posts</h4>
-
+        <div className={'container'}>
+          <h4 className='text-center'>Posts</h4>
           <SearchSortSubnav
             app={ app }
             sort={ props.sort }
             time={ props.time }
             composeSortingUrl={ this._composeSortingUrl.bind(this) }
           />
-          <ListingList
-            app={ app }
-            listings={ listings}
-            apiOptions={ apiOptions }
-            user={ props.user }
-            token={ props.token }
-            winWidth={ props.ctx.winWidth }
-            compact={ compact }
-          />
-          <div className="row pageNav">
-            <div className="col-xs-12">
-              <p>
-                <a href={ prevUrl } className={ `btn btn-sm btn-primary ${prevUrl ? '' : 'hidden'}` } rel="prev">
-                  <span className='glyphicon glyphicon-chevron-left'></span>
-                  Previous Page
-                </a>
-                <a href={ nextUrl } className={ `btn btn-sm btn-primary ${nextUrl ? '' : 'hidden'}` } rel="next">
-                  Next Page
-                  <span className='glyphicon glyphicon-chevron-right'></span>
-                </a>
-              </p>
+        </div>,
+
+        <ListingContainer
+          app={ app }
+          listings={ listings}
+          apiOptions={ apiOptions }
+          user={ props.user }
+          token={ props.token }
+          winWidth={ props.ctx.winWidth }
+          compact={ compact }
+          >
+            <div className="row pageNav">
+              <div className="col-xs-12">
+                <p>
+                  <a href={ prevUrl } className={ `btn btn-sm btn-primary ${prevUrl ? '' : 'hidden'}` } rel="prev">
+                    <span className='glyphicon glyphicon-chevron-left'></span>
+                    Previous Page
+                  </a>
+                  <a href={ nextUrl } className={ `btn btn-sm btn-primary ${nextUrl ? '' : 'hidden'}` } rel="next">
+                    Next Page
+                    <span className='glyphicon glyphicon-chevron-right'></span>
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
+        </ListingContainer>
       ];
     }
 

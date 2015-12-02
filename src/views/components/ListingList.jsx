@@ -22,19 +22,14 @@ class ListingList extends BaseComponent {
     };
 
     this._lazyLoad = this._lazyLoad.bind(this);
-    this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
   componentDidMount() {
     this._addListeners();
-
-    this.props.app.on(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   componentWillUnmount() {
     this._removeListeners();
-
-    this.props.app.off(constants.COMPACT_TOGGLE, this._onCompactToggle);
   }
 
   _getLoadedDistance () {
@@ -166,7 +161,7 @@ class ListingList extends BaseComponent {
     }
 
     return (
-      <div ref='root'>{listings}</div>
+      <div className={ this.props.className } ref='root'>{listings}</div>
     );
   }
 
@@ -184,10 +179,6 @@ class ListingList extends BaseComponent {
     if (compact !== 'undefined' && compact !==this.state.compact) {
       this.setState({compact: compact});
     }
-  }
-
-  _onCompactToggle(compact) {
-    this.setState({ compact });
   }
 
   static propTypes = {

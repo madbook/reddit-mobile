@@ -3,7 +3,7 @@ import constants from '../../constants';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
-import ListingList from '../components/ListingList';
+import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 
@@ -40,20 +40,19 @@ class UserActivityPage extends BasePage {
           user={ user }
         />
 
-        <div className={'container Listing-container'} >
-          <ListingList
-            app={ app }
-            listings={activities}
-            firstPage={page}
-            page={page}
-            hideSubredditLabel={false}
-            user={user}
-            token={token}
-            hideUser={ true }
-            apiOptions={ props.apiOptions }
-            winWidth={ props.ctx.winWidth }
-          />
-        </div>
+        <ListingContainer
+          compact={ props.compact }
+          app={ app }
+          listings={activities}
+          firstPage={page}
+          page={page}
+          hideSubredditLabel={false}
+          user={user}
+          token={token}
+          hideUser={ true }
+          apiOptions={ props.apiOptions }
+          winWidth={ props.ctx.winWidth }
+        />
       </div>
     );
   }
