@@ -5,6 +5,7 @@ import cookies from 'cookies-js';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
+import ListingPaginationButtons from '../components/ListingPaginationButtons';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
@@ -70,8 +71,8 @@ class IndexPage extends BasePage {
 
     var firstId;
     var lastId;
-    var prevButton;
-    var nextButton;
+    let prevUrl;
+    let nextUrl;
     var apiOptions = props.apiOptions;
     var subreddit = '';
 
@@ -101,12 +102,7 @@ class IndexPage extends BasePage {
           before: firstId,
         });
 
-        prevButton = (
-          <a href={subreddit + '?' + querystring.stringify(prevQuery) } className='btn btn-sm btn-primary IndexPage-button prev'>
-            <span className='glyphicon glyphicon-chevron-left'></span>
-            Previous Page
-          </a>
-        );
+        prevUrl = subreddit + '?' + querystring.stringify(prevQuery);
       }
 
       var nextQuery = Object.assign({}, props.ctx.query, {
@@ -115,12 +111,7 @@ class IndexPage extends BasePage {
         after: lastId,
       });
 
-      nextButton = (
-        <a href={ subreddit + '?' + querystring.stringify(nextQuery) } className='btn btn-sm btn-primary IndexPage-button next'>
-          Next Page
-          <span className='glyphicon glyphicon-chevron-right'></span>
-        </a>
-      );
+      nextUrl = subreddit + '?' + querystring.stringify(nextQuery);
     }
 
     var showAds = !!props.config.adsPath;
@@ -154,13 +145,11 @@ class IndexPage extends BasePage {
           winWidth={ this.props.ctx.winWidth }
           compact={ compact }
         >
-          <div className='pageNav IndexPage-buttons-holder-holder'>
-            <div className='col-xs-12 IndexPage-buttons-holder'>
-              <p className={'IndexPage-buttons' + (compact ? ' compact' : '')}>
-                { prevButton } { nextButton }
-              </p>
-            </div>
-          </div>
+          <ListingPaginationButtons
+            compact={ compact }
+            prevUrl={ prevUrl }
+            nextUrl={ nextUrl }
+          />
         </ListingContainer>
       </div>
     );

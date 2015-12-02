@@ -14,6 +14,7 @@ import ListingContainer from '../../src/views/components/ListingContainer';
 import ListingContent from '../../src/views/components/ListingContent';
 import ListingDropdown from '../../src/views/components/ListingDropdown';
 import ListingList from '../../src/views/components/ListingList';
+import ListingPaginationButtons from '../../src/views/components/ListingPaginationButtons';
 import Loading from '../../src/views/components/Loading';
 import MessageNav from '../../src/views/components/MessageNav';
 import MessagePreview from '../../src/views/components/MessagePreview';

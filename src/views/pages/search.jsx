@@ -4,12 +4,16 @@ import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
+import ListingPaginationButtons from '../components/ListingPaginationButtons';
 import Loading from '../components/Loading';
 import SearchSortSubnav from '../components/SearchSortSubnav';
 import SearchBar from '../components/SearchBar';
 
 const _searchMinLength = 3;
 const _searchLimit = 25;
+// API hardcodes removing 3 (when using the default limit of 25) listing
+// results and turning those into recommended subreddits based on your search.
+const _searchLimitWithRecommendations = _searchLimit - 3;
 
 class SearchPage extends BasePage {
   constructor(props) {
@@ -150,7 +154,7 @@ class SearchPage extends BasePage {
       }) : null;
 
       // ..and of course for the next too :-\
-      const nextUrl = (meta.after || (props.before && listings.length)) ? this._composeUrl({
+      const nextUrl = (meta.after || listings.length >= _searchLimitWithRecommendations) ? this._composeUrl({
         query: props.ctx.query.q,
         subredditName: props.subredditName,
         after: meta.after || listings[listings.length - 1].name,
@@ -206,20 +210,11 @@ class SearchPage extends BasePage {
           winWidth={ props.ctx.winWidth }
           compact={ compact }
           >
-            <div className="row pageNav">
-              <div className="col-xs-12">
-                <p>
-                  <a href={ prevUrl } className={ `btn btn-sm btn-primary ${prevUrl ? '' : 'hidden'}` } rel="prev">
-                    <span className='glyphicon glyphicon-chevron-left'></span>
-                    Previous Page
-                  </a>
-                  <a href={ nextUrl } className={ `btn btn-sm btn-primary ${nextUrl ? '' : 'hidden'}` } rel="next">
-                    Next Page
-                    <span className='glyphicon glyphicon-chevron-right'></span>
-                  </a>
-                </p>
-              </div>
-            </div>
+            <ListingPaginationButtons
+              compact={ compact }
+              prevUrl={ prevUrl }
+              nextUrl={ nextUrl }
+            />
         </ListingContainer>
       ];
     }
