@@ -435,23 +435,6 @@ function initialize(bindLinks) {
     cookies.set(message.key, 'globalMessageSeen', options);
   });
 
-  app.on(constants.EU_COOKIE_NOTICE_SEEN, function(num) {
-    let options = {};
-
-    let date = new Date();
-    date.setFullYear(date.getFullYear() + 2);
-    options.expires = date;
-
-    let oldCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
-    // view count is incremented by 1 or, when a user closes dialog
-    // by 3.
-    if (num !== constants.EU_COOKIE_HIDE_AFTER_VIEWS) {
-      cookies.set('EUCookieNotice', oldCookie + 1, options);
-    } else {
-      cookies.set('EUCookieNotice', num, options);
-    }
-  });
-
   window.addEventListener('scroll', throttle(function() {
       app.emit(constants.SCROLL);
     }.bind(app), 100));

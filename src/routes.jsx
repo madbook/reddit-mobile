@@ -203,7 +203,7 @@ function makeBody() {
     });
 
     return (
-      <BodyLayout { ...props }>
+      <BodyLayout { ...props } key='layout'>
         { content }
       </BodyLayout>
     );

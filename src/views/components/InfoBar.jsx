@@ -1,5 +1,7 @@
 import React from 'react';
 import process from 'reddit-text-js';
+import cookies from 'cookies-js';
+import { find as _find, filter as _filter } from 'lodash/collection';
 
 import BaseComponent from './BaseComponent';
 
@@ -21,21 +23,23 @@ class InfoBar extends BaseComponent {
     this.incrementCookieNoticeSeen = this.incrementCookieNoticeSeen.bind(this);
     this.handleNewMessage = this.handleNewMessage.bind(this);
     this.removeEUCookieMessage = this.removeEUCookieMessage.bind(this);
+    this.removeMessage = this.removeMessage.bind(this);
   }
 
   componentDidMount() {
-    let { app, messages } = this.props;
-    let hasEUCookie = this.checkForEUCookie(messages);
+    const { app, messages } = this.props;
+    const hasEUCookie = _find(messages, {type: constants.messageTypes.EU_COOKIE});
 
     app.on(constants.NEW_INFOBAR_MESSAGE, this.handleNewMessage);
 
     if (hasEUCookie) {
       app.on('route:start', this.incrementCookieNoticeSeen);
+      this.incrementCookieNoticeSeen();
     }
   }
 
   componentWillUnmount() {
-    let { app } = this.props;
+    const { app } = this.props;
     app.off('route:start', this.incrementCookieNoticeSeen);
     app.off(constants.NEW_INFOBAR_MESSAGE, this.handleNewMessage);
   }
@@ -44,26 +48,41 @@ class InfoBar extends BaseComponent {
     this.removeEUCookieMessage(nextProps);
   }
 
-  incrementCookieNoticeSeen() {
-    let { app } = this.props;
-    app.emit(constants.EU_COOKIE_NOTICE_SEEN, 1);
-  }
+  incrementCookieNoticeSeen(e, num=1) {
+    const { app } = this.props;
+    const oldCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
+    let options = {};
 
-  checkForEUCookie(messages) {
-    return messages.reduce((prev, message) => {
-      return message.type === constants.messageTypes.EU_COOKIE;
-    }, false);
+    let date = new Date();
+    date.setFullYear(date.getFullYear() + 2);
+    options.expires = date;
+
+    let newNum;
+    if (num !== constants.EU_COOKIE_HIDE_AFTER_VIEWS) {
+      newNum = oldCookie + num;
+      cookies.set('EUCookieNotice', newNum, options);
+    } else {
+      cookies.set('EUCookieNotice', num, options);
+    }
+
+    if ([num, newNum].indexOf(constants.EU_COOKIE_HIDE_AFTER_VIEWS) !== -1) {
+      app.off('route:start', this.incrementCookieNoticeSeen);
+    }
   }
 
   removeEUCookieMessage(nextProps) {
     if (!nextProps.showEUCookieMessage && this.props.showEUCookieMessage) {
-      let messages = this.state.messages.map((message) => {
+      this.removeMessage((message) => {
         if (message.type !== constants.messageTypes.EU_COOKIE ) {
           return message;
         }
       });
-      this.setState({ messages });
     }
+  }
+
+  removeMessage(condition) {
+    const messages = _filter(this.state.messages, condition);
+    this.setState({ messages });
   }
 
   handleNewMessage(message) {
@@ -73,13 +92,13 @@ class InfoBar extends BaseComponent {
   }
 
   close() {
-    let { app } = this.props;
+    const { app } = this.props;
     let message = this.state.messages[0];
 
     if (message.type === constants.messageTypes.GLOBAL) {
       app.emit(constants.HIDE_GLOBAL_MESSAGE, message);
     } else if (message.type === constants.messageTypes.EU_COOKIE) {
-      app.emit(constants.EU_COOKIE_NOTICE_SEEN, constants.EU_COOKIE_HIDE_AFTER_VIEWS);
+      this.incrementCookieNoticeSeen(null, constants.EU_COOKIE_HIDE_AFTER_VIEWS);
     }
 
     let messages = this.state.messages.slice(1);
