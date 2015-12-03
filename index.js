@@ -78,7 +78,7 @@ process.on('uncaughtException', function (err) {
       line: line,
       url: url,
     }, {
-      hivemind: config.statsDomain,
+      hivemind: config.statsURL,
     });
   }
 

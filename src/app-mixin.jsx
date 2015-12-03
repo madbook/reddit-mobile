@@ -43,7 +43,7 @@ function logError(err, ctx, config) {
     url: url,
     requestUrl: ctx ? ctx.path : null,
   }, {
-    hivemind: config.statsDomain,
+    hivemind: config.statsURL,
   }, {
     level: config.debugLevel || 'error',
   });

@@ -57,7 +57,7 @@ These options are never shared with the client.
 * `API_PASS_THROUGH_HEADERS` - semicolon-delimited whitelist of headers (lowercase)
   that the server should send to the api during server rendering. For example:
   `accept-language;other-thing`. (user-agent is sent automatically.)
-* `STATS_DOMAIN` - a domain that tracking data should be sent to (such as page
+* `STATS_URL` - a url that tracking data should be sent to (such as page
   load times.) reddit uses a [metron](https://github.com/reddit/metron) instance
   to send page load timings to statsd, for instance.
 * `ACTION_NAME_SECRET` - a secret key used to sign data send to the stats

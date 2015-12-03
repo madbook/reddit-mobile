@@ -41,7 +41,7 @@ function config() {
 
     loginPath: process.env.LOGIN_PATH || '/oauth2/login',
 
-    statsDomain: process.env.STATS_DOMAIN || 'https://stats.redditmedia.com/',
+    statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
     adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
     manifest: {},
 

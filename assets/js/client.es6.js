@@ -11,7 +11,7 @@ function onError(message, url, line, column) {
     column,
     requestUrl: window.location.toString()
   }, {
-    hivemind: window.bootstrap && window.bootstrap.config ? window.bootstrap.config.statsDomain : undefined,
+    hivemind: window.bootstrap && window.bootstrap.config ? window.bootstrap.config.statsURL : undefined,
   });
 }
 

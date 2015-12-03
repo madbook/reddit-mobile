@@ -33,7 +33,7 @@ let serverRoutes = function(app) {
   });
 
   router.post('/timings', function * () {
-    const statsDomain = app.config.statsDomain;
+    const statsURL = app.config.statsURL;
     let timings = this.request.body.rum;
 
     if(!app.config.actionNameSecret) {
@@ -55,7 +55,7 @@ let serverRoutes = function(app) {
     timings.verification = hash;
 
     superagent
-        .post(statsDomain)
+        .post(statsURL)
         .type('json')
         .send({ rum: timings })
         .timeout(constants.DEFAULT_API_TIMEOUT)
