@@ -602,11 +602,14 @@ function routes(app) {
   });
 
   router.get('user.login', '/login', function * () {
-    this.props.error = this.query.error;
+    const { error, message, originalUrl } = this.query;
+    this.props = {...this.props, error, message, originalUrl };
     this.body = makeBody(LoginPage);
   });
 
   router.get('user.register', '/register', function * () {
+    const { error, message, originalUrl } = this.query;
+    this.props = {...this.props, error, message, originalUrl };
     this.body = makeBody(RegisterPage);
   });
 

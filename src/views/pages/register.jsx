@@ -3,58 +3,66 @@ import querystring from 'querystring';
 
 import BasePage from './BasePage';
 
+const ERROR_MESSAGES = {
+  EMAIL_NEWSLETTER: 'please enter an email to sign up for the newsletter',
+  PASSWORD_MATCH: 'passwords do not match',
+  500: 'There was a problem with the server',
+  default: 'An error occured.',
+};
+
+const terms = (
+  <a href='/help/useragreement' className='text-link' target='_blank'>Terms</a>
+);
+const privacy = (
+  <a href='/help/privacypolicy' className='text-link' target='_blank'>Privacy Policy </a>
+);
+const content = (
+  <a href='/help/contentpolicy/' className='text-link' target='_blank'>Content Policy</a>
+);
+
 class RegisterPage extends BasePage {
+  static propTypes = {
+    originalUrl: React.PropTypes.string,
+    error: React.PropTypes.string,
+    message: React.PropTypes.string,
+  }
+
   render () {
-    var usernameClass = '';
-    var passwordClass = '';
-    var emailClass = '';
+    let usernameClass = '';
+    let passwordClass = '';
+    let emailClass = '';
 
-    var errorClass = 'visually-hidden';
+    let errorClass = 'visually-hidden';
 
-    var dest = this.props.ctx.query.originalUrl;
-    var linkDest = '';
-    var refererTag = '';
-    var message;
+    const props = this.props;
+    const { originalUrl, error, ctx } = this.props;
 
-    if (dest) {
-      linkDest = '/?' + querystring.stringify({
-        originalUrl: dest,
-      });
-      refererTag = <input type='hidden' name='originalUrl' value={ dest } />;
+    const message = props.message ||
+                    ERROR_MESSAGES[error] ||
+                    ERROR_MESSAGES.default;
+    let linkDest = '';
+    let refererTag = '';
+
+    if (originalUrl) {
+      linkDest = '/?' + querystring.stringify({originalUrl});
+      refererTag = <input type='hidden' name='originalUrl' value={ originalUrl } />;
     }
 
-    if (this.props.ctx.query.error) {
-      switch (this.props.ctx.query.error) {
+    if (error) {
+      switch (error) {
         case 'EMAIL_NEWSLETTER':
           emailClass = 'has-error';
-          message = 'Please enter an email if you wish to sign up to the newsletter.';
           break;
         case 'PASSWORD_MATCH':
           passwordClass = 'has-error';
-          message = 'Passwords do not match.';
           break;
         case 'USERNAME_TAKEN':
           usernameClass = 'has-error';
-          message = 'Your username has already been taken.';
           break;
-        default:
-          message = 'An error occured.';
-          break;
-
       }
 
       errorClass = 'alert alert-danger alert-bar';
     }
-
-    const terms = (
-      <a href='/help/useragreement' className='text-link' target='_blank'>Terms</a>
-    );
-    const privacy = (
-      <a href='/help/privacypolicy' className='text-link' target='_blank'>Privacy Policy </a>
-    );
-    const content = (
-      <a href='/help/contentpolicy/' className='text-link' target='_blank'>Content Policy</a>
-    );
 
     return (
       <main>
@@ -124,7 +132,7 @@ class RegisterPage extends BasePage {
 
                 { refererTag }
 
-                <input type='hidden' value={ this.props.ctx.csrf } name='_csrf' />
+                <input type='hidden' value={ ctx.csrf } name='_csrf' />
 
                 <button type='submit' className='btn-post btn-block'>Create Account</button>
               </form>
