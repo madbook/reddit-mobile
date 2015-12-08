@@ -10,10 +10,12 @@ class BasePage extends BaseComponent {
     super(props);
 
     this.props = props;
+
     this.state = {
       data: {},
       meta: {},
       loaded: !!props.dataCache,
+      finished: false,
     };
 
     if (props.dataCache) {
@@ -39,6 +41,10 @@ class BasePage extends BaseComponent {
         if (!props.dataCache[key]) {
           this.watch(key);
         }
+      }
+
+      if (isEqual([...this.props.data.keys()].sort(), Object.keys(props.dataCache).sort())) {
+        this.finish();
       }
     }
   }
@@ -73,10 +79,21 @@ class BasePage extends BaseComponent {
           data: data,
         });
       }
+
+      if (isEqual([...this.props.data.keys()].sort(), Object.keys(this.state.data).sort())) {
+        this.finish();
+      }
     }, (e) => {
       this.props.app.error(e, this.props.ctx, this.props.app);
       this.props.app.forceRender(this.props.ctx.body, this.props);
     });
+  }
+
+  finish () {
+    if (this.state.finished === false && this.track) {
+      this.props.app.emit('pageview', { ...this.props, data: this.state.data });
+      this.setState({ finished: true });
+    }
   }
 
   buildTrackingPixelProps(url, props) {

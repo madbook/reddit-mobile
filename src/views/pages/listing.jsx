@@ -14,7 +14,6 @@ import TopSubnav from '../components/TopSubnav';
 class ListingPage extends BasePage {
   constructor(props) {
     super(props);
-
     this.state.editing = false;
     this.state.loadingMoreComments = false;
   }
