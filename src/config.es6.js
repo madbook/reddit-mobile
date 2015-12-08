@@ -49,7 +49,8 @@ function config() {
 
     trackerKey: process.env.TRACKER_KEY,
     trackerEndpoint: process.env.TRACKER_ENDPOINT,
-    trackerClientName: process.env.TRACKER_CLIENT_NAME,
+    trackerClientSecret: process.env.TRACKER_SECRET,
+    trackerClientAppName: process.env.TRACKER_CLIENT_NAME,
 
     // hack for now for global messages displayed with the infobar component.
     globalMessage: globalMessage,

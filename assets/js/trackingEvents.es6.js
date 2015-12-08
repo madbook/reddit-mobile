@@ -28,9 +28,10 @@ function postData(eventInfo) {
 function trackingEvents(app) {
   const tracker = new EventTracker(
     app.config.trackerKey,
+    app.config.trackerClientSecret,
     postData,
     app.config.trackerEndpoint,
-    app.config.trackerClientName,
+    app.config.trackerAppName,
     calculateHash
   );
 
