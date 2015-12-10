@@ -1,5 +1,4 @@
 import React from 'react';
-const PropTypes = React.PropTypes;
 
 import { models } from 'snoode';
 import querystring from 'querystring';
@@ -11,10 +10,9 @@ class CommentBox extends BaseComponent {
   constructor(props) {
     super(props);
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.submit = this.submit.bind(this);
-    this.handleError = this.handleError.bind(this);
+    this.state = {};
   }
+
   componentDidMount () {
     this.setState({
       reply: savedReply.get(this.props.thingId),
@@ -39,92 +37,70 @@ class CommentBox extends BaseComponent {
     this.submitComment(text);
   }
 
-  async submitComment (text) {
+  submitComment (text) {
     if (!text) {
       return;
     }
 
-    this.setState({error: ''});
-
-    const { apiOptions, app, token, thingId, onSubmit } = this.props;
-    const { requireLogin, config, api } = app;
-
-    if (!token) {
-      requireLogin(config.loginPath);
+    if (!this.props.token) {
+      this.props.app.requireLogin(this.props.app.config.loginPath);
 
       return;
     }
 
-    const comment = new models.Comment({
-      thingId: thingId,
+    var comment = new models.Comment({
+      thingId: this.props.thingId,
       text: text
     });
 
-    const options = {...api.buildOptions(apiOptions), model: comment};
+    var options = this.props.app.api.buildOptions(this.props.apiOptions);
 
-    try {
-      const newComment = await api.comments.post(options);
+    options = Object.assign(options, {
+      model: comment,
+    });
 
+    this.props.app.api.comments.post(options).then((function(comment) {
       savedReply.clear();
-      this.setState({reply: ''});
+      this.setState({ reply: '' });
+      this.props.onSubmit(comment);
+    }).bind(this));
 
-      onSubmit(newComment);
-      app.emit('comment', newComment);
-    } catch (err) {
-      this.handleError(err);
-    }
-  }
-
-  handleError (e) {
-    if (e.errors && e.errors.length) {
-      const error = e.errors[0][1];
-      this.setState({ error });
-    } else {
-      this.setState({error: 'There was a problem'});
-
-      const { ctx, app } = this.props;
-      app.error(e, ctx, app, {redirect: false, replaceBody: false});
-    }
+    this.props.app.emit('comment', comment);
   }
 
   render () {
-    const { reply, error } = this.state;
-    const { thingId, ctx } = this.props;
-    let csrf;
+    var value = this.state.reply;
+    var className = value && value.trim() ? 'has-content' : '';
+    var csrf;
 
-    if(ctx.csrf) {
-      csrf = (<input type='hidden' name='_csrf' value={ ctx.csrf } />);
-    }
-
-    let errorMessage;
-    if (error) {
-      errorMessage = (<span className='text-danger pull-left'>{ error }</span>);
+    if(this.props.ctx.csrf) {
+      csrf = (<input type='hidden' name='_csrf' value={ this.props.ctx.csrf } />);
     }
 
     return (
       <div className='row CommentBox'>
-        <form action={ '/comment' } method='POST' onSubmit={ this.submit }>
-          <input type='hidden' name='thingId' value={ thingId } />
+        <form action={ '/comment' } method='POST' onSubmit={ this.submit.bind(this) }>
+          <input type='hidden' name='thingId' value={ this.props.thingId } />
           { csrf }
-          <label className='sr-only' htmlFor={ 'textarea-' + thingId }>Comment</label>
-          <div className='CommentBox-textarea-holder'>
-            <textarea placeholder='Add your comment!' id={ 'textarea-' + thingId } rows='2'
+          <label className='sr-only' htmlFor={ 'textarea-' + this.props.thingId }>Comment</label>
+          <div className={`CommentBox-textarea-holder ${className}`}>
+            <textarea placeholder='Add your comment!' id={ 'textarea-' + this.props.thingId } rows='2'
                       className='form-control' name='text' ref='text'
-                      onChange={ this.handleInputChange } value={ reply } ></textarea>
+                      onChange={ this.handleInputChange.bind(this) } value={ value } ></textarea>
           </div>
-          { errorMessage }
-          <button type='submit' className='btn btn-post' disabled={!reply}>Post</button>
+          <button type='submit' className='btn-post'>Post</button>
         </form>
       </div>
     );
   }
 }
 
+//TODO: someone more familiar with this component could eventually fill this out better
 CommentBox.propTypes = {
-  apiOptions: PropTypes.object,
-  onSubmit: PropTypes.func.isRequired,
-  thingId: PropTypes.string.isRequired,
-  token: PropTypes.string,
+  // apiOptions: React.PropTypes.object,
+  onSubmit: React.PropTypes.func.isRequired,
+  thingId: React.PropTypes.string.isRequired,
+  token: React.PropTypes.string,
 };
 
 export default CommentBox;
