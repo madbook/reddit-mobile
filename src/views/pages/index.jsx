@@ -1,7 +1,6 @@
 import React from 'react';
 import constants from '../../constants';
 import querystring from 'querystring';
-import cookies from 'cookies-js';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
@@ -44,7 +43,7 @@ class IndexPage extends BasePage {
     var isFakeSub = fakeSubs.indexOf(subredditName) !== -1;
 
     if (!data || !data.listings ||
-        (subredditName && (!data.subreddit && !isFakeSub ))) {
+        (subredditName && (!data.subreddit && !isFakeSub))) {
       return (
         <Loading />
       );
@@ -53,7 +52,7 @@ class IndexPage extends BasePage {
     let bypassInterstitial = data.preferences && data.preferences.over_18;
     if (!bypassInterstitial) {
       if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
-        return (<Interstitial  {...props} loggedIn={data.preferences} type='over18' />);
+        return (<Interstitial  {...props} loggedIn={ data.preferences } type='over18' />);
       }
     }
     var listings = this.state.data.listings;
@@ -62,10 +61,7 @@ class IndexPage extends BasePage {
                              props.subredditName.indexOf('+') === -1 &&
                              props.subredditName !== 'all';
 
-    var app = props.app;
     var page = props.page || 0;
-    var api = app.api;
-    var token = props.token;
 
     var user = this.state.data.user;
 
@@ -73,7 +69,7 @@ class IndexPage extends BasePage {
     var lastId;
     let prevUrl;
     let nextUrl;
-    var apiOptions = props.apiOptions;
+
     var subreddit = '';
 
     if (props.subredditName) {

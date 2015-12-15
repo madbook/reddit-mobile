@@ -20,7 +20,7 @@ class LoginPage extends BasePage {
         originalUrl: dest,
       });
 
-      refererTag = <input type='hidden' name='originalUrl' value={dest} />;
+      refererTag = <input type='hidden' name='originalUrl' value={ dest } />;
     }
 
     return (
@@ -33,12 +33,24 @@ class LoginPage extends BasePage {
               <form action='/login' method='POST'>
                 <div className='form-group'>
                   <label htmlFor='username' className='hidden'>Username</label>
-                  <input id='username' className='form-control' name='username' type='text' placeholder='Username' />
+                  <input
+                    id='username'
+                    className='form-control'
+                    name='username'
+                    type='text'
+                    placeholder='Username'
+                  />
                 </div>
 
                 <div className={ errorClass + ' form-group' }>
                   <label htmlFor='password' className='hidden'>Password</label>
-                  <input id='password' className='form-control' name='password' type='password' placeholder='Password' />
+                  <input
+                    id='password'
+                    className='form-control'
+                    name='password'
+                    type='password'
+                    placeholder='Password'
+                  />
                 </div>
 
                 { refererTag }
@@ -49,7 +61,10 @@ class LoginPage extends BasePage {
               </form>
 
               <p>
-                <a href={'/register' + linkDest } data-no-route='true'>Don't have an account? Register!</a>
+                <a
+                  href={ '/register' + linkDest }
+                  data-no-route='true'
+                >Don't have an account? Register!</a>
               </p>
             </div>
           </div>
@@ -57,6 +72,6 @@ class LoginPage extends BasePage {
       </div>
     );
   }
-};
+}
 
 export default LoginPage;

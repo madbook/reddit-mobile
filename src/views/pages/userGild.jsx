@@ -1,9 +1,6 @@
 import React from 'react';
-import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
-import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
 class UserGildPage extends BasePage {
@@ -28,6 +25,6 @@ class UserGildPage extends BasePage {
 
 UserGildPage.propTypes = {
   userName: React.PropTypes.string.isRequired,
-}
+};
 
 export default UserGildPage;

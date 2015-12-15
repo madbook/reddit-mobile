@@ -1,6 +1,4 @@
 import React from 'react';
-import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import MessageNav from '../components/MessageNav';
@@ -26,18 +24,18 @@ class MessagesPage extends BasePage {
 
       content = (
         <Inbox
-          app={this.props.app}
-          messages={messages}
-          key={'mesages-' + view}
-          user={this.state.data.user}
-          token={this.props.token}
-          apiOptions={this.props.apiOptions}
+          app={ this.props.app }
+          messages={ messages }
+          key={ 'mesages-' + view }
+          user={ this.state.data.user }
+          token={ this.props.token }
+          apiOptions={ this.props.apiOptions }
         />
       );
     }
 
     return (
-      <div className={`message-page message-${view}`}>
+      <div className={ `message-page message-${view}` }>
         <div>
           <MessageNav {...this.props} user={ this.state.data.user } />
           { content }

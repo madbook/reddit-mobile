@@ -1,5 +1,4 @@
 import React from 'react';
-import constants from '../../constants';
 import querystring from 'querystring';
 
 import BasePage from './BasePage';
@@ -27,6 +26,10 @@ class SearchPage extends BasePage {
     this.state.compact = props.compact;
 
     this._lastQueryKey = null;
+
+    this.onSearch = this.onSearch.bind(this);
+    this._composeSortingUrl = this._composeSortingUrl.bind(this);
+    this.handleShowMoreClick = this.handleShowMoreClick.bind(this);
   }
 
   get track () {
@@ -57,7 +60,7 @@ class SearchPage extends BasePage {
     if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
       const url = this._composeUrl({
         query: value,
-        subredditName: props.subredditName
+        subredditName: props.subredditName,
       });
 
       this.props.app.redirect(url);
@@ -98,7 +101,7 @@ class SearchPage extends BasePage {
     return Math.random().toString(36).substr(2, 9);
   }
 
-  handleShowMoreClick(e) {
+  handleShowMoreClick() {
     const props = this.props;
 
     const url = this._composeUrl({
@@ -122,8 +125,12 @@ class SearchPage extends BasePage {
         <Loading />
       );
     } else if (!this.state.data.search) {
+      const noResClass = noResult && props.ctx.query.q ? '' : 'hidden';
       controls = (
-        <div className={ `container no-results text-right text-special ${noResult &&props.ctx.query.q ? '' : 'hidden'}` } key="search-no-results">
+        <div
+          className={ `container no-results text-right text-special ${noResClass}` }
+          key="search-no-results"
+        >
           Sorry, we couldn't find anything.
         </div>
       );
@@ -144,42 +151,63 @@ class SearchPage extends BasePage {
       const meta = state.data.subreddits ? state.data.subreddits.meta : {};
 
       // API is messed up, so we have to do our own detection for the prev..
-      const prevUrl = (meta.before || listings.length && page > 0) ? this._composeUrl({
-        query: props.ctx.query.q,
-        subredditName: props.subredditName,
-        before: meta.before || listings[0].name,
-        page: page - 1,
-        sort: props.sort,
-        time: props.time,
-      }) : null;
+      let prevUrl;
+      if (meta.before || listings.length && page > 0) {
+        prevUrl = this._composeUrl({
+          query: props.ctx.query.q,
+          subredditName: props.subredditName,
+          before: meta.before || listings[0].name,
+          page: page - 1,
+          sort: props.sort,
+          time: props.time,
+        });
+      }
 
       // ..and of course for the next too :-\
-      const nextUrl = (meta.after || listings.length >= _searchLimitWithRecommendations) ? this._composeUrl({
-        query: props.ctx.query.q,
-        subredditName: props.subredditName,
-        after: meta.after || listings[listings.length - 1].name,
-        page: page + 1,
-        sort: props.sort,
-        time: props.time,
-      }) : null;
+      let nextUrl;
+      if (meta.after || listings.length >= _searchLimitWithRecommendations) {
+        nextUrl = this._composeUrl({
+          query: props.ctx.query.q,
+          subredditName: props.subredditName,
+          after: meta.after || listings[listings.length - 1].name,
+          page: page + 1,
+          sort: props.sort,
+          time: props.time,
+        });
+      }
+
+      const subredditOnlyClass = subredditResultsOnly ? '' : 'hidden';
+      const showMoreClass = subreddits.length > 3 ? 'hidden' : '';
+      const noSubClass = noSubResults || (!noListResults && subredditResultsOnly) ? 'hidden' : '';
 
       controls = [
 
-        <div className={ `container subreddit-only text-left ${subredditResultsOnly ? '' : 'hidden'}` } key="search-subreddit-only">
-          <span>{ `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }</span>
+        <div
+          className={ `container subreddit-only text-left ${subredditOnlyClass}` }
+          key="search-subreddit-only"
+        >
+          <span>
+            { `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }
+          </span>
           <a href={ this._composeUrl({ query: props.ctx.query.q }) }>Search all of reddit?</a>
         </div>,
 
-        <div className={ `container summary-container ${noSubResults || (!noListResults && subredditResultsOnly) ? 'hidden' : ''}` }
-             ref='summary' key="search-summary">
+        <div
+          className={ `container summary-container ${noSubClass}` }
+          ref='summary' key="search-summary"
+        >
           <h4 className="text-center">Subreddits</h4>
           <ul className="subreddits-list">
             {
               subreddits.map(function (subreddit, idx) {
                 return (
                   <li className="subreddits-list-item" key={ `search-subreddit-${idx}` }>
-                    <a href={subreddit.url} title={subreddit.display_name} className="subreddit-link">
-                      <span className="subreddit-name">{subreddit.display_name} </span>
+                    <a
+                      href={ subreddit.url }
+                      title={ subreddit.display_name }
+                      className="subreddit-link"
+                    >
+                      <span className="subreddit-name">{ subreddit.display_name } </span>
                     </a>
                   </li>
                 );
@@ -187,35 +215,38 @@ class SearchPage extends BasePage {
             }
           </ul>
 
-          <button className={ `btn-show-more btn-link pull-right ${subreddits.length > 3 ? 'hidden' : ''}` }
-                  title="Show more" onClick={this.handleShowMoreClick.bind(this)}>Show more</button>
+          <button
+            className={ `btn-show-more btn-link pull-right ${showMoreClass}` }
+            title="Show more"
+            onClick={ this.handleShowMoreClick }
+          >Show more</button>
         </div>,
 
-        <div className={'container'}>
+        <div className='container'>
           <h4 className='text-center'>Posts</h4>
           <SearchSortSubnav
             app={ app }
             sort={ props.sort }
             time={ props.time }
-            composeSortingUrl={ this._composeSortingUrl.bind(this) }
+            composeSortingUrl={ this._composeSortingUrl }
           />
         </div>,
 
         <ListingContainer
           app={ app }
-          listings={ listings}
+          listings={ listings }
           apiOptions={ apiOptions }
           user={ props.user }
           token={ props.token }
           winWidth={ props.ctx.winWidth }
           compact={ compact }
-          >
+        >
             <ListingPaginationButtons
               compact={ compact }
               prevUrl={ prevUrl }
               nextUrl={ nextUrl }
             />
-        </ListingContainer>
+        </ListingContainer>,
       ];
     }
 
@@ -223,8 +254,9 @@ class SearchPage extends BasePage {
       <div className='search-main'>
         <div className="container search-bar-container">
           <SearchBar action='/search'
-            onSearch={ this.onSearch.bind(this) }
-            defaultValue={ this.props.ctx.query.q } />
+            onSearch={ this.onSearch }
+            defaultValue={ this.props.ctx.query.q }
+          />
         </div>
 
         { controls }
@@ -234,7 +266,7 @@ class SearchPage extends BasePage {
 
   static isNoRecordsFound(data) {
     return ((data || {}).links || []).length === 0 &&
-           ((data || {}).subreddits || []).length === 0
+           ((data || {}).subreddits || []).length === 0;
   }
 }
 

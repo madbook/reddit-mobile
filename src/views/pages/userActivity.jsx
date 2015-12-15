@@ -1,6 +1,4 @@
 import React from 'react';
-import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
@@ -43,12 +41,12 @@ class UserActivityPage extends BasePage {
         <ListingContainer
           compact={ props.compact }
           app={ app }
-          listings={activities}
-          firstPage={page}
-          page={page}
-          hideSubredditLabel={false}
-          user={user}
-          token={token}
+          listings={ activities }
+          firstPage={ page }
+          page={ page }
+          hideSubredditLabel={ false }
+          user={ user }
+          token={ token }
           hideUser={ true }
           apiOptions={ props.apiOptions }
           winWidth={ props.ctx.winWidth }
@@ -68,6 +66,6 @@ UserActivityPage.propTypes = {
   page: React.PropTypes.number,
   sort: React.PropTypes.string,
   userName: React.PropTypes.string.isRequired,
-}
+};
 
 export default UserActivityPage;

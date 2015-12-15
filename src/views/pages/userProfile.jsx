@@ -1,6 +1,4 @@
 import React from 'react';
-import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
@@ -31,10 +29,10 @@ class UserProfilePage extends BasePage {
         />
 
         <UserProfile
-          userProfile={userProfile}
-          key={'user-profile-' + name}
-          user={this.props.user}
-          token={this.props.token}
+          userProfile={ userProfile }
+          key={ 'user-profile-' + name }
+          user={ this.props.user }
+          token={ this.props.token }
           app={ this.props.app }
         />
       </div>
@@ -44,6 +42,6 @@ class UserProfilePage extends BasePage {
 
 UserProfilePage.propTypes = {
   userName: React.PropTypes.string.isRequired,
-}
+};
 
 export default UserProfilePage;

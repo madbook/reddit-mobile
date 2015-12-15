@@ -20,7 +20,7 @@ class RegisterPage extends BasePage {
       linkDest = '/?' + querystring.stringify({
         originalUrl: dest,
       });
-      refererTag = <input type='hidden' name='originalUrl' value={dest} />;
+      refererTag = <input type='hidden' name='originalUrl' value={ dest } />;
     }
 
     if (this.props.ctx.query.error) {
@@ -35,7 +35,7 @@ class RegisterPage extends BasePage {
           break;
         case 'USERNAME_TAKEN':
           usernameClass = 'has-error';
-          message = 'Your username has already been taken.'
+          message = 'Your username has already been taken.';
           break;
         default:
           message = 'An error occured.';
@@ -45,6 +45,16 @@ class RegisterPage extends BasePage {
 
       errorClass = 'alert alert-danger alert-bar';
     }
+
+    const terms = (
+      <a href='/help/useragreement' className='text-link' target='_blank'>Terms</a>
+    );
+    const privacy = (
+      <a href='/help/privacypolicy' className='text-link' target='_blank'>Privacy Policy </a>
+    );
+    const content = (
+      <a href='/help/contentpolicy/' className='text-link' target='_blank'>Content Policy</a>
+    );
 
     return (
       <main>
@@ -61,22 +71,49 @@ class RegisterPage extends BasePage {
               <form action='/register' method='POST'>
                 <div className={ usernameClass + ' form-group' }>
                   <label htmlFor='username' className='hidden'>Username</label>
-                  <input id='username' className='form-control' name='username' type='text' placeholder='Choose a username' required='required' />
+                  <input
+                    id='username'
+                    className='form-control'
+                    name='username'
+                    type='text'
+                    placeholder='Choose a username'
+                    required='required'
+                  />
                 </div>
 
                 <div className={ passwordClass + ' form-group' }>
                   <label htmlFor='password' className='hidden'>Password</label>
-                  <input id='password' className='form-control' name='password' type='password' placeholder='Password' required='required' />
+                  <input
+                    id='password'
+                    className='form-control'
+                    name='password'
+                    type='password'
+                    placeholder='Password'
+                    required='required'
+                  />
                 </div>
 
                 <div className={ passwordClass + ' form-group' }>
                   <label htmlFor='password2' className='hidden'>Verify password</label>
-                  <input id='password2' className='form-control' name='password2' type='password' placeholder='Verify password' required='required' />
+                  <input
+                    id='password2'
+                    className='form-control'
+                    name='password2'
+                    type='password'
+                    placeholder='Verify password'
+                    required='required'
+                  />
                 </div>
 
                 <div className={ emailClass + ' form-group' }>
                   <label htmlFor='email' className='hidden'>Email (optional)</label>
-                  <input id='email' className='form-control' name='email' type='email' placeholder='Email (optional)' />
+                  <input
+                    id='email'
+                    className='form-control'
+                    name='email'
+                    type='email'
+                    placeholder='Email (optional)'
+                  />
                 </div>
 
                 <div className='checkbox'>
@@ -93,20 +130,23 @@ class RegisterPage extends BasePage {
               </form>
 
               <p>
-                <a href={'/login' + linkDest } data-no-route='true'>Already have an account? Log in!</a>
+                <a
+                  href={ '/login' + linkDest }
+                  data-no-route='true'
+                >Already have an account? Log in!</a>
               </p>
             </div>
           </div>
 
           <div className='text-muted text-small'>
-            By signing up, you agree to our <a href='https://reddit.com/help/useragreement' className='text-link' target='_blank'>Terms </a>
-            and that you have read our <a href='https://reddit.com/help/privacypolicy' className='text-link' target='_blank'>Privacy Policy </a>
-            and <a href='https://www.reddit.com/help/contentpolicy/' className='text-link' target='_blank'>Content Policy</a>.
+            By signing up, you agree to our { terms }
+            and that you have read our { privacy }
+            and { content }.
           </div>
         </div>
       </main>
     );
   }
-};
+}
 
 export default RegisterPage;

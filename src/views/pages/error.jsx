@@ -19,12 +19,12 @@ class ErrorPage extends BasePage {
     global.location = `https://www.reddit.com${this.props.app.fullPathName()}`;
   }
 
-  _reload(e) {
+  _reload() {
     global.location.reload();
   }
 
   render() {
-    var referrer = this.props.referrer
+    var referrer = this.props.referrer;
     var parsedReferrer = referrer ? url.parse(referrer) : {};
     var sameOrigin = referrer && parsedReferrer.host === url.parse(this.props.origin).host;
     var back = sameOrigin ? parsedReferrer.path : '/';
@@ -40,7 +40,8 @@ class ErrorPage extends BasePage {
         <div>
           <h3>
             <a href="javascript: void 0;"
-              onClick={ this._desktopSite } >
+              onClick={ this._desktopSite }
+            >
               Try the desktop site instead?
             </a>
           </h3>
@@ -52,7 +53,14 @@ class ErrorPage extends BasePage {
     } else if (status === 403 || status === 401) {
       callToAction = <h3><a href={ back }>{ IDEMPOTENT_ERROR_MESSAGE }</a></h3>;
     } else {
-      callToAction = <h3><a href='javascript: void 0;' onClick={ this._reload }>{ TRANSIENT_ERROR_MESSAGE }</a></h3>;
+      callToAction = (
+        <h3>
+          <a
+            href='javascript: void 0;'
+            onClick={ this._reload }
+          >{ TRANSIENT_ERROR_MESSAGE }</a>
+        </h3>
+      );
     }
 
     return (

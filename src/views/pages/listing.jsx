@@ -1,6 +1,5 @@
 import React from 'react';
 import remove from 'lodash/array/remove';
-import constants from '../../constants';
 import { models } from 'snoode';
 
 import BasePage from './BasePage';
@@ -16,6 +15,12 @@ class ListingPage extends BasePage {
     super(props);
     this.state.editing = false;
     this.state.loadingMoreComments = false;
+
+    this.onNewComment = this.onNewComment.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.saveUpdatedText = this.saveUpdatedText.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
 
   get track () {
@@ -55,14 +60,14 @@ class ListingPage extends BasePage {
 
         this.setState({
           editing: false,
-          data: data,
+          data,
         });
 
         app.emit('post:edit');
       }
     }).catch((err) => {
       this.setState({ linkEditError: err });
-    })
+    });
   }
 
   onDelete(id) {
@@ -70,7 +75,7 @@ class ListingPage extends BasePage {
     var options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
-      id: id,
+      id,
     });
 
     // nothing returned for this endpoint
@@ -80,7 +85,7 @@ class ListingPage extends BasePage {
       remove(data, {name: id});
 
       app.setState({
-        data: data,
+        data,
       });
 
       app.redirect('/r/' + subredditName);
@@ -89,7 +94,7 @@ class ListingPage extends BasePage {
 
   toggleEdit() {
     this.setState({
-      editing: !this.state.editing
+      editing: !this.state.editing,
     });
   }
 
@@ -103,31 +108,35 @@ class ListingPage extends BasePage {
     return keys;
   }
 
-  async loadMore(loadMore, e) {
+  async loadMore(e) {
     e.preventDefault();
-    let { app, apiOptions, sort } = this.props;
+    const { app, apiOptions, sort } = this.props;
+    const { data } = this.state;
+
+    const index = e.currentTarget.dataset.index;
+    const comment = data.comments[index];
 
     let options = app.api.buildOptions(apiOptions);
     options = Object.assign(options, {
       query: {
-        ids: loadMore.children,
+        ids: comment.children,
       },
-      linkId: this.state.data.listing.name,
+      linkId: data.listing.name,
       sort: sort || 'best',
     });
 
-    this.setState({loadingMoreComments: true})
+    this.setState({loadingMoreComments: true});
 
     try {
       let res = await app.api.comments.get(options);
-      let data = Object.assign({},this.state.data);
-      data.comments = data.comments
+      let newData = Object.assign({}, data);
+      newData.comments = data.comments
         .slice(0, data.comments.length - 1)
         .concat(res.body);
 
       this.setState({
-         data: data,
-         loadingMoreComments: false,
+        data,
+        loadingMoreComments: false,
       });
     } catch (e) {
       app.error(e, this, app, { redirect: false, replaceBody: false });
@@ -139,7 +148,7 @@ class ListingPage extends BasePage {
     let { data, editing, loadingMoreComments, linkEditError } = this.state;
     let { app, apiOptions, commentId, ctx, token, sort, subredditName,
          isGoogleCrawler, origin } = this.props;
-        
+
     sort = sort || 'best';
 
     if (!data || !data.listing) {
@@ -147,10 +156,10 @@ class ListingPage extends BasePage {
     }
 
     let user = data.user,
-        listing = data.listing,
-        comments = data.comments,
-        author = listing.author,
-        permalink = listing.cleanPermalink;
+      listing = data.listing,
+      comments = data.comments,
+      author = listing.author,
+      permalink = listing.cleanPermalink;
 
 
     let singleComment;
@@ -165,17 +174,16 @@ class ListingPage extends BasePage {
       );
     }
 
-    let savedCommentKeys = this._getLocalStorageKeys();
 
     let commentsList;
     if (comments) {
       commentsList = comments.map((comment, i) => {
-        var key = `comment-${i}`
+        var key = `comment-${i}`;
 
         if (comment && comment.bodyHtml !== undefined) {
           return (
             <Comment
-              key={key}
+              key={ key }
               ctx={ ctx }
               app={ app }
               subredditName={ subredditName }
@@ -195,17 +203,19 @@ class ListingPage extends BasePage {
           let numChildren = comment.children.length;
           let word = numChildren > 1 ? 'replies' : 'reply';
           let permalink = permalink + comment.parent_id.substring(3) + '?context=0';
-          let text = loadingMoreComments ? 'Loading...' : `load more comments (${numChildren} ${word})`;
+          let text = loadingMoreComments ? 'Loading...' :
+                                           `load more comments (${numChildren} ${word})`;
           return (
-            <a 
-              key={key}
+            <a
+              key={ key }
               href={ permalink }
               data-no-route='true'
-              onClick={this.loadMore.bind(this, comment)}
+              data-index={ i }
+              onClick={ this.loadMore }
             >{ text }</a>
           );
         }
-      })
+      });
     } else {
       commentsList = (
         <div className='Loading-Container'>
@@ -236,13 +246,13 @@ class ListingPage extends BasePage {
             editError={ linkEditError }
             editing={ editing }
             listing={ listing }
-            onDelete={this.onDelete.bind(this, listing.name)}
+            onDelete={ this.onDelete }
             user={ user }
             token={ token }
-            saveUpdatedText={ this.saveUpdatedText.bind(this) }
+            saveUpdatedText={ this.saveUpdatedText }
             single={ true }
-            toggleEdit={ this.toggleEdit.bind(this) }
             winWidth={ this.props.ctx.winWidth }
+            toggleEdit={ this.toggleEdit }
           />
           <CommentBox
             apiOptions={ apiOptions }
@@ -251,7 +261,7 @@ class ListingPage extends BasePage {
             token={ token }
             app={ app }
             ctx={ ctx }
-            onSubmit={ this.onNewComment.bind(this) }
+            onSubmit={ this.onNewComment }
           />
           { singleComment }
           { commentsList }

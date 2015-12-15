@@ -6,7 +6,7 @@ import BasePage from './BasePage';
 class MessageComposePage extends BasePage {
   render () {
     return (
-      <div className={`message-page message-${this.props.view}`}>
+      <div className={ `message-page message-${this.props.view}` }>
         <div>
           <MessageNav {...this.props} user={ this.state.data.user } />
           <div className='container'>
@@ -22,6 +22,6 @@ class MessageComposePage extends BasePage {
       </div>
     );
   }
-};
+}
 
 export default MessageComposePage;

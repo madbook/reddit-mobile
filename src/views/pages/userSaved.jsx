@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
@@ -21,18 +20,7 @@ class UserSavedPage extends BasePage {
   }
 
   render() {
-    let {
-      actionName,
-      page,
-      token,
-      app,
-      sort,
-      userName,
-      apiOptions,
-      hidden,
-      ctx,
-      compact
-    } = this.props;
+    const { actionName, page, token, app, apiOptions, ctx, compact } = this.props;
 
     let { activities, user } = this.state.data;
     let loaded = this.state.loaded;

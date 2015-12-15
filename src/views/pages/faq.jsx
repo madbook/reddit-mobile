@@ -108,6 +108,6 @@ class FAQPage extends BasePage {
       </div>
     );
   }
-};
+}
 
 export default FAQPage;
