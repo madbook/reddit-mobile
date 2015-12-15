@@ -2,8 +2,6 @@
 // This is the only code (besides gulpfile / index) that is *not* run on the
 // client.
 
-import co from 'co';
-
 // server and middleware
 import koa from 'koa';
 import koaStatic from 'koa-static';
@@ -31,7 +29,7 @@ import defaultConfig from '../config';
 
 const ignoreCSRF = ['/timings'];
 
-function getBucket(loid, choices, controlSize) {
+function getBucket(loid) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
 }
 
@@ -102,7 +100,7 @@ function setCompact(ctx, app) {
 const config = defaultConfig();
 function formatBootstrap(props) {
   for (var p in props.config) {
-    if (!config.hasOwnProperty(p)){
+    if (!config.hasOwnProperty(p)) {
       delete props.config[p];
     }
   }
@@ -123,7 +121,7 @@ class Server {
     var app = new App(config);
 
     oauthRoutes(app);
-    serverRoutes(app);
+    serverRoutes(app, this);
     routes(app);
 
     var server = koa();
@@ -131,12 +129,12 @@ class Server {
 
     // tell koa-session what security settings to use for the session cookie
     var sessionOptions = {
-        secure: config.https,
-        secureProxy: config.httpsProxy
+      secure: config.https,
+      secureProxy: config.httpsProxy,
     };
 
     this.statsd = new StatsdClient(config.statsd || {
-      _socket:  { send: ()=>{}, close: ()=>{}  }
+      _socket:  { send: ()=>{}, close: ()=>{}  },
     });
 
     let that = this;
@@ -216,7 +214,7 @@ class Server {
   }
 
   fatalError(app) {
-    return function * (next) {
+    return function * () {
       // If there is no body and it's not a redirect, log out an error
       if (!this.body && !(parseInt(this.status / 100) === 3)) {
         app.error('Fatal error', this, app, {
@@ -227,10 +225,10 @@ class Server {
         this.body = 'Internal server error.';
         this.status = 500;
       }
-    }
+    };
   }
 
-  csrf (app) {
+  csrf () {
     return function * (next) {
       if (['GET', 'HEAD', 'OPTIONS'].includes(this.method)) {
         return yield* next;
@@ -241,12 +239,12 @@ class Server {
       }
 
       try {
-        this.assertCSRF(this.request.body)
+        this.assertCSRF(this.request.body);
         yield next;
       } catch (e) {
         this.redirect('/?error=invalid_token');
       }
-    }
+    };
   }
 
   setLOID (app) {
@@ -314,7 +312,7 @@ class Server {
 
       yield next;
       return;
-    }
+    };
   }
 
   setHeaders (app) {
@@ -333,16 +331,15 @@ class Server {
       }
 
       yield next;
-    }
+    };
   }
 
-  cacheGuard (app) {
+  cacheGuard () {
     return function * (next) {
 
       yield next;
 
       var cookieHeaders = this.res.getHeader('Set-Cookie') || [];
-      var setUncacheableCookie = false;
       cookieHeaders.forEach(c => {
         c = c.split(/=/)[0];
         // this isn't a cacheable cookie or its signature cookie?
@@ -351,7 +348,7 @@ class Server {
           this.set('Cache-Control', 'private, no-cache');
         }
       });
-    }
+    };
   }
 
   modifyRequest (app) {
@@ -382,7 +379,7 @@ class Server {
       this.isGoogleCrawler = this.userAgent.toLowerCase().indexOf('googlebot') > -1;
 
       yield next;
-    }
+    };
   }
 
   convertSession(app) {
@@ -413,7 +410,7 @@ class Server {
       }
 
       yield next;
-    }
+    };
   }
 
   checkToken (app) {
@@ -450,7 +447,7 @@ class Server {
 
       yield next;
       return;
-    }
+    };
   }
 
   start () {

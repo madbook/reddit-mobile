@@ -3,10 +3,12 @@ import scmp from 'scmp';
 import superagent from 'superagent';
 import uuid from 'uuid';
 import url from 'url';
-import querystring from 'querystring';
 import constants from '../constants';
 
-const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,save,edit,account,creddits,flair,livemanage,modconfig,modcontributors,modflair,modlog,modothers,modposts,modself,modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
+               ' save,edit,account,creddits,flair,livemanage,modconfig,' +
+               'modcontributors,modflair,modlog,modothers,modposts,modself,' +
+               'modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
@@ -29,7 +31,7 @@ var oauthRoutes = function(app) {
 
   function getPassthroughHeaders(ctx, app) {
     if (app.getConfig('apiPassThroughHeaders')) {
-      return app.getConfig('apiPassThroughHeaders').reduce(function(headers, key){
+      return app.getConfig('apiPassThroughHeaders').reduce(function(headers, key) {
         if (ctx.headers[key]) {
           headers[key] = ctx.headers[key];
         }
@@ -78,7 +80,7 @@ var oauthRoutes = function(app) {
   function getToken (ctx, code, redirect) {
     return new Promise(function(resolve) {
       OAuth2.authCode.getToken({
-        code: code,
+        code,
         redirect_uri: redirect,
       }, function(err, result) {
         if (err) {
@@ -148,7 +150,7 @@ var oauthRoutes = function(app) {
 
   app.refreshToken = refreshToken;
 
-  function convertSession(ctx, session) {
+  function convertSession(ctx) {
     return new Promise(function(resolve, reject) {
       const endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
 
@@ -156,7 +158,7 @@ var oauthRoutes = function(app) {
 
       let headers = {
         'User-Agent': ctx.headers['user-agent'],
-        cookie: cookie,
+        cookie,
         'accept-encoding': ctx.headers['accept-encoding'],
         'accept-language': ctx.headers['accept-language'],
       };
@@ -199,7 +201,7 @@ var oauthRoutes = function(app) {
 
           let postParams = {
             client_id: clientId,
-            redirect_uri: redirect_uri,
+            redirect_uri,
             scope: SCOPES,
             state: modhash,
             duration: 'permanent',
@@ -230,8 +232,8 @@ var oauthRoutes = function(app) {
 
               let postData = {
                 grant_type: 'authorization_code',
-                code: code,
-                redirect_uri: redirect_uri,
+                code,
+                redirect_uri,
               };
 
               let b = new Buffer(
@@ -262,7 +264,7 @@ var oauthRoutes = function(app) {
                     reject(err);
                   }
 
-                  let token = OAuth2.accessToken.create(res.body)
+                  let token = OAuth2.accessToken.create(res.body);
                   return resolve(token);
                 });
             });
@@ -291,7 +293,9 @@ var oauthRoutes = function(app) {
     let state = hmac(key, referer);
     let redirectURI = referer;
 
-    if ((!this.get('Referer')) || (this.get('Referer') && this.get('Referer').slice(0, origin.length) === origin)) {
+    if ((!this.get('Referer')) || (this.get('Referer') &&
+         this.get('Referer').slice(0, origin.length) === origin)) {
+
       redirectURI = OAuth2.authCode.authorizeURL({
         redirect_uri: redirect,
         scope: SCOPES,
@@ -319,7 +323,6 @@ var oauthRoutes = function(app) {
   });
 
   router.get('/oauth2/refresh', function * () {
-    let token = this.cookies.get('token');
     let rToken = this.cookies.get('refreshToken');
 
     if (!this.cookies.get('token')) {
@@ -343,7 +346,6 @@ var oauthRoutes = function(app) {
   router.get('/oauth2/token', function * () {
     let code = this.query.code;
     let error = this.query.error;
-    let ctx = this;
 
     if (error) {
       return this.redirect('/oauth2/error?message=' + this.query.error);
@@ -379,13 +381,13 @@ var oauthRoutes = function(app) {
 
     let data = {
       grant_type: 'password',
-      username: username,
-      password: password,
+      username,
+      password,
       device_id: id,
       duration: 'permanent',
     };
 
-    let p = new Promise(function(resolve, reject) {
+    let p = new Promise(function(resolve) {
       let headers = {
         'User-Agent': ctx.headers['user-agent'],
         'Authorization': basicAuth,
@@ -434,7 +436,7 @@ var oauthRoutes = function(app) {
     if (status === 200) {
       if (dest) {
         this.redirect(app.config.origin + dest);
-    } else {
+      } else {
         this.redirect('/');
       }
     } else {
@@ -467,10 +469,11 @@ var oauthRoutes = function(app) {
     }
 
     if (!ctx.body.email && ctx.body.newsletter === 'on') {
-      return ctx.redirect('/register?error=EMAIL_NEWSLETTER&message=please+enter+an+email+to+sign+up+for+the+newsletter');
+      const message = 'please+enter+an+email+to+sign+up+for+the+newsletter';
+      return ctx.redirect(`/register?error=EMAIL_NEWSLETTER&message=${message}`);
     }
 
-    let p = new Promise(function(resolve, reject) {
+    let p = new Promise(function(resolve) {
 
       let headers = Object.assign({
         'User-Agent': ctx.headers['user-agent'],
@@ -508,11 +511,11 @@ var oauthRoutes = function(app) {
               return resolve(ctx.redirect('/login?error=' + status));
             }
           });
-      });
+        });
     });
 
     yield p;
   });
-}
+};
 
 export default oauthRoutes;

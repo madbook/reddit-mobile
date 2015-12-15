@@ -1,7 +1,8 @@
 import superagent from 'superagent';
-import crypto from 'crypto'
+import crypto from 'crypto';
 import constants from '../constants';
 
+import { models } from 'snoode';
 // set up server-only routes
 let serverRoutes = function(app) {
   const router = app.router;
@@ -36,7 +37,7 @@ let serverRoutes = function(app) {
     const statsURL = app.config.statsURL;
     let timings = this.request.body.rum;
 
-    if(!app.config.actionNameSecret) {
+    if (!app.config.actionNameSecret) {
       console.log('returning early, no secret');
       return;
     }
@@ -59,38 +60,37 @@ let serverRoutes = function(app) {
         .type('json')
         .send({ rum: timings })
         .timeout(constants.DEFAULT_API_TIMEOUT)
-        .end(function(){ });
+        .end(function() { });
   });
 
   // Server-side only!
-  app.router.post('vote', '/vote/:id',
+  router.post('vote', '/vote/:id',
     function * () {
       const endpoints = {
         '1': 'comment',
         '3': 'listing',
-      }
+      };
 
       let id = this.params.id;
-      let endpoint = endpoints[id[1]];
 
       let vote = new models.Vote({
         direction: parseInt(this.query.direction),
-        id: id,
+        id,
       });
 
       if (vote.get('direction') !== undefined && vote.get('id')) {
         let options = app.api.buildOptions(props.apiOptions);
         options.model = vote;
-        api.votes.post(options).then(function() { });
+        app.api.votes.post(options).then(function() { });
       }
     });
 
-  app.router.post('/comment', function * () {
+  router.post('/comment', function * () {
     var ctx = this;
 
     let comment = new models.Comment({
       thingId: ctx.body.thingId,
-      text: ctx.body.text
+      text: ctx.body.text,
     });
 
     if (!this.token) {
@@ -100,12 +100,12 @@ let serverRoutes = function(app) {
     let options = app.api.buildOptions(props.apiOptions);
     options.model = comment;
 
-    api.comments.post(options).then(function() {
+    app.api.comments.post(options).then(function() {
       this.redirect(this.headers.referer || '/');
     });
   });
 
-  app.router.get('/routes', function* () {
+  router.get('/routes', function* () {
     this.body = app.router.stack.routes
       .filter(function(r) {
         return (
@@ -117,9 +117,9 @@ let serverRoutes = function(app) {
         return {
           regexp: r.regexp.toString(),
           path: r.path,
-        }
+        };
       });
   });
-}
+};
 
 export default serverRoutes;

@@ -1,7 +1,6 @@
 function parseObject (list) {
   if (!list) { return; }
   let obj = {};
-  let split;
 
   list.split(';').forEach(function (l) {
     if (l && l.indexOf('=')) {
@@ -59,7 +58,7 @@ function serverConfig(numCPUs) {
       debug: env.STATSD_DEBUG,
       prefix: env.STATSD_PREFIX || 'mweb.server',
       socketTimeout: env.STATSD_TIMEOUT || 100,
-    }
+    };
   }
 
   return config;

@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: 0 */
 import blessed from 'blessed';
 import contrib from 'blessed-contrib';
 import moment from 'moment';
@@ -9,7 +10,7 @@ import throttle from 'lodash/function/throttle';
 
 import superagent from 'superagent';
 
-import {spawn, exec} from 'child_process';
+import {exec} from 'child_process';
 
 import {EventEmitter} from 'events';
 
@@ -24,7 +25,7 @@ class Console {
 
     this.logStream = fs.createWriteStream('./reddit-mobile.log', {
       flags: 'w',
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
 
     this.log = this.log.bind(this);
@@ -72,7 +73,7 @@ class Console {
         return [
           this.processes[i].toString(),
           filesize(s.memory),
-          s.cpu.toString() + '%'
+          s.cpu.toString() + '%',
         ];
       });
 
@@ -110,7 +111,7 @@ class Console {
     const grid = new contrib.grid({
       rows: 13,
       cols: 12,
-      screen: screen
+      screen,
     });
 
     // Set this, so if it fails, we can get log output
@@ -123,7 +124,7 @@ class Console {
 
     const status = this.buildStatus(grid);
 
-    screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+    screen.key(['escape', 'q', 'C-c'], function() {
       process.exit(0);
     });
 
@@ -188,7 +189,7 @@ class Console {
           'lat': '39.04',
           'lon' : '-77.48',
           color: colors[current % 2],
-          char: 'X'
+          char: 'X',
         });
 
         current++;
@@ -197,12 +198,12 @@ class Console {
           'lat': '37.78',
           'lon' : '-122.41',
           color: colors[current % 2],
-          char: 'X'
+          char: 'X',
         });
 
         blink();
       }, 1000);
-    }
+    };
 
     blink();
 
@@ -227,10 +228,10 @@ class Console {
       keys: true,
       clickable: true,
       value: defaultPrefix,
-      width: '75%'
+      width: '75%',
     });
 
-    input.key('enter', function (ch, key) {
+    input.key('enter', function () {
       let uri = this.getValue();
       cons.log('Beginning test of ' + uri);
 
@@ -275,12 +276,12 @@ class Console {
         fg: 'white',
         bg: 'blue',
         focus: {
-          bg: 'red'
+          bg: 'red',
         },
         hover: {
-          bg: 'red'
-        }
-      }
+          bg: 'red',
+        },
+      },
     });
 
     button.on('press', clearLogs);
@@ -330,26 +331,25 @@ class Console {
       clickable: true,
       interactive: true,
       keys: true,
-      keys: true,
       fg: 'white',
       label: 'Active Processes',
       columnSpacing: 6,
       columnWidth: [
         7,
         10,
-        10
-      ]
+        10,
+      ],
     });
 
     status.setData({
       headers,
-      data: []
+      data: [],
     });
 
     this.emitter.on('stats', (data) => {
       status.setData({
         headers,
-        data
+        data,
       });
 
       this.screen.render();
@@ -363,8 +363,8 @@ class Console {
       label: 'Active requests queued',
       tags: true,
       style: {
-        fg: 'blue'
-      }
+        fg: 'blue',
+      },
     });
 
     let maxRequests = {};
@@ -377,17 +377,17 @@ class Console {
       let titles = Object.keys(requests).map((k) => {
         let latest = requests[k][requests[k].length - 1];
 
-        if (!maxRequests[k] || latest > maxRequests[k]){
+        if (!maxRequests[k] || latest > maxRequests[k]) {
           maxRequests[k] = latest;
         }
 
-        return `${k} [${latest}] (M: ${maxRequests[k]})`
+        return `${k} [${latest}] (M: ${maxRequests[k]})`;
       });
 
       activeRequests.setData(
         titles,
         Object.values(requests)
-      )
+      );
     }, 500));
   }
 
@@ -398,7 +398,7 @@ class Console {
   failProcess (pid) {
     var i = this.processes.indexOf(pid);
 
-    if(i != -1) {
+    if (i != -1) {
       this.processes = this.processes.splice(i, 1);
     }
   }
