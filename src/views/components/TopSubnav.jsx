@@ -6,21 +6,31 @@ function TopSubnav (props) {
   const { user } = props;
 
   if (user) {
-    var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
+    var loginLink = (
+      <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>
+    );
   } else {
-    loginLink = <a className='TopSubnav-a' href={ props.app.config.loginPath } data-no-route='true'>Log in / Register</a>;
+    loginLink = (
+      <a
+        className='TopSubnav-a'
+        href={ props.app.config.loginPath }
+        data-no-route='true'
+      >Log in / Register</a>
+    );
   }
 
   var sort = null;
-  if (!props.hideSort){
-    sort = <SortDropdown
-      app={ props.app }
-      sort={ props.sort }
-      excludedSorts={ props.excludedSorts }
-      list={ props.list }
-      baseUrl={ props.ctx.url }
-      className='pull-left'
-    />;
+  if (!props.hideSort) {
+    sort = (
+      <SortDropdown
+        app={ props.app }
+        sort={ props.sort }
+        excludedSorts={ props.excludedSorts }
+        list={ props.list }
+        baseUrl={ props.ctx.url }
+        className='pull-left'
+      />
+    );
   }
 
   return (

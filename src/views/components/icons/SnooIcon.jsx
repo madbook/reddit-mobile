@@ -1,3 +1,4 @@
+/*eslint max-len: 0*/
 import React from 'react';
 import SVG from '../../components/SVG';
 
@@ -7,9 +8,6 @@ const _MOUTH_STROKE = 0.55;
 const _DINGLEBERRY_CENTER = {x: 14.753913, y: 4.293349};
 const _ELBOW = {x: 10.859162, y: 3.443727};
 const _ROOT = {x: 9.995599, y: 7.339012};
-const _REPEL_RADIUS = 10;
-const _REPEL_FORCE = -0.05;
-const _RETURN_FORCE = 0.05;
 const _LEFT_EYE_X = 7.482927;
 const _RIGHT_EYE_X = 12.508015;
 const _EAR_HEIGHT = 9.6234565;
@@ -43,19 +41,19 @@ function SnooIcon (props) {
       { background }
       <g>
         <path className='SVG-fill-bg' d='M16.086926,11.717036c0-2.414056-2.732691-4.378024-6.091592-4.378024 c-3.358627,0-6.091061,1.963968-6.091061,4.378024c0,2.414167,2.732434,4.378257,6.091061,4.378257 C13.354235,16.095293,16.086926,14.131204,16.086926,11.717036z'/>
-        <circle className='SVG-fill-bg' cx={_DINGLEBERRY_CENTER.x} cy={_DINGLEBERRY_CENTER.y} r={_EYE_RADIUS}/>
+        <circle className='SVG-fill-bg' cx={ _DINGLEBERRY_CENTER.x } cy={ _DINGLEBERRY_CENTER.y } r={ _EYE_RADIUS }/>
         <g fill='none' className='SVG-stroke-bg' strokeWidth='0.532991' strokeLinecap='round'>
-          <line x1={_ELBOW.x} y1={_ELBOW.y} x2={_DINGLEBERRY_CENTER.x} y2={_DINGLEBERRY_CENTER.y}/>
-          <line x1={_ELBOW.x} y1={_ELBOW.y} x2={_ROOT.x} y2={_ROOT.y}/>
+          <line x1={ _ELBOW.x } y1={ _ELBOW.y } x2={ _DINGLEBERRY_CENTER.x } y2={ _DINGLEBERRY_CENTER.y }/>
+          <line x1={ _ELBOW.x } y1={ _ELBOW.y } x2={ _ROOT.x } y2={ _ROOT.y }/>
         </g>
-        <circle className='SVG-fill-bg' cx='4.6658' cy={_EAR_HEIGHT} r={_EAR_RADIUS}/>
-        <circle className='SVG-fill-bg' cx='15.325253' cy={_EAR_HEIGHT} r={_EAR_RADIUS}/>
+        <circle className='SVG-fill-bg' cx='4.6658' cy={ _EAR_HEIGHT } r={ _EAR_RADIUS }/>
+        <circle className='SVG-fill-bg' cx='15.325253' cy={ _EAR_HEIGHT } r={ _EAR_RADIUS }/>
         <g className={ rainbow ? '' : 'SVG-fill' } fill={ rainbow ? _GREEN : '' }>
           <circle cx={ _LEFT_EYE_X } cy={ _EYE_HEIGHT } r={ _EYE_RADIUS }/>
           <circle cx={ _RIGHT_EYE_X } cy={ _EYE_HEIGHT } r={ _EYE_RADIUS }/>
         </g>
-        <rect x={_LEFT_EYE_X - _EYE_RADIUS} y={_EYE_HEIGHT - _EYE_RADIUS} className='SVG-fill-bg' width={_RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2} height='0'/>
-        <rect x={_LEFT_EYE_X - _EYE_RADIUS} y={_EYE_HEIGHT + _EYE_RADIUS} className='SVG-fill-bg' width={_RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2} height='0'/>
+        <rect x={ _LEFT_EYE_X - _EYE_RADIUS } y={ _EYE_HEIGHT - _EYE_RADIUS } className='SVG-fill-bg' width={ _RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2 } height='0'/>
+        <rect x={ _LEFT_EYE_X - _EYE_RADIUS } y={ _EYE_HEIGHT + _EYE_RADIUS } className='SVG-fill-bg' width={ _RIGHT_EYE_X - _LEFT_EYE_X + _EYE_RADIUS * 2 } height='0'/>
         <path fill='none' className={ rainbow ? '' : 'SVG-stroke mouth' } stroke={ rainbow ? _BLUE : '' } strokeWidth={ _MOUTH_STROKE } strokeLinecap='round' d='M7.652076,13.657867c0.460886,0.460942,1.363549,0.705836,2.347492,0.705836 c1.016057,0,1.886656-0.244787,2.348355-0.705836'/>
       </g>
     </SVG>

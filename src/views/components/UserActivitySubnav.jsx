@@ -6,6 +6,25 @@ import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
 import SortDropdown from '../components/SortDropdown';
 
+const dropdownList = [
+  {
+    activity: 'comments',
+    text: 'Submitted comments',
+  },
+  {
+    activity: 'submitted',
+    text: 'Submitted posts',
+  },
+  {
+    activity: 'overview',
+    text: 'Comments and posts',
+  },
+  {
+    activity: 'gilded',
+    text: 'Gilded',
+  },
+];
+
 class UserActivitySubnav extends BaseComponent {
   constructor(props) {
     super(props);
@@ -38,7 +57,7 @@ class UserActivitySubnav extends BaseComponent {
     var url = base;
 
     var q = {
-      activity: activity,
+      activity,
     };
 
     if (sort) {
@@ -67,45 +86,30 @@ class UserActivitySubnav extends BaseComponent {
         break;
     }
 
-    var dropdownList = [
-      {
-        activity: 'comments',
-        text: 'Submitted comments',
-      },
-      {
-        activity: 'submitted',
-        text: 'Submitted posts',
-      },
-      {
-        activity: 'overview',
-        text: 'Comments and posts',
-      },
-      {
-        activity: 'gilded',
-        text: 'Gilded',
-      },
-    ];
-
     var activityTitle = dropdownList.find((d) => {
       return d.activity === activity;
     }).text;
 
     var button = (
-      <button className={(this.state.opened ? ' opened' : '')}>
+      <button className={ (this.state.opened ? ' opened' : '') }>
         { activityTitle } <span className='icon-caron'/>
       </button>
     );
-    var opened = this.state.opened;
+    const { opened, sort, page } = this.state;
 
     // add user to the bar as well
     var user = this.props.user;
     if (user) {
       var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
     } else {
-      loginLink = <a className='TopSubnav-a' href={ this.props.app.config.loginPath } data-no-route='true'>Log in / Register</a>;
+      loginLink = (
+        <a
+          className='TopSubnav-a'
+          href={ this.props.app.config.loginPath }
+          data-no-route='true'
+        >Log in / Register</a>
+      );
     }
-
-    var props = this.props;
 
     return (
       <div className='TopSubnav'>
@@ -113,14 +117,21 @@ class UserActivitySubnav extends BaseComponent {
           id={ this._id }
           button={ button }
           app={ this.props.app }
-          className='Dropdown-inline'>
+          className='Dropdown-inline'
+        >
           {
             dropdownList.map((d) => {
-              var iconClass = opened && activity === d.activity ? 'icon-check-shown' : 'icon-check-hidden';
+              var iconClass = opened && activity === d.activity ? 'icon-check-shown' :
+                                                                  'icon-check-hidden';
+
+              const url = this.buildUrl(baseUrl, d.activity, sort, page);
               return (
-                <li className='Dropdown-li' key={`ua-subnav-${d.text}`}>
-                  <a className='Dropdown-button' href={ this.buildUrl(baseUrl, d.activity, this.state.sort, this.state.page) }>
-                    <span className={'icon-check ' + iconClass }>{' '}</span>
+                <li className='Dropdown-li' key={ `ua-subnav-${d.text}` }>
+                  <a
+                    className='Dropdown-button'
+                    href={ url }
+                  >
+                    <span className={ 'icon-check ' + iconClass }>{ ' ' }</span>
                     <span className='Dropdown-text'>{ d.text }</span>
                   </a>
                 </li>

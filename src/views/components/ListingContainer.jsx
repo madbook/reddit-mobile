@@ -1,6 +1,5 @@
 import React from 'react';
 import constants from '../../constants';
-import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
 import ListingList from './ListingList';
@@ -12,7 +11,7 @@ class ListingContainer extends BaseComponent {
     super(props);
 
     this.state = {
-      compact: this.props.compact
+      compact: this.props.compact,
     };
 
     this._onCompactToggle = this._onCompactToggle.bind(this);
@@ -35,7 +34,7 @@ class ListingContainer extends BaseComponent {
     const compact = this.state.compact;
 
     return (
-      <div className={'container Listing-container' + (compact ? ' compact' : '')}>
+      <div className={ 'container Listing-container' + (compact ? ' compact' : '') }>
         <ListingList
           { ...props }
           compact={ compact }
@@ -52,4 +51,4 @@ class ListingContainer extends BaseComponent {
   }
 }
 
-export default ListingContainer
+export default ListingContainer;

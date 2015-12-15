@@ -32,7 +32,7 @@ class ReportPlaceholder extends BaseComponent {
   render() {
     var fadeClass = '';
 
-    if(this.state.closed) {
+    if (this.state.closed) {
       return (<div />);
     }
 
@@ -41,7 +41,7 @@ class ReportPlaceholder extends BaseComponent {
     }
 
     return (
-      <div className={`listing-alert alert alert-danger ${fadeClass}`} role='alert'>
+      <div className={ `listing-alert alert alert-danger ${fadeClass}` } role='alert'>
         <div className='container'>
           <button type='button' className='close' onClick={ this._close }>
             <span aria-hidden='true'>&times;</span>

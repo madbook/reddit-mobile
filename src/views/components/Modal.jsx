@@ -7,7 +7,7 @@ class Modal extends BaseComponent {
 
     this.state = {
       open: props.open || false,
-    }
+    };
 
     this.closeModal = this.closeModal.bind(this);
   }
@@ -24,14 +24,14 @@ class Modal extends BaseComponent {
 
   render () {
 
-    var style = { 
-      display: 'none'
+    var style = {
+      display: 'none',
     };
 
     var openClass = '';
     if (this.state.open) {
       openClass = 'in';
-      style.display = 'block'
+      style.display = 'block';
     }
 
     return (

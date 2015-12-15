@@ -73,7 +73,7 @@ class InfoBar extends BaseComponent {
   removeEUCookieMessage(nextProps) {
     if (!nextProps.showEUCookieMessage && this.props.showEUCookieMessage) {
       this.removeMessage((message) => {
-        if (message.type !== constants.messageTypes.EU_COOKIE ) {
+        if (message.type !== constants.messageTypes.EU_COOKIE) {
           return message;
         }
       });
@@ -118,7 +118,7 @@ class InfoBar extends BaseComponent {
         content = (
           <div
             className='infobar-html'
-            dangerouslySetInnerHTML={{__html: process(message.text)}}
+            dangerouslySetInnerHTML={ {__html: process(message.text)} }
           />
         );
       } else if (message.plainText) {

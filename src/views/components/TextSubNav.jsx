@@ -17,9 +17,13 @@ class TextSubNav extends BaseComponent {
     return (
       <nav className='TextSubNav shadow'>
         <ul ref='ul' className='TextSubNav-ul list-unstyled'>
-          {this.props.children}
+          { this.props.children }
         </ul>
-        <div ref='indicator' className='TextSubNav-indicator' style={ {marginLeft: this.state.indicatorLeft, width: this.state.indicatorWidth} }></div>
+        <div
+          ref='indicator'
+          className='TextSubNav-indicator'
+          style={ {marginLeft: this.state.indicatorLeft, width: this.state.indicatorWidth} }
+        />
       </nav>
     );
   }
@@ -28,7 +32,7 @@ class TextSubNav extends BaseComponent {
     this._moveIndicator();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     this._moveIndicator();
   }
 

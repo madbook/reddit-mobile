@@ -1,7 +1,6 @@
 import React from 'react';
 
 import SortDropdown from '../components/SortDropdown';
-import BaseComponent from './BaseComponent';
 
 function SearchSortSubnav (props) {
   return (

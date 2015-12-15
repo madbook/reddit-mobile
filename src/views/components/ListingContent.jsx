@@ -8,9 +8,7 @@ const PropTypes = React.PropTypes;
 
 import BaseComponent from './BaseComponent';
 
-const _gifMatch = /\.(?:gif)/gi;
 const _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
-const _httpsRegex = /^https:\/\//;
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
 
 function _gifToHTML5(url) {
@@ -28,7 +26,6 @@ function _gifToHTML5(url) {
     var gfy = _gfyRegex.exec(url);
 
     if (gfy.length === 2) {
-      var id = gfy[1];
       return {
         iframe: url,
       };
@@ -49,7 +46,7 @@ const _HEIGHT = 1080;
 
 // Calculate the lowest common denominator
 function euclid (a, b) {
-  if(b === 0) {
+  if (b === 0) {
     return a;
   }
 
@@ -106,6 +103,7 @@ class ListingContent extends BaseComponent {
     this.state.playing = props.expandedCompact ? true : false;
 
     this._togglePlaying = this._togglePlaying.bind(this);
+    this.saveText = this.saveText.bind(this);
   }
 
   render() {
@@ -119,7 +117,7 @@ class ListingContent extends BaseComponent {
       }
 
       return (
-        <div ref='all' className={ 'ListingContent' + (this._isCompact() ? ' compact' : '')}>
+        <div ref='all' className={ 'ListingContent' + (this._isCompact() ? ' compact' : '') }>
           { stalactiteNode }
           { contentNode }
         </div>
@@ -140,7 +138,11 @@ class ListingContent extends BaseComponent {
 
     let oembed = listing.media ? listing.media.oembed : null;
     let url = mobilify(listing.url || listing.cleanPermalink);
-    let preview = (listing.preview || oembed) ? this._previewImage(isNSFW, oembed, props.showNSFW) : null;
+
+    let preview;
+    if (listing.preview || oembed) {
+      preview = this._previewImage(isNSFW, oembed, props.showNSFW);
+    }
 
     // build thumbnails for all listings
     if (props.isThumbnail) {
@@ -176,11 +178,11 @@ class ListingContent extends BaseComponent {
     // this handles only direct links to gifs.
     let html5 = _gifToHTML5(href);
     if (this.state.playing && html5) {
-        if (html5.iframe) {
-          return this._renderIFrame(html5.iframe, _DEFAULT_ASPECT_RATIO);
-        } else {
-          return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
-        }
+      if (html5.iframe) {
+        return this._renderIFrame(html5.iframe, _DEFAULT_ASPECT_RATIO);
+      } else {
+        return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
+      }
     }
 
     return this._renderImage(src, href, onClick, playable);
@@ -188,17 +190,24 @@ class ListingContent extends BaseComponent {
 
   _renderTextPlaceholder(html, collapsed, id) {
     return (
-      <div  ref='text' key={id} className={ 'ListingContent-text placeholder' + (collapsed ? ' collapsed' : '') }
-            onClick={ this.props.expand }>
-      </div>
+      <div
+        ref='text'
+        key={ id }
+        className={ 'ListingContent-text placeholder' + (collapsed ? ' collapsed' : '') }
+        onClick={ this.props.expand }
+      />
     );
   }
 
   _renderTextHTML(html, collapsed, id) {
     return (
-      <div  ref='text' key={id} className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
-            dangerouslySetInnerHTML={ {__html: html} }
-            onClick={ _wrapSelftextExpand(this.props.expand) }/>
+      <div
+        ref='text'
+        key={ id }
+        className={ 'ListingContent-text' + (collapsed ? ' collapsed' : '') }
+        dangerouslySetInnerHTML={ {__html: html} }
+        onClick={ _wrapSelftextExpand(this.props.expand) }
+      />
     );
   }
 
@@ -209,14 +218,13 @@ class ListingContent extends BaseComponent {
     let isNSFW = ListingContent.isNSFW(props.listing);
 
     let style = {};
-    let loaded = props.loaded;
 
-    const config = this.props.app.config
+    const config = this.props.app.config;
     const https = (config.https || config.httpsProxy);
 
     let playIconNode;
     if (playable && !(isNSFW && !props.showNSFW)) {
-      playIconNode = <span className='icon-play-circled'>{' '}</span>;
+      playIconNode = <span className='icon-play-circled'>{ ' ' }</span>;
     }
 
     if (src.url) {
@@ -245,7 +253,8 @@ class ListingContent extends BaseComponent {
         <a  className='ListingContent-image'
           href={ href }
           onClick={ onClick }
-          data-no-route={ noRoute }>
+          data-no-route={ noRoute }
+        >
           <img className='ListingContent-image-img' src={ src.url }/>
           { playIconNode }
           { nsfwNode }
@@ -259,11 +268,13 @@ class ListingContent extends BaseComponent {
       _aspectRatioClass(aspectRatio)) + (showPlaceholder ? ' placeholder' : '');
 
     return (
-      <a  className={ linkClass }
-          href={ href }
-          onClick={ onClick }
-          data-no-route={ noRoute }
-          style={ style }>
+      <a
+        className={ linkClass }
+        href={ href }
+        onClick={ onClick }
+        data-no-route={ noRoute }
+        style={ style }
+      >
           { playIconNode }
           { nsfwNode }
       </a>
@@ -277,22 +288,25 @@ class ListingContent extends BaseComponent {
     }
 
     let props = this.props;
-    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) || _DEFAULT_ASPECT_RATIO;
+    let aspectRatio = this._getAspectRatio(props.single, src.width, src.height) ||
+                      _DEFAULT_ASPECT_RATIO;
     let style = {};
     if (props.single) {
       style.height = 1 / aspectRatio * props.width  + 'px';
     }
 
     return (
-      <div className={'ListingContent-video ' + _aspectRatioClass(aspectRatio)} style={ style }>
-        <video  className='ListingContent-videovideo'
-                poster={ poster }
-                width='100%'
-                height='100%'
-                loop='true'
-                muted='true'
-                controls='true'
-                autoPlay='true'>
+      <div className={ 'ListingContent-video ' + _aspectRatioClass(aspectRatio) } style={ style }>
+        <video
+          className='ListingContent-videovideo'
+          poster={ poster }
+          width='100%'
+          height='100%'
+          loop='true'
+          muted='true'
+          controls='true'
+          autoPlay='true'
+        >
           { sources }
         </video>
       </div>
@@ -310,21 +324,25 @@ class ListingContent extends BaseComponent {
       _aspectRatioClass(aspectRatio) : 'set-height');
     return (
       <div  className={ className } style={ style }>
-        <iframe className='ListingContent-iframeiframe'
-                width='100%'
-                height='100%'
-                src={ src }
-                frameBorder='0'
-                allowFullScreen=''
-                sandbox='allow-scripts allow-forms allow-same-origin' />
+        <iframe
+          className='ListingContent-iframeiframe'
+          width='100%'
+          height='100%'
+          src={ src }
+          frameBorder='0'
+          allowFullScreen=''
+          sandbox='allow-scripts allow-forms allow-same-origin'
+        />
       </div>
     );
   }
 
   _renderHTML(content, aspectRatio) {
     return (
-      <div  className={'ListingContent-html ' + _aspectRatioClass(aspectRatio)}
-            dangerouslySetInnerHTML={ {__html: content} } />
+      <div
+        className={ 'ListingContent-html ' + _aspectRatioClass(aspectRatio) }
+        dangerouslySetInnerHTML={ {__html: content} }
+      />
     );
   }
 
@@ -336,8 +354,10 @@ class ListingContent extends BaseComponent {
     }
     if (this._isCompact()) {
       return (
-        <a className={'ListingContent-image' + (props.loaded ? ' placeholder' : '')}
-          href={ mobilify(props.listing.url) }>{nsfwNode}</a>
+        <a
+          className={ 'ListingContent-image' + (props.loaded ? ' placeholder' : '') }
+          href={ mobilify(props.listing.url) }
+        >{ nsfwNode }</a>
       );
     }
   }
@@ -360,7 +380,7 @@ class ListingContent extends BaseComponent {
         <div className='ListingContent-textarea-holder'>
           <textarea
             className='form-control'
-            defaultValue={text}
+            defaultValue={ text }
             ref='updatedText'
           ></textarea>
         </div>
@@ -376,7 +396,7 @@ class ListingContent extends BaseComponent {
             <button
               className='btn btn-primary btn-block'
               type='button'
-              onClick={ this.saveText.bind(this) }
+              onClick={ this.saveText }
             >Save</button>
           </div>
         </div>
@@ -412,12 +432,13 @@ class ListingContent extends BaseComponent {
     let aspectRatio = this._getAspectRatio(this.props.single,
                         oembed.width, oembed.height) || _DEFAULT_ASPECT_RATIO;
 
+    let media;
     switch (oembed.type) {
       case 'image':
-        return this._renderIFrame(url, aspectRatio);
+        media = this._renderIFrame(url, aspectRatio);
         break;
       case 'video':
-        return this._renderHTML(listing.expandContent, aspectRatio);
+        media = this._renderHTML(listing.expandContent, aspectRatio);
         break;
       case 'rich':
         let findSrc = oembed.html.match(/src="([^"]*)/);
@@ -428,25 +449,20 @@ class ListingContent extends BaseComponent {
         }
 
         if (frameUrl) {
-          return this._renderIFrame(frameUrl, aspectRatio);
+          media = this._renderIFrame(frameUrl, aspectRatio);
         }
         break;
-      default:
-        return null;
     }
+    return media;
   }
 
   _buildThumbnail(listing, expand, isNSFW, playable, preview) {
-    const config = this.props.app.config
-    const https = config.https || config.httpsProxy;
-
     if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
-      let ad = listing.preview.images[0].resolutions[0];
       let url = listing.cleanUrl;
-      return this._renderImage(preview, url, expand, playable );
+      return this._renderImage(preview, url, expand, playable);
 
     } else if (preview) {
-      return this._renderImage(preview, listing.cleanUrl, expand, playable );
+      return this._renderImage(preview, listing.cleanUrl, expand, playable);
 
     } else if (listing.selftext) {
       return this._renderTextPlaceholder(listing.expandContent, true, listing.id);
@@ -460,7 +476,6 @@ class ListingContent extends BaseComponent {
     let { listing, width, tallestHeight } = this.props;
     let compact = this._isCompact();
 
-    let url = listing.url;
     width = compact ? 80 : width;
 
     let preview = listing.preview;
@@ -500,7 +515,7 @@ class ListingContent extends BaseComponent {
       }
 
       if (source) {
-         return source;
+        return source;
       }
     }
 

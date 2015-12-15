@@ -23,7 +23,7 @@ class SeashellsDropdown extends BaseComponent {
     var openedClass = opened ? 'rotate90' : '';
     var button = (
       <button type='button' className='SeashellsDropdown-button'>
-        <span className={'icon-seashells ' + openedClass}></span>
+        <span className={ 'icon-seashells ' + openedClass }></span>
       </button>
     );
     return (

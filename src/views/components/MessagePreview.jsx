@@ -1,5 +1,4 @@
 import React from 'react';
-import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
 import moment from 'moment';
 import process from 'reddit-text-js';
@@ -44,7 +43,7 @@ class MessagePreview extends BaseComponent {
     }
 
     var message = new models.Message({
-      text: text,
+      text,
       thingId: this.props.message.parent_id || this.props.message.name,
     });
 
@@ -89,8 +88,6 @@ class MessagePreview extends BaseComponent {
     let readClass = message.new ? ' message-unread' : '';
     let isMine = message.author === props.user.name;
 
-    let authorClass = isMine ? ' message-mine' : '';
-
     let context;
     let subreddit;
     let reply;
@@ -134,7 +131,7 @@ class MessagePreview extends BaseComponent {
         <h3 className='message-title'>
           { message.subject }
         </h3>
-      )
+      );
     }
 
     var submitClass = '';
@@ -149,9 +146,18 @@ class MessagePreview extends BaseComponent {
       reply = (
         <form action='/mesage' method='POST' onSubmit={ this._onReplySubmit }>
           <div className='message-preivew-texarea-holder'>
-            <textarea ref='replyText' name='reply' placeholder='Message...' className={ 'form-control ' + submitClass} />
+            <textarea
+              ref='replyText'
+              name='reply'
+              placeholder='Message...'
+              className={ 'form-control ' + submitClass }
+            />
           </div>
-          <button type='submit' className={'btn btn-primary btn-post btn-block ' + submitClass} disabled={ submitDisabled }>Send</button>
+          <button
+            type='submit'
+            className={ 'btn btn-primary btn-post btn-block ' + submitClass }
+            disabled={ submitDisabled }
+          >Send</button>
           <p>
             <a href='#' className='btn btn-link' onClick={ this._onReplyClick }>Cancel</a>
           </p>
@@ -160,7 +166,12 @@ class MessagePreview extends BaseComponent {
     } else {
       if (!message.context && !message.replies && props.lastReply) {
         reply = (
-          <a href={ link } className='btn btn-xs btn-primary' onClick={ this._onReplyClick } data-no-route='true'>Reply</a>
+          <a
+            href={ link }
+            className='btn btn-xs btn-primary'
+            onClick={ this._onReplyClick }
+            data-no-route='true'
+          >Reply</a>
         );
       }
     }
@@ -181,7 +192,7 @@ class MessagePreview extends BaseComponent {
       author = (
         <h4 className='message-author'>
           <a href={ link }>
-            { `${type} from `}
+            { `${type} from ` }
             <span className={ distinguished }>{ `${message.author}` }</span>
           </a>
         </h4>
@@ -194,19 +205,19 @@ class MessagePreview extends BaseComponent {
       replies = (
         <div className='col-xs-11 col-xs-offset-1'>
           <Inbox
-            app={this.props.app}
-            isReply={true}
-            messages={message.replies}
-            user={this.props.user}
-            token={this.props.token}
-            apiOptions={this.props.apiOptions}
+            app={ this.props.app }
+            isReply={ true }
+            messages={ message.replies }
+            user={ this.props.user }
+            token={ this.props.token }
+            apiOptions={ this.props.apiOptions }
           />
         </div>
       );
     }
 
     return (
-      <article className={'panel message-preview' + readClass}>
+      <article className={ 'panel message-preview' + readClass }>
         <div className='panel-body'>
           <div className='row'>
             <div className='col-xs-12'>
@@ -222,10 +233,10 @@ class MessagePreview extends BaseComponent {
 
           <div className='row'>
             <div className='col-xs-12'>
-              <div className='message-body vertical-spacing-top' dangerouslySetInnerHTML={{
-                __html: process(message.body)
-              }} />
-
+              <div
+                className='message-body vertical-spacing-top'
+                dangerouslySetInnerHTML={ {__html: process(message.body)} }
+              />
             </div>
 
             { replies }

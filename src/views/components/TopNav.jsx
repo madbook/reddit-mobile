@@ -3,11 +3,9 @@ import constants from '../../constants';
 import { models } from 'snoode';
 
 import BaseComponent from './BaseComponent';
-import Loading from '../components/Loading';
 import Logo from '../components/icons/Logo';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 import SnooIcon from '../components/icons/SnooIcon';
-import SubredditAboutPage from '../pages/subredditAbout';
 
 class TopNav extends BaseComponent {
   constructor(props) {
@@ -21,6 +19,7 @@ class TopNav extends BaseComponent {
 
     this._onToggle = this._onToggle.bind(this);
     this._onSubscribeClick = this._onSubscribeClick.bind(this);
+    this._onClick = this._onClick.bind(this, 'hamburger');
   }
 
   loadSubreddit(data) {
@@ -38,13 +37,13 @@ class TopNav extends BaseComponent {
 
   componentWillReceiveProps(nextProps) {
     var {data, subredditName} = nextProps;
-    var subPromise = data.get('subreddit')
+    var subPromise = data.get('subreddit');
 
     if (subredditName && subPromise && subredditName !== this.props.subredditName) {
       this.loadSubreddit(subPromise);
-    } else if (!subredditName && this.state.subreddit){
+    } else if (!subredditName && this.state.subreddit) {
       this.setState({
-        subreddit: null
+        subreddit: null,
       });
     }
   }
@@ -94,15 +93,18 @@ class TopNav extends BaseComponent {
             </a>
           </li>
           <li className='Dropdown-li'>
-            <a className='MobileButton Dropdown-button' href={ `${props.config.reddit}/r/${props.subredditName}/wiki` }
-                          data-no-route='true'>
+            <a
+              className='MobileButton Dropdown-button'
+              href={ `${props.config.reddit}/r/${props.subredditName}/wiki` }
+              data-no-route='true'
+            >
               <span className='icon-text-circled' > </span>
               <span className='Dropdown-text'>Wiki</span>
             </a>
           </li>
-          <li className={`Dropdown-li ${props.token ? '' : 'hidden'}`}>
+          <li className={ `Dropdown-li ${props.token ? '' : 'hidden'}` }>
             <button className='Mobilebutton Dropdown-button' onClick={ this._onSubscribeClick }>
-              <span className={'icon-save-circled ' + subscribedClass}> </span>
+              <span className={ 'icon-save-circled ' + subscribedClass }> </span>
               <span className='Dropdown-text'>
                 { isSubscribed ? 'Unsubscribe' : 'Subscribe' }
               </span>
@@ -125,7 +127,7 @@ class TopNav extends BaseComponent {
     }
 
     return (
-      <nav className={'TopNav' + (this.state.sideNavOpen ? ' opened' : '')}>
+      <nav className={ 'TopNav' + (this.state.sideNavOpen ? ' opened' : '') }>
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <a className='MobileButton TopNav-padding TopNav-snoo' href='/'>
@@ -133,22 +135,28 @@ class TopNav extends BaseComponent {
           </a>
           <h1 className='TopNav-text TopNav-padding'>
             <span>
-              <a className='TopNav-a' href={link}>
-                {title}
+              <a className='TopNav-a' href={ link }>
+                { title }
               </a>
             </span>
           </h1>
         </div>
         <div className='TopNav-padding TopNav-right' key='topnav-actions'>
           { subredditMenu }
-          <a className='MobileButton TopNav-floaty' href={`${currentSub}/submit`}>
-            <span className='icon-post'>{' '}</span>
+          <a className='MobileButton TopNav-floaty' href={ `${currentSub}/submit` }>
+            <span className='icon-post'>{ ' ' }</span>
           </a>
-          <a className='MobileButton TopNav-floaty' href={ (props.subredditName ? `/r/${props.subredditName}` : '') + "/search" }>
+          <a
+            className='MobileButton TopNav-floaty'
+            href={ (props.subredditName ? `/r/${props.subredditName}` : '') + '/search' }
+          >
             <span className='icon-search'></span>
           </a>
-          <button className='MobileButton TopNav-floaty' onClick={this._onClick.bind(this, 'hamburger')}>
-            <span className={sideNavIcon}></span>
+          <button
+            className='MobileButton TopNav-floaty'
+            onClick={ this._onClick }
+          >
+            <span className={ sideNavIcon }></span>
             { notificationsCount }
           </button>
         </div>
@@ -156,7 +164,7 @@ class TopNav extends BaseComponent {
    );
   }
 
-  _onSubscribeClick(event) {
+  _onSubscribeClick() {
     var state = this.state;
 
     if (state.subreddit) {
@@ -164,7 +172,7 @@ class TopNav extends BaseComponent {
 
       var subscription = new models.Subscription({
         action: state.subreddit.user_is_subscriber ? 'unsub' : 'sub',
-        sr: state.subreddit.name
+        sr: state.subreddit.name,
       });
 
       var options = Object.assign({}, this.props.apiOptions, {
@@ -174,7 +182,7 @@ class TopNav extends BaseComponent {
       this.setState({
         subreddit: Object.assign({}, state.subreddit, {
           user_is_subscriber: !state.subreddit.user_is_subscriber,
-        })
+        }),
       });
 
       // and send request to the server to do actual work
@@ -185,7 +193,7 @@ class TopNav extends BaseComponent {
             this.setState({
               subreddit: Object.assign(state.subreddit, {
                 user_is_subscriber: !state.subreddit.user_is_subscriber,
-              })
+              }),
             });
 
             this.props.app.render('/400', false);

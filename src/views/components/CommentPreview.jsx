@@ -1,6 +1,5 @@
 import React from 'react';
 import mobilify from '../../lib/mobilify';
-import moment from 'moment';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 
@@ -43,9 +42,7 @@ function CommentPreview  (props) {
           </div>
         </div>
         <div className='row'>
-          <div className='col-xs-12' dangerouslySetInnerHTML={{
-            __html: comment.body_html
-          }} />
+          <div className='col-xs-12' dangerouslySetInnerHTML={ {__html: comment.body_html} } />
         </div>
       </div>
     </div>

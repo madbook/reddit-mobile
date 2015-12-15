@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import cookies from 'cookies-js';
 

@@ -2,7 +2,6 @@ import React from 'react';
 const PropTypes = React.PropTypes;
 
 import { models } from 'snoode';
-import querystring from 'querystring';
 import savedReply from '../../lib/savedReply';
 
 import BaseComponent from './BaseComponent';
@@ -21,7 +20,7 @@ class CommentBox extends BaseComponent {
     });
   }
 
-  handleInputChange (e) {
+  handleInputChange () {
     const value = this.refs.text.value;
 
     this.setState({
@@ -56,8 +55,8 @@ class CommentBox extends BaseComponent {
     }
 
     const comment = new models.Comment({
-      thingId: thingId,
-      text: text
+      thingId,
+      text,
     });
 
     const options = {...api.buildOptions(apiOptions), model: comment};
@@ -92,7 +91,7 @@ class CommentBox extends BaseComponent {
     const { thingId, ctx } = this.props;
     let csrf;
 
-    if(ctx.csrf) {
+    if (ctx.csrf) {
       csrf = (<input type='hidden' name='_csrf' value={ ctx.csrf } />);
     }
 
@@ -108,12 +107,19 @@ class CommentBox extends BaseComponent {
           { csrf }
           <label className='sr-only' htmlFor={ 'textarea-' + thingId }>Comment</label>
           <div className='CommentBox-textarea-holder'>
-            <textarea placeholder='Add your comment!' id={ 'textarea-' + thingId } rows='2'
-                      className='form-control' name='text' ref='text'
-                      onChange={ this.handleInputChange } value={ reply } ></textarea>
+            <textarea
+              placeholder='Add your comment!'
+              id={ 'textarea-' + thingId }
+              rows='2'
+              className='form-control'
+              name='text'
+              ref='text'
+              onChange={ this.handleInputChange }
+              value={ reply }
+            />
           </div>
           { errorMessage }
-          <button type='submit' className='btn btn-post' disabled={!reply}>Post</button>
+          <button type='submit' className='btn btn-post' disabled={ !reply }>Post</button>
         </form>
       </div>
     );

@@ -22,6 +22,13 @@ class SubredditSelectionButton extends BaseComponent {
       },
       loaded: true,
     };
+
+    this.onSearch = this.onSearch.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.goToAbout = this.goToAbout.bind(this);
+    this.openSubmitRules = this.openSubmitRules.bind(this);
+    this._handleSelect = this._handleSelect.bind(this);
+    this.getSub = this.getSub.bind(this);
   }
 
   onSearch (newVal) {
@@ -30,7 +37,7 @@ class SubredditSelectionButton extends BaseComponent {
     }
 
     this.setState({
-      lastQuery: newVal
+      lastQuery: newVal,
     });
 
     var api = this.props.app.api;
@@ -52,32 +59,46 @@ class SubredditSelectionButton extends BaseComponent {
         });
 
         this.setState({
-          subs: newSubs, loaded: true
+          subs: newSubs, loaded: true,
         });
       }
     }.bind(this));
     this.setState({loaded: false});
   }
 
-  _handleSelect (sub, e) {
-    this.props.changeSubreddit(sub);
+  _handleSelect (e) {
+    const sub = this.getSub(e.currentTarget);
+
+    this.props.changeSubreddit(sub.display_name);
   }
 
-  toggle (e) {
-      this.props.toggleOpen();
+  toggle () {
+    this.props.toggleOpen();
   }
 
-  openSubmitRules (text, name) {
-    if (this.state.submitRules.name === name) {
+  getSub(currentTarget) {
+    return this.state.subs[parseInt(currentTarget.dataset.index)];
+  }
+
+  openSubmitRules (e) {
+    const { submit_text, display_name } = this.getSub(e.currentTarget);
+
+    if (this.state.submitRules.name === display_name) {
       this.setState({submitRules: {name: '', text: ''}});
     } else {
       this.setState({
         submitRules: {
-          text: text,
-          name: name,
-        }
+          text: submit_text,
+          name: display_name,
+        },
       });
     }
+  }
+
+  goToAbout(e) {
+    const sub = this.getSub(e.currentTarget);
+
+    this.props.goToAboutPage(sub.display_name);
   }
 
   render () {
@@ -85,38 +106,42 @@ class SubredditSelectionButton extends BaseComponent {
     var content;
 
     if (this.state.loaded) {
-      content = this.state.subs.map(function(sub) {
+      content = this.state.subs.map(function(sub, i) {
         var expandContent;
         if (this.state.submitRules.name === sub.display_name) {
           var text = this.state.submitRules.text || 'No rules specified...';
           expandContent = (
             <div className='container sub-selection-rules'>
 
-              <div dangerouslySetInnerHTML={{
-                  __html: process(text)
-                }}>
-              </div>
+              <div dangerouslySetInnerHTML={ {__html: process(text)} } />
               <button
                 type='button'
-                onClick={this._handleSelect.bind(this, sub.display_name)}
+                data-index={ i }
+                onClick={ this._handleSelect }
                 className='btn btn-primary pull-right'
-              >Submit to {sub.display_name}</button>
+              >Submit to { sub.display_name }</button>
             </div>
           );
         }
 
         return (
-          <div className='sub-selection-option' key={sub.display_name}>
+          <div className='sub-selection-option' key={ sub.display_name }>
             <button type='button'
               className='sub-selection-btn'
-              onClick={this.openSubmitRules.bind(this, sub.submit_text, sub.display_name)}
+              data-index={ i }
+              onClick={ this.openSubmitRules }
             >
               <span className='sub-icon-placeholder'></span>{ sub.display_name }
             </button>
             <div className='sub-selection-menu pull-right'>
               <SeashellsDropdown right={ true } app={ props.app }>
                 <li className='Dropdown-li'>
-                  <button type='button' className='Dropdown-button' onClick={props.goToAboutPage.bind(null, sub.display_name)}>
+                  <button
+                    type='button'
+                    className='Dropdown-button'
+                    data-index={ i }
+                    onClick={ this.goToAbout }
+                  >
                     <span
                       className='Dropdown-text'
                     >About this community</span>
@@ -135,11 +160,15 @@ class SubredditSelectionButton extends BaseComponent {
     }
 
     if (props.open) {
-        return (
+      return (
           <div>
             <div className='Submit-header'>
               <div className='Submit-centered'>
-                <button type='button' className='close pull-left' onClick={ this.toggle.bind(this) }>
+                <button
+                  type='button'
+                  className='close pull-left'
+                  onClick={ this.toggle }
+                >
                   <span className='Submit-close' aria-hidden='true'>&times;</span>
                 </button>
                 <span className='Submit-header-text'>Choose a community</span>
@@ -148,8 +177,9 @@ class SubredditSelectionButton extends BaseComponent {
             <div className='sub-selection-wrapper Submit-centered'>
               <div className='Submit-search-holder'>
                 <SearchBar
-                  onSearch={ this.onSearch.bind(this) }
-                  defaultValue={ this.props.ctx.query.q } />
+                  onSearch={ this.onSearch }
+                  defaultValue={ this.props.ctx.query.q }
+                />
               </div>
               { content }
             </div>
@@ -159,7 +189,7 @@ class SubredditSelectionButton extends BaseComponent {
       return (
         <div className="sub-selection-selected">
           <div className='Submit-centered'>
-            <span onClick={this.toggle.bind(this)} className='text-muted submit-posting-to' >
+            <span onClick={ this.toggle } className='text-muted submit-posting-to' >
               Posting to: &nbsp;
               <button type='button' className={ this.props.errorClass }>
                 { props.subreddit }

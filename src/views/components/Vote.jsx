@@ -24,6 +24,8 @@ class Vote extends BaseComponent {
     }
 
     this._onVote = this._onVote.bind(this);
+    this.upvote = this._onClick.bind(this, 'upvote');
+    this.downvote = this._onClick.bind(this, 'downvote');
   }
 
   componentDidMount() {
@@ -59,7 +61,7 @@ class Vote extends BaseComponent {
       localScore = dir;
     }
 
-    var newScore = this.state.score + diff
+    var newScore = this.state.score + diff;
     return [newScore, localScore];
   }
 
@@ -68,7 +70,7 @@ class Vote extends BaseComponent {
       var [newScore, localScore] = this._getScore(dir);
 
       this.setState({
-        localScore: localScore,
+        localScore,
         score: newScore,
       });
 
@@ -116,37 +118,54 @@ class Vote extends BaseComponent {
       voteClass = ' downvoted';
     }
 
+    const { thing } = this.props;
+    const score = thing.hide_score || thing.score_hidden ? '●' : this.state.score;
+
     return (
         <ul className='linkbar linkbar-compact'>
           <li>
-            <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
+            <form
+              className='vote-form'
+              action={ '/vote/'+ thing.name }
+              method='post'
+            >
               <input type='hidden' name='direction' value='1'/>
               <button
                 type='submit'
-                className={'vote text-muted ' + (voteClass || '')}
+                className={ 'vote text-muted ' + (voteClass || '') }
                 data-vote='up'
-                data-thingid={ this.props.thing.name }
+                data-thingid={ thing.name }
                 data-no-route='true'
-                onClick={this._onClick.bind(this, 'upvote')}>
+                onClick={ this.upvote }
+              >
                 <span className='icon-upvote-circled'></span>
               </button>
             </form>
           </li>
           <li className='vote-score-container'>
-            <span className='vote-score' data-vote-score={this.state.score } data-thingid={ this.props.thing.name }>
-              { this.props.thing.hide_score || this.props.thing.score_hidden ? '●' : this.state.score }
+            <span
+              className='vote-score'
+              data-vote-score={ this.state.score }
+              data-thingid={ this.props.thing.name }
+            >
+              { score }
             </span>
           </li>
           <li>
-            <form className='vote-form' action={'/vote/'+this.props.thing.name} method='post'>
+            <form
+              className='vote-form'
+              action={ '/vote/'+ thing.name }
+              method='post'
+            >
               <input type='hidden' name='direction' value='-1'/>
               <button
                 type='submit'
-                className={'vote text-muted ' + (voteClass || '')}
+                className={ 'vote text-muted ' + (voteClass || '') }
                 data-vote='down'
-                data-thingid={ this.props.thing.name }
+                data-thingid={ thing.name }
                 data-no-route='true'
-                onClick={this._onClick.bind(this, 'downvote')}>
+                onClick={ this.downvote }
+              >
                 <span className='icon-downvote-circled'></span>
               </button>
             </form>

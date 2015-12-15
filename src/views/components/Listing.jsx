@@ -12,9 +12,10 @@ import Vote from '../components/Vote';
 
 const PropTypes = React.PropTypes;
 
-function isImgurDomain(domain) {
-  return (domain || '').indexOf('imgur.com') >= 0;
-}
+// this is called in a commented out section below
+// function isImgurDomain(domain) {
+//   return (domain || '').indexOf('imgur.com') >= 0;
+// }
 
 function _isCompact(props) {
   return props.compact && !props.single;
@@ -27,7 +28,7 @@ class Listing extends BaseComponent {
     var compact = _isCompact(props);
 
     this.state = {
-      compact: compact,
+      compact,
       expanded: false,
       showNSFW: !props.showOver18Interstitial && props.subredditIsNSFW,
       loaded: false,
@@ -103,42 +104,36 @@ class Listing extends BaseComponent {
 
     if (linkFlairText) {
       var linkNode = (
-        <span className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }>
+        <span
+          className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }
+        >
           { linkFlairText }
         </span>
       );
     }
 
     if (nsfwNode || linkNode) {
-      var flairNode = <div className='Listing-flair link-flair-container vertical-spacing-top'>
-        { nsfwNode }
-        { linkNode }
-      </div>;
+      var flairNode = (
+        <div className='Listing-flair link-flair-container vertical-spacing-top'>
+          { nsfwNode }
+          { linkNode }
+        </div>
+      );
     }
 
     if (!hideSubredditLabel) {
       var srDetail = listing.sr_detail;
       if (srDetail) {
-        var iconImg = srDetail.icon_img;
         var keyColor = srDetail.key_color;
         if (keyColor) {
           var style = {color: keyColor};
         }
       }
 
-      if (!this.state.compact) {
-        if (iconImg) {
-          var iconNode = (
-            <div className='Listing-icon' style={ {backgroundImage: 'url(' + iconImg + ')'} }>
-            </div>
-          );
-        } else {
-          iconNode = <span className='icon-snoo-circled icon' />;
-        }
-      }
-
       var subredditNode = subreddit ? (
-        <a className='Listing-subreddit' href={`/r/${subreddit}`}><span style={ style }>r/{ subreddit }</span></a>
+        <a className='Listing-subreddit' href={ `/r/${subreddit}` }>
+          <span style={ style }>r/{ subreddit }</span>
+        </a>
       ) : null;
     }
 
@@ -155,10 +150,13 @@ class Listing extends BaseComponent {
     }
 
     return (
-      <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '')}>
+      <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '') }>
         { row1Node }
-        <div className={ 'Listing-header-row2'}>
-          <a href={ mobilify(listing.url) } className={ 'Listing-title' + ( distinguished ? ' text-' + distinguished : '') }>
+        <div className={ 'Listing-header-row2' }>
+          <a
+            href={ mobilify(listing.url) }
+            className={ 'Listing-title' + (distinguished ? ' text-' + distinguished : '') }
+          >
             { listing.title + ' ' + (listing.edited ? '*' : '') }
           </a>
           { row2Dropdown }
@@ -171,7 +169,7 @@ class Listing extends BaseComponent {
     let { listing, single, hideWhen, hideDomain, hideComments,
           app, token, apiOptions } = this.props;
 
-    let { domain, promoted, gilded, cleanPermalink, num_comments,
+    let { domain, promoted, gilded, num_comments,
           created_utc } = listing;
 
     if (gilded && single) {
@@ -201,7 +199,8 @@ class Listing extends BaseComponent {
         <li className='Listing-comments linkbar-item-no-seperator'>
           <a
             className='Listing-commentsbutton'
-            href={ listing.cleanPermalink }>
+            href={ listing.cleanPermalink }
+          >
             <span className='icon-comments-circled listing-footer-icon' />
             <span className='Listing-numcomments'>{ num_comments }</span>
             { whenNode }
@@ -265,16 +264,17 @@ class Listing extends BaseComponent {
         this.key = Math.random();
       }
       expandedCompact = (
-        <ListingContent expand = { this.toggleExpanded }
-                        expanded = { true }
-                        width={ width }
-                        showNSFW={ true }
-                        tallestHeight={ tallestHeight }
-                        loaded={ loaded }
-                        { ...this.props }
-                        expandedCompact={ true }
-                        compact={ compact }
-                        />
+        <ListingContent
+          expand = { this.toggleExpanded }
+          expanded = { true }
+          width={ width }
+          showNSFW={ true }
+          tallestHeight={ tallestHeight }
+          loaded={ loaded }
+          { ...this.props }
+          expandedCompact={ true }
+          compact={ compact }
+        />
       );
     }
 
@@ -285,7 +285,8 @@ class Listing extends BaseComponent {
       <article
         ref='root'
         style={ {zIndex: z || 1} }
-        className={ listingClass }>
+        className={ listingClass }
+      >
         <div className='Listing-content-holder'>
           { this._renderHeadline() }
           <ListingContent
@@ -303,7 +304,7 @@ class Listing extends BaseComponent {
             editError={ editError }
             { ...this.props }
             compact={ compact }
-            />
+          />
           { this._renderFooter() }
         </div>
         { expandedCompact }

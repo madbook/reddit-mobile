@@ -1,9 +1,7 @@
 import React from 'react';
 
-import constants from '../../constants';
 import mobilify from '../../lib/mobilify';
 import { models } from 'snoode';
-import moment from 'moment';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 import savedReply from '../../lib/savedReply';
@@ -15,7 +13,7 @@ import ReportPlaceholder from '../components/ReportPlaceholder';
 import Vote from '../components/Vote';
 
 var replyIcon = (
-  <span className='icon-reply-circled'>{' '}</span>
+  <span className='icon-reply-circled'>{ ' ' }</span>
 );
 
 class Comment extends BaseComponent {
@@ -31,7 +29,7 @@ class Comment extends BaseComponent {
       score: props.comment.score,
       editing: false,
       loadingMoreComments: false,
-    }
+    };
 
     this.setScore = this.setScore.bind(this);
     this.onReport = this.onReport.bind(this);
@@ -42,6 +40,7 @@ class Comment extends BaseComponent {
     this.updateComment = this.updateComment.bind(this);
     this.onNewComment = this.onNewComment.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
 
   componentDidMount () {
@@ -59,7 +58,7 @@ class Comment extends BaseComponent {
 
   setScore (score) {
     this.setState({
-      score: score,
+      score,
     });
   }
 
@@ -74,7 +73,7 @@ class Comment extends BaseComponent {
       collapsed: !this.state.collapsed,
       showTools: false,
       showReplyBox: false,
-    })
+    });
   }
 
   showReplyBox (e) {
@@ -91,21 +90,21 @@ class Comment extends BaseComponent {
     comment.replies.unshift(newComment);
 
     this.setState({
-      comment: comment,
+      comment,
       collapsed: false,
       showReplyBox: false,
       showTools: false,
     });
   }
 
-  showTools (e) {
+  showTools () {
     this.setState({ showTools: !this.state.showTools });
   }
 
   toggleEdit () {
     this.setState({
       editing: !this.state.editing,
-    })
+    });
   }
 
   async onDelete () {
@@ -114,13 +113,13 @@ class Comment extends BaseComponent {
     var options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
-      id: id,
+      id,
     });
 
     // nothing returned for this endpoint
     // so we assume success :/
     try {
-      let res = await app.api.comments.delete(options);
+      await app.api.comments.delete(options);
 
       let deletedComment = Object.assign({}, this.state.comment);
       deletedComment.body_html = '<p>[deleted]</p>';
@@ -129,7 +128,7 @@ class Comment extends BaseComponent {
         comment: deletedComment,
         showTools: false,
       });
-    } catch(e) {
+    } catch (e) {
       app.error(e, this, app, { redirect: false, replaceBody: false });
     }
   }
@@ -170,23 +169,23 @@ class Comment extends BaseComponent {
     }
   }
 
-  async loadMore(loadMore, e) {
+  async loadMore(e) {
     e.preventDefault();
     let { app, apiOptions, sort } = this.props;
 
-    let children = loadMore.children;
     let comment = Object.assign({}, this.state.comment);
+    const children = comment.replies[comment.replies.length - 1].children;
 
     let options = app.api.buildOptions(apiOptions);
     options = Object.assign(options, {
       query: {
-        ids: loadMore.children,
+        ids: children,
       },
       linkId: comment.link_id,
-      sort: sort,
+      sort,
     });
 
-    this.setState({loadingMoreComments: true})
+    this.setState({loadingMoreComments: true});
 
     try {
       let data = await app.api.comments.get(options);
@@ -195,8 +194,8 @@ class Comment extends BaseComponent {
         .concat(data.body);
 
       this.setState({
-         comment: comment,
-         loadingMoreComments: false,
+        comment,
+        loadingMoreComments: false,
       });
     } catch (e) {
       app.error(e, this, app, { redirect: false, replaceBody: false });
@@ -245,7 +244,11 @@ class Comment extends BaseComponent {
       toolbox = (
         <ul className='linkbar-spread linkbar-spread-5 comment-toolbar clearfix'>
           <li>
-            <a className='MobileButton comment-svg' onClick={this.showReplyBox} href='#' >{ replyIcon }</a>
+            <a
+              className='MobileButton comment-svg'
+              onClick={ this.showReplyBox }
+              href='#'
+            >{ replyIcon }</a>
           </li>
           <li className='linkbar-spread-li-double comment-vote-container comment-svg'>
             <Vote
@@ -267,11 +270,11 @@ class Comment extends BaseComponent {
                 onReport={ this.onReport }
                 token={ token }
                 apiOptions={ apiOptions }
-                listing={comment}
+                listing={ comment }
                 showEditAndDel={ showEditAndDel }
                 onEdit={ this.toggleEdit }
                 onDelete={ this.onDelete }
-                />
+              />
             </div>
           </li>
         </ul>
@@ -281,7 +284,7 @@ class Comment extends BaseComponent {
     let authorFlair;
     if (comment.author_flair_text) {
       authorFlair = (
-        <span className={`label label-default ${comment.author_flair_css_class}`}>
+        <span className={ `label label-default ${comment.author_flair_css_class}` }>
           { comment.author_flair_text }
         </span>
       );
@@ -289,7 +292,7 @@ class Comment extends BaseComponent {
 
     let gilded;
     if (comment.gilded) {
-      let gilded = (
+      gilded = (
         <span className='icon-gold-circled'/>
       );
     }
@@ -305,24 +308,25 @@ class Comment extends BaseComponent {
                 return (
                   <Comment
                     {...this.props}
-                    comment={c}
-                    key={key}
-                    nestingLevel={nestingLevel + 1}
-                    op={op}
+                    comment={ c }
+                    key={ key }
+                    nestingLevel={ nestingLevel + 1 }
+                    op={ op }
                   />
-                )
+                );
               } else {
                 let numChildren = c.children.length;
                 let word = numChildren > 1 ? 'replies' : 'reply';
                 let permalink = permalinkBase + c.parent_id.substring(3) + '?context=0';
                 let text = loadingMoreComments ? 'Loading...' : `Load ${numChildren}  ${word}`;
                 return (
-                  <div className='comment-content comment-loadmore text-small' key={key}>
+                  <div className='comment-content comment-loadmore text-small' key={ key }>
                     <a
-                      href={permalink}
+                      href={ permalink }
                       data-no-route='true'
-                      onClick={this.loadMore.bind(this, c)}
-                      ><span className='icon icon-comments icon-inline' />{ text }</a>
+                      data-index={ i }
+                      onClick={ this.loadMore }
+                    ><span className='icon icon-comments icon-inline'/>{ text }</a>
                   </div>
                 );
               }
@@ -335,11 +339,11 @@ class Comment extends BaseComponent {
     if (!collapsed) {
       var body = (
         <div className='comment-body'>
-          <div className='comment-content vertical-spacing-sm' dangerouslySetInnerHTML={{
-              __html: mobilify(comment.body_html)
-            }}
-            onClick={this.showTools} />
-
+          <div
+            className='comment-content vertical-spacing-sm'
+            dangerouslySetInnerHTML={ { __html: mobilify(comment.body_html)} }
+            onClick={ this.showTools }
+          />
           <footer className='comment-footer'>
             { toolbox }
             { commentBox }
@@ -364,30 +368,43 @@ class Comment extends BaseComponent {
             { errorText }
           </div>
           <div className='comment-textarea-holder'>
-            <textarea ref='updatedText' className='form-control' defaultValue={ comment.body }></textarea>
+            <textarea
+              ref='updatedText'
+              className='form-control'
+              defaultValue={ comment.body }
+            />
           </div>
           <div className='btn-group btn-group-justified'>
             <div className='btn-group'>
-              <button className='btn btn-primary btn-block' type='button' onClick={ this.toggleEdit }>Cancel</button>
+              <button
+                className='btn btn-primary btn-block'
+                type='button'
+                onClick={ this.toggleEdit }
+              >Cancel</button>
             </div>
             <div className='btn-group'>
-              <button className='btn btn-primary btn-block' type='button' onClick={ this.updateComment }>Save</button>
+              <button
+                className='btn btn-primary btn-block'
+                type='button'
+                onClick={ this.updateComment }
+              >Save</button>
             </div>
           </div>
         </div>
       );
     }
-
+    const collapsedClass = collapsed ? 'comment-header comment-collapsed' : '';
+    const iconCollapsed = collapsed ? '' : 'opened';
     return (
       <div className='comment'>
-        <article className={`comment-article ${highlighted}`}>
-          <div className={`comment-submitted ${(collapsed ? 'comment-header comment-collapsed' : '')}`}>
+        <article className={ `comment-article ${highlighted}` }>
+          <div className={ `comment-submitted ${collapsedClass}` }>
             <a href='#' onClick={ this.toggleCollapsed }>
               <ul className='linkbar linkbar-compact tween comment-title-list'>
-                <li className={`comment-title-collapse-container twirly before ${(collapsed ? '' : 'opened')}`}>
+                <li className={ `comment-title-collapse-container twirly before ${iconCollapsed}` }>
                 </li>
                 <li className="comment-title-username">
-                  <span className={`${opClass} ${distinguishedClass}`}>
+                  <span className={ `${opClass} ${distinguishedClass}` }>
                     { comment.author }
                   </span>
 

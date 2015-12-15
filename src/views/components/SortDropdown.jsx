@@ -97,14 +97,19 @@ class SortDropdown extends BaseComponent {
 
     var sortParam = this.props.sortParam || 'sort';
     var opened = this.state.opened;
-    var button = <button className={(opened ? ' opened' : '')}>{sortTitle} <span className='icon-caron'/></button>;
+    var button = (
+      <button className={ (opened ? ' opened' : '') }>
+        { sortTitle } <span className='icon-caron'/>
+      </button>
+    );
 
     return (
       <Dropdown
         id={ this._id }
         button={ button }
         app={ this.props.app }
-        className={ this.props.className }>
+        className={ this.props.className }
+      >
         {
           list.map(function(map) {
             var url = baseUrl;
@@ -118,11 +123,12 @@ class SortDropdown extends BaseComponent {
                 [sortParam]: map.param.toLowerCase(),
               });
             }
-            var iconClass = opened && map.text === sortTitle.toLowerCase() ? 'icon-check-shown' : 'icon-check-hidden';
+            var iconClass = opened && map.text === sortTitle.toLowerCase() ? 'icon-check-shown' :
+                                                                             'icon-check-hidden';
             return (
               <li className='Dropdown-li' key={ url }>
                 <a className='Dropdown-button' href={ url }>
-                  <span className={'icon-check ' + iconClass }>{' '}</span>
+                  <span className={ 'icon-check ' + iconClass }>{ ' ' }</span>
                   <span className='Dropdown-text'>{ titleCase(map.text) }</span>
                 </a>
               </li>

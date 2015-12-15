@@ -32,7 +32,7 @@ class Dropdown extends BaseComponent {
 
       var tab = (
         <div className={ tabClass } key={ this._key }>
-          <div className={pointer + (this.props.right ? ' pull-right' : '')}></div>
+          <div className={ pointer + (this.props.right ? ' pull-right' : '') }></div>
           <ul className='Dropdown-ul list-unstyled'>
             { this.props.children }
           </ul>
@@ -41,7 +41,7 @@ class Dropdown extends BaseComponent {
     }
 
     return (
-      <div className={className} onClick={ this._onClick }>
+      <div className={ className } onClick={ this._onClick }>
         { this.props.button }
         { tab }
       </div>

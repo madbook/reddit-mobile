@@ -22,6 +22,7 @@ class ListingList extends BaseComponent {
     };
 
     this._lazyLoad = this._lazyLoad.bind(this);
+    this._checkAdPos = this._checkAdPos.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +58,6 @@ class ListingList extends BaseComponent {
   _lazyLoad() {
     var listings = this.props.listings;
     var loadedDistance = this._getLoadedDistance();
-    var adIsMidListing = listings.length > this.state.adLocation;
 
     for (var i = 0; i < listings.length; i++) {
       var listing = this.refs['listing' + i];
@@ -109,14 +109,14 @@ class ListingList extends BaseComponent {
 
     return (
       <Ad
-        loid={this.props.loid}
+        loid={ this.props.loid }
         key='ad'
         ref='ad'
         {...this.props}
-        srnames={srnames}
-        afterLoad={this._checkAdPos.bind(this)}
+        srnames={ srnames }
+        afterLoad={ this._checkAdPos }
         compact={ this.state.compact }
-        />
+      />
     );
   }
 
@@ -132,20 +132,20 @@ class ListingList extends BaseComponent {
         if (listing._type === 'Comment') {
           return (
             <CommentPreview
-              comment={listing}
-              key={'page-comment-' + index}
-              page={page}
+              comment={ listing }
+              key={ 'page-comment-' + index }
+              page={ page }
             />
           );
         } else {
           if (props.showHidden || !listing.hidden) {
             return (
               <Listing
-                index={index}
-                key={'page-listing-' + index}
-                listing={listing}
-                ref={'listing' + i}
-                z={length - i}
+                index={ index }
+                key={ 'page-listing-' + index }
+                listing={ listing }
+                ref={ 'listing' + i }
+                z={ length - i }
                 subredditIsNSFW={ props.subredditIsNSFW }
                 {...props}
                 compact={ compact }
@@ -162,7 +162,7 @@ class ListingList extends BaseComponent {
     }
 
     return (
-      <div className={ this.props.className } ref='root'>{listings}</div>
+      <div className={ this.props.className } ref='root'>{ listings }</div>
     );
   }
 
@@ -178,7 +178,7 @@ class ListingList extends BaseComponent {
   componentWillReceiveProps(nextProps) {
     var compact = nextProps.compact;
     if (compact !== 'undefined' && compact !==this.state.compact) {
-      this.setState({compact: compact});
+      this.setState({compact});
     }
   }
 

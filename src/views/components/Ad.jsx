@@ -62,10 +62,10 @@ class Ad extends BaseComponent {
     var loggedIn = !!this.props.token;
     var origin = (loggedIn ?
       app.config.authAPIOrigin :
-        app.config.nonAuthAPIOrigin)
+        app.config.nonAuthAPIOrigin);
     var headers = {};
     var postData = {
-      srnames: srnames,
+      srnames,
       is_mobile_web: true,
       raw_json: '1',
     };
@@ -97,7 +97,7 @@ class Ad extends BaseComponent {
             return reject(res);
           }
         });
-      });
+    });
   }
 
   componentDidMount() {
@@ -152,7 +152,7 @@ class Ad extends BaseComponent {
       const middleIsAboveBottom = middle < winHeight;
       const middleIsBelowTop = bottom > constants.TOP_NAV_HEIGHT + height / 2;
 
-      if(middleIsAboveBottom && middleIsBelowTop) {
+      if (middleIsAboveBottom && middleIsBelowTop) {
         const srcs=['imp_pixel', 'adserver_imp_pixel'];
 
         for (var i = 0, iLen = srcs.length; i < iLen; i++) {
@@ -177,13 +177,14 @@ class Ad extends BaseComponent {
       <Listing
         ref='listing'
         {...props}
-        hideDomain={true}
-        hideSubredditLabel={true}
-        hideWhen={true}
-        listing={listing} />
+        hideDomain={ true }
+        hideSubredditLabel={ true }
+        hideWhen={ true }
+        listing={ listing }
+      />
     );
   }
-};
+}
 
 Ad.propTypes = {
   afterLoad: React.PropTypes.func.isRequired,

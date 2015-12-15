@@ -1,13 +1,10 @@
 import React from 'react';
-import cookies from 'cookies-js';
 import mobilify from '../../lib/mobilify';
 import moment from 'moment';
 import propTypes from '../../propTypes';
 
-import BaseComponent from './BaseComponent';
-
 function formatComments (comments, origin) {
-  return comments.filter(function(c){ return c; }).map(function(c) {
+  return comments.filter(function(c) { return c; }).map(function(c) {
     return {
       '@type': 'Comment',
       text: c.body_html,
@@ -73,7 +70,7 @@ function GoogleCarouselMetadata (props) {
 
     baseObject.sharedContent = {
       url: mobilify(embed.url || listing.url, origin),
-    }
+    };
 
     if (listing.preview && listing.preview.images[0]) {
       baseObject.sharedContent.thumbnail = listing.preview.images[0].source.url;
@@ -83,7 +80,7 @@ function GoogleCarouselMetadata (props) {
   } else {
     baseObject.sharedContent = {
       url: mobilify(listing.url, origin),
-    }
+    };
 
     if (listing.preview && listing.preview.images[0]) {
       baseObject.sharedContent.thumbnail = listing.preview.images[0].source.url;
@@ -98,7 +95,7 @@ function GoogleCarouselMetadata (props) {
     </script>
   `;
 
-  return <div dangerouslySetInnerHTML={{ __html: googleScript }} />;
+  return <div dangerouslySetInnerHTML={ { __html: googleScript } } />;
 }
 
 //TODO: someone more familiar with this component could eventually fill this out better

@@ -1,16 +1,18 @@
 import React from 'react';
 import BaseComponent from './BaseComponent';
 import { models } from 'snoode';
-import propTypes from '../../propTypes';
 import constants from '../../constants';
+
+const message = 'You must be at least eighteen years old to view this content.' +
+                ' Are you over eighteen and willing to see adult content?';
 
 const contentMap = {
   'over18': {
+    message,
     class: 'icon-header-18plus',
     header: 'You must be 18+ to view this community',
-    message: 'You must be at least eighteen years old to view this content. Are you over eighteen and willing to see adult content?',
-  }
-}
+  },
+};
 
 class Interstitial extends BaseComponent {
   constructor(props) {
@@ -18,7 +20,7 @@ class Interstitial extends BaseComponent {
 
     this.setOver18 = this.setOver18.bind(this);
     this.goHome = this.goHome.bind(this);
-  }  
+  }
 
   async setOver18 () {
     var {app, apiOptions, topNavLink} = this.props;
@@ -29,14 +31,14 @@ class Interstitial extends BaseComponent {
         model: new models.Preferences({over_18: true}),
         changeSet: ['over_18'],
       });
-    
+
       try {
-        let res = await app.api.preferences.patch(options);
+        await app.api.preferences.patch(options);
         app.emit(constants.TOGGLE_OVER_18, 'true');
         app.redirect(topNavLink);
-      } catch(e) {
+      } catch (e) {
         app.error(e, this, app, { redirect: false, replaceBody: false });
-      }  
+      }
     } else {
       app.emit(constants.TOGGLE_OVER_18, 'true');
       app.redirect(topNavLink);
@@ -57,8 +59,14 @@ class Interstitial extends BaseComponent {
     if (props.type === 'over18') {
       buttons = (
         <div>
-          <button className='btn btn-primary btn-block' onClick={ this.goHome } >NO THANK YOU</button>
-          <button className='btn btn-primary btn-block' onClick={ this.setOver18 } >CONTINUE</button>
+          <button
+            className='btn btn-primary btn-block'
+            onClick={ this.goHome }
+          >NO THANK YOU</button>
+          <button
+            className='btn btn-primary btn-block'
+            onClick={ this.setOver18 }
+          >CONTINUE</button>
         </div>
       );
     }
@@ -66,7 +74,9 @@ class Interstitial extends BaseComponent {
     if (props.customText) {
       customText = (
         <div className='panel interstitial-custom-text-panel'>
-        <h3 className='interstitial-custom-text-header'>{ '/r/' +  props.subredditName || '/r/subreddit' }</h3>
+        <h3
+          className='interstitial-custom-text-header'
+        >{ '/r/' +  props.subredditName || '/r/subreddit' }</h3>
         <p>{ props.customText || 'hello world this is a custom message for thi spanel' }</p>
         </div>
         );

@@ -1,7 +1,6 @@
 import React from 'react';
 import { models } from 'snoode';
 
-import constants from '../../constants';
 import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
@@ -52,7 +51,13 @@ class ListingDropdown extends BaseComponent {
     if (props.token) {
       if (this.state.reportFormOpen) {
         reportForm = (
-          <form className='ListingDropdown-form' action={`/report/${ props.listing.name }`} method='POST' onSubmit={ this._onReportSubmit } onClick={ this._cancelBubble }>
+          <form
+            className='ListingDropdown-form'
+            action={ `/report/${ props.listing.name }` }
+            method='POST'
+            onSubmit={ this._onReportSubmit }
+            onClick={ this._cancelBubble }
+          >
             <div className='input-group'>
               <input type='text' className='form-control' placeholder='reason' ref='otherReason' />
               <span className='input-group-btn'>
@@ -68,7 +73,7 @@ class ListingDropdown extends BaseComponent {
       reportLink = (
         <li className='Dropdown-li'>
           <button className='Dropdown-button' onClick={ this._onReportClick }>
-            <span className='icon-flag-circled'>{' '}</span>
+            <span className='icon-flag-circled'>{ ' ' }</span>
             <span className='Dropdown-text'>Report this</span>
           </button>
           { reportForm }
@@ -82,7 +87,7 @@ class ListingDropdown extends BaseComponent {
       saveLink = (
         <li className='Dropdown-li'>
           <button className='Dropdown-button' onClick={ this._onSaveClick }>
-            <span className={'icon-save-circled ' + isSavedClass }>{' '}</span>
+            <span className={ 'icon-save-circled ' + isSavedClass }>{ ' ' }</span>
             <span className='Dropdown-text'>{ saved ? 'Saved' : 'Save' }</span>
           </button>
         </li>
@@ -92,7 +97,7 @@ class ListingDropdown extends BaseComponent {
         hideLink = (
           <li className='Dropdown-li'>
             <button className='Dropdown-button' onClick={ this._onHideClick }>
-              <span className='icon-settings-circled'>{' '}</span>
+              <span className='icon-settings-circled'>{ ' ' }</span>
               <span className='Dropdown-text'>{ hidden ? 'Hidden' : 'Hide' }</span>
             </button>
           </li>
@@ -124,7 +129,7 @@ class ListingDropdown extends BaseComponent {
           <li className='Dropdown-li'>
             <button className='Dropdown-button' onClick={ this._onEditClick }>
               <span className='icon-post-circled' />
-              <span className='Dropdown-text'>Edit {thing}</span>
+              <span className='Dropdown-text'>Edit { thing }</span>
             </button>
           </li>
         );
@@ -135,7 +140,7 @@ class ListingDropdown extends BaseComponent {
       var toggleDelBtn = (
         <button type='button' className='Dropdown-button' onClick={ this._onDelToggle }>
           <span className='icon-x' />
-          <span className='Dropdown-text'>Delete {thing}</span>
+          <span className='Dropdown-text'>Delete { thing }</span>
         </button>
       );
 
@@ -151,10 +156,18 @@ class ListingDropdown extends BaseComponent {
             <p className='Dropdown-menu-text'>Are you sure?</p>
             <div className='btn-group btn-group-justified'>
               <div className='btn-group'>
-                <button type='button' className='btn btn-primary' onClick={ this._onDelClick }>yes</button>
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  onClick={ this._onDelClick }
+                >yes</button>
               </div>
               <div className='btn-group'>
-                <button type='button' className='btn btn-primary' onClick={ this._onDelToggle }>no</button>
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  onClick={ this._onDelToggle }
+                >no</button>
               </div>
             </div>
           </div>
@@ -163,7 +176,7 @@ class ListingDropdown extends BaseComponent {
     }
 
     var viewComments;
-    if (props.viewComments && props.listing._type === "Link") {
+    if (props.viewComments && props.listing._type === 'Link') {
       viewComments = (
         <li className='Dropdown-li'>
           <a className='MobileButton Dropdown-button' href={ listing.permalink }>
@@ -290,7 +303,7 @@ class ListingDropdown extends BaseComponent {
       model: report,
     });
 
-    this.props.app.api.reports.post(options).then((comment) => {
+    this.props.app.api.reports.post(options).then(() => {
       this._onReport();
     });
 
@@ -318,9 +331,10 @@ class ListingDropdown extends BaseComponent {
     });
   }
 
-  _onDelClick (){
-    if (this.props.onDelete) {
-      this.props.onDelete();
+  _onDelClick () {
+    const { onDelete, listing } = this.props;
+    if (onDelete) {
+      onDelete(listing.name);
     }
   }
 }

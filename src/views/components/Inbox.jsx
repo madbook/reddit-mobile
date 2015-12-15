@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import MessagePreview from './MessagePreview';
 import BaseComponent from './BaseComponent';
@@ -29,7 +28,7 @@ class Inbox extends BaseComponent {
     }
 
     this.setState({
-      messages: messages,
+      messages,
     });
   }
 
@@ -45,14 +44,14 @@ class Inbox extends BaseComponent {
             var isLastReply = !props.isReply || props.isReply && (props.messages.length - 1) === i;
             return (
               <MessagePreview
-                app={props.app}
-                lastReply={isLastReply}
-                user={props.user}
-                token={props.token}
-                key={'message-' + m.name}
-                message={m}
-                apiOptions={props.apiOptions}
-                onSubmit={onSubmit}
+                app={ props.app }
+                lastReply={ isLastReply }
+                user={ props.user }
+                token={ props.token }
+                key={ 'message-' + m.name }
+                message={ m }
+                apiOptions={ props.apiOptions }
+                onSubmit={ onSubmit }
               />
             );
           })

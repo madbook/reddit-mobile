@@ -8,7 +8,10 @@ class CaptchaBox extends BaseComponent {
     this.state = {
       captchaSrc: '',
       iden: this.props.iden || '',
-    }
+    };
+
+    this.newCaptcha = this.newCaptcha.bind(this);
+    this._updateCaptchaInfo = this._updateCaptchaInfo.bind(this);
   }
 
   componentDidMount() {
@@ -16,7 +19,7 @@ class CaptchaBox extends BaseComponent {
       this.requestCaptcha();
     } else {
       var captchaSrc = this._makeCaptchaUrl(this.state.iden);
-      this.setState({captchaSrc: captchaSrc});
+      this.setState({captchaSrc});
     }
   }
 
@@ -31,23 +34,23 @@ class CaptchaBox extends BaseComponent {
 
     var options = api.buildOptions(this.props.apiOptions);
     options.form = {};
-    options.form.api_type = 'json'
+    options.form.api_type = 'json';
 
     api.captcha.post(options).then(function(data) {
       var iden = data.iden;
       var src = this._makeCaptchaUrl(iden);
 
       this.setState({
+        iden,
         captchaSrc: src,
-        iden: iden,
       });
 
       this.props.cb({
         iden: this.state.iden,
-        answer: ''
+        answer: '',
       });
 
-    }.bind(this))
+    }.bind(this));
   }
 
   _makeCaptchaUrl (iden) {
@@ -63,8 +66,8 @@ class CaptchaBox extends BaseComponent {
     const { iden } = this.state;
 
     const info = {
-      answer: answer,
-      iden: iden,
+      answer,
+      iden,
     };
 
     this.props.cb(info);
@@ -79,7 +82,7 @@ class CaptchaBox extends BaseComponent {
     );
     if (this.state.captchaSrc) {
       img = (
-        <img width='120' height='50' src={this.state.captchaSrc} />
+        <img width='120' height='50' src={ this.state.captchaSrcv } />
       );
     }
 
@@ -93,18 +96,20 @@ class CaptchaBox extends BaseComponent {
             className='form-control'
             ref='answer'
             type='text'
-            onChange={this._updateCaptchaInfo.bind(this)}
-            defaultValue={this.props.answer}
+            onChange={ this._updateCaptchaInfo }
+            defaultValue={ this.props.answer }
           />
         </div>
         <div className='captcha-new-link'>
-          <p className={'text-danger ' + errorText }>That did not seem to match. Please try again.</p>
-          <a  href='#' onClick={this.newCaptcha.bind(this)}>get a new code</a>
+          <p
+            className={ 'text-danger ' + errorText }
+          >That did not seem to match. Please try again.</p>
+          <a  href='#' onClick={ this.newCaptcha }>get a new code</a>
         </div>
         <button
           type='button'
           className='btn btn-primary btn-block'
-          onClick={this.props.action}
+          onClick={ this.props.action }
         >{ this.props.actionName }</button>
       </div>
     );

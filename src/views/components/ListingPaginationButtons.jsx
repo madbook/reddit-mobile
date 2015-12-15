@@ -7,7 +7,7 @@ class ListingPaginationButtons extends BaseComponent {
     super(props);
 
     this.state = {
-      compact: this.props.compact
+      compact: this.props.compact,
     };
   }
 
@@ -38,7 +38,7 @@ class ListingPaginationButtons extends BaseComponent {
     return (
       <div className='pageNav IndexPage-buttons-holder-holder'>
         <div className='col-xs-12 IndexPage-buttons-holder'>
-           <p className={'IndexPage-buttons' + (compact ? ' compact' : '')}>
+           <p className={ 'IndexPage-buttons' + (compact ? ' compact' : '') }>
               { prevButton } { nextButton }
             </p>
         </div>
