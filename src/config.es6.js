@@ -1,17 +1,19 @@
+/*eslint max-len: 0*/
+
 // This configuration is shared with the client. Any hidden, server-only config
 // belongs in ./server instead.
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 let globalMessage = {
   frontPageOnly: true,
   text: 'We’re [updating our privacy policy](https://www.reddit.com/r/announcements/comments/3tlcil/we_are_updating_our_privacy_policy_effective_jan/), to take effect on January 1, 2016. By continuing to use m.reddit.com, you agree to the [new privacy policy](https://www.reddit.com/help/privacypolicy)',
-  expires: 'Jan 01, 2016'
+  expires: 'Jan 01, 2016',
 };
 
 if (globalMessage) {
   const sha = crypto.createHash('sha1');
   if (!globalMessage.text) {
-    throw 'Global message defined with no text'
+    throw 'Global message defined with no text';
   }
   sha.update(globalMessage.text);
   globalMessage.key = sha.digest('hex');
@@ -53,8 +55,8 @@ function config() {
     trackerClientAppName: process.env.TRACKER_CLIENT_NAME,
 
     // hack for now for global messages displayed with the infobar component.
-    globalMessage: globalMessage,
+    globalMessage,
   };
-};
+}
 
 export default config;

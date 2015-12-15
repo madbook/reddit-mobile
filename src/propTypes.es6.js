@@ -1,6 +1,6 @@
 import React from 'react';
 
-let { array, string, number, object, bool, shape, oneOfType, arrayOf } = React.PropTypes;
+let { array, string, number, bool, shape, oneOfType, arrayOf } = React.PropTypes;
 
 var _listingSource = shape({
   url: string.isRequired,
@@ -16,7 +16,7 @@ var _listingVariants = shape({
   nsfw: shape({
     resolutions: _listingResolutions.isRequired,
     source: _listingSource,
-  })
+  }),
 });
 
 export default {

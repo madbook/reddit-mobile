@@ -15,28 +15,28 @@ function redirectSort (ctx, sort, subreddit) {
 
 function routes(app) {
   SORTS.forEach(function(sort) {
-    app.router.get(`/${sort}`, function *(next) {
+    app.router.get(`/${sort}`, function *() {
       redirectSort(this, 'hot', this.params.subreddit);
     });
 
-    app.router.get('/r/:subreddit/' + sort, function *(next) {
+    app.router.get('/r/:subreddit/' + sort, function *() {
       redirectSort(this, sort, this.params.subreddit);
     });
   });
 
-  app.router.get('/user/:user', function *(next) {
+  app.router.get('/user/:user', function *() {
     return this.redirect(`/u/${this.params.user}`);
   });
 
-  app.router.get('/user/:user/m/:multi', function *(next) {
+  app.router.get('/user/:user/m/:multi', function *() {
     return this.redirect(`/u/${this.params.user}/m/${this.params.multi}`);
   });
 
-  app.router.get('/search/:query', function*(next) {
+  app.router.get('/search/:query', function*() {
     return this.redirect(`/search?q=${this.params.query}`);
   });
 
-  app.router.get('/r/:subreddit/search/:query', function*(next) {
+  app.router.get('/r/:subreddit/search/:query', function*() {
     return this.redirect(`/r/${this.params.subreddit}/search?q=${this.params.query}`);
   });
 }

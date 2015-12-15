@@ -36,11 +36,11 @@ function logError(err, ctx, config) {
   }
 
   errorLog({
+    line,
+    url,
+    userAgent,
     error: err,
-    userAgent: userAgent,
     message: err.message,
-    line: line,
-    url: url,
     requestUrl: ctx ? ctx.path : null,
   }, {
     hivemind: config.statsURL,
@@ -56,15 +56,6 @@ const errorMsgMap = {
   'default': 'Oops, looks like something went wrong.',
 };
 
-
-function formatSubreddit(s) {
-  return {
-    icon: s.icon,
-    display_name: s.display_name,
-    url: s.url,
-    submit_text: s.submit_text,
-  }
-}
 
 function mixin (App) {
   class MixedInApp extends App {
@@ -136,10 +127,10 @@ function mixin (App) {
             <ErrorPage {...props}/>
           </BodyLayout>
         );
-      }
+      };
     }
 
-    loadingpage (props) {
+    loadingpage () {
       return (
         <Loading />
       );

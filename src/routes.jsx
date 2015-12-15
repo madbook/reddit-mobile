@@ -6,9 +6,6 @@ import superagent from 'superagent';
 
 import merge from 'lodash/object/merge';
 
-// Load models from snoode (api lib) so we can post new ones.
-import { models } from 'snoode';
-
 // components
 import BodyLayout from './views/layouts/BodyLayout';
 import Layout from './views/layouts/DefaultLayout';
@@ -88,7 +85,7 @@ function filterContextProps(ctx) {
     tokenExpires: ctx.tokenExpires,
     redirect: ctx.redirect,
     env: ctx.env,
-  }
+  };
 }
 
 function buildProps(ctx, app) {
@@ -99,7 +96,7 @@ function buildProps(ctx, app) {
   }
 
   ctx.props = {
-    app: app,
+    app,
     title: 'reddit: the front page of the internet',
     metaDescription: 'reddit: the front page of the internet',
     data: new Map(),
@@ -127,8 +124,8 @@ function buildProps(ctx, app) {
   return ctx.props;
 }
 
-function getSubreddit(ctx, app) {
-  let { subreddit, multi } = ctx.params;
+function getSubreddit(ctx) {
+  let { subreddit } = ctx.params;
 
   if (subreddit) {
     Object.assign(ctx.props, {
@@ -151,12 +148,11 @@ function getSubreddit(ctx, app) {
 }
 
 function userData(ctx, app) {
-  let { apiOptions, data} = ctx.props;
-  let { preferences, users, subreddits } = app.api;
+  let { apiOptions } = ctx.props;
 
   if (ctx.token) {
     let userOptions =  Object.assign({}, apiOptions, {
-      user: 'me'
+      user: 'me',
     });
     setData(ctx, 'user', 'users', userOptions);
 
@@ -195,10 +191,10 @@ function makeBody() {
     let content = Array.prototype.map.call(arguments, (comp, i) => {
       if (Array.isArray(comp)) {
         const [Component, propOveride] = comp;
-        return <Component {...(propOveride || props)} key={`${props.key}-${i}`} />;
+        return <Component {...(propOveride || props)} key={ `${props.key}-${i} ` } />;
       } else {
         const Component = comp;
-        return <Component {... props} key={`${props.key}-${i}`} />;
+        return <Component {... props} key={ `${props.key}-${i}` } />;
       }
     });
 
@@ -207,8 +203,8 @@ function makeBody() {
         { content }
       </BodyLayout>
     );
-  }
-};
+  };
+}
 
 
 function * globalMessage(next) {
@@ -250,7 +246,7 @@ function routes(app) {
       this.url.indexOf('/timings') === 0 ||
       this.url.indexOf('/goto') === 0 ||
       this.url.indexOf('/health') === 0
-    ){
+    ) {
       return yield next;
     } else {
       getSubreddit(this, app);
@@ -273,17 +269,17 @@ function routes(app) {
   router.use(defaultLayout);
   router.use(globalMessage);
 
-  function * indexPage (next) {
+  function * indexPage () {
     let props = this.props;
     var sort = this.query.sort || 'hot';
 
     Object.assign(this.props, {
+      sort,
       multi: this.params.multi,
       multiUser: this.params.user,
       after: this.query.after,
       before: this.query.before,
       page: parseInt(this.query.page) || 0,
-      sort: sort,
     });
 
 
@@ -315,7 +311,7 @@ function routes(app) {
   router.get('index.subreddit', '/r/:subreddit', indexPage);
   router.get('index.multi', '/u/:user/m/:multi', indexPage);
 
-  function * commentsPage(next) {
+  function * commentsPage() {
     var ctx = this;
     var props = this.props;
 
@@ -349,15 +345,17 @@ function routes(app) {
 
   router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
   router.get('comments.listingid', '/comments/:listingId', commentsPage);
-  router.get('comments.permalink', '/r/:subreddit/comments/:listingId/:listingTitle/:commentId', commentsPage);
+  router.get('comments.permalink',
+             '/r/:subreddit/comments/:listingId/:listingTitle/:commentId',
+             commentsPage);
   router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
   router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
 
-  router.get('subreddit.about', '/r/:subreddit/about', function *(next) {
+  router.get('subreddit.about', '/r/:subreddit/about', function *() {
     this.body = makeBody(SubredditAboutPage);
   });
 
-  function * searchPage(next) {
+  function * searchPage() {
     var ctx = this;
 
     let props = Object.assign(this.props, {
@@ -401,19 +399,34 @@ function routes(app) {
     var gildActive = active === 'gild' ? 'active' : false;
 
     return [
-      <li className='TextSubNav-li' active={aboutActive} key={`about-${aboutActive.toString()}`}>
-        <a className={`TextSubNav-a ${aboutActive}`} href={`/u/${userName}`}>About</a>
+      <li
+        className='TextSubNav-li'
+        active={ aboutActive }
+        key={ `about-${aboutActive.toString()}` }
+      >
+        <a className={ `TextSubNav-a ${aboutActive}` } href={ `/u/${userName}` }>About</a>
       </li>,
-      <li className='TextSubNav-li' active={activityActive} key={`activity-${activityActive.toString()}`}>
-        <a className={`TextSubNav-a ${activityActive}`} href={`/u/${userName}/activity`}>Activity</a>
+      <li
+        className='TextSubNav-li'
+        active={ activityActive }
+        key={ `activity-${activityActive.toString()}` }
+      >
+        <a
+          className={ `TextSubNav-a ${activityActive}` }
+          href={ `/u/${userName}/activity` }
+        >Activity</a>
       </li>,
-      <li className='TextSubNav-li' active={gildActive} key={`gild-${gildActive.toString()}`}>
-        <a className={`TextSubNav-a ${gildActive}`} href={`/u/${userName}/gild`}>Give gold</a>
+      <li
+        className='TextSubNav-li'
+        active={ gildActive }
+        key={ `gild-${gildActive.toString()}` }
+      >
+        <a className={ `TextSubNav-a ${gildActive}` } href={ `/u/${userName}/gild` }>Give gold</a>
       </li>,
     ];
   }
 
-  router.get('user.profile', '/u/:user', function *(next) {
+  router.get('user.profile', '/u/:user', function *() {
     var ctx = this;
 
     this.props.userName = ctx.params.user;
@@ -427,13 +440,13 @@ function routes(app) {
     this.props.data.set('userProfile', app.api.users.get(userOpts));
 
     let subNavProps = {
-      children: userProfileSubnav('about', ctx.params.user)
+      children: userProfileSubnav('about', ctx.params.user),
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserProfilePage);
   });
 
-  router.get('user.gild', '/u/:user/gild', function *(next) {
+  router.get('user.gild', '/u/:user/gild', function *() {
     var ctx = this;
 
     this.props.userName = ctx.params.user;
@@ -442,25 +455,25 @@ function routes(app) {
     this.props.topNavLink = `/u/${ctx.params.user}`;
 
     let subNavProps = {
-      children: userProfileSubnav('gild', ctx.params.user)
+      children: userProfileSubnav('gild', ctx.params.user),
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserGildPage);
   });
 
-  router.get('user.activity', '/u/:user/activity', function *(next) {
+  router.get('user.activity', '/u/:user/activity', function *() {
     var sort = this.query.sort || 'hot';
     var activity = this.query.activity || 'comments';
 
     var ctx = this;
 
     Object.assign(this.props, {
-      activity: activity,
+      activity,
+      sort,
       userName: ctx.params.user,
       after: ctx.query.after,
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
-      sort: sort,
       title: `about u/${ctx.params.user}`,
       metaDescription: `about u/${ctx.params.user} on reddit.com`,
     });
@@ -468,25 +481,25 @@ function routes(app) {
     let props = this.props;
 
     let activitiesOpts = buildAPIOptions(ctx, {
+      activity,
       query: {
+        sort,
         after: props.after,
         before: props.before,
-        sort: sort,
       },
-      activity: activity,
       user: ctx.params.user,
     });
 
     this.props.data.set('activities', app.api.activities.get(activitiesOpts));
 
     let subNavProps = {
-      children: userProfileSubnav('activity', ctx.params.user)
+      children: userProfileSubnav('activity', ctx.params.user),
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserActivityPage);
   });
 
-  function * submitPage(next) {
+  function * submitPage() {
     let { query, props } = this;
 
     if (query) {
@@ -511,14 +524,14 @@ function routes(app) {
       let submitQuery = querystring.stringify(query);
       submitUrl += submitQuery ? `?${submitQuery}` : '';
 
-      return this.redirect('/login?originalUrl=' + submitUrl)
+      return this.redirect('/login?originalUrl=' + submitUrl);
     }
 
     this.body = function(props) {
       return (
         <SubmitPage key={ this.key } {...props}/>
       );
-    }
+    };
   }
 
   router.get('submit', '/submit', submitPage);
@@ -530,11 +543,11 @@ function routes(app) {
     let sort = this.query.sort || 'hot';
 
     Object.assign(this.props, {
+      sort,
       userName: ctx.params.user,
       after: ctx.query.after,
       before: ctx.query.before,
       page: parseInt(ctx.query.page) || 0,
-      sort: sort,
       title: `${props.actionName} links`,
       metaDescription: `u/${ctx.params.user}'s saved links on reddit.com`,
     });
@@ -554,7 +567,7 @@ function routes(app) {
       user: props.userName,
     });
 
-    this.props.data.set('activities', saved.get(savedOpts))
+    this.props.data.set('activities', saved.get(savedOpts));
 
     this.body = makeBody(UserSavedPage);
   }
@@ -583,7 +596,7 @@ function routes(app) {
   function tryLoad (url, options) {
     var endpoint = options.origin + url + '.json';
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       try {
         let sa = superagent
                   .head(endpoint)
@@ -621,7 +634,7 @@ function routes(app) {
         origin: app.getConfig('authAPIOrigin'),
         headers: {
           'Authorization': `bearer ${token}`,
-        }
+        },
       };
     } else {
       apiOptions =  {
@@ -670,17 +683,15 @@ function routes(app) {
     this.redirect(`/search?${query}`);
   });
 
-  router.get('messages.compose', '/message/compose', function *(next) {
+  router.get('messages.compose', '/message/compose', function *() {
     if (!this.token) {
       let query = {
         originalUrl: this.url,
-      }
+      };
 
       return this.redirect('/login?' + querystring.stringify(query));
     }
 
-    var page;
-    var ctx = this;
 
     Object.assign(this.props, {
       title: 'Compose New Message',
@@ -691,16 +702,15 @@ function routes(app) {
     this.body = makeBody(MessageComposePage);
   });
 
-  router.get('messages', '/message/:view', function *(next) {
+  router.get('messages', '/message/:view', function *() {
     if (!this.token) {
       let query = {
         originalUrl: this.url,
-      }
+      };
 
       return this.redirect('/login?' + querystring.stringify(query));
     }
 
-    var page;
     var ctx = this;
 
     let props = Object.assign(this.props, {
@@ -718,7 +728,7 @@ function routes(app) {
     this.body = makeBody(MessagesPage);
   });
 
-  router.get('404', '*', function *(next) {
+  router.get('404', '*', function *() {
     this.props.status = 404;
     this.body = app.errorPage(this, 404);
   });

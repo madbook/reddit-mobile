@@ -27,7 +27,7 @@ class BodyLayout extends BasePage {
 
     return (
       <div className='container-with-betabanner'>
-        <SideNav {...this.props} user={ user} subscriptions={ userSubscriptions } />
+        <SideNav {...this.props} user={ user } subscriptions={ userSubscriptions } />
         <TopNav {...this.props}/>
         <InfoBar messages={ messages } app={ app } showEUCookieMessage={ showEUCookieMessage }/>
         <main>

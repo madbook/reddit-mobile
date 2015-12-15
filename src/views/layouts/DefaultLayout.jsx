@@ -1,5 +1,4 @@
 import React from 'react';
-import BaseComponent from '../components/BaseComponent';
 import LiveReload from '../components/LiveReload';
 
 function DefaultLayout  (props) {
@@ -58,7 +57,7 @@ function DefaultLayout  (props) {
     `;
 
     gaTracking = (
-      <div dangerouslySetInnerHTML={{ __html: trackingCode }} />
+      <div dangerouslySetInnerHTML={ { __html: trackingCode } } />
     );
   }
 
@@ -90,7 +89,10 @@ function DefaultLayout  (props) {
         <link href={ baseCSS } rel='stylesheet' />
         { canonical }
 
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+        />
         <meta name='theme-color' content='#336699' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta id='csrf-token-meta-tag' name='csrf-token' content={ props.ctx.csrf } />
