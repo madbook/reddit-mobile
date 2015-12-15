@@ -2,7 +2,6 @@ import superagent from 'superagent';
 import crypto from 'crypto';
 import constants from '../constants';
 
-import { models } from 'snoode';
 // set up server-only routes
 let serverRoutes = function(app) {
   const router = app.router;
@@ -63,47 +62,7 @@ let serverRoutes = function(app) {
         .end(function() { });
   });
 
-  // Server-side only!
-  router.post('vote', '/vote/:id',
-    function * () {
-      const endpoints = {
-        '1': 'comment',
-        '3': 'listing',
-      };
 
-      let id = this.params.id;
-
-      let vote = new models.Vote({
-        direction: parseInt(this.query.direction),
-        id,
-      });
-
-      if (vote.get('direction') !== undefined && vote.get('id')) {
-        let options = app.api.buildOptions(props.apiOptions);
-        options.model = vote;
-        app.api.votes.post(options).then(function() { });
-      }
-    });
-
-  router.post('/comment', function * () {
-    var ctx = this;
-
-    let comment = new models.Comment({
-      thingId: ctx.body.thingId,
-      text: ctx.body.text,
-    });
-
-    if (!this.token) {
-      return this.redirect(this.headers.referer || '/');
-    }
-
-    let options = app.api.buildOptions(props.apiOptions);
-    options.model = comment;
-
-    app.api.comments.post(options).then(function() {
-      this.redirect(this.headers.referer || '/');
-    });
-  });
 
   router.get('/routes', function* () {
     this.body = app.router.stack.routes
