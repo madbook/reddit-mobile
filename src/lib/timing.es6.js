@@ -1,5 +1,8 @@
-function getTimes(opts) {
-  var performance = global.performance || global.webkitPerformance || global.msPerformance || global.mozPerformance;
+function getTimes() {
+  var performance = global.performance ||
+                    global.webkitPerformance ||
+                    global.msPerformance ||
+                    global.mozPerformance;
 
   if (!performance || !performance.timing) {
     return;
@@ -25,16 +28,16 @@ function getTimes(opts) {
     timings[key] = duration;
   }
 
-  timing('redirectTiming', 'redirectStart', 'redirectEnd')
-  timing('startTiming', 'fetchStart', 'domainLookupStart')
-  timing('dnsTiming', 'domainLookupStart', 'domainLookupEnd')
-  timing('tcpTiming', 'connectStart', 'connectEnd')
-  timing('httpsTiming', 'secureConnectionStart', 'connectEnd')
-  timing('requestTiming', 'requestStart', 'responseStart')
-  timing('responseTiming', 'responseStart', 'responseEnd')
-  timing('domLoadingTiming', 'domLoading', 'domInteractive')
-  timing('domInteractiveTiming', 'domInteractive', 'domContentLoadedEventStart')
-  timing('domContentLoadedTiming', 'domContentLoadedEventStart', 'domContentLoadedEventEnd')
+  timing('redirectTiming', 'redirectStart', 'redirectEnd');
+  timing('startTiming', 'fetchStart', 'domainLookupStart');
+  timing('dnsTiming', 'domainLookupStart', 'domainLookupEnd');
+  timing('tcpTiming', 'connectStart', 'connectEnd');
+  timing('httpsTiming', 'secureConnectionStart', 'connectEnd');
+  timing('requestTiming', 'requestStart', 'responseStart');
+  timing('responseTiming', 'responseStart', 'responseEnd');
+  timing('domLoadingTiming', 'domLoading', 'domInteractive');
+  timing('domInteractiveTiming', 'domInteractive', 'domContentLoadedEventStart');
+  timing('domContentLoadedTiming', 'domContentLoadedEventStart', 'domContentLoadedEventEnd');
 
   return timings;
 }

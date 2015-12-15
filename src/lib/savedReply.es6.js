@@ -1,4 +1,3 @@
-'use strict';
 
 var _saved = null;
 
@@ -10,8 +9,8 @@ function set(thingId, reply) {
   }
 
   var saved = {
-    thingId: thingId,
-    reply: reply,
+    thingId,
+    reply,
   };
 
   global.localStorage.setItem('savedReply', JSON.stringify(saved));
@@ -46,7 +45,7 @@ function clear() {
 }
 
 export default {
-  set: set,
-  get: get,
-  clear: clear,
-}
+  set,
+  get,
+  clear,
+};

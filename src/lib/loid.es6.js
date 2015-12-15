@@ -15,9 +15,9 @@ function setLoggedOutCookies(cookies, app) {
   cookies.set('loidcreated', loidcreated, options);
 
   return {
-    loid: loid,
-    loidcreated: loidcreated,
-    options: options,
+    loid,
+    loidcreated,
+    options,
   };
 }
 

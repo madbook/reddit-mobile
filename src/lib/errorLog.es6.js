@@ -4,7 +4,7 @@ function simpleUA(agent) {
   if (/server/i.test(agent)) { return 'server'; }
   if (/iPhone/i.test(agent)) { return 'ios'; }
   if (/android/i.test(agent)) { return 'android'; }
-  
+
   return 'unknownClient';
 }
 
@@ -59,7 +59,7 @@ function hivemind(ua, endpoint) {
     .type('json')
     .send(data)
     .timeout(3000)
-    .end(function(){ });
+    .end(function() { });
 }
 
 export default errorLog;
