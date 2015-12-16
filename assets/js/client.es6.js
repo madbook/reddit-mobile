@@ -328,13 +328,31 @@ function initialize(bindLinks) {
     }
   }
 
+  function logMissingHref($link) {
+    const $linkClone = $link.cloneNode(true);
+    const $tmpWrapper = document.createElement('div');
+    $tmpWrapper.appendChild($linkClone);
+    const linkStringified = $tmpWrapper.innerHTML;
+
+    const error = {
+      message: 'A tag missing HREF',
+      linkStringified,
+    };
+
+    const options = {
+      redirect: false,
+      replaceBody: false,
+    };
+
+    app.error(error, app.getState('ctx'), app, options);
+  }
+
   function attachEvents() {
     attachFastClick(document.body);
 
-    if(history && bindLinks) {
-
+    if (history && bindLinks) {
       $body.addEventListener('click', function(e) {
-        var $link = e.target;
+        let $link = e.target;
 
         if ($link.tagName !== 'A') {
           $link = findLinkParent($link);
@@ -344,8 +362,13 @@ function initialize(bindLinks) {
           }
         }
 
-        var href = $link.getAttribute('href');
-        var currentUrl = app.fullPathName();
+        const href = $link.getAttribute('href');
+        if (!href) {
+          logMissingHref($link);
+          return;
+        }
+
+        const currentUrl = app.fullPathName();
 
         // If it has a target=_blank, or an 'external' data attribute, or it's
         // an absolute url, let the browser route rather than forcing a capture.
@@ -372,7 +395,7 @@ function initialize(bindLinks) {
         initialUrl = href;
 
         // Update the referrer before navigation
-        var a = document.createElement('a');
+        const a = document.createElement('a');
         a.href = currentUrl;
         referrer = a.href;
 

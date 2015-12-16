@@ -436,6 +436,7 @@ function routes(app) {
 
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
+    this.props.topNavLink = `/u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
 
     let userOpts = buildAPIOptions(ctx, {
