@@ -13,6 +13,8 @@ const EU_COOKIE_MESSAGE = 'Cookies help us deliver our Services. By ' +
   'using our Services, you agree to our use of cookies. ' +
   '[Learn More](https://www.reddit.com/help/privacypolicy)';
 
+let InfoBarEUCookieFirstShow = true;
+
 class InfoBar extends BaseComponent {
   constructor(props) {
     super(props);
@@ -34,7 +36,10 @@ class InfoBar extends BaseComponent {
 
     if (hasEUCookie) {
       app.on('route:start', this.incrementCookieNoticeSeen);
-      this.incrementCookieNoticeSeen();
+      if (InfoBarEUCookieFirstShow) {
+        this.incrementCookieNoticeSeen();
+        InfoBarEUCookieFirstShow = false;
+      }
     }
   }
 

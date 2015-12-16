@@ -200,7 +200,11 @@ function makeBody() {
     });
 
     return (
-      <BodyLayout { ...props } key='layout'>
+      // Note: please don't set a key here, as it will make React re-use the
+      // component when it really shouldn't. Properties that are promises,
+      // whose result is based on the state of the cache, won't be picked up
+      // as new props. Setting a key will break state when the cache has updated.
+      <BodyLayout { ...props }>
         { content }
       </BodyLayout>
     );
