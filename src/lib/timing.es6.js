@@ -1,5 +1,5 @@
 function getTimes() {
-  var performance = global.performance ||
+  const performance = global.performance ||
                     global.webkitPerformance ||
                     global.msPerformance ||
                     global.mozPerformance;
@@ -8,18 +8,18 @@ function getTimes() {
     return;
   }
 
-  var pt = performance.timing;
+  const pt = performance.timing;
 
-  var timings = {};
+  const timings = {};
 
   function timing(key, start, end) {
     if (!pt[start] || !pt[end]) {
       return;
     }
 
-    var startTime = pt[start] / 1000;
-    var endTime = pt[end] / 1000;
-    var duration = endTime - startTime;
+    const startTime = pt[start] / 1000;
+    const endTime = pt[end] / 1000;
+    const duration = endTime - startTime;
 
     if (duration === 0) {
       return;

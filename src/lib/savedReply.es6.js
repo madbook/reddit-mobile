@@ -1,6 +1,6 @@
 import localStorageAvailable from './localStorageAvailable';
 
-var _saved = null;
+let _saved = null;
 
 function set(thingId, reply) {
   reply = reply && reply.trim();
@@ -9,7 +9,7 @@ function set(thingId, reply) {
     return;
   }
 
-  var saved = {
+  const saved = {
     thingId,
     reply,
   };
@@ -21,12 +21,12 @@ function set(thingId, reply) {
 }
 
 function get(thingId) {
-  var saved;
+  let saved = _saved;
 
   if (_saved) {
     saved = _saved;
   } else if (localStorageAvailable()) {
-    var savedReply = global.localStorage.getItem('savedReply');
+    const savedReply = global.localStorage.getItem('savedReply');
 
     try {
       saved = JSON.parse(savedReply);

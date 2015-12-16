@@ -6,7 +6,7 @@ import crypto from 'crypto';
 
 import localStorageAvailable from './lib/localStorageAvailable';
 
-let globalMessage = {
+const globalMessage = {
   frontPageOnly: true,
   text: 'We’re [updating our privacy policy](https://www.reddit.com/r/announcements/comments/3tlcil/we_are_updating_our_privacy_policy_effective_jan/), to take effect on January 1, 2016. By continuing to use m.reddit.com, you agree to the [new privacy policy](https://www.reddit.com/help/privacypolicy)',
   expires: 'Jan 01, 2016',
@@ -14,9 +14,11 @@ let globalMessage = {
 
 if (globalMessage) {
   const sha = crypto.createHash('sha1');
+
   if (!globalMessage.text) {
     throw Error('Global message defined with no text');
   }
+
   sha.update(globalMessage.text);
   globalMessage.key = sha.digest('hex');
 }

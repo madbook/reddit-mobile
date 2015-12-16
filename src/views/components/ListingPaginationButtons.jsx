@@ -67,6 +67,9 @@ class ListingPaginationButtons extends BaseComponent {
     let {
       prevUrl,
       nextUrl,
+    } = this.props;
+
+    const {
       listings,
       pageSize = 25,
     } = this.props;
@@ -104,7 +107,7 @@ class ListingPaginationButtons extends BaseComponent {
     return (
       <div className='pageNav IndexPage-buttons-holder-holder'>
         <div className='col-xs-12 IndexPage-buttons-holder'>
-           <p className={ 'IndexPage-buttons' + (compact ? ' compact' : '') }>
+           <p className={ `IndexPage-buttons${compact ? ' compact' : ''}` }>
               { prevButton } { nextButton }
             </p>
         </div>

@@ -1,18 +1,26 @@
 import React from 'react';
 
-let { array, string, number, bool, shape, oneOfType, arrayOf } = React.PropTypes;
+const {
+  array,
+  string,
+  number,
+  bool,
+  shape,
+  oneOfType,
+  arrayOf,
+} = React.PropTypes;
 
-var _listingSource = shape({
+const _listingSource = shape({
   url: string.isRequired,
 });
 
-var _listingResolutions = arrayOf(shape({
+const _listingResolutions = arrayOf(shape({
   width: number.isRequired,
   height: number.isRequired,
   url: string.isRequired,
 }));
 
-var _listingVariants = shape({
+const _listingVariants = shape({
   nsfw: shape({
     resolutions: _listingResolutions.isRequired,
     source: _listingSource,

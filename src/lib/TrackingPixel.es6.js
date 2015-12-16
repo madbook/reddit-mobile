@@ -10,35 +10,39 @@ class TrackingPixel {
       return;
     }
 
-    if (this.props.url) {
-      var trackingUrl = this.props.url + '&r=' + Math.random();
+    const { props } = this;
 
-      if (this.props.referrer) {
-        let domain = url.parse(this.props.referrer).host;
-        trackingUrl += '&referrer_domain=' + domain;
+    if (props.url) {
+      let trackingUrl = `${props.url}&r=${Math.random()}`;
+
+      if (props.referrer) {
+        const domain = url.parse(props.referrer).host;
+        trackingUrl += `&referrer_domain=${domain}`;
       }
 
-      if (!this.props.user && this.props.loid) {
-        trackingUrl += '&loid=' + this.props.loid;
-        trackingUrl += '&loidcreated=' + this.props.loidcreated;
+      if (!props.user && props.loid) {
+        trackingUrl += `&loid=${props.loid}`;
+        trackingUrl += `&loidcreated=${props.loidcreated}`;
       }
 
-      if (this.props.compact) {
+      if (props.compact) {
         trackingUrl += '&view_type=compact';
       } else {
         trackingUrl += '&view_type=list';
       }
 
-      trackingUrl += '&dnt=' + this.props.dnt;
+      trackingUrl += `&dnt=${this.props.dnt}`;
 
-      var experiments = this.props.experiments;
+      const experiments = this.props.experiments;
+
       if (experiments && experiments.length) {
-        trackingUrl += '&exps=' + experiments.map((e) => {
-          return e.id + ':' + e.value;
+        trackingUrl += '&exps=';
+        trackingUrl += experiments.map((e) => {
+          return `${e.id}:${e.value}`;
         }).join(';');
       }
 
-      var img = new Image();
+      const img = new Image();
       img.src = trackingUrl;
     }
   }

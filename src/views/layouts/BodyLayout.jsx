@@ -48,7 +48,7 @@ class BodyLayout extends BasePage {
       return null;
     }
 
-    let messages = [];
+    const messages = [];
     if (showEUCookieMessage) {
       messages.push({type: constants.messageTypes.EU_COOKIE});
     }

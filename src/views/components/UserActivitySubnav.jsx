@@ -47,11 +47,11 @@ class UserActivitySubnav extends BaseComponent {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.on(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.off(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
   }
 
   _onOpen(bool) {
@@ -61,9 +61,9 @@ class UserActivitySubnav extends BaseComponent {
   }
 
   buildUrl(base, activity, sort, page) {
-    var url = base;
+    const url = base;
 
-    var q = {
+    const q = {
       activity,
     };
 
@@ -75,13 +75,13 @@ class UserActivitySubnav extends BaseComponent {
       q.page = page;
     }
 
-    return url + '?' + querystring.stringify(q);
+    return `${url}?${querystring.stringify(q)}`;
   }
 
   render() {
-    var baseUrl = `/u/${this.props.name}/activity`;
-    var activity = this.state.activity;
-    var sortList = 'userComments';
+    const baseUrl = `/u/${this.props.name}/activity`;
+    const activity = this.state.activity;
+    let sortList = 'userComments';
 
     switch (activity) {
       case 'listings':
@@ -93,21 +93,24 @@ class UserActivitySubnav extends BaseComponent {
         break;
     }
 
-    var activityTitle = dropdownList.find((d) => {
+    const activityTitle = dropdownList.find((d) => {
       return d.activity === activity;
     }).text;
 
-    var button = (
+    const button = (
       <button className={ (this.state.opened ? ' opened' : '') }>
         { activityTitle } <span className='icon-caron'/>
       </button>
     );
+
     const { opened, sort, page } = this.state;
 
     // add user to the bar as well
-    var user = this.props.user;
+    const user = this.props.user;
+    let loginLink;
+
     if (user) {
-      var loginLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
+      loginLink = <a className='TopSubnav-a' href={ `/u/${user.name}` }>{ user.name }</a>;
     } else {
       loginLink = (
         <a
@@ -127,8 +130,11 @@ class UserActivitySubnav extends BaseComponent {
         >
           {
             dropdownList.map((d) => {
-              var iconClass = opened && activity === d.activity ? 'icon-check-shown' :
-                                                                  'icon-check-hidden';
+              let iconClass = 'icon-check-hidden';
+
+              if (opened && activity === d.activity) {
+                iconClass = 'icon-check-shown';
+              }
 
               const url = this.buildUrl(baseUrl, d.activity, sort, page);
               return (
@@ -137,7 +143,7 @@ class UserActivitySubnav extends BaseComponent {
                     className='Dropdown-button'
                     href={ url }
                   >
-                    <span className={ 'icon-check ' + iconClass }>{ ' ' }</span>
+                    <span className={ `icon-check ${iconClass}` }>{ ' ' }</span>
                     <span className='Dropdown-text'>{ d.text }</span>
                   </a>
                 </li>

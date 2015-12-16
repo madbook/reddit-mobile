@@ -12,7 +12,6 @@ const _searchLimit = 25;
 
 class SubredditSelectionButton extends BaseComponent {
   static propTypes = {
-    // apiOptions: React.PropTypes.object,
     changeSubreddit: React.PropTypes.func.isRequired,
     errorClass: React.PropTypes.string.isRequired,
     goToAboutPage: React.PropTypes.func,
@@ -52,16 +51,16 @@ class SubredditSelectionButton extends BaseComponent {
       lastQuery: newVal,
     });
 
-    var api = this.props.app.api;
+    const api = this.props.app.api;
 
-    var options = api.buildOptions(this.props.apiOptions);
+    const options = api.buildOptions(this.props.apiOptions);
     options.query.type = ['sr'];
     options.query.limit = _searchLimit;
     options.query.q = newVal;
 
     api.search.get(options).then(function (data={}) {
       if (data.body && data.body.subreddits) {
-        var newSubs = data.body.subreddits.map((sub) => {
+        const newSubs = data.body.subreddits.map((sub) => {
           return {
             display_name: sub.display_name,
             icon_img: sub.icon_img,
@@ -114,14 +113,14 @@ class SubredditSelectionButton extends BaseComponent {
   }
 
   render () {
-    var props = this.props;
-    var content;
+    const props = this.props;
+    let content;
 
     if (this.state.loaded) {
       content = this.state.subs.map(function(sub, i) {
-        var expandContent;
+        let expandContent;
         if (this.state.submitRules.name === sub.display_name) {
-          var text = this.state.submitRules.text || 'No rules specified...';
+          const text = this.state.submitRules.text || 'No rules specified...';
           expandContent = (
             <div className='container sub-selection-rules'>
 

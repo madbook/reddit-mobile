@@ -2,7 +2,7 @@
 import React from 'react';
 import SVG from '../../components/SVG';
 
-let Logo = function (props) {
+const Logo = function Logo (props) {
   return (
     <SVG
       className='Logo SVG-icon'

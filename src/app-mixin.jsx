@@ -69,7 +69,8 @@ function mixin (App) {
     constructor (config={}) {
       super(config);
 
-      let app = this;
+      const app = this;
+
       // Set up two APIs (until we get non-authed oauth working).
       this.api = new V1Api({
         timeout: constants.DEFAULT_API_TIMEOUT,
@@ -114,7 +115,7 @@ function mixin (App) {
     }
 
     errorPage(ctx, statusCode) {
-      var statusMsg = errorMsgMap[statusCode] || errorMsgMap.default;
+      const title = errorMsgMap[statusCode] || errorMsgMap.default;
 
       if (!isNaN(parseInt(statusCode))) {
         ctx.status = parseInt(statusCode);
@@ -123,7 +124,7 @@ function mixin (App) {
       }
 
       Object.assign({}, ctx.props || {}, {
-        title: statusMsg,
+        title,
         status: ctx.status,
         originalUrl: ctx.originalUrl || '/',
       });

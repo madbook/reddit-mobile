@@ -14,7 +14,7 @@ function TopSubnav (props) {
       </a>
     );
   } else if (user) {
-    navLink = <a className='TopSubnav-a' href={ '/u/' + user.name }>{ user.name }</a>;
+    navLink = <a className='TopSubnav-a' href={ `/u/${user.name}` }>{ user.name }</a>;
   } else {
     navLink = (
       <a
@@ -26,7 +26,7 @@ function TopSubnav (props) {
     );
   }
 
-  var sort = null;
+  let sort;
   if (!props.hideSort && !props.leftLink) {
     sort = (
       <SortDropdown

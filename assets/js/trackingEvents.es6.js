@@ -10,7 +10,7 @@ import gtm from './gtm';
 const idRegex = /(?:t\d+_)?(.*)/;
 
 function calculateHash (key, string) {
-  let hmac = crypto.createHmac('sha256', key);
+  const hmac = crypto.createHmac('sha256', key);
   hmac.setEncoding('hex');
   hmac.write(string);
   hmac.end();
@@ -56,7 +56,7 @@ function trackingEvents(app) {
   }
 
   function convertId (id) {
-    let unprefixedId = idRegex.exec(id)[1];
+    const unprefixedId = idRegex.exec(id)[1];
     return parseInt(unprefixedId, 36);
   }
 
@@ -69,7 +69,7 @@ function trackingEvents(app) {
     const LINK_LIMIT = 25;
 
 
-    let data = {
+    const data = {
       language: 'en', // NOTE: update when there are translations
     };
 
@@ -194,7 +194,7 @@ function trackingEvents(app) {
     let fullUrl = ctx.path;
 
     if (query) {
-      fullUrl += '?' + query;
+      fullUrl += `?${query}`;
     }
 
     gaSend('set', 'page', fullUrl);

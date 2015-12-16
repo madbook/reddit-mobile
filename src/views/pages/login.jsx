@@ -39,7 +39,7 @@ class LoginPage extends BasePage {
     let refererTag;
 
     if (originalUrl) {
-      linkDest = '/?' + querystring.stringify({originalUrl});
+      linkDest = `/?${querystring.stringify({originalUrl})}`;
 
       refererTag = <input type='hidden' name='originalUrl' value={ originalUrl } />;
     }
@@ -66,7 +66,7 @@ class LoginPage extends BasePage {
                   />
                 </div>
 
-                <div className={ passwordClass + ' form-group' }>
+                <div className={ `${passwordClass} form-group` }>
                   <label htmlFor='password' className='hidden'>Password</label>
                   <input
                     id='password'
@@ -86,7 +86,7 @@ class LoginPage extends BasePage {
 
               <p>
                 <a
-                  href={ '/register' + linkDest }
+                  href={ `/register${linkDest}` }
                   data-no-route='true'
                 >Don't have an account? Register!</a>
               </p>

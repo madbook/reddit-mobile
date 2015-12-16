@@ -164,7 +164,7 @@ class UserOverlayMenu extends BaseComponent {
     if (compact) {
       cookies.expire('compact');
     } else {
-      let date = new Date();
+      const date = new Date();
       date.setFullYear(date.getFullYear() + 2);
 
       cookies.set('compact', true, {
@@ -176,7 +176,6 @@ class UserOverlayMenu extends BaseComponent {
     const newCompact = !compact;
     app.emit(constants.COMPACT_TOGGLE, newCompact);
 
-    // TODO hacky, fix this latedr
     app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
     this.setState({compact: newCompact});
   }
@@ -187,7 +186,7 @@ class UserOverlayMenu extends BaseComponent {
     let query = '';
 
     if (Object.keys(this.props.ctx.query).length > 0) {
-      query = '?' + querystring.stringify(this.props.ctx.query || {});
+      query = `?${querystring.stringify(this.props.ctx.query || {})}`;
     }
 
     this.props.app.emit('route:desktop', `${url}${query}`);

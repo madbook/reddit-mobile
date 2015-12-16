@@ -2,7 +2,7 @@
 const SORTS = ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'];
 
 function redirectSort (ctx, sort, subreddit) {
-  var url = `?sort=${sort}`;
+  let url = `?sort=${sort}`;
 
   if (subreddit) {
     url = `/r/${subreddit}${url}`;
@@ -19,7 +19,7 @@ function routes(app) {
       redirectSort(this, 'hot', this.params.subreddit);
     });
 
-    app.router.get('/r/:subreddit/' + sort, function *() {
+    app.router.get(`/r/:subreddit/${sort}`, function *() {
       redirectSort(this, sort, this.params.subreddit);
     });
   });

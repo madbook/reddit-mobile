@@ -15,7 +15,7 @@ import StatsdClient from 'statsd-client';
 import ServerReactApp from 'horse-react/src/server';
 import mixin from '../app-mixin';
 
-var App = mixin(ServerReactApp);
+const App = mixin(ServerReactApp);
 
 // The core
 import constants from '../constants';
@@ -39,7 +39,7 @@ function formatProps (props = {}) {
 }
 
 function setExperiment(app, ctx, id, value) {
-  let cookieOptions = {
+  const cookieOptions = {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: false,
@@ -67,7 +67,7 @@ function setCompact(ctx, app) {
 
   let compact = (ctx.cookies.get('compact') || '').toString() === 'true';
 
-  let cookieOptions = {
+  const cookieOptions = {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: false,
@@ -99,7 +99,8 @@ function setCompact(ctx, app) {
 // Save a static reference to the config object at startup
 const defaultConfig = Config();
 function formatBootstrap(props) {
-  for (var p in props.config) {
+  let p;
+  for (p in props.config) {
     if (!defaultConfig.hasOwnProperty(p)) {
       delete props.config[p];
     }
@@ -118,17 +119,17 @@ class Server {
     config.experiments = config.experiments || [];
     config.formatBootstrap = formatBootstrap;
 
-    var app = new App(config);
+    const app = new App(config);
 
     oauthRoutes(app);
     serverRoutes(app, this);
     routes(app);
 
-    var server = koa();
+    const server = koa();
     server.keys = config.keys;
 
     // tell koa-session what security settings to use for the session cookie
-    var sessionOptions = {
+    const sessionOptions = {
       secure: config.https,
       secureProxy: config.httpsProxy,
     };
@@ -137,9 +138,9 @@ class Server {
       _socket: { send: ()=>{}, close: ()=>{} },
     });
 
-    let that = this;
+    const that = this;
     server.use(function * (next) {
-      let statsd = that.statsd;
+      const statsd = that.statsd;
 
       that.activeRequests++;
 
@@ -186,7 +187,7 @@ class Server {
 
     if (!config.assetPath) {
       // Set up static routes for built (and unbuilt, static) files
-      server.use(koaStatic(__dirname + '/../../build'));
+      server.use(koaStatic(`${__dirname}/../../build`));
     }
 
     server.use(this.checkToken(app));
@@ -250,7 +251,7 @@ class Server {
   setLOID (app) {
     return function * (next) {
       if (!this.cookies.get('loid')) {
-        let cookies = setLoggedOutCookies(this.cookies, app);
+        const cookies = setLoggedOutCookies(this.cookies, app);
 
         // koa doesn't return cookies set within the
         // same request, cache it for later
@@ -275,7 +276,7 @@ class Server {
         // If user came from desktop, and is a new user, treat them as new for
         // experiments.
         if (this.query.ref_source === 'desktop') {
-          let created = new Date(this.cookies.get('loidcreated'));
+          const created = new Date(this.cookies.get('loidcreated'));
 
           if (created.setMinutes(created.getMinutes() - 5) < Date.now()) {
             this.newUser = true;
@@ -287,14 +288,14 @@ class Server {
         this.newUser = true;
       }
 
-      let bucket = getBucket(loid);
+      const bucket = getBucket(loid);
       this.experiments = [];
 
       if (app.config.experiments.fiftyfifty &&
           this.newUser &&
           !this.cookies.get('fiftyfifty')) {
         // divide by two, because there are two possible buckets, plus control
-        let bucketSize = parseInt(app.config.experiments.fiftyfifty) / 2;
+        const bucketSize = parseInt(app.config.experiments.fiftyfifty) / 2;
 
         if (bucket < bucketSize) {
           setExperiment(app, this, 'fiftyfifty', 'A');
@@ -339,11 +340,11 @@ class Server {
 
       yield next;
 
-      var cookieHeaders = this.res.getHeader('Set-Cookie') || [];
+      const cookieHeaders = this.res.getHeader('Set-Cookie') || [];
       cookieHeaders.forEach(c => {
         c = c.split(/=/)[0];
         // this isn't a cacheable cookie or its signature cookie?
-        if (!constants.CACHEABLE_COOKIES.find(x => (x === c || x + '.sig' === c))) {
+        if (!constants.CACHEABLE_COOKIES.find(x => ([x, `${x}.sig`].includes(c)))) {
           // the response can't be cached, then
           this.set('Cache-Control', 'private, no-cache');
         }
@@ -391,14 +392,14 @@ class Server {
         return;
       }
 
-      let session = this.cookies.get('reddit_session');
+      const session = this.cookies.get('reddit_session');
 
       if (!this.token &&
           !this.cookies.get('token') &&
           session) {
 
         try {
-          var token = yield app.convertSession(this, session);
+          const token = yield app.convertSession(this, session);
 
           this.token = token.token.access_token;
           this.tokenExpires = token.token.expires_at.toString();

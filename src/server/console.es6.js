@@ -35,17 +35,17 @@ class Console {
   }
 
   log () {
-    let message = [...arguments].join('\t');
+    const message = [...arguments].join('\t');
     this.emitter.emit('log', Date.now(), message, 'log');
   }
 
   warn () {
-    let message = [...arguments].join('\t');
+    const message = [...arguments].join('\t');
     this.emitter.emit('log', Date.now(), message, 'warn');
   }
 
   error () {
-    let message = [...arguments].join('\t');
+    const message = [...arguments].join('\t');
     this.emitter.emit('log', Date.now(), message, 'error');
   }
 
@@ -69,11 +69,11 @@ class Console {
         });
       });
     })).then((data) => {
-      let stats = data.map((s, i) => {
+      const stats = data.map((s, i) => {
         return [
           this.processes[i].toString(),
           filesize(s.memory),
-          s.cpu.toString() + '%',
+          `${s.cpu.toString()}%`,
         ];
       });
 
@@ -89,7 +89,7 @@ class Console {
   }
 
   formatLog (timestamp, data) {
-    let time = moment(timestamp).format('HH:mm:ss.SS');
+    const time = moment(timestamp).format('HH:mm:ss.SS');
     return `{#666666-fg}[${time}]{/} ${data}`;
   }
 
@@ -142,7 +142,7 @@ class Console {
     });
 
     this.emitter.on('log', (timestamp, data, type='info') => {
-      let message = `${this.formatLog(timestamp, data)}`;
+      const message = `${this.formatLog(timestamp, data)}`;
 
       if (type === 'warn') {
         log.log(`{yellow-fg}${message}{/}`);
@@ -155,7 +155,7 @@ class Console {
       log.render();
 
       if (this.logStream) {
-        this.logStream.write(message + '\n');
+        this.logStream.write(`${message}\n`);
       }
     });
 
@@ -180,10 +180,10 @@ class Console {
   buildMap (grid) {
     const map = grid.set(9, 7, 3, 5, contrib.map, { });
 
-    let colors = ['white', 'green'];
+    const colors = ['white', 'green'];
     let current = 0;
 
-    let blink = function() {
+    const blink = function() {
       setTimeout(function() {
         map.addMarker({
           'lat': '39.04',
@@ -211,8 +211,8 @@ class Console {
   }
 
   buildForm (grid) {
-    let cons = this;
-    let defaultPrefix = this.config.origin;
+    const cons = this;
+    const defaultPrefix = this.config.origin;
 
     function submit (data) {
       console.log('submitted', data);
@@ -232,20 +232,20 @@ class Console {
     });
 
     input.key('enter', function () {
-      let uri = this.getValue();
-      cons.log('Beginning test of ' + uri);
+      const uri = this.getValue();
+      cons.log(`Beginning test of ${uri}`);
 
       superagent
         .get(uri)
         .end(function(err, res) {
           if (err || (res && !res.ok)) {
-            cons.log(err || 'TEST FAIL: ' + res.status);
+            cons.log(`${err || 'TEST FAIL'}: ${res.status}`);
           } else {
             cons.log('Test succeeded');
           }
 
-          let bareURI = uri.replace(defaultPrefix, '');
-          let filename = `testlog-${bareURI.replace(/[^a-zA-Z\d\s]/g,'-')}-${Date.now()}.log`;
+          const bareURI = uri.replace(defaultPrefix, '');
+          const filename = `testlog-${bareURI.replace(/[^a-zA-Z\d\s]/g,'-')}-${Date.now()}.log`;
           fs.writeFile(filename, err || res.text);
 
           cons.log(`Test results written to ${filename}.`);
@@ -289,9 +289,9 @@ class Console {
   }
 
   logRequest ([state, method, uri, options, status, err, duration]) {
-    let message = [];
-    let parsedUri = url.parse(uri);
-    let api = '[api]' + parsedUri.path;
+    const message = [];
+    const parsedUri = url.parse(uri);
+    const api = `[api]${parsedUri.path}`;
 
     // requsest has completed if there's a status
     if (status) {
@@ -367,15 +367,15 @@ class Console {
       },
     });
 
-    let maxRequests = {};
+    const maxRequests = {};
 
     this.emitter.on('activeRequests', (requests) => {
       this.activeRequests = requests;
     });
 
     this.emitter.on('activeRequests', throttle(function(requests) {
-      let titles = Object.keys(requests).map((k) => {
-        let latest = requests[k][requests[k].length - 1];
+      const titles = Object.keys(requests).map((k) => {
+        const latest = requests[k][requests[k].length - 1];
 
         if (!maxRequests[k] || latest > maxRequests[k]) {
           maxRequests[k] = latest;
@@ -396,7 +396,7 @@ class Console {
   }
 
   failProcess (pid) {
-    var i = this.processes.indexOf(pid);
+    const i = this.processes.indexOf(pid);
 
     if (i !== -1) {
       this.processes = this.processes.splice(i, 1);

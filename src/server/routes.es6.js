@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import constants from '../constants';
 
 // set up server-only routes
-let serverRoutes = function(app) {
+const serverRoutes = function(app) {
   const router = app.router;
 
   router.get('/robots.txt', function * () {
@@ -35,7 +35,7 @@ let serverRoutes = function(app) {
 
   router.post('/timings', function *() {
     const statsURL = app.config.statsURL;
-    let timings = this.request.body.rum;
+    const timings = this.request.body.rum;
 
     if (!app.config.actionNameSecret) {
       console.log('returning early, no secret');
@@ -46,7 +46,7 @@ let serverRoutes = function(app) {
     const algorithm = 'sha1';
     let hash;
 
-    let hmac = crypto.createHmac(algorithm, secret);
+    const hmac = crypto.createHmac(algorithm, secret);
     hmac.setEncoding('hex');
     hmac.write(timings.actionName);
     hmac.end();

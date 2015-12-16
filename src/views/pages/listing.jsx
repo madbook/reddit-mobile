@@ -41,7 +41,7 @@ class ListingPage extends BasePage {
 
   onNewComment (comment) {
     // make a shallow copy so we can append to it
-    var comments = this.state.data.comments.slice();
+    const comments = this.state.data.comments.slice();
     comments.splice(0, 0, comment);
 
     this.setState({
@@ -51,13 +51,13 @@ class ListingPage extends BasePage {
 
   saveUpdatedText(newText) {
     const {app, apiOptions} = this.props;
-    let listing = this.state.data.listing;
+    const listing = this.state.data.listing;
 
     if (newText === listing.selftext) {
       return;
     }
 
-    let link = new models.Link(listing);
+    const link = new models.Link(listing);
     let options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
@@ -67,7 +67,7 @@ class ListingPage extends BasePage {
 
     app.api.links.patch(options).then((newListing) => {
       if (newListing) {
-        var data = Object.assign({}, this.state.data);
+        const data = Object.assign({}, this.state.data);
         data.listing = newListing;
 
         this.setState({
@@ -83,8 +83,8 @@ class ListingPage extends BasePage {
   }
 
   onDelete(id) {
-    var {app, subredditName, apiOptions} = this.props;
-    var options = app.api.buildOptions(apiOptions);
+    const { app, subredditName, apiOptions } = this.props;
+    let options = app.api.buildOptions(apiOptions);
 
     options = Object.assign(options, {
       id,
@@ -93,14 +93,14 @@ class ListingPage extends BasePage {
     // nothing returned for this endpoint
     // so we assume success :/
     app.api.links.delete(options).then(() => {
-      var data = this.state.data.listing;
+      const data = this.state.data.listing;
       remove(data, {name: id});
 
       app.setState({
         data,
       });
 
-      app.redirect('/r/' + subredditName);
+      app.redirect(`/r/${subredditName}`);
     });
   }
 
@@ -127,11 +127,11 @@ class ListingPage extends BasePage {
       sort: sort || 'best',
     });
 
-    this.setState({loadingMoreComments: true});
+    this.setState({ loadingMoreComments: true });
 
     try {
-      let res = await app.api.comments.get(options);
-      let newData = Object.assign({}, data);
+      const res = await app.api.comments.get(options);
+      const newData = Object.assign({}, data);
       newData.comments = data.comments
         .slice(0, data.comments.length - 1)
         .concat(res.body);
@@ -149,30 +149,26 @@ class ListingPage extends BasePage {
   render() {
     const { data, editing, loadingMoreComments, linkEditError } = this.state;
 
-    let {
+    const {
       app,
       apiOptions,
       commentId,
       ctx,
       token,
-      sort,
       subredditName,
     } = this.props;
 
+    const sort = this.props.sort || 'best';
+
     const { origin } = this.props.config;
     const { url, env } = ctx;
-
-    sort = sort || 'best';
 
     if (!data || !data.listing) {
       return (<Loading />);
     }
 
-    let user = data.user,
-      listing = data.listing,
-      comments = data.comments,
-      author = listing.author,
-      permalink = listing.cleanPermalink;
+    const { user, listing, comments } = data;
+    const { author, permalink } = listing;
 
     let singleComment;
     if (commentId) {
@@ -191,7 +187,7 @@ class ListingPage extends BasePage {
 
     if (comments) {
       commentsList = comments.map((comment, i) => {
-        var key = `comment-${i}`;
+        const key = `comment-${i}`;
 
         if (comment && comment.bodyHtml !== undefined) {
           return (
@@ -216,10 +212,10 @@ class ListingPage extends BasePage {
           );
         }
 
-        let numChildren = comment.children.length;
-        let word = numChildren > 1 ? 'replies' : 'reply';
-        let permalink = permalink + comment.parent_id.substring(3) + '?context=0';
-        let text = loadingMoreComments ? 'Loading...' :
+        const numChildren = comment.children.length;
+        const word = numChildren > 1 ? 'replies' : 'reply';
+        const permalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
+        const text = loadingMoreComments ? 'Loading...' :
                                          `load more comments (${numChildren} ${word})`;
         return (
           <a

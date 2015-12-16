@@ -50,8 +50,8 @@ class CommunitySearchRow extends BaseComponent {
   _goto(e) {
     e.preventDefault();
     const location = this.refs.location.value.trim();
-    let query = querystring.stringify({ location });
-    let url = `/goto?${query}`;
+    const query = querystring.stringify({ location });
+    const url = `/goto?${query}`;
     this.props.app.redirect(url);
   }
 

@@ -39,16 +39,16 @@ class CommunityHeader extends BaseComponent {
   renderBannerRow(subreddit) {
     const iconUrl = subreddit.icon_img;
 
-    let iconStyle = {};
-    let iconClass = ['CommunityHeader-banner-icon-holder'];
+    const iconStyle = {};
+    const iconClass = ['CommunityHeader-banner-icon-holder'];
 
     if (iconUrl) {
       iconStyle.backgroundImage = `url(${iconUrl})`;
       iconClass.push('CommunityHeader-banner-icon-holder-image');
     }
 
-    let bannerStyle = {};
-    let bannerClass = ['CommunityHeader-banner'];
+    const bannerStyle = {};
+    const bannerClass = ['CommunityHeader-banner'];
 
     if (subreddit.key_color) {
       bannerStyle.backgroundColor = subreddit.key_color;

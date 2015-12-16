@@ -25,15 +25,15 @@ class UserSavedPage extends BasePage {
   componentDidMount() {
     super.componentDidMount();
 
-    let {app, userName} = this.props;
-    app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, 'u/' + userName);
+    const { app, userName } = this.props;
+    app.emit(constants.TOP_NAV_SUBREDDIT_CHANGE, `u/${userName}`);
   }
 
   render() {
     const { actionName, page, token, app, apiOptions, ctx, compact } = this.props;
 
-    let { activities, user } = this.state.data;
-    let loaded = this.state.loaded;
+    const { activities, user } = this.state.data;
+    const loaded = this.state.loaded;
 
     if (!loaded || typeof activities === 'undefined') {
       return (

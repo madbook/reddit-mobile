@@ -61,9 +61,9 @@ class InfoBar extends BaseComponent {
   incrementCookieNoticeSeen(e, num=1) {
     const { app } = this.props;
     const oldCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
-    let options = {};
+    const options = {};
 
-    let date = new Date();
+    const date = new Date();
     date.setFullYear(date.getFullYear() + 2);
     options.expires = date;
 
@@ -96,14 +96,14 @@ class InfoBar extends BaseComponent {
   }
 
   handleNewMessage(message) {
-    let messages = this.state.messages.slice();
+    const messages = this.state.messages.slice();
     messages.push(message);
     this.setState({ messages });
   }
 
   close() {
     const { app } = this.props;
-    let message = this.state.messages[0];
+    const message = this.state.messages[0];
 
     if (message.type === constants.messageTypes.GLOBAL) {
       app.emit(constants.HIDE_GLOBAL_MESSAGE, message);
@@ -111,7 +111,7 @@ class InfoBar extends BaseComponent {
       this.incrementCookieNoticeSeen(null, constants.EU_COOKIE_HIDE_AFTER_VIEWS);
     }
 
-    let messages = this.state.messages.slice(1);
+    const messages = this.state.messages.slice(1);
     this.setState({ messages });
   }
 

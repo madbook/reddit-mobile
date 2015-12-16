@@ -6,9 +6,7 @@ import Inbox from '../components/Inbox';
 import Loading from '../components/Loading';
 
 class MessagesPage extends BasePage {
-  //TODO: someone more familiar with this component could eventually fill this out better
   static propTypes = {
-    // apiOptions: React.PropTypes.object,
     data: React.PropTypes.object,
     view: React.PropTypes.string.isRequired,
   };
@@ -18,22 +16,22 @@ class MessagesPage extends BasePage {
   }
 
   render() {
-    var content;
+    let content;
+    let view;
 
     if (!this.state.loaded || !this.state.data.messages) {
       content = (
         <Loading />
       );
     } else {
-      var messages = this.state.data.messages;
-
-      var view = this.props.view.toLowerCase();
+      const messages = this.state.data.messages;
+      view = this.props.view.toLowerCase();
 
       content = (
         <Inbox
           app={ this.props.app }
           messages={ messages }
-          key={ 'mesages-' + view }
+          key={ `mesages-${view}` }
           user={ this.state.data.user }
           token={ this.props.token }
           apiOptions={ this.props.apiOptions }

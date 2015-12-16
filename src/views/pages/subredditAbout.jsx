@@ -29,7 +29,7 @@ class SubredditAboutPage extends BasePage {
     const subreddit = this.state.data.subreddit;
 
     let htmlDump;
-    let data = this.state.data.subreddit;
+    const data = this.state.data.subreddit;
 
     let accountsActive;
     if (data.accounts_active) {

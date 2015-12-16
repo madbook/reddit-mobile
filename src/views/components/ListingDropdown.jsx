@@ -32,7 +32,7 @@ class ListingDropdown extends BaseComponent {
       showDelPrompt: false,
     };
 
-    var likes = props.listing.likes;
+    const likes = props.listing.likes;
 
     if (likes === false) {
       this.state.localScore = -1;
@@ -55,14 +55,14 @@ class ListingDropdown extends BaseComponent {
   }
 
   render() {
-    var props = this.props;
-    var listing = props.listing;
+    const props = this.props;
+    const listing = props.listing;
 
-    var reportLink;
-    var reportForm;
+    let reportLink;
+    let reportForm;
 
-    var hideLink;
-    var saveLink;
+    let hideLink;
+    let saveLink;
 
     if (props.token) {
       if (this.state.reportFormOpen) {
@@ -96,14 +96,14 @@ class ListingDropdown extends BaseComponent {
         </li>
       );
 
-      var saved = this.state.saved;
-      var hidden = this.state.hidden;
-      var isSavedClass = saved ? 'saved' : '';
+      const saved = this.state.saved;
+      const hidden = this.state.hidden;
+      const isSavedClass = saved ? 'saved' : '';
 
       saveLink = (
         <li className='Dropdown-li'>
           <button className='Dropdown-button' onClick={ this._onSaveClick }>
-            <span className={ 'icon-save-circled ' + isSavedClass }>{ ' ' }</span>
+            <span className={ `icon-save-circled ${isSavedClass}` }>{ ' ' }</span>
             <span className='Dropdown-text'>{ saved ? 'Saved' : 'Save' }</span>
           </button>
         </li>
@@ -121,7 +121,7 @@ class ListingDropdown extends BaseComponent {
       }
     }
 
-    var permalink;
+    let permalink;
 
     if (props.permalink) {
       permalink = (
@@ -134,11 +134,11 @@ class ListingDropdown extends BaseComponent {
       );
     }
 
-    var editLink;
-    var delLink;
+    let editLink;
+    let delLink;
 
     if (props.showEditAndDel) {
-      let thing = listing._type === 'Comment'? 'Comment' : 'Post';
+      const thing = listing._type === 'Comment' ? 'Comment' : 'Post';
 
       if (listing.is_self || thing !== 'Post') {
         editLink = (
@@ -152,8 +152,8 @@ class ListingDropdown extends BaseComponent {
       }
 
 
-      var confirmClass = 'hidden';
-      var toggleDelBtn = (
+      let confirmClass = 'hidden';
+      let toggleDelBtn = (
         <button type='button' className='Dropdown-button' onClick={ this._onDelToggle }>
           <span className='icon-x' />
           <span className='Dropdown-text'>Delete { thing }</span>
@@ -191,7 +191,7 @@ class ListingDropdown extends BaseComponent {
       );
     }
 
-    var viewComments;
+    let viewComments;
     if (props.viewComments && props.listing._type === 'Link') {
       viewComments = (
         <li className='Dropdown-li'>
@@ -203,11 +203,11 @@ class ListingDropdown extends BaseComponent {
       );
     }
 
-    var moreFrom;
+    let moreFrom;
     if (listing.subreddit) {
       moreFrom = (
         <li className='Dropdown-li'>
-          <a className='Dropdown-button' href={ '/r/' + listing.subreddit }>
+          <a className='Dropdown-button' href={ `/r/${listing.subreddit}` }>
             <span className='icon-snoo-circled' />
             <span className='Dropdown-text'>More from r/{ listing.subreddit }</span>
           </a>
@@ -224,7 +224,7 @@ class ListingDropdown extends BaseComponent {
         { permalink }
         { moreFrom }
         <li className='Dropdown-li'>
-          <a className='Dropdown-button' href={ '/u/' + listing.author }>
+          <a className='Dropdown-button' href={ `/u/${listing.author}` }>
             <span className='icon-info-circled' />
             <span className='Dropdown-text'>About { listing.author }</span>
           </a>
@@ -247,7 +247,7 @@ class ListingDropdown extends BaseComponent {
   _onSaveClick(e) {
     e.preventDefault();
 
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    let options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
@@ -272,7 +272,7 @@ class ListingDropdown extends BaseComponent {
     e.preventDefault();
     // api call
     this.props.app.emit('hide', this.props.listing.id);
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    let options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       id: this.props.listing.name,
@@ -304,10 +304,10 @@ class ListingDropdown extends BaseComponent {
   _onReportSubmit(e) {
     e.preventDefault();
 
-    let id = this.props.listing.name;
+    const id = this.props.listing.name;
     const reason = this.refs.otherReason.value.trim();
 
-    let report = new models.Report({
+    const report = new models.Report({
       thing_id: id,
       reason: 'other',
       other_reason: reason,

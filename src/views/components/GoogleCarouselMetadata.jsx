@@ -13,7 +13,7 @@ function formatComments (comments, origin) {
       author: {
         '@type': 'Person',
         name: c.author,
-        url: origin + '/u/' + c.author,
+        url: `${origin}/u/${c.author}`,
       },
       interactionCount: [
         {
@@ -32,18 +32,18 @@ function formatComments (comments, origin) {
 }
 
 function GoogleCarouselMetadata (props) {
-  let listing = props.listing;
-  let comments = props.comments;
+  const listing = props.listing;
+  const comments = props.comments;
 
   if (!listing || !comments || comments.length === 0) {
     return (<div />);
   }
 
-  let published = moment(listing.created_utc * 1000);
+  const published = moment(listing.created_utc * 1000);
 
-  let origin = props.origin;
+  const origin = props.origin;
 
-  let baseObject = {
+  const baseObject = {
     '@context': 'http://schema.org',
     '@type': 'DiscussionForumPosting',
     url: origin + props.url,
@@ -52,7 +52,7 @@ function GoogleCarouselMetadata (props) {
     author: {
       '@type': 'Person',
       name: listing.author,
-      url: origin + '/u/' + listing.author,
+      url: `${origin}/u/${listing.author}`,
     },
     interactionCount: [{
       '@type': 'UserInteraction',
@@ -67,7 +67,7 @@ function GoogleCarouselMetadata (props) {
   if (listing.selftext) {
     baseObject.articleBody = listing.expandcontent;
   } else if (listing.media && listing.media.oembed) {
-    let embed = listing.media.oembed;
+    const embed = listing.media.oembed;
 
     baseObject.sharedContent = {
       url: mobilify(embed.url || listing.url, origin),
@@ -90,7 +90,7 @@ function GoogleCarouselMetadata (props) {
 
   baseObject.comment['@list'] = formatComments(comments, props.origin);
 
-  let googleScript = `
+  const googleScript = `
     <script type='application/ld+json'>
       ${props.app.safeStringify(baseObject)}
     </script>
@@ -99,7 +99,6 @@ function GoogleCarouselMetadata (props) {
   return <div dangerouslySetInnerHTML={ { __html: googleScript } } />;
 }
 
-//TODO: someone more familiar with this component could eventually fill this out better
 GoogleCarouselMetadata.propTypes = {
   comments: React.PropTypes.arrayOf(propTypes.comment).isRequired,
   // listing: propTypes.listing.isRequired, this one appears to be getting empty objects sometimes

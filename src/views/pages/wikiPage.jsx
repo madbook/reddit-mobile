@@ -191,13 +191,15 @@ class WikiPageComp extends BasePage {
       );
     }
 
+    const path = wikiPath ? `/${wikiPath}` : '';
+
     return (
       <div className='container wikiPage-wrapper'>
         <TextSubNav>
           <li className={ `TextSubNav-li ${revisionActive}` } >
             <a
               className='TextSubNav-a'
-              href={ `${urlPrefix}/wiki/revisions${wikiPath ? '/' + wikiPath : ''}` }
+              href={ `${urlPrefix}/wiki/revisions${path}` }
             >
               Revisions
             </a>

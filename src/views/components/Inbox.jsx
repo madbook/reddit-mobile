@@ -4,11 +4,7 @@ import MessagePreview from './MessagePreview';
 import BaseComponent from './BaseComponent';
 
 class Inbox extends BaseComponent {
-  //TODO: someone more familiar with this component could eventually fill this out better
   static propTypes = {
-    // apiOptions: React.PropTypes.object,
-    // isReply: React.PropTypes.bool.isRequired,
-    // messages: React.PropTypes.array.isRequired,
   };
   
   constructor(props) {
@@ -26,7 +22,7 @@ class Inbox extends BaseComponent {
   }
 
   onSubmit (message) {
-    let messages = this.state.messages || [];
+    const messages = this.state.messages || [];
 
     if (this.props.isReply) {
       messages.push(message);
@@ -40,22 +36,26 @@ class Inbox extends BaseComponent {
   }
 
   render() {
-    var props = this.props;
-    var messages = this.state.messages;
-    var onSubmit = this.onSubmit;
+    const props = this.props;
+    const messages = this.state.messages;
+    const onSubmit = this.onSubmit;
 
     return (
       <div className={ 'Inbox' }>
         {
           messages.map(function(m, i) {
-            var isLastReply = !props.isReply || props.isReply && (props.messages.length - 1) === i;
+            const isLastReply = (
+              !props.isReply ||
+              props.isReply && (props.messages.length - 1) === i
+            );
+
             return (
               <MessagePreview
                 app={ props.app }
                 lastReply={ isLastReply }
                 user={ props.user }
                 token={ props.token }
-                key={ 'message-' + m.name }
+                key={ `message-${m.name}` }
                 message={ m }
                 apiOptions={ props.apiOptions }
                 onSubmit={ onSubmit }

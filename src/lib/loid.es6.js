@@ -1,10 +1,10 @@
 import randomString from './randomString';
 
 function setLoggedOutCookies(cookies, app) {
-  let loid = randomString(18);
-  let loidcreated = (new Date()).toISOString();
+  const loid = randomString(18);
+  const loidcreated = (new Date()).toISOString();
 
-  var options = {
+  const options = {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: false,

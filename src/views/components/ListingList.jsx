@@ -50,7 +50,7 @@ class ListingList extends BaseComponent {
   }
 
   _checkAdPos() {
-    var loadedDistance = this._getLoadedDistance();
+    const loadedDistance = this._getLoadedDistance();
 
     if (!this.refs.ad) {
       return true;
@@ -68,11 +68,12 @@ class ListingList extends BaseComponent {
   }
 
   _lazyLoad() {
-    var listings = this.props.listings;
-    var loadedDistance = this._getLoadedDistance();
+    const listings = this.props.listings;
+    const loadedDistance = this._getLoadedDistance();
 
-    for (var i = 0; i < listings.length; i++) {
-      var listing = this.refs['listing' + i];
+    let i;
+    for (i = 0; i < listings.length; i++) {
+      const listing = this.refs[`listing${i}`];
 
       // commentpreviews are stateless, so the ref won't exist.
       if (!listing) {
@@ -115,7 +116,7 @@ class ListingList extends BaseComponent {
   }
 
   buildAd() {
-    var srnames = uniq(this.props.listings.map(function(l) {
+    const srnames = uniq(this.props.listings.map(function(l) {
       return l.subreddit;
     }));
 
@@ -133,19 +134,20 @@ class ListingList extends BaseComponent {
   }
 
   render() {
-    var props = this.props;
-    var page = props.firstPage || 0;
-    var length = props.listings.length;
-    var compact = this.state.compact;
-    var listings = (
+    const props = this.props;
+    const page = props.firstPage || 0;
+    const length = props.listings.length;
+    const compact = this.state.compact;
+
+    const listings = (
       props.listings.map(function(listing, i) {
-        var index = (page * 25) + i;
+        const index = (page * 25) + i;
 
         if (listing._type === 'Comment') {
           return (
             <CommentPreview
               comment={ listing }
-              key={ 'page-comment-' + index }
+              key={ `page-comment-${index}` }
               page={ page }
             />
           );
@@ -155,9 +157,9 @@ class ListingList extends BaseComponent {
           return (
             <Listing
               index={ index }
-              key={ 'page-listing-' + index }
+              key={ `page-listing-${index}` }
               listing={ listing }
-              ref={ 'listing' + i }
+              ref={ `listing${i}` }
               z={ length - i }
               subredditIsNSFW={ props.subredditIsNSFW }
               {...props}
@@ -188,8 +190,8 @@ class ListingList extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    var compact = nextProps.compact;
-    if (compact !== 'undefined' && compact !==this.state.compact) {
+    const compact = nextProps.compact;
+    if (compact !== 'undefined' && compact !== this.state.compact) {
       this.setState({compact});
     }
   }

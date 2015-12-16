@@ -28,11 +28,11 @@ class Modal extends BaseComponent {
 
   render () {
 
-    var style = {
+    const style = {
       display: 'none',
     };
 
-    var openClass = '';
+    let openClass = '';
     if (this.state.open) {
       openClass = 'in';
       style.display = 'block';

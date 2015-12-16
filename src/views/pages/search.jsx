@@ -19,7 +19,6 @@ class SearchPage extends BasePage {
            ((data || {}).subreddits || []).length === 0;
   }
   
-  //TODO: someone more familiar with this component could eventually fill this out better
   static propTypes = {
     after: React.PropTypes.string,
     // apiOptions: React.PropTypes.object,
@@ -85,7 +84,7 @@ class SearchPage extends BasePage {
   }
 
   _composeUrl(data) {
-    let qs = { q: data.query };
+    const qs = { q: data.query };
     if (data.after) { qs.after = data.after; }
     if (data.before) { qs.before = data.before; }
     if (data.page) { qs.page = data.page; }
@@ -93,13 +92,13 @@ class SearchPage extends BasePage {
     if (data.time) { qs.time = data.time; }
     if (data.type) { qs.type = data.type; }
 
-    return (data.subredditName ? `/r/${data.subredditName}` : '') +
-      '/search?' + querystring.stringify(qs);
+    const sub = (data.subredditName ? `/r/${data.subredditName}` : '');
+    return `${sub}/search?${querystring.stringify(qs)}`;
   }
 
   _composeSortingUrl(data) {
     const props = this.props;
-    let qs = { q: props.ctx.query.q };
+    const qs = { q: props.ctx.query.q };
     if (props.after) { qs.after = props.after; }
     if (props.before) { qs.before = props.before; }
     if (props.page) { qs.page = props.page; }
@@ -110,8 +109,8 @@ class SearchPage extends BasePage {
       if (props.sort) { qs.sort = props.sort; }
     }
 
-    return (props.subredditName ? `/r/${props.subredditName}` : '') +
-      '/search?' + querystring.stringify(qs);
+    const sub = (props.subredditName ? `/r/${props.subredditName}` : '');
+    return `${sub}/search?${querystring.stringify(qs)}`;
   }
 
   _generateUniqueKey() {

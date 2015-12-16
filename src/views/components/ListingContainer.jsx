@@ -78,7 +78,7 @@ class ListingContainer extends BaseComponent {
     }
 
     return (
-      <div className={ 'container Listing-container' + (compact ? ' compact' : '') }>
+      <div className={ `container Listing-container${(compact ? ' compact' : '')}` }>
         <ListingList
           { ...this.props }
           compact={ compact }

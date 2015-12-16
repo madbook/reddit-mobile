@@ -1,10 +1,10 @@
 function parseObject (list) {
   if (!list) { return; }
-  let obj = {};
+  const obj = {};
 
   list.split(';').forEach(function (l) {
     if (l && l.indexOf('=')) {
-      let split = l.split('=');
+      const split = l.split('=');
       obj[split[0].trim()] = split[1].trim();
     }
   });
@@ -17,12 +17,10 @@ function parseList (list) {
   return list.split(';');
 }
 
-
 function serverConfig(numCPUs) {
-  let env = process.env;
-  let config = require('../config')();
+  const env = process.env;
+  const config = require('../config')();
   config.processes = numCPUs;
-
 
   if (config.minifyAssets) {
     // Import built-asset manifests for passing to layouts

@@ -32,8 +32,16 @@ function simpleUA(agent) {
 function formatLog(details) {
   if (!details) { return; }
 
-  let {userAgent, message, url, line, column, requestUrl} = details;
-  let errorString = [userAgent || 'UNKNOWN'];
+  const {
+    userAgent,
+    message, 
+    url,
+    line,
+    column,
+    requestUrl,
+  } = details;
+
+  const errorString = [userAgent || 'UNKNOWN'];
 
   errorString.push(message || 'NO MESSAGE');
   errorString.push(requestUrl || 'NO REQUEST URL');
@@ -50,7 +58,7 @@ function formatLog(details) {
 }
 
 function errorLog(details, errorEndpoints, config={}) {
-  let formattedLog = formatLog(details);
+  const formattedLog = formatLog(details);
   console.log(formattedLog);
 
   if (config.debugLevel === 'info') {
@@ -66,7 +74,7 @@ function errorLog(details, errorEndpoints, config={}) {
 
   // send to statsd
   if (errorEndpoints.hivemind) {
-    let ua = simpleUA(details.userAgent || '');
+    const ua = simpleUA(details.userAgent || '');
     hivemind(ua, errorEndpoints.hivemind);
   }
 
@@ -81,7 +89,7 @@ function sendErrorLog(error, endpoint) {
 }
 
 function hivemind(ua, endpoint) {
-  let data = {
+  const data = {
     mwebError: {},
   };
 

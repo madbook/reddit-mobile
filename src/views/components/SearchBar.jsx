@@ -2,7 +2,6 @@ import React from 'react';
 import BaseComponent from './BaseComponent';
 
 class SearchBar extends BaseComponent {
-  //TODO: someone more familiar with this component could eventually fill this out better
   static propTypes = {
     action: React.PropTypes.string.isRequired,
     defaultValue: React.PropTypes.string,
@@ -21,7 +20,7 @@ class SearchBar extends BaseComponent {
     }
 
     e.preventDefault();
-    var val = this.refs.search.value.trim();
+    const val = this.refs.search.value.trim();
 
     if (val !== this.props.defaultValue) {
       this.props.onSearch(val);

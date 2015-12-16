@@ -44,7 +44,7 @@ class RegisterPage extends BasePage {
     let refererTag = '';
 
     if (originalUrl) {
-      linkDest = '/?' + querystring.stringify({originalUrl});
+      linkDest = `/?${querystring.stringify({originalUrl})}`;
       refererTag = <input type='hidden' name='originalUrl' value={ originalUrl } />;
     }
 
@@ -77,7 +77,7 @@ class RegisterPage extends BasePage {
               <h1 className='title h4'>Create a New Account</h1>
 
               <form action='/register' method='POST'>
-                <div className={ usernameClass + ' form-group' }>
+                <div className={ `${usernameClass} form-group` }>
                   <label htmlFor='username' className='hidden'>Username</label>
                   <input
                     id='username'
@@ -89,7 +89,7 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ passwordClass + ' form-group' }>
+                <div className={ `${passwordClass} form-group` }>
                   <label htmlFor='password' className='hidden'>Password</label>
                   <input
                     id='password'
@@ -101,7 +101,7 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ passwordClass + ' form-group' }>
+                <div className={ `${passwordClass} form-group` }>
                   <label htmlFor='password2' className='hidden'>Verify password</label>
                   <input
                     id='password2'
@@ -113,7 +113,7 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ emailClass + ' form-group' }>
+                <div className={ `${emailClass} form-group` }>
                   <label htmlFor='email' className='hidden'>Email (optional)</label>
                   <input
                     id='email'
@@ -139,7 +139,7 @@ class RegisterPage extends BasePage {
 
               <p>
                 <a
-                  href={ '/login' + linkDest }
+                  href={ `/login${linkDest}` }
                   data-no-route='true'
                 >Already have an account? Log in!</a>
               </p>

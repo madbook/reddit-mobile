@@ -26,18 +26,19 @@ class Dropdown extends BaseComponent {
   }
 
   render() {
-    var className = constants.DROPDOWN_CSS_CLASS + ' ' + (this.props.className || '');
+    let className = `${constants.DROPDOWN_CSS_CLASS} ${this.props.className || ''}`;
     className += (this.props.right ? ' pull-right' : '');
 
+    let tab;
     if (this.state.opened) {
-      var pointer = 'stalagmite';
-      var tabClass = 'Dropdown-tab shadow';
+      let pointer = 'stalagmite';
+      let tabClass = 'Dropdown-tab shadow';
       if (this.props.reversed) {
         pointer = 'stalactite';
         tabClass += ' Dropdown-reverse-tab';
       }
 
-      var tab = (
+      tab = (
         <div className={ tabClass } key={ this._key }>
           <div className={ pointer + (this.props.right ? ' pull-right' : '') }></div>
           <ul className='Dropdown-ul list-unstyled'>
@@ -70,7 +71,7 @@ class Dropdown extends BaseComponent {
   _open() {
     this.setState({opened: true});
     this.props.app.emit(constants.DROPDOWN_OPEN, this.props.id);
-    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, true);
+    this.props.app.emit(`${constants.DROPDOWN_OPEN}:${this.props.id}`, true);
 
     // Close once another dropdown opens
     this.props.app.on(constants.DROPDOWN_OPEN, this._close);
@@ -79,7 +80,7 @@ class Dropdown extends BaseComponent {
   _close() {
     this.componentWillUnmount();
     this.setState({opened: false});
-    this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
+    this.props.app.emit(`${constants.DROPDOWN_OPEN}:${this.props.id}`, false);
   }
 }
 

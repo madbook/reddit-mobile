@@ -10,7 +10,7 @@ function iconOrSpacerFromProps(props) {
   let iconContent;
 
   if (props.iconURL) {
-    let backgroundStyle = {
+    const backgroundStyle = {
       backgroundImage: `url(${props.iconURL})`,
     };
 
@@ -24,7 +24,7 @@ function iconOrSpacerFromProps(props) {
         style={ backgroundStyle }
       />);
   } else if (props.icon) {
-    let iconStyles = {};
+    const iconStyles = {};
 
     if (props.iconBackgroundColor) {
       iconStyles.backgroundColor = props.iconBackgroundColor;

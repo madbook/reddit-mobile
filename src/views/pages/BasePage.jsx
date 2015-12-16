@@ -25,7 +25,8 @@ class BasePage extends BaseComponent {
     };
 
     if (props.dataCache) {
-      for (var k in props.dataCache) {
+      let k;
+      for (k in props.dataCache) {
         props.data.set(k, Promise.resolve(props.dataCache[k]));
 
         if (props.dataCache[k] && props.dataCache[k].body) {
@@ -52,7 +53,8 @@ class BasePage extends BaseComponent {
   watchProperties() {
     // Handle no-data error-page case
     if (this.props.data) {
-      for (var key of this.props.data.keys()) {
+      let key;
+      for (key of this.props.data.keys()) {
         if (!this.props.dataCache[key]) {
           this.watch(key);
         }
@@ -69,7 +71,7 @@ class BasePage extends BaseComponent {
       let data;
       if (p.body) {
         data = Object.assign({}, this.state.data);
-        var meta = Object.assign({}, this.state.meta);
+        const meta = Object.assign({}, this.state.meta);
 
         data[property] = p.body;
         meta[property] = p.headers;
@@ -138,8 +140,8 @@ class BasePage extends BaseComponent {
       return;
     }
 
-    let trackingProps = this.buildTrackingPixelProps(url, this.props);
-    let pixel = new TrackingPixel(trackingProps);
+    const trackingProps = this.buildTrackingPixelProps(url, this.props);
+    const pixel = new TrackingPixel(trackingProps);
     pixel.fire();
   }
 

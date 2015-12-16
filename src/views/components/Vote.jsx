@@ -22,7 +22,7 @@ class Vote extends BaseComponent {
       score: props.thing.score,
     };
 
-    var likes = props.thing.likes;
+    const likes = props.thing.likes;
 
     if (likes === false) {
       this.state.localScore = -1;
@@ -38,29 +38,29 @@ class Vote extends BaseComponent {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    this.props.app.on(`${constants.VOTE}:${this.props.thing.id}`, this._onVote);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.VOTE + ':' + this.props.thing.id, this._onVote);
+    this.props.app.off(`${constants.VOTE}:${this.props.thing.id}`, this._onVote);
   }
 
   _onClick(str, evt) {
     switch (str) {
       case 'upvote':
         evt.preventDefault();
-        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, 1);
+        this.props.app.emit(`${constants.VOTE}:${this.props.thing.id}`, 1);
         break;
       case 'downvote':
         evt.preventDefault();
-        this.props.app.emit(constants.VOTE+':'+this.props.thing.id, -1);
+        this.props.app.emit(`${constants.VOTE}:${this.props.thing.id}`, -1);
         break;
     }
   }
 
   _getScore(dir) {
-    var diff;
-    var localScore;
+    let diff;
+    let localScore;
 
     if (this.state.localScore === dir) {
       diff = dir * -1;
@@ -70,13 +70,13 @@ class Vote extends BaseComponent {
       localScore = dir;
     }
 
-    var newScore = this.state.score + diff;
+    const newScore = this.state.score + diff;
     return [newScore, localScore];
   }
 
   _onVote(dir) {
     if (this.submitVote(dir)) {
-      var [newScore, localScore] = this._getScore(dir);
+      const [newScore, localScore] = this._getScore(dir);
 
       this.setState({
         localScore,
@@ -96,12 +96,12 @@ class Vote extends BaseComponent {
       direction = 0;
     }
 
-    var vote = new models.Vote({
+    const vote = new models.Vote({
       direction: parseInt(direction),
       id: this.props.thing.name,
     });
 
-    var options = this.props.app.api.buildOptions(this.props.apiOptions);
+    let options = this.props.app.api.buildOptions(this.props.apiOptions);
 
     options = Object.assign(options, {
       model: vote,

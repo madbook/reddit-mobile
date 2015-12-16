@@ -7,7 +7,6 @@ const TRANSIENT_ERROR_MESSAGE = 'Try again?';
 const IDEMPOTENT_ERROR_MESSAGE = 'Go back?';
 
 class ErrorPage extends BasePage {
-  // TODO: someone more familiar with this component could eventually fill this out
   static propTypes = {
     status: React.PropTypes.number.isRequired,
     originalUrl: React.PropTypes.string.isRequired,
@@ -32,12 +31,13 @@ class ErrorPage extends BasePage {
   }
 
   render() {
-    var referrer = this.props.referrer;
-    var parsedReferrer = referrer ? url.parse(referrer) : {};
-    var sameOrigin = referrer && parsedReferrer.host === url.parse(this.props.origin).host;
-    var back = sameOrigin ? parsedReferrer.path : '/';
-    var status = this.props.status;
-    var callToAction;
+    const referrer = this.props.referrer;
+    const parsedReferrer = referrer ? url.parse(referrer) : {};
+    const sameOrigin = referrer && parsedReferrer.host === url.parse(this.props.origin).host;
+    const status = this.props.status;
+
+    let back = sameOrigin ? parsedReferrer.path : '/';
+    let callToAction;
 
     if (this.props.originalUrl === back) {
       back = '/';

@@ -7,9 +7,9 @@ const RE_HAS_NAMESPACE = /\..+$/;
 
 let allowedOrigins = [ALLOW_WILDCARD];
 let re_postMessageAllowedOrigin = compileOriginRegExp(allowedOrigins);
-let messageNamespaces = [DEFAULT_MESSAGE_NAMESPACE];
+const messageNamespaces = [DEFAULT_MESSAGE_NAMESPACE];
 let re_messageNamespaces = compileNamespaceRegExp(messageNamespaces);
-let proxies = {};
+const proxies = {};
 let listening = false;
 
 function receiveMessage(e) {
@@ -20,15 +20,15 @@ function receiveMessage(e) {
   }
 
 
-  let message = JSON.parse(e.data);
-  let type = message.type;
+  const message = JSON.parse(e.data);
+  const type = message.type;
 
   // Namespace doesn't match, ignore
   if (!re_messageNamespaces.test(type)) {
     return;
   }
 
-  let namespace = type.split('.', 2)[1];
+  const namespace = type.split('.', 2)[1];
 
   if (proxies[namespace]) {
     const proxyWith = proxies[namespace];
@@ -61,11 +61,11 @@ function _removeEventListener(type, handler) {
 }
 
 function compileOriginRegExp(origins) {
-  return new RegExp('^http(s)?:\\/\\/' + origins.join('|') + '$', 'i');
+  return new RegExp(`^http(s)?:\\/\\/${origins.join('|')}$`, 'i');
 }
 
 function compileNamespaceRegExp(namespaces) {
-  return new RegExp('\\.(?:' + namespaces.join('|') + ')$');
+  return new RegExp(`\\.(?:${namespaces.join('|')})$`);
 }
 
 function isWildcard(origin) {
@@ -98,7 +98,8 @@ const frames = {
     }
 
     options = options || {};
-    for (let key in DEFAULT_POSTMESSAGE_OPTIONS) {
+    let key;
+    for (key in DEFAULT_POSTMESSAGE_OPTIONS) {
       if (!options.hasOwnProperty(key)) {
         options[key] = DEFAULT_POSTMESSAGE_OPTIONS[key];
       }
@@ -130,7 +131,7 @@ const frames = {
 
     context = context || this;
 
-    let scoped = function(e) {
+    const scoped = function(e) {
       if (source &&
           source !== e.source &&
           source.contentWindow !== e.source) {
@@ -213,7 +214,7 @@ const frames = {
    * param {String} origin The origin to be removed.
    */
   removePostMessageOrigin(origin) {
-    let index = allowedOrigins.indexOf(origin);
+    const index = allowedOrigins.indexOf(origin);
 
     if (index !== -1) {
       allowedOrigins.splice(index, 1);
@@ -244,7 +245,7 @@ const frames = {
    * param {String} namespace The namespace to stop listening to.
    */
   stopListening(namespace) {
-    let index = messageNamespaces.indexOf(namespace);
+    const index = messageNamespaces.indexOf(namespace);
 
     if (index !== -1) {
       messageNamespaces.splice(index, 1);

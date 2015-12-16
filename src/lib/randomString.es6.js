@@ -1,8 +1,8 @@
 function randomString(len) {
-  var id = [];
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const id = [];
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (var i = 0; i < len; i++) {
+  for (let i = 0; i < len; i++) {
     id.push(chars.charAt(Math.floor(Math.random() * chars.length)));
   }
 

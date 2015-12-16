@@ -46,8 +46,6 @@ class TopNav extends BaseComponent {
     const props = this.props;
     const assetPath = props.app.config.assetPath;
     const { sideNavOpen, communityMenuOpen } = this.state;
-    // TODO: there's topnav link and title being passed in as props,
-    // which we'll want to use in a different way later.
 
     let currentSubredditPath = '';
     if (props.subredditName) {
@@ -74,7 +72,7 @@ class TopNav extends BaseComponent {
     }
 
     return (
-      <nav className={ 'TopNav' + (this.state.sideNavOpen ? ' opened' : '') }>
+      <nav className={ `TopNav${this.state.sideNavOpen ? ' opened' : ''}` }>
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
           <div className='TopNav-beta'>beta</div>
           <a

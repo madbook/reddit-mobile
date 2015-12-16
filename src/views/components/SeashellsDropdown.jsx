@@ -22,15 +22,17 @@ class SeashellsDropdown extends BaseComponent {
   }
 
   render() {
-    var reversed = this.props.reversed || false;
-    var opened = this.state.opened;
-    var content = opened ? this.props.children : undefined;
-    var openedClass = opened ? 'rotate90' : '';
-    var button = (
+    const reversed = this.props.reversed || false;
+    const opened = this.state.opened;
+    const content = opened ? this.props.children : undefined;
+    const openedClass = opened ? 'rotate90' : '';
+
+    const button = (
       <button type='button' className='SeashellsDropdown-button'>
-        <span className={ 'icon-seashells ' + openedClass }></span>
+        <span className={ `icon-seashells ${openedClass}` }></span>
       </button>
     );
+
     return (
       <Dropdown
         app={ this.props.app }
@@ -45,11 +47,11 @@ class SeashellsDropdown extends BaseComponent {
   }
 
   componentDidMount() {
-    this.props.app.on(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.on(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
   }
 
   componentWillUnmount() {
-    this.props.app.off(constants.DROPDOWN_OPEN + ':' + this._id, this._onOpen);
+    this.props.app.off(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
   }
 
   _onOpen(bool) {

@@ -7,8 +7,8 @@ function DefaultLayout (props) {
   const assetPath = config.assetPath;
   const manifest = config.manifest;
 
-  let baseCSS = assetPath + '/css/';
-  let clientJS = assetPath + '/js/';
+  let baseCSS = `${assetPath}/css/`;
+  let clientJS = `${assetPath}/js/`;
 
   let liveReload;
   if (config.liveReload) {
@@ -42,9 +42,9 @@ function DefaultLayout (props) {
   let gaTracking;
 
   if (config.googleAnalyticsId) {
-    let googleAnalyticsId = config.googleAnalyticsId;
+    const googleAnalyticsId = config.googleAnalyticsId;
 
-    let trackingCode = `
+    const trackingCode = `
       <script>
       if (!window.DO_NOT_TRACK) {
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -136,7 +136,6 @@ function DefaultLayout (props) {
   );
 }
 
-//TODO: someone more familiar with this component could eventually fill this out better
 DefaultLayout.propTypes = {
   metaDescription: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,

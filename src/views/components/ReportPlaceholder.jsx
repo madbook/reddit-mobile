@@ -30,7 +30,7 @@ class ReportPlaceholder extends BaseComponent {
   }
 
   render() {
-    var fadeClass = '';
+    let fadeClass = '';
 
     if (this.state.closed) {
       return (<div />);

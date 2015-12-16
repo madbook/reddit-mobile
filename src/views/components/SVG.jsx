@@ -18,9 +18,9 @@ function SVG (props) {
         xmlns={ _NS }
         x='0px'
         y='0px'
-        width={ width+'px' }
-        height={ height+'px' }
-        viewBox={ '0 0 '+width+' '+height }
+        width={ `${width}px` }
+        height={ `${height}px` }
+        viewBox={ `0 0 ${width} ${height}` }
         onMouseMove={ move }
         onMouseLeave={ out }
       >
@@ -31,7 +31,7 @@ function SVG (props) {
 
   const fallbackIcon = props.fallbackIcon;
   if (fallbackIcon) {
-    return <figure className={ props.className + ' ' + fallbackIcon }/>;
+    return <figure className={ `${props.className} ${fallbackIcon}` }/>;
   }
 
   const fallbackText = props.fallbackText;

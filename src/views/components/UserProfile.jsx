@@ -3,37 +3,9 @@ import moment from 'moment';
 import propTypes from '../../propTypes';
 
 function UserProfile (props) {
-  var userProfile = props.userProfile;
-  var created = moment(userProfile.created * 1000);
-    //TODO trophy case items can look like this when we get that data
-            /*<li className='UserProfile-trophy clearfix'>
-              <span className='icon-crown-circled'/>
-              <div className='pull-left'>
-                <p className='UserProfile-trophy-title'>Gold Membership</p>
-                <p className='UserProfile-trophy-date'>Since December 2014</p>
-              </div>
-            </li>
-            <li className='UserProfile-trophy clearfix'>
-              <span className='icon-crown-circled'/>
-              <div className='pull-left'>
-                <p className='UserProfile-trophy-title'>Gold Membership</p>
-                <p className='UserProfile-trophy-date'>Since December 2014</p>
-              </div>
-            </li>
-            <li className='UserProfile-trophy clearfix'>
-              <span className='icon-crown-circled'/>
-              <div className='pull-left'>
-                <p className='UserProfile-trophy-title'>Gold Membership</p>
-                <p className='UserProfile-trophy-date'>Since December 2014</p>
-              </div>
-            </li>
-            <li className='UserProfile-trophy clearfix'>
-              <span className='icon-crown-circled'/>
-              <div className='pull-left'>
-                <p className='UserProfile-trophy-title'>Gold Membership</p>
-                <p className='UserProfile-trophy-date'>Since December 2014</p>
-              </div>
-            </li>*/
+  const userProfile = props.userProfile;
+  const created = moment(userProfile.created * 1000);
+
   return (
     <article className={ 'UserProfile' }>
       <ul className='UserProfile-ul list-unstyled'>

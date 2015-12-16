@@ -123,7 +123,7 @@ class IndexPage extends BasePage {
       return null;
     }
 
-    let bypassInterstitial = data.preferences && data.preferences.over_18;
+    const bypassInterstitial = data.preferences && data.preferences.over_18;
 
     if (!bypassInterstitial) {
       if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
@@ -132,41 +132,41 @@ class IndexPage extends BasePage {
     }
 
 
-    var hideSubredditLabel = props.subredditName &&
+    const hideSubredditLabel = props.subredditName &&
                              props.subredditName.indexOf('+') === -1 &&
                              props.subredditName !== 'all';
 
-    var page = props.page || 0;
+    const page = props.page || 0;
 
-    var user = this.state.data.user;
+    const user = this.state.data.user;
 
     let pagingPrefix;
 
     if (props.subredditName) {
-      pagingPrefix = '/r/' + props.subredditName;
+      pagingPrefix = `/r/${props.subredditName}`;
     }
 
     if (props.multi) {
-      pagingPrefix = '/u/' + props.multiUser + '/m/' + props.multi;
+      pagingPrefix = `/u/${props.multiUser}/m/${props.multi}`;
     }
 
     // Use the same logic for the url and for the subreddit name display
     const subreddit = pagingPrefix;
 
-    var sort = props.sort || 'hot';
-    var excludedSorts = [];
+    const sort = props.sort || 'hot';
+    const excludedSorts = [];
 
     if (!props.subredditName || props.multi) {
       excludedSorts.push('gilded');
     }
 
-    var showAds = !!props.config.adsPath;
+    let showAds = !!props.config.adsPath;
 
     if (props.prefs && props.prefs.hide_ads === true) {
       showAds = false;
     }
 
-    let subredditIsNSFW = data.subreddit ? data.subreddit.over18 : false;
+    const subredditIsNSFW = data.subreddit ? data.subreddit.over18 : false;
 
     let notificationBar;
     const notifications = props.ctx.notifications;

@@ -42,7 +42,7 @@ class Listing extends BaseComponent {
   constructor(props) {
     super(props);
 
-    var compact = _isCompact(props);
+    const compact = _isCompact(props);
 
     this.state = {
       compact,
@@ -80,11 +80,25 @@ class Listing extends BaseComponent {
 
   //build headline
   _renderHeadline() {
-    let { app, apiOptions, user, token, single, toggleEdit, onDelete,
-          listing, hideSubredditLabel } = this.props;
+    const {
+      app,
+      apiOptions,
+      user,
+      token,
+      single,
+      toggleEdit,
+      onDelete,
+      listing,
+      hideSubredditLabel,
+    } = this.props;
 
-    let { distinguished, subreddit, author } = listing;
-    var linkFlairText = listing.link_flair_text;
+    const {
+      distinguished,
+      subreddit,
+      author,
+    } = listing;
+
+    const linkFlairText = listing.link_flair_text;
 
     let showEditAndDel = false;
     if (user && single) {
@@ -92,7 +106,7 @@ class Listing extends BaseComponent {
     }
 
 
-    var listingDropdownNode = (
+    const listingDropdownNode = (
       <ListingDropdown
         apiOptions={ apiOptions }
         app={ app }
@@ -111,26 +125,32 @@ class Listing extends BaseComponent {
       />
     );
 
+    let nsfwNode;
+
     if (ListingContent.isNSFW(listing)) {
-      var nsfwNode = (
+      nsfwNode = (
         <span className='Listing-link-flair label label-danger'>
           NSFW
         </span>
       );
     }
 
+    let linkNode;
+
     if (linkFlairText) {
-      var linkNode = (
+      linkNode = (
         <span
-          className={ 'Listing-link-flair label label-primary ' + listing.link_flair_css_class }
+          className={ `Listing-link-flair label label-primary ${listing.link_flair_css_class}` }
         >
           { linkFlairText }
         </span>
       );
     }
 
+    let flairNode;
+
     if (nsfwNode || linkNode) {
-      var flairNode = (
+      flairNode = (
         <div className='Listing-flair link-flair-container vertical-spacing-top'>
           { nsfwNode }
           { linkNode }
@@ -138,24 +158,32 @@ class Listing extends BaseComponent {
       );
     }
 
+    let subredditNode;
+
     if (!hideSubredditLabel) {
-      var srDetail = listing.sr_detail;
+      const srDetail = listing.sr_detail;
+      let style;
+
       if (srDetail) {
-        var keyColor = srDetail.key_color;
+        const keyColor = srDetail.key_color;
+
         if (keyColor) {
-          var style = {color: keyColor};
+          style = { color: keyColor };
         }
       }
 
-      var subredditNode = subreddit ? (
+      subredditNode = subreddit ? (
         <a className='Listing-subreddit' href={ `/r/${subreddit}` }>
           <span style={ style }>r/{ subreddit }</span>
         </a>
       ) : null;
     }
 
+    let row1Node;
+    let row2Dropdown;
+
     if (subredditNode || flairNode) {
-      var row1Node = (
+      row1Node = (
         <div className='Listing-header-row1'>
           { listing.locked
             ? <div className='Listing-lock icon-lock'/>
@@ -166,18 +194,24 @@ class Listing extends BaseComponent {
         </div>
       );
     } else {
-      var row2Dropdown = listingDropdownNode;
+      row2Dropdown = listingDropdownNode;
     }
 
+    const distinguishedClass = distinguished ? ` text-${distinguished}` : '';
+
+    const edited = listing.edited ? ' *' : '';
+
+    const title = `${listing.title}${edited}`;
+
     return (
-      <header className={ 'Listing-header' + (row2Dropdown ? ' single-row' : '') }>
+      <header className={ `Listing-header${(row2Dropdown ? ' single-row' : '')}` }>
         { row1Node }
         <div className={ 'Listing-header-row2' }>
           <a
             href={ mobilify(listing.url) }
-            className={ 'Listing-title' + (distinguished ? ' text-' + distinguished : '') }
+            className={ `Listing-title${distinguishedClass}` }
           >
-            { listing.title + ' ' + (listing.edited ? '*' : '') }
+            { title }
           </a>
           { row2Dropdown }
         </div>
@@ -186,23 +220,42 @@ class Listing extends BaseComponent {
   }
 
   _renderFooter() {
-    let { listing, single, hideWhen, hideDomain, hideComments,
-          app, token, apiOptions, hideSubredditLabel } = this.props;
+    const {
+      listing,
+      single,
+      hideWhen,
+      hideDomain,
+      hideComments,
+      app,
+      token,
+      apiOptions,
+      hideSubredditLabel,
+    } = this.props;
 
-    let { domain, promoted, gilded, num_comments,
-          created_utc, subreddit } = listing;
+    const {
+      domain,
+      promoted,
+      gilded,
+      num_comments,
+      created_utc,
+      subreddit,
+    } = listing;
+
+    let gildedNode;
 
     if (gilded && single) {
-      var gildedNode = (
+      gildedNode = (
         <li><span className='icon-gold-circled'/></li>
       );
     }
 
+    let whenNode;
+
     if (!hideWhen) {
-      var whenNode = (<span className='Listing-when'>{ short(created_utc * 1000) }</span>);
+      whenNode = (<span className='Listing-when'>{ short(created_utc * 1000) }</span>);
     }
 
-    var domainNode;
+    let domainNode;
 
     if (promoted) {
       domainNode = (
@@ -214,8 +267,10 @@ class Listing extends BaseComponent {
       );
     }
 
+    let commentsNode;
+
     if (!hideComments) {
-      var commentsNode = (
+      commentsNode = (
         <li className='Listing-comments linkbar-item-no-seperator'>
           <a
             className='Listing-commentsbutton'
@@ -257,41 +312,39 @@ class Listing extends BaseComponent {
     );
   }
 
-  //build image credit
-    /*_renderImageCredit() {
-      var props = this.props;
-      var state = this.state;
-      var listing = props.listing;
-      var domain = listing.domain;
-      var url = listing.url;
-
-      if (!state.compact && state.expanded || props.single) {
-        var u = isImgurDomain(domain) ? url.replace(ListingContent.imgMatch, '') : url;
-        return (
-          <div className="external-image-meta">
-            <span>{ domain }</span>
-            <span> | </span>
-            <a href={ u } data-no-route="true">{ u }</a>
-          </div>
-        );
-      }
-    }*/
-
   render() {
-    var { width, compact, tallestHeight, loaded, expanded,
-          hidden, reported, showNSFW } = this.state;
-    var { showHidden, single, editing, listing, toggleEdit, saveUpdatedText,
-          editError, z} = this.props;
+    const {
+      width,
+      compact,
+      tallestHeight,
+      loaded,
+      expanded,
+      hidden,
+      reported,
+      showNSFW,
+    } = this.state;
+
+    const {
+      showHidden,
+      single,
+      editing,
+      listing,
+      toggleEdit,
+      saveUpdatedText,
+      editError,
+      z,
+    } = this.props;
 
     if ((!showHidden && hidden) || reported) {
       return null;
     }
 
-    var expandedCompact;
+    let expandedCompact;
     if (compact && expanded && !single) {
       if (!this.key) {
         this.key = Math.random();
       }
+
       expandedCompact = (
         <ListingContent
           expand = { this.toggleExpanded }
@@ -307,7 +360,7 @@ class Listing extends BaseComponent {
       );
     }
 
-    var listingClass = `Listing ${(compact ? 'compact' : 'card')}` +
+    const listingClass = `Listing ${(compact ? 'compact' : 'card')}` +
       `${(listing.promoted ? ' Listing-sponsored' : '')}`;
 
     return (
@@ -374,7 +427,7 @@ class Listing extends BaseComponent {
     const state = this.state;
     const node = this.refs.root;
 
-    let newState = {};
+    const newState = {};
     let height;
 
     newState.width = node.offsetWidth;

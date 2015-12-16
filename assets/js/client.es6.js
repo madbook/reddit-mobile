@@ -38,7 +38,7 @@ import ClientReactApp from 'horse-react/src/client';
 import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
 
-var App = mixin(ClientReactApp);
+const App = mixin(ClientReactApp);
 
 import defaultConfig from '../../src/config';
 import constants from '../../src/constants';
@@ -52,19 +52,19 @@ import trackingEvents from './trackingEvents';
 import EUCountries from '../../src/EUCountries';
 
 let _lastWinWidth = 0;
-let winWidth = window.innerWidth;
+const winWidth = window.innerWidth;
 
-var beginRender = 0;
+let beginRender = 0;
 
-var $body = document.body || document.getElementsByTagName('body')[0];
-var $head = document.head || document.getElementsByTagName('head')[0];
+const $body = document.body || document.getElementsByTagName('body')[0];
+const $head = document.head || document.getElementsByTagName('head')[0];
 
-var config = defaultConfig();
+const config = defaultConfig();
 // the client should post errors to the /error endpoint.
 config.postErrorURL = POST_ERROR_URL;
 
 function loadShim() {
-  var shimScript = document.createElement('script');
+  const shimScript = document.createElement('script');
   shimScript.type = 'text\/javascript';
   shimScript.onload = function() {
     initialize(false);
@@ -72,7 +72,7 @@ function loadShim() {
 
   $head.appendChild(shimScript, document.currentScript);
 
-  shimScript.src = window.bootstrap.config.assetPath + '/js/es5-shims.js';
+  shimScript.src =`${window.bootstrap.config.assetPath}/js/es5-shims.js`;
 }
 
 function onLoad(fn) {
@@ -93,11 +93,11 @@ if (!Object.create || !Array.prototype.map || !Object.freeze) {
   });
 }
 
-var referrer;
+let referrer;
 
 function modifyContext (ctx) {
-  let baseCtx = this.getState('ctx');
-  let app = this;
+  const baseCtx = this.getState('ctx');
+  const app = this;
 
   const EUCookie = parseInt(cookies.get('EUCookieNotice')) || 0;
   const isEUCountry = EUCountries.indexOf(this.getState('country')) !== -1;
@@ -129,7 +129,7 @@ function modifyContext (ctx) {
 }
 
 function setTitle(props={}) {
-  let $title = document.getElementsByTagName('title')[0];
+  const $title = document.getElementsByTagName('title')[0];
   if (props.title) {
     if ($title.textContent) {
       $title.textContent = props.title;
@@ -150,10 +150,10 @@ function refreshToken (app) {
           reject(err);
         }
 
-        var token = res.body;
+        const token = res.body;
 
-        var now = new Date();
-        var expires = new Date(token.tokenExpires);
+        const now = new Date();
+        const expires = new Date(token.tokenExpires);
 
         Object.assign(app.getState('ctx'), {
           token: token.token,
@@ -202,8 +202,8 @@ function sendTimings() {
   // Send the timings during the next cycle.
   if (window.bootstrap.actionName) {
     if (Math.random() < 0.1) { // 10% of requests
-      var timings = Object.assign({
-        actionName: 'm.server.' + window.bootstrap.actionName,
+      const timings = Object.assign({
+        actionName: `m.server.${window.bootstrap.actionName}`,
       }, getTimes());
 
       timings.mountTiming = (Date.now() - beginRender) / 1000;
@@ -249,7 +249,7 @@ function initialize(bindLinks) {
 
   config.seed = window.bootstrap.seed || Math.random();
 
-  var app = new App(config);
+  const app = new App(config);
   routes(app);
 
   app.setState('userSubscriptions', dataCache.userSubscriptions);
@@ -264,10 +264,10 @@ function initialize(bindLinks) {
   app.emitter.setMaxListeners(30);
 
   if (app.getState('token')) {
-    var now = new Date();
-    var expires = new Date(app.getState('tokenExpires'));
+    const now = new Date();
+    const expires = new Date(app.getState('tokenExpires'));
 
-    var refreshMS = (expires - now);
+    let refreshMS = (expires - now);
 
     // refresh a little before it expires, to be safe
     refreshMS *= 0.90;
@@ -290,7 +290,7 @@ function initialize(bindLinks) {
   app.state.ctx.env = 'CLIENT';
   app.modifyContext = modifyContext.bind(app);
 
-  var history = window.history || window.location.history;
+  const history = window.history || window.location.history;
   app.pushState = (data, title, url) => {
     if (history) {
       history.pushState(data, title, url);
@@ -335,10 +335,10 @@ function initialize(bindLinks) {
     ReactDOM.render(view(props), app.config.mountPoint);
   };
 
-  var scrollCache = {};
+  const scrollCache = {};
 
   let ignoredInitialPopState = false;
-  var initialUrl = app.fullPathName();
+  let initialUrl = app.fullPathName();
 
   function postRender(href) {
     return function(props) {
@@ -435,7 +435,7 @@ function initialize(bindLinks) {
       });
 
       window.addEventListener('popstate', function() {
-        var href = app.fullPathName();
+        const href = app.fullPathName();
         if (href === initialUrl && !ignoredInitialPopState) {
           ignoredInitialPopState = true;
           return;
@@ -467,14 +467,14 @@ function initialize(bindLinks) {
   });
 
   app.on('route:desktop', function(route) {
-    let options = {};
+    const options = {};
 
-    let date = new Date();
+    const date = new Date();
     date.setFullYear(date.getFullYear() + 2);
     options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
-      var domain = '.' + window.bootstrap.config.reddit
+      const domain = `.${window.bootstrap.config.reddit}`
         .match(/https?:\/\/(.+)/)[1]
         .split('.')
         .splice(1,2)
@@ -512,7 +512,7 @@ function initialize(bindLinks) {
   });
 
   app.on(constants.HIDE_GLOBAL_MESSAGE, function(message) {
-    let options = {
+    const options = {
       expires: new Date(message.expires),
     };
     cookies.set(message.key, 'globalMessageSeen', options);

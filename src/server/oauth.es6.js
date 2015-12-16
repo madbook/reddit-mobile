@@ -19,12 +19,12 @@ function nukeTokens(ctx) {
 }
 
 // set up oauth routes
-var oauthRoutes = function(app) {
+const oauthRoutes = function(app) {
   app.nukeTokens = nukeTokens;
 
   const router = app.router;
 
-  let cookieOptions = {
+  const cookieOptions = {
     secure: app.getConfig('https'),
     secureProxy: app.getConfig('httpsProxy'),
     httpOnly: true,
@@ -96,22 +96,22 @@ var oauthRoutes = function(app) {
 
   function refreshToken (ctx, rToken) {
     return new Promise(function(resolve, reject) {
-      const endpoint = app.config.nonAuthAPIOrigin + '/api/v1/access_token';
+      const endpoint = `${app.config.nonAuthAPIOrigin}/api/v1/access_token`;
       let b;
 
       if (app.config.oauth.secretClientId) {
         b = new Buffer(
-          app.config.oauth.secretClientId + ':' + app.config.oauth.secretSecret
+          `${app.config.oauth.secretClientId}:${app.config.oauth.secretSecret}`
         );
       } else {
         b = new Buffer(
-          app.config.oauth.clientId + ':' + app.config.oauth.secret
+          `${app.config.oauth.clientId}:${app.config.oauth.secret}`
         );
       }
 
       const s = b.toString('base64');
 
-      const basicAuth = 'Basic ' + s;
+      const basicAuth = `Basic ${s}`;
 
       const data = {
         grant_type: 'refresh_token',
@@ -144,7 +144,7 @@ var oauthRoutes = function(app) {
             return reject(401);
           }
 
-          var token = OAuth2.accessToken.create(res.body);
+          const token = OAuth2.accessToken.create(res.body);
           return resolve(token);
         });
     });
@@ -154,11 +154,11 @@ var oauthRoutes = function(app) {
 
   function convertSession(ctx) {
     return new Promise(function(resolve, reject) {
-      const endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
+      const endpoint = `${app.config.nonAuthAPIOrigin}/api/me.json`;
 
       const cookie = ctx.headers.cookie.replace(/__cf_mob_redir=1/, '__cf_mob_redir=0');
 
-      let headers = {
+      const headers = {
         'User-Agent': ctx.headers['user-agent'],
         cookie,
         'accept-encoding': ctx.headers['accept-encoding'],
@@ -185,9 +185,9 @@ var oauthRoutes = function(app) {
           }
 
           const modhash = res.body.data.modhash;
-          const endpoint = app.config.nonAuthAPIOrigin + '/api/v1/authorize';
+          const endpoint = `${app.config.nonAuthAPIOrigin}/api/v1/authorize`;
 
-          const redirect_uri = app.config.origin + '/oauth2/token';
+          const redirect_uri = `${app.config.origin}/oauth2/token`;
 
           let clientId;
           let clientSecret;
@@ -230,7 +230,7 @@ var oauthRoutes = function(app) {
               const location = url.parse(res.headers.location, true);
               const code = location.query.code;
 
-              const endpoint = app.config.nonAuthAPIOrigin + '/api/v1/access_token';
+              const endpoint = `${app.config.nonAuthAPIOrigin}/api/v1/access_token`;
 
               const postData = {
                 grant_type: 'authorization_code',
@@ -239,13 +239,13 @@ var oauthRoutes = function(app) {
               };
 
               const b = new Buffer(
-                clientId + ':' + clientSecret
+                `${clientId}:${clientSecret}`
               );
 
               const s = b.toString('base64');
-              const basicAuth = 'Basic ' + s;
+              const basicAuth = `Basic ${s}`;
 
-              let headers = {
+              const headers = {
                 'User-Agent': ctx.headers['user-agent'],
                 'Authorization': basicAuth,
               };
@@ -284,10 +284,11 @@ var oauthRoutes = function(app) {
     tokenPath: '/api/v1/access_token',
   });
 
-  const redirect = app.config.origin + '/oauth2/token';
+  const redirect = `${app.config.origin}/oauth2/token`;
 
   router.get('/oauth2/login', function * () {
-    const origin = app.getConfig('origin') + '/';
+    const configOrigin = app.getConfig('origin');
+    const origin = `${configOrigin}/`;
 
     // referer spelled wrong according to spec.
     const referer = this.get('Referer') || '/';
@@ -348,7 +349,7 @@ var oauthRoutes = function(app) {
     const { code, error }= this.query;
 
     if (error) {
-      return this.redirect('/oauth2/error?message=' + error);
+      return this.redirect(`/oauth2/error?message=${error}`);
     }
 
     const [state, referer] = this.query.state.split('|');
@@ -369,15 +370,15 @@ var oauthRoutes = function(app) {
 
   function login(username, password, ctx) {
     const id = uuid.v4();
-    const endpoint = app.config.nonAuthAPIOrigin + '/api/fp/1/auth/access_token';
+    const endpoint = `${app.config.nonAuthAPIOrigin}/api/fp/1/auth/access_token`;
 
     const b = new Buffer(
-      app.config.oauth.secretClientId + ':' + app.config.oauth.secretSecret
+      `${app.config.oauth.secretClientId}:${app.config.oauth.secretSecret}`
     );
 
     const s = b.toString('base64');
 
-    const basicAuth = 'Basic ' + s;
+    const basicAuth = `Basic ${s}`;
 
     const data = {
       grant_type: 'password',
@@ -388,7 +389,7 @@ var oauthRoutes = function(app) {
     };
 
     return new Promise(function(resolve, reject) {
-      let headers = {
+      const headers = {
         'User-Agent': ctx.headers['user-agent'],
         'Authorization': basicAuth,
       };
@@ -433,14 +434,12 @@ var oauthRoutes = function(app) {
         if (dest) {
           return `${app.config.origin}${dest}`;
         }
-
         return '/';
       }
     } catch (e) {
       if (Array.isArray(e)) {
         return `/login?error=${e[0]}&message=${e[1]}`;
       }
-
       return `/login?error=${e}`;
     }
   }
@@ -477,10 +476,11 @@ var oauthRoutes = function(app) {
   });
 
   router.post('/register', function * () {
-    const endpoint = app.config.nonAuthAPIOrigin + '/api/register';
+    const origin = app.getConfig('nonAuthAPIOrigin');
+    const endpoint = `${origin}/api/register`;
     const { password, password2, username, newsletter, email } = this.body;
 
-    let data = {
+    const data = {
       user: username,
       passwd: password,
       passwd2: password2,
@@ -505,7 +505,7 @@ var oauthRoutes = function(app) {
 
     try {
       const URI = yield new Promise((resolve, reject) => {
-        let headers = Object.assign({
+        const headers = Object.assign({
           'User-Agent': this.headers['user-agent'],
         }, app.config.apiHeaders || {});
 
