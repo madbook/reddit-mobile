@@ -139,8 +139,8 @@ class ListingList extends BaseComponent {
     var compact = this.state.compact;
     var listings = (
       props.listings.map(function(listing, i) {
-
         var index = (page * 25) + i;
+
         if (listing._type === 'Comment') {
           return (
             <CommentPreview
@@ -149,21 +149,21 @@ class ListingList extends BaseComponent {
               page={ page }
             />
           );
-        } else {
-          if (props.showHidden || !listing.hidden) {
-            return (
-              <Listing
-                index={ index }
-                key={ 'page-listing-' + index }
-                listing={ listing }
-                ref={ 'listing' + i }
-                z={ length - i }
-                subredditIsNSFW={ props.subredditIsNSFW }
-                {...props}
-                compact={ compact }
-              />
-            );
-          }
+        }
+
+        if (props.showHidden || !listing.hidden) {
+          return (
+            <Listing
+              index={ index }
+              key={ 'page-listing-' + index }
+              listing={ listing }
+              ref={ 'listing' + i }
+              z={ length - i }
+              subredditIsNSFW={ props.subredditIsNSFW }
+              {...props}
+              compact={ compact }
+            />
+          );
         }
       })
     );

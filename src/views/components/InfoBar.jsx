@@ -152,11 +152,11 @@ class InfoBar extends BaseComponent {
           </article>
         </div>
       );
-    } else {
-      return (
-        <div className='infobar-placeholder'></div>
-      );
     }
+
+    return (
+      <div className='infobar-placeholder'></div>
+    );
   }
 }
 

@@ -127,7 +127,7 @@ class IndexPage extends BasePage {
 
     if (!bypassInterstitial) {
       if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
-        return (<Interstitial  {...props} loggedIn={ data.preferences } type='over18' />);
+        return (<Interstitial {...props} loggedIn={ data.preferences } type='over18' />);
       }
     }
 

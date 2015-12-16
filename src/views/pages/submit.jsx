@@ -15,11 +15,12 @@ function _removeNewLines(title) {
 function _determineKind(body) {
   var words = body.trim(' ').split(' ');
   var hasProtocol = /^(http|https):\/\/[^ "]+$/.test(words[0]);
+
   if (words.length === 1 && hasProtocol) {
     return 'link';
-  } else {
-    return 'self';
   }
+
+  return 'self';
 }
 
 var debouncedDetermineKind = throttle(_determineKind, 1000);

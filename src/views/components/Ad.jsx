@@ -37,7 +37,7 @@ class Ad extends BaseComponent {
       return true;
     }
 
-    return listing.checkPos.apply(listing, arguments);
+    return listing.checkPos(...arguments);
   }
 
   getAd() {
@@ -98,9 +98,9 @@ class Ad extends BaseComponent {
             link.url = link.href_url;
 
             return resolve(new models.Link(link).toJSON());
-          } else {
-            return reject(res);
           }
+
+          return reject(res);
         });
     });
   }

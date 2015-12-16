@@ -117,7 +117,7 @@ class CaptchaBox extends BaseComponent {
           <p
             className={ 'text-danger ' + errorText }
           >That did not seem to match. Please try again.</p>
-          <a  href='#' onClick={ this.newCaptcha }>get a new code</a>
+          <a href='#' onClick={ this.newCaptcha }>get a new code</a>
         </div>
         <button
           type='button'

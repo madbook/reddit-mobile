@@ -184,7 +184,7 @@ const frames = {
    */
   receiveMessageOnce(source, type, callback, context) {
     const listener = frames.receiveMessage(source, type, function() {
-      callback && callback.apply(this, arguments);
+      if (callback) { callback.apply(this, arguments); }
 
       listener.off();
     }, context);

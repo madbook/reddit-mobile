@@ -197,21 +197,21 @@ class SubredditSelectionButton extends BaseComponent {
             </div>
           </div>
         );
-    } else {
-      return (
-        <div className="sub-selection-selected">
-          <div className='Submit-centered'>
-            <span onClick={ this.toggle } className='text-muted submit-posting-to' >
-              Posting to: &nbsp;
-              <button type='button' className={ this.props.errorClass }>
-                { props.subreddit }
-                <span className='icon-caron'/>
-              </button>
-            </span>
-          </div>
-        </div>
-      );
     }
+
+    return (
+      <div className="sub-selection-selected">
+        <div className='Submit-centered'>
+          <span onClick={ this.toggle } className='text-muted submit-posting-to' >
+            Posting to: &nbsp;
+            <button type='button' className={ this.props.errorClass }>
+              { props.subreddit }
+              <span className='icon-caron'/>
+            </button>
+          </span>
+        </div>
+      </div>
+    );
   }
 }
 

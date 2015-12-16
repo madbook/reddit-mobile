@@ -214,22 +214,22 @@ class ListingPage extends BasePage {
               />
             </div>
           );
-        } else {
-          let numChildren = comment.children.length;
-          let word = numChildren > 1 ? 'replies' : 'reply';
-          let permalink = permalink + comment.parent_id.substring(3) + '?context=0';
-          let text = loadingMoreComments ? 'Loading...' :
-                                           `load more comments (${numChildren} ${word})`;
-          return (
-            <a
-              key={ key }
-              href={ permalink }
-              data-no-route='true'
-              data-index={ i }
-              onClick={ this.loadMore }
-            >{ text }</a>
-          );
         }
+
+        let numChildren = comment.children.length;
+        let word = numChildren > 1 ? 'replies' : 'reply';
+        let permalink = permalink + comment.parent_id.substring(3) + '?context=0';
+        let text = loadingMoreComments ? 'Loading...' :
+                                         `load more comments (${numChildren} ${word})`;
+        return (
+          <a
+            key={ key }
+            href={ permalink }
+            data-no-route='true'
+            data-index={ i }
+            onClick={ this.loadMore }
+          >{ text }</a>
+        );
       });
 
       // Show google crawler metadata when the server renders

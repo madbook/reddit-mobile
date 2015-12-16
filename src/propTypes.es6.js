@@ -19,7 +19,7 @@ var _listingVariants = shape({
   }),
 });
 
-const _subreddit  = shape({
+const _subreddit = shape({
   id: string,
   name: string,
   display_name: string,

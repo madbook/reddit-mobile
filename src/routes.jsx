@@ -58,7 +58,7 @@ function buildAPIOptions(ctx, options={}) {
   }, options);
 
   if (ctx.token) {
-    apiOptions.headers['Authorization'] = `bearer ${ctx.token}`;
+    apiOptions.headers.Authorization = `bearer ${ctx.token}`;
   }
 
   if (app.config.apiPassThroughHeaders) {
@@ -153,9 +153,10 @@ function userData(ctx, app) {
   let { apiOptions } = ctx.props;
 
   if (ctx.props.token) {
-    let userOptions =  Object.assign({}, apiOptions, {
+    let userOptions = Object.assign({}, apiOptions, {
       user: 'me',
     });
+
     setData(ctx, 'user', 'users', userOptions);
 
     let prefOptions = Object.assign({}, apiOptions);
@@ -202,10 +203,10 @@ function makeBody() {
       if (Array.isArray(comp)) {
         const [Component, propOveride] = comp;
         return <Component {...(propOveride || props)} key={ `${props.key}-${i} ` } />;
-      } else {
-        const Component = comp;
-        return <Component {... props} key={ `${props.key}-${i}` } />;
       }
+
+      const Component = comp;
+      return <Component {... props} key={ `${props.key}-${i}` } />;
     });
 
     return (
@@ -283,11 +284,11 @@ function routes(app) {
       this.url.indexOf('/health') === 0
     ) {
       return yield next;
-    } else {
-      getSubreddit(this, app);
-      userData(this, app);
-      return yield next;
     }
+
+    getSubreddit(this, app);
+    userData(this, app);
+    return yield next;
   }
 
   router.get('health', '/health', function * () {
@@ -673,14 +674,14 @@ function routes(app) {
   function makeOptions(token, app) {
     let apiOptions;
     if (token) {
-      apiOptions =  {
+      apiOptions = {
         origin: app.getConfig('authAPIOrigin'),
         headers: {
           'Authorization': `bearer ${token}`,
         },
       };
     } else {
-      apiOptions =  {
+      apiOptions = {
         origin: app.getConfig('nonAuthAPIOrigin'),
       };
     }

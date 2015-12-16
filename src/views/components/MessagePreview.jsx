@@ -65,16 +65,15 @@ class MessagePreview extends BaseComponent {
       sending: true,
     });
 
-    this.props.app.api.messages.post(options).then((function(message) {
+    this.props.app.api.messages.post(options).then((function(data) {
       if (this.props.onSubmit) {
-        this.props.onSubmit(message);
+        this.props.onSubmit(data);
       }
 
       this.setState({
         sending: false,
         showReply: false,
       });
-
     }).bind(this));
 
     this.props.app.emit('message:reply', message);

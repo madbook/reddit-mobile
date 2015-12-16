@@ -398,7 +398,7 @@ class Console {
   failProcess (pid) {
     var i = this.processes.indexOf(pid);
 
-    if (i != -1) {
+    if (i !== -1) {
       this.processes = this.processes.splice(i, 1);
     }
   }

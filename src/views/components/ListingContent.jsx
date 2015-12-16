@@ -59,7 +59,7 @@ function incrRound (n, incr) {
 
 function _aspectRatioClass(ratio) {
   if (!ratio) {
-    return  'aspect-ratio-16x9';
+    return 'aspect-ratio-16x9';
   }
 
   const w = incrRound(ratio * _HEIGHT, _INCREMENT);
@@ -139,9 +139,9 @@ class ListingContent extends BaseComponent {
         </div>
       );
 
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   buildContent() {
@@ -196,9 +196,9 @@ class ListingContent extends BaseComponent {
     if (this.state.playing && html5) {
       if (html5.iframe) {
         return this._renderIFrame(html5.iframe, _DEFAULT_ASPECT_RATIO);
-      } else {
-        return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
       }
+
+      return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
     }
 
     return this._renderImage(src, href, onClick, playable);
@@ -255,7 +255,7 @@ class ListingContent extends BaseComponent {
     let aspectRatio = this._getAspectRatio(props.single, src.width, src.height);
 
     if (props.single && aspectRatio) {
-      style.height = 1 / aspectRatio * props.width  + 'px';
+      style.height = 1 / aspectRatio * props.width + 'px';
     }
 
     if (!onClick && compact) {
@@ -266,7 +266,7 @@ class ListingContent extends BaseComponent {
 
     if (src && src.url && !aspectRatio) {
       return (
-        <a  className='ListingContent-image'
+        <a className='ListingContent-image'
           href={ href }
           onClick={ onClick }
           data-no-route={ noRoute }
@@ -308,7 +308,7 @@ class ListingContent extends BaseComponent {
                       _DEFAULT_ASPECT_RATIO;
     let style = {};
     if (props.single) {
-      style.height = 1 / aspectRatio * props.width  + 'px';
+      style.height = 1 / aspectRatio * props.width + 'px';
     }
 
     return (
@@ -339,7 +339,7 @@ class ListingContent extends BaseComponent {
     let className = 'ListingContent-iframe ' + (aspectRatio ?
       _aspectRatioClass(aspectRatio) : 'set-height');
     return (
-      <div  className={ className } style={ style }>
+      <div className={ className } style={ style }>
         <iframe
           className='ListingContent-iframeiframe'
           width='100%'
@@ -434,14 +434,14 @@ class ListingContent extends BaseComponent {
           <p className='ListingContent-nsfw-p'>NSFW</p>
         </div>
       );
-    } else {
-      return (
-        <div className='ListingContent-nsfw'>
-          <p className='ListingContent-nsfw-p'>This post is marked as NSFW</p>
-          <p className='ListingContent-nsfw-p outlined'>Show post?</p>
-        </div>
-      );
     }
+
+    return (
+      <div className='ListingContent-nsfw'>
+        <p className='ListingContent-nsfw-p'>This post is marked as NSFW</p>
+        <p className='ListingContent-nsfw-p outlined'>Show post?</p>
+      </div>
+    );
   }
 
   _buildMedia(listing, url, oembed) {
@@ -476,16 +476,13 @@ class ListingContent extends BaseComponent {
     if (listing.promoted && has(listing, 'preview.images.0.resolutions.0')) {
       let url = listing.cleanUrl;
       return this._renderImage(preview, url, expand, playable);
-
     } else if (preview) {
       return this._renderImage(preview, listing.cleanUrl, expand, playable);
-
     } else if (listing.selftext) {
       return this._renderTextPlaceholder(listing.expandContent, true, listing.id);
-
-    } else {
-      return this._renderPlaceholder(isNSFW);
     }
+
+    return this._renderPlaceholder(isNSFW);
   }
 
   _previewImage(isNSFW, oembed, showNSFW) {
@@ -520,9 +517,9 @@ class ListingContent extends BaseComponent {
           .find((r) => {
             if (compact) {
               return r.width >= width && r.height >= tallestHeight;
-            } else {
-              return r.width >= width;
             }
+
+            return r.width >= width;
           });
 
         if (bestFit) {
@@ -542,9 +539,9 @@ class ListingContent extends BaseComponent {
           width: oembed.thumbnail_width,
           height: oembed.thumbnail_height,
         };
-      } else {
-        return {};
       }
+
+      return {};
     }
   }
 

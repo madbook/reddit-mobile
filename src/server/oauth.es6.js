@@ -156,7 +156,7 @@ var oauthRoutes = function(app) {
     return new Promise(function(resolve, reject) {
       const endpoint = app.config.nonAuthAPIOrigin + '/api/me.json';
 
-      const cookie = ctx.headers['cookie'].replace(/__cf_mob_redir=1/, '__cf_mob_redir=0');
+      const cookie = ctx.headers.cookie.replace(/__cf_mob_redir=1/, '__cf_mob_redir=0');
 
       let headers = {
         'User-Agent': ctx.headers['user-agent'],
@@ -432,16 +432,16 @@ var oauthRoutes = function(app) {
       if (status === 200) {
         if (dest) {
           return `${app.config.origin}${dest}`;
-        } else {
-          return '/';
         }
+
+        return '/';
       }
     } catch (e) {
       if (Array.isArray(e)) {
         return `/login?error=${e[0]}&message=${e[1]}`;
-      } else {
-        return `/login?error=${e}`;
       }
+
+      return `/login?error=${e}`;
     }
   }
 

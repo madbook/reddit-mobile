@@ -173,7 +173,7 @@ function refreshToken (app) {
             app.setState('refreshingToken', false);
             app.emit('token:refresh', token);
           });
-        }, (expires - now) * .9);
+        }, (expires - now) * 0.9);
       });
   });
 }
@@ -193,15 +193,15 @@ function elementInDropdown(el) {
     return true;
   } else if (el.parentNode) {
     return elementInDropdown(el.parentNode);
-  } else {
-    return false;
   }
+
+  return false;
 }
 
 function sendTimings() {
   // Send the timings during the next cycle.
   if (window.bootstrap.actionName) {
-    if (Math.random() < .1) { // 10% of requests
+    if (Math.random() < 0.1) { // 10% of requests
       var timings = Object.assign({
         actionName: 'm.server.' + window.bootstrap.actionName,
       }, getTimes());
@@ -270,7 +270,7 @@ function initialize(bindLinks) {
     var refreshMS = (expires - now);
 
     // refresh a little before it expires, to be safe
-    refreshMS *= .90;
+    refreshMS *= 0.90;
 
     // if it's within a minute, refresh now
     refreshMS = Math.max(refreshMS - (1000 * 60), 0);
@@ -316,7 +316,7 @@ function initialize(bindLinks) {
       setTitle(props);
       postRender(path);
     });
-  }.bind(app);
+  };
 
   // Redirects to the proper register path if the user isn't logged in.
   //
@@ -593,7 +593,7 @@ function initialize(bindLinks) {
 
   window.addEventListener('scroll', throttle(function() {
     app.emit(constants.SCROLL);
-  }.bind(app), 100));
+  }, 100));
 
   window.addEventListener('resize', throttle(function() {
     // Prevent resize from firing when chrome shows/hides nav bar
@@ -601,7 +601,7 @@ function initialize(bindLinks) {
       _lastWinWidth = winWidth;
       app.emit(constants.RESIZE);
     }
-  }.bind(app), 100));
+  }, 100));
 
   function setMetaColor (color) {
     const metas = Array.prototype.slice.call(document.getElementsByTagName('meta'));

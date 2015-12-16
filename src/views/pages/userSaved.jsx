@@ -47,28 +47,27 @@ class UserSavedPage extends BasePage {
           <p>{ `You have no ${actionName.toLowerCase()} links or comments.` }</p>
         </div>
       );
-    } else {
-      return (
-        <div className='user-page user-saved'>
-          <ListingContainer
-            user={ user }
-            app={ app }
-            ctx={ ctx }
-            showHidden={ true }
-            listings={ activities }
-            firstPage={ page }
-            hideSubredditLabel={ false }
-            token={ token }
-            hideUser={ false }
-            apiOptions={ apiOptions }
-            winWidth={ ctx.winWidth }
-            compact={ compact }
-            listingClassName={ 'vertical-spacing-top' }
-          />
-        </div>
-      );
-
     }
+
+    return (
+      <div className='user-page user-saved'>
+        <ListingContainer
+          user={ user }
+          app={ app }
+          ctx={ ctx }
+          showHidden={ true }
+          listings={ activities }
+          firstPage={ page }
+          hideSubredditLabel={ false }
+          token={ token }
+          hideUser={ false }
+          apiOptions={ apiOptions }
+          winWidth={ ctx.winWidth }
+          compact={ compact }
+          listingClassName={ 'vertical-spacing-top' }
+        />
+      </div>
+    );
   }
 }
 

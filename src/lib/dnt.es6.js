@@ -12,7 +12,7 @@ if (global.navigator) {
     global.navigator.msDoNotTrack;
 
 
-  const dnt = doNotTrack == null ?
+  const dnt = !doNotTrack ?
     null : /^(yes|1)$/i.test(doNotTrack) && ieVersion !== 10 ?
       '1' : '0';
 

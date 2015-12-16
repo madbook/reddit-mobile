@@ -83,7 +83,7 @@ class Interstitial extends BaseComponent {
         <div className='panel interstitial-custom-text-panel'>
         <h3
           className='interstitial-custom-text-header'
-        >{ '/r/' +  props.subredditName || '/r/subreddit' }</h3>
+        >{ '/r/' + props.subredditName || '/r/subreddit' }</h3>
         <p>{ props.customText || 'hello world this is a custom message for thi spanel' }</p>
         </div>
         );

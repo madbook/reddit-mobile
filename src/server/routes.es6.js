@@ -33,7 +33,7 @@ let serverRoutes = function(app) {
     `;
   });
 
-  router.post('/timings', function * () {
+  router.post('/timings', function *() {
     const statsURL = app.config.statsURL;
     let timings = this.request.body.rum;
 
@@ -64,8 +64,7 @@ let serverRoutes = function(app) {
   });
 
 
-
-  router.get('/routes', function* () {
+  router.get('/routes', function *() {
     this.body = app.router.stack.routes
       .filter(function(r) {
         return (

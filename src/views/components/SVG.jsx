@@ -27,29 +27,29 @@ function SVG (props) {
         { props.children }
       </svg>
     );
-  } else {
-    const fallbackIcon = props.fallbackIcon;
-    if (fallbackIcon) {
-      return <figure className={ props.className + ' ' + fallbackIcon }/>;
-    }
-
-    const fallbackText = props.fallbackText;
-    if (fallbackText) {
-      return <span className='fallbackText'>{ fallbackText }</span>;
-    }
-
-    const fallbackImg = props.fallbackImg;
-    if (fallbackImg) {
-      return <img className='fallbackImg' src={ fallbackImg } width={ width } height={ height }/>;
-    }
-
-    const Fallback = props.fallbackComponent;
-    if (Fallback) {
-      return <Fallback/>;
-    }
-
-    return <span className='placeholder'/>;
   }
+
+  const fallbackIcon = props.fallbackIcon;
+  if (fallbackIcon) {
+    return <figure className={ props.className + ' ' + fallbackIcon }/>;
+  }
+
+  const fallbackText = props.fallbackText;
+  if (fallbackText) {
+    return <span className='fallbackText'>{ fallbackText }</span>;
+  }
+
+  const fallbackImg = props.fallbackImg;
+  if (fallbackImg) {
+    return <img className='fallbackImg' src={ fallbackImg } width={ width } height={ height }/>;
+  }
+
+  const Fallback = props.fallbackComponent;
+  if (Fallback) {
+    return <Fallback/>;
+  }
+
+  return <span className='placeholder'/>;
 }
 
 SVG.ENABLED = typeof document !== 'undefined' &&

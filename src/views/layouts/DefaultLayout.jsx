@@ -2,7 +2,7 @@ import React from 'react';
 import LiveReload from '../components/LiveReload';
 import constants from '../../constants';
 
-function DefaultLayout  (props) {
+function DefaultLayout (props) {
   const config = props.config;
   const assetPath = config.assetPath;
   const manifest = config.manifest;

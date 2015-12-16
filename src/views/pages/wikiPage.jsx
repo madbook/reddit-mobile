@@ -117,7 +117,7 @@ class WikiPageComp extends BasePage {
               />
             </div>
             <p className='wikiPage-last-edit'>
-              Revision by  <span className='bold'>{ editor }</span> - { date }
+              Revision by <span className='bold'>{ editor }</span> - { date }
             </p>
           </div>
         );

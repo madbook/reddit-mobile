@@ -20,7 +20,7 @@ class CommunityOverlayMenu extends BaseComponent {
     const num = subscriptions.length;
     if (num > 1) {
       return `${num} Communities`;
-    } else if (num == 1) {
+    } else if (num === 1) {
       return '1 Community';
     }
     return 'No Communities';
@@ -31,7 +31,7 @@ class CommunityOverlayMenu extends BaseComponent {
 
     let followingRow;
     if (subscriptions) {
-      followingRow =  (
+      followingRow = (
         <ExpandoRow
           key='communities-row'
           icon={ 'icon-settings' }

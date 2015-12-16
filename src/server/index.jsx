@@ -9,7 +9,7 @@ import bodyParser from 'koa-bodyparser';
 import csrf from 'koa-csrf';
 import compress from 'koa-compress';
 
-import session from 'koa-session';
+import koasession from 'koa-session';
 import StatsdClient from 'statsd-client';
 
 import ServerReactApp from 'horse-react/src/server';
@@ -25,7 +25,7 @@ import routes from '../routes';
 
 import setLoggedOutCookies from '../lib/loid';
 
-import defaultConfig from '../config';
+import Config from '../config';
 
 const ignoreCSRF = ['/timings', '/error'];
 
@@ -97,10 +97,10 @@ function setCompact(ctx, app) {
 }
 
 // Save a static reference to the config object at startup
-const config = defaultConfig();
+const defaultConfig = Config();
 function formatBootstrap(props) {
   for (var p in props.config) {
-    if (!config.hasOwnProperty(p)) {
+    if (!defaultConfig.hasOwnProperty(p)) {
       delete props.config[p];
     }
   }
@@ -134,7 +134,7 @@ class Server {
     };
 
     this.statsd = new StatsdClient(config.statsd || {
-      _socket:  { send: ()=>{}, close: ()=>{}  },
+      _socket: { send: ()=>{}, close: ()=>{} },
     });
 
     let that = this;
@@ -164,11 +164,11 @@ class Server {
         }
 
         if (this.props.timings.render) {
-          statsd.timing('timings.render',  this.props.timings.render);
+          statsd.timing('timings.render', this.props.timings.render);
         }
 
         if (this.props.timings.data) {
-          statsd.timing('timings.data',  this.props.timings.data);
+          statsd.timing('timings.data', this.props.timings.data);
         }
       }
     });
@@ -177,7 +177,7 @@ class Server {
     // responses don't get cached.
     server.use(this.cacheGuard());
 
-    server.use(session(server, sessionOptions));
+    server.use(koasession(server, sessionOptions));
     server.use(compress());
     server.use(bodyParser());
 
@@ -300,7 +300,7 @@ class Server {
           setExperiment(app, this, 'fiftyfifty', 'A');
         } else if (bucket < bucketSize * 2) {
           setExperiment(app, this, 'fiftyfifty', 'B');
-        } else  {
+        } else {
           setExperiment(app, this, 'fiftyfifty', 'control');
         }
       } else if (this.cookies.get('fiftyfifty')) {
@@ -343,7 +343,7 @@ class Server {
       cookieHeaders.forEach(c => {
         c = c.split(/=/)[0];
         // this isn't a cacheable cookie or its signature cookie?
-        if (!constants.CACHEABLE_COOKIES.find(x => (x == c || x + '.sig' == c))) {
+        if (!constants.CACHEABLE_COOKIES.find(x => (x === c || x + '.sig' === c))) {
           // the response can't be cached, then
           this.set('Cache-Control', 'private, no-cache');
         }

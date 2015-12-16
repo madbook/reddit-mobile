@@ -114,7 +114,7 @@ function mixin (App) {
     }
 
     errorPage(ctx, statusCode) {
-      var statusMsg = errorMsgMap[statusCode] || errorMsgMap['default'];
+      var statusMsg = errorMsgMap[statusCode] || errorMsgMap.default;
 
       if (!isNaN(parseInt(statusCode))) {
         ctx.status = parseInt(statusCode);

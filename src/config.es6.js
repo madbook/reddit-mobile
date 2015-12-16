@@ -15,7 +15,7 @@ let globalMessage = {
 if (globalMessage) {
   const sha = crypto.createHash('sha1');
   if (!globalMessage.text) {
-    throw 'Global message defined with no text';
+    throw Error('Global message defined with no text');
   }
   sha.update(globalMessage.text);
   globalMessage.key = sha.digest('hex');
@@ -54,7 +54,7 @@ function config() {
 
     statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
     mediaDomain: process.env.MEDIA_DOMAIN || 'www.redditmedia.com',
-    adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
+    adsPath: process.env.ADS_PATH || '/api/request_promo.json',
     manifest: {},
 
     trackerKey: process.env.TRACKER_KEY,
