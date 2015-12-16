@@ -4,19 +4,14 @@ exec 1>&2
 # enable user input
 exec < /dev/tty
 
-# Check if a console.log was added
-consoleregexp='\+*console\.log'
-
 # CHECK
-if test $(git diff --cached | grep $consoleregexp | wc -l) != 0
-then 
-  exec git diff --cached | grep -ne $consoleregexp
-  read -p "A console.log was added. Continue? (y/n)" yn
+if read -p "Do you want to run the linter? (y/n)" yn
+then
   echo $yn | grep ^[Yy]$
-  if [ $? -eq 0 ] 
+  if [ $? -eq 0 ]
   then
-    exit 0; #THE USER WANTS TO CONTINUE
+    npm run lint
   else
-    exit 1; # THE USER DONT WANT TO CONTINUE SO ROLLBACK
+    exit 0; #THE USER WANTS TO CONTINUE
   fi
 fi
