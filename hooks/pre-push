@@ -15,4 +15,4 @@ if [[ "$BRANCH" =~ $PROTECTED_BRANCHES ]]; then
   fi
 fi
 
-exit 0
+npm run lint
