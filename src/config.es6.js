@@ -38,12 +38,10 @@ function config() {
     reddit: process.env.REDDIT || 'https://www.reddit.com',
 
     googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
-    googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
 
     loginPath: process.env.LOGIN_PATH || '/oauth2/login',
 
     statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
-    mediaDomain: process.env.MEDIA_DOMAIN || 'www.redditmedia.com',
     adsPath: process.env.ADS_PATH ||  '/api/request_promo.json',
     manifest: {},
 
