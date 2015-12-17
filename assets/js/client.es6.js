@@ -1,7 +1,5 @@
 import 'babel/polyfill';
 
-import '../../src/lib/dnt';
-
 import errorLog from '../../src/lib/errorLog';
 
 function onError(message, url, line, column) {
