@@ -29,8 +29,6 @@ class TrackingPixel {
         trackingUrl += '&view_type=list';
       }
 
-      trackingUrl += '&dnt=' + this.props.dnt;
-
       var experiments = this.props.experiments;
       if (experiments && experiments.length) {
         trackingUrl += '&exps=' + experiments.map((e) => {

@@ -87,7 +87,6 @@ class BasePage extends BaseComponent {
       loidcreated: props.loidcreated,
       user: props.user,
       compact: props.compact,
-      dnt: !!global.navigator.doNotTrack,
     };
   }
 
