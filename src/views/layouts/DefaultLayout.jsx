@@ -2,18 +2,19 @@ import React from 'react';
 import LiveReload from '../components/LiveReload';
 
 function DefaultLayout  (props) {
-  const assetPath = props.config.assetPath;
-  const manifest = props.config.manifest;
+  const config = props.config;
+  const assetPath = config.assetPath;
+  const manifest = config.manifest;
 
   let baseCSS = assetPath + '/css/';
   let clientJS = assetPath + '/js/';
 
   let liveReload;
-  if (props.config.liveReload) {
+  if (config.liveReload) {
     liveReload = (<LiveReload />);
   }
 
-  if (props.config.minifyAssets) {
+  if (config.minifyAssets) {
     baseCSS += manifest['base.css'];
     clientJS += manifest['client.min.js'];
   } else {
@@ -23,9 +24,9 @@ function DefaultLayout  (props) {
 
   let canonical;
 
-  if (props.config.url) {
+  if (config.url) {
     canonical = (
-      <link rel='canonical' href={ `${props.config.reddit}${props.ctx.url}` } />
+      <link rel='canonical' href={ `${config.reddit}${props.ctx.url}` } />
     );
   }
 
@@ -39,8 +40,8 @@ function DefaultLayout  (props) {
 
   let gaTracking;
 
-  if (props.config.googleAnalyticsId) {
-    let googleAnalyticsId = props.config.googleAnalyticsId;
+  if (config.googleAnalyticsId) {
+    let googleAnalyticsId = config.googleAnalyticsId;
 
     let trackingCode = `
       <script>
@@ -63,7 +64,7 @@ function DefaultLayout  (props) {
 
   let gtmTracking;
 
-  if (props.config.googleTagManagerId && props.config.mediaDomain) {
+  if (config.googleTagManagerId && config.mediaDomain) {
     const gtmCode = `
       <script>
         if (!navigator.doNotTrack) {
@@ -71,14 +72,14 @@ function DefaultLayout  (props) {
           frame.style.display = 'none';
           frame.referrer = 'no-referrer';
           frame.id = 'gtm-jail';
-          frame.src = '//${props.config.mediaDomain}/gtm/jail?id=${props.config.googleTagManagerId}';
+          frame.src = '//${config.mediaDomain}/gtm/jail?id=${config.googleTagManagerId}';
           document.body.appendChild(frame);
         }
       </script>
     `;
 
     gtmTracking = (
-      <div dangerouslySetInnerHTML={{ __html: gtmCode }} />
+      <div dangerouslySetInnerHTML={ { __html: gtmCode } } />
     );
   }
 

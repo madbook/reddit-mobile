@@ -1,4 +1,3 @@
-'use strict';
 
 // Normalize DNT across browser vendors
 // spec: http://www.w3.org/2011/tracking-protection/drafts/tracking-dnt.html#widl-Navigator-doNotTrack
@@ -12,9 +11,9 @@ if (global.navigator) {
     global.doNotTrack ||
     global.navigator.msDoNotTrack;
 
-  
+
   const dnt = doNotTrack == null ?
-    null : /^(yes|1)$/i.test(doNotTrack) && ieVersion !== 10 ? 
+    null : /^(yes|1)$/i.test(doNotTrack) && ieVersion !== 10 ?
       '1' : '0';
 
   try {
