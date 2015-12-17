@@ -91,6 +91,10 @@ class BasePage extends BaseComponent {
   }
 
   fireTrackingPixel(url) {
+    if (this.props.ctx.env === 'SERVER') {
+      return;
+    }
+
     let trackingProps = this.buildTrackingPixelProps(url, this.props);
     let pixel = new TrackingPixel(trackingProps);
     pixel.fire();
