@@ -107,7 +107,7 @@ function trackingEvents(app) {
       props.data.subreddit
     );
 
-    data.compact_view = props.compact ? 'T' : 'F';
+    data.compact_view = props.compact;
 
     if (target) {
       // Subreddit ids/names are swapped
