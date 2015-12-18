@@ -96,6 +96,7 @@ class IndexPage extends BasePage {
           count: 25,
           page: page - 1,
           before: firstId,
+          after: undefined,
         });
 
         prevUrl = subreddit + '?' + querystring.stringify(prevQuery);
@@ -105,6 +106,7 @@ class IndexPage extends BasePage {
         count: 25,
         page: page + 1,
         after: lastId,
+        before: undefined,
       });
 
       nextUrl = subreddit + '?' + querystring.stringify(nextQuery);
