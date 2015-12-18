@@ -45,7 +45,7 @@ function DefaultLayout  (props) {
 
     let trackingCode = `
       <script>
-      if (!navigator.doNotTrack) {
+      if (!window.DO_NOT_TRACK) {
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -67,7 +67,7 @@ function DefaultLayout  (props) {
   if (config.googleTagManagerId && config.mediaDomain) {
     const gtmCode = `
       <script>
-        if (!navigator.doNotTrack) {
+        if (!window.DO_NOT_TRACK) {
           var frame = document.createElement('iframe');
           frame.style.display = 'none';
           frame.referrer = 'no-referrer';

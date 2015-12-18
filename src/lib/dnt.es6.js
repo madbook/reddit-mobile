@@ -16,14 +16,5 @@ if (global.navigator) {
     null : /^(yes|1)$/i.test(doNotTrack) && ieVersion !== 10 ?
       '1' : '0';
 
-  try {
-    // DNT is readonly in browsers that support getters
-    Object.defineProperty(global.navigator, 'doNotTrack', {
-      get: function() {
-        return dnt;
-      },
-    });
-  } catch (e) {
-    global.navigator.doNotTrack = dnt;
-  }
+  global.DO_NOT_TRACK = dnt;
 }
