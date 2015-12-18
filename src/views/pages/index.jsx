@@ -1,10 +1,8 @@
 import React from 'react';
 import constants from '../../constants';
-import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
-import ListingPaginationButtons from '../components/ListingPaginationButtons';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
@@ -65,51 +63,24 @@ class IndexPage extends BasePage {
 
     var user = this.state.data.user;
 
-    var firstId;
-    var lastId;
-    let prevUrl;
-    let nextUrl;
-
-    var subreddit = '';
+    let pagingPrefix = '';
 
     if (props.subredditName) {
-      subreddit = '/r/' + props.subredditName;
+      pagingPrefix = '/r/' + props.subredditName;
     }
 
     if (props.multi) {
-      subreddit = '/u/' + props.multiUser + '/m/' + props.multi;
+      pagingPrefix = '/u/' + props.multiUser + '/m/' + props.multi;
     }
+
+    // Use the same logic for the url and for the subreddit name display
+    const subreddit = pagingPrefix;
 
     var sort = props.sort || 'hot';
     var excludedSorts = [];
 
     if (!props.subredditName || props.multi) {
       excludedSorts.push('gilded');
-    }
-
-    if (listings.length) {
-      firstId = listings[0].name;
-      lastId = listings[listings.length - 1].name;
-
-      if (page > 0) {
-        var prevQuery = Object.assign({}, props.ctx.query, {
-          count: 25,
-          page: page - 1,
-          before: firstId,
-          after: undefined,
-        });
-
-        prevUrl = subreddit + '?' + querystring.stringify(prevQuery);
-      }
-
-      var nextQuery = Object.assign({}, props.ctx.query, {
-        count: 25,
-        page: page + 1,
-        after: lastId,
-        before: undefined,
-      });
-
-      nextUrl = subreddit + '?' + querystring.stringify(nextQuery);
     }
 
     var showAds = !!props.config.adsPath;
@@ -144,13 +115,8 @@ class IndexPage extends BasePage {
           subredditIsNSFW={ subredditIsNSFW }
           winWidth={ this.props.ctx.winWidth }
           compact={ compact }
-        >
-          <ListingPaginationButtons
-            compact={ compact }
-            prevUrl={ prevUrl }
-            nextUrl={ nextUrl }
-          />
-        </ListingContainer>
+          pagingPrefix={ pagingPrefix }
+        />
       </div>
     );
   }

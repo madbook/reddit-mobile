@@ -1,8 +1,10 @@
 import React from 'react';
+
 import constants from '../../constants';
 
 import BaseComponent from './BaseComponent';
 import ListingList from './ListingList';
+import ListingPaginationButtons from './ListingPaginationButtons';
 
 const Proptypes = React.PropTypes;
 
@@ -30,24 +32,55 @@ class ListingContainer extends BaseComponent {
   }
 
   render() {
-    const props = this.props;
+    const {
+      listings,
+      ctx,
+      shouldPage,
+      pagingPrefix,
+      prevUrl,
+      nextUrl,
+      listingClassName,
+    } = this.props;
+
     const compact = this.state.compact;
+
+    let pagination;
+
+    // Default paging to `true`
+    if (shouldPage || typeof shouldPage === 'undefined') {
+      pagination = (
+        <ListingPaginationButtons
+          pagingPrefix={ pagingPrefix }
+          listings={ listings }
+          compact={ compact }
+          ctx={ ctx }
+          prevUrl={ prevUrl }
+          nextUrl={ nextUrl }
+        />
+      );
+    }
 
     return (
       <div className={ 'container Listing-container' + (compact ? ' compact' : '') }>
         <ListingList
-          { ...props }
+          { ...this.props }
           compact={ compact }
-          className = { props.listingClassName }
+          className = { listingClassName }
         />
-        { this.props.children }
+        { pagination }
       </div>
     );
   }
 
   static propTypes = {
     compact: Proptypes.bool,
+    shouldPage: Proptypes.bool,
     listingClassName: Proptypes.string,
+    listings: Proptypes.array,
+    ctx: Proptypes.object,
+    pagingPrefix: Proptypes.string,
+    prevUrl: Proptypes.string,
+    nextUrl: Proptypes.string,
   }
 }
 

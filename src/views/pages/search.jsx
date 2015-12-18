@@ -3,7 +3,6 @@ import querystring from 'querystring';
 
 import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
-import ListingPaginationButtons from '../components/ListingPaginationButtons';
 import Loading from '../components/Loading';
 import SearchSortSubnav from '../components/SearchSortSubnav';
 import SearchBar from '../components/SearchBar';
@@ -234,19 +233,16 @@ class SearchPage extends BasePage {
 
         <ListingContainer
           app={ app }
+          ctx={ props.ctx }
           listings={ listings }
           apiOptions={ apiOptions }
           user={ props.user }
           token={ props.token }
           winWidth={ props.ctx.winWidth }
           compact={ compact }
-        >
-            <ListingPaginationButtons
-              compact={ compact }
-              prevUrl={ prevUrl }
-              nextUrl={ nextUrl }
-            />
-        </ListingContainer>,
+          prevUrl={ prevUrl }
+          nextUrl={ nextUrl }
+        />,
       ];
     }
 
