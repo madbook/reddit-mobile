@@ -10,6 +10,10 @@ class CaptchaBox extends BaseComponent {
       iden: this.props.iden || '',
     };
 
+    if (props.iden) {
+      this.state.captchaSrc = this._makeCaptchaUrl(this.state.iden);
+    }
+
     this.newCaptcha = this.newCaptcha.bind(this);
     this._updateCaptchaInfo = this._updateCaptchaInfo.bind(this);
   }
@@ -17,9 +21,6 @@ class CaptchaBox extends BaseComponent {
   componentDidMount() {
     if (!this.state.iden) {
       this.requestCaptcha();
-    } else {
-      var captchaSrc = this._makeCaptchaUrl(this.state.iden);
-      this.setState({captchaSrc});
     }
   }
 
