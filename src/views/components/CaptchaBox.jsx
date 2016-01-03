@@ -82,7 +82,7 @@ class CaptchaBox extends BaseComponent {
     );
     if (this.state.captchaSrc) {
       img = (
-        <img width='120' height='50' src={ this.state.captchaSrcv } />
+        <img width='120' height='50' src={ this.state.captchaSrc } />
       );
     }
 
