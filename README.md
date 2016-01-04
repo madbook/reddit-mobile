@@ -2,7 +2,7 @@ reddit-mobile
 =============
 
 reddit-mobile is a web server and build system for building polymorphic
-React applications in node or io.js. It is part of a larger series of plugins that,
+React applications in node. It is part of a larger series of plugins that,
 together, form frontend applications for reddit.
 
 See [the wiki](https://github.com/reddit/reddit-mobile/wiki) for an in-depth
@@ -11,7 +11,7 @@ explanation of how everything fits together.
 Getting Up and Running
 ----------------------
 
-0. Install [node.js](https://nodejs.org/download/) v4.1+ or iojs 3.0+
+0. Install [node.js](https://nodejs.org/download/) v4.2 and npm 3.5
 1. [Fork](https://github.com/reddit/reddit-mobile/fork) and clone
   this project.
 2. Run `npm install` to install other dependencies.
@@ -30,6 +30,6 @@ Getting Up and Running
     4. Repeat recursively if you need to work on a dependency's dependency
     5. Re-run the build and restart your server (`npm run watch` *will* watch
       linked files)
-8. Commit hooks - symlink `hooks` into `.git/hooks` (`ln -s -f ../hooks .git/hooks`), which
+8. Commit hooks - symlink `hooks` into `.git/hooks` (`ln -s -f ./hooks .git/hooks`), which
   will run some safety checks before committing and pushing code.
 
