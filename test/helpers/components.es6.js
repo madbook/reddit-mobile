@@ -29,7 +29,7 @@ import SubredditSelectionButton from '../../src/views/components/SubredditSelect
 import SVG from '../../src/views/components/SVG';
 import TextSubNav from '../../src/views/components/TextSubNav';
 import TopNav from '../../src/views/components/TopNav';
-import TopSubNav from '../../src/views/components/TopSubNav';
+import TopSubnav from '../../src/views/components/TopSubnav';
 import UserActivitySubnav from '../../src/views/components/UserActivitySubnav';
 import UserProfile from '../../src/views/components/UserProfile';
 import Vote from '../../src/views/components/Vote';
@@ -88,7 +88,7 @@ export {
     SVG,
     TextSubNav,
     TopNav,
-    TopSubNav,
+    TopSubnav,
     UserActivitySubnav,
     UserProfile,
     Vote,

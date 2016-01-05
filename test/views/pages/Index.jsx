@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 
-import { IndexPage, Loading, TopSubNav, ListingContainer } from '../../helpers/components';
+import { IndexPage, Loading, TopSubnav, ListingContainer } from '../../helpers/components';
 
 var expect = chai.expect;
 chai.use(sinonChai);
