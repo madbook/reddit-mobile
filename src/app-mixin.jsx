@@ -17,16 +17,21 @@ import errorLog from './lib/errorLog';
 import constants from './constants';
 
 function logError(err, ctx, config) {
-  var userAgent;
-  var url;
-  var line;
+  let userAgent;
+  let url;
+  const line = null; // update line when it's really set somewhere
 
   if (err.stack) {
     url = err.stack.split('\n')[1];
   }
 
-  if (ctx && ctx.env === 'SERVER' || process) {
-    userAgent = 'SERVER';
+  if (ctx && ctx.env || process && process.env) {
+    userAgent = ctx.env || process.env;
+    if (typeof userAgent === 'object') {
+      // process.env === {} on the client (but client should be using ctx.env)
+      // so this seems like a good default
+      userAgent = 'SERVER';
+    }
 
     if (ctx && ctx.headers && ctx.headers['user-agent']) {
       userAgent += '-' + ctx.headers['user-agent'];

@@ -286,6 +286,8 @@ function initialize(bindLinks) {
     window.location = '/oauth2/login';
   });
 
+  // env comes from bootstrap from the server, update now that the client is loading
+  app.state.ctx.env = 'CLIENT';
   modifyContext = modifyContext.bind(app);
   app.modifyContext = modifyContext;
 
