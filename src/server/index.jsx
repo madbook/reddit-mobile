@@ -420,16 +420,17 @@ class Server {
         return;
       }
 
-      var now = new Date();
-      var expires = this.cookies.get('tokenExpires');
+      const now = new Date();
 
-      expires = new Date(expires);
+      const cookieToken = this.cookies.get('token');
+      const cookieExpires = this.cookies.get('tokenExpires');
+      const rToken = this.cookies.get('refreshToken');
 
-      if (now > expires) {
-        var rToken = this.cookies.get('refreshToken');
+      const expires = new Date(cookieExpires);
 
+      if (cookieToken && rToken && now > expires) {
         try {
-          var token = yield app.refreshToken(this, rToken);
+          const token = yield app.refreshToken(this, rToken);
 
           this.token = token.token.access_token;
           this.tokenExpires = token.token.expires_at.toString();
@@ -443,6 +444,14 @@ class Server {
 
           return;
         }
+        // Sometimes, there's an empty token cookie. This is unexpected- a user
+        // should never have an expires but not a token or a refresh token - but
+        // in case their cookies get mangled somehow, we should nuke the invalid
+        // ones.
+      } else if (expires) {
+        this.cookies.set('token');
+        this.cookies.set('tokenExpires');
+        this.cookies.set('refreshToken');
       }
 
       yield next;
