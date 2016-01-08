@@ -1,13 +1,13 @@
 import React from 'react';
 import process from 'reddit-text-js';
+import moment from 'moment';
+
 import mobilify from '../../lib/mobilify';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import ListingContainer from '../components/ListingContainer';
 import TextSubNav from '../components/TextSubNav';
-
-import moment from 'moment';
 
 const PAGETYPES = {
   LISTING: 't3',
@@ -18,6 +18,11 @@ const PAGETYPES = {
 };
 
 class WikiPageComp extends BasePage {
+  static propTypes = {
+    subredditName: React.PropTypes.string,
+    ctx: React.PropTypes.object.isRequired,
+  };
+  
   makeContent(props, data) {
     const compact = props.compact;
     let content;
@@ -146,10 +151,5 @@ class WikiPageComp extends BasePage {
     );
   }
 }
-
-WikiPageComp.propTypes = {
-  subredditName: React.PropTypes.string,
-  ctx: React.PropTypes.object.isRequired,
-};
 
 export default WikiPageComp;

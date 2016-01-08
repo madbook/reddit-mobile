@@ -6,6 +6,13 @@ import Inbox from '../components/Inbox';
 import Loading from '../components/Loading';
 
 class MessagesPage extends BasePage {
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    data: React.PropTypes.object,
+    view: React.PropTypes.string.isRequired,
+  };
+  
   get track () {
     return 'messages';
   }
@@ -44,12 +51,5 @@ class MessagesPage extends BasePage {
     );
   }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-MessagesPage.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  data: React.PropTypes.object,
-  view: React.PropTypes.string.isRequired,
-};
 
 export default MessagesPage;

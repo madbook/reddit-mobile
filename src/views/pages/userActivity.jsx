@@ -6,6 +6,17 @@ import Loading from '../components/Loading';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 
 class UserActivityPage extends BasePage {
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    activity: React.PropTypes.string.isRequired,
+    after: React.PropTypes.string,
+    before: React.PropTypes.string,
+    data: React.PropTypes.object,
+    page: React.PropTypes.number,
+    sort: React.PropTypes.string,
+    userName: React.PropTypes.string.isRequired,
+  };
+  
   get track() {
     return 'activity';
   }
@@ -62,16 +73,5 @@ class UserActivityPage extends BasePage {
     );
   }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-UserActivityPage.propTypes = {
-  activity: React.PropTypes.string.isRequired,
-  after: React.PropTypes.string,
-  before: React.PropTypes.string,
-  data: React.PropTypes.object,
-  page: React.PropTypes.number,
-  sort: React.PropTypes.string,
-  userName: React.PropTypes.string.isRequired,
-};
 
 export default UserActivityPage;

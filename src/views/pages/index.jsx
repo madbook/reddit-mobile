@@ -1,4 +1,5 @@
 import React from 'react';
+
 import constants from '../../constants';
 
 import BasePage from './BasePage';
@@ -9,6 +10,20 @@ import Interstitial from '../components/Interstitial';
 import CommunityHeader from '../components/CommunityHeader';
 
 class IndexPage extends BasePage {
+  static propTypes = {
+    before: React.PropTypes.string,
+    after: React.PropTypes.string,
+    data: React.PropTypes.object,
+    multi: React.PropTypes.string,
+    multiUser: React.PropTypes.string,
+    page: React.PropTypes.number,
+    prefs: React.PropTypes.shape({
+      hide_ads: React.PropTypes.bool.isRequired,
+    }),
+    sort: React.PropTypes.string,
+    subredditName: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
     this.state.compact = props.compact;
@@ -125,19 +140,5 @@ class IndexPage extends BasePage {
     );
   }
 }
-
-IndexPage.propTypes = {
-  before: React.PropTypes.string,
-  after: React.PropTypes.string,
-  data: React.PropTypes.object,
-  multi: React.PropTypes.string,
-  multiUser: React.PropTypes.string,
-  page: React.PropTypes.number,
-  prefs: React.PropTypes.shape({
-    hide_ads: React.PropTypes.bool.isRequired,
-  }),
-  sort: React.PropTypes.string,
-  subredditName: React.PropTypes.string,
-};
 
 export default IndexPage;

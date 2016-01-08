@@ -7,6 +7,14 @@ const TRANSIENT_ERROR_MESSAGE = 'Try again?';
 const IDEMPOTENT_ERROR_MESSAGE = 'Go back?';
 
 class ErrorPage extends BasePage {
+  // TODO: someone more familiar with this component could eventually fill this out
+  static propTypes = {
+    status: React.PropTypes.number.isRequired,
+    originalUrl: React.PropTypes.string.isRequired,
+    title: React.PropTypes.string.isRequired,
+    referrer: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
     this._desktopSite = this._desktopSite.bind(this);
@@ -77,13 +85,5 @@ class ErrorPage extends BasePage {
     );
   }
 }
-
-// TODO: someone more familiar with this component could eventually fill this out
-ErrorPage.propTypes = {
-  status: React.PropTypes.number.isRequired,
-  originalUrl: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired,
-  referrer: React.PropTypes.string,
-};
 
 export default ErrorPage;

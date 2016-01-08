@@ -14,6 +14,24 @@ const _searchLimit = 25;
 const _searchLimitWithRecommendations = _searchLimit - 3;
 
 class SearchPage extends BasePage {
+  static isNoRecordsFound(data) {
+    return ((data || {}).links || []).length === 0 &&
+           ((data || {}).subreddits || []).length === 0;
+  }
+  
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    after: React.PropTypes.string,
+    // apiOptions: React.PropTypes.object,
+    before: React.PropTypes.string,
+    data: React.PropTypes.object,
+    page: React.PropTypes.number.isRequired,
+    sort: React.PropTypes.string.isRequired,
+    subredditName: React.PropTypes.string,
+    subreddits: React.PropTypes.object,
+    time: React.PropTypes.string.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -259,24 +277,6 @@ class SearchPage extends BasePage {
       </div>
     );
   }
-
-  static isNoRecordsFound(data) {
-    return ((data || {}).links || []).length === 0 &&
-           ((data || {}).subreddits || []).length === 0;
-  }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-SearchPage.propTypes = {
-  after: React.PropTypes.string,
-  // apiOptions: React.PropTypes.object,
-  before: React.PropTypes.string,
-  data: React.PropTypes.object,
-  page: React.PropTypes.number.isRequired,
-  sort: React.PropTypes.string.isRequired,
-  subredditName: React.PropTypes.string,
-  subreddits: React.PropTypes.object,
-  time: React.PropTypes.string.isRequired,
-};
 
 export default SearchPage;

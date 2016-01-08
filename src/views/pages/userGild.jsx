@@ -4,6 +4,10 @@ import BasePage from './BasePage';
 import TopSubnav from '../components/TopSubnav';
 
 class UserGildPage extends BasePage {
+  static propTypes = {
+    userName: React.PropTypes.string.isRequired,
+  };
+  
   render() {
     return (
       <div className="user-page user-gild">
@@ -22,9 +26,5 @@ class UserGildPage extends BasePage {
     );
   }
 }
-
-UserGildPage.propTypes = {
-  userName: React.PropTypes.string.isRequired,
-};
 
 export default UserGildPage;

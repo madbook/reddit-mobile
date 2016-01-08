@@ -1,4 +1,5 @@
 import React from 'react';
+
 import constants from '../../constants';
 
 import BasePage from './BasePage';
@@ -8,6 +9,15 @@ import Loading from '../components/Loading';
 const PropTypes = React.PropTypes;
 
 class UserSavedPage extends BasePage {
+  static propTypes = {
+    actionName: PropTypes.string.isRequired,
+    apiOptions: PropTypes.object,
+    data: PropTypes.object,
+    page: PropTypes.number,
+    sort: PropTypes.string,
+    userName: PropTypes.string.isRequired,
+  }
+  
   get track () {
     return 'activities';
   }
@@ -59,15 +69,6 @@ class UserSavedPage extends BasePage {
       );
 
     }
-  }
-
-  static propTypes = {
-    actionName: PropTypes.string.isRequired,
-    apiOptions: PropTypes.object,
-    data: PropTypes.object,
-    page: PropTypes.number,
-    sort: PropTypes.string,
-    userName: PropTypes.string.isRequired,
   }
 }
 

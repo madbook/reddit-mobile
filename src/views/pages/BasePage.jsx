@@ -6,6 +6,12 @@ import TrackingPixel from '../../lib/TrackingPixel';
 import constants from '../../constants';
 
 class BasePage extends BaseComponent {
+  static propTypes = {
+    ctx: React.PropTypes.object.isRequired,
+    data: React.PropTypes.object.isRequired,
+    app: React.PropTypes.object.isRequired,
+  };
+  
   constructor (props) {
     super(props);
 
@@ -136,11 +142,5 @@ class BasePage extends BaseComponent {
     this.props.app.emit('page:update', this.props);
   }
 }
-
-BasePage.propTypes = {
-  ctx: React.PropTypes.object.isRequired,
-  data: React.PropTypes.object.isRequired,
-  app: React.PropTypes.object.isRequired,
-};
 
 export default BasePage;

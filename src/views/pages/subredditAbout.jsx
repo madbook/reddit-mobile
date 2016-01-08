@@ -8,6 +8,11 @@ import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
 class SubredditAboutPage extends BasePage {
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    subredditName: React.PropTypes.string.isRequired,
+  };
+  
   get track () {
     return 'subreddit';
   }
@@ -68,10 +73,5 @@ class SubredditAboutPage extends BasePage {
     );
   }
 }
-
-SubredditAboutPage.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  subredditName: React.PropTypes.string.isRequired,
-};
 
 export default SubredditAboutPage;

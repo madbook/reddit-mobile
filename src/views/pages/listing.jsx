@@ -11,6 +11,15 @@ import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
 class ListingPage extends BasePage {
+  static propTypes = {
+    commentId: React.PropTypes.string,
+    data: React.PropTypes.object,
+    isGoogleCrawler: React.PropTypes.bool,
+    listingId: React.PropTypes.string.isRequired,
+    sort: React.PropTypes.string,
+    subredditName: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
     this.state.editing = false;
@@ -281,14 +290,5 @@ class ListingPage extends BasePage {
     );
   }
 }
-
-ListingPage.propTypes = {
-  commentId: React.PropTypes.string,
-  data: React.PropTypes.object,
-  isGoogleCrawler: React.PropTypes.bool,
-  listingId: React.PropTypes.string.isRequired,
-  sort: React.PropTypes.string,
-  subredditName: React.PropTypes.string,
-};
 
 export default ListingPage;

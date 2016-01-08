@@ -6,6 +6,10 @@ import TopSubnav from '../components/TopSubnav';
 import UserProfile from '../components/UserProfile';
 
 class UserProfilePage extends BasePage {
+  static propTypes = {
+    userName: React.PropTypes.string.isRequired,
+  };
+  
   get track () {
     return 'userProfile';
   }
@@ -39,9 +43,5 @@ class UserProfilePage extends BasePage {
     );
   }
 }
-
-UserProfilePage.propTypes = {
-  userName: React.PropTypes.string.isRequired,
-};
 
 export default UserProfilePage;

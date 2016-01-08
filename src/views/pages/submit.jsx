@@ -25,6 +25,16 @@ function _determineKind(body) {
 var debouncedDetermineKind = throttle(_determineKind, 1000);
 
 class SubmitPage extends BasePage {
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    kind: React.PropTypes.string,
+    resubmit: React.PropTypes.bool,
+    subredditName: React.PropTypes.string,
+    thingId: React.PropTypes.string,
+    type: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -394,15 +404,5 @@ class SubmitPage extends BasePage {
     );
   }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-SubmitPage.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  kind: React.PropTypes.string,
-  resubmit: React.PropTypes.bool,
-  subredditName: React.PropTypes.string,
-  thingId: React.PropTypes.string,
-  type: React.PropTypes.string,
-};
 
 export default SubmitPage;
