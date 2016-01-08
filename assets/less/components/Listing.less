@@ -15,7 +15,12 @@
 
 .Listing {
   position: relative;
-  .transform(translateZ(0));
+  // Chrome on iOS won't pick this up, but only browsers like Safari
+  // and chrome on android will. Chrome on iOS can't handle the memory
+  // usage or something and the scroll janks. They might not be using
+  // WKWebView which would explain the huge performance difference
+  // than iOS Safari
+  will-change: transform;
 
   &.compact {
     @media (min-width: @max-width) {
@@ -48,7 +53,7 @@
     }
   }
 
-  &:not(.compact) {
+  &.card {
     @radius: 3px;
     margin-bottom: @row-spacing-base;
     border-radius: @radius;

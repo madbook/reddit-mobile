@@ -278,7 +278,7 @@ class Listing extends BaseComponent {
       );
     }
 
-    var listingClass = `Listing ${(compact ? 'compact' : '')}` +
+    var listingClass = `Listing ${(compact ? 'compact' : 'card')}` +
       `${(listing.promoted ? ' Listing-sponsored' : '')}`;
 
     return (
