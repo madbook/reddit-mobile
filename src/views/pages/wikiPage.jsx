@@ -43,16 +43,27 @@ class WikiPageComp extends BasePage {
         const revisions = data.wikiPage.revisions.map((wikiRevision)=> {
           const { author, page, timestamp } = wikiRevision;
           return (
-            <div>
-              { author.name } { page } { moment(timestamp * 1000).fromNow() }
-            </div>
+            <tr key={ author + timestamp }>
+              <td className='wikiPage-revision-author'>{ author.name }</td>
+              <td>{ page }</td>
+              <td className='wikiPage-revision-date'>{ moment(timestamp * 1000).fromNow() }</td>
+            </tr>
           );
         });
 
         content = (
           <div className='wikiPage-container'>
             <h2>Revisions</h2>
-            { revisions }
+            <table className='wikiPage-revision-table'>
+              <tbody>
+                <tr>
+                  <th>User</th>
+                  <th>Page</th>
+                  <th>When</th>
+                </tr>
+                { revisions }
+              </tbody>
+            </table>
           </div>
         );
         break;
