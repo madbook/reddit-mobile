@@ -8,6 +8,7 @@ class ListingPaginationButtons extends BaseComponent {
     compact: React.PropTypes.bool,
     prevUrl: React.PropTypes.string,
     nextUrl: React.PropTypes.string,
+    pageSize: React.PropTypes.number,
   };
   
   constructor(props) {
@@ -63,7 +64,12 @@ class ListingPaginationButtons extends BaseComponent {
 
     // Allow overriding for special cases, like search. Otherwise, fall back to
     // the default logic for building next/previous urls.
-    let { prevUrl, nextUrl } = this.props;
+    let {
+      prevUrl,
+      nextUrl,
+      listings,
+      pageSize = 25,
+    } = this.props;
 
     if (!prevUrl) {
       prevUrl = this.buildPrevUrl();
@@ -72,6 +78,7 @@ class ListingPaginationButtons extends BaseComponent {
     if (!nextUrl) {
       nextUrl = this.buildNextUrl();
     }
+
 
     let prevButton;
     let nextButton;
@@ -85,13 +92,15 @@ class ListingPaginationButtons extends BaseComponent {
       );
     }
 
-    if (nextUrl) {
-      nextButton = (
-        <a href={ nextUrl } rel='next' className='btn btn-sm btn-primary IndexPage-button next'>
-          Next Page
-          <span className='glyphicon glyphicon-chevron-right'></span>
-        </a>
-      );
+    if (listings.length >= pageSize) {
+      if (nextUrl) {
+        nextButton = (
+          <a href={ nextUrl } rel='next' className='btn btn-sm btn-primary IndexPage-button next'>
+            Next Page
+            <span className='glyphicon glyphicon-chevron-right'></span>
+          </a>
+        );
+      }
     }
 
     return (

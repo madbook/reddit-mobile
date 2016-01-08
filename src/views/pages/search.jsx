@@ -260,6 +260,7 @@ class SearchPage extends BasePage {
           compact={ compact }
           prevUrl={ prevUrl }
           nextUrl={ nextUrl }
+          pageSize={ 22 }
         />,
       ];
     }

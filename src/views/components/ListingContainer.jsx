@@ -55,6 +55,7 @@ class ListingContainer extends BaseComponent {
       prevUrl,
       nextUrl,
       listingClassName,
+      pageSize,
     } = this.props;
 
     const compact = this.state.compact;
@@ -71,6 +72,7 @@ class ListingContainer extends BaseComponent {
           ctx={ ctx }
           prevUrl={ prevUrl }
           nextUrl={ nextUrl }
+          pageSize={ pageSize }
         />
       );
     }

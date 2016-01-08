@@ -47,6 +47,15 @@ class IndexPage extends BasePage {
     return 'listings';
   }
 
+  noListingsPage (url='/') {
+    return (
+      <div>
+        <h1>Whoops! There are no links here.</h1>
+        <h2><a href={ url }>Return to first page for fresh links?</a></h2>
+      </div>
+    );
+  }
+
   render() {
     var loading;
     var props = this.props;
@@ -56,7 +65,7 @@ class IndexPage extends BasePage {
     var fakeSubs = ['mod', 'all', 'friends'];
     var isFakeSub = fakeSubs.indexOf(subredditName) !== -1;
 
-    if (!data || !data.listings ||
+    if (!data || typeof data.listings === 'undefined' ||
         (subredditName && (!data.subreddit && !isFakeSub))) {
       return (
         <Loading />
@@ -64,11 +73,13 @@ class IndexPage extends BasePage {
     }
 
     let bypassInterstitial = data.preferences && data.preferences.over_18;
+
     if (!bypassInterstitial) {
       if (data.subreddit && data.subreddit.over18 && props.showOver18Interstitial) {
         return (<Interstitial  {...props} loggedIn={ data.preferences } type='over18' />);
       }
     }
+
     var listings = this.state.data.listings;
 
     var hideSubredditLabel = props.subredditName &&
@@ -79,7 +90,7 @@ class IndexPage extends BasePage {
 
     var user = this.state.data.user;
 
-    let pagingPrefix = '';
+    let pagingPrefix = '/';
 
     if (props.subredditName) {
       pagingPrefix = '/r/' + props.subredditName;
@@ -87,6 +98,10 @@ class IndexPage extends BasePage {
 
     if (props.multi) {
       pagingPrefix = '/u/' + props.multiUser + '/m/' + props.multi;
+    }
+
+    if (listings.length === 0 && props.page !== 0) {
+      return this.noListingsPage(pagingPrefix);
     }
 
     // Use the same logic for the url and for the subreddit name display

@@ -429,11 +429,6 @@ function initialize(bindLinks) {
   // config value after render.
   beginRender = Date.now();
 
-  // If we're using an old render cache from a restore, nuke it
-  if ((beginRender - window.bootstrap.render) > 1000 * 60 * 5) {
-    app.setState('dataCache');
-  }
-
   render(app, app.fullPathName(), true, modifyContext).then(function() {
     app.setState('dataCache');
 

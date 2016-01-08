@@ -31,7 +31,7 @@ describe('index page', () => {
 
       ctx.instance.setState({
         data: {
-          listings: []
+          listings: [{ }]
         }
       });
       ctx.result = ctx.renderer.getRenderOutput();
