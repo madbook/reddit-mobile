@@ -448,7 +448,7 @@ class Server {
         // should never have an expires but not a token or a refresh token - but
         // in case their cookies get mangled somehow, we should nuke the invalid
         // ones.
-      } else if (expires) {
+      } else if (expires && (!cookieToken || !rToken)) {
         this.cookies.set('token');
         this.cookies.set('tokenExpires');
         this.cookies.set('refreshToken');
