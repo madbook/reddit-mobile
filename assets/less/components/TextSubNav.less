@@ -17,17 +17,25 @@
   }
 }
 
-.TextSubNav-title {
-  padding-top: @grid-size;
-  font-weight: bold;
-}
-
 .TextSubNav-ul {
   margin-bottom: 0;
 }
 
 .TextSubNav-li {
   display: inline-block;;
+}
+
+.TextSubNav-icon-li {
+  height: 45px;
+  vertical-align: top;
+}
+.TextSubNav-icon-li > a {
+  position: relative;
+  top: 19px;
+}
+
+.TextSubNav-li.active {
+  border-bottom: 3px solid #247cb4;
 }
 
 .TextSubNav-a {
@@ -46,15 +54,4 @@
   &:active {
     color: lighten(@black, 20%);
   }
-}
-
-.TextSubNav-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  height: 3px;
-  width: 0;
-  background-color: #247cb4;
-  margin-width: 0;
-  .transition(width 0.3s, margin-left 0.6s cubic-bezier(0.330, 1.445, 0.545, 1.000););
 }

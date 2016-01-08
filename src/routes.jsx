@@ -413,28 +413,25 @@ function routes(app) {
 
     return [
       <li
-        className='TextSubNav-li'
-        active={ aboutActive }
+        className={ `TextSubNav-li ${aboutActive}` }
         key={ `about-${aboutActive.toString()}` }
       >
-        <a className={ `TextSubNav-a ${aboutActive}` } href={ `/u/${userName}` }>About</a>
+        <a className='TextSubNav-a' href={ `/u/${userName}` }>About</a>
       </li>,
       <li
-        className='TextSubNav-li'
-        active={ activityActive }
+        className={ `TextSubNav-li ${activityActive}` }
         key={ `activity-${activityActive.toString()}` }
       >
         <a
-          className={ `TextSubNav-a ${activityActive}` }
+          className='TextSubNav-a'
           href={ `/u/${userName}/activity` }
         >Activity</a>
       </li>,
       <li
-        className='TextSubNav-li'
-        active={ gildActive }
+        className={ `TextSubNav-li ${gildActive}` }
         key={ `gild-${gildActive.toString()}` }
       >
-        <a className={ `TextSubNav-a ${gildActive}` } href={ `/u/${userName}/gild` }>Give gold</a>
+        <a className='TextSubNav-a' href={ `/u/${userName}/gild` }>Give gold</a>
       </li>,
     ];
   }

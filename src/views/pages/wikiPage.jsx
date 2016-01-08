@@ -144,15 +144,15 @@ class WikiPageComp extends BasePage {
     return (
       <div className='container wikiPage-wrapper'>
         <TextSubNav>
-          <li className='TextSubNav-li' active={ revisionActive } >
+          <li className={ `TextSubNav-li ${revisionActive}` } >
             <a
-              className={ `TextSubNav-a ${revisionActive}` }
+              className='TextSubNav-a'
               href={ `${urlPrefix}/wiki/revisions` }
             >Revisions</a>
           </li>
-          <li className='TextSubNav-li' active={ pagesActive } >
+          <li className={ `TextSubNav-li ${pagesActive}` } >
             <a
-              className={ `TextSubNav-a ${pagesActive}` }
+              className='TextSubNav-a'
               href={ `${urlPrefix}/wiki/pages` }
             >Pages</a>
           </li>
