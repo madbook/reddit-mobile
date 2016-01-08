@@ -18,11 +18,11 @@ class ListingContainer extends BaseComponent {
     pagingPrefix: Proptypes.string,
     prevUrl: Proptypes.string,
     nextUrl: Proptypes.string,
-  }
+  };
 
   static defaultProps = {
     shouldPage: true,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -86,8 +86,6 @@ class ListingContainer extends BaseComponent {
       </div>
     );
   }
-
-
 }
 
 export default ListingContainer;

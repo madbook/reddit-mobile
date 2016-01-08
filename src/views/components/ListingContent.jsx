@@ -1,13 +1,12 @@
 import React from 'react';
+import has from 'lodash/object/has';
+import URL from 'url';
 
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
-import has from 'lodash/object/has';
-import URL from 'url';
-const PropTypes = React.PropTypes;
-
 import BaseComponent from './BaseComponent';
 
+const PropTypes = React.PropTypes;
 const _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
 
@@ -96,6 +95,23 @@ function forceProtocol(url, https) {
 }
 
 class ListingContent extends BaseComponent {
+  static propTypes = {
+    compact: PropTypes.bool,
+    editError: PropTypes.arrayOf(PropTypes.string),
+    editing: PropTypes.bool,
+    expand: PropTypes.func.isRequired,
+    expanded: PropTypes.bool.isRequired,
+    expandedCompact: PropTypes.bool,
+    isThumbnail: PropTypes.bool,
+    listing: propTypes.listing.isRequired,
+    loaded: PropTypes.bool.isRequired,
+    saveUpdatedText: PropTypes.func,
+    single: PropTypes.bool,
+    tallestHeight: PropTypes.number.isRequired,
+    toggleEdit: PropTypes.func,
+    width: PropTypes.number.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -559,23 +575,6 @@ class ListingContent extends BaseComponent {
     }
 
     return listing.title.match(/nsf[wl]/gi) || listing.over_18;
-  }
-
-  static propTypes = {
-    compact: PropTypes.bool,
-    editError: PropTypes.arrayOf(PropTypes.string),
-    editing: PropTypes.bool,
-    expand: PropTypes.func.isRequired,
-    expanded: PropTypes.bool.isRequired,
-    expandedCompact: PropTypes.bool,
-    isThumbnail: PropTypes.bool,
-    listing: propTypes.listing.isRequired,
-    loaded: PropTypes.bool.isRequired,
-    saveUpdatedText: PropTypes.func,
-    single: PropTypes.bool,
-    tallestHeight: PropTypes.number.isRequired,
-    toggleEdit: PropTypes.func,
-    width: PropTypes.number.isRequired,
   }
 }
 

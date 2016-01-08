@@ -1,7 +1,8 @@
 import React from 'react';
+import uniq from 'lodash/array/uniq';
+
 import constants from '../../constants';
 import propTypes from '../../propTypes';
-import uniq from 'lodash/array/uniq';
 
 import Ad from '../components/Ad';
 import BaseComponent from './BaseComponent';
@@ -13,6 +14,17 @@ const Proptypes = React.PropTypes;
 const _AD_LOCATION = 11;
 
 class ListingList extends BaseComponent {
+  static propTypes = {
+    compact: Proptypes.bool,
+    firstPage: Proptypes.number,
+    listings: Proptypes.arrayOf(Proptypes.oneOfType([
+      propTypes.comment,
+      propTypes.listing,
+    ])).isRequired,
+    showAds: Proptypes.bool,
+    showHidden: Proptypes.bool,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -180,17 +192,6 @@ class ListingList extends BaseComponent {
     if (compact !== 'undefined' && compact !==this.state.compact) {
       this.setState({compact});
     }
-  }
-
-  static propTypes = {
-    compact: Proptypes.bool,
-    firstPage: Proptypes.number,
-    listings: Proptypes.arrayOf(Proptypes.oneOfType([
-      propTypes.comment,
-      propTypes.listing,
-    ])).isRequired,
-    showAds: Proptypes.bool,
-    showHidden: Proptypes.bool,
   }
 }
 

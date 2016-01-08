@@ -1,13 +1,18 @@
 import React from 'react';
-
-import constants from '../../constants';
 import { models } from 'snoode';
 import superagent from 'superagent';
 
+import constants from '../../constants';
 import BaseComponent from './BaseComponent';
 import Listing from './Listing';
 
 class Ad extends BaseComponent {
+  static propTypes = {
+    afterLoad: React.PropTypes.func.isRequired,
+    compact: React.PropTypes.bool.isRequired,
+    token: React.PropTypes.string,
+  };
+  
   constructor (props) {
     super(props);
 
@@ -185,11 +190,5 @@ class Ad extends BaseComponent {
     );
   }
 }
-
-Ad.propTypes = {
-  afterLoad: React.PropTypes.func.isRequired,
-  compact: React.PropTypes.bool.isRequired,
-  token: React.PropTypes.string,
-};
 
 export default Ad;

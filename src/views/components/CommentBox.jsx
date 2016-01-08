@@ -1,12 +1,19 @@
 import React from 'react';
-const PropTypes = React.PropTypes;
-
 import { models } from 'snoode';
-import savedReply from '../../lib/savedReply';
 
+import savedReply from '../../lib/savedReply';
 import BaseComponent from './BaseComponent';
 
+const PropTypes = React.PropTypes;
+
 class CommentBox extends BaseComponent {
+  static propTypes = {
+    apiOptions: PropTypes.object,
+    onSubmit: PropTypes.func.isRequired,
+    thingId: PropTypes.string.isRequired,
+    token: PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -125,12 +132,5 @@ class CommentBox extends BaseComponent {
     );
   }
 }
-
-CommentBox.propTypes = {
-  apiOptions: PropTypes.object,
-  onSubmit: PropTypes.func.isRequired,
-  thingId: PropTypes.string.isRequired,
-  token: PropTypes.string,
-};
 
 export default CommentBox;

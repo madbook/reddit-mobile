@@ -1,6 +1,7 @@
 import React from 'react';
-import mobilify from '../../lib/mobilify';
 import moment from 'moment';
+
+import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
 function formatComments (comments, origin) {

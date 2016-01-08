@@ -1,6 +1,7 @@
 import React from 'react';
-import constants from '../../constants';
 import querystring from 'querystring';
+
+import constants from '../../constants';
 import titleCase from '../../lib/titleCase';
 
 import Dropdown from '../components/Dropdown';
@@ -58,6 +59,15 @@ var _LISTS = {
 };
 
 class SortDropdown extends BaseComponent {
+  static propTypes = {
+    baseUrl: React.PropTypes.string,
+    className: React.PropTypes.string,
+    excludedSorts: React.PropTypes.arrayOf(React.PropTypes.string),
+    list: React.PropTypes.string.isRequired,
+    sort: React.PropTypes.string.isRequired,
+    sortParam: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -143,14 +153,5 @@ class SortDropdown extends BaseComponent {
     this.setState({opened: bool});
   }
 }
-
-SortDropdown.propTypes = {
-  baseUrl: React.PropTypes.string,
-  className: React.PropTypes.string,
-  excludedSorts: React.PropTypes.arrayOf(React.PropTypes.string),
-  list: React.PropTypes.string.isRequired,
-  sort: React.PropTypes.string.isRequired,
-  sortParam: React.PropTypes.string,
-};
 
 export default SortDropdown;

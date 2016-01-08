@@ -7,6 +7,22 @@ import BaseComponent from './BaseComponent';
 import SeashellsDropdown from '../components/SeashellsDropdown';
 
 class ListingDropdown extends BaseComponent {
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    listing: React.PropTypes.oneOfType([
+      propTypes.comment,
+      propTypes.listing,
+    ]).isRequired,
+    onDelete: React.PropTypes.func,
+    onEdit: React.PropTypes.func,
+    onHide: React.PropTypes.func,
+    onSave: React.PropTypes.func,
+    onReport: React.PropTypes.func.isRequired,
+    permalink: React.PropTypes.string,
+    showEditAndDel: React.PropTypes.bool,
+    showHide: React.PropTypes.bool,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -338,21 +354,5 @@ class ListingDropdown extends BaseComponent {
     }
   }
 }
-
-ListingDropdown.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  listing: React.PropTypes.oneOfType([
-    propTypes.comment,
-    propTypes.listing,
-  ]).isRequired,
-  onDelete: React.PropTypes.func,
-  onEdit: React.PropTypes.func,
-  onHide: React.PropTypes.func,
-  onSave: React.PropTypes.func,
-  onReport: React.PropTypes.func.isRequired,
-  permalink: React.PropTypes.string,
-  showEditAndDel: React.PropTypes.bool,
-  showHide: React.PropTypes.bool,
-};
 
 export default ListingDropdown;

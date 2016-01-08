@@ -1,10 +1,17 @@
 import React from 'react';
 
 import constants from '../../constants';
-
 import BaseComponent from './BaseComponent';
 
 class Dropdown extends BaseComponent {
+  static propTypes = {
+    className: React.PropTypes.string,
+    button: React.PropTypes.element.isRequired,
+    id: React.PropTypes.number.isRequired,
+    right: React.PropTypes.bool,
+    reversed: React.PropTypes.bool,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -75,13 +82,5 @@ class Dropdown extends BaseComponent {
     this.props.app.emit(constants.DROPDOWN_OPEN + ':' + this.props.id, false);
   }
 }
-
-Dropdown.propTypes = {
-  className: React.PropTypes.string,
-  button: React.PropTypes.element.isRequired,
-  id: React.PropTypes.number.isRequired,
-  right: React.PropTypes.bool,
-  reversed: React.PropTypes.bool,
-};
 
 export default Dropdown;

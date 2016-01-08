@@ -4,6 +4,13 @@ import MessagePreview from './MessagePreview';
 import BaseComponent from './BaseComponent';
 
 class Inbox extends BaseComponent {
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    // isReply: React.PropTypes.bool.isRequired,
+    // messages: React.PropTypes.array.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -60,12 +67,5 @@ class Inbox extends BaseComponent {
     );
   }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-Inbox.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  // isReply: React.PropTypes.bool.isRequired,
-  // messages: React.PropTypes.array.isRequired,
-};
 
 export default Inbox;

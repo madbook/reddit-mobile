@@ -1,6 +1,7 @@
 import React from 'react';
-import BaseComponent from './BaseComponent';
 import { models } from 'snoode';
+
+import BaseComponent from './BaseComponent';
 import constants from '../../constants';
 
 const message = 'You must be at least eighteen years old to view this content.' +
@@ -15,6 +16,12 @@ const contentMap = {
 };
 
 class Interstitial extends BaseComponent {
+  static propTypes = {
+    subredditName: React.PropTypes.string.isRequired,
+    type: React.PropTypes.string.isRequired,
+    customText: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -96,11 +103,5 @@ class Interstitial extends BaseComponent {
     );
   }
 }
-
-Interstitial.propTypes = {
-  subredditName: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
-  customText: React.PropTypes.string,
-};
 
 export default Interstitial;

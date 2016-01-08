@@ -1,6 +1,7 @@
 import React from 'react';
-import constants from '../../constants';
 import querystring from 'querystring';
+
+import constants from '../../constants';
 
 import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
@@ -26,6 +27,12 @@ const dropdownList = [
 ];
 
 class UserActivitySubnav extends BaseComponent {
+  static propTypes = {
+    activity: React.PropTypes.string,
+    name: React.PropTypes.string.isRequired,
+    sort: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -155,11 +162,5 @@ class UserActivitySubnav extends BaseComponent {
     );
   }
 }
-
-UserActivitySubnav.propTypes = {
-  activity: React.PropTypes.string,
-  name: React.PropTypes.string.isRequired,
-  sort: React.PropTypes.string,
-};
 
 export default UserActivitySubnav;

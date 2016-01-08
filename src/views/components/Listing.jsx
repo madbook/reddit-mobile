@@ -22,6 +22,23 @@ function _isCompact(props) {
 }
 
 class Listing extends BaseComponent {
+  static propTypes = {
+    apiOptions: PropTypes.object,
+    compact: PropTypes.bool,
+    editError: PropTypes.arrayOf(PropTypes.string),
+    editing: PropTypes.bool,
+    hideComments: PropTypes.bool,
+    hideDomain: PropTypes.bool,
+    hideSubredditLabel: PropTypes.bool,
+    hideWhen: PropTypes.bool,
+    listing: propTypes.listing.isRequired,
+    onDelete: PropTypes.func,
+    saveUpdatedText: PropTypes.func,
+    single: PropTypes.bool,
+    toggleEdit: PropTypes.func,
+    z: PropTypes.number,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -375,23 +392,6 @@ class Listing extends BaseComponent {
 
   _loadContent() {
     this.setState({loaded: true}, this.resize);
-  }
-
-  static propTypes = {
-    apiOptions: PropTypes.object,
-    compact: PropTypes.bool,
-    editError: PropTypes.arrayOf(PropTypes.string),
-    editing: PropTypes.bool,
-    hideComments: PropTypes.bool,
-    hideDomain: PropTypes.bool,
-    hideSubredditLabel: PropTypes.bool,
-    hideWhen: PropTypes.bool,
-    listing: propTypes.listing.isRequired,
-    onDelete: PropTypes.func,
-    saveUpdatedText: PropTypes.func,
-    single: PropTypes.bool,
-    toggleEdit: PropTypes.func,
-    z: PropTypes.number,
   }
 }
 

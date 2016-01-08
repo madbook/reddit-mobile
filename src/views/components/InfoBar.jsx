@@ -4,7 +4,6 @@ import cookies from 'cookies-js';
 import { find as _find, filter as _filter } from 'lodash/collection';
 
 import BaseComponent from './BaseComponent';
-
 import constants from '../../constants';
 
 const PropTypes = React.PropTypes;
@@ -16,6 +15,12 @@ const EU_COOKIE_MESSAGE = 'Cookies help us deliver our Services. By ' +
 let InfoBarEUCookieFirstShow = true;
 
 class InfoBar extends BaseComponent {
+  static propTypes = {
+    messages: PropTypes.array.isRequired,
+    app: PropTypes.object.isRequired,
+    showEUCookieMessage: PropTypes.bool.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -152,12 +157,6 @@ class InfoBar extends BaseComponent {
         <div className='infobar-placeholder'></div>
       );
     }
-  }
-
-  static propTypes = {
-    messages: PropTypes.array.isRequired,
-    app: PropTypes.object.isRequired,
-    showEUCookieMessage: PropTypes.bool.isRequired,
   }
 }
 

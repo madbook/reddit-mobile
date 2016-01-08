@@ -2,6 +2,10 @@ import React from 'react';
 import BaseComponent from './BaseComponent';
 
 class Modal extends BaseComponent {
+  static propTypes = {
+    open: React.PropTypes.bool,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -59,9 +63,5 @@ class Modal extends BaseComponent {
   }
 
 }
-
-Modal.propTypes = {
-  open: React.PropTypes.bool,
-};
 
 export default Modal;

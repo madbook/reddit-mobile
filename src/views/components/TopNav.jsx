@@ -1,4 +1,5 @@
 import React from 'react';
+
 import constants from '../../constants';
 import propTypes from '../../propTypes';
 
@@ -10,6 +11,11 @@ const UserMenuButton = 'userMenuButton';
 const CommunityMenuButton = 'communityMenuButton';
 
 class TopNav extends BaseComponent {
+  static propTypes = {
+    user: propTypes.user,
+    subredditName: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -144,11 +150,6 @@ class TopNav extends BaseComponent {
 
   _onCommunityMenuToggle(bool) {
     this.setState({ communityMenuOpen: bool});
-  }
-
-  static propTypes = {
-    user: propTypes.user,
-    subredditName: React.PropTypes.string,
   }
 }
 

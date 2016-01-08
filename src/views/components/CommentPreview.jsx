@@ -5,7 +5,7 @@ import short from '../../lib/formatDifference';
 
 const subredditRegex = /\/\/www.reddit.com\/r\/([^/]*)/;
 
-function CommentPreview  (props) {
+function CommentPreview(props) {
   const comment = props.comment;
   const submitted = short(comment.created_utc * 1000);
 

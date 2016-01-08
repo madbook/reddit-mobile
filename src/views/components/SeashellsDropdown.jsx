@@ -1,10 +1,15 @@
 import React from 'react';
+
 import constants from '../../constants';
 
 import BaseComponent from './BaseComponent';
 import Dropdown from '../components/Dropdown';
 
 class SeashellsDropdown extends BaseComponent {
+  static propTypes = {
+    reversed: React.PropTypes.bool,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -51,9 +56,5 @@ class SeashellsDropdown extends BaseComponent {
     this.setState({opened: bool});
   }
 }
-
-SeashellsDropdown.propTypes = {
-  reversed: React.PropTypes.bool,
-};
 
 export default SeashellsDropdown;

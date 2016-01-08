@@ -1,5 +1,6 @@
 import React from 'react';
 import process from 'reddit-text-js';
+
 import propTypes from '../../propTypes';
 
 import BaseComponent from './BaseComponent';
@@ -10,6 +11,17 @@ import SeashellsDropdown from '../components/SeashellsDropdown';
 const _searchLimit = 25;
 
 class SubredditSelectionButton extends BaseComponent {
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    changeSubreddit: React.PropTypes.func.isRequired,
+    errorClass: React.PropTypes.string.isRequired,
+    goToAboutPage: React.PropTypes.func,
+    open: React.PropTypes.bool.isRequired,
+    subreddit: React.PropTypes.string.isRequired,
+    subscriptions: propTypes.subscriptions,
+    toggleOpen: React.PropTypes.func.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -202,16 +214,5 @@ class SubredditSelectionButton extends BaseComponent {
     }
   }
 }
-
-SubredditSelectionButton.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  changeSubreddit: React.PropTypes.func.isRequired,
-  errorClass: React.PropTypes.string.isRequired,
-  goToAboutPage: React.PropTypes.func,
-  open: React.PropTypes.bool.isRequired,
-  subreddit: React.PropTypes.string.isRequired,
-  subscriptions: propTypes.subscriptions,
-  toggleOpen: React.PropTypes.func.isRequired,
-};
 
 export default SubredditSelectionButton;

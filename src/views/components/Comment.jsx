@@ -1,7 +1,7 @@
 import React from 'react';
+import { models } from 'snoode';
 
 import mobilify from '../../lib/mobilify';
-import { models } from 'snoode';
 import propTypes from '../../propTypes';
 import short from '../../lib/formatDifference';
 import savedReply from '../../lib/savedReply';
@@ -17,6 +17,16 @@ var replyIcon = (
 );
 
 class Comment extends BaseComponent {
+  static propTypes = {
+    apiOptions: React.PropTypes.object.isRequired,
+    comment: propTypes.comment.isRequired,
+    highlight: React.PropTypes.string,
+    nestingLevel: React.PropTypes.number.isRequired,
+    op: React.PropTypes.string.isRequired,
+    permalinkBase: React.PropTypes.string.isRequired,
+    subredditName: React.PropTypes.string.isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -428,15 +438,5 @@ class Comment extends BaseComponent {
     );
   }
 }
-
-Comment.propTypes = {
-  apiOptions: React.PropTypes.object.isRequired,
-  comment: propTypes.comment.isRequired,
-  highlight: React.PropTypes.string,
-  nestingLevel: React.PropTypes.number.isRequired,
-  op: React.PropTypes.string.isRequired,
-  permalinkBase: React.PropTypes.string.isRequired,
-  subredditName: React.PropTypes.string.isRequired,
-};
 
 export default Comment;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-
 import isEqual from 'lodash/lang/isEqual';
 
 class BaseComponent extends React.Component {

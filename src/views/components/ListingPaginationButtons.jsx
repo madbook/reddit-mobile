@@ -4,6 +4,12 @@ import querystring from 'querystring';
 import BaseComponent from './BaseComponent';
 
 class ListingPaginationButtons extends BaseComponent {
+  static propTypes = {
+    compact: React.PropTypes.bool,
+    prevUrl: React.PropTypes.string,
+    nextUrl: React.PropTypes.string,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -97,12 +103,6 @@ class ListingPaginationButtons extends BaseComponent {
         </div>
       </div>
     );
-  }
-
-  static propTypes = {
-    compact: React.PropTypes.bool,
-    prevUrl: React.PropTypes.string,
-    nextUrl: React.PropTypes.string,
   }
 }
 

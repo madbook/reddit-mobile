@@ -2,6 +2,13 @@ import React from 'react';
 import BaseComponent from './BaseComponent';
 
 class SearchBar extends BaseComponent {
+  //TODO: someone more familiar with this component could eventually fill this out better
+  static propTypes = {
+    action: React.PropTypes.string.isRequired,
+    defaultValue: React.PropTypes.string,
+    onSearch: React.PropTypes.func,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -47,12 +54,5 @@ class SearchBar extends BaseComponent {
     );
   }
 }
-
-//TODO: someone more familiar with this component could eventually fill this out better
-SearchBar.propTypes = {
-  action: React.PropTypes.string.isRequired,
-  defaultValue: React.PropTypes.string,
-  onSearch: React.PropTypes.func,
-};
 
 export default SearchBar;

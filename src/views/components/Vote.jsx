@@ -1,11 +1,21 @@
 import React from 'react';
 import { models } from 'snoode';
+
 import constants from '../../constants';
 import propTypes from '../../propTypes';
 
 import BaseComponent from '../components/BaseComponent';
 
 class Vote extends BaseComponent {
+  static propTypes = {
+    // apiOptions: React.PropTypes.object,
+    setScore: React.PropTypes.func,
+    thing: React.PropTypes.oneOfType([
+      propTypes.comment,
+      propTypes.listing,
+    ]).isRequired,
+  };
+  
   constructor(props) {
     super(props);
 
@@ -174,14 +184,5 @@ class Vote extends BaseComponent {
     );
   }
 }
-
-Vote.propTypes = {
-  // apiOptions: React.PropTypes.object,
-  setScore: React.PropTypes.func,
-  thing: React.PropTypes.oneOfType([
-    propTypes.comment,
-    propTypes.listing,
-  ]).isRequired,
-};
 
 export default Vote;
