@@ -129,6 +129,21 @@ class SearchPage extends BasePage {
     this.props.app.redirect(url);
   }
 
+  shouldShowNoResultsMessage(data) {
+    if (!data.search) {
+      return true;
+    }
+
+    const props = this.props;
+
+    // If we're searching within a subreddit and have no results don't
+    // render the banner. The generic case will handle linking to the
+    // site-wide search
+    const searchingInSubreddit = !!(props.subredditName && props.ctx.query.q);
+    return !data.search.links ||
+      (data.search.links.length === 0 && !searchingInSubreddit);
+  }
+
   render() {
     const state = this.state;
     const data = state.data;
@@ -141,7 +156,7 @@ class SearchPage extends BasePage {
       controls = (
         <Loading />
       );
-    } else if (!data.search || data.search.links.length === 0) {
+    } else if (this.shouldShowNoResultsMessage(data)) {
       const noResClass = props.ctx.query.q ? '' : 'hidden';
       controls = (
         <div
