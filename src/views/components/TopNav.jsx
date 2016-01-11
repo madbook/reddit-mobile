@@ -15,7 +15,7 @@ class TopNav extends BaseComponent {
     user: propTypes.user,
     subredditName: React.PropTypes.string,
   };
-  
+
   constructor(props) {
     super(props);
 

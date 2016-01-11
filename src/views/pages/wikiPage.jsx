@@ -22,22 +22,31 @@ class WikiPageComp extends BasePage {
     subredditName: React.PropTypes.string,
     ctx: React.PropTypes.object.isRequired,
   };
-  
+
   makeContent(props, data) {
     const compact = props.compact;
     let content;
 
     switch (data.wikiPage._type) {
       case PAGETYPES.LISTING:
-        content = (
-          <ListingContainer
-            {...props}
-            compact={ compact }
-            user={ data.user || null }
-            showAds={ false }
-            listings={ data.wikiPage.conversations }
-          />
-        );
+        const { conversations } = data.wikiPage;
+        if (conversations && conversations.length) {
+          content = (
+            <ListingContainer
+              {...props}
+              compact={ compact }
+              user={ data.user || null }
+              showAds={ false }
+              listings={ data.wikiPage.conversations }
+            />
+          );
+        } else {
+          content = (
+            <div className='wikiPage-container'>
+              <p>No discussions about this page.</p>
+            </div>
+          );
+        }
         break;
       case PAGETYPES.WIKI_REVISION:
         const revisions = data.wikiPage.revisions.map((wikiRevision)=> {
@@ -51,21 +60,29 @@ class WikiPageComp extends BasePage {
           );
         });
 
-        content = (
-          <div className='wikiPage-container'>
-            <h2>Revisions</h2>
-            <table className='wikiPage-revision-table'>
-              <tbody>
-                <tr>
-                  <th>User</th>
-                  <th>Page</th>
-                  <th>When</th>
-                </tr>
-                { revisions }
-              </tbody>
-            </table>
-          </div>
-        );
+        if (revisions.length) {
+          content = (
+            <div className='wikiPage-container'>
+              <h2>Revisions</h2>
+              <table className='wikiPage-revision-table'>
+                <tbody>
+                  <tr>
+                    <th>User</th>
+                    <th>Page</th>
+                    <th>When</th>
+                  </tr>
+                  { revisions }
+                </tbody>
+              </table>
+            </div>
+          );
+        } else {
+          content = (
+            <div className='wikiPage-container'>
+              <p>No recent revisions to show.</p>
+            </div>
+          );
+        }
         break;
       case PAGETYPES.WIKIPAGE_LISTING:
         const list = data.wikiPage.pages.map((link, i) => {
@@ -86,14 +103,22 @@ class WikiPageComp extends BasePage {
 
         break;
       case PAGETYPES.WIKIPAGE:
-        const body = data.wikiPage.content_md || 'Nothing here...';
+        const { content_md, revision_by, revision_date } = data.wikiPage;
+        const body = content_md || 'Nothing here...';
+        const editor = revision_by.name;
+        const date = moment(revision_date * 1000).fromNow();
 
         content = (
-          <div className='wikiPage-container'>
-            <div
-              className='wikiPage-html'
-              dangerouslySetInnerHTML={ { __html: process(mobilify(body)) } }
-            />
+          <div>
+            <div className='wikiPage-container'>
+              <div
+                className='wikiPage-html'
+                dangerouslySetInnerHTML={ { __html: process(mobilify(body)) } }
+              />
+            </div>
+            <p className='wikiPage-last-edit'>
+              Revision by  <span className='bold'>{ editor }</span> - { date }
+            </p>
           </div>
         );
         break;
@@ -105,12 +130,22 @@ class WikiPageComp extends BasePage {
           );
         });
 
+        const wikiPath = props.ctx.params.wikiPath;
+        const showInIndex = listedInPagesIndex ? 'true' : 'false';
+
         content = (
           <div className='wikiPage-container'>
             <div>
-              <p>editing permissions: { editingPermissionLevel }</p>
-              <p>show in list of pages: { listedInPagesIndex ? 'true' : 'false' }</p>
-              <h3>Authorized to edit this page:</h3>
+              <h2 className='wikiPage-settings-title'>Settings for { wikiPath }</h2>
+              <p>
+                Page editing permissions:
+                <span className='bold'> { editingPermissionLevel }</span>
+              </p>
+              <p>
+                show this page on the list of wiki pages:
+                <span className='bold'> { showInIndex }</span>
+              </p>
+              <h4>Authorized to edit this page:</h4>
               <ul className='list-unstyled'>
                 { editors }
               </ul>
@@ -137,9 +172,24 @@ class WikiPageComp extends BasePage {
     const subreddit = this.props.subredditName;
     const urlPrefix = subreddit ? `/r/${subreddit}` : '';
 
-    const path = this.props.ctx.path;
-    const revisionActive = path.indexOf('/wiki/revisions') !== -1 ? 'active' : '';
-    const pagesActive = path.indexOf('/wiki/pages') !== -1 ? 'active' : '';
+    const { wikiPath, subPath } = this.props.ctx.params;
+    const revisionActive = subPath === 'revisions' ? 'active' : '';
+    const pagesActive = subPath === 'pages' ? 'active' : '';
+    const discussActive = subPath === 'discussions' ? 'active' : '';
+
+    let discussionsLink;
+    if (wikiPath) {
+      discussionsLink = (
+        <li className={ `TextSubNav-li ${discussActive}` } >
+          <a
+            className='TextSubNav-a'
+            href={ `${urlPrefix}/wiki/discussions/${wikiPath}` }
+          >
+            Discussions
+          </a>
+        </li>
+      );
+    }
 
     return (
       <div className='container wikiPage-wrapper'>
@@ -147,14 +197,19 @@ class WikiPageComp extends BasePage {
           <li className={ `TextSubNav-li ${revisionActive}` } >
             <a
               className='TextSubNav-a'
-              href={ `${urlPrefix}/wiki/revisions` }
-            >Revisions</a>
+              href={ `${urlPrefix}/wiki/revisions${wikiPath ? '/' + wikiPath : ''}` }
+            >
+              Revisions
+            </a>
           </li>
+          { discussionsLink }
           <li className={ `TextSubNav-li ${pagesActive}` } >
             <a
               className='TextSubNav-a'
               href={ `${urlPrefix}/wiki/pages` }
-            >Pages</a>
+            >
+              Pages
+            </a>
           </li>
         </TextSubNav>
          { content }

@@ -750,14 +750,27 @@ function routes(app) {
   });
 
   function * wikiPage() {
-    const path = this.params[0].substr(1) || 'index';
+    // const path = this.params.wikiPath || 'index';  //this.params[0].substr(1) || 'index';
+    const { subreddit, subPath, wikiPath } = this.params;
 
-    let options = buildAPIOptions(this, {
+    let path = '';
+    if (subPath) {
+      path = `${subPath}${wikiPath ? '/': ''}`;
+    }
+
+    if (wikiPath) {
+      path += wikiPath;
+    } else if (!path) {
+      path = 'index';
+    }
+
+    const options = buildAPIOptions(this, {
+      subreddit,
+      path,
+      type: subPath || 'wikiPage',
       query: {
         raw_json: 1,
       },
-      subreddit: this.params.subreddit || null,
-      path,
     });
 
     const wikiGet = new Promise(function(resolve, reject) {
@@ -774,8 +787,13 @@ function routes(app) {
     this.body = makeBody(WikiPage);
   }
 
-  router.get('wiki', '/wiki*', wikiPage);
-  router.get('wiki.subreddit', '/r/:subreddit/wiki*', wikiPage);
+  const regex = 'discussions|revisions|settings|pages';
+  router.get('wiki', `/r/:subreddit/wiki/:subPath(${regex})/:wikiPath(.*)?`, wikiPage);
+  router.get('wiki', `/wiki/:subPath(${regex})/:wikiPath(.*)?`, wikiPage);
+
+  router.get('wiki.subreddit', '/r/:subreddit/wiki/:wikiPath(.*)?', wikiPage);
+  router.get('wiki', '/wiki/:wikiPath(.*)?', wikiPage);
+
 
   router.get('404', '*', function *() {
     this.props.status = 404;

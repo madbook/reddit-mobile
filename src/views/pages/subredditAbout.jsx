@@ -12,7 +12,7 @@ class SubredditAboutPage extends BasePage {
     // apiOptions: React.PropTypes.object,
     subredditName: React.PropTypes.string.isRequired,
   };
-  
+
   get track () {
     return 'subreddit';
   }
@@ -52,7 +52,7 @@ class SubredditAboutPage extends BasePage {
     ];
 
     const wikiLink = (
-      <a className='TopSubnav-a' href={ `${subreddit.url}wiki` }>
+      <a className='TopSubnav-a' href={ `${subreddit.url}wiki/index` }>
         Wiki
       </a>
     );
