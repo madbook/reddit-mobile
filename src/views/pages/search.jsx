@@ -131,18 +131,18 @@ class SearchPage extends BasePage {
 
   render() {
     const state = this.state;
+    const data = state.data;
     const props = this.props;
     const app = this.props.app;
     const apiOptions = props.apiOptions;
     let controls;
-    let noResult;
 
     if (!state.loaded && props.ctx.query && props.ctx.query.q) {
       controls = (
         <Loading />
       );
-    } else if (!this.state.data.search) {
-      const noResClass = noResult && props.ctx.query.q ? '' : 'hidden';
+    } else if (!data.search || data.search.links.length === 0) {
+      const noResClass = props.ctx.query.q ? '' : 'hidden';
       controls = (
         <div
           className={ `container no-results text-right text-special ${noResClass}` }
@@ -159,7 +159,6 @@ class SearchPage extends BasePage {
       const listings = searchResults.links || [];
       const noListResults = listings.length === 0;
       const noSubResults = subreddits.length === 0;
-      noResult = noSubResults && noListResults;
       const subredditResultsOnly = props.subredditName && props.ctx.query.q;
       const compact = this.state.compact;
 
