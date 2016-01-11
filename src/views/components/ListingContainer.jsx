@@ -9,6 +9,21 @@ import ListingPaginationButtons from './ListingPaginationButtons';
 const Proptypes = React.PropTypes;
 
 class ListingContainer extends BaseComponent {
+  static propTypes = {
+    compact: Proptypes.bool,
+    shouldPage: Proptypes.bool,
+    listingClassName: Proptypes.string,
+    listings: Proptypes.array,
+    ctx: Proptypes.object,
+    pagingPrefix: Proptypes.string,
+    prevUrl: Proptypes.string,
+    nextUrl: Proptypes.string,
+  }
+
+  static defaultProps = {
+    shouldPage: true,
+  }
+
   constructor(props) {
     super(props);
 
@@ -47,7 +62,7 @@ class ListingContainer extends BaseComponent {
     let pagination;
 
     // Default paging to `true`
-    if (shouldPage || typeof shouldPage === 'undefined') {
+    if (shouldPage && listings.length) {
       pagination = (
         <ListingPaginationButtons
           pagingPrefix={ pagingPrefix }
@@ -72,16 +87,7 @@ class ListingContainer extends BaseComponent {
     );
   }
 
-  static propTypes = {
-    compact: Proptypes.bool,
-    shouldPage: Proptypes.bool,
-    listingClassName: Proptypes.string,
-    listings: Proptypes.array,
-    ctx: Proptypes.object,
-    pagingPrefix: Proptypes.string,
-    prevUrl: Proptypes.string,
-    nextUrl: Proptypes.string,
-  }
+
 }
 
 export default ListingContainer;
