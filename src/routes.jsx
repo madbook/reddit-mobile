@@ -552,11 +552,8 @@ function routes(app) {
       return this.redirect('/login?originalUrl=' + submitUrl);
     }
 
-    this.body = function(props) {
-      return (
-        <SubmitPage key={ this.key } {...props}/>
-      );
-    };
+    props.hideTopNav = true;
+    this.body = makeBody(SubmitPage);
   }
 
   router.get('submit', '/submit', submitPage);

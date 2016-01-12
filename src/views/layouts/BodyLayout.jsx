@@ -11,6 +11,11 @@ import CommunityOverlayMenu from '../components/CommunityOverlayMenu';
 import { userData } from '../../routes';
 
 class BodyLayout extends BasePage {
+  static propTypes = {
+    hideTopNav: React.PropTypes.bool,
+    showEUCookieMessage: React.PropTypes.bool,
+  };
+
   constructor(props) {
     super(props);
 
@@ -35,9 +40,13 @@ class BodyLayout extends BasePage {
     }
   }
 
-  render () {
-    const { user, userSubscriptions } = this.state.data;
-    const { app, globalMessage, showEUCookieMessage } = this.props;
+  renderTopNavIfVisible(props, state) {
+    const { user, userSubscriptions } = state.data;
+    const { app, globalMessage, showEUCookieMessage, hideTopNav } = props;
+
+    if (hideTopNav) {
+      return null;
+    }
 
     let messages = [];
     if (showEUCookieMessage) {
@@ -49,20 +58,31 @@ class BodyLayout extends BasePage {
     }
 
     return (
-      <div className='container-with-betabanner'>
+      <div>
         <CommunityOverlayMenu
           {...this.props}
           user={ user }
           subscriptions={ userSubscriptions }
+          key='communitymenu'
         />
-        <UserOverlayMenu {...this.props} user={ user } />
-        <TopNav {...this.props} user={ user } />
+        <UserOverlayMenu {...this.props} user={ user } key='usermenu' />
+        <TopNav {...this.props} user={ user } key='topnav' />
         <InfoBar
-          key='onlyRenderThisOnceEver'
           messages={ messages }
           app={ app }
           showEUCookieMessage={ showEUCookieMessage }
+          key='onlyRenderThisOnceEver'
         />
+      </div>
+    );
+  }
+
+  render () {
+    const topNavIfVisible = this.renderTopNavIfVisible(this.props, this.state);
+
+    return (
+      <div className='container-with-betabanner'>
+        { topNavIfVisible }
         <main>
           { this.props.children }
         </main>
