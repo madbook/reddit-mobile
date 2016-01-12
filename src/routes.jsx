@@ -678,6 +678,7 @@ function routes(app) {
       originalUrl,
     });
 
+    this.props.hideTopNav = true;
     this.body = makeBody(LoginPage);
   });
 
@@ -688,6 +689,7 @@ function routes(app) {
       originalUrl,
     });
 
+    this.props.hideTopNav = true;
     this.body = makeBody(RegisterPage);
   });
 
