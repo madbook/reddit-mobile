@@ -31,13 +31,17 @@ class BasePage extends BaseComponent {
           }
         } else {
           this.state.data[k] = props.dataCache[k];
+
+          if (k === 'subreddit') {
+            props.app.emit(constants.SET_META_COLOR,
+              props.dataCache[k].key_color || constants.DEFAULT_KEY_COLOR);
+          }
         }
       }
     }
 
-
     this.watchProperties();
-  }
+  } 
 
   watchProperties() {
     // Handle no-data error-page case
@@ -80,6 +84,10 @@ class BasePage extends BaseComponent {
         data = Object.assign({}, this.state.data);
 
         data[property] = p;
+
+        if (property === 'subreddit') {
+          this.props.app.emit(constants.SET_META_COLOR, p.key_color || constants.DEFAULT_KEY_COLOR);
+        }
 
         this.setState({
           data,

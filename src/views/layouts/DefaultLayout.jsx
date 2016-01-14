@@ -1,5 +1,6 @@
 import React from 'react';
 import LiveReload from '../components/LiveReload';
+import constants from '../../constants';
 
 function DefaultLayout  (props) {
   const config = props.config;
@@ -83,6 +84,14 @@ function DefaultLayout  (props) {
     );
   }
 
+  let keyColor = constants.DEFAULT_KEY_COLOR;
+
+  if (props.dataCache &&
+      props.dataCache.subreddit &&
+      props.dataCache.subreddit.key_color) {
+    keyColor = props.dataCache.subreddit.key_color;
+  }
+
   return (
     <html>
       <head>
@@ -94,7 +103,7 @@ function DefaultLayout  (props) {
           name='viewport'
           content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
         />
-        <meta name='theme-color' content='#336699' />
+        <meta name='theme-color' content={ keyColor } />
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta id='csrf-token-meta-tag' name='csrf-token' content={ props.ctx.csrf } />
         { metaDescription }

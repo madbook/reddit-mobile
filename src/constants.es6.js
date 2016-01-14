@@ -28,4 +28,6 @@ export default {
     GLOBAL: 'global',
     EU_COOKIE: 'euCookie',
   },
+  DEFAULT_KEY_COLOR: '#336699',
+  SET_META_COLOR: 'setMetaColor',
 };

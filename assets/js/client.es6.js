@@ -326,6 +326,10 @@ function initialize(bindLinks) {
       }
 
       setTitle(props);
+
+      if (!props.data.get('subreddit')) {
+        setMetaColor(constants.DEFAULT_KEY_COLOR);
+      }
     }
   }
 
@@ -562,6 +566,18 @@ function initialize(bindLinks) {
       app.emit(constants.RESIZE);
     }
   }.bind(app), 100));
+
+  function setMetaColor (color) {
+    const metas = Array.prototype.slice.call(document.getElementsByTagName('meta'));
+
+    const tag = metas.find(function(m) {
+      return m.getAttribute('name') === 'theme-color';
+    });
+
+    tag.content = color;
+  }
+
+  app.on(constants.SET_META_COLOR, setMetaColor);
 
   if (window.bootstrap.config.googleAnalyticsId) {
     trackingEvents(app);
