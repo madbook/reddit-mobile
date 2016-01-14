@@ -19,6 +19,39 @@ var _listingVariants = shape({
   }),
 });
 
+const _subreddit  = shape({
+  id: string,
+  name: string,
+  display_name: string,
+  subscribers: number,
+  accounts_active: number,
+  lang: string,
+  over18: bool,
+
+  banner_img: string,
+  banner_size: arrayOf(number),
+
+  user_is_banned: bool,
+  user_is_contributor: bool,
+  user_is_subscriber: bool,
+  user_is_moderator: bool,
+  submit_text: string,
+  submission_type: string,
+
+  collapse_deleted_comments: bool,
+  comment_score_hide_mins: number,
+  community_rules: arrayOf(shape({})),
+  hide_ads: bool,
+  icon_img: string,
+  icon_size: arrayOf(number),
+  key_color: string,
+
+  public_description: string,
+  public_traffic: bool,
+  quarantine: bool,
+  related_subreddits: arrayOf(_subreddit),
+});
+
 export default {
 
   comment: shape({
@@ -117,4 +150,6 @@ export default {
     link_karma: number.isRequired,
     name: string.isRequired,
   }),
+
+  subreddit: _subreddit,
 };

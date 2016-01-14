@@ -3,26 +3,71 @@
 
 @font-family-sans-serif:  helvetica, arial, sans-serif;
 @font-size-base: 13px;
+@grid-size: 8px;
+@half-grid-size: floor(@grid-size / 2);
 
-@white: #fff;
+// Colors (from the internal brandbook)
+
+// Primary
+@orangered: #FF4500;
+@mint: #0DD3BB;
+@blue: #24A0ED;
+
+// override some bootstrap styles
+@brand-primary: @blue;
+
+// Primary white->grey
+@white: #FFF;
+@off-white: #FCFCFB;
+@pale-grey: #EFEFED;
+@neutral: #CCCCCA;
+
+// Text Colors:
+@grey-text: #A5A4A4;
+@semi-black-text: #222;
+@alien-blue-text: #0079D3;
+
+// Secondary Colors
+@orange: #FF8717;
+@mango: #FFB000;
+@lime: #94E044;
+@green: #46D160;
+
+// Night Theme colors
+@dark-grey: #545452;
+@off-black: #353535;
+
+// Special use colors
+@periwinkle: #7193FF;
+@gold: #DDBD37;
+@warning-yellow: #FFD635;
+@nsfw-salmon: #FF585B;
+@ban-red: #EA0027;
+
+// Tertiary Colors
+@brown: #A06A42;
+@leather: #C18D42;
+@chartreuse: #D4E815;
+@dark-green: #45A508;
+@teal: #25B79F;
+@dark-teal: #008985;
+@navy: #4856A3;
+@purple: #7E53C1;
+@berry: #DB0064;
+@pink: #FF66AC;
+@highlight: #FFF03E;
+
 @gray: #505453;
-@green: #2ECC40;
 @red: #d84141;
 @dark-red: #BE1337;
 @pink-red: #FF575B;
-@green: #228822;
 @black: #222222;
-@blue: #126d92;
-@periwinkle: #9494FF;
-@orangered: #FF4500;
-@gold: #d8c161;
-@brand-primary: @blue;
+
 @light-gray: #dedede;
+@transparent-grey: rgba(0, 0, 0, 0.3);
 
-@brand-primary-bg-lightest: #f6f9fa;
+@brand-primary-bg-lightest: @off-white;
 @brand-info: #f0f0f0;
-
-@brand-success: @green;
 
 @mod-text: @red;
 @admin-text: @red;
@@ -34,9 +79,9 @@
 @row-spacing-base: 9px;
 @grid-gutter-width: 10px;
 
-@gray-border: 1px solid #e7e7e7;
+@gray-border: 1px solid @neutral;
 @max-width: 1000px;
-@top-nav-height: 45px;
+@top-nav-height: 48px;
 @icon-size: 16px;
 
 @state-danger-text: @dark-red;

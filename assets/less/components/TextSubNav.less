@@ -17,39 +17,44 @@
   }
 }
 
-  .TextSubNav-ul {
-    margin-bottom: 0;
+.TextSubNav-title {
+  padding-top: @grid-size;
+  font-weight: bold;
+}
+
+.TextSubNav-ul {
+  margin-bottom: 0;
+}
+
+.TextSubNav-li {
+  display: inline-block;;
+}
+
+.TextSubNav-a {
+  font-size: 14px;
+  line-height: 45px;
+  color: @text-muted;
+  font-weight: bold;
+  .tween;
+  margin: 0 15px;
+
+  &:hover, &:visited {
+    text-decoration: none;
+    color: @black;
   }
 
-    .TextSubNav-li {
-      display: inline-block;;
-    }
-
-      .TextSubNav-a {
-        font-size: 14px;
-        line-height: 45px;
-        color: @text-muted;
-        font-weight: bold;
-        .tween;
-        margin: 0 15px;
-
-        &:hover, &:visited {
-          text-decoration: none;
-          color: @black;
-        }
-
-        &:active {
-          color: lighten(@black, 20%);
-        }
-      }
-
-  .TextSubNav-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    height: 3px;
-    width: 0;
-    background-color: #247cb4;
-    margin-width: 0;
-    .transition(width 0.3s, margin-left 0.6s cubic-bezier(0.330, 1.445, 0.545, 1.000););
+  &:active {
+    color: lighten(@black, 20%);
   }
+}
+
+.TextSubNav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 3px;
+  width: 0;
+  background-color: #247cb4;
+  margin-width: 0;
+  .transition(width 0.3s, margin-left 0.6s cubic-bezier(0.330, 1.445, 0.545, 1.000););
+}

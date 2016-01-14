@@ -35,15 +35,20 @@ class BasePage extends BaseComponent {
       }
     }
 
+
+    this.watchProperties();
+  }
+
+  watchProperties() {
     // Handle no-data error-page case
     if (this.props.data) {
       for (var key of this.props.data.keys()) {
-        if (!props.dataCache[key]) {
+        if (!this.props.dataCache[key]) {
           this.watch(key);
         }
       }
 
-      if (isEqual([...this.props.data.keys()].sort(), Object.keys(props.dataCache).sort())) {
+      if (isEqual([...this.props.data.keys()].sort(), Object.keys(this.props.dataCache).sort())) {
         this.finish();
       }
     }

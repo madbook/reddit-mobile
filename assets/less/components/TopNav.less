@@ -1,6 +1,6 @@
 .TopNav {
   height: @top-nav-height;
-  background-color: @body-bg;
+  background-color: @white;
   position: fixed;
   width: 100%;
   z-index: 11;
@@ -17,10 +17,6 @@
     left: 0;
     right: 0;
     .tween;
-  }
-
-  &.opened:after {
-    right: @top-nav-height;
   }
 }
 
@@ -52,10 +48,6 @@
     .SVG-fill {
       fill: @orangered !important;
     }
-
-      .mouth {
-      stroke: @black !important;
-    }
   }
 }
 
@@ -85,7 +77,7 @@
   // display: block;
   float: left;
   height: 100%;
-  margin-left: 5px;
+  padding: 0 5px;
 }
 
 .TopNav-right {
@@ -104,41 +96,32 @@
 
     #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
   }
+}
 
-  .icon-search, .icon-hamburger, .icon-x {
-    font-size: 2.5em;
-  }
-
-  .icon-post {
-    font-size: 3em;
-  }
-
-  .icon-search, .icon-post {
-    position: relative;
-    top: 15px;
-  }
-
-  .icon-hamburger, .icon-x {
-    line-height: 30px;
-    top: 0;
-  }
-
-  .Dropdown {
-    float:left !important;
-    position: relative;
-    top: 15px;
-
-    .Dropdown-tab {
-      right: 5px;
-    }
-  }
+.icon-search, .icon-post_edit {
+  position: relative;
+  top: 16px;
 }
 
 .MobileButton {
-  padding-right: 0px;
-
   &:hover, &:focus {
     text-decoration: none;
+  }
+
+  &.community-button {
+    // size is based on holding an icon font
+    width: 1.2em;
+    height: 1.2em;
+
+    margin-left: 4px;
+
+    border: 1px solid @pale-grey;
+    border-radius: .6em;
+    vertical-align: middle;
+  }
+
+  &.twirlyIcon-open {
+    .rotate(180deg);
   }
 }
 
@@ -149,10 +132,22 @@
   line-height: 46px;
   display: inline-block;
 
-  svg {
+  .TopNav-text-vcentering {
+    display:inline-block;
+    vertical-align: middle;
+  }
+
+  svg, .fallbackImg {
     position: relative;
     top: 50%;
+  }
+
+  svg {
     margin-top: -12px;
+  }
+
+  .fallbackImg {
+    margin-top: -11px;
   }
 }
 

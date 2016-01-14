@@ -3,13 +3,36 @@ import React from 'react';
 import constants from '../../constants';
 
 import TopNav from '../components/TopNav';
-import SideNav from '../components/SideNav';
 import BasePage from '../pages/BasePage';
 import InfoBar from '../components/InfoBar';
+import UserOverlayMenu from '../components/UserOverlayMenu';
+import CommunityOverlayMenu from '../components/CommunityOverlayMenu';
+
+import { userData } from '../../routes';
 
 class BodyLayout extends BasePage {
   constructor(props) {
     super(props);
+
+    this._updateUserState = this._updateUserState.bind(this);
+  }
+
+  componentDidMount() {
+    const { app } = this.props;
+    app.on(constants.USER_DATA_CHANGED, this._updateUserState);
+  }
+
+  componentWillUnmount() {
+    const { app } = this.props;
+    app.off(constants.USER_DATA_CHANGED, this._updateUserState);
+  }
+
+  _updateUserState() {
+    // rebuild the userData based promises so they can be reloaded
+    if (this.props && this.props.app) {
+      userData(this, this.props.app);
+      this.watchProperties();
+    }
   }
 
   render () {
@@ -27,8 +50,13 @@ class BodyLayout extends BasePage {
 
     return (
       <div className='container-with-betabanner'>
-        <SideNav {...this.props} user={ user } subscriptions={ userSubscriptions } />
-        <TopNav {...this.props}/>
+        <CommunityOverlayMenu
+          {...this.props}
+          user={ user }
+          subscriptions={ userSubscriptions }
+        />
+        <UserOverlayMenu {...this.props} user={ user } />
+        <TopNav {...this.props} user={ user } />
         <InfoBar
           key='onlyRenderThisOnceEver'
           messages={ messages }

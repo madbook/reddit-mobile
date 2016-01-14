@@ -151,7 +151,7 @@ function getSubreddit(ctx) {
 function userData(ctx, app) {
   let { apiOptions } = ctx.props;
 
-  if (ctx.token) {
+  if (ctx.props.token) {
     let userOptions =  Object.assign({}, apiOptions, {
       user: 'me',
     });
@@ -168,7 +168,15 @@ function userData(ctx, app) {
         limit: 250,
       },
     });
-    subOptions.headers['user-agent'] = ctx.headers['user-agent'];
+
+    let userAgent;
+    if (ctx.headers) {
+      userAgent = ctx.headers['user-agent'];
+    } else if (apiOptions.headers) {
+      userAgent = apiOptions.headers['user-agent'];
+    }
+
+    subOptions.headers['user-agent'] = userAgent;
     setData(ctx, 'userSubscriptions', 'subreddits', subOptions);
 
   } else {
@@ -445,8 +453,9 @@ function routes(app) {
 
     this.props.data.set('userProfile', app.api.users.get(userOpts));
 
-    let subNavProps = {
+    const subNavProps = {
       children: userProfileSubnav('about', ctx.params.user),
+      userName: ctx.params.user,
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserProfilePage);
@@ -460,8 +469,9 @@ function routes(app) {
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
     this.props.topNavLink = `/u/${ctx.params.user}`;
 
-    let subNavProps = {
+    const subNavProps = {
       children: userProfileSubnav('gild', ctx.params.user),
+      userName: ctx.params.user,
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserGildPage);
@@ -498,8 +508,9 @@ function routes(app) {
 
     this.props.data.set('activities', app.api.activities.get(activitiesOpts));
 
-    let subNavProps = {
+    const subNavProps = {
       children: userProfileSubnav('activity', ctx.params.user),
+      userName: ctx.params.user,
     };
 
     this.body = makeBody([TextSubNav, subNavProps], UserActivityPage);
@@ -774,3 +785,4 @@ function routes(app) {
 
 export default routes;
 export var buildProps = buildProps;
+export var userData = userData;

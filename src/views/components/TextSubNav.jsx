@@ -16,6 +16,9 @@ class TextSubNav extends BaseComponent {
   render() {
     return (
       <nav className='TextSubNav shadow'>
+        <div className='TextSubNav-title'>
+          { this.props.userName }
+        </div>
         <ul ref='ul' className='TextSubNav-ul list-unstyled'>
           { this.props.children }
         </ul>
@@ -52,6 +55,10 @@ class TextSubNav extends BaseComponent {
     } else if (this.state.indicatorWidth != 0) {
       this.setState({indicatorWidth: 0});
     }
+  }
+
+  static propTypes = {
+    userName: React.PropTypes.string.isRequired,
   }
 }
 

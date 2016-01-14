@@ -16,6 +16,4 @@ describe('lib: titleCase', () => {
   it('Returns all words with only the first letter(a-z) capitalized.', () => {
     expect(titleCase('hello worlD #1')).to.equal('Hello World #1');
   });
-
 });
-

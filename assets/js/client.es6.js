@@ -4,6 +4,7 @@ import '../../src/lib/dnt';
 
 import errorLog from '../../src/lib/errorLog';
 
+
 function onError(message, url, line, column) {
   errorLog({
     userAgent: window.navigator.userAgent,
@@ -43,6 +44,8 @@ import routes from '../../src/routes';
 import trackingEvents from './trackingEvents';
 
 import EUCountries from '../../src/EUCountries';
+
+const isSafari = window.navigator.userAgent.indexOf('Safari') > -1;
 
 let _lastWinWidth = 0;
 let winWidth = window.innerWidth;
@@ -461,7 +464,7 @@ function initialize(bindLinks) {
   });
 
   app.on(constants.TOGGLE_OVER_18, function(val) {
-    cookies.set('over18', val)
+    cookies.set('over18', val);
   });
 
   app.on(constants.HIDE_GLOBAL_MESSAGE, function(message) {
@@ -469,6 +472,72 @@ function initialize(bindLinks) {
       expires: new Date(message.expires),
     };
     cookies.set(message.key, 'globalMessageSeen', options);
+  });
+
+  const elementCanScroll = function elementCanScroll(el) {
+    const top = el.scrollTop;
+
+    if (top <= 0) {
+      el.scrollTop = 1;
+      return false;
+    }
+
+    const totalScroll = top + el.offsetHeight;
+    if (totalScroll === el.scrollHeight) {
+      el.scrollTop = top - 1;
+      return false;
+    }
+
+    return true;
+  };
+
+  const stopScroll = throttle(function stopScroll(e) {
+    let touchMoveAllowed = false;
+    let target = e.target;
+
+    while (target !== null) {
+      if (target.classList && target.classList.contains(constants.OVERLAY_MENU_CSS_CLASS)) {
+        if (elementCanScroll(target)) {
+          touchMoveAllowed = true;
+        }
+        break;
+      }
+
+      target = target.parentNode;
+    }
+
+    if (!touchMoveAllowed) {
+      e.preventDefault();
+    }
+  }, 50);
+
+  app.on(constants.OVERLAY_MENU_OPEN, function(open) {
+    if (!$body.classList) {
+      return;
+    }
+
+    // Scrolling on Safari is weird, possibly iOS 9. Overflow hidden doesn't
+    // prevent the page background from scrolling as you'd expect.
+    // When we're on Safari we do a fancy check to stop touchmove events
+    // from scrolling the background.
+    // We don't use position: fixed becuase the repaint from changing position
+    // is slow in safari. Plus there's extra bookkeeping for preserving the
+    // scroll position.
+    if (open) {
+      if ($body.classList.contains(constants.OVERLAY_MENU_VISIBLE_CSS_CLASS)) {
+        return;
+      }
+
+      $body.classList.add(constants.OVERLAY_MENU_VISIBLE_CSS_CLASS);
+      if (isSafari) {
+        $body.addEventListener('touchmove', stopScroll);
+      }
+    } else {
+      $body.classList.remove(constants.OVERLAY_MENU_VISIBLE_CSS_CLASS);
+      if (isSafari) {
+        $body.removeEventListener('touchmove', stopScroll);
+      }
+    }
   });
 
   function closeDropdowns() {
