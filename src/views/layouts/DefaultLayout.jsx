@@ -64,15 +64,21 @@ function DefaultLayout  (props) {
   }
 
   let gtmTracking;
+  const subredditName = props.ctx.params.subreddit;
 
   if (config.googleTagManagerId && config.mediaDomain) {
     const gtmCode = `
       <script>
         if (!window.DO_NOT_TRACK) {
           var frame = document.createElement('iframe');
+
           frame.style.display = 'none';
           frame.referrer = 'no-referrer';
           frame.id = 'gtm-jail';
+          frame.name = JSON.stringify({
+            subreddit: '${subredditName || ''}',
+            origin: location.origin,
+          });
           frame.src = '//${config.mediaDomain}/gtm/jail?id=${config.googleTagManagerId}';
           document.body.appendChild(frame);
         }

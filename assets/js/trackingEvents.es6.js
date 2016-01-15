@@ -4,7 +4,7 @@ import superagent from 'superagent';
 import EventTracker from 'event-tracker';
 import constants from '../../src/constants';
 import url from 'url';
-
+import gtm from './gtm';
 
 // Build a regex which can pull the base36 out of a prefixed or unprefixed id.
 const idRegex = /(?:t\d+_)?(.*)/;
@@ -186,6 +186,7 @@ function trackingEvents(app) {
   app.on('pageview', function(props) {
     const payload = buildPageviewData(props);
     eventSend('screenview_events', 'cs.screenview', payload);
+    gtm.trigger('pageview', { subreddit: props.ctx.params.subreddit || '' });
   });
 
   app.on('route:start', function(ctx) {
