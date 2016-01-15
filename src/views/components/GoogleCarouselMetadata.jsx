@@ -34,7 +34,7 @@ function GoogleCarouselMetadata (props) {
   let listing = props.listing;
   let comments = props.comments;
 
-  if (!props.show || !listing || !comments || comments.length === 0) {
+  if (!listing || !comments || comments.length === 0) {
     return (<div />);
   }
 
@@ -103,7 +103,6 @@ GoogleCarouselMetadata.propTypes = {
   comments: React.PropTypes.arrayOf(propTypes.comment).isRequired,
   // listing: propTypes.listing.isRequired, this one appears to be getting empty objects sometimes
   origin: React.PropTypes.string.isRequired,
-  // show: React.PropTypes.bool.isRequired,
 };
 
 export default GoogleCarouselMetadata;

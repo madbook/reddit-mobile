@@ -147,7 +147,10 @@ class ListingPage extends BasePage {
   render() {
     let { data, editing, loadingMoreComments, linkEditError } = this.state;
     let { app, apiOptions, commentId, ctx, token, sort, subredditName,
-         isGoogleCrawler, origin } = this.props;
+         isGoogleCrawler } = this.props;
+
+    let { origin } = this.props.config;
+    let { url } = ctx;
 
     sort = sort || 'best';
 
@@ -174,8 +177,9 @@ class ListingPage extends BasePage {
       );
     }
 
-
     let commentsList;
+    let googleCarousel;
+
     if (comments) {
       commentsList = comments.map((comment, i) => {
         var key = `comment-${i}`;
@@ -216,6 +220,18 @@ class ListingPage extends BasePage {
           );
         }
       });
+
+      if (isGoogleCrawler) {
+        googleCarousel = (
+          <GoogleCarouselMetadata
+            url={ url }
+            app={ app }
+            origin={ origin }
+            listing={ listing }
+            comments={ comments }
+          />
+        );
+      }
     } else {
       commentsList = (
         <div className='Loading-Container'>
@@ -226,12 +242,6 @@ class ListingPage extends BasePage {
 
     return (
       <div className='listing-main'>
-        <GoogleCarouselMetadata
-          origin={ origin }
-          show={ isGoogleCrawler }
-          listing={ listing }
-          comments={ comments }
-        />
         <TopSubnav
           { ...this.props }
           user={ user }
@@ -239,6 +249,7 @@ class ListingPage extends BasePage {
           list='comments'
         />
         <div className='container listing-content' key='container'>
+          { googleCarousel }
           <Listing
             app={ app }
             ctx={ ctx }
