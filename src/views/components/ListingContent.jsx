@@ -80,7 +80,7 @@ function _wrapSelftextExpand(fn) {
 
 function _isPlayable(listing) {
   let media = listing.media;
-  if (listing.url.indexOf('.gif') > -1 ||
+  if (listing.url && listing.url.indexOf('.gif') > -1 ||
       (media && media.oembed && media.oembed.type !== 'image')
      ) {
     return true;
