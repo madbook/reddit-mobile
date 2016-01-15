@@ -74,10 +74,10 @@ function setCompact(ctx, app) {
     maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
   };
 
-  let ua = ctx.headers['user-agent'];
+  const ua = ctx.headers['user-agent'];
 
   // Set compact for opera mini
-  if (ua.match(/(opera mini|android 2)/i)) {
+  if (ua && ua.match(/(opera mini|android 2)/i)) {
     compact = true;
   }
 
