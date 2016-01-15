@@ -173,7 +173,6 @@ class ListingPage extends BasePage {
       author = listing.author,
       permalink = listing.cleanPermalink;
 
-
     let singleComment;
     if (commentId) {
       singleComment = (
@@ -210,6 +209,7 @@ class ListingPage extends BasePage {
               token={ token }
               apiOptions={ apiOptions }
               sort={ sort }
+              repliesLocked={ listing.locked }
             />
           );
         } else {
@@ -274,19 +274,31 @@ class ListingPage extends BasePage {
             winWidth={ this.props.ctx.winWidth }
             toggleEdit={ this.toggleEdit }
           />
-          <CommentBox
-            apiOptions={ apiOptions }
-            thingId={ listing.name }
-            user={ user }
-            token={ token }
-            app={ app }
-            ctx={ ctx }
-            onSubmit={ this.onNewComment }
-          />
+          { listing.locked
+            ? <div className='listing-content__locked'>Comments are locked</div>
+            : this.renderCommentBox() }
           { singleComment }
           { commentsList }
         </div>
       </div>
+    );
+  }
+  
+  renderCommentBox() {
+    const { apiOptions, token, app, ctx } = this.props;
+    const { data } = this.state;
+    const { listing, user } = data;
+    
+    return (
+      <CommentBox
+        apiOptions={ apiOptions }
+        thingId={ listing.name }
+        user={ user }
+        token={ token }
+        app={ app }
+        ctx={ ctx }
+        onSubmit={ this.onNewComment }
+      />
     );
   }
 }

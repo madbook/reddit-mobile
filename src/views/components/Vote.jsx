@@ -8,7 +8,6 @@ import BaseComponent from '../components/BaseComponent';
 
 class Vote extends BaseComponent {
   static propTypes = {
-    // apiOptions: React.PropTypes.object,
     setScore: React.PropTypes.func,
     thing: React.PropTypes.oneOfType([
       propTypes.comment,
@@ -120,67 +119,90 @@ class Vote extends BaseComponent {
     return true;
   }
 
-  render() {
-    var voteClass = '';
+  get voteClass() {
+    let voteClass = '';
     if (this.state.localScore > 0) {
       voteClass = ' upvoted';
     } else if (this.state.localScore < 0) {
       voteClass = ' downvoted';
     }
+    return voteClass;
+  }
 
+  renderUpvote() {
+    const { thing } = this.props;
+    return (
+      <li>
+        <form
+          className='vote-form'
+          action={ `/vote/${thing.name}` }
+          method='post'
+        >
+          <input type='hidden' name='direction' value='1'/>
+          <button
+            type='submit'
+            className={ `vote text-muted ${this.voteClass}` }
+            data-vote='up'
+            data-thingid={ thing.name }
+            data-no-route='true'
+            onClick={ this.upvote }
+          >
+            <span className='icon-upvote-circled'/>
+          </button>
+        </form>
+      </li>
+    );
+  }
+
+  renderDownvote() {
+    const { thing } = this.props;
+    return (
+      <li>
+        <form
+          className='vote-form'
+          action={ `/vote/${thing.name}` }
+          method='post'
+        >
+          <input type='hidden' name='direction' value='-1'/>
+          <button
+            type='submit'
+            className={ `vote text-muted ${this.voteClass}` }
+            data-vote='down'
+            data-thingid={ thing.name }
+            data-no-route='true'
+            onClick={ this.downvote }
+          >
+            <span className='icon-downvote-circled'/>
+          </button>
+        </form>
+      </li>
+    );
+  }
+
+  renderVoteCount() {
     const { thing } = this.props;
     const score = thing.hide_score || thing.score_hidden ? '●' : this.state.score;
 
     return (
-        <ul className='linkbar linkbar-compact'>
-          <li>
-            <form
-              className='vote-form'
-              action={ '/vote/'+ thing.name }
-              method='post'
-            >
-              <input type='hidden' name='direction' value='1'/>
-              <button
-                type='submit'
-                className={ 'vote text-muted ' + (voteClass || '') }
-                data-vote='up'
-                data-thingid={ thing.name }
-                data-no-route='true'
-                onClick={ this.upvote }
-              >
-                <span className='icon-upvote-circled'></span>
-              </button>
-            </form>
-          </li>
-          <li className='vote-score-container'>
-            <span
-              className='vote-score'
-              data-vote-score={ this.state.score }
-              data-thingid={ this.props.thing.name }
-            >
-              { score }
-            </span>
-          </li>
-          <li>
-            <form
-              className='vote-form'
-              action={ '/vote/'+ thing.name }
-              method='post'
-            >
-              <input type='hidden' name='direction' value='-1'/>
-              <button
-                type='submit'
-                className={ 'vote text-muted ' + (voteClass || '') }
-                data-vote='down'
-                data-thingid={ thing.name }
-                data-no-route='true'
-                onClick={ this.downvote }
-              >
-                <span className='icon-downvote-circled'></span>
-              </button>
-            </form>
-          </li>
-        </ul>
+      <li className='vote-score-container'>
+        <span
+          className='vote-score'
+          data-vote-score={ this.state.score }
+          data-thingid={ this.props.thing.name }
+        >
+          { score }
+        </span>
+      </li>
+    );
+  }
+
+  render() {
+    return (
+      <ul className='linkbar linkbar-compact'>
+        { this.renderUpvote() }
+        { this.renderVoteCount() }
+        { this.renderDownvote() }
+      </ul>
     );
   }
 }

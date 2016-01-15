@@ -241,7 +241,7 @@ class Comment extends BaseComponent {
     if (showTools || highlight === comment.id) {
       highlighted = 'comment-highlighted';
 
-      if (showReplyBox) {
+      if (showReplyBox && !this.props.repliesLocked) {
         commentBox = (
           <CommentBox
             {...this.props}
@@ -249,6 +249,10 @@ class Comment extends BaseComponent {
             thingId={ comment.name }
             onSubmit={ this.onNewComment }
           />
+        );
+      } else if (showReplyBox) {
+        commentBox = (
+          <div className="comment-replies-locked" >Comments are locked</div>
         );
       }
       toolbox = (
@@ -351,7 +355,7 @@ class Comment extends BaseComponent {
         <div className='comment-body'>
           <div
             className='comment-content vertical-spacing-sm'
-            dangerouslySetInnerHTML={ { __html: mobilify(comment.body_html)} }
+            dangerouslySetInnerHTML={ { __html: mobilify(comment.body_html) } }
             onClick={ this.showTools }
           />
           <footer className='comment-footer'>

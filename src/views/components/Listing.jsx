@@ -157,6 +157,9 @@ class Listing extends BaseComponent {
     if (subredditNode || flairNode) {
       var row1Node = (
         <div className='Listing-header-row1'>
+          { listing.locked
+            ? <div className='Listing-lock icon-lock'/>
+            : null }
           { subredditNode }
           { flairNode }
           { listingDropdownNode }
@@ -184,10 +187,10 @@ class Listing extends BaseComponent {
 
   _renderFooter() {
     let { listing, single, hideWhen, hideDomain, hideComments,
-          app, token, apiOptions } = this.props;
+          app, token, apiOptions, hideSubredditLabel } = this.props;
 
     let { domain, promoted, gilded, num_comments,
-          created_utc } = listing;
+          created_utc, subreddit } = listing;
 
     if (gilded && single) {
       var gildedNode = (
@@ -227,9 +230,18 @@ class Listing extends BaseComponent {
       );
     }
 
+    const linkFlairText = listing.link_flair_text;
+    const hasFlair =
+      ListingContent.isNSFW(listing) ||
+      linkFlairText ||
+      (!hideSubredditLabel && subreddit);
+
     return (
       <footer className='Listing-footer'>
         <ul className='linkbar text-muted'>
+          { !hasFlair && listing.locked
+            ? <div className='Listing-lock-large listing-footer-icon icon-lock'/>
+            : null }
           { commentsNode }
           { gildedNode }
         </ul>

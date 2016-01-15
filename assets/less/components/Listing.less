@@ -4,6 +4,14 @@
   width: auto;
 }
 
+.listing-content {
+  .listing-content__locked {
+    text-align: right;
+    margin: 1em 0.5em;
+    color: @light-gray;
+  }
+}
+
 .Listing-container {
   z-index: 1;
   position: relative;
@@ -130,76 +138,91 @@
   }
 }
 
-  .Listing-header-row1 {
-    margin-bottom: 30px;
+.Listing-header-row1 {
+  margin-bottom: 30px;
+}
+
+.Listing-subreddit,
+.Listing-lock,
+.Listing-lock-large {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.Listing-subreddit,
+.Listing-lock {
+  font-size: 12px;
+  line-height: 240%;
+  float: left;
+  margin-right: 5px;
+  min-height: 24px;
+}
+
+.Listing-subreddit {
+  color: @gray;
+  font-weight: bold;
+
+  &:visited {
+    color: @gray;
+  }
+}
+
+.Listing-lock,
+.Listing-lock-large {
+  color: @warning-yellow;
+}
+
+.Listing-subreddit .icon, .Listing-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  line-height: 24px;
+  margin-right: 5px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.Listing-icon {
+  background-color: @light-gray;
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  margin-right: 5px;
+}
+
+.Listing-flair {
+  float: left;
+}
+
+.Listing-header-row2 {
+  clear: both;
+  font-size: 18px;
+  display: block;
+  line-height: 130%;
+}
+
+.Listing-title {
+  color: @black;
+  word-break: break-word;
+  word-wrap: break-word;
+
+  &.text-admin {
+    color: @admin-text;
   }
 
-    .Listing-subreddit {
-      font-size: 12px;
-      float: left;
-      color: @gray;
-      font-weight: bold;
-      line-height: 240%;
-      margin-right: 5px;
-      display: inline-block;
-      min-height: 24px;
-
-      &:visited {
-        color: @gray;
-      }
-    }
-
-      .Listing-subreddit .icon, .Listing-icon {
-        width: 24px;
-        height: 24px;
-        font-size: 24px;
-        line-height: 24px;
-        margin-right: 5px;
-        vertical-align: middle;
-        display: inline-block;
-      }
-
-      .Listing-icon {
-        background-color: @light-gray;
-        border-radius: 12px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: 50% 50%;
-        margin-right: 5px;
-      }
-
-    .Listing-flair {
-      float: left;
-    }
-
-  .Listing-header-row2 {
-    clear: both;
-    font-size: 18px;
-    display: block;
-    line-height: 130%;
+  &.text-moderator {
+    color: @mod-text;
   }
 
-    .Listing-title {
-      color: @black;
-      word-break: break-word;
-      word-wrap: break-word;
+  &:active {
+    color: lighten(@black, 20%);
+  }
 
-      &.text-admin {
-        color: @admin-text;
-      }
-
-      &.text-moderator {
-        color: @mod-text;
-      }
-
-      &:active {
-        color: lighten(@black, 20%);
-      }
-
-      &:visited {
-        color: lighten(@black, 40%);
-      }
-    }
+  &:visited {
+    color: lighten(@black, 40%);
+  }
+}
 
 .Listing-footer {
   padding: 0 10px;
