@@ -2,8 +2,27 @@ import superagent from 'superagent';
 
 function simpleUA(agent) {
   if (/server/i.test(agent)) { return 'server'; }
-  if (/iPhone/i.test(agent)) { return 'ios'; }
-  if (/android/i.test(agent)) { return 'android'; }
+
+  if (/iPhone/i.test(agent) || /iPad/i.test(agent) || /iPod/i.test(agent)) {
+    if (/CriOS/i.test(agent)) {
+      return 'ios-chrome';
+    }
+
+    return 'ios-safari';
+  }
+
+  // Windows Phone 10 adds android to the UA, put this test first
+  if (/Windows Phone/i.test(agent) || /Trident/i.test(agent)) { return 'windows-phone'; }
+
+  if (/android/i.test(agent)) {
+    if (/Version/i.test(agent)) {
+      return 'android-stock-browser';
+    }
+
+    return 'android-chrome';
+  }
+
+  if (/googlebot/i.test(agent)) { return 'googlebot-js-client'; }
 
   return 'unknownClient';
 }
