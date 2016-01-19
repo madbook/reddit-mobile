@@ -154,12 +154,20 @@ class ListingPage extends BasePage {
   }
 
   render() {
-    let { data, editing, loadingMoreComments, linkEditError } = this.state;
-    let { app, apiOptions, commentId, ctx, token, sort, subredditName,
-         isGoogleCrawler } = this.props;
+    const { data, editing, loadingMoreComments, linkEditError } = this.state;
 
-    let { origin } = this.props.config;
-    let { url } = ctx;
+    let {
+      app,
+      apiOptions,
+      commentId,
+      ctx,
+      token,
+      sort,
+      subredditName,
+    } = this.props;
+
+    const { origin } = this.props.config;
+    const { url, isGoogleCrawler } = ctx;
 
     sort = sort || 'best';
 

@@ -5,7 +5,7 @@ import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
 
 function formatComments (comments, origin) {
-  return comments.filter(function(c) { return c; }).map(function(c) {
+  return comments.filter(c => c && c.author).map(function(c) {
     return {
       '@type': 'Comment',
       text: c.body_html,
