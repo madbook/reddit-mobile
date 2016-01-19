@@ -33,9 +33,10 @@ function logError(err, ctx, config) {
       userAgent = 'SERVER';
     }
 
-    if (ctx && ctx.headers && ctx.headers['user-agent']) {
-      userAgent += '-' + ctx.headers['user-agent'];
+    if (ctx && ctx.userAgent) {
+      userAgent += `-${ctx.userAgent}`;
     }
+
   } else if (ctx && ctx.headers) {
     userAgent = ctx.headers['user-agent'];
   }
