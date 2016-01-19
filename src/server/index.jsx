@@ -359,7 +359,7 @@ class Server {
       this.env = 'SERVER';
 
       this.body = this.request.body;
-      this.userAgent = this.headers['user-agent'];
+      this.userAgent = this.headers['user-agent'] || '';
       this.country = this.headers['cf-ipcountry'];
 
       if (!this.token) {
