@@ -4,6 +4,9 @@ import querystring from 'querystring';
 import BasePage from './BasePage';
 import SnooIconHeader from '../components/snooiconheader';
 
+import MinimalInput from '../components/formElements/minimalinput';
+import SquareButton from '../components/formElements/SquareButton';
+
 const ERROR_MESSAGES = {
   504: 'The request timed out',
   500: 'There was a problem with the server',
@@ -37,6 +40,11 @@ const ERROR_TYPES = [
   ...PASS_ERRORS,
 ];
 
+const PasswordFieldTypes = {
+  password: 'password',
+  text: 'text',
+};
+
 class LoginPage extends BasePage {
   static propTypes = {
     error: React.PropTypes.string,
@@ -50,37 +58,67 @@ class LoginPage extends BasePage {
 
   constructor(props) {
     super(props);
+    const { error, message } = props;
+
+    this.state = {
+      ...this.state,
+      showForgot: false,
+      passwordFieldType: PasswordFieldTypes.password,
+      errorMessage: error ? message ||
+                    ERROR_MESSAGES[error] ||
+                    ERROR_MESSAGES.default : '',
+      usernameText: '',
+      passwordText: '',
+    };
 
     this.goBack = this.goBack.bind(this);
+    this.toggleShowForgot = this.toggleShowForgot.bind(this);
+    this.updateUsername = this.updateField.bind(this, 'usernameText');
+    this.updatePassword = this.updateField.bind(this, 'passwordText');
+    this.clearPassword = this.clearPassword.bind(this);
+    this.toggleType = this.toggleType.bind(this);
   }
 
   goBack() {
-    this.props.app.redirect('/');
+    this.props.app.redirect(this.props.originalUrl || '/');
+  }
+
+  updateField(name, e) {
+    const newState = {
+      [name]: e.target.value,
+    };
+
+    this.setState(newState);
+  }
+
+  clearPassword(e) {
+    e.preventDefault();
+    this.setState({passwordText: ''});
+  }
+
+  toggleShowForgot(e) {
+    e.preventDefault();
+    this.setState({showForgot: !this.state.showForgot});
+  }
+
+  toggleType(e) {
+    e.preventDefault();
+    this.setState({
+      passwordFieldType: this.state.passwordFieldType === PasswordFieldTypes.password ?
+        PasswordFieldTypes.text : PasswordFieldTypes.password,
+    });
   }
 
   render () {
-    const {
-      error,
-      message,
-      originalUrl,
-      ctx,
-      username,
-    } = this.props;
-
-    let errorClass = 'visually-hidden';
-    let passwordClass = '';
-
-    const errorMessage = message ||
-                        ERROR_MESSAGES[error] ||
-                        ERROR_MESSAGES.default;
+    const { error, originalUrl, ctx } = this.props;
+    const { passwordFieldType, showForgot,
+            errorMessage, passwordText, usernameText } = this.state;
 
     if (error) {
-      errorClass = 'alert alert-danger alert-bar';
-
-      if (error === '400') {
-        passwordClass = 'has-error';
-      }
+      // what to do with generic errors?
     }
+
+    const passErr = error && error === '400';
 
     let linkDest = '';
     let refererTag;
@@ -91,13 +129,10 @@ class LoginPage extends BasePage {
       refererTag = <input type='hidden' name='originalUrl' value={ originalUrl } />;
     }
 
-
+    const blue = passwordFieldType === 'text' ? 'blue' : '';
 
     return (
       <div className='login-wrapper'>
-        <div className={ errorClass } role='alert'>
-          { errorMessage }
-        </div>
         <SnooIconHeader title='Log in' close={ this.goBack } />
         <div className='container'>
           <div className='row'>
@@ -108,35 +143,54 @@ class LoginPage extends BasePage {
                   data-no-route='true'
                 >New user? Sign up!</a>
               </p>
-              <form action='/login' method='POST'>
-                <div className='form-group'>
-                  <label htmlFor='username' className='hidden'>Username</label>
-                  <input
-                    id='username'
-                    className='form-control'
-                    name='username'
-                    type='text'
-                    placeholder='Username'
-                    defaultValue={ username }
-                  />
-                </div>
-
-                <div className={ `${passwordClass} form-group` }>
-                  <label htmlFor='password' className='hidden'>Password</label>
-                  <input
-                    id='password'
-                    className='form-control'
-                    name='password'
-                    type='password'
-                    placeholder='Password'
-                  />
-                </div>
-
+              <form action='/login' method='POST' className='login-form'>
+                <MinimalInput
+                  name='username'
+                  type='text'
+                  placeholder='Username'
+                  showTopBorder={ true }
+                  onChange={ this.updateUsername }
+                  value={ usernameText }
+                />
+                <MinimalInput
+                  name='password'
+                  type={ passwordFieldType }
+                  placeholder='Password'
+                  showTopBorder={ false }
+                  error={ passErr ? errorMessage : '' }
+                  onChange={ this.updatePassword }
+                  value={ passwordText }
+                >
+                  {
+                    passErr || passwordText.length === 0 ? (
+                      <button
+                        className={ `login__toggle-btn ${blue}` }
+                        onClick={ this.toggleType }
+                      >
+                        <span className='icon-eye' />
+                      </button>
+                    ) : (
+                      <button
+                        className='login__clear-btn'
+                        onClick={ this.clearPassword }
+                      >
+                        <span className='icon-x' />
+                      </button>
+                    )
+                  }
+                </MinimalInput>
                 { refererTag }
-
                 <input type='hidden' value={ ctx.csrf } name='_csrf' />
-
-                <button type='submit' className='btn-post btn-block'>Log In</button>
+                <a
+                  href='#'
+                  className='pull-right login__forgot-link'
+                  onClick={ this.toggleShowForgot }
+                >
+                  Forgot?
+                </a>
+                <div style={ {height: '45px', marginTop: '40px'} }>
+                  <SquareButton text='Log In' />
+                </div>
               </form>
             </div>
           </div>

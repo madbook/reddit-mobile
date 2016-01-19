@@ -1,0 +1,42 @@
+.inputMinimal {
+  padding-bottom: 1px;
+  // position relative for the optional nested button
+  // that is absolute positioned.
+  position: relative;
+
+  &__error-text {
+    color: @red;
+    padding: 3px 0  0 10px;
+  }
+
+  &__input {
+    border: none;
+    // for ios
+    -webkit-appearance: none;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+
+    background-image: none;
+    border-bottom: @gray-border;
+    width: 100%;
+    background-color: transparent;
+    font-size: 1.2em;
+    padding: 10px;
+
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid @blue;
+    }
+
+    &.show-top {
+      background-image: none;
+      border-top: @gray-border;
+    }
+
+    &.error {
+      border-bottom: 2px solid @state-danger-bg;
+    }
+  }
+}

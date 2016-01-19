@@ -120,12 +120,12 @@ class RegisterPage extends BasePage {
                   data-no-route='true'
                 >Already have an account? Log in!</a>
               </p>
-              <form action='/register' method='POST'>
-                <div className={ `${usernameClass} form-group` }>
+              <form action='/register' method='POST' className='login-form'>
+                <div className={ usernameClass + ' form-group-minimal' }>
                   <label htmlFor='username' className='hidden'>Username</label>
                   <input
                     id='username'
-                    className='form-control'
+                    className='input-minimal'
                     name='username'
                     type='text'
                     placeholder='Choose a username'
@@ -134,11 +134,11 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ `${passwordClass} form-group` }>
+                <div className={ passwordClass + ' form-group-minimal' }>
                   <label htmlFor='password' className='hidden'>Password</label>
                   <input
                     id='password'
-                    className='form-control'
+                    className='input-minimal'
                     name='password'
                     type='password'
                     placeholder='Password'
@@ -146,11 +146,11 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ `${passwordClass} form-group` }>
+                <div className={ passwordClass + ' form-group-minimal' }>
                   <label htmlFor='password2' className='hidden'>Verify password</label>
                   <input
                     id='password2'
-                    className='form-control'
+                    className='input-minimal'
                     name='password2'
                     type='password'
                     placeholder='Verify password'
@@ -158,11 +158,11 @@ class RegisterPage extends BasePage {
                   />
                 </div>
 
-                <div className={ `${emailClass} form-group` }>
+                <div className={ emailClass + ' form-group-minimal form-group-minimal-last' }>
                   <label htmlFor='email' className='hidden'>Email (optional)</label>
                   <input
                     id='email'
-                    className='form-control'
+                    className='input-minimal'
                     name='email'
                     type='email'
                     placeholder='Email (optional)'
@@ -196,3 +196,4 @@ class RegisterPage extends BasePage {
 }
 
 export default RegisterPage;
+
