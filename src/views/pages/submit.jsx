@@ -65,6 +65,7 @@ class SubmitPage extends BasePage {
     this.handleTitleChange = this.handleChange.bind(this, 'title');
     this.handleBodyChange = this.handleChange.bind(this, 'body');
     this.close = this.close.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount () {
@@ -259,6 +260,10 @@ class SubmitPage extends BasePage {
     }
   }
 
+  closeModal() {
+    this.setState({ requiresCaptcha: false });
+  }
+
   render () {
     const props = this.props;
     const subredditName = this.state.subreddit;
@@ -303,7 +308,7 @@ class SubmitPage extends BasePage {
 
     if (this.state.requiresCaptcha) {
       captcha = (
-        <Modal open={ true } >
+        <Modal open={ true } close={ this.closeModal } >
           <div className='Submit-captcha-heading' >
             <span>Ok, one more thing. You're human right?</span>
           </div>
