@@ -1,4 +1,5 @@
 import React from 'react';
+import querystring from 'querystring';
 
 import constants from '../../constants';
 
@@ -8,6 +9,16 @@ import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
 import CommunityHeader from '../components/CommunityHeader';
+import NotificationBar from '../components/NotificationBar';
+
+const FAKE_SUBS = ['mod', 'all', 'friends'];
+
+const NOTIFICATIONS = {
+  stalePage: {
+    type: 'success',
+    message: 'This page refreshed to show you current posts',
+  },
+};
 
 class IndexPage extends BasePage {
   static propTypes = {
@@ -23,10 +34,42 @@ class IndexPage extends BasePage {
     sort: React.PropTypes.string,
     subredditName: React.PropTypes.string,
   };
-  
+
+  static isStalePage (query, listings) {
+    // detect if we are on an invalid (stale) page, and if so, redirect to
+    // the front page.
+    if (query.before || query.after) {
+      const { body, headers } = listings;
+
+      // We sent in pagination, but we didn't get a before/after back
+      if (!headers.before && !headers.after && !body.length) {
+        return true;
+      }
+    }
+  }
+
+  static stalePageRedirectUrl (path, query={}) {
+    let qs = '';
+
+    if (query && Object.keys(query).length > 0) {
+      const q = { ...query };
+      delete q.before;
+      delete q.after;
+      delete q.page;
+      delete q.count;
+
+      if (Object.keys(q).length > 0) {
+        qs = `?${querystring.stringify(q)}`;
+      }
+    }
+
+    return `${path}${qs}`;
+  }
+
   constructor(props) {
     super(props);
     this.state.compact = props.compact;
+    this.stale = false;
     this._onCompactToggle = this._onCompactToggle.bind(this);
   }
 
@@ -47,29 +90,37 @@ class IndexPage extends BasePage {
     return 'listings';
   }
 
-  noListingsPage (url='/') {
-    return (
-      <div>
-        <h1>Whoops! There are no links here.</h1>
-        <h2><a href={ url }>Return to first page for fresh links?</a></h2>
-      </div>
-    );
-  }
-
   render() {
-    var loading;
-    var props = this.props;
-    var { data, compact } = this.state;
+    let loading;
 
-    var subredditName = props.subredditName;
-    var fakeSubs = ['mod', 'all', 'friends'];
-    var isFakeSub = fakeSubs.indexOf(subredditName) !== -1;
+    const props = this.props;
+    const { data, meta, compact } = this.state;
+    const { app } = props;
+
+    const subredditName = props.subredditName;
+    const isFakeSub = FAKE_SUBS.indexOf(subredditName) !== -1;
 
     if (!data || typeof data.listings === 'undefined' ||
         (subredditName && (!data.subreddit && !isFakeSub))) {
       return (
         <Loading />
       );
+    }
+
+    const listings = this.state.data.listings;
+
+    // For now, do a check on the client side, which asynchornously loads data.
+    // The server also does this check in routes. Eventually, refactor this in
+    // such a way that it can be written in one place generically for all routes
+    // and pages.
+    if (!this.stale && IndexPage.isStalePage(props.ctx.query, {
+      body: listings,
+      headers: meta.listings,
+    })) {
+      app.emit('notification', 'stalePage');
+      props.app.redirect(IndexPage.stalePageRedirectUrl(props.ctx.path, props.ctx.query));
+      this.stale = true;
+      return null;
     }
 
     let bypassInterstitial = data.preferences && data.preferences.over_18;
@@ -80,7 +131,6 @@ class IndexPage extends BasePage {
       }
     }
 
-    var listings = this.state.data.listings;
 
     var hideSubredditLabel = props.subredditName &&
                              props.subredditName.indexOf('+') === -1 &&
@@ -90,7 +140,7 @@ class IndexPage extends BasePage {
 
     var user = this.state.data.user;
 
-    let pagingPrefix = '/';
+    let pagingPrefix;
 
     if (props.subredditName) {
       pagingPrefix = '/r/' + props.subredditName;
@@ -98,10 +148,6 @@ class IndexPage extends BasePage {
 
     if (props.multi) {
       pagingPrefix = '/u/' + props.multiUser + '/m/' + props.multi;
-    }
-
-    if (listings.length === 0 && props.page !== 0) {
-      return this.noListingsPage(pagingPrefix);
     }
 
     // Use the same logic for the url and for the subreddit name display
@@ -122,11 +168,19 @@ class IndexPage extends BasePage {
 
     let subredditIsNSFW = data.subreddit ? data.subreddit.over18 : false;
 
+    let notificationBar;
+    const notifications = props.ctx.notifications;
+    if (notifications && notifications.indexOf('stalePage') !== -1) {
+      notificationBar = (<NotificationBar { ...NOTIFICATIONS.stalePage } />);
+    }
+
     return (
       <div>
         { loading }
 
         <CommunityHeader {...props} subreddit={ data.subreddit } />
+
+        { notificationBar }
 
         <TopSubnav
           { ...props }

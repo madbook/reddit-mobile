@@ -92,15 +92,13 @@ class ListingPaginationButtons extends BaseComponent {
       );
     }
 
-    if (listings.length >= pageSize) {
-      if (nextUrl) {
-        nextButton = (
-          <a href={ nextUrl } rel='next' className='btn btn-sm btn-primary IndexPage-button next'>
-            Next Page
-            <span className='glyphicon glyphicon-chevron-right'></span>
-          </a>
-        );
-      }
+    if (listings.length >= pageSize && nextUrl) {
+      nextButton = (
+        <a href={ nextUrl } rel='next' className='btn btn-sm btn-primary IndexPage-button next'>
+          Next Page
+          <span className='glyphicon glyphicon-chevron-right'></span>
+        </a>
+      );
     }
 
     return (

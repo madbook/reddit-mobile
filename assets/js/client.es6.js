@@ -116,8 +116,12 @@ function modifyContext (ctx) {
     redirect: redirect.bind(app),
     env: 'CLIENT',
     winWidth: window.innerWidth,
+    // pick up notifications off of the base for the intial load, since the
+    // server sends a delete the first time. delete the basectx.notifications
+    // after the first render.
+    notifications: baseCtx.notifications ||
+                  (decodeURIComponent(cookies.get('notifications') || '')).split(','),
   });
-
 
   if (!ctx.token) {
     ctx.loid = cookies.get('loid');
@@ -309,11 +313,11 @@ function initialize(bindLinks) {
     render(app, app.fullPathName(), false, modifyContext).then(function(props) {
       setTitle(props);
     });
-  }
+  };
 
   app.forceRender = function (view, props) {
     ReactDOM.render(view(props), app.config.mountPoint);
-  }
+  };
 
   var scrollCache = {};
 
@@ -321,18 +325,20 @@ function initialize(bindLinks) {
 
   function postRender(href) {
     return function(props) {
-      if(scrollCache[href]) {
+      if (scrollCache[href]) {
         $body.scrollTop = scrollCache[href];
       } else {
         $body.scrollTop = 0;
       }
 
-      setTitle(props);
+      if (props) {
+        setTitle(props);
 
-      if (!props.data.get('subreddit')) {
-        setMetaColor(constants.DEFAULT_KEY_COLOR);
+        if (!props.data.get('subreddit')) {
+          setMetaColor(constants.DEFAULT_KEY_COLOR);
+        }
       }
-    }
+    };
   }
 
   function logMissingHref($link) {
@@ -432,6 +438,9 @@ function initialize(bindLinks) {
   render(app, app.fullPathName(), true, modifyContext).then(function() {
     app.setState('dataCache');
 
+    // nuke bootstrap notifications
+    app.setState('ctx', { ...bootstrap.ctx, notifications: undefined });
+
     attachEvents();
     referrer = document.location.href;
     sendTimings();
@@ -466,6 +475,15 @@ function initialize(bindLinks) {
 
   app.on(constants.TOGGLE_OVER_18, function(val) {
     cookies.set('over18', val);
+  });
+
+  app.on('notification', function(notification) {
+    this.setNotification(cookies, notification);
+  }.bind(app));
+
+  app.on('pageview', function() {
+    // reset notifications once the page loads
+    cookies.set('notifications');
   });
 
   app.on(constants.HIDE_GLOBAL_MESSAGE, function(message) {

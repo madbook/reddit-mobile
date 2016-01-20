@@ -141,6 +141,20 @@ function mixin (App) {
         <Loading />
       );
     }
+
+    setNotification(cookies, message) {
+      const notifications = (cookies.get('notifications') || '').split(',');
+      const app = this;
+
+      notifications.push(message);
+
+      cookies.set('notifications', notifications, {
+        secure: app.getConfig('https'),
+        secureProxy: app.getConfig('httpsProxy'),
+        httpOnly: false,
+        overwrite: true,
+      });
+    }
   }
 
   return MixedInApp;

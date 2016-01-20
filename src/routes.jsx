@@ -85,6 +85,7 @@ function filterContextProps(ctx) {
     tokenExpires: ctx.tokenExpires,
     redirect: ctx.redirect,
     env: ctx.env,
+    notifications: ctx.notifications,
   };
 }
 
@@ -284,6 +285,17 @@ function routes(app) {
   function * indexPage () {
     let props = this.props;
     var sort = this.query.sort || 'hot';
+
+    this.preServerRender = function indexPagePreRender() {
+      // If we're on a next/prev for an invalid thing_id, so that no results are
+      // sent back, we have a stale cache. Redirect back to the first page of
+      // the sub, multi, or other.
+      if (IndexPage.isStalePage(this.query, this.props.dataCache.listings)) {
+        app.setNotification(this.cookies, 'stalePage');
+        this.redirect(IndexPage.stalePageRedirectUrl(this.path, this.query));
+        return false;
+      }
+    };
 
     Object.assign(this.props, {
       sort,

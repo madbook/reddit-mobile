@@ -361,6 +361,10 @@ class Server {
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'] || '';
       this.country = this.headers['cf-ipcountry'];
+      this.notifications = (this.cookies.get('notifications') || '').split(',');
+
+      // reset notifications after read
+      this.cookies.set('notifications');
 
       if (!this.token) {
         this.token = this.cookies.get('token');
