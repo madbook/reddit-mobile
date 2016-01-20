@@ -1,8 +1,21 @@
-.modal-tiny-header {
-	padding: 10px 10px 0 0;
-}
+.Modal {
+  &__content {
+    border-radius: 0;
+  }
 
-.modal-dialog.Modal-small {
-	max-width: 300px;
-	margin: 130px auto 30px;
+  &__close {
+    display: inline-block;
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    z-index: 9999;
+    width: 40px;
+    height: 30px;
+    font-size: 2.3em;
+  }
+
+  &__small.modal-dialog {
+    max-width: 300px;
+    margin: 130px auto 30px;
+  }
 }
