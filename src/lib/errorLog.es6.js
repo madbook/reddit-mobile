@@ -3,6 +3,10 @@ import superagent from 'superagent';
 function simpleUA(agent) {
   if (/server/i.test(agent)) { return 'server'; }
 
+  // Googlebot does silly things like tell us it's iPhone, check first
+  // see https://googlewebmastercentral.blogspot.com/2014/01/a-new-googlebot-user-agent-for-crawling.html
+  if (/Googlebot/i.test(agent)) { return 'googlebot-js-client'; }
+
   if (/iPhone/i.test(agent) || /iPad/i.test(agent) || /iPod/i.test(agent)) {
     if (/CriOS/i.test(agent)) {
       return 'ios-chrome';
@@ -21,8 +25,6 @@ function simpleUA(agent) {
 
     return 'android-chrome';
   }
-
-  if (/googlebot/i.test(agent)) { return 'googlebot-js-client'; }
 
   return 'unknownClient';
 }
