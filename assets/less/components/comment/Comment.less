@@ -1,0 +1,57 @@
+.Comment {
+  &__body,
+  &__toolsContainer,
+  &__replies {
+    &.m-hidden {
+      display: none;
+    }
+  }
+  
+  &__body {
+    padding-top: @grid-size;
+  }
+  
+  &__tools {
+    float: right;
+  }
+  
+  &__edit {
+    margin: (2 * @grid-size) 0;
+    
+    &.m-hidden {
+      display: none;
+    }
+  }
+  
+  &__replyForm {
+    margin-top: @grid-size;
+    
+    &.m-hidden {
+      display: none;
+    }
+  }
+  
+  &__replies {
+    margin-left: @grid-size;
+    
+    &.m-no-indent {
+      margin-left: 0;
+    }
+  }
+  
+  &__reply,
+  &__seemore {
+    margin-top: @grid-size;
+    padding-top: @grid-size;
+    border-top: 1px solid @pale-grey;
+    
+    &.m-highlight {
+      border-color: @mango;
+    }
+  }
+
+  &__replyFormLocked {
+    text-align: right;
+    color: @neutral;
+  }
+}

@@ -51,8 +51,6 @@ import trackingEvents from './trackingEvents';
 
 import EUCountries from '../../src/EUCountries';
 
-const isSafari = window.navigator.userAgent.indexOf('Safari') > -1;
-
 let _lastWinWidth = 0;
 let winWidth = window.innerWidth;
 
@@ -575,14 +573,10 @@ function initialize(bindLinks) {
       }
 
       $body.classList.add(constants.OVERLAY_MENU_VISIBLE_CSS_CLASS);
-      if (isSafari) {
-        $body.addEventListener('touchmove', stopScroll);
-      }
+      $body.addEventListener('touchmove', stopScroll);
     } else {
       $body.classList.remove(constants.OVERLAY_MENU_VISIBLE_CSS_CLASS);
-      if (isSafari) {
-        $body.removeEventListener('touchmove', stopScroll);
-      }
+      $body.removeEventListener('touchmove', stopScroll);
     }
   });
 

@@ -1,0 +1,23 @@
+.DropdownController {
+  &__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: @transparent-grey;
+    z-index: 15;
+  }
+  
+  &__contentWrapper {
+    position: fixed;
+    max-width: 420px;
+    z-index: 16;
+    background-color: @white;
+  }
+  
+  &__content {
+    overflow-y: scroll;
+    overflow-y: touch;
+  }
+}

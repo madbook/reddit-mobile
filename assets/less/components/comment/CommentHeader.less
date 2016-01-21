@@ -1,0 +1,152 @@
+.CommentHeader {
+  &__table {
+    width: 100%;
+  }
+  
+  &__col1,
+  &__col2,
+  &__col3 {
+    vertical-align: top;
+  }
+  
+  &__col1 {
+    width: 20px;
+  }
+  
+  &__col2 {
+    // This is a bit of trickery. It doesn't actually matter what the max-width
+    // is; the middle column will always occupy the remaining space
+    // between the first and last columns. However, setting this rule
+    // prevents the middle column from overflowing.
+    max-width: 0px;
+  }
+  
+  &__col3 {
+    width: 45px;
+    text-align: right;
+  }
+  
+  &__username,
+  &__usernameIcon,
+  &__flair,
+  &__timestamp,
+  &__separator,
+  &__caron,
+  &__dots {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  &__username,
+  &__flair,
+  &__timestamp,
+  &__separator {
+    margin-right: @half-grid-size;
+  }
+  
+  &__username,
+  &__flair,
+  &__timestamp {
+    color: @grey-text;
+  }
+  
+  &__username,
+  &__flair {
+    &.m-highlight {
+      color: @mango;
+      
+      [class*=" icon-"] {
+        // need to user important to overcome all the default styling around
+        // icons
+        color: @mango !important;
+      }
+    }
+  }
+  
+  &__dots {
+    margin-right: @half-grid-size;
+    color: @blue;
+  }
+  
+  &__caron {
+    margin-right: @grid-size;
+    
+    &[class*=" icon-"] {
+      color: @blue;
+    }
+    
+    &.m-highlight {
+      &[class*=" icon-"] {
+        color: @mango;
+      }
+    }
+    
+    &.m-collapsed {
+      transform: rotate(-90deg);
+    }
+  }
+  
+  &__separator {
+    color: @pale-grey;
+  }
+  
+  &__username {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    &.m-admin {
+      color: @orangered;
+    }
+    
+    &.m-moderator {
+      color: @lime;
+    }
+    
+    &.m-op {
+      color: @blue;
+    }
+    
+    &.m-self {
+      color: @mint;
+    }
+  }
+  
+  &__usernameIcon {
+    margin-left: @half-grid-size;
+    
+    &[class*=" icon-"] {
+      &.icon-snoosilhouette {
+        color: @orangered;
+      }
+      
+      &.icon-mod {
+        color: @lime;
+      }
+      
+      &.icon-op {
+        color: @blue;
+      }
+      
+      &.icon-user-account {
+        color: @mint;
+      }
+    }
+  }
+  
+  &__gold,
+  &__goldCount {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  &__gold {
+    color: @gold;
+  }
+  
+  &__goldCount {
+    color: @neutral;
+    margin-left: @half-grid-size;
+  }
+}

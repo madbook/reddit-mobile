@@ -1,0 +1,21 @@
+.SquareButton {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: @blue;
+  
+  &.m-disabled {
+    background-color: @pale-grey;
+  }
+  
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 1.5;
+    color: @off-white;
+    letter-spacing: 1.6;
+  }
+}

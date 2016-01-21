@@ -3,13 +3,13 @@
 import Ad from '../../src/views/components/Ad';
 import BaseComponent from '../../src/views/components/BaseComponent';
 import CaptchaBox from '../../src/views/components/CaptchaBox';
-import Comment from '../../src/views/components/Comment';
-import CommentBox from '../../src/views/components/CommentBox';
+import Comment from '../../src/views/components/comment/Comment';
 import CommentPreview from '../../src/views/components/CommentPreview';
 import CommunityHeader from '../../src/views/components/CommunityHeader';
 import CommunityOverlayMenu from '../../src/views/components/CommunityOverlayMenu';
 import CommunitySearchRow from '../../src/views/components/CommunitySearchRow';
 import Dropdown from '../../src/views/components/Dropdown';
+import DropdownController from '../../src/views/components/dropdown/DropdownController';
 import GoogleCarouselMetadata from '../../src/views/components/GoogleCarouselMetadata';
 import Inbox from '../../src/views/components/Inbox';
 import Listing from '../../src/views/components/Listing';
@@ -67,13 +67,13 @@ export {
     BaseComponent,
     CaptchaBox,
     Comment,
-    CommentBox,
     CommentPreview,
     Comment,
     CommunityHeader,
     CommunityOverlayMenu,
     CommunitySearchRow,
     Dropdown,
+    DropdownController,
     GoogleCarouselMetadata,
     Inbox,
     Listing,

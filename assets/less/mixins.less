@@ -26,6 +26,14 @@
           transform-origin: @output;
 }
 
+.linear-gradient-background(@deg, @from, @to) {
+  background-color: @to;
+  background-image: -webkit-linear-gradient(@deg, @from, @to);
+  background-image:    -moz-linear-gradient(@deg, @from, @to);
+  background-image:      -o-linear-gradient(@deg, @from, @to);
+  background-image:         linear-gradient(@deg, @from, @to);
+}
+
 .icon-font(@rules) {
   [class^="icon-"] {@rules();}
   [class*=" icon-"] {@rules();}

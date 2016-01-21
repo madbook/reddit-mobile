@@ -10,6 +10,7 @@ require('babel/register')({
 require('./lib/titleCase');
 require('./lib/formatDifference');
 require('./lib/formatNumber');
+require('./lib/extractErrorMsg');
 
 // Even with shallow rendering react currently looks for document when setState is used.
 // see https://github.com/facebook/react/issues/4019

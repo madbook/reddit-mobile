@@ -1,0 +1,26 @@
+.CommentSeeMore {
+  &__caron,
+  &__msg,
+  &__dots {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  &__caron {
+    margin-right: @grid-size;
+    transform: rotate(-90deg);
+    
+    &[class*=" icon-"] {
+      color: @blue;
+    }
+  }
+  
+  &__msg {
+    color: @blue;
+  }
+  
+  &__dots {
+    margin-right: @half-grid-size;
+    color: @blue;
+  }
+}
