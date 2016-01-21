@@ -81,7 +81,6 @@ function filterContextProps(ctx) {
     userAgent: ctx.userAgent,
     csrf: ctx.csrf,
     referrer: ctx.headers.referer,
-    isGoogleCrawler: ctx.isGoogleCrawler,
     token: ctx.token,
     tokenExpires: ctx.tokenExpires,
     redirect: ctx.redirect,

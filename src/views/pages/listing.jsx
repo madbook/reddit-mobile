@@ -14,7 +14,6 @@ class ListingPage extends BasePage {
   static propTypes = {
     commentId: React.PropTypes.string,
     data: React.PropTypes.object,
-    isGoogleCrawler: React.PropTypes.bool,
     listingId: React.PropTypes.string.isRequired,
     sort: React.PropTypes.string,
     subredditName: React.PropTypes.string,
@@ -167,7 +166,7 @@ class ListingPage extends BasePage {
     } = this.props;
 
     const { origin } = this.props.config;
-    const { url, isGoogleCrawler } = ctx;
+    const { url, env } = ctx;
 
     sort = sort || 'best';
 
@@ -238,7 +237,8 @@ class ListingPage extends BasePage {
         }
       });
 
-      if (isGoogleCrawler) {
+      // Show google crawler metadata when the server renders
+      if (env === 'SERVER') {
         googleCarousel = (
           <GoogleCarouselMetadata
             url={ url }

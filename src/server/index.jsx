@@ -376,8 +376,6 @@ class Server {
       this.renderSynchronous = true;
       this.useCache = false;
 
-      this.isGoogleCrawler = this.userAgent.toLowerCase().indexOf('googlebot') > -1;
-
       yield next;
     };
   }
