@@ -10,7 +10,9 @@ then
   echo $yn | grep ^[Yy]$
   if [ $? -eq 0 ]
   then
-    npm run lint
+    CHANGED_FILES=`git diff --staged --name-only | grep \.js* | tr -s '\n' ' '`
+
+    echo $CHANGED_FILES | xargs ./node_modules/.bin/eslint --plugin babel --ext .js,.jsx
   else
     exit 0; #THE USER WANTS TO CONTINUE
   fi
