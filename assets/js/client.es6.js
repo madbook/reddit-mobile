@@ -70,7 +70,7 @@ function loadShim() {
   shimScript.type = 'text\/javascript';
   shimScript.onload = function() {
     initialize(false);
-  }
+  };
 
   $head.appendChild(shimScript, document.currentScript);
 
@@ -159,17 +159,17 @@ function refreshToken (app) {
 
         Object.assign(app.getState('ctx'), {
           token: token.token,
-          tokenExpires: token.tokenExpires
+          tokenExpires: token.tokenExpires,
         });
 
         app.setState('refreshingToken', false);
         app.emit('token:refresh', token);
 
         window.setTimeout(function() {
-          refreshToken(app).then(function(){
+          refreshToken(app).then(function() {
             Object.assign(app.getState('ctx'), {
               token: token.token,
-              tokenExpires: token.tokenExpires
+              tokenExpires: token.tokenExpires,
             });
 
             app.setState('refreshingToken', false);
@@ -177,7 +177,7 @@ function refreshToken (app) {
           });
         }, (expires - now) * .9);
       });
-  })
+  });
 }
 
 function findLinkParent(el) {
@@ -216,7 +216,7 @@ function sendTimings() {
         .send({
           rum: timings,
         })
-        .end(function(){});
+        .end(function() {});
     }
   }
 }
@@ -238,8 +238,6 @@ function render (app, ...args) {
 
 function initialize(bindLinks) {
   const dataCache = window.bootstrap.dataCache;
-  var plugin;
-  var p;
 
   referrer = document.referrer;
 
@@ -280,7 +278,7 @@ function initialize(bindLinks) {
     refreshMS = Math.max(refreshMS - (1000 * 60), 0);
 
     window.setTimeout(function() {
-      refreshToken(app).then(function(){});
+      refreshToken(app).then(function() {});
     }, refreshMS);
   } else if (!cookies.get('loid')) {
     setLoggedOutCookies(cookies, app);
@@ -292,8 +290,7 @@ function initialize(bindLinks) {
 
   // env comes from bootstrap from the server, update now that the client is loading
   app.state.ctx.env = 'CLIENT';
-  modifyContext = modifyContext.bind(app);
-  app.modifyContext = modifyContext;
+  app.modifyContext = modifyContext.bind(app);
 
   var history = window.history || window.location.history;
   app.pushState = (data, title, url) => {
@@ -317,7 +314,7 @@ function initialize(bindLinks) {
 
     // Set to the browser's interpretation of the current name (to make
     // relative paths easier), and send in the old url.
-    render(app, app.fullPathName(), false, modifyContext).then(function(props) {
+    render(app, app.fullPathName(), false, app.modifyContext).then(function(props) {
       setTitle(props);
       postRender(path);
     });
@@ -438,11 +435,11 @@ function initialize(bindLinks) {
         app.redirect(href);
       });
 
-      window.addEventListener('popstate', function(e) {
+      window.addEventListener('popstate', function() {
         var href = app.fullPathName();
         scrollCache[initialUrl] = window.scrollY;
 
-        render(app, href, false, modifyContext).then(postRender(href));
+        render(app, href, false, app.modifyContext).then(postRender(href));
 
         initialUrl = href;
       });
@@ -454,11 +451,11 @@ function initialize(bindLinks) {
   // config value after render.
   beginRender = Date.now();
 
-  render(app, app.fullPathName(), true, modifyContext).then(function() {
+  render(app, app.fullPathName(), true, app.modifyContext).then(function() {
     app.setState('dataCache');
 
     // nuke bootstrap notifications
-    app.setState('ctx', { ...bootstrap.ctx, notifications: undefined });
+    app.setState('ctx', { ...window.bootstrap.ctx, notifications: undefined });
 
     attachEvents();
     referrer = document.location.href;
@@ -473,7 +470,12 @@ function initialize(bindLinks) {
     options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
-      var domain = '.' + window.bootstrap.config.reddit.match(/https?:\/\/(.+)/)[1].split('.').splice(1,2).join('.');
+      var domain = '.' + window.bootstrap.config.reddit
+        .match(/https?:\/\/(.+)/)[1]
+        .split('.')
+        .splice(1,2)
+        .join('.');
+
       options.domain = domain;
     }
 
@@ -589,11 +591,11 @@ function initialize(bindLinks) {
     }
   });
 
-  window.addEventListener('scroll', throttle(function(e) {
-      app.emit(constants.SCROLL);
-    }.bind(app), 100));
+  window.addEventListener('scroll', throttle(function() {
+    app.emit(constants.SCROLL);
+  }.bind(app), 100));
 
-  window.addEventListener('resize', throttle(function(e) {
+  window.addEventListener('resize', throttle(function() {
     // Prevent resize from firing when chrome shows/hides nav bar
     if (winWidth !== _lastWinWidth) {
       _lastWinWidth = winWidth;

@@ -19,30 +19,29 @@ function receiveMessage(e) {
     return;
   }
 
-  try {
-    let message = JSON.parse(e.data);
-    let type = message.type;
 
-    // Namespace doesn't match, ignore
-    if (!re_messageNamespaces.test(type)) {
-      return;
-    }
+  let message = JSON.parse(e.data);
+  let type = message.type;
 
-    let namespace = type.split('.', 2)[1];
+  // Namespace doesn't match, ignore
+  if (!re_messageNamespaces.test(type)) {
+    return;
+  }
 
-    if (proxies[namespace]) {
-      const proxyWith = proxies[namespace];
+  let namespace = type.split('.', 2)[1];
 
-      proxyWith.targets.forEach(function(target) {
-        frames.postMessage(target, type, message.data, message.options);
-      });
-    }
+  if (proxies[namespace]) {
+    const proxyWith = proxies[namespace];
 
-    const customEvent = new CustomEvent(type, {detail: message.data});
-    customEvent.source = e.source;
+    proxyWith.targets.forEach(function(target) {
+      frames.postMessage(target, type, message.data, message.options);
+    });
+  }
 
-    global.dispatchEvent(customEvent);
-  } catch (x) {}
+  const customEvent = new CustomEvent(type, {detail: message.data});
+  customEvent.source = e.source;
+
+  global.dispatchEvent(customEvent);
 }
 
 function _addEventListener(type, handler, useCapture) {
@@ -53,7 +52,7 @@ function _addEventListener(type, handler, useCapture) {
   }
 }
 
-function _removeEventListener(type, handler, useCapture) {
+function _removeEventListener(type, handler) {
   if (global.removeEventListener) {
     global.removeEventListener(type, handler);
   } else if (global.detachEvent) {
@@ -66,7 +65,7 @@ function compileOriginRegExp(origins) {
 }
 
 function compileNamespaceRegExp(namespaces) {
-  return new RegExp('\\.(?:' + namespaces.join('|') + ')$')
+  return new RegExp('\\.(?:' + namespaces.join('|') + ')$');
 }
 
 function isWildcard(origin) {
@@ -93,7 +92,7 @@ const frames = {
    * param {String} options.targetOrigin Specifies what the origin of
       otherWindow must be for the event to be dispatched.
    */
-  postMessage: function (target, type, data, options) {
+  postMessage(target, type, data, options) {
     if (!RE_HAS_NAMESPACE.test(type)) {
       type += DEFAULT_MESSAGE_NAMESPACE;
     }
@@ -106,9 +105,9 @@ const frames = {
     }
 
     target.postMessage(JSON.stringify({
-      type: type,
-      data: data,
-      options: options,
+      type,
+      data,
+      options,
     }), options.targetOrigin);
   },
 
@@ -121,7 +120,7 @@ const frames = {
    * param {Object} [context=this] The context the callback is invoked with.
    * returns {Object} The listener.
    */
-  receiveMessage: function (source, type, callback, context) {
+  receiveMessage(source, type, callback, context) {
     if (typeof source === 'string') {
       context = callback;
       callback = type;
@@ -144,7 +143,7 @@ const frames = {
     _addEventListener(type, scoped);
 
     return {
-      off: function() { _removeEventListener(type, scoped); }
+      off() { _removeEventListener(type, scoped); },
     };
   },
 
@@ -154,7 +153,7 @@ const frames = {
    * targets {Array<Window>} [source] The frames to proxy messages to.
    *  NOTE: supports a single frame as well.
    */
-  proxy: function(namespace, targets) {
+  proxy(namespace, targets) {
     this.listen(namespace);
 
     if (!Array.isArray(targets)) {
@@ -164,10 +163,10 @@ const frames = {
     let namespaceProxies = proxies[namespace];
 
     if (namespaceProxies) {
-      namespaceProxies.targets = [].concat(namespaceProxies.targets, target);
+      namespaceProxies.targets = [].concat(namespaceProxies.targets, targets);
     } else {
       namespaceProxies = {
-        targets: targets,
+        targets,
       };
     }
 
@@ -183,19 +182,18 @@ const frames = {
    * param {Object} [context=this] The context the callback is invoked with.
    * returns {Object} The listener.
    */
-  receiveMessageOnce: function (source, type, callback, context) {
-    return frames.receiveMessage(source, type, function() {
+  receiveMessageOnce(source, type, callback, context) {
+    const listener = frames.receiveMessage(source, type, function() {
       callback && callback.apply(this, arguments);
-
-      listener.off();
     }, context);
+    listener.off();
   },
 
   /*
    * Adds an allowed origin to be listened to.
    * param {String} origin The origin to be added.
    */
-  addPostMessageOrigin: function (origin) {
+  addPostMessageOrigin(origin) {
     if (isWildcard(origin)) {
       allowedOrigins = [ALLOW_WILDCARD];
     } else if (allowedOrigins.indexOf(origin) === -1) {
@@ -211,7 +209,7 @@ const frames = {
    * Removes an origin from the list of those listened to.
    * param {String} origin The origin to be removed.
    */
-  removePostMessageOrigin: function (origin) {
+  removePostMessageOrigin(origin) {
     let index = allowedOrigins.indexOf(origin);
 
     if (index !== -1) {
@@ -225,7 +223,7 @@ const frames = {
    * Listens to messages on of the specified namespace.
    * param {String} namespace The namespace to be listened to.
    */
-  listen: function (namespace) {
+  listen(namespace) {
     if (messageNamespaces.indexOf(namespace) === -1) {
       messageNamespaces.push(namespace);
       re_messageNamespaces = compileNamespaceRegExp(messageNamespaces);
@@ -242,7 +240,7 @@ const frames = {
    * Stops listening to messages on of the specified namespace.
    * param {String} namespace The namespace to stop listening to.
    */
-  stopListening: function (namespace) {
+  stopListening(namespace) {
     let index = messageNamespaces.indexOf(namespace);
 
     if (index !== -1) {

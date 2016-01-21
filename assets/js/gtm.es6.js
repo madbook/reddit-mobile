@@ -1,12 +1,10 @@
-'use strict';
-
 import frames from './frames';
 
 let jail = document.getElementById('gtm-jail');
 
 let gtm = {
 
-  trigger: function(eventName, payload) {
+  trigger(eventName, payload) {
     if (payload) {
       this.set(payload);
     }
@@ -16,7 +14,7 @@ let gtm = {
     });
   },
 
-  set: function(data) {
+  set(data) {
     frames.postMessage(jail.contentWindow, 'data.gtm', data);
   },
 

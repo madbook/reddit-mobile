@@ -1,5 +1,5 @@
 import querystring from 'querystring';
-import crypto from 'crypto'
+import crypto from 'crypto';
 import superagent from 'superagent';
 import EventTracker from 'event-tracker';
 import constants from '../../src/constants';
@@ -27,7 +27,7 @@ function postData(eventInfo) {
     .query(query)
     .timeout(constants.DEFAULT_API_TIMEOUT)
     .send(data)
-    .end(function(){});
+    .end(function() {});
 }
 
 function trackingEvents(app) {
@@ -233,7 +233,7 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'comment', 'edit');
   });
 
-  app.on('search', function (query) {
+  app.on('search', function () {
     gaSend('send', 'event', 'search');
   });
 
@@ -241,7 +241,7 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'goto', query);
   });
 
-  app.on('report', function (query) {
+  app.on('report', function () {
     gaSend('send', 'event', 'report');
   });
 
