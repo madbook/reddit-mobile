@@ -14,6 +14,10 @@ function iconOrSpacerFromProps(props) {
       backgroundImage: `url(${props.iconURL})`,
     };
 
+    if (props.iconBackgroundColor) {
+      backgroundStyle.backgroundColor = props.iconBackgroundColor;
+    }
+
     iconContent = (
       <span
         className='OverlayMenu-icon OverlayMenu-icon-img'
