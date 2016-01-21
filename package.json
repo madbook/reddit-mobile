@@ -9,7 +9,7 @@
     "watch": "gulp watch",
     "dev": "gulp dev",
     "test": "mocha test/index.js",
-    "lint": "eslint src --ext .js,.jsx"
+    "lint": "eslint src assets/js --ext .js,.jsx"
   },
   "author": "reddit <jack@reddit.com>",
   "license": "MIT",
