@@ -27,7 +27,7 @@ import RegisterPage from './views/pages/register';
 import MessagesPage from './views/pages/messages';
 import MessageComposePage from './views/pages/messageCompose';
 import SubmitPage from './views/pages/submit';
-import WikiPage from './views/pages/wikiPage';
+import WikiPage from './views/pages/wikipage';
 
 import constants from './constants';
 import defaultConfig from './config';
