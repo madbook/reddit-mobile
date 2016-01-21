@@ -49,11 +49,11 @@ class WikiPageComp extends BasePage {
         }
         break;
       case PAGETYPES.WIKI_REVISION:
-        const revisions = data.wikiPage.revisions.map((wikiRevision)=> {
+        const revisions = data.wikiPage.revisions.map((wikiRevision, i) => {
           const { author, page, timestamp } = wikiRevision;
           return (
-            <tr key={ author + timestamp }>
-              <td className='wikiPage-revision-author'>{ author.name }</td>
+            <tr key={ i }>
+              <td className='wikiPage-revision-author'>{ author ? author.name : 'Unknown' }</td>
               <td>{ page }</td>
               <td className='wikiPage-revision-date'>{ moment(timestamp * 1000).fromNow() }</td>
             </tr>
@@ -105,7 +105,7 @@ class WikiPageComp extends BasePage {
       case PAGETYPES.WIKIPAGE:
         const { content_md, revision_by, revision_date } = data.wikiPage;
         const body = content_md || 'Nothing here...';
-        const editor = revision_by.name;
+        const editor = revision_by ? revision_by.name: 'Unknown';
         const date = moment(revision_date * 1000).fromNow();
 
         content = (
