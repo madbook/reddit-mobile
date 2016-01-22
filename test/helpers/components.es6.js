@@ -57,6 +57,7 @@ import UserActivityPage from '../../src/views/pages/userActivity';
 import UserGildPage from '../../src/views/pages/userGild';
 import UserProfilePage from '../../src/views/pages/userProfile';
 import UserSavedPage from '../../src/views/pages/userSaved';
+import WikiPage from '../../src/views/pages/wikipage';
 
 //layouts
 
@@ -119,6 +120,7 @@ export {
     UserGildPage,
     UserProfilePage,
     UserSavedPage,
+    WikiPage,
 
     BodyLayout,
 };

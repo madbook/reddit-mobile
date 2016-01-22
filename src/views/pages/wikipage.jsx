@@ -17,6 +17,12 @@ const PAGETYPES = {
   WIKIPAGE_SETTINGS: 'WikiPageSettings',
 };
 
+export const MESSAGES = {
+  NO_REVISIONS: 'No recent revisions to show.',
+  NO_CONVERSATIONS: 'No discussions about this page.',
+  NO_MARKDOWN: 'Nothing here...',
+};
+
 class WikiPageComp extends BasePage {
   static propTypes = {
     subredditName: React.PropTypes.string,
@@ -27,7 +33,7 @@ class WikiPageComp extends BasePage {
     if (!wikiPage.revisions.length) {
       return (
         <div className='wikiPage-container'>
-          <p>No recent revisions to show.</p>
+          <p>{ MESSAGES.NO_REVISIONS }</p>
         </div>
       );
     }
@@ -65,7 +71,7 @@ class WikiPageComp extends BasePage {
     if (!conversations || !conversations.length) {
       return (
         <div className='wikiPage-container'>
-          <p>No discussions about this page.</p>
+          <p>{ MESSAGES.NO_CONVERSATIONS }</p>
         </div>
       );
     }
@@ -101,7 +107,7 @@ class WikiPageComp extends BasePage {
 
   renderWikiPage(wikiPage) {
     const { content_md, revision_by, revision_date } = wikiPage;
-    const body = content_md || 'Nothing here...';
+    const body = content_md || MESSAGES.NO_MARKDOWN;
     const editor = revision_by ? revision_by.name: 'Unknown';
     const date = moment(revision_date * 1000).fromNow();
 

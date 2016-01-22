@@ -26,6 +26,7 @@ require('./views/layouts/BodyLayout');
 // pages
 require('./views/pages/Index');
 require('./views/pages/userSaved');
+require('./views/pages/wikipage');
 
 // functions from routes
 require('./routes/loginRegisterOriginalUrl.es6.js');
