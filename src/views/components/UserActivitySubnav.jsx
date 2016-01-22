@@ -32,7 +32,7 @@ class UserActivitySubnav extends BaseComponent {
     name: React.PropTypes.string.isRequired,
     sort: React.PropTypes.string,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -113,7 +113,6 @@ class UserActivitySubnav extends BaseComponent {
         <a
           className='TopSubnav-a'
           href={ this.props.app.config.loginPath }
-          data-no-route='true'
         >Log in / Register</a>
       );
     }

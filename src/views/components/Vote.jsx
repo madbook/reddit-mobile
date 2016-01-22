@@ -14,7 +14,7 @@ class Vote extends BaseComponent {
       propTypes.listing,
     ]).isRequired,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -90,10 +90,7 @@ class Vote extends BaseComponent {
   }
 
   submitVote(direction) {
-    if (!this.props.token) {
-      window.location = this.props.app.config.loginPath;
-      return;
-    }
+    if (this.props.app.needsToLogInUser()) { return; }
 
     if (this.state.localScore === direction) {
       direction = 0;

@@ -20,6 +20,9 @@ if (globalMessage) {
 }
 
 function config() {
+  const loginPath = process.env.LOGIN_PATH || '/oauth2/login';
+  const registerPath = loginPath === '/login' ? '/register' : loginPath;
+
   return {
     https: process.env.HTTPS === 'true',
     httpsProxy: process.env.HTTPS_PROXY === 'true',
@@ -42,7 +45,8 @@ function config() {
     googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
     googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
 
-    loginPath: process.env.LOGIN_PATH || '/oauth2/login',
+    loginPath,
+    registerPath,
 
     statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
     mediaDomain: process.env.MEDIA_DOMAIN || 'www.redditmedia.com',

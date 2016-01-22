@@ -129,11 +129,7 @@ class CommunityHeader extends BaseComponent {
   }
 
   _onSubscribeToggle() {
-    if (!this.props.token) {
-      // hard redirect: we need to make sure the CSRF token is fresh
-      window.location = '/register';
-      return;
-    }
+    if (this.props.app.needsToLogInUser()) { return; }
 
     const subreddit = this.state.subreddit;
     const props = this.props;

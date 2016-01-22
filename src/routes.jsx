@@ -5,6 +5,7 @@ import querystring from 'querystring';
 import superagent from 'superagent';
 
 import merge from 'lodash/object/merge';
+import url from 'url';
 
 // components
 import BodyLayout from './views/layouts/BodyLayout';
@@ -238,6 +239,23 @@ function * globalMessage(next) {
     }
   }
   yield next;
+}
+
+function loginRegisterOriginalUrl(query, headers) {
+  let redirectUrl;
+
+  if (query && query.originalUrl) {
+    redirectUrl = url.parse(query.originalUrl).path;
+  } else if (!redirectUrl && headers && headers.referer) {
+    const parsedReferrer = url.parse(headers.referer);
+    redirectUrl = parsedReferrer.path;
+  }
+
+  // Make sure redirectUrl is a a relative path. url.parse will accept any
+  // string and return it back as the path. path will be null when parsing empty string
+  if (redirectUrl && redirectUrl[0] === '/') {
+    return redirectUrl;
+  }
 }
 
 // The main entry point to this file is the routes function.
@@ -607,13 +625,15 @@ function routes(app) {
   });
 
   router.get('user.login', '/login', function * () {
-    const { error, message, originalUrl } = this.query;
+    const { error, message } = this.query;
+    const originalUrl = loginRegisterOriginalUrl(this.query, this.headers);
     this.props = {...this.props, error, message, originalUrl };
     this.body = makeBody(LoginPage);
   });
 
   router.get('user.register', '/register', function * () {
-    const { error, message, originalUrl } = this.query;
+    const { error, message } = this.query;
+    const originalUrl = loginRegisterOriginalUrl(this.query, this.headers);
     this.props = {...this.props, error, message, originalUrl };
     this.body = makeBody(RegisterPage);
   });
@@ -812,3 +832,4 @@ function routes(app) {
 export default routes;
 export var buildProps = buildProps;
 export var userData = userData;
+export var loginRegisterOriginalUrl = loginRegisterOriginalUrl;

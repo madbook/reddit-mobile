@@ -13,7 +13,7 @@ class CommentBox extends BaseComponent {
     thingId: PropTypes.string.isRequired,
     token: PropTypes.string,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -50,16 +50,12 @@ class CommentBox extends BaseComponent {
       return;
     }
 
+    if (this.props.app.needsToLogInUser()) { return; }
+
     this.setState({error: ''});
 
-    const { apiOptions, app, token, thingId, onSubmit } = this.props;
-    const { requireLogin, config, api } = app;
-
-    if (!token) {
-      requireLogin(config.loginPath);
-
-      return;
-    }
+    const { apiOptions, app, thingId, onSubmit } = this.props;
+    const { api } = app;
 
     const comment = new models.Comment({
       thingId,

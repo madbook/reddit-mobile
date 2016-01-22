@@ -20,7 +20,6 @@ function TopSubnav (props) {
       <a
         className='TopSubnav-a'
         href={ props.app.config.loginPath }
-        data-no-route='true'
       >
         Log in / Register
       </a>

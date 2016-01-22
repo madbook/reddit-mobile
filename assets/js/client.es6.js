@@ -85,17 +85,6 @@ function onLoad(fn) {
   }
 }
 
-function redirect(status, path) {
-  if ((typeof status === 'string') && !path) {
-    path = status;
-  }
-
-  if (path.indexOf('/login') > -1 || path.indexOf('/register') > -1 ) {
-    window.location = path;
-  } else {
-    this.redirect(path);
-  }
-}
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
@@ -121,7 +110,7 @@ function modifyContext (ctx) {
     showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
     showEUCookieMessage: (EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
     showGlobalMessage: cookies.get((app.config.globalMessage || {}).key) === undefined,
-    redirect: redirect.bind(app),
+    redirect: app.redirect,
     env: 'CLIENT',
     winWidth: window.innerWidth,
     // pick up notifications off of the base for the intial load, since the
@@ -313,15 +302,39 @@ function initialize(bindLinks) {
     }
   };
 
-  app.redirect = function(url) {
-    app.pushState(null, null, url);
+  app.redirect = function redirect(status, path) {
+    if ((typeof status === 'string') && !path) {
+      path = status;
+    }
+
+    if (path.indexOf(config.loginPath) === 0 ||
+        path.indexOf(config.registerPath) === 0) {
+      window.location = path;
+      return;
+    }
+
+    app.pushState(null, null, path);
 
     // Set to the browser's interpretation of the current name (to make
     // relative paths easier), and send in the old url.
     render(app, app.fullPathName(), false, modifyContext).then(function(props) {
       setTitle(props);
+      postRender(path);
     });
-  };
+  }.bind(app);
+
+  // Redirects to the proper register path if the user isn't logged in.
+  //
+  // Return truthy because that's easier for consumers to check.
+  // Doesn't throw an exception for control flow out of the caller.
+  // This would make the consuming code a oneliner but it's not really
+  // an error. Plus it will simplfy things for the client-side errors.
+  app.needsToLogInUser = function() {
+    if (!this.getState('token')) {
+      this.redirect(this.config.registerPath);
+      return true;
+    }
+  }.bind(app);
 
   app.forceRender = function (view, props) {
     ReactDOM.render(view(props), app.config.mountPoint);
@@ -420,11 +433,9 @@ function initialize(bindLinks) {
         a.href = currentUrl;
         referrer = a.href;
 
-        app.pushState(null, null, href);
-
-        // Set to the browser's interpretation of the current name (to make
-        // relative paths easier), and send in the old url.
-        render(app, app.fullPathName(), false, modifyContext).then(postRender(href));
+        // Let app.redirect do the heavy lifting. It has the the fancy
+        // check for login / register
+        app.redirect(href);
       });
 
       window.addEventListener('popstate', function(e) {

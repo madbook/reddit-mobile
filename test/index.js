@@ -25,3 +25,6 @@ require('./views/layouts/BodyLayout');
 // pages
 require('./views/pages/Index');
 require('./views/pages/userSaved');
+
+// functions from routes
+require('./routes/loginRegisterOriginalUrl.es6.js');

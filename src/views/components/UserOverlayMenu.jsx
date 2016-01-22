@@ -94,10 +94,9 @@ class UserOverlayMenu extends BaseComponent {
       userBasedRows = (
         <LinkRow
           key='login-row'
-          noRoute={ true }
           text={ 'Log in / sign up' }
           icon={ userIconClassName }
-          href={ this.props.app.config.loginPath }
+          href={ config.loginPath }
         />);
     }
 
