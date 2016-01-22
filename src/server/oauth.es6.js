@@ -8,9 +8,9 @@ import has from 'lodash/object/has';
 import constants from '../constants';
 
 const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
-               ' save,edit,account,creddits,flair,livemanage,modconfig,' +
+               'save,edit,account,creddits,flair,livemanage,modconfig,' +
                'modcontributors,modflair,modlog,modothers,modposts,modself,' +
-               'modwiki,privatemessages,report,subscribe,wikiedit,wikiread';
+               'modwiki,privatemessages,report,wikiedit,wikiread';
 
 function nukeTokens(ctx) {
   ctx.cookies.set('token');
