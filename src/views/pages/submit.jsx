@@ -34,7 +34,7 @@ class SubmitPage extends BasePage {
     thingId: React.PropTypes.string,
     type: React.PropTypes.string,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -69,6 +69,10 @@ class SubmitPage extends BasePage {
 
   componentDidMount () {
     super.componentDidMount();
+
+    if (!this.props.app.config.localStorageAvailable) {
+      return;
+    }
 
     var saved = global.localStorage.getItem('savedLinkContent');
     if (saved) {
@@ -246,9 +250,11 @@ class SubmitPage extends BasePage {
         subreddit: this.state.subreddit,
       };
 
-      global.localStorage.setItem('savedLinkContent', JSON.stringify(content));
-      var url = '/r/' + subName + '/about';
+      if (this.props.app.localStorageAvailable) {
+        global.localStorage.setItem('savedLinkContent', JSON.stringify(content));
+      }
 
+      const url = `/r/${subName}/about`;
       app.redirect(url);
     }
   }

@@ -1,3 +1,4 @@
+import localStorageAvailable from './localStorageAvailable';
 
 var _saved = null;
 
@@ -13,7 +14,9 @@ function set(thingId, reply) {
     reply,
   };
 
-  global.localStorage.setItem('savedReply', JSON.stringify(saved));
+  if (localStorageAvailable()) {
+    global.localStorage.setItem('savedReply', JSON.stringify(saved));
+  }
   _saved = saved;
 }
 
@@ -22,7 +25,7 @@ function get(thingId) {
 
   if (_saved) {
     saved = _saved;
-  } else {
+  } else if (localStorageAvailable()) {
     var savedReply = global.localStorage.getItem('savedReply');
 
     try {
@@ -40,7 +43,9 @@ function get(thingId) {
 }
 
 function clear() {
-  global.localStorage.removeItem('savedReply');
+  if (localStorageAvailable()) {
+    global.localStorage.removeItem('savedReply');
+  }
   _saved = undefined;
 }
 

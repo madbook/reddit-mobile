@@ -18,7 +18,7 @@ class ListingPage extends BasePage {
     sort: React.PropTypes.string,
     subredditName: React.PropTypes.string,
   };
-  
+
   constructor(props) {
     super(props);
     this.state.editing = false;
@@ -105,17 +105,7 @@ class ListingPage extends BasePage {
       editing: !this.state.editing,
     });
   }
-
-  _getLocalStorageKeys() {
-    var keys = [];
-    if (global.localStorage) {
-      for (var key in localStorage) {
-        keys.push(key);
-      }
-    }
-    return keys;
-  }
-
+  
   async loadMore(e) {
     e.preventDefault();
     const { app, apiOptions, sort } = this.props;
@@ -291,12 +281,12 @@ class ListingPage extends BasePage {
       </div>
     );
   }
-  
+
   renderCommentBox() {
     const { apiOptions, token, app, ctx } = this.props;
     const { data } = this.state;
     const { listing, user } = data;
-    
+
     return (
       <CommentBox
         apiOptions={ apiOptions }
