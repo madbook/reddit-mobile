@@ -1,27 +1,35 @@
 import 'babel/polyfill';
 
-import '../../src/lib/dnt';
+import superagent from 'superagent';
 
 import errorLog from '../../src/lib/errorLog';
 
+const POST_ERROR_URL = '/error';
 
 function onError(message, url, line, column) {
-  errorLog({
+  const details = {
     userAgent: window.navigator.userAgent,
     message,
     url,
     line,
     column,
-    requestUrl: window.location.toString()
-  }, {
-    hivemind: window.bootstrap && window.bootstrap.config ? window.bootstrap.config.statsURL : undefined,
+    requestUrl: window.location.toString(),
+  };
+
+  const hivemind = window.bootstrap && window.bootstrap.config ?
+    window.bootstrap.config.statsURL : undefined;
+
+  errorLog(details, {
+    hivemind,
+    postErrorURL: POST_ERROR_URL,
   });
 }
 
 // Register as early as possible
 window.onerror = onError;
 
-import React from 'react';
+import '../../src/lib/dnt';
+
 import ReactDOM from 'react-dom';
 import throttle from 'lodash/function/throttle';
 import forOwn from 'lodash/object/forOwn';
@@ -29,8 +37,6 @@ import forOwn from 'lodash/object/forOwn';
 import ClientReactApp from 'horse-react/src/client';
 import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
-import querystring from 'querystring';
-import superagent from 'superagent';
 
 var App = mixin(ClientReactApp);
 
@@ -56,6 +62,8 @@ var $body = document.body || document.getElementsByTagName('body')[0];
 var $head = document.head || document.getElementsByTagName('head')[0];
 
 var config = defaultConfig();
+// the client should post errors to the /error endpoint.
+config.postErrorURL = POST_ERROR_URL;
 
 function loadShim() {
   var shimScript = document.createElement('script');

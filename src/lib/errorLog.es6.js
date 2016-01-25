@@ -57,6 +57,11 @@ function errorLog(details, errorEndpoints, config={}) {
     }
   }
 
+  // send to local log
+  if (errorEndpoints.log) {
+    sendErrorLog(formattedLog, errorEndpoints.log);
+  }
+
   // send to statsd
   if (errorEndpoints.hivemind) {
     let ua = simpleUA(details.userAgent || '');
@@ -64,6 +69,13 @@ function errorLog(details, errorEndpoints, config={}) {
   }
 
   // log to winston, soon
+}
+
+function sendErrorLog(error, endpoint) {
+  superagent
+    .post(endpoint)
+    .send({ error })
+    .then(()=>{});
 }
 
 function hivemind(ua, endpoint) {

@@ -50,6 +50,7 @@ function logError(err, ctx, config) {
     requestUrl: ctx ? ctx.path : null,
   }, {
     hivemind: config.statsURL,
+    log: config.postErrorURL,
   }, {
     level: config.debugLevel || 'error',
   });

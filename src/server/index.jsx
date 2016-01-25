@@ -27,7 +27,7 @@ import setLoggedOutCookies from '../lib/loid';
 
 import defaultConfig from '../config';
 
-const ignoreCSRF = ['/timings'];
+const ignoreCSRF = ['/timings', '/error'];
 
 function getBucket(loid) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;

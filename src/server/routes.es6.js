@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import crypto from 'crypto';
+
 import constants from '../constants';
 
 // set up server-only routes
@@ -78,6 +79,17 @@ let serverRoutes = function(app) {
           path: r.path,
         };
       });
+  });
+
+  router.post('/error', function* () {
+    // log it out if it's a legit origin
+    if (this.headers.origin &&
+        app.config.origin.indexOf(this.headers.origin) === 0) {
+      console.log(this.body.error.substring(0,1000));
+    }
+
+    this.body = null;
+    return;
   });
 };
 
