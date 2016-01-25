@@ -1,23 +1,23 @@
 import frames from './frames';
 
-let jail = document.getElementById('gtm-jail');
-
-let gtm = {
-
+export default {
   trigger(eventName, payload) {
-    if (payload) {
-      this.set(payload);
-    }
+    const jailEl = document.getElementById('gtm-jail');
+    if (jailEl) {
+      if (payload) {
+        this.set(payload);
+      }
 
-    frames.postMessage(jail.contentWindow, 'event.gtm', {
-      event: eventName,
-    });
+      frames.postMessage(jailEl.contentWindow, 'event.gtm', {
+        event: eventName,
+      });
+    }
   },
 
   set(data) {
-    frames.postMessage(jail.contentWindow, 'data.gtm', data);
+    const jailEl = document.getElementById('gtm-jail');
+    if (jailEl) {
+      frames.postMessage(jailEl.contentWindow, 'data.gtm', data);
+    }
   },
-
 };
-
-export default gtm;

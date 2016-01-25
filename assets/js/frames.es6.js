@@ -56,7 +56,7 @@ function _removeEventListener(type, handler) {
   if (global.removeEventListener) {
     global.removeEventListener(type, handler);
   } else if (global.detachEvent) {
-    global.attachEvent(`on${type}`, handler);
+    global.detachEvent(`on${type}`, handler);
   }
 }
 
@@ -185,8 +185,11 @@ const frames = {
   receiveMessageOnce(source, type, callback, context) {
     const listener = frames.receiveMessage(source, type, function() {
       callback && callback.apply(this, arguments);
+
+      listener.off();
     }, context);
-    listener.off();
+
+    return listener;
   },
 
   /*
