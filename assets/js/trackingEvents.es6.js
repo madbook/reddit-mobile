@@ -226,7 +226,9 @@ function trackingEvents(app) {
   });
 
   app.on('comment', function (comment) {
-    gaSend('send', 'event', 'comment', 'words', comment.get('text').match(/\S+/g).length);
+    if (comment.text) {
+      gaSend('send', 'event', 'comment', 'words', comment.text.match(/\S+/g).length);
+    }
   });
 
   app.on('comment:edit', function() {
@@ -266,7 +268,9 @@ function trackingEvents(app) {
   });
 
   app.on('message:reply', function(message) {
-    gaSend('send', 'event', 'messages', 'reply', message.get('text').match(/\S+/g).length);
+    if (message.text) {
+      gaSend('send', 'event', 'messages', 'reply', message.text.match(/\S+/g).length);
+    }
   });
 }
 
