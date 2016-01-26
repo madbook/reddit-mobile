@@ -1,5 +1,4 @@
 import chai from 'chai';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 import shallowHelpers from 'react-shallow-renderer-helpers';
@@ -7,11 +6,11 @@ import renderWithProps from '../../helpers/renderWithProps';
 
 import { BodyLayout } from '../../helpers/components';
 
-var expect = chai.expect;
+const expect = chai.expect;
 chai.use(sinonChai);
 
 describe('BodyLayout', () => {
-  var ctx;
+  let ctx;
 
   before('render and find element', () => {
     ctx = renderWithProps({children: 'hello world'}, BodyLayout);

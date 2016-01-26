@@ -1,32 +1,31 @@
 import chai from 'chai';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-var expect = chai.expect;
+const expect = chai.expect;
 
 chai.use(sinonChai);
 
 import short from '../../src/lib/formatDifference';
 
 describe('lib: formatDifference', () => {
-	it('is a function', () => {
-		expect(short).to.be.a('function');
-	});
+  it('is a function', () => {
+    expect(short).to.be.a('function');
+  });
 
-	var min = 60 * 1000;
-	var hour = min * 60;
-	var day = hour * 24;
+  const min = 60 * 1000;
+  const hour = min * 60;
+  const day = hour * 24;
 
-	var date = Date.now();
-	
-	it('returns the delta time with a single letter abbreviated unit', () => {
-		var dayAgo = date - day;
-		expect(short(dayAgo)).to.equal('1d');
+  const date = Date.now();
 
-		var hourAgo = date - hour;
-		expect(short(hourAgo)).to.equal('1h');
+  it('returns the delta time with a single letter abbreviated unit', () => {
+    const dayAgo = date - day;
+    expect(short(dayAgo)).to.equal('1d');
 
-		var minAgo = date - min;
-		expect(short(minAgo)).to.equal('1m');
-	});
+    const hourAgo = date - hour;
+    expect(short(hourAgo)).to.equal('1h');
+
+    const minAgo = date - min;
+    expect(short(minAgo)).to.equal('1m');
+  });
 });

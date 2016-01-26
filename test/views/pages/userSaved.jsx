@@ -1,24 +1,22 @@
 import chai from 'chai';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
-import { models } from 'snoode';
 
 import { UserSavedPage, Loading, ListingContainer } from '../../helpers/components';
 
-var expect = chai.expect;
+const expect = chai.expect;
 chai.use(sinonChai);
 
 describe('UserSaved page', () => {
-  var ctx;
+  let ctx;
 
   beforeEach('render and find element', () => {
-    let extraProps = {
-      actionName: "saved",
+    const extraProps = {
+      actionName: 'saved',
       userName: 'test',
-    }
+    };
     ctx = renderWithProps(extraProps, UserSavedPage);
   });
 
@@ -61,5 +59,4 @@ describe('UserSaved page', () => {
       expect(listingContainer).to.not.equal(undefined);
     });
   });
-
 });

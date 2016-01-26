@@ -1,17 +1,17 @@
+/*eslint no-unused-vars: 0 */
+// TODO: add tests here
 import chai from 'chai';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 
 import { Listing } from '../../helpers/components';
 
-var expect = chai.expect;
+const expect = chai.expect;
 chai.use(sinonChai);
 
 describe('Listing component', () => {
-  var ctx;
+  let ctx;
 
   beforeEach('render and find element', () => {
     ctx = renderWithProps({open: true}, Listing);
