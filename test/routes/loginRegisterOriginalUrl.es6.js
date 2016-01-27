@@ -63,4 +63,22 @@ describe('routes: loginRegisterOriginalUrl', () => {
     // reddit if someone tries to redirect back to their site
     expect(loginRegisterOriginalUrl(null, otherSiteReferer)).to.equal('/');
   });
+
+  it('will not allow redirect loop', () => {
+    const loginReferer = {
+      referer: 'https://m.reddit.com/login',
+    };
+
+    // this should be '/' so it returns to the frontpage of
+    // reddit if someone tries to redirect back to their site
+    expect(loginRegisterOriginalUrl(null, loginReferer)).to.equal('/');
+
+    const registerReferer = {
+      referer: 'https://m.reddit.com/register',
+    };
+
+    // this should be '/' so it returns to the frontpage of
+    // reddit if someone tries to redirect back to their site
+    expect(loginRegisterOriginalUrl(null, registerReferer)).to.equal('/');
+  });
 });

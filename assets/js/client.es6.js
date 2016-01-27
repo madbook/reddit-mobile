@@ -339,6 +339,7 @@ function initialize(bindLinks) {
 
   var scrollCache = {};
 
+  let ignoredInitialPopState = false;
   var initialUrl = app.fullPathName();
 
   function postRender(href) {
@@ -437,6 +438,11 @@ function initialize(bindLinks) {
 
       window.addEventListener('popstate', function() {
         var href = app.fullPathName();
+        if (href === initialUrl && !ignoredInitialPopState) {
+          ignoredInitialPopState = true;
+          return;
+        }
+
         scrollCache[initialUrl] = window.scrollY;
 
         render(app, href, false, app.modifyContext).then(postRender(href));

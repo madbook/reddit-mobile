@@ -254,6 +254,10 @@ function loginRegisterOriginalUrl(query, headers) {
   // Make sure redirectUrl is a a relative path. url.parse will accept any
   // string and return it back as the path. path will be null when parsing empty string
   if (redirectUrl && redirectUrl[0] === '/') {
+    if (redirectUrl.indexOf('/login') === 0 ||
+        redirectUrl.indexOf('/register') === 0) {
+      return '/';
+    }
     return redirectUrl;
   }
 }
