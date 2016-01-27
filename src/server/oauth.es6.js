@@ -403,7 +403,7 @@ var oauthRoutes = function(app) {
         .type('form')
         .send(data)
         .timeout(constants.DEFAULT_API_TIMEOUT)
-        .end((err, res) => {
+        .end((err, res = {}) => {
           if (err || !res.ok) {
             if (err.timeout) { res.status = 504; }
 
@@ -446,7 +446,7 @@ var oauthRoutes = function(app) {
   }
 
   function handleRegisterResponse(resolve, reject, data, ctx) {
-    return async function (err, res) {
+    return async function (err, res = {}) {
       if (err || !res.ok) {
         if (err.timeout) { res.status = 504; }
         return reject(`/register?error=${(res.status || 500)}`);
