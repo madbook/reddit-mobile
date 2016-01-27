@@ -110,9 +110,14 @@ class BasePage extends BaseComponent {
   }
 
   finish () {
-    if (this.state.finished === false && this.track) {
-      this.props.app.emit('pageview', { ...this.props, data: this.state.data });
-      this.setState({ finished: true });
+    if (this.props.ctx.env !== 'SERVER') {
+      if (this.state.finished === false && this.track) {
+        this.props.app.emit('pageview', {
+          ...this.props,
+          data: this.state.data,
+        });
+        this.setState({ finished: true });
+      }
     }
   }
 
