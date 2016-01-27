@@ -17,7 +17,7 @@ describe('BodyLayout', () => {
   });
 
   it('should render children inside "main" element', () => {
-    let main = shallowHelpers.findType(ctx.result, 'main');
+    const main = shallowHelpers.findType(ctx.result, 'main');
     expect(main.props.children).to.equal('hello world');
   });
 

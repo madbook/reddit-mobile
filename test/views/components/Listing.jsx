@@ -1,5 +1,4 @@
 /*eslint no-unused-vars: 0 */
-// TODO: add tests here
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 

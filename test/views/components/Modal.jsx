@@ -21,7 +21,7 @@ describe('Modal', () => {
   });
 
   it('should set the class "in" on modal when open is true', () => {
-    let modal = shallowHelpers.findClass(ctx.result, 'modal');
+    const modal = shallowHelpers.findClass(ctx.result, 'modal');
     expect(modal.props.className.indexOf('in')).to.not.equal(-1);
   });
 
@@ -37,7 +37,7 @@ describe('Modal', () => {
     });
 
     it('should not set "in" class on modal', () => {
-      let modal = shallowHelpers.findClass(ctx.result, 'modal');
+      const modal = shallowHelpers.findClass(ctx.result, 'modal');
       expect(modal.props.className.indexOf('in')).to.equal(-1);
     });
 

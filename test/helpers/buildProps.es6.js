@@ -1,17 +1,16 @@
-
 import { ServerReactApp } from 'horse-react';
 
 import mixin from '../../src/app-mixin';
 import { buildProps } from '../../src/routes';
 
 
-let App = mixin(ServerReactApp);
+const App = mixin(ServerReactApp);
 
 export default function () {
-  let config = {};
-  var app = new App(config);
+  const config = {};
+  const app = new App(config);
 
-  let ctx = {
+  const ctx = {
     dataCache: {},
     route: {},
     headers: {},

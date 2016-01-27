@@ -1,3 +1,4 @@
+/*eslint no-unused-expressions: 0 */
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 
@@ -10,7 +11,7 @@ const expect = chai.expect;
 chai.use(sinonChai);
 
 describe('index page', () => {
-  var ctx;
+  let ctx;
 
   beforeEach('render and find element', () => {
     ctx = renderWithProps({
@@ -37,7 +38,7 @@ describe('index page', () => {
     });
 
     it('renders a ListingList copmonent when listings are loaded', () => {
-      let listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
+      const listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
       expect(listingContainer).to.not.equal(undefined);
     });
   });

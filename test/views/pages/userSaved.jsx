@@ -55,7 +55,7 @@ describe('UserSaved page', () => {
     });
 
     it('should render ListingList', () => {
-      let listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
+      const listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
       expect(listingContainer).to.not.equal(undefined);
     });
   });
