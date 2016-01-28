@@ -90,7 +90,7 @@ require('./version');
 
 // Require in the express server.
 const Server = require('./src/server');
-const Console = require('./src/server/console');
+let Console;
 
 const cluster = require('cluster');
 
@@ -120,6 +120,7 @@ if (cluster.isMaster) {
 
   // If we used `node index.js --console`, instantiate a dashboard.
   if (process.argv[2] && process.argv[2] === '--console') {
+    Console = require('./src/server/console');
     dashboard = new Console(config);
     dashboard.start();
   }
