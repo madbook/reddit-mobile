@@ -214,13 +214,13 @@ class ListingPage extends BasePage {
 
         const numChildren = comment.children.length;
         const word = numChildren > 1 ? 'replies' : 'reply';
-        const permalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
+        const contextPermalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
         const text = loadingMoreComments ? 'Loading...' :
                                          `load more comments (${numChildren} ${word})`;
         return (
           <a
             key={ key }
-            href={ permalink }
+            href={ contextPermalink }
             data-no-route='true'
             data-index={ i }
             onClick={ this.loadMore }
