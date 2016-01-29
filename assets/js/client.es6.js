@@ -312,7 +312,21 @@ function initialize(bindLinks) {
 
     // Set to the browser's interpretation of the current name (to make
     // relative paths easier), and send in the old url.
-    render(app, app.fullPathName(), false, app.modifyContext).then(postRender(path));
+    render(app, app.fullPathName(), false, app.modifyContext).then(function(props) {
+      postRender(path)(props);
+
+      // postRender will adjust scroll to pages we know, and will be called again
+      // in the listener for 'pageview'. If we're going to a page that's not
+      // in the scrollcache, we should set scroll to top, like you'd expect.
+      // We do this here instead of postRender so it only happens when you first load the page.
+      // This let you go to a comment with large selftext for the first time, scroll,
+      // and not have a janky scrollTop:0 after the comments are fetched. But it also
+      // lets you hit back from that comment thread, and preserves your scroll position
+      // in the listings page after the listings are pulled from cache.
+      if (!scrollCache[path]) {
+        $body.scrollTop = 0;
+      }
+    });
   };
 
   // Redirects to the proper register path if the user isn't logged in.
@@ -339,11 +353,10 @@ function initialize(bindLinks) {
 
   function postRender(href) {
     return function(props) {
+
       if (scrollCache[href]) {
         $body.scrollTop = scrollCache[href];
-      } else {
-        $body.scrollTop = 0;
-      }
+      } // else app.redirect will handle it
 
       if (props) {
         setTitle(props);
@@ -439,9 +452,7 @@ function initialize(bindLinks) {
         }
 
         scrollCache[initialUrl] = window.scrollY;
-
         render(app, href, false, app.modifyContext).then(postRender(href));
-
         initialUrl = href;
       });
     }
@@ -506,6 +517,9 @@ function initialize(bindLinks) {
   app.on('pageview', function() {
     // reset notifications once the page loads
     cookies.set('notifications');
+
+    // update the scroll position when data finishes loading
+    postRender(app.fullPathName())();
   });
 
   app.on(constants.HIDE_GLOBAL_MESSAGE, function(message) {
@@ -590,6 +604,10 @@ function initialize(bindLinks) {
 
   window.addEventListener('scroll', throttle(function() {
     app.emit(constants.SCROLL);
+
+    // Preseve scroll position if you scroll while waiting for content to load
+    const href = app.fullPathName();
+    scrollCache[href] = window.scrollY;
   }, 100));
 
   window.addEventListener('resize', throttle(function() {
