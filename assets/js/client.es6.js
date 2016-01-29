@@ -312,10 +312,7 @@ function initialize(bindLinks) {
 
     // Set to the browser's interpretation of the current name (to make
     // relative paths easier), and send in the old url.
-    render(app, app.fullPathName(), false, app.modifyContext).then(function(props) {
-      setTitle(props);
-      postRender(path);
-    });
+    render(app, app.fullPathName(), false, app.modifyContext).then(postRender(path));
   };
 
   // Redirects to the proper register path if the user isn't logged in.
