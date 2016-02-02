@@ -58,7 +58,7 @@ class ButtonRow extends BaseComponent {
     iconURL: React.PropTypes.string,
     text: React.PropTypes.node.isRequired,
     clickHandler: React.PropTypes.func.isRequired,
-  }
+  };
 }
 
 class LinkRow extends BaseComponent {
@@ -85,7 +85,7 @@ class LinkRow extends BaseComponent {
     href: React.PropTypes.string.isRequired,
     icon: React.PropTypes.string,
     iconURL: React.PropTypes.string,
-  }
+  };
 }
 
 class ExpandoRow extends BaseComponent {
@@ -147,7 +147,7 @@ class ExpandoRow extends BaseComponent {
     subtext: React.PropTypes.string,
     icon: React.PropTypes.string,
     iconURL: React.PropTypes.string,
-  }
+  };
 }
 
 export default { ButtonRow, LinkRow, ExpandoRow };

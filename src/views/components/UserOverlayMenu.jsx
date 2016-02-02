@@ -195,7 +195,7 @@ class UserOverlayMenu extends BaseComponent {
   static propTypes = {
     compact: React.PropTypes.bool.isRequired,
     user: propTypes.user,
-  }
+  };
 }
 
 export default UserOverlayMenu;

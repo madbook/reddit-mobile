@@ -163,7 +163,7 @@ class CommunityHeader extends BaseComponent {
 
   static propTypes = {
     subreddit: propTypes.subreddit,
-  }
+  };
 }
 
 export default CommunityHeader;

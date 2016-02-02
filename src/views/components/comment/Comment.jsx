@@ -6,7 +6,6 @@ import mobilify from '../../../lib/mobilify';
 import extractErrorMsg from '../../../lib/extractErrorMsg';
 import BaseComponent from '../BaseComponent';
 import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
 import CommentTools from './CommentTools';
 import CommentReplyForm from './CommentReplyForm';
 import CommentSeeMore from './CommentSeeMore';
@@ -354,15 +353,14 @@ export default class Comment extends BaseComponent {
   }
   
   render() {
-    const { repliesLocked } = this.props;
-    const { commentReplies, editing, commentDeleted } = this.state;
+    const { commentReplies, editing, commentDeleted, collapsed, showReplyBox } = this.state;
     
     return (
       <div className='Comment'>
         { this.renderHeader() }
         { editing ? this.renderEditForm() : this.renderBody() }
         { !commentDeleted ? this.renderTools() : null }
-        { repliesLocked ? this.renderLockedReplyForm() : this.renderReplyForm() }
+        { !collapsed && showReplyBox ? this.renderReplyArea() : null }
         { commentReplies.length ? this.renderReplies() : null }
       </div>
     );
@@ -414,9 +412,10 @@ export default class Comment extends BaseComponent {
     if (collapsed) { cls += ' m-hidden'; }
     
     return (
-      <div className={ cls }>
-        <CommentBody content={ bodyText } />
-      </div>
+      <div
+        className={ cls }
+        dangerouslySetInnerHTML={ { __html: bodyText } }
+      />
     );
   }
   
@@ -452,14 +451,17 @@ export default class Comment extends BaseComponent {
     );
   }
   
-  renderReplyForm() {
-    const { collapsed, showReplyBox, replyBoxError, replyBoxContent } = this.state;
+  renderReplyArea() {
+    const { repliesLocked } = this.state;
     
-    let cls = 'Comment__replyForm';
-    if (collapsed || !showReplyBox) { cls += ' m-hidden'; }
+    return repliesLocked ? this.renderLockedReplyForm() : this.renderReplyForm();
+  }
+  
+  renderReplyForm() {
+    const { replyBoxError, replyBoxContent } = this.state;
     
     return (
-      <div className={ cls }>
+      <div className='Comment__replyForm'>
         <CommentReplyForm
           onReplySubmit={ this.submitReply }
           onClose={ this.toggleReplyForm }
@@ -473,13 +475,8 @@ export default class Comment extends BaseComponent {
   }
   
   renderLockedReplyForm() {
-    const { collapsed, showReplyBox } = this.state;
-    
-    let cls = 'Comment__replyForm';
-    if (collapsed || !showReplyBox) { cls += ' m-hidden'; }
-    
     return (
-      <div className={ cls }>
+      <div className='Comment__replyForm'>
         <div className='Comment__replyFormLocked'>
           Comments are locked
         </div>

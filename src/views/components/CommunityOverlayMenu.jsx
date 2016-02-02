@@ -87,7 +87,7 @@ class CommunityOverlayMenu extends BaseComponent {
   static propTypes = {
     user: propTypes.user,
     subscriptions: propTypes.subscriptions,
-  }
+  };
 }
 
 export default CommunityOverlayMenu;

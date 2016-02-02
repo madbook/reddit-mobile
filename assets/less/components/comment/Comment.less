@@ -9,6 +9,11 @@
   
   &__body {
     padding-top: @grid-size;
+    overflow-x: hidden;
+    
+    a {
+      color: @blue;
+    }
   }
   
   &__tools {
@@ -25,10 +30,6 @@
   
   &__replyForm {
     margin-top: @grid-size;
-    
-    &.m-hidden {
-      display: none;
-    }
   }
   
   &__replies {

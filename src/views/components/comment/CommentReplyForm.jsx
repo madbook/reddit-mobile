@@ -7,18 +7,15 @@ const T = React.PropTypes;
 
 export default class CommentReplyForm extends React.Component {
   static propTypes = {
-    onReplySubmit: T.func,
-    onContentChange: T.func,
-    onClose: T.func,
+    onReplySubmit: T.func.isRequired,
+    onContentChange: T.func.isRequired,
+    onClose: T.func.isRequired,
     buttonText: T.string,
     value: T.string,
     error: T.string,
   };
   
   static defaultProps = {
-    onReplySubmit: () => {},
-    onContentChange: () => {},
-    onClose: () => {},
     buttonText: 'Submit',
     value: '',
     error: '',

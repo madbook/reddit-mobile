@@ -15,7 +15,7 @@ class LoginPage extends BasePage {
     error: React.PropTypes.string,
     message: React.PropTypes.string,
     originalUrl: React.PropTypes.string,
-  }
+  };
 
   render () {
     const { error, message, originalUrl, ctx } = this.props;

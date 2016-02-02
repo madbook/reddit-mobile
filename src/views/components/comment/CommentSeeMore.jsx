@@ -26,15 +26,14 @@ function CommentSeeMore(props) {
 
 CommentSeeMore.propTypes = {
   count: T.number.isRequired,
+  onLoadMore: T.func.isRequired,
   isLoading: T.bool,
   dots: T.number,
-  onLoadMore: T.func,
 };
 
 CommentSeeMore.defaultProps = {
   isLoading: false,
   dots: 0,
-  onLoadMore: () => {},
 };
 
 export default CommentSeeMore;

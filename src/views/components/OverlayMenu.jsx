@@ -91,7 +91,7 @@ class OverlayMenu extends BaseComponent {
     openedOnEventName: React.PropTypes.string.isRequired,
     firesEventName: React.PropTypes.string,
     renderChildren: React.PropTypes.func.isRequired,
-  }
+  };
 }
 
 export default OverlayMenu;

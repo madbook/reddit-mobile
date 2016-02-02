@@ -27,16 +27,16 @@ export default class CommentTools extends React.Component {
     voteDirection: T.number,
     saved: T.bool,
     permalinkUrl: T.string,
-    onToggleReplyForm: T.func,
-    onUpvote: T.func,
-    onDownvote: T.func,
-    onEditComment: T.func,
-    onDeleteComment: T.func,
-    onGildComment: T.func,
-    onShareComment: T.func,
-    onSaveComment: T.func,
-    onGotoUserProfile: T.func,
-    onReportComment: T.func,
+    onToggleReplyForm: T.func.isRequired,
+    onUpvote: T.func.isRequired,
+    onDownvote: T.func.isRequired,
+    onEditComment: T.func.isRequired,
+    onDeleteComment: T.func.isRequired,
+    onGildComment: T.func.isRequired,
+    onShareComment: T.func.isRequired,
+    onSaveComment: T.func.isRequired,
+    onGotoUserProfile: T.func.isRequired,
+    onReportComment: T.func.isRequired,
   };
   
   static defaultProps = {
@@ -44,16 +44,6 @@ export default class CommentTools extends React.Component {
     scoreHidden: false,
     saved: false,
     permalinkUrl: '',
-    onToggleReplyForm: () => {},
-    onUpvote: () => {},
-    onDownvote: () => {},
-    onEditComment: () => {},
-    onDeleteComment: () => {},
-    onGildComment: () => {},
-    onShareComment: () => {},
-    onSaveComment: () => {},
-    onGotoUserProfile: () => {},
-    onReportComment: () => {},
   };
   
   constructor(props) {

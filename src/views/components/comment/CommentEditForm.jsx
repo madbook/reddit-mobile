@@ -8,15 +8,13 @@ export default class CommentEditForm extends React.Component {
   static propTypes = {
     content: T.string,
     error: T.string,
-    onClose: T.func,
-    onSubmit: T.func,
+    onClose: T.func.isRequired,
+    onSubmit: T.func.isRequired,
   };
   
   static defaultProps = {
     content: '',
     error: '',
-    onClose: () => {},
-    onSubmit: () => {},
   };
   
   constructor(props) {

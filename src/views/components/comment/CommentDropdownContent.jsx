@@ -11,13 +11,13 @@ export default class CommentDropdownContent extends React.Component {
     saved: T.bool,
     permalinkUrl: T.string,
     userLoggedIn: T.bool,
-    onEditClicked: T.func,
-    onDeleteClicked: T.func,
-    onGoldClicked: T.func,
-    onShareClicked: T.func,
-    onSaveClicked: T.func,
-    onProfileClicked: T.func,
-    onReportClicked: T.func,
+    onEditClicked: T.func.isRequired,
+    onDeleteClicked: T.func.isRequired,
+    onGoldClicked: T.func.isRequired,
+    onShareClicked: T.func.isRequired,
+    onSaveClicked: T.func.isRequired,
+    onProfileClicked: T.func.isRequired,
+    onReportClicked: T.func.isRequired,
   };
   
   static defaultProps = {
@@ -25,13 +25,6 @@ export default class CommentDropdownContent extends React.Component {
     saved: false,
     userLoggedIn: false,
     permalinkUrl: '',
-    onEditClicked: () => {},
-    onDeleteClicked: () => {},
-    onGoldClicked: () => {},
-    onShareClicked: () => {},
-    onSaveClicked: () => {},
-    onProfileClicked: () => {},
-    onReportClicked: () => {},
   };
   
   constructor(props) {

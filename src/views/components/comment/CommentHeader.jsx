@@ -54,9 +54,8 @@ function renderInfo(author, flair, created, authorType, highlight) {
         { author }
         { authorIcon ? <div className={ authorIconCls }/> : null }
       </div>
-      { separator }
       { flair ? renderFlair(flair, highlight) : null }
-      { flair ? separator : null }
+      { separator }
       { renderTimestamp(created, highlight) }
     </td>
   );

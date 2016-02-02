@@ -25,7 +25,7 @@ class RegisterPage extends BasePage {
     originalUrl: React.PropTypes.string,
     error: React.PropTypes.string,
     message: React.PropTypes.string,
-  }
+  };
 
   render () {
     let usernameClass = '';
