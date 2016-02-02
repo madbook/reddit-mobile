@@ -17,7 +17,7 @@ class UserSavedPage extends BasePage {
     sort: PropTypes.string,
     userName: PropTypes.string.isRequired,
   };
-  
+
   get track () {
     return 'activities';
   }
