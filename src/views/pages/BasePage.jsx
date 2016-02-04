@@ -1,6 +1,8 @@
 import React from 'react';
 import isEqual from 'lodash/lang/isEqual';
 
+import features from '../../featureflags';
+
 import BaseComponent from '../components/BaseComponent';
 import TrackingPixel from '../../lib/TrackingPixel';
 import constants from '../../constants';
@@ -23,6 +25,13 @@ class BasePage extends BaseComponent {
       loaded: !!props.dataCache,
       finished: false,
     };
+
+    const state = this.state;
+
+    this.state.feature = features.withContext({
+      props,
+      state,
+    });
 
     if (props.dataCache) {
       let k;
@@ -154,6 +163,13 @@ class BasePage extends BaseComponent {
 
   componentDidMount() {
     this.props.app.emit('page:update', this.props);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    nextState.feature = this.state.feature.withContext({
+      props: nextProps,
+      state: nextState,
+    });
   }
 }
 

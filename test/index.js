@@ -12,6 +12,9 @@ require('./lib/formatDifference');
 require('./lib/formatNumber');
 require('./lib/extractErrorMsg');
 
+// src
+require('./src/featureflags');
+
 // Even with shallow rendering react currently looks for document when setState is used.
 // see https://github.com/facebook/react/issues/4019
 global.document = {};

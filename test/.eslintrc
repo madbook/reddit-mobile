@@ -1,5 +1,6 @@
 {
   "rules": {
     "max-len": 0, // turn off max len for tests. expect statements add up fast
+    "no-unused-expressions": 0, // allow chai-style `to.be.X` to work
   }
 }

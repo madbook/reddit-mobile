@@ -66,7 +66,7 @@ class BodyLayout extends BasePage {
           key='communitymenu'
         />
         <UserOverlayMenu {...this.props} user={ user } key='usermenu' />
-        <TopNav {...this.props} user={ user } key='topnav' />
+        <TopNav {...this.props} feature={ this.state.feature } user={ user } key='topnav' />
         <InfoBar
           messages={ messages }
           app={ app }

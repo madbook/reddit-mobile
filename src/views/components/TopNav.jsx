@@ -44,6 +44,8 @@ class TopNav extends BaseComponent {
 
   render() {
     const props = this.props;
+    const feature = props.feature;
+
     const assetPath = props.app.config.assetPath;
     const { sideNavOpen, communityMenuOpen } = this.state;
 
@@ -71,10 +73,15 @@ class TopNav extends BaseComponent {
       communityMenuIcon = 'icon-nav-arrowup blue';
     }
 
+    let beta;
+    if (feature.enabled('beta')) {
+      beta = (<div className='TopNav-beta'>beta</div>);
+    }
+
     return (
       <nav className={ `TopNav${this.state.sideNavOpen ? ' opened' : ''}` }>
         <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
-          <div className='TopNav-beta'>beta</div>
+          { beta }
           <a
             className='MobileButton TopNav-padding TopNav-snoo'
             href='/'
