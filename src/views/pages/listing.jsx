@@ -21,7 +21,7 @@ class ListingPage extends BasePage {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       ...this.state,
       editing: false,
@@ -109,7 +109,7 @@ class ListingPage extends BasePage {
       editing: !this.state.editing,
     });
   }
-  
+
   async loadMore(e) {
     e.preventDefault();
     const { app, apiOptions, sort } = this.props;
@@ -185,7 +185,23 @@ class ListingPage extends BasePage {
     let commentsList;
     let googleCarousel;
 
-    if (comments) {
+    /*
+      comments can be in one of three states:
+        1) it is an array of comments
+        2) it is an object with other data in it
+        3) it is not defined
+
+      In case 1, we can go ahead and map over the list to draw any comments
+      that might be there.
+
+      For case 2, this usually happens when there are 0 comments or there was
+      an error in fetching comments. In this case, we don't want to render
+      anything.
+
+      For case 3, this means that comments have not loaded yet, and we should
+      draw a loading state.
+    */
+    if (Array.isArray(comments)) {
       commentsList = comments.map((comment, i) => {
         const key = `comment-${i}`;
 
@@ -240,7 +256,7 @@ class ListingPage extends BasePage {
           />
         );
       }
-    } else {
+    } else if (!comments) {
       commentsList = (
         <div className='Loading-Container'>
           <Loading />
