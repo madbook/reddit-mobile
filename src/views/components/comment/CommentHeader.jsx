@@ -18,17 +18,17 @@ function getAuthorIcon(authorType) {
 
 function renderDots(count) {
   const content = fill(Array(count), '•').join(' ');
-  
+
   return <div className='CommentHeader__dots'>{ content }</div>;
 }
 
 function renderCaron(collapsed, dots, highlight) {
   const style = dots ? {width: 26 + (10 * dots)} : null;
-  
+
   let headerCls = 'CommentHeader__caron icon-caron-circled tween';
   if (collapsed) { headerCls += ' m-collapsed'; }
   if (highlight) { headerCls += ' m-highlight'; }
-  
+
   return (
     <td className='CommentHeader__col1' style={ style }>
       { dots ? renderDots(dots) : null }
@@ -37,20 +37,21 @@ function renderCaron(collapsed, dots, highlight) {
   );
 }
 
-function renderInfo(author, flair, created, authorType, highlight) {
+function renderInfo(author, flair, created, authorType, highlight, stickied) {
   const authorIcon = getAuthorIcon(authorType);
   const authorIconCls = `CommentHeader__usernameIcon icon-${authorIcon}`;
-  
+
   let usernameCls = 'CommentHeader__username';
   if (highlight) {
     usernameCls += ' m-highlight';
   } else if (authorType) {
     usernameCls += ` m-${authorType}`;
   }
-  
+
   return (
     <td className='CommentHeader__col2'>
       <div className={ usernameCls }>
+        { stickied ? <div className='CommentHeader__sticky icon-sticky' /> : null }
         { author }
         { authorIcon ? <div className={ authorIconCls }/> : null }
       </div>
@@ -64,14 +65,14 @@ function renderInfo(author, flair, created, authorType, highlight) {
 function renderFlair(flair, highlight) {
   let cls = 'CommentHeader__flair';
   if (highlight) { cls += ' m-highlight'; }
-  
+
   return <div className={ cls }>{ flair }</div>;
 }
 
 function renderTimestamp(created, highlight) {
   let cls = 'CommentHeader__timestamp';
   if (highlight) { cls += ' m-highlight'; }
-  
+
   return <div className={ cls }>{ short(created * 1000) }</div>;
 }
 
@@ -93,7 +94,17 @@ function renderGoldCount(gildCount) {
 }
 
 function CommentHeader(props) {
-  const { collapsed, dots, highlight, author, flair, created, authorType, gildCount} = props;
+  const {
+    collapsed,
+    dots,
+    highlight,
+    author,
+    flair,
+    created,
+    authorType,
+    gildCount,
+    stickied,
+  } = props;
 
   return (
     <div className='CommentHeader'>
@@ -101,7 +112,7 @@ function CommentHeader(props) {
         <tbody>
           <tr>
             { renderCaron(collapsed, dots, highlight) }
-            { renderInfo(author, flair, created, authorType, highlight) }
+            { renderInfo(author, flair, created, authorType, highlight, stickied) }
             { gildCount ? renderGold(gildCount) : null }
           </tr>
         </tbody>
@@ -119,6 +130,7 @@ CommentHeader.propTypes = {
   collapsed: T.bool,
   dots: T.number,
   highlight: T.bool,
+  stickied: T.bool,
 };
 
 CommentHeader.defaultProps = {
@@ -127,6 +139,7 @@ CommentHeader.defaultProps = {
   authorType: '',
   dots: 0,
   highlight: false,
+  stickied: false,
 };
 
 export default CommentHeader;
