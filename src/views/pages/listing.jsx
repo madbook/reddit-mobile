@@ -137,10 +137,9 @@ class ListingPage extends BasePage {
         .concat(res.body);
 
       this.setState({
-        data: newData,
+        data,
         loadingMoreComments: false,
       });
-
     } catch (e) {
       app.error(e, this, app, { redirect: false, replaceBody: false });
       this.setState({loadingMoreComments: false});
@@ -234,7 +233,6 @@ class ListingPage extends BasePage {
         const contextPermalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
         const text = loadingMoreComments ? 'Loading...' :
                                          `load more comments (${numChildren} ${word})`;
-
         return (
           <a
             key={ key }
