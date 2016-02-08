@@ -27,7 +27,7 @@ function determineAuthorType(distinguished, author, op, user) {
   } else if (author === op) {
     return 'op';
   }
-
+  
   return '';
 }
 
@@ -46,19 +46,19 @@ export default class Comment extends BaseComponent {
     repliesLocked: T.bool,
     highlightedComment: T.string,
   };
-
+  
   static defaultProps = {
     sort: 'best',
     nestingLevel: 0,
     repliesLocked: false,
     highlightedComment: '',
   };
-
+  
   constructor(props) {
     super(props);
-
+    
     const { comment } = props;
-
+    
     this.state = {
       comment: props.comment, // set as state since editing can change this
       commentScore: comment.score,
@@ -79,7 +79,7 @@ export default class Comment extends BaseComponent {
         props.user,
       ),
     };
-
+    
     this.toggleCollapse = this.toggleCollapse.bind(this);
     this.toggleReplyForm = this.toggleReplyForm.bind(this);
     this.toggleEditForm = this.toggleEditForm.bind(this);
@@ -94,57 +94,57 @@ export default class Comment extends BaseComponent {
     this.saveComment = this.saveComment.bind(this);
     this.reportComment = this.reportComment.bind(this);
   }
-
+  
   toggleCollapse(e) {
     e.stopPropagation();
-
+    
     this.setState({
       collapsed: !this.state.collapsed,
     });
   }
-
+  
   toggleReplyForm() {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     this.setState({
       showReplyBox: !this.state.showReplyBox,
     });
   }
-
+  
   toggleEditForm() {
     this.setState({
       editing: !this.state.editing,
     });
   }
-
+  
   handleUpvote() {
     this.submitVote(1);
   }
-
+  
   handleDownvote() {
     this.submitVote(-1);
   }
-
+  
   handleReplyBoxContent(replyText) {
     this.setState({
       replyBoxContent: replyText,
     });
   }
-
+  
   buildVote(delta) {
     return new models.Vote({
       direction: delta,
       id: this.state.comment.name,
     });
   }
-
+  
   buildApiOptions() {
     return this.props.app.api.buildOptions(this.props.apiOptions);
   }
-
+  
   async submitReply() {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     try {
       const options = {
         ...this.buildApiOptions(),
@@ -153,7 +153,7 @@ export default class Comment extends BaseComponent {
           text: this.state.replyBoxContent.trim(),
         }),
       };
-
+      
       const newComment = await this.props.app.api.comments.post(options);
 
       this.setState({
@@ -168,18 +168,18 @@ export default class Comment extends BaseComponent {
       });
     }
   }
-
+  
   async submitVote(delta) {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     const currentScore = this.state.commentScore;
     const currentVoteDirection = this.state.voteDirection;
-
+    
     try {
       const undoVote = (delta - currentVoteDirection) === 0;
       const newVoteDirection = undoVote ? 0 : delta;
       const vote = this.buildVote(newVoteDirection);
-
+      
       // In determining the new score:
       // 1) If we are undoing a vote we want to remove (read: subtract) it from
       //    the comment score
@@ -188,12 +188,12 @@ export default class Comment extends BaseComponent {
       const newScore = undoVote
         ? currentScore - delta
         : currentScore - currentVoteDirection + delta;
-
+      
       this.setState({
         voteDirection: newVoteDirection,
         commentScore: newScore,
       });
-
+      
       this.props.app.emit('vote', vote);
       await this.props.app.api.votes.post({
         ...this.buildApiOptions(),
@@ -205,7 +205,7 @@ export default class Comment extends BaseComponent {
       // undo any optimistic UI updates
       if (this.state.commentScore !== currentScore) {
         this.props.app.emit('vote', this.buildVote(currentVoteDirection));
-
+        
         this.setState({
           voteDirection: currentVoteDirection,
           commentScore: currentScore,
@@ -213,14 +213,14 @@ export default class Comment extends BaseComponent {
       }
     }
   }
-
+  
   async loadMoreComments(commentStub) {
     if (this.state.loadingMoreComments) { return; }
-
+    
     this.setState({
       loadingMoreComments: true,
     });
-
+    
     try {
       const response = await this.props.app.api.comments.get({
         ...this.buildApiOptions(),
@@ -228,7 +228,7 @@ export default class Comment extends BaseComponent {
         linkId: this.state.comment.link_id,
         sort: this.props.sort,
       });
-
+      
       const newComments = response.body;
       this.setState({
         commentReplies: without(this.state.commentReplies, commentStub).concat(newComments),
@@ -240,19 +240,19 @@ export default class Comment extends BaseComponent {
       });
     }
   }
-
+  
   async submitCommentEdit(newCommentText) {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     try {
       const options = {
         ...this.buildApiOptions(),
         model: new models.Comment(this.state.comment),
         changeSet: newCommentText.trim(),
       };
-
+      
       const newData = await this.props.app.api.comments.patch(options);
-
+      
       // we need to manually set an error if there is no data. this is because
       // the api will return a 200 even if there was a failure.
       if (newData) {
@@ -263,7 +263,7 @@ export default class Comment extends BaseComponent {
           },
           editing: false,
         });
-
+        
         this.props.app.emit('comment:edit');
       } else {
         throw new Error('Sorry, there was a problem');
@@ -274,18 +274,18 @@ export default class Comment extends BaseComponent {
       });
     }
   }
-
+  
   async deleteComment() {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     try {
       const options = {
         ...this.buildApiOptions(),
         id: this.state.comment.name,
       };
-
+      
       await this.props.app.api.comments.delete(options);
-
+      
       this.setState({
         comment: {
           ...this.state.comment,
@@ -300,7 +300,7 @@ export default class Comment extends BaseComponent {
       });
     }
   }
-
+  
   async saveComment() {
     try {
       const options = {
@@ -308,7 +308,7 @@ export default class Comment extends BaseComponent {
         id: this.state.comment.name,
         type: this.state.comment._type.toLowerCase(),
       };
-
+      
       if (this.state.comment.saved) {
         await this.props.app.api.saved.delete(options);
         this.setState({
@@ -330,10 +330,10 @@ export default class Comment extends BaseComponent {
       // Do nothing
     }
   }
-
+  
   async reportComment(reportReason) {
     if (this.props.app.needsToLogInUser()) { return; }
-
+    
     try {
       const options = {
         ...this.buildApiOptions(),
@@ -343,18 +343,18 @@ export default class Comment extends BaseComponent {
           other_reason: reportReason,
         }),
       };
-
+      
       await this.props.app.api.reports.post(options);
-
+      
       this.props.app.emit('report', this.state.comment.id);
     } catch (e) {
       // do nothing;
     }
   }
-
+  
   render() {
     const { commentReplies, editing, commentDeleted, collapsed, showReplyBox } = this.state;
-
+    
     return (
       <div className='Comment'>
         { this.renderHeader() }
@@ -365,11 +365,11 @@ export default class Comment extends BaseComponent {
       </div>
     );
   }
-
+  
   renderHeader() {
     const { nestingLevel, highlightedComment } = this.props;
     const { collapsed, authorType, comment } = this.state;
-
+    
     return (
       <div className='Comment__header' onClick={ this.toggleCollapse } >
         <CommentHeader
@@ -381,18 +381,17 @@ export default class Comment extends BaseComponent {
           gildCount={ comment.gilded }
           collapsed={ collapsed }
           highlight={ comment.id === highlightedComment }
-          stickied={ comment.stickied }
         />
       </div>
     );
   }
-
+  
   renderEditForm() {
     const { collapsed, editingError, comment } = this.state;
 
     let cls = 'Comment__edit';
     if (collapsed) { cls += ' m-hidden'; }
-
+    
     return (
       <div className={ cls }>
         <CommentEditForm
@@ -404,14 +403,14 @@ export default class Comment extends BaseComponent {
       </div>
     );
   }
-
+  
   renderBody() {
     const { collapsed, comment } = this.state;
     const bodyText = mobilify(comment.body_html);
-
+    
     let cls = 'Comment__body';
     if (collapsed) { cls += ' m-hidden'; }
-
+    
     return (
       <div
         className={ cls }
@@ -419,14 +418,14 @@ export default class Comment extends BaseComponent {
       />
     );
   }
-
+  
   renderTools() {
     const { user, permalinkBase } = this.props;
     const { commentScore, voteDirection, collapsed, comment } = this.state;
-
+    
     let cls = 'Comment__toolsContainer clearfix';
     if (collapsed) { cls += ' m-hidden'; }
-
+    
     return (
       <div className={ cls }>
         <div className='Comment__tools'>
@@ -451,16 +450,16 @@ export default class Comment extends BaseComponent {
       </div>
     );
   }
-
+  
   renderReplyArea() {
     const { repliesLocked } = this.state;
-
+    
     return repliesLocked ? this.renderLockedReplyForm() : this.renderReplyForm();
   }
-
+  
   renderReplyForm() {
     const { replyBoxError, replyBoxContent } = this.state;
-
+    
     return (
       <div className='Comment__replyForm'>
         <CommentReplyForm
@@ -474,7 +473,7 @@ export default class Comment extends BaseComponent {
       </div>
     );
   }
-
+  
   renderLockedReplyForm() {
     return (
       <div className='Comment__replyForm'>
@@ -484,30 +483,30 @@ export default class Comment extends BaseComponent {
       </div>
     );
   }
-
+  
   renderReplies() {
     const { nestingLevel } = this.props;
     const { commentReplies, collapsed } = this.state;
-
+    
     let cls = 'Comment__replies';
     if (collapsed) { cls += ' m-hidden'; }
     if (nestingLevel > 5) { cls += ' m-no-indent'; }
-
+    
     return (
       <div className={ cls }>
         { commentReplies.map(this.renderReply) }
       </div>
     );
   }
-
+  
   renderReply(reply) {
     const { loadingMoreComments } = this.state;
     const { nestingLevel, highlightedComment } = this.props;
     const replyCallback = () => this.loadMoreComments(reply);
-
+    
     let cls = 'Comment__reply';
     if (reply.id === highlightedComment) { cls += ' m-highlight'; }
-
+    
     if (reply && reply.body_html !== undefined) {
       return (
         <div className={ cls } key={ reply.id } >
@@ -528,7 +527,7 @@ export default class Comment extends BaseComponent {
         </div>
       );
     }
-
+    
     return (
       <div className='Comment__seemore' key={ reply.id } >
         <CommentSeeMore
