@@ -21,13 +21,13 @@ function computeFloat(target) {
   const targetWidth = targetBounds.width;
   const targetMidpoint = targetLeft + (targetWidth / 2);
   const windowWidth = window.innerWidth;
-  
+
   if (targetMidpoint < (MAX_WIDTH / 2)) {
     return { left: MARGIN_BUFFER };
   } else if ((windowWidth - targetMidpoint) < (MAX_WIDTH / 2)) {
     return { right: MARGIN_BUFFER };
   }
-  
+
   // if we're at this point, it is safe to assume that the dropdown will assume
   // the MAX_WIDTH
   return {
@@ -45,29 +45,29 @@ function computeContentStyles(target, offset) {
   const targetWidth = targetBounds.width;
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
-  
+
   const arrowStyle = {
     position: 'fixed',
     left: targetLeft + (targetWidth / 2),
   };
-  
+
   const wrapperStyle = {
     ...computeFloat(target),
     width: windowWidth - (2 * MARGIN_BUFFER),
   };
-  
+
   const contentStyle = {};
-  
+
   if (shouldRenderAbove(target)) {
     wrapperStyle.bottom = windowHeight - targetBottom + targetHeight + offset;
-    contentStyle.maxHeight = targetTop - MARGIN_BUFFER;
+    contentStyle.maxHeight = targetTop - offset - MARGIN_BUFFER;
     arrowStyle.top = targetTop - offset;
   } else {
     wrapperStyle.top = targetBottom + offset;
-    contentStyle.maxHeight = windowHeight - targetBottom - MARGIN_BUFFER;
+    contentStyle.maxHeight = windowHeight - targetBottom - offset - MARGIN_BUFFER;
     arrowStyle.top = targetBottom + offset - ARROW_HEIGHT;
   }
-  
+
   return { arrowStyle, wrapperStyle, contentStyle };
 }
 
@@ -78,33 +78,33 @@ export default class DropdownController extends React.Component {
     offset: T.number,
     onClose: T.func,
   };
-  
+
   static defaultProps = {
     offset: 0,
     onClose: () => {},
   };
-  
+
   constructor(props) {
     super(props);
-    
+
     this.bodyOverflow = document.body.style.overflow;
     this.handleClose = this.handleClose.bind(this);
   }
-  
+
   handleClose(e) {
     e.stopPropagation();
     e.preventDefault();
     this.props.onClose();
   }
-  
+
   componentDidMount() {
     this.props.app.emit(constants.OVERLAY_MENU_OPEN, true);
   }
-  
+
   componentWillUnmount() {
     this.props.app.emit(constants.OVERLAY_MENU_OPEN, false);
   }
-  
+
   render() {
     return (
       <div className='DropdownController'>
@@ -113,7 +113,7 @@ export default class DropdownController extends React.Component {
       </div>
     );
   }
-  
+
   renderOverlay() {
     return (
       <div
@@ -122,11 +122,11 @@ export default class DropdownController extends React.Component {
       />
     );
   }
-  
+
   renderContent() {
     const { children, target, offset } = this.props;
     const { wrapperStyle, contentStyle, arrowStyle } = computeContentStyles(target, offset);
-    
+
     return (
       <div className='DropdownController__contentWrapper' style={ wrapperStyle }>
         <div className='DropdownController__content' style={ contentStyle }>{ children }</div>
@@ -134,12 +134,12 @@ export default class DropdownController extends React.Component {
       </div>
     );
   }
-  
+
   renderArrow(style) {
     const { target } = this.props;
     const renderAbove = shouldRenderAbove(target);
     const arrowCls = renderAbove ? 'stalactite' : 'stalagmite';
-    
+
     return (
       <div className={ arrowCls } style={ style }/>
     );

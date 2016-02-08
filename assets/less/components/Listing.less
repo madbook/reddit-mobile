@@ -98,9 +98,9 @@
   }
 }
 
-  .Listing-content-holder {
-    position: relative;
-  }
+.Listing-content-holder {
+  position: relative;
+}
 
 .Listing-link-flair {
   font-weight: normal;
@@ -242,47 +242,47 @@
   }
 }
 
-  .Listing-comments {
-    .SVG-icon {
-      margin-right: 5px;
-    }
+.Listing-comments {
+  .SVG-icon {
+    margin-right: 5px;
   }
+}
 
-  .Listing-vote {
-    float: right;
-    color: #8e8e8e;
-    position: absolute;
-    padding: 0 10px;
-    right: 0;
-    bottom: 0;
+.Listing-vote {
+  float: right;
+  color: #8e8e8e;
+  position: absolute;
+  padding: 0 10px;
+  right: 0;
+  bottom: 0;
 
-    #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
+  #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
 
-    .vote {
-      padding: 10px 0;
-    }
-  }
-
-  .Listing-commentsbutton {
+  .vote {
     padding: 10px 0;
-    display: inline-block;
   }
+}
 
-  .Listing-numcomments {
-    margin-right: 0.5em;
-    vertical-align: middle;
+.Listing-commentsbutton {
+  padding: 10px 0;
+  display: inline-block;
+}
+
+.Listing-numcomments {
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+.Listing-when, .Listing-domain {
+  vertical-align: middle;
+  padding: 0;
+  margin-right: 0.5em;
+
+  &:before {
+    content:'·';
+    padding-right: 0.5em;
   }
-
-  .Listing-when, .Listing-domain {
-    vertical-align: middle;
-    padding: 0;
-    margin-right: 0.5em;
-
-    &:before {
-      content:'·';
-      padding-right: 0.5em;
-    }
-  }
+}
 
 //this and below seem like the probably shouldn't be root level selectors?
 .external-image-meta {

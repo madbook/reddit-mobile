@@ -31,6 +31,7 @@ import WikiPage from './views/pages/wikipage';
 
 import constants from './constants';
 import defaultConfig from './config';
+import { SORTS } from './sortValues';
 
 const config = defaultConfig();
 
@@ -511,9 +512,8 @@ function routes(app) {
   });
 
   router.get('user.activity', '/u/:user/activity', function *() {
-    const sort = this.query.sort || 'hot';
+    const sort = this.query.sort || SORTS.CONFIDENCE;
     const activity = this.query.activity || 'comments';
-
     const ctx = this;
 
     Object.assign(this.props, {

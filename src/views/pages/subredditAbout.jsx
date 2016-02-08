@@ -52,7 +52,7 @@ class SubredditAboutPage extends BasePage {
     ];
 
     const wikiLink = (
-      <a className='TopSubnav-a' href={ `${subreddit.url}wiki/index` }>
+      <a className='TopSubnav__a' href={ `${subreddit.url}wiki/index` }>
         Wiki
       </a>
     );

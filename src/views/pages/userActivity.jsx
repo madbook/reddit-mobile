@@ -4,6 +4,7 @@ import BasePage from './BasePage';
 import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
 import UserActivitySubnav from '../components/UserActivitySubnav';
+import { SORTS } from '../../sortValues';
 
 class UserActivityPage extends BasePage {
   static propTypes = {
@@ -12,12 +13,22 @@ class UserActivityPage extends BasePage {
     before: React.PropTypes.string,
     data: React.PropTypes.object,
     page: React.PropTypes.number,
-    sort: React.PropTypes.string,
+    sort: React.PropTypes.oneOf(Object.values(SORTS)),
     userName: React.PropTypes.string.isRequired,
   };
-  
+
   get track() {
     return 'activity';
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.handleSortChange = this.handleSortChange.bind(this);
+  }
+
+  handleSortChange({ sort, activity }) {
+    this.props.app.redirect(`${this.props.ctx.url}?sort=${sort}&activity=${activity}`);
   }
 
   render() {
@@ -32,7 +43,7 @@ class UserActivityPage extends BasePage {
 
     const {
       page = 0,
-      sort = 'hot',
+      sort = SORTS.CONFIDENCE,
       compact,
       apiOptions,
       token,
@@ -45,13 +56,15 @@ class UserActivityPage extends BasePage {
     const activities = state.data.activities;
 
     return (
-      <div className="user-page user-activity">
+      <div className='user-page user-activity'>
         <UserActivitySubnav
           app={ app }
           sort={ sort }
           name={ userName }
           activity={ props.activity }
           user={ user }
+          onSortChange={ this.handleSortChange }
+          onActivitySortChange={ this.handleSortChange }
         />
 
         <ListingContainer

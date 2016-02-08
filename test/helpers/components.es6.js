@@ -28,7 +28,6 @@ import ReportPlaceholder from '../../src/views/components/ReportPlaceholder';
 import SearchBar from '../../src/views/components/SearchBar';
 import SearchSortSubnav from '../../src/views/components/SearchSortSubnav';
 import SeashellsDropdown from '../../src/views/components/SeashellsDropdown';
-import SortDropdown from '../../src/views/components/SortDropdown';
 import SubredditSelectionButton from '../../src/views/components/SubredditSelectionButton';
 import SVG from '../../src/views/components/SVG';
 import TextSubNav from '../../src/views/components/TextSubNav';
@@ -93,7 +92,6 @@ export {
     SearchBar,
     SearchSortSubnav,
     SeashellsDropdown,
-    SortDropdown,
     SubredditSelectionButton,
     SVG,
     TextSubNav,

@@ -86,7 +86,7 @@ class TopNav extends BaseComponent {
             <span className='TopNav-text-vcentering'>
               <a
                 className='TopNav-a'
-                href={ "/" }
+                href={ '/' }
                 onClick={ this._onWordMarkClick }
                 data-no-route={ true }
               >

@@ -1,6 +1,8 @@
 import React from 'react';
 
 import SquareButton from '../formElements/SquareButton';
+import DropdownContent from '../dropdown/DropdownContent';
+import DropdownRow from '../dropdown/DropdownRow';
 
 const T = React.PropTypes;
 
@@ -19,106 +21,107 @@ export default class CommentDropdownContent extends React.Component {
     onProfileClicked: T.func.isRequired,
     onReportClicked: T.func.isRequired,
   };
-  
+
   static defaultProps = {
     userOwned: false,
     saved: false,
     userLoggedIn: false,
     permalinkUrl: '',
   };
-  
+
   constructor(props) {
     super(props);
-    
+
     this.state = {
       showReportForm: false,
       reportReason: '',
       reportEnabled: false,
     };
-    
+
     this.toggleReportForm = this.toggleReportForm.bind(this);
     this.handleReportReason = this.handleReportReason.bind(this);
     this.handleReportSubmit = this.handleReportSubmit.bind(this);
     this.handleReportClicked = this.handleReportClicked.bind(this);
     this.handleInputDrawn = this.handleInputDrawn.bind(this);
   }
-  
+
   toggleReportForm() {
     this.setState({
       showReportForm: !this.state.showReportForm,
     });
   }
-  
+
   handleReportReason(e) {
     const value = e.target.value;
-    
+
     this.setState({
       reportReason: value,
       reportEnabled: !!value,
     });
   }
-  
+
   handleReportSubmit() {
     this.props.onReportClicked(this.state.reportReason.trim());
   }
-  
+
   handleReportClicked(e) {
     e.stopPropagation();
   }
-  
+
   handleInputDrawn(input) {
     if (input) {
       input.focus();
     }
   }
-  
+
   render() {
     const { userOwned, userLoggedIn } = this.props;
-    
+
     return (
       <div className='CommentDropdownContent'>
-        { userOwned ? this.renderEdit() : null }
-        { userOwned ? this.renderDelete() : null }
-        { !userOwned && false /* disabled for now */ ? this.renderGold() : null }
-        { this.renderShare() }
-        { userLoggedIn ? this.renderSave() : null }
-        { this.renderProfile() }
-        { userLoggedIn && !userOwned ? this.renderReport() : null }
+        <DropdownContent>
+          { userOwned ? this.renderEdit() : null }
+          { userOwned ? this.renderDelete() : null }
+          { !userOwned && false /* disabled for now */ ? this.renderGold() : null }
+          { this.renderShare() }
+          { userLoggedIn ? this.renderSave() : null }
+          { this.renderProfile() }
+          { userLoggedIn && !userOwned ? this.renderReport() : null }
+        </DropdownContent>
       </div>
     );
   }
-  
+
   renderEdit() {
     return (
-      <div className='CommentDropdownContent__edit' onClick={ this.props.onEditClicked }>
+      <DropdownRow onClick={ this.props.onEditClicked }>
         <div className='CommentDropdownContent__icon icon-post'/>
         <div className='CommentDropdownContent__text'>Edit Comment</div>
-      </div>
+      </DropdownRow>
     );
   }
-  
+
   renderDelete() {
     return (
-      <div className='CommentDropdownContent__delete' onClick={ this.props.onDeleteClicked }>
+      <DropdownRow onClick={ this.props.onDeleteClicked }>
         <div className='CommentDropdownContent__icon icon-x'/>
         <div className='CommentDropdownContent__text'>Delete Comment</div>
-      </div>
+      </DropdownRow>
     );
   }
-  
+
   renderGold() {
     return (
-      <div className='CommentDropdownContent__giveGold' onClick={ this.props.onGoldClicked }>
+      <DropdownRow onClick={ this.props.onGoldClicked }>
         <div className='CommentDropdownContent__icon icon-gold-circled'/>
         <div className='CommentDropdownContent__text'>Give Gold</div>
-      </div>
+      </DropdownRow>
     );
   }
-  
+
   renderShare() {
     return (
-      <a
-        className='CommentDropdownContent__share'
+      <DropdownRow
         onClick={ this.props.onShareClicked }
         href={ this.props.permalinkUrl }
       >
@@ -126,28 +129,27 @@ export default class CommentDropdownContent extends React.Component {
         <div className='CommentDropdownContent__text' >
           Permalink
         </div>
-      </a>
+      </DropdownRow>
     );
   }
-  
+
   renderSave() {
     const { saved } = this.props;
-    
+
     let iconCls = 'CommentDropdownContent__icon icon-save';
     if (saved) { iconCls += ' m-selected'; }
-    
+
     return (
-      <div className='CommentDropdownContent__save' onClick={ this.props.onSaveClicked }>
+      <DropdownRow onClick={ this.props.onSaveClicked }>
         <div className={ iconCls }/>
         <div className='CommentDropdownContent__text'>{ saved ? 'Saved' : 'Save' }</div>
-      </div>
+      </DropdownRow>
     );
   }
-  
+
   renderProfile() {
     return (
-      <a
-        className='CommentDropdownContent__profile'
+      <DropdownRow
         onClick={ this.props.onProfileClicked }
         href={ `/u/${this.props.username}` }
       >
@@ -155,23 +157,23 @@ export default class CommentDropdownContent extends React.Component {
         <div className='CommentDropdownContent__text' >
           { `${this.props.username}'s profile` }
         </div>
-      </a>
+      </DropdownRow>
     );
   }
-  
+
   renderReport() {
     const { showReportForm } = this.state;
     const icon = showReportForm ? 'icon-x' : 'icon-flag';
     const iconCls = `CommentDropdownContent__icon ${icon}`;
-    
+
     return (
-      <div className='CommentDropdownContent__report' onClick={ this.toggleReportForm }>
+      <DropdownRow onClick={ this.toggleReportForm }>
         <div className={ iconCls }/>
         { showReportForm ? this.renderReportForm() : this.renderReportText() }
-      </div>
+      </DropdownRow>
     );
   }
-  
+
   renderReportText() {
     return (
       <div className='CommentDropdownContent__text' >
@@ -179,10 +181,10 @@ export default class CommentDropdownContent extends React.Component {
       </div>
     );
   }
-  
+
   renderReportForm() {
     const { reportReason, reportEnabled } = this.state;
-    
+
     return (
       <div
         className='CommentDropdownContent__reportForm'

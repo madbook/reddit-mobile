@@ -3,6 +3,7 @@ import { models } from 'snoode';
 import without from 'lodash/array/without';
 
 import mobilify from '../../../lib/mobilify';
+import { SORTS } from '../../../sortValues';
 import extractErrorMsg from '../../../lib/extractErrorMsg';
 import BaseComponent from '../BaseComponent';
 import CommentHeader from './CommentHeader';
@@ -48,7 +49,7 @@ export default class Comment extends BaseComponent {
   };
 
   static defaultProps = {
-    sort: 'best',
+    sort: SORTS.CONFIDENCE,
     nestingLevel: 0,
     repliesLocked: false,
     highlightedComment: '',

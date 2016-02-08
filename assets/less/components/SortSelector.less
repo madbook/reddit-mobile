@@ -1,0 +1,104 @@
+.SortSelector {
+  &__currentSortContent {
+    display: inline-block;
+  }
+
+  &__currentIcon,
+  &__currentText,
+  &__currentCaron {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__currentIcon,
+  &__dropdownIcon {
+    font-size: 24px;
+    color: @grey-text;
+    text-align: center;
+    margin-left: -@half-grid-size;
+
+    // I wish the icons were actually normalized...
+    &.icon-karma {
+      font-size: 28px;
+    }
+
+    &.icon-new {
+      font-size: 22px;
+    }
+
+    &.icon-bar-chart {
+      font-size: 21px;
+    }
+
+    &.icon-op {
+      font-size: 21px;
+    }
+
+    &.icon-circle {
+      font-size: 20px;
+      color: @pale-grey;
+    }
+
+    &.icon-check-circled {
+      font-size: 22px;
+    }
+
+    &.icon-history {
+      font-size: 22px;
+    }
+  }
+
+  &__currentIcon {
+    width: 4 * @grid-size;
+  }
+
+  &__currentText {
+    color: @grey-text;
+    padding-right: @grid-size;
+  }
+
+  &__currentCaron {
+    color: @grey-text;
+  }
+
+  &__dropdownIcon,
+  &__dropdownText {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__dropdownIcon {
+    width: 5 * @grid-size;
+
+    &.m-selected {
+      color: @blue;
+    }
+
+    &.icon-check-circled.m-selected {
+      color: @lime;
+    }
+  }
+
+  &__dropdownText {
+    color: @grey-text;
+
+    &.m-selected {
+      color: @semi-black-text;
+    }
+
+    &.m-no-icon {
+      margin-left: @grid-size;
+    }
+  }
+
+  &__title {
+    padding: 0 @grid-size @grid-size;
+    margin-bottom: @grid-size;
+    border-bottom: 1px solid @pale-grey;
+    font-size: 10px;
+    line-height: 3 * @grid-size;
+    letter-spacing: 1.5;
+    color: @grey-text;
+    font-weight: bold;
+  }
+}

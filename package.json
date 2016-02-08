@@ -9,7 +9,8 @@
     "watch": "gulp watch",
     "dev": "gulp dev",
     "test": "mocha test/index.js",
-    "lint": "eslint src test assets/js --ext .js,.jsx"
+    "lint": "eslint src test assets/js --ext .js,.jsx",
+    "fonts": "gulp icon-fonts"
   },
   "author": "reddit <jack@reddit.com>",
   "license": "MIT",

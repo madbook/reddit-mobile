@@ -2,6 +2,7 @@ import React from 'react';
 import remove from 'lodash/array/remove';
 import { models } from 'snoode';
 
+import { SORTS } from '../../sortValues';
 import BasePage from './BasePage';
 import LinkTools from '../components/LinkTools';
 import Comment from '../components/comment/Comment';
@@ -33,6 +34,7 @@ class ListingPage extends BasePage {
     this.saveUpdatedText = this.saveUpdatedText.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   get track () {
@@ -110,6 +112,11 @@ class ListingPage extends BasePage {
     });
   }
 
+  handleSortChange(newSort) {
+    const newUrl = `${this.props.ctx.url}?sort=${newSort}`;
+    this.props.app.redirect(newUrl);
+  }
+
   async loadMore(e) {
     e.preventDefault();
     const { app, apiOptions, sort } = this.props;
@@ -124,7 +131,7 @@ class ListingPage extends BasePage {
         ids: comment.children,
       },
       linkId: data.listing.name,
-      sort: sort || 'best',
+      sort: sort || SORTS.HOT,
     });
 
     this.setState({ loadingMoreComments: true });
@@ -159,7 +166,7 @@ class ListingPage extends BasePage {
       subredditName,
     } = this.props;
 
-    const sort = this.props.sort || 'best';
+    const sort = this.props.sort || SORTS.CONFIDENCE;
 
     const { origin } = this.props.config;
     const { url, env } = ctx;
@@ -273,6 +280,7 @@ class ListingPage extends BasePage {
           user={ user }
           sort={ sort }
           list='comments'
+          hideSort={ true }
         />
         <div className='container listing-content' key='container'>
           { googleCarousel }
@@ -297,8 +305,10 @@ class ListingPage extends BasePage {
               apiOptions={ apiOptions }
               token={ token }
               linkId={ listing.name }
-              onNewComment={ this.onNewComment }
               isLocked={ listing.locked }
+              sort={ sort }
+              onNewComment={ this.onNewComment }
+              onSortChange={ this.handleSortChange }
             />
           </div>
           { singleComment }

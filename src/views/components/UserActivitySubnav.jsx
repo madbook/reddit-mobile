@@ -1,171 +1,205 @@
 import React from 'react';
-import querystring from 'querystring';
 
-import constants from '../../constants';
+import { SORTS } from '../../sortValues';
 
 import BaseComponent from './BaseComponent';
-import Dropdown from '../components/Dropdown';
-import SortDropdown from '../components/SortDropdown';
+import DropdownController from './dropdown/DropdownController';
+import DropdownContent from './dropdown/DropdownContent';
+import DropdownRow from './dropdown/DropdownRow';
+import SortSelector from './SortSelector';
 
-const dropdownList = [
-  {
-    activity: 'comments',
-    text: 'Submitted comments',
-  },
-  {
-    activity: 'submitted',
-    text: 'Submitted posts',
-  },
-  {
-    activity: 'overview',
-    text: 'Comments and posts',
-  },
-  {
-    activity: 'gilded',
-    text: 'Gilded',
-  },
+const T = React.PropTypes;
+
+const activityMap = {
+  comments: 'Submitted comments',
+  submitted: 'Submitted posts',
+  overview: 'Comments and posts',
+  gilded: 'Gilded',
+};
+
+const commentSortOptions = [
+  SORTS.CONFIDENCE,
+  SORTS.TOP,
+  SORTS.NEW,
+  SORTS.CONTROVERSIAL,
+  SORTS.QA,
 ];
 
-class UserActivitySubnav extends BaseComponent {
+const postSortOptions = [
+  SORTS.HOT,
+  SORTS.TOP,
+  SORTS.NEW,
+  SORTS.CONTROVERSIAL,
+];
+
+export default class UserActivitySubnav extends BaseComponent {
   static propTypes = {
-    activity: React.PropTypes.string,
-    name: React.PropTypes.string.isRequired,
-    sort: React.PropTypes.string,
+    name: T.string.isRequired,
+    onSortChange: T.func.isRequired,
+    onActivitySortChange: T.func.isRequired,
+    user: T.object,
+    sort: T.oneOf(Object.values(SORTS)),
+    activity: T.string,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      opened: false,
-      sort: props.sort || 'hot',
+      sort: props.sort || SORTS.HOT,
       activity: props.activity || 'comments',
+      activityDropdownTarget: null,
     };
 
-    this._onOpen = this._onOpen.bind(this);
-    this._id = Math.random();
+    this.handleSortChange = this.handleSortChange.bind(this);
+    this.toggleActivitySort = this.toggleActivitySort.bind(this);
+    this.renderActivityRow = this.renderActivityRow.bind(this);
   }
 
-  componentDidMount() {
-    this.props.app.on(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
+  handleSortChange(newSort) {
+    if (this.state.sort !== newSort) {
+      this.setState({ sort: newSort });
+      this.props.onSortChange({
+        sort: newSort,
+        activity: this.state.activity,
+      });
+    }
   }
 
-  componentWillUnmount() {
-    this.props.app.off(`${constants.DROPDOWN_OPEN}:${this._id}`, this._onOpen);
+  handleActivitySortClick(newActivitySort) {
+    if (this.state.activity !== newActivitySort) {
+      const sortOptions = newActivitySort === 'comments'
+        ? commentSortOptions
+        : postSortOptions;
+
+      let newSort = this.state.sort;
+      // guard against wrong state. when can this happen? one example: if a user
+      // is sorting comments with the CONFIDENCE sort, but switches to sorting
+      // posts, the CONFIDENCE sort is no longer relevant.
+      if (sortOptions.indexOf(newSort) < 0) { newSort = sortOptions[0]; }
+
+      this.setState({
+        sort: newSort,
+        activity: newActivitySort,
+      });
+
+      this.props.onActivitySortChange({
+        sort: newSort,
+        activity: newActivitySort,
+      });
+    }
   }
 
-  _onOpen(bool) {
+  toggleActivitySort(e) {
     this.setState({
-      opened: bool,
+      activityDropdownTarget: this.state.activityDropdownTarget ? null : e.target.parentElement,
     });
   }
 
-  buildUrl(base, activity, sort, page) {
-    const url = base;
+  render() {
+    const { activityDropdownTarget } = this.state;
 
-    const q = {
-      activity,
-    };
-
-    if (sort) {
-      q.sort = sort;
-    }
-
-    if (page) {
-      q.page = page;
-    }
-
-    return `${url}?${querystring.stringify(q)}`;
+    return (
+      <div className='TopSubnav'>
+        { this.renderSortDropdown() }
+        { this.renderActivitySort() }
+        <div className='pull-right'>{ this.renderUserLink() }</div>
+        { activityDropdownTarget ? this.renderActivityDropdown() : null }
+      </div>
+    );
   }
 
-  render() {
-    const baseUrl = `/u/${this.props.name}/activity`;
-    const activity = this.state.activity;
-    let sortList = 'userComments';
+  renderSortDropdown() {
+    const { app, activity } = this.props;
+    // we want to present different sort options depending on the acitivity type
+    // to mimic the actual sort options the user would see when sorting each
+    // resource type.
+    const sortOptions = activity === 'comments' ? commentSortOptions : postSortOptions;
 
-    switch (activity) {
-      case 'listings':
-        sortList = 'listings';
-        break;
-      case 'overview':
-      case 'gilded':
-        sortList = 'both';
-        break;
-    }
+    let { sort } = this.state;
+    // guard against wrong state. see comment in handleActivitySortClick for
+    // an example. we repeat the guard in the render function to handle the
+    // initial render case.
+    if (sortOptions.indexOf(sort) < 0) { sort = sortOptions[0]; }
 
-    const activityTitle = dropdownList.find((d) => {
-      return d.activity === activity;
-    }).text;
-
-    const button = (
-      <button className={ (this.state.opened ? ' opened' : '') }>
-        { activityTitle } <span className='icon-caron'/>
-      </button>
+    return (
+      <div className='TopSubnav__sortDropdown'>
+        <SortSelector
+          app={ app }
+          sortValue={ sort }
+          sortOptions={ sortOptions }
+          onSortChange={ this.handleSortChange }
+        />
+      </div>
     );
+  }
 
-    const { opened, sort, page } = this.state;
+  renderActivitySort() {
+    const { activity } = this.state;
 
-    // add user to the bar as well
-    const user = this.props.user;
-    let loginLink;
+    return (
+      <div className='TopSubnav__sortDropdown'>
+        <div className='TopSubnav__activitySort' onClick={ this.toggleActivitySort }>
+          <div className='TopSubnav__activitySortText'>{ activityMap[activity] }</div>
+          <div className='TopSubnav__activitySortIcon icon-caron' />
+        </div>
+      </div>
+    );
+  }
+
+  renderUserLink() {
+    const { user, app } = this.props;
 
     if (user) {
-      loginLink = <a className='TopSubnav-a' href={ `/u/${user.name}` }>{ user.name }</a>;
-    } else {
-      loginLink = (
+      return (
         <a
-          className='TopSubnav-a'
-          href={ this.props.app.config.loginPath }
-        >Log in / Register</a>
+          className='TopSubnav__a'
+          href={ `/u/${user.name}` }
+        >
+          { user.name }
+        </a>
       );
     }
 
     return (
-      <div className='TopSubnav'>
-        <Dropdown
-          id={ this._id }
-          button={ button }
-          app={ this.props.app }
-          className='Dropdown-inline'
-        >
-          {
-            dropdownList.map((d) => {
-              let iconClass = 'icon-check-hidden';
+      <a
+        className='TopSubnav__a'
+        href={ app.config.loginPath }
+      >
+        Log in / Register
+      </a>
+    );
+  }
 
-              if (opened && activity === d.activity) {
-                iconClass = 'icon-check-shown';
-              }
+  renderActivityDropdown() {
+    const { app } = this.props;
+    const { activityDropdownTarget } = this.state;
 
-              const url = this.buildUrl(baseUrl, d.activity, sort, page);
-              return (
-                <li className='Dropdown-li' key={ `ua-subnav-${d.text}` }>
-                  <a
-                    className='Dropdown-button'
-                    href={ url }
-                  >
-                    <span className={ `icon-check ${iconClass}` }>{ ' ' }</span>
-                    <span className='Dropdown-text'>{ d.text }</span>
-                  </a>
-                </li>
-              );
-            })
-          }
-        </Dropdown>
+    return (
+      <DropdownController
+        target={ activityDropdownTarget }
+        app={ app }
+        offset={ 8 }
+        onClose={ this.toggleActivitySort }
+      >
+        <DropdownContent>
+          { Object.keys(activityMap).map(this.renderActivityRow) }
+        </DropdownContent>
+      </DropdownController>
+    );
+  }
 
-        <span className='text-muted'> sorted by </span>
+  renderActivityRow(sortName) {
+    // define callback
+    const handleSortClick = this.handleActivitySortClick.bind(this, sortName);
 
-        <SortDropdown
-          app={ this.props.app }
-          sort={ this.state.sort }
-          list={ sortList }
-          baseUrl={ this.buildUrl(baseUrl, this.state.activity) }
-          className='Dropdown-inline'
-        />
-
-        <div className='pull-right'>{ loginLink }</div>
-      </div>
+    return (
+      <DropdownRow
+        key={ sortName }
+        onClick={ handleSortClick }
+      >
+        { activityMap[sortName] }
+      </DropdownRow>
     );
   }
 }
-
-export default UserActivitySubnav;

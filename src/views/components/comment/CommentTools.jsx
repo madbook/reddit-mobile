@@ -13,7 +13,7 @@ function scoreText(score, scoreHidden) {
   } else if (score < 1100) {
     return '1k';
   }
-  
+
   return `${(score/1000).toFixed(1)}k`;
 }
 
@@ -32,27 +32,27 @@ export default class CommentTools extends React.Component {
     onDownvote: T.func.isRequired,
     onEditComment: T.func.isRequired,
     onDeleteComment: T.func.isRequired,
-    onGildComment: T.func.isRequired,
-    onShareComment: T.func.isRequired,
     onSaveComment: T.func.isRequired,
-    onGotoUserProfile: T.func.isRequired,
     onReportComment: T.func.isRequired,
+    onGildComment: T.func, // not required b/c functionality doesn't exist
+    onShareComment: T.func, // not required b/c row is a link
+    onGotoUserProfile: T.func, // not required b/c/ row is a link
   };
-  
+
   static defaultProps = {
     voteDirection: 0,
     scoreHidden: false,
     saved: false,
     permalinkUrl: '',
   };
-  
+
   constructor(props) {
     super(props);
-    
+
     this.state = {
       dropdownTarget: null,
     };
-    
+
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleEditClicked = this.handleEditClicked.bind(this);
     this.handleDeleteClicked = this.handleDeleteClicked.bind(this);
@@ -62,51 +62,51 @@ export default class CommentTools extends React.Component {
     this.handleProfileClicked = this.handleProfileClicked.bind(this);
     this.handleReportClicked = this.handleReportClicked.bind(this);
   }
-  
+
   toggleDropdown(e) {
     this.setState({
       dropdownTarget: this.state.dropdownTarget ? null : e.target,
     });
   }
-  
+
   handleEditClicked() {
     this.setState({dropdownTarget: null});
     this.props.onEditComment();
   }
-  
+
   handleDeleteClicked() {
     this.setState({dropdownTarget: null});
     this.props.onDeleteComment();
   }
-  
+
   handleGildClicked() {
     this.setState({dropdownTarget: null});
     this.props.onGildComment();
   }
-  
+
   handleShareClicked() {
     this.setState({dropdownTarget: null});
     this.props.onShareComment();
   }
-  
+
   handleSaveClicked() {
     this.setState({dropdownTarget: null});
     this.props.onSaveComment();
   }
-  
+
   handleProfileClicked() {
     this.setState({dropdownTarget: null});
     this.props.onGotoUserProfile();
   }
-  
+
   handleReportClicked(reportReason) {
     this.setState({dropdownTarget: null});
     this.props.onReportComment(reportReason);
   }
-  
+
   render() {
     const { dropdownTarget } = this.state;
-    
+
     return (
       <div className='CommentTools'>
         { this.renderReply() }
@@ -119,7 +119,7 @@ export default class CommentTools extends React.Component {
       </div>
     );
   }
-  
+
   renderReply() {
     return (
       <div
@@ -128,7 +128,7 @@ export default class CommentTools extends React.Component {
       />
     );
   }
-  
+
   renderSeashells() {
     return (
       <div
@@ -137,39 +137,39 @@ export default class CommentTools extends React.Component {
       />
     );
   }
-  
+
   renderDivider() {
     return <div className='CommentTools__divider' />;
   }
-  
+
   renderScore() {
     const { score, scoreHidden } = this.props;
-    
+
     return <div className='CommentTools__score'>{ scoreText(score, scoreHidden) }</div>;
   }
-  
+
   renderUpvote() {
     const { voteDirection } = this.props;
-    
+
     let cls = 'CommentTools__upvote icon-upvote';
     if (voteDirection === 1) { cls += ' m-selected'; }
-    
+
     return <div className={ cls } onClick={ this.props.onUpvote } />;
   }
-  
+
   renderDownvote() {
     const { voteDirection } = this.props;
-    
+
     let cls = 'CommentTools__downvote icon-downvote';
     if (voteDirection === -1) { cls += ' m-selected'; }
-    
+
     return <div className={ cls } onClick={ this.props.onDownvote } />;
   }
-  
+
   renderDropdown() {
     const { commentAuthor, username, app, saved, permalinkUrl } = this.props;
     const { dropdownTarget } = this.state;
-    
+
     return (
       <DropdownController
         target={ dropdownTarget }

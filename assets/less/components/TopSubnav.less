@@ -1,21 +1,48 @@
 .TopSubnav {
-  color: @alien-blue-text;
-  line-height: 30px;
-  padding: 0 10px;
+  line-height: 4 * @grid-size;
+  padding: @grid-size;
   max-width: @max-width;
   margin: 0 auto;
-  height: 30px;
+  height: 6 * @grid-size;
 
   .text-muted {
     margin-right: 5px;
   }
 
   .Dropdown {
-
     .twirly.after:after {
       border-left-color: @blue;
       top: 10px;
     }
+  }
+
+  &__a {
+    color: @alien-blue-text;
+
+    &:visited {
+      color: @alien-blue-text;
+    }
+  }
+
+  &__sortDropdown {
+    display: inline-block;
+
+    & + & {
+      margin-left: @grid-size;
+      padding-left: @grid-size;
+      border-left: 1px solid @pale-grey;
+    }
+  }
+
+  &__activitySortText,
+  &__activitySortIcon {
+    display: inline-block;
+    vertical-align: middle;
+    color: @grey-text;
+  }
+
+  &__activitySortText {
+    margin-right: @grid-size;
   }
 }
 
@@ -35,4 +62,5 @@
 
 .container {
   clear: both;
+  margin-bottom: @grid-size;
 }

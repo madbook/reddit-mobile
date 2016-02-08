@@ -1,42 +1,55 @@
 import React from 'react';
 
 import propTypes from '../../propTypes';
-import SortDropdown from '../components/SortDropdown';
+import SortSelector from './SortSelector';
+import { SORTS } from '../../sortValues';
 
-function TopSubnav (props) {
+function renderSortSelector(currentSort, app, baseUrl) {
+  // define callback
+  const handleSortChange = function(newSort) {
+    app.redirect(`${baseUrl}?sort=${newSort}`);
+  };
+
+  return (
+    <div className='pull-left'>
+      <SortSelector
+        app={ app }
+        sortValue={ currentSort }
+        sortOptions={ [
+          SORTS.HOT,
+          SORTS.TOP,
+          SORTS.NEW,
+          SORTS.CONTROVERSIAL,
+        ] }
+        onSortChange={ handleSortChange }
+        title='Sort posts by:'
+      />
+    </div>
+  );
+}
+
+function TopSubnav(props) {
   const { user, subreddit } = props;
+  const showSort = !props.hideSort && !props.leftLink;
+
   let navLink;
 
   if (subreddit && !props.hideSort) {
     navLink = (
-      <a className='TopSubnav-a' href={ `${subreddit.url}about` }>
+      <a className='TopSubnav__a' href={ `${subreddit.url}about` }>
         About this community
       </a>
     );
   } else if (user) {
-    navLink = <a className='TopSubnav-a' href={ `/u/${user.name}` }>{ user.name }</a>;
+    navLink = <a className='TopSubnav__a' href={ `/u/${user.name}` }>{ user.name }</a>;
   } else {
     navLink = (
       <a
-        className='TopSubnav-a'
+        className='TopSubnav__a'
         href={ props.app.config.loginPath }
       >
         Log in / Register
       </a>
-    );
-  }
-
-  let sort;
-  if (!props.hideSort && !props.leftLink) {
-    sort = (
-      <SortDropdown
-        app={ props.app }
-        sort={ props.sort }
-        excludedSorts={ props.excludedSorts }
-        list={ props.list }
-        baseUrl={ props.ctx.url }
-        className='pull-left'
-      />
     );
   }
 
@@ -47,7 +60,7 @@ function TopSubnav (props) {
 
   return (
     <div className='TopSubnav'>
-      { sort }
+      { showSort ? renderSortSelector(props.sort, props.app, props.ctx.url) : null }
       { leftLink }
       <div className='pull-right'>{ navLink }</div>
     </div>
