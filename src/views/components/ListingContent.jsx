@@ -7,13 +7,30 @@ import propTypes from '../../propTypes';
 import BaseComponent from './BaseComponent';
 
 const PropTypes = React.PropTypes;
-const _gfyRegex = /https?:\/\/(?:.+)\.gfycat.com\/(.+)\.gif/;
+const _gfyCatRegex = /^https?:\/\/(.*\.?)gfycat.com/;
+const _gfyCatURLBase = 'https://thumbs.gfycat.com';
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
 
+function gfycatMP4Url(gfyCatUrl) {
+  // gif doesn't seem to be there, so the .gif replace is a safety check
+  return `${gfyCatUrl.replace(_gfyCatRegex, _gfyCatURLBase).replace(/\.gif$/, '')}-mobile.mp4`;
+}
+
 function _gifToHTML5(url) {
-  if (!url || url.indexOf('.gif') < 1) {
+  if (!url) {
     return;
   }
+
+  if (url.indexOf('gfycat.com') > -1) {
+    return {
+      mp4: gfycatMP4Url(url),
+    };
+  }
+
+  if (url.indexOf('.gif') < 1) {
+    return;
+  }
+
   // If it's imgur, make a gifv link
   if (url.indexOf('imgur.com') > -1) {
     return {
@@ -21,15 +38,16 @@ function _gifToHTML5(url) {
       mp4: url.replace(/\.gif/, '.mp4'),
       poster: url.replace(/\.gif/, 'h.jpg'),
     };
-  } else if (url.indexOf('gfycat') > 8) {
-    const gfy = _gfyRegex.exec(url);
-
-    if (gfy.length === 2) {
-      return {
-        iframe: url,
-      };
-    }
   }
+}
+
+function autoPlayGif(gif) {
+  if (!gif) {
+    return;
+  }
+
+  // need this to make iOS really autoplay the gif
+  gif.play();
 }
 
 //there are css values in aspect-ratio.less that must correlate with _WIDEST and _TALLEST
@@ -111,7 +129,7 @@ class ListingContent extends BaseComponent {
     toggleEdit: PropTypes.func,
     width: PropTypes.number.isRequired,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -173,8 +191,8 @@ class ListingContent extends BaseComponent {
     }
 
     // this case catches any 'playable' gif or video and displays the preview image
-    // so we don't get annoying auto play.
-    if (isPlayable && preview && !this.state.playing) {
+    // if it's not playing, or the video that autoplays if it is playing
+    if (isPlayable && preview) {
       return this.buildImage(preview, url, this._togglePlaying, isPlayable);
     }
 
@@ -192,13 +210,20 @@ class ListingContent extends BaseComponent {
 
   buildImage(src, href, onClick, playable=false) {
     // this handles only direct links to gifs.
-    const html5 = _gifToHTML5(href);
-    if (this.state.playing && html5) {
-      if (html5.iframe) {
-        return this._renderIFrame(html5.iframe, _DEFAULT_ASPECT_RATIO);
+    const html5sources = _gifToHTML5(href);
+    if (this.state.playing && html5sources) {
+      if (html5sources.iframe) {
+        return this._renderIFrame(html5sources.iframe, _DEFAULT_ASPECT_RATIO);
       }
 
-      return this._renderVideo({webm: html5.webm, mp4: html5.mp4}, html5.poster);
+      const generatedSrc = {
+        webm: html5sources.webm,
+        mp4: html5sources.mp4,
+        width: src.width,
+        height: src.height,
+      };
+
+      return this._renderVideo(generatedSrc, html5sources.poster);
     }
 
     return this._renderImage(src, href, onClick, playable);
@@ -334,6 +359,7 @@ class ListingContent extends BaseComponent {
           muted='true'
           controls='true'
           autoPlay='true'
+          ref={ autoPlayGif }
         >
           { sources }
         </video>
