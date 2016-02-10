@@ -36,6 +36,7 @@ class IndexPage extends BasePage {
   };
 
   static isStalePage (query, listings) {
+    if (!listings || !query) { return; }
     // detect if we are on an invalid (stale) page, and if so, redirect to
     // the front page.
     if (query.before || query.after) {
@@ -195,7 +196,7 @@ class IndexPage extends BasePage {
           { ...props }
           user={ user }
           showAds={ showAds }
-          listings={ listings }
+          listings={ listings || [] }
           firstPage={ page }
           page={ page }
           hideSubredditLabel={ hideSubredditLabel }
