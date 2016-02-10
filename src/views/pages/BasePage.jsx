@@ -67,7 +67,9 @@ class BasePage extends BaseComponent {
   }
 
   watch (property) {
-    this.props.data.get(property).then((p) => {
+    const promise = this.props.data.get(property);
+
+    promise.then((p) => {
       let data;
       if (p.body) {
         data = Object.assign({}, this.state.data);
@@ -106,8 +108,13 @@ class BasePage extends BaseComponent {
         this.finish();
       }
     }, (e) => {
-      this.props.app.error(e, this.props.ctx, this.props.app);
-      this.props.app.forceRender(this.props.ctx.body, this.props);
+      // keep every listener from error logging - only log the first failure on
+      // the promise.
+      if (!promise.failed) {
+        promise.failed = true;
+        this.props.app.error(e, this.props.ctx, this.props.app);
+        this.props.app.forceRender(this.props.ctx.body, this.props);
+      }
     });
   }
 
