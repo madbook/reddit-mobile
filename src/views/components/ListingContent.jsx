@@ -10,6 +10,7 @@ const PropTypes = React.PropTypes;
 const _gfyCatRegex = /^https?:\/\/(.*\.?)gfycat.com/;
 const _gfyCatURLBase = 'https://thumbs.gfycat.com';
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
+const _GIF_EXTENSION = /\.gif$/;
 
 function gfycatMP4Url(gfyCatUrl) {
   // gif doesn't seem to be there, so the .gif replace is a safety check
@@ -27,6 +28,12 @@ function _gifToHTML5(url) {
     };
   }
 
+  if (url.indexOf('giphy.com') > -1) {
+    return {
+      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
+    };
+  }
+
   if (url.indexOf('.gif') < 1) {
     return;
   }
@@ -34,9 +41,9 @@ function _gifToHTML5(url) {
   // If it's imgur, make a gifv link
   if (url.indexOf('imgur.com') > -1) {
     return {
-      webm: url.replace(/\.gif/, '.webm'),
-      mp4: url.replace(/\.gif/, '.mp4'),
-      poster: url.replace(/\.gif/, 'h.jpg'),
+      webm: url.replace(_GIF_EXTENSION, '.webm'),
+      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
+      poster: url.replace(_GIF_EXTENSION, 'h.jpg'),
     };
   }
 }
@@ -324,6 +331,7 @@ class ListingContent extends BaseComponent {
         data-no-route={ noRoute }
         style={ style }
       >
+          { this.state.playing ? <img className='ListingContent-inline-gif' src={ href } /> : null }
           { playIconNode }
           { nsfwNode }
       </a>
