@@ -48,7 +48,6 @@ import ListingPage from '../../src/views/pages/listing';
 import LoginPage from '../../src/views/pages/login';
 import MessageComposePage from '../../src/views/pages/messageCompose';
 import MessagesPage from '../../src/views/pages/messages';
-import RegisterPage from '../../src/views/pages/register';
 import SearchPage from '../../src/views/pages/search';
 import SubmitPage from '../../src/views/pages/submit';
 import SubredditAboutPage from '../../src/views/pages/subredditAbout';
@@ -110,7 +109,6 @@ export {
     LoginPage,
     MessageComposePage,
     MessagesPage,
-    RegisterPage,
     SearchPage,
     SubmitPage,
     SubredditAboutPage,

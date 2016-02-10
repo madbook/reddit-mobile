@@ -12,20 +12,20 @@ function Input(props) {
   if (error) {
     errorClass = 'error';
     errorMessage = (
-      <p className='inputMinimal__error-text'>{ error }</p>
+      <p className='minimalInput__error-text'>{ error }</p>
     );
   }
 
   return (
     <div>
-      <div className='inputMinimal'>
+      <div className='minimalInput'>
         <label htmlFor={ name } className='hidden'/>
         <input
           id={ name }
           name={ name }
           type={ type }
           value={ value }
-          className={ `inputMinimal__input ${showTop} ${errorClass}` }
+          className={ `minimalInput__input ${showTop} ${errorClass}` }
           placeholder={ placeholder }
           onChange={ onChange }
         />

@@ -98,7 +98,7 @@ function setCompact(ctx, app) {
 }
 
 // Save a static reference to the config object at startup
-const defaultConfig = Config();
+const defaultConfig = Config;
 function formatBootstrap(props) {
   let p;
   for (p in props.config) {

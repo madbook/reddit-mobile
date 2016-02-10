@@ -405,62 +405,106 @@ const oauthRoutes = function(app) {
         .send(data)
         .timeout(constants.DEFAULT_API_TIMEOUT)
         .end((err, res = {}) => {
-          if (err || !res.ok) {
-            if (err.timeout) { res.status = 504; }
+          const obj = {};
 
-            return reject(res.status || 500);
+          if (err || !res.ok) {
+            obj.status = err.timeout ? 504 : res.status || 500;
+            obj.errorType = obj.status === 400 ? 'WRONG_PASSWORD' : obj.status;
           }
 
           /* temporary while api returns a `200` with an error in body */
           if (has(res, 'body.json.errors.0')) {
-            const error = res.body.json.errors[0];
-            return reject(error);
+            const errorTuple = res.body.json.errors[0];
+            obj.errorType = errorTuple[0];
+            obj.message = errorTuple[1];
+            obj.status = 400;
           }
 
-          const token = OAuth2.accessToken.create(res.body);
+          if (!obj.status) {
+            obj.status = 200;
+            obj.token = OAuth2.accessToken.create(res.body);
+            setTokenCookie(ctx, obj.token);
+          }
 
-          setTokenCookie(ctx, token);
-          resolve(200);
+          if (obj.status !== 200) {
+            reject(obj);
+          }
+
+          resolve(obj);
         });
     });
   }
 
-  async function getLoginRedirect(username, passwd, ctx) {
+  async function getLoginRedirectOrRes(username, passwd, ctx) {
     try {
-      const status = await login(username, passwd, ctx);
+      const result = await login(username, passwd, ctx);
       const dest = ctx.body.originalUrl || '';
 
-      if (status === 200) {
+      if (result.status === 200) {
+        if (ctx.isAjax) {
+          ctx.body = { token: result.token };
+          return;
+        }
+
         if (dest) {
           return `${app.config.origin}${dest}`;
         }
         return '/';
       }
     } catch (e) {
-      if (Array.isArray(e)) {
-        return `/login?error=${e[0]}&message=${e[1]}${ctx.queryPath}`;
+      if (ctx.isAjax) {
+        ctx.status = e.status;
+        ctx.body = {
+          error: e.errorType,
+        };
+
+        if (e.message) {
+          ctx.body.message = e.message;
+        }
+
+        return;
       }
-      return `/login?error=${e}${ctx.queryPath}`;
+
+      const message = e.message ? `&message=${e.message}` : '';
+      return `/login?error=${e.errorType}${message}${ctx.queryPath}`;
     }
   }
 
   function handleRegisterResponse(resolve, reject, data, ctx) {
     return async function (err, res = {}) {
+      const obj = {};
       if (err || !res.ok) {
-        if (err.timeout) { res.status = 504; }
-        return reject(`/register?error=${(res.status || 500)}${ctx.queryPath}`);
+        obj.status = err.timeout ? 504 : res.status || 500;
+        obj.errorType = obj.status;
       }
 
       /* temporary while api returns a `200` with an error in body */
       if (has(res, 'body.json.errors.0')) {
-        const error = res.body.json.errors[0];
-
-        return reject(`/register?error=${error[0]}&message=${error[1]}${ctx.queryPath}`);
+        const errorTuple = res.body.json.errors[0];
+        obj.errorType = errorTuple[0];
+        obj.message = errorTuple[1];
+        obj.status = 400;
       }
 
-      const redirectURI = await getLoginRedirect(data.user, data.passwd, ctx);
+      if (obj.errorType) {
+        if (ctx.isAjax) {
+          ctx.status = obj.status;
+          ctx.body = {
+            error: obj.errorType,
+          };
 
-      resolve(redirectURI);
+          if (obj.message) {
+            ctx.body.message = obj.message;
+          }
+          resolve();
+        }
+
+        const message = obj.message ? `&message=${obj.message}` : '';
+        return reject(`/login?error=${obj.errorType}${message}${ctx.queryPath}`);
+      }
+
+      const redirectURIOrRes = await getLoginRedirectOrRes(data.user, data.passwd, ctx);
+      resolve(redirectURIOrRes);
     };
   }
 
@@ -473,11 +517,11 @@ const oauthRoutes = function(app) {
     const { username, password } = this.body;
 
     this.queryPath = getRedirectQueryParams(this);
+    this.isAjax = this.req.headers['content-type'] === 'application/json';
 
-    const url = yield getLoginRedirect(username, password, this);
+    const urlOrRes = yield getLoginRedirectOrRes(username, password, this);
 
-    app.setNotification(this.cookies, 'login');
-    this.redirect(url);
+    return redirectOrReturn(this, urlOrRes);
   });
 
   function getRedirectQueryParams(ctx) {
@@ -488,17 +532,25 @@ const oauthRoutes = function(app) {
     return originalPath + userPath;
   }
 
+  function redirectOrReturn(ctx, uri) {
+    if (ctx.isAjax) { return; }
+
+    ctx.redirect(uri);
+  }
+
   router.post('/register', function * () {
     const origin = app.getConfig('nonAuthAPIOrigin');
     const endpoint = `${origin}/api/register`;
-    const { password, password2, username, newsletter, email } = this.body;
+    const { password, username, email, newsletter } = this.body;
+
+    this.isAjax = this.req.headers['content-type'] === 'application/json';
 
     this.queryPath = getRedirectQueryParams(this);
 
     const data = {
       user: username,
       passwd: password,
-      passwd2: password2,
+      passwd2: password,
       api_type: 'json',
     };
 
@@ -506,16 +558,17 @@ const oauthRoutes = function(app) {
       data.email = email;
     }
 
-    if (newsletter === 'on') {
+    if (newsletter) {
       data.newsletter_subscribe = true;
-    }
 
-    if (password !== password2) {
-      return this.redirect(`/register?error=PASSWORD_MATCH${this.queryPath}`);
-    }
-
-    if (!email && newsletter === 'on') {
-      return this.redirect(`/register?error=EMAIL_NEWSLETTER${this.queryPath}`);
+      if (!email) {
+        if (this.isAjax) {
+          this.body = { error: 'NEWSLETTER_NO_EMAIL'};
+          this.status = 400;
+          return;
+        }
+        return this.redirect(`/register?error=NEWSLETTER_NO_EMAIL${this.queryPath}`);
+      }
     }
 
     try {
@@ -544,11 +597,10 @@ const oauthRoutes = function(app) {
           .timeout(constants.DEFAULT_API_TIMEOUT)
           .end(handleRegisterResponse(resolve, reject, data, this));
       });
-      app.setNotification(this.cookies, 'register');
-      this.redirect(URI);
+
+      return redirectOrReturn(this, URI);
     } catch (errorURI) {
-      app.setNotification(this.cookies, 'register');
-      this.redirect(errorURI);
+      return redirectOrReturn(this, errorURI);
     }
   });
 };

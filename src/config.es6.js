@@ -32,6 +32,7 @@ function config() {
     httpsProxy: process.env.HTTPS_PROXY === 'true',
 
     debugLevel: process.env.DEBUG_LEVEL,
+    postErrorURL: '/error',
 
     minifyAssets: process.env.MINIFY_ASSETS === 'true',
 
@@ -71,4 +72,4 @@ function config() {
   };
 }
 
-export default config;
+export default config();
