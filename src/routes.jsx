@@ -52,11 +52,13 @@ function buildAPIOptions(ctx, options={}) {
 
   const apiOptions = merge({
     origin: app.getConfig(apiOrigin),
-    headers: {
-      'user-agent': ctx.headers['user-agent'],
-    },
+    headers: { },
     env: ctx.env || 'SERVER',
   }, options);
+
+  if (ctx.headers['user-agent']) {
+    apiOptions.headers['user-agent'] = ctx.headers['user-agent'];
+  }
 
   if (ctx.token) {
     apiOptions.headers.Authorization = `bearer ${ctx.token}`;
