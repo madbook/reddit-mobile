@@ -18,11 +18,8 @@ export default function(app, $body, render, history) {
       path = status;
     }
 
-    if (path.indexOf(app.config.loginPath) === 0 ||
-        path.indexOf(app.config.registerPath) === 0) {
-      window.location = path;
-      return;
-    }
+    const currentUrl = app.fullPathName();
+    app.scrollCache[currentUrl] = window.scrollY;
 
     app.pushState(null, null, path);
 

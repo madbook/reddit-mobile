@@ -338,7 +338,6 @@ class LoginPage extends BasePage {
       <p className='login__register-link'>
         <a
           href={ url + linkDest }
-          data-no-route='true'
         >{ text }</a>
       </p>
     );
