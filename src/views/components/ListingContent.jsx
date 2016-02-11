@@ -192,7 +192,7 @@ class ListingContent extends BaseComponent {
 
     // this case catches any 'playable' gif or video and displays the preview image
     // if it's not playing, or the video that autoplays if it is playing
-    if (isPlayable && preview) {
+    if (isPlayable && preview && !this.state.playing) {
       return this.buildImage(preview, url, this._togglePlaying, isPlayable);
     }
 
