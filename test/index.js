@@ -11,6 +11,8 @@ require('./lib/titleCase');
 require('./lib/formatDifference');
 require('./lib/formatNumber');
 require('./lib/extractErrorMsg');
+require('./lib/rootDomain');
+require('./lib/gifToHTML5Sources');
 
 // src
 require('./src/featureflags');

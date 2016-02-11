@@ -3,50 +3,13 @@ import has from 'lodash/object/has';
 import URL from 'url';
 
 import mobilify from '../../lib/mobilify';
+import gifToHTML5Sources from '../../lib/gifToHTML5Sources';
+import { posterForHrefIfGiphyCat } from '../../lib/gifToHTML5Sources';
 import propTypes from '../../propTypes';
 import BaseComponent from './BaseComponent';
 
 const PropTypes = React.PropTypes;
-const _gfyCatRegex = /^https?:\/\/(.*\.?)gfycat.com/;
-const _gfyCatURLBase = 'https://thumbs.gfycat.com';
 const _DEFAULT_ASPECT_RATIO = 16 / 9;
-const _GIF_EXTENSION = /\.gif$/;
-
-function gfycatMP4Url(gfyCatUrl) {
-  // gif doesn't seem to be there, so the .gif replace is a safety check
-  return `${gfyCatUrl.replace(_gfyCatRegex, _gfyCatURLBase).replace(/\.gif$/, '')}-mobile.mp4`;
-}
-
-function _gifToHTML5(url) {
-  if (!url) {
-    return;
-  }
-
-  if (url.indexOf('gfycat.com') > -1) {
-    return {
-      mp4: gfycatMP4Url(url),
-    };
-  }
-
-  if (url.indexOf('giphy.com') > -1) {
-    return {
-      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
-    };
-  }
-
-  if (url.indexOf('.gif') < 1) {
-    return;
-  }
-
-  // If it's imgur, make a gifv link
-  if (url.indexOf('imgur.com') > -1) {
-    return {
-      webm: url.replace(_GIF_EXTENSION, '.webm'),
-      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
-      poster: url.replace(_GIF_EXTENSION, 'h.jpg'),
-    };
-  }
-}
 
 function autoPlayGif(gif) {
   if (!gif) {
@@ -217,7 +180,7 @@ class ListingContent extends BaseComponent {
 
   buildImage(src, href, onClick, playable=false) {
     // this handles only direct links to gifs.
-    const html5sources = _gifToHTML5(href);
+    const html5sources = gifToHTML5Sources(href);
     if (this.state.playing && html5sources) {
       if (html5sources.iframe) {
         return this._renderIFrame(html5sources.iframe, _DEFAULT_ASPECT_RATIO);
@@ -276,7 +239,9 @@ class ListingContent extends BaseComponent {
     }
 
     if (src.url) {
-      style.backgroundImage = `url("${forceProtocol(src.url, https)}")`;
+      const giphyPosterHref = posterForHrefIfGiphyCat(href);
+      const backgroundImage = giphyPosterHref ? giphyPosterHref : src.url;
+      style.backgroundImage = `url("${forceProtocol(backgroundImage, https)}")`;
     }
 
     let nsfwNode;
@@ -342,6 +307,10 @@ class ListingContent extends BaseComponent {
     const sources = [];
     let i;
     for (i in src) {
+      if (i === 'width' || i === 'height' || !src[i]) {
+        continue;
+      }
+
       sources.push(<source type={ `video/${i}` } src={ src[i] } key={ `video-src-${i}` } />);
     }
 
