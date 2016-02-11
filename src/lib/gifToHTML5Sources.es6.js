@@ -4,6 +4,7 @@ const _gfyCatRegex = /^https?:\/\/(.*\.?)gfycat.com/;
 const _gfycatMobileBase = 'https://thumbs.gfycat.com';
 const _gfycatWebmBase = 'https://zippy.gfycat.com';
 const _GIF_EXTENSION = /\.gif$/;
+const _GIF_V_EXTENSION = /\.gifv$/;
 
 function gfycatMP4Url(gfyCatUrl) {
   // gif doesn't seem to be there, so the .gif replace is a safety check
@@ -46,20 +47,18 @@ export default function gifToHTML5Sources(url) {
     };
   }
 
-  if (!_GIF_EXTENSION.test(url)) { return; }
-
-  if (urlRoot === 'giphy.com') {
+  if (urlRoot === 'giphy.com' && _GIF_EXTENSION.test(url)) {
     return {
       mp4: url.replace(_GIF_EXTENSION, '.mp4'),
     };
   }
 
   // If it's imgur, make a gifv link
-  if (urlRoot === 'imgur.com') {
+  if (urlRoot === 'imgur.com' && _GIF_V_EXTENSION.test(url)) {
     return {
-      webm: url.replace(_GIF_EXTENSION, '.webm'),
-      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
-      poster: url.replace(_GIF_EXTENSION, 'h.jpg'),
+      webm: url.replace(_GIF_V_EXTENSION, '.webm'),
+      mp4: url.replace(_GIF_V_EXTENSION, '.mp4'),
+      poster: url.replace(_GIF_V_EXTENSION, 'h.jpg'),
     };
   }
 }

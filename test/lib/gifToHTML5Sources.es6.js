@@ -32,8 +32,8 @@ describe('lib: gifToHTML5Sources', () => {
     expect(gfyCatSources.poster).to.match(/mobile\.jpg$/);
   });
 
-  it('turns imgur links into mp4, webm, and poster links', () => {
-    const imgurGif = 'http://i.imgur.com/ZohCJH8.gif';
+  it('turns imgur gifv links into mp4, webm, and poster links', () => {
+    const imgurGif = 'http://i.imgur.com/ZohCJH8.gifv';
     const imgurSources = gifToHTML5Sources(imgurGif);
     expect(imgurSources).to.exist.and.include.keys(['webm', 'mp4', 'poster']);
     expect(imgurSources.poster).to.match(/h\.jpg$/);

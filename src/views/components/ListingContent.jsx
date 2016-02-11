@@ -132,6 +132,15 @@ class ListingContent extends BaseComponent {
     return null;
   }
 
+  useOurOwnPlayingOrPreviewing(oembed, url) {
+    if (!this.state.playing || !oembed) {
+      return true;
+    }
+
+    const provider = oembed.provider_name.toLowerCase();
+    return (provider === 'gfycat' || provider === 'imgur' || /\.gif$/.test(url));
+  }
+
   buildContent() {
     const props = this.props;
     const listing = props.listing;
@@ -162,7 +171,7 @@ class ListingContent extends BaseComponent {
 
     // this case catches any 'playable' gif or video and displays the preview image
     // if it's not playing, or the video that autoplays if it is playing
-    if (isPlayable && preview && !this.state.playing) {
+    if (isPlayable && preview && this.useOurOwnPlayingOrPreviewing(oembed, url)) {
       return this.buildImage(preview, url, this._togglePlaying, isPlayable);
     }
 
