@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import has from 'lodash/object/has';
 
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
@@ -83,7 +84,7 @@ function GoogleCarouselMetadata (props) {
       url: mobilify(listing.url, origin),
     };
 
-    if (listing.preview && listing.preview.images[0]) {
+    if (has(listing, 'preview.images.0.source.url')) {
       baseObject.sharedContent.thumbnail = listing.preview.images[0].source.url;
     }
   }
