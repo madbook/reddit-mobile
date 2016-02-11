@@ -29,6 +29,9 @@ const serverRoutes = function(app) {
       Disallow: /search
       Disallow: /r/*/search
       Disallow: /u/*
+      Disallow: /message/*
+      Disallow: /submit*
+      Disallow: /r/*/submit/*
       Allow: /
     `;
   });
