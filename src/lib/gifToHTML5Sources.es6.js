@@ -6,6 +6,8 @@ const _gfycatWebmBase = 'https://zippy.gfycat.com';
 const _GIF_EXTENSION = /\.gif$/;
 const _GIF_V_EXTENSION = /\.gifv$/;
 
+const _IMGUR_GALLERY_PATH = /\/gallery\//;
+
 function gfycatMP4Url(gfyCatUrl) {
   // gif doesn't seem to be there, so the .gif replace is a safety check
   return `${gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase)
@@ -54,11 +56,23 @@ export default function gifToHTML5Sources(url) {
   }
 
   // If it's imgur, make a gifv link
-  if (urlRoot === 'imgur.com' && _GIF_V_EXTENSION.test(url)) {
-    return {
-      webm: url.replace(_GIF_V_EXTENSION, '.webm'),
-      mp4: url.replace(_GIF_V_EXTENSION, '.mp4'),
-      poster: url.replace(_GIF_V_EXTENSION, 'h.jpg'),
-    };
+  if (urlRoot === 'imgur.com') {
+    let imgurURL = url;
+
+    // Sometimes we get imgur urls that have /gallery/ in them
+    // when they should really point to just the gif. Sometimes they have the
+    // wrong extension and maybe include query params. Clean that all up
+    if (_IMGUR_GALLERY_PATH.test(imgurURL) || /\.jpg(\?.*$)$/.test(imgurURL)) {
+      imgurURL = imgurURL.replace(_IMGUR_GALLERY_PATH, '/').replace(/\.(jpg|gif|gifv)(\?.*$)?/, '');
+      imgurURL = `${imgurURL}.gifv`;
+    }
+
+    if (_GIF_V_EXTENSION.test(imgurURL)) {
+      return {
+        webm: imgurURL.replace(_GIF_V_EXTENSION, '.webm'),
+        mp4: imgurURL.replace(_GIF_V_EXTENSION, '.mp4'),
+        poster: imgurURL.replace(_GIF_V_EXTENSION, 'h.jpg'),
+      };
+    }
   }
 }

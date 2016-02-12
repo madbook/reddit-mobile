@@ -41,6 +41,24 @@ describe('lib: gifToHTML5Sources', () => {
     expect(imgurSources.mp4).to.match(/\.mp4$/);
   });
 
+  it('turns imgur gallery links (which we know are really gifs) into mp4, webm, and poster', () => {
+    const imgurGalleryGif = 'http://imgur.com/gallery/KTMrOJ8';
+    const imgurSources = gifToHTML5Sources(imgurGalleryGif);
+    expect(imgurSources).to.exist.and.include.keys(['webm', 'mp4', 'poster']);
+    expect(imgurSources.poster).to.match(/h\.jpg$/);
+    expect(imgurSources.webm).to.match(/\.webm$/);
+    expect(imgurSources.mp4).to.match(/\.mp4$/);
+  });
+
+  it('turns imgur links with jpg extension (assume we know from embedly its a real gif) into mp4, webm, and poster', () => {
+    const imgurGalleryGif = 'http://i.imgur.com/KTMrOJ8.jpg?fb';
+    const imgurSources = gifToHTML5Sources(imgurGalleryGif);
+    expect(imgurSources).to.exist.and.include.keys(['webm', 'mp4', 'poster']);
+    expect(imgurSources.poster).to.match(/h\.jpg$/);
+    expect(imgurSources.webm).to.match(/\.webm$/);
+    expect(imgurSources.mp4).to.match(/\.mp4$/);
+  });
+
   it('turns giphy links into mp4', () => {
     const giphyGif = 'http://i.giphy.com/l4Ki2xDVdr2YD1Hqw.gif';
     const giphySources = gifToHTML5Sources(giphyGif);

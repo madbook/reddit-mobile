@@ -137,6 +137,11 @@ class ListingContent extends BaseComponent {
       return true;
     }
 
+    // we want to use our own previewing for gifs which will be
+    // type 'video', so make sure we don't accidently catch
+    // anything else like an imgur gallery (type 'rich')
+    if (oembed.type !== 'video') { return false; }
+
     const provider = oembed.provider_name.toLowerCase();
     return (provider === 'gfycat' || provider === 'imgur' || /\.gif$/.test(url));
   }
