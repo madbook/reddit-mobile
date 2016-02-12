@@ -1,5 +1,8 @@
 import superagent from 'superagent';
 
+import { errors } from 'snoode';
+const { ResponseError } = errors;
+
 function simpleUA(agent) {
   if (/server/i.test(agent)) { return 'server'; }
 
@@ -39,9 +42,14 @@ function formatLog(details) {
     line,
     column,
     requestUrl,
+    error,
   } = details;
 
   const errorString = [userAgent || 'UNKNOWN'];
+
+  if (error instanceof ResponseError) {
+    errorString.push('API REQUEST FAILURE');
+  }
 
   errorString.push(message || 'NO MESSAGE');
   errorString.push(requestUrl || 'NO REQUEST URL');
@@ -72,10 +80,12 @@ function errorLog(details, errorEndpoints, config={}) {
     sendErrorLog(formattedLog, errorEndpoints.log);
   }
 
+  const isAPIFailure = details.error && details.error instanceof ResponseError;
+
   // send to statsd
   if (errorEndpoints.hivemind) {
     const ua = simpleUA(details.userAgent || '');
-    hivemind(ua, errorEndpoints.hivemind);
+    hivemind(ua, errorEndpoints.hivemind, isAPIFailure);
   }
 
   // log to winston, soon
@@ -88,12 +98,13 @@ function sendErrorLog(error, endpoint) {
     .then(()=>{});
 }
 
-function hivemind(ua, endpoint) {
+function hivemind(ua, endpoint, isAPIFailure) {
+  const segment = isAPIFailure ? 'mwebAPIError' : 'mwebError';
   const data = {
-    mwebError: {},
+    [segment]: {},
   };
 
-  data.mwebError[ua] = 1;
+  data[segment][ua] = 1;
 
   superagent
     .post(endpoint)
