@@ -34,7 +34,7 @@ function formatLog(details) {
 
   const {
     userAgent,
-    message, 
+    message,
     url,
     line,
     column,
@@ -54,7 +54,7 @@ function formatLog(details) {
     }
   }
 
-  return errorString.join('\t');
+  return errorString.join('|');
 }
 
 function errorLog(details, errorEndpoints, config={}) {
