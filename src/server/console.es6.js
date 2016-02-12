@@ -239,7 +239,8 @@ class Console {
         .get(uri)
         .end(function(err, res) {
           if (err || (res && !res.ok)) {
-            cons.log(`${err || 'TEST FAIL'}: ${res.status}`);
+            const status = res ? res.status : undefined;
+            cons.log(`${err || 'TEST FAIL'}: ${status}`);
           } else {
             cons.log('Test succeeded');
           }
