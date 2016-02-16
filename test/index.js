@@ -13,6 +13,7 @@ require('./lib/formatNumber');
 require('./lib/extractErrorMsg');
 require('./lib/rootDomain');
 require('./lib/gifToHTML5Sources');
+require('./lib/isFakeSubreddit');
 
 // src
 require('./src/featureflags');

@@ -32,6 +32,7 @@ import WikiPage from './views/pages/wikipage';
 import constants from './constants';
 import defaultConfig from './config';
 import { SORTS } from './sortValues';
+import isFakeSubreddit, { randomSubs } from './lib/isFakeSubreddit';
 
 const config = defaultConfig();
 
@@ -142,9 +143,7 @@ function getSubreddit(ctx) {
       metaDescription: `r/${subreddit} at reddit.com`,
     });
 
-    const fakeSubs = ['all', 'mod', 'friends', 'random', 'randnsfw', 'myrandom'];
-    if (subreddit.indexOf('+') === -1 && !fakeSubs.includes(subreddit)) {
-
+    if (!isFakeSubreddit(subreddit)) {
       const subredditOpts = buildAPIOptions(ctx, {
         id: subreddit.toLowerCase(),
       });
@@ -359,6 +358,45 @@ function routes(app) {
 
   // The homepage route.
   router.get('index', '/', indexPage);
+
+  router.get('random', `/r/:randomSubreddit(${randomSubs.join('|')})`, function *() {
+    const ctx = this;
+    const { origin, headers } = buildAPIOptions(this);
+    const endpoint = `${origin}/r/${ctx.params.randomSubreddit}`;
+
+    const randomRedirectResult = new Promise(function (resolve) {
+      const sa = superagent
+                .head(endpoint)
+                .timeout(constants.DEFAULT_API_TIMEOUT)
+                .set(headers);
+
+      if (sa.redirects) {
+        sa.redirects(0);
+      }
+
+      sa.end(function(err, result) {
+        resolve(result);
+      });
+    });
+
+    try {
+      const result = yield randomRedirectResult;
+      if (result && result.header && result.header.location) {
+        const parsedLocation = url.parse(result.header.location);
+        if (parsedLocation && parsedLocation.path) {
+          // locations back from /r/myrandom include the .json extension apparently
+          return this.redirect(parsedLocation.path.replace(/\.json$/, ''));
+        }
+      }
+
+    } catch (e) {
+      // app.error handles making an error page or redirect
+      app.error(e, this, app);
+      return;
+    }
+
+    this.body = app.errorPage(this);
+  });
 
   router.get('index.subreddit', '/r/:subreddit', indexPage);
   router.get('index.multi', '/u/:user/m/:multi', indexPage);

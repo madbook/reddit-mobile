@@ -11,7 +11,7 @@ import Interstitial from '../components/Interstitial';
 import CommunityHeader from '../components/CommunityHeader';
 import NotificationBar from '../components/NotificationBar';
 
-const FAKE_SUBS = ['mod', 'all', 'friends'];
+import isFakeSubreddit from '../../lib/isFakeSubreddit';
 
 const NOTIFICATIONS = {
   stalePage: {
@@ -99,7 +99,7 @@ class IndexPage extends BasePage {
     const { app } = props;
 
     const subredditName = props.subredditName;
-    const isFakeSub = FAKE_SUBS.indexOf(subredditName) !== -1;
+    const isFakeSub = isFakeSubreddit(subredditName);
 
     if (!data || typeof data.listings === 'undefined' ||
         (subredditName && (!data.subreddit && !isFakeSub))) {
