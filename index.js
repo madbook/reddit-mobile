@@ -38,23 +38,13 @@ global.console.warn = function() {
 // Register that we're using es6, so babel can compile import statements.
 // The `ignore` set to false allows babel to compile npm modules, and the `only`
 // forces it to only compile files with a `.es6.js` or `.jsx` extension.
-require('babel-register')({
+require('babel/register')({
   ignore: false,
   only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
   extensions: ['.js', '.es6.js', '.jsx' ],
   sourceMap: true,
-  presets: [
-    'es2015',
-    'react',
-  ],
-  plugins: [
-    'transform-object-rest-spread',
-    'transform-async-to-generator',
-    'transform-class-properties',
-    'syntax-trailing-function-commas',
-    'transform-react-constant-elements',
-    'transform-react-inline-elements',
-  ],
+  stage: 0,
+  optional: ['optimisation.react.inlineElements', 'optimisation.react.constantElements'],
 });
 
 const throttle = require('lodash/function/throttle');
@@ -62,9 +52,9 @@ const throttle = require('lodash/function/throttle');
 const numCPUs = process.env.PROCESSES || require('os').cpus().length;
 
 // App config
-const config = require('./src/server/config').default(numCPUs);
+const config = require('./src/server/config')(numCPUs);
 
-const errorLog = require('./src/lib/errorLog').default;
+const errorLog = require('./src/lib/errorLog');
 
 // If we miss catching an exception, format and log it before exiting the
 // process.
@@ -99,7 +89,7 @@ process.on('uncaughtException', function (err) {
 require('./version');
 
 // Require in the express server.
-const Server = require('./src/server').default;
+const Server = require('./src/server');
 let Console;
 
 const cluster = require('cluster');
@@ -130,7 +120,7 @@ if (cluster.isMaster) {
 
   // If we used `node index.js --console`, instantiate a dashboard.
   if (process.argv[2] && process.argv[2] === '--console') {
-    Console = require('./src/server/console').default;
+    Console = require('./src/server/console');
     dashboard = new Console(config);
     dashboard.start();
   }
