@@ -3,6 +3,7 @@
 // client.
 
 // server and middleware
+import 'babel-polyfill';
 import koa from 'koa';
 import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';

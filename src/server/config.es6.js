@@ -19,7 +19,7 @@ function parseList (list) {
 
 function serverConfig(numCPUs) {
   const env = process.env;
-  const config = require('../config')();
+  const config = require('../config').default();
   config.processes = numCPUs;
 
   if (config.minifyAssets) {
