@@ -1,7 +1,7 @@
 // Redirect desktop urls to mobile-web urls.
 const SORTS = ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'];
 
-function redirectSort (ctx, sort, subreddit) {
+function redirectSort(ctx, sort, subreddit) {
   let url = `?sort=${sort}`;
 
   if (subreddit) {
