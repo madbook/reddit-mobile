@@ -61,18 +61,30 @@ module.exports = function buildJS(gulp, options) {
 
     bundler.add(entryFile);
 
-    var optional = [];
+    let plugins = [
+      'transform-object-rest-spread',
+      'transform-async-to-generator',
+      'transform-class-properties',
+      'syntax-trailing-function-commas',
+    ];
+
     if (!options.debug) {
-      optional = ['optimisation.react.inlineElements', 'optimisation.react.constantElements'];
+      plugins = plugins.concat([
+        'transform-react-constant-elements',
+        'transform-react-inline-elements',
+      ]);
     }
 
     bundler
       .transform(babelify.configure({
+        plugins,
         ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|lodash|snuownd)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: options.debug,
-        stage: 0,
-        optional: optional,
+        presets: [
+          'es2015',
+          'react',
+        ],
       }), {
         global: true,
       })

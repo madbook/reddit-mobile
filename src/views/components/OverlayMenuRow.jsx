@@ -150,4 +150,4 @@ class ExpandoRow extends BaseComponent {
   };
 }
 
-export default { ButtonRow, LinkRow, ExpandoRow };
+export { ButtonRow, LinkRow, ExpandoRow };

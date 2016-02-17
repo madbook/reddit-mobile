@@ -1,9 +1,20 @@
-require('babel/register')({
+require('babel-polyfill');
+
+require('babel-register')({
   ignore: false,
   only: /.+(?:(?:\.es6\.js)|(?:.jsx))$/,
   extensions: ['.js', '.es6.js', '.jsx' ],
   sourceMap: true,
-  stage: 0,
+  presets: [
+    'es2015',
+    'react',
+  ],
+  plugins: [
+    'transform-object-rest-spread',
+    'transform-async-to-generator',
+    'transform-class-properties',
+    'syntax-trailing-function-commas',
+  ],
 });
 
 // lib
