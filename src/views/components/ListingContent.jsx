@@ -311,7 +311,7 @@ class ListingContent extends BaseComponent {
         style={ style }
       >
           { this.state.playing ? <img className='ListingContent-inline-gif' src={ href } /> : null }
-          { playIconNode }
+          { this.state.playing ? null : playIconNode }
           { nsfwNode }
       </a>
     );
