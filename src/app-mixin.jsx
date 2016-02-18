@@ -77,6 +77,7 @@ function mixin (App) {
         defaultHeaders: config.apiHeaders,
         debugLevel: config.debugLevel,
         log: app.logRequests.bind(app),
+        appName: config.appName,
       });
 
       this.randomBySeed = randomBySeed(config.seed);

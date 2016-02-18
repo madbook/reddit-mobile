@@ -64,6 +64,8 @@ function config() {
     trackerClientSecret: process.env.TRACKER_SECRET,
     trackerClientAppName: process.env.TRACKER_CLIENT_NAME,
 
+    appName: process.env.APP_NAME || 'mweb',
+
     // hack for now for global messages displayed with the infobar component.
     globalMessage,
   };
