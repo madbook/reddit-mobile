@@ -33,6 +33,7 @@ function postData(eventInfo) {
 function trackingEvents(app) {
   let trackerSecret = app.config.trackerClientSecret || '';
   trackerSecret = new Buffer(trackerSecret, 'base64').toString();
+  app.eventQueue = [];
 
   const tracker = new EventTracker(
     app.config.trackerKey,
@@ -45,7 +46,18 @@ function trackingEvents(app) {
 
   function eventSend(topic, type, payload) {
     if (tracker) {
-      tracker.track(topic, type, payload);
+      if (app.getState('loaded')) {
+        tracker.track(topic, type, payload);
+      }
+
+      app.eventQueue.push([topic, type, payload]);
+
+    }
+  }
+
+  function clearEventQueue() {
+    while (app.eventQueue.length) {
+      eventSend(...app.eventQueue.shift());
     }
   }
 
@@ -226,10 +238,16 @@ function trackingEvents(app) {
   app.on('pageview', function(props) {
     const payload = buildPageviewData(props);
     eventSend('screenview_events', 'cs.screenview', payload);
+    app.setState('loaded', true);
+    clearEventQueue();
     gtm.trigger('pageview', { subreddit: props.ctx.params.subreddit || '' });
   });
 
   app.on('route:start', function(ctx) {
+    // app 'loaded' state is used to check if we should queue all events other than
+    // pageview to ensure pageview is first
+    app.setState('loaded', false);
+
     const query = querystring.stringify(ctx.query);
     let fullUrl = ctx.path;
 
@@ -273,11 +291,11 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'register', 'attempt');
   });
 
-  app.on('vote', function (vote) {
+  app.on('vote', function(vote) {
     gaSend('send', 'event', 'vote', vote.get('direction'));
   });
 
-  app.on('comment', function (comment) {
+  app.on('comment', function(comment) {
     if (comment.text) {
       gaSend('send', 'event', 'comment', 'words', comment.text.match(/\S+/g).length);
     }
@@ -287,15 +305,15 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'comment', 'edit');
   });
 
-  app.on('search', function () {
+  app.on('search', function() {
     gaSend('send', 'event', 'search');
   });
 
-  app.on('goto', function (query) {
+  app.on('goto', function(query) {
     gaSend('send', 'event', 'goto', query);
   });
 
-  app.on('report', function () {
+  app.on('report', function() {
     gaSend('send', 'event', 'report');
   });
 
