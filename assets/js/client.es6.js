@@ -87,6 +87,9 @@ function initialize(bindLinks) {
   // env comes from bootstrap from the server, update now that the client is loading
   app.state.ctx.env = 'CLIENT';
 
+  if (window.bootstrap.config.googleAnalyticsId) {
+    trackingEvents(app);
+  }
   // Don't re-render tracking pixel on first load. App reads from state
   // (bootstrap) on first load, so override state, and then set the proper
   // config value after render.
@@ -106,10 +109,6 @@ function initialize(bindLinks) {
 
     sendTimings(beginRender);
   });
-
-  if (window.bootstrap.config.googleAnalyticsId) {
-    trackingEvents(app);
-  }
 }
 
 module.exports = initialize;
