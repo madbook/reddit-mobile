@@ -99,9 +99,7 @@ function mixin (App) {
         }
       }
 
-      if (!e.status || (e.status !== 429 && e.status !== 504)) {
-        logError(e, ctx, app.config);
-      }
+      logError(e, ctx, app.config);
 
       if (options.replaceBody !== false) {
         ctx.body = this.errorPage(ctx, e.status);
