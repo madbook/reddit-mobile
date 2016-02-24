@@ -438,9 +438,9 @@ const oauthRoutes = function(app) {
       }
     } catch (e) {
       if (Array.isArray(e)) {
-        return `/login?error=${e[0]}&message=${e[1]}`;
+        return `/login?error=${e[0]}&message=${e[1]}${ctx.queryPath}`;
       }
-      return `/login?error=${e}`;
+      return `/login?error=${e}${ctx.queryPath}`;
     }
   }
 
@@ -448,14 +448,14 @@ const oauthRoutes = function(app) {
     return async function (err, res = {}) {
       if (err || !res.ok) {
         if (err.timeout) { res.status = 504; }
-        return reject(`/register?error=${(res.status || 500)}`);
+        return reject(`/register?error=${(res.status || 500)}${ctx.queryPath}`);
       }
 
       /* temporary while api returns a `200` with an error in body */
       if (has(res, 'body.json.errors.0')) {
         const error = res.body.json.errors[0];
 
-        return reject(`/register?error=${error[0]}&message=${error[1]}`);
+        return reject(`/register?error=${error[0]}&message=${error[1]}${ctx.queryPath}`);
       }
 
       const redirectURI = await getLoginRedirect(data.user, data.passwd, ctx);
@@ -471,14 +471,29 @@ const oauthRoutes = function(app) {
    */
   router.post('/login', function * () {
     const { username, password } = this.body;
+
+    this.queryPath = getRedirectQueryParams(this);
+
     const url = yield getLoginRedirect(username, password, this);
+
+    app.setNotification(this.cookies, 'login');
     this.redirect(url);
   });
+
+  function getRedirectQueryParams(ctx) {
+    const { originalUrl, username } = ctx.body;
+    const originalPath = originalUrl ? `&originalUrl=${originalUrl}` : '';
+    const userPath = `&username=${username}`;
+
+    return originalPath + userPath;
+  }
 
   router.post('/register', function * () {
     const origin = app.getConfig('nonAuthAPIOrigin');
     const endpoint = `${origin}/api/register`;
     const { password, password2, username, newsletter, email } = this.body;
+
+    this.queryPath = getRedirectQueryParams(this);
 
     const data = {
       user: username,
@@ -496,11 +511,11 @@ const oauthRoutes = function(app) {
     }
 
     if (password !== password2) {
-      return this.redirect('/register?error=PASSWORD_MATCH');
+      return this.redirect(`/register?error=PASSWORD_MATCH${this.queryPath}`);
     }
 
     if (!email && newsletter === 'on') {
-      return this.redirect('/register?error=EMAIL_NEWSLETTER');
+      return this.redirect(`/register?error=EMAIL_NEWSLETTER${this.queryPath}`);
     }
 
     try {
@@ -519,9 +534,10 @@ const oauthRoutes = function(app) {
           .timeout(constants.DEFAULT_API_TIMEOUT)
           .end(handleRegisterResponse(resolve, reject, data, this));
       });
-
+      app.setNotification(this.cookies, 'register');
       this.redirect(URI);
     } catch (errorURI) {
+      app.setNotification(this.cookies, 'register');
       this.redirect(errorURI);
     }
   });

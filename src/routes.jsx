@@ -672,16 +672,22 @@ function routes(app) {
   });
 
   router.get('user.login', '/login', function * () {
-    const { error, message } = this.query;
     const originalUrl = loginRegisterOriginalUrl(this.query, this.headers);
-    this.props = {...this.props, error, message, originalUrl };
+
+    Object.assign(this.props, this.query, {
+      originalUrl,
+    });
+
     this.body = makeBody(LoginPage);
   });
 
   router.get('user.register', '/register', function * () {
-    const { error, message } = this.query;
     const originalUrl = loginRegisterOriginalUrl(this.query, this.headers);
-    this.props = {...this.props, error, message, originalUrl };
+
+    Object.assign(this.props, this.query, {
+      originalUrl,
+    });
+
     this.body = makeBody(RegisterPage);
   });
 

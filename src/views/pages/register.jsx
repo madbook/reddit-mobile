@@ -10,6 +10,32 @@ const ERROR_MESSAGES = {
   default: 'An error occured.',
 };
 
+const EMAIL_ERRORS = [
+  'BAD_EMAIL',
+];
+
+const PASS_ERRORS = [
+  'PASSWORD_MATCH',
+  'WRONG_PASSWORD',
+  'SHORT_PASSWORD',
+  'BAD_PASSWORD',
+  'BAD_PASSWORD_MATCH',
+];
+
+const USER_ERRORS = [
+  'USER_DOESNT_EXIST',
+  'USERNAME_TAKEN',
+  'USERNAME_INVALID_CHARACTERS',
+  'USERNAME_TOO_SHORT',
+  'USERNAME_TAKEN_DEL',
+];
+
+const ERROR_TYPES = [
+  ...EMAIL_ERRORS,
+  ...USER_ERRORS,
+  ...PASS_ERRORS,
+];
+
 const terms = (
   <a href='/help/useragreement' className='text-link' target='_blank'>Terms</a>
 );
@@ -27,6 +53,30 @@ class RegisterPage extends BasePage {
     message: React.PropTypes.string,
   };
 
+  static defaultProps = {
+    username: '',
+  };
+
+  componentDidMount() {
+    const { app, error, ctx, username } = this.props;
+    const notifications = ctx.notifications || [];
+    const registerAttempt = notifications.includes('register');
+
+    if (registerAttempt && error) {
+      const eventProps = {
+        ...this.props,
+        user: {
+          name: username,
+        },
+        country: app.getState('country'),
+        successful: false,
+        process_notes: ERROR_TYPES.includes(error) ? error : null,
+      };
+
+      app.emit('register:attempt', eventProps);
+    }
+  }
+
   render () {
     let usernameClass = '';
     let passwordClass = '';
@@ -35,7 +85,7 @@ class RegisterPage extends BasePage {
     let errorClass = 'visually-hidden';
 
     const props = this.props;
-    const { originalUrl, error, ctx } = this.props;
+    const { originalUrl, error, ctx, username } = props;
 
     const message = props.message ||
                     ERROR_MESSAGES[error] ||
@@ -86,6 +136,7 @@ class RegisterPage extends BasePage {
                     type='text'
                     placeholder='Choose a username'
                     required='required'
+                    defaultValue={ username }
                   />
                 </div>
 

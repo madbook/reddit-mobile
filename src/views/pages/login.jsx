@@ -10,6 +10,32 @@ const ERROR_MESSAGES = {
   default: 'An error occured.',
 };
 
+const EMAIL_ERRORS = [
+  'BAD_EMAIL',
+];
+
+const PASS_ERRORS = [
+  'PASSWORD_MATCH',
+  'WRONG_PASSWORD',
+  'SHORT_PASSWORD',
+  'BAD_PASSWORD',
+  'BAD_PASSWORD_MATCH',
+];
+
+const USER_ERRORS = [
+  'USER_DOESNT_EXIST',
+  'USERNAME_TAKEN',
+  'USERNAME_INVALID_CHARACTERS',
+  'USERNAME_TOO_SHORT',
+  'USERNAME_TAKEN_DEL',
+];
+
+const ERROR_TYPES = [
+  ...EMAIL_ERRORS,
+  ...USER_ERRORS,
+  ...PASS_ERRORS,
+];
+
 class LoginPage extends BasePage {
   static propTypes = {
     error: React.PropTypes.string,
@@ -17,8 +43,39 @@ class LoginPage extends BasePage {
     originalUrl: React.PropTypes.string,
   };
 
+  static defaultProps = {
+    username: '',
+  };
+
+  componentDidMount() {
+    const { error, app, ctx, username } = this.props;
+    const notifications = ctx.notifications || [];
+    const loginAttempt = notifications.includes('login');
+
+    if (loginAttempt && error) {
+      const err = (error === '400') ? 'WRONG_PASSWORD' : error;
+      const eventProps = {
+        ...this.props,
+        user: {
+          name: username,
+        },
+        country: app.getState('country'),
+        successful: false,
+        process_notes: ERROR_TYPES.includes(err) ? err : null,
+      };
+
+      app.emit('login:attempt', eventProps);
+    }
+  }
+
   render () {
-    const { error, message, originalUrl, ctx } = this.props;
+    const {
+      error,
+      message,
+      originalUrl,
+      ctx,
+      username,
+    } = this.props;
 
     let errorClass = 'visually-hidden';
     let passwordClass = '';
@@ -63,6 +120,7 @@ class LoginPage extends BasePage {
                     name='username'
                     type='text'
                     placeholder='Username'
+                    defaultValue={ username }
                   />
                 </div>
 
