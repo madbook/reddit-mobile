@@ -213,11 +213,20 @@ function trackingEvents(app) {
   }
 
   function getBasePayload(props) {
+    const referrer = (props.ctx || {}).referrer || '';
+    const domain = window.location.host;
     return {
-      domain: window.location.host,
-      geoip_country: props.country || null,
-      user_agent: props.ctx.userAgent,
+      domain,
+      geoip_country: props.country ||
+                     props.app.getState('country') || null,
+      user_agent: props.app.getState('ctx').userAgent,
+      referrer_domain: url.parse(referrer).host || domain,
+      referrer_url: referrer,
     };
+  }
+
+  function stripPrefix(str) {
+    return str.replace(/(t[1-8]_)\w/, '');
   }
 
   function buildLoginData(props) {
@@ -269,6 +278,31 @@ function trackingEvents(app) {
         app.emit(`${loginAction}:attempt`, eventProps);
       }
     }
+  }
+
+  function buildCommentData(props) {
+    const { subreddit, subreddit_id, author,
+            name, body, link_id, parent_id } = props.comment;
+    const payload = {
+      ...getBasePayload(props),
+      user_name: author,
+      user_id36: props.user.id,
+      sr_name: subreddit,
+      sr_id36: stripPrefix(subreddit_id),
+      comment_id36: stripPrefix(name),
+      comment_fullname: name,
+      comment_body: body,
+      parent_id36: stripPrefix(parent_id),
+      parent_fullname: parent_id,
+      parent_created_ts: props.parentCreated,
+      post_id36: stripPrefix(link_id),
+      post_fullname: link_id,
+      post_created_ts: props.postCreated,
+      referrer_domain: url.parse(props.ctx.referrer).host,
+      referrer_url: props.ctx.referrer,
+    };
+
+    return payload;
   }
 
   app.on('pageview', function(props) {
@@ -332,9 +366,13 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'vote', vote.get('direction'));
   });
 
-  app.on('comment', function(comment) {
-    if (comment.text) {
-      gaSend('send', 'event', 'comment', 'words', comment.text.match(/\S+/g).length);
+
+  app.on('comment:new', function (props) {
+    const payload = buildCommentData(props);
+    eventSend('comment_events', 'cs.comment', payload);
+
+    if (props.comment.text) {
+      gaSend('send', 'event', 'comment', 'words', props.comment.text.match(/\S+/g).length);
     }
   });
 

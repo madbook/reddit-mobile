@@ -10,6 +10,7 @@ const T = React.PropTypes;
 
 export default class LinkTools extends React.Component {
   static propTypes = {
+    userId: T.string,
     app: T.object.isRequired,
     apiOptions: T.object.isRequired,
     linkId: T.string.isRequired,
@@ -57,18 +58,19 @@ export default class LinkTools extends React.Component {
   }
 
   async submitNewComment() {
-    if (this.props.app.needsToLogInUser()) { return; }
+    const { app, apiOptions, linkId, onNewComment, userId } = this.props;
+    if (app.needsToLogInUser()) { return; }
 
     try {
       const options = {
-        ...this.props.app.api.buildOptions(this.props.apiOptions),
+        ...app.api.buildOptions(apiOptions),
         model: new models.Comment({
-          thingId: this.props.linkId,
+          thingId: linkId,
           text: this.state.commentValue.trim(),
         }),
       };
 
-      const newComment = await this.props.app.api.comments.post(options);
+      const newComment = await app.api.comments.post(options);
 
       this.setState({
         showForm: false,
@@ -76,7 +78,13 @@ export default class LinkTools extends React.Component {
         error: '',
       });
 
-      this.props.onNewComment(newComment);
+      app.emit('comment:new', {
+        ...this.props,
+        comment: newComment,
+        user: { id: userId },
+      });
+
+      onNewComment(newComment);
     } catch (e) {
       this.setState({
         error: extractErrorMsg(e),

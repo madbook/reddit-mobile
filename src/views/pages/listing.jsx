@@ -220,6 +220,7 @@ class ListingPage extends BasePage {
           return (
             <div className='listing-comment' key={ comment.id } >
               <Comment
+                postCreated={ listing.created }
                 ctx={ ctx }
                 app={ app }
                 subredditName={ subredditName }
@@ -307,6 +308,8 @@ class ListingPage extends BasePage {
           <div className='container'>
             <div className="listing-content__tools">
               <LinkTools
+                ctx={ ctx }
+                userId={ user.id }
                 app={ app }
                 apiOptions={ apiOptions }
                 token={ token }

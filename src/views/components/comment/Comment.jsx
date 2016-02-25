@@ -34,6 +34,8 @@ function determineAuthorType(distinguished, author, op, user) {
 
 export default class Comment extends BaseComponent {
   static propTypes = {
+    parentCreated: T.number,
+    postCreated: T.number,
     comment: T.object.isRequired,
     apiOptions: T.object.isRequired,
     app: T.object.isRequired,
@@ -144,6 +146,8 @@ export default class Comment extends BaseComponent {
   }
 
   async submitReply() {
+    const { app } = this.props;
+
     if (this.props.app.needsToLogInUser()) { return; }
 
     try {
@@ -155,7 +159,12 @@ export default class Comment extends BaseComponent {
         }),
       };
 
-      const newComment = await this.props.app.api.comments.post(options);
+      const newComment = await app.api.comments.post(options);
+
+      app.emit('comment:new', {
+        ...this.props,
+        comment: newComment,
+      });
 
       this.setState({
         commentReplies: [newComment].concat(this.state.commentReplies),
@@ -513,6 +522,8 @@ export default class Comment extends BaseComponent {
       return (
         <div className={ cls } key={ reply.id } >
           <Comment
+            parentCreated={ this.state.comment.created }
+            postCreated={ this.props.postCreated }
             comment={ reply }
             apiOptions={ this.props.apiOptions }
             app={ this.props.app }
