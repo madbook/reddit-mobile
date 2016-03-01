@@ -2,10 +2,12 @@ import React from 'react';
 import querystring from 'querystring';
 import has from 'lodash/object/has';
 import superagent from 'superagent';
+import cookies from 'cookies-js';
 
 const T = React.PropTypes;
 
 import constants from '../../constants';
+import addIfPresent from '../../lib/addIfPresent';
 
 import BasePage from './BasePage';
 import SnooIconHeader from '../components/snooiconheader';
@@ -158,35 +160,14 @@ class LoginPage extends BasePage {
 
   parseError(error) {
     const err = {
-      username: false,
-      password: false,
-      email: false,
+      username: USER_ERRORS.includes(error),
+      password: PASS_ERRORS.includes(error),
+      email: EMAIL_ERRORS.includes(error),
       global: false,
     };
 
-    if (error) {
-      switch (error) {
-        case 'BAD_EMAIL':
-        case 'NEWSLETTER_NO_EMAIL':
-          err.email = true;
-          break;
-        case 'PASSWORD_MATCH':
-        case 'WRONG_PASSWORD':
-        case 'SHORT_PASSWORD':
-        case 'BAD_PASSWORD':
-        case 'BAD_PASSWORD_MATCH':
-          err.password = true;
-          break;
-        case 'USER_DOESNT_EXIST':
-        case 'USERNAME_TAKEN':
-        case 'USERNAME_INVALID_CHARACTERS':
-        case 'USERNAME_TOO_SHORT':
-        case 'USERNAME_TAKEN_DEL':
-          err.username = true;
-          break;
-        default:
-          err.global = true;
-      }
+    if (!err.username && !err.password && !err.email) {
+      err.global = true;
     }
 
     return err;
@@ -277,7 +258,7 @@ class LoginPage extends BasePage {
         });
 
         app.setTokenRefresh(app, token.expires_at);
-
+        app.setNotification(cookies, action);
         app.redirect(originalUrl || '/');
       }
     } catch (e) {
@@ -288,6 +269,21 @@ class LoginPage extends BasePage {
         delete e.message;
       }
       this.handleErrors(e);
+
+      const eventProps = {
+        ...this.props,
+        user: {
+          name: username,
+        },
+        country: app.getState('country'),
+        process_notes: ERROR_TYPES.includes(e.error) ? e.error : null,
+        successful: false,
+      };
+
+      addIfPresent(eventProps, 'email', email);
+      addIfPresent(eventProps, 'newsletter', newsletter);
+
+      app.emit(`${action}:attempt`, eventProps);
     }
   }
 

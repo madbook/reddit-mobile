@@ -13,7 +13,7 @@ class BasePage extends BaseComponent {
     data: React.PropTypes.object.isRequired,
     app: React.PropTypes.object.isRequired,
   };
-  
+
   constructor (props) {
     super(props);
 
@@ -57,7 +57,7 @@ class BasePage extends BaseComponent {
     }
 
     this.watchProperties();
-  } 
+  }
 
   watchProperties() {
     // Handle no-data error-page case

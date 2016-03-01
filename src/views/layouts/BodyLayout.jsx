@@ -23,28 +23,8 @@ class BodyLayout extends BasePage {
   }
 
   componentDidMount() {
-    const { app, ctx } = this.props;
-    const { data } = this.state;
+    const app = this.props.app;
     app.on(constants.USER_DATA_CHANGED, this._updateUserState);
-    const notifications = ctx.notifications || [];
-
-    const loginAction = notifications.find((v) => {
-      return v === 'login' || v === 'register';
-    });
-
-    if (loginAction && data.user) {
-      const eventProps = {
-        ...this.props,
-        user: data.user,
-        successful: true,
-        country: app.getState('country'),
-        // We get redirected to the referrer (in app only) after
-        // successful login so we know it was the current route.
-        originalUrl: ctx.path,
-      };
-
-      app.emit(`${loginAction}:attempt`, eventProps);
-    }
   }
 
   componentWillUnmount() {

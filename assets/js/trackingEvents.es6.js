@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import superagent from 'superagent';
 import EventTracker from 'event-tracker';
 import constants from '../../src/constants';
+import addIfPresent from '../../src/lib/addIfPresent';
 import url from 'url';
 import gtm from './gtm';
 
@@ -47,17 +48,18 @@ function trackingEvents(app) {
   function eventSend(topic, type, payload) {
     if (tracker) {
       if (app.getState('loaded')) {
-        tracker.track(topic, type, payload);
+        return tracker.track(topic, type, payload);
       }
 
       app.eventQueue.push([topic, type, payload]);
-
     }
   }
 
   function clearEventQueue() {
-    while (app.eventQueue.length) {
-      eventSend(...app.eventQueue.shift());
+    if (app.eventQueue.length) {
+      app.eventQueue.forEach((e) => {
+        eventSend(...e);
+      });
     }
   }
 
@@ -195,12 +197,6 @@ function trackingEvents(app) {
     return data;
   }
 
-  function addIfPresent(obj, name, prop) {
-    if (prop) {
-      obj[name] = prop;
-    }
-  }
-
   function getBasePayload(props) {
     return {
       domain: window.location.host,
@@ -235,10 +231,36 @@ function trackingEvents(app) {
     return payload;
   }
 
+  function handleLogin(props) {
+    const { data, ctx, app } = props;
+    if (data.user) {
+      const notifications = ctx.notifications || [];
+
+      const loginAction = notifications.find((v) => {
+        return v === 'login' || v === 'register';
+      });
+
+      if (loginAction) {
+        const eventProps = {
+          ...props,
+          user: data.user,
+          successful: true,
+          country: app.getState('country'),
+          // We get redirected to the referrer (in app only) after
+          // successful login so we know it was the current route.
+          originalUrl: ctx.path,
+        };
+
+        app.emit(`${loginAction}:attempt`, eventProps);
+      }
+    }
+  }
+
   app.on('pageview', function(props) {
     const payload = buildPageviewData(props);
-    eventSend('screenview_events', 'cs.screenview', payload);
     app.setState('loaded', true);
+    eventSend('screenview_events', 'cs.screenview', payload);
+    handleLogin(props);
     clearEventQueue();
     gtm.trigger('pageview', { subreddit: props.ctx.params.subreddit || '' });
   });
