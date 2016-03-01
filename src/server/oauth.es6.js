@@ -524,6 +524,16 @@ const oauthRoutes = function(app) {
           'User-Agent': this.headers['user-agent'],
         }, app.config.apiHeaders || {});
 
+        const b = new Buffer(
+          `${app.config.oauth.secretClientId}:${app.config.oauth.secretSecret}`
+        );
+
+        const s = b.toString('base64');
+
+        const basicAuth = `Basic ${s}`;
+
+        headers.Authorization = basicAuth;
+
         assignPassThroughHeaders(headers, this, app);
 
         superagent
