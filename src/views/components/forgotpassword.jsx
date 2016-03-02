@@ -1,8 +1,8 @@
 import React from 'react';
-import superagent from 'superagent';
 import has from 'lodash/object/has';
 
 import constants from '../../constants';
+import makeRequest from '../../lib/makeRequest';
 
 const T = React.PropTypes;
 
@@ -78,10 +78,12 @@ class ForgotPassword extends BaseComponent {
 
   async makeRequest(uri, postData) {
     try {
-      const res = await superagent.post(uri)
+      const res = await makeRequest
+        .post(uri)
         .type('form')
         .send(postData)
-        .timeout(constants.DEFAULT_API_TIMEOUT);
+        .timeout(constants.DEFAULT_API_TIMEOUT)
+        .then();
 
       const body = res.body;
       if (has(body, 'json.errors') && body.json.errors.length) {
