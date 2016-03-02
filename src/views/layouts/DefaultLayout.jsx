@@ -110,7 +110,6 @@ function DefaultLayout (props) {
           content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
         />
         <meta name='theme-color' content={ keyColor } />
-        <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta id='csrf-token-meta-tag' name='csrf-token' content={ props.ctx.csrf } />
         { metaDescription }
 
