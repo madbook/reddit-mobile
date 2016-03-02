@@ -14,6 +14,10 @@ class BasePage extends BaseComponent {
     app: React.PropTypes.object.isRequired,
   };
 
+  get track() {
+    return true;
+  }
+
   constructor (props) {
     super(props);
 

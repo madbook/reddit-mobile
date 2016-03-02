@@ -16,6 +16,10 @@ class BodyLayout extends BasePage {
     showEUCookieMessage: React.PropTypes.bool,
   };
 
+  get track() {
+    return false;
+  }
+
   constructor(props) {
     super(props);
 
