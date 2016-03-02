@@ -1,10 +1,10 @@
+import superagent from 'superagent';
 import ReactDOM from 'react-dom';
 import throttle from 'lodash/function/throttle';
 
 import errorLog from '../../src/lib/errorLog';
 import constants from '../../src/constants';
 import getTimes from '../../src/lib/timing';
-import makeRequest from '../../src/lib/makeRequest';
 
 import config from '../../src/config';
 
@@ -115,34 +115,40 @@ export function logMissingHref($link, app) {
 export function refreshToken (app) {
   app.setState('refreshingToken', true);
 
-  return makeRequest
-    .get('/oauth2/refresh')
-    .then(res => {
-      const token = res.body;
+  return new Promise(function(resolve, reject) {
+    superagent
+      .get('/oauth2/refresh')
+      .end(function(err, res) {
+        if (err) {
+          reject(err);
+        }
 
-      const now = new Date();
-      const expires = new Date(token.tokenExpires);
+        const token = res.body;
 
-      Object.assign(app.getState('ctx'), {
-        token: token.token,
-        tokenExpires: token.tokenExpires,
-      });
+        const now = new Date();
+        const expires = new Date(token.tokenExpires);
 
-      app.setState('refreshingToken', false);
-      app.emit('token:refresh', token);
-
-      window.setTimeout(function() {
-        refreshToken(app).then(function() {
-          Object.assign(app.getState('ctx'), {
-            token: token.token,
-            tokenExpires: token.tokenExpires,
-          });
-
-          app.setState('refreshingToken', false);
-          app.emit('token:refresh', token);
+        Object.assign(app.getState('ctx'), {
+          token: token.token,
+          tokenExpires: token.tokenExpires,
         });
-      }, (expires - now) * 0.9);
-    });
+
+        app.setState('refreshingToken', false);
+        app.emit('token:refresh', token);
+
+        window.setTimeout(function() {
+          refreshToken(app).then(function() {
+            Object.assign(app.getState('ctx'), {
+              token: token.token,
+              tokenExpires: token.tokenExpires,
+            });
+
+            app.setState('refreshingToken', false);
+            app.emit('token:refresh', token);
+          });
+        }, (expires - now) * 0.9);
+      });
+  });
 }
 
 export function sendTimings(beginRender) {
@@ -155,13 +161,13 @@ export function sendTimings(beginRender) {
 
       timings.mountTiming = (Date.now() - beginRender) / 1000;
 
-      makeRequest
+      superagent
         .post('/timings')
         .timeout(constants.DEFAULT_API_TIMEOUT)
         .send({
           rum: timings,
         })
-        .then();
+        .end(function() {});
     }
   }
 }

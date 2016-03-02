@@ -2,6 +2,7 @@
 
 import React from 'react';
 import querystring from 'querystring';
+import superagent from 'superagent';
 
 import merge from 'lodash/object/merge';
 import url from 'url';
@@ -31,7 +32,6 @@ import constants from './constants';
 import defaultConfig from './config';
 import { SORTS } from './sortValues';
 import isFakeSubreddit, { randomSubs } from './lib/isFakeSubreddit';
-import makeRequest from './lib/makeRequest';
 
 const config = defaultConfig;
 
@@ -363,18 +363,20 @@ function routes(app) {
     const { origin, headers } = buildAPIOptions(this);
     const endpoint = `${origin}/r/${ctx.params.randomSubreddit}`;
 
-    const sa = makeRequest
-      .head(endpoint)
-      .timeout(constants.DEFAULT_API_TIMEOUT)
-      .set(headers);
+    const randomRedirectResult = new Promise(function (resolve) {
+      const sa = superagent
+                .head(endpoint)
+                .timeout(constants.DEFAULT_API_TIMEOUT)
+                .set(headers);
 
-    if (sa.redirects) {
-      sa.redirects(0);
-    }
+      if (sa.redirects) {
+        sa.redirects(0);
+      }
 
-    const randomRedirectResult = sa
-      .then(function() { return true; })
-      .catch(function() { return null; });
+      sa.end(function(err, result) {
+        resolve(result);
+      });
+    });
 
     try {
       const result = yield randomRedirectResult;
@@ -693,25 +695,29 @@ function routes(app) {
   function tryLoad (url, options) {
     const endpoint = `${options.origin}${url}.json`;
 
-    const sa = makeRequest
-      .head(endpoint)
-      .set(options.headers)
-      .timeout(constants.DEFAULT_API_TIMEOUT);
+    return new Promise(function(resolve) {
+      try {
+        const sa = superagent
+                  .head(endpoint)
+                  .set(options.headers)
+                  .timeout(constants.DEFAULT_API_TIMEOUT);
 
-    // bombs in browser
-    if (sa.redirects) {
-      sa.redirects(0);
-    }
-
-    return sa
-      .then(function(res) {
-        if (!res || !res.ok) {
-          throw new Error('No response');
-        } else {
-          return true;
+        // bombs in browser
+        if (sa.redirects) {
+          sa.redirects(0);
         }
-      })
-      .catch(function() { return; });
+
+        sa.end(function(err, res) {
+          if (err || !res || !res.ok) {
+            resolve();
+          } else {
+            resolve(true);
+          }
+        });
+      } catch (e) {
+        console.log(e, e.stack);
+      }
+    });
   }
 
   function makeOptions(token, app) {

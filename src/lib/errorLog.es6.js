@@ -1,6 +1,6 @@
-import { errors } from 'snoode';
-import makeRequest from './makeRequest';
+import superagent from 'superagent';
 
+import { errors } from 'snoode';
 const { ResponseError } = errors;
 
 function simpleUA(agent) {
@@ -92,10 +92,10 @@ function errorLog(details, errorEndpoints, config={}) {
 }
 
 function sendErrorLog(error, endpoint) {
-  makeRequest
+  superagent
     .post(endpoint)
     .send({ error })
-    .then();
+    .then(()=>{});
 }
 
 function hivemind(ua, endpoint, isAPIFailure) {
@@ -106,12 +106,12 @@ function hivemind(ua, endpoint, isAPIFailure) {
 
   data[segment][ua] = 1;
 
-  makeRequest
+  superagent
     .post(endpoint)
     .type('json')
     .send(data)
     .timeout(3000)
-    .then();
+    .end(function() { });
 }
 
 export default errorLog;
