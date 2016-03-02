@@ -1,10 +1,10 @@
 import React from 'react';
 import { models } from 'snoode';
-import superagent from 'superagent';
 
 import constants from '../../constants';
 import BaseComponent from './BaseComponent';
 import Listing from './Listing';
+import makeRequest from '../../lib/makeRequest';
 
 class Ad extends BaseComponent {
   static propTypes = {
@@ -12,7 +12,7 @@ class Ad extends BaseComponent {
     compact: React.PropTypes.bool.isRequired,
     token: React.PropTypes.string,
   };
-  
+
   constructor (props) {
     super(props);
 
@@ -80,27 +80,20 @@ class Ad extends BaseComponent {
       postData.loid = this.props.loid;
     }
 
-    return new Promise((resolve, reject) => {
-      superagent.post(origin + this.props.config.adsPath)
-        .set(headers)
-        .type('form')
-        .send(postData)
-        .timeout(constants.DEFAULT_API_TIMEOUT)
-        .end(function(err, res) {
-          if (err) {
-            return reject(err);
-          }
-
-          if (res && res.status === 200 && res.body) {
-            const link = res.body.data;
-            link.url = link.href_url;
-
-            return resolve(new models.Link(link).toJSON());
-          }
-
-          return reject(res);
-        });
-    });
+    return makeRequest
+      .post(origin + this.props.config.adsPath)
+      .set(headers)
+      .type('form')
+      .send(postData)
+      .timeout(constants.DEFAULT_API_TIMEOUT)
+      .then(function(res) {
+        if (!res || !res.body || res.state !== 200) {
+          throw res;
+        }
+        const link = res.body.data;
+        link.url = link.href_url;
+        return new models.Link(link).toJSON();
+      });
   }
 
   componentDidMount() {

@@ -25,6 +25,7 @@ require('./lib/extractErrorMsg');
 require('./lib/rootDomain');
 require('./lib/gifToHTML5Sources');
 require('./lib/isFakeSubreddit');
+require('./lib/makeRequest');
 
 // src
 require('./src/featureflags');

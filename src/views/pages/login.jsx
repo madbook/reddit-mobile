@@ -1,13 +1,13 @@
 import React from 'react';
 import querystring from 'querystring';
 import has from 'lodash/object/has';
-import superagent from 'superagent';
 import cookies from 'cookies-js';
 
 const T = React.PropTypes;
 
 import constants from '../../constants';
 import addIfPresent from '../../lib/addIfPresent';
+import makeRequest from '../../lib/makeRequest';
 
 import BasePage from './BasePage';
 import SnooIconHeader from '../components/snooiconheader';
@@ -301,22 +301,16 @@ class LoginPage extends BasePage {
   }
 
   makeRequest(endpoint, data) {
-    return new Promise((resolve, reject) => {
-      superagent
-        .post(endpoint)
-        .type('json')
-        .send(data)
-        .timeout(constants.DEFAULT_API_TIMEOUT)
-        .end((err, res) => {
-          if (err) {
-            if (has(res, 'body.error')) {
-              return reject(res.body);
-            }
-            return reject(err);
-          }
-          return resolve(res);
-        });
-    });
+    return makeRequest
+      .post(endpoint)
+      .type('json')
+      .send(data)
+      .timeout(constants.DEFAULT_API_TIMEOUT)
+      .then()
+      .catch(err => {
+        if (has(err, 'body.error')) { throw err.body; }
+        throw err;
+      });
   }
 
   renderLoginRegisterLink(mode, originalUrl) {

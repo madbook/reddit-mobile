@@ -1,9 +1,9 @@
 import querystring from 'querystring';
 import crypto from 'crypto';
-import superagent from 'superagent';
 import EventTracker from 'event-tracker';
 import constants from '../../src/constants';
 import addIfPresent from '../../src/lib/addIfPresent';
+import makeRequest from '../../src/lib/makeRequest';
 import url from 'url';
 import gtm from './gtm';
 
@@ -22,13 +22,13 @@ function calculateHash (key, string) {
 function postData(eventInfo) {
   const { url, data, query, headers } = eventInfo;
 
-  superagent
+  makeRequest
     .post(url)
     .set(headers)
     .query(query)
     .timeout(constants.DEFAULT_API_TIMEOUT)
     .send(data)
-    .end(function() {});
+    .then();
 }
 
 function trackingEvents(app) {
