@@ -6,6 +6,7 @@ import propTypes from '../../propTypes';
 import BaseComponent from './BaseComponent';
 import Logo from '../components/icons/Logo';
 import SnooIcon from '../components/icons/SnooIcon';
+import SearchBarController from '../components/search/SearchBarController';
 
 const UserMenuButton = 'userMenuButton';
 const CommunityMenuButton = 'communityMenuButton';
@@ -118,8 +119,12 @@ class TopNav extends BaseComponent {
           <a
             className='MobileButton TopNav-floaty'
             href={ `${currentSubredditPath}/search` }
+            data-no-route={ true }
           >
-            <span className='icon-search icon-large'></span>
+            <SearchBarController
+              app={ this.props.app }
+              ctx={ this.props.ctx }
+            />
           </a>
           <button
             className='MobileButton TopNav-floaty'

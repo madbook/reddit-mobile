@@ -1,6 +1,7 @@
 import querystring from 'querystring';
 import crypto from 'crypto';
 import EventTracker from 'event-tracker';
+import omit from 'lodash/object/omit';
 import constants from '../../src/constants';
 import addIfPresent from '../../src/lib/addIfPresent';
 import makeRequest from '../../src/lib/makeRequest';
@@ -132,6 +133,15 @@ function trackingEvents(app) {
         if (query.after) {
           data.target_after = query.after;
         }
+      }
+
+      if (props.data.search && props.ctx.query.q) {
+        data.query_string = props.ctx.query.q;
+        data.query_string_length = props.ctx.query.q.length;
+      }
+
+      if (props.data.search) {
+        data.sr_listing = props.data.search.subreddits.map(sr => sr.display_name).join(',');
       }
     }
 
@@ -363,6 +373,10 @@ function trackingEvents(app) {
     if (message.text) {
       gaSend('send', 'event', 'messages', 'reply', message.text.match(/\S+/g).length);
     }
+  });
+
+  app.on('searchBar', function(payload) {
+    eventSend('search_events', payload.type, omit(payload, 'type'));
   });
 }
 

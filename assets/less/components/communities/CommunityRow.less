@@ -1,0 +1,69 @@
+.CommunityRow {
+  display: table;
+
+  &__icon,
+  &__details,
+  &__add {
+    display: table-cell;
+    vertical-align: middle;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+  }
+
+  &__iconImg,
+  &__iconBlank {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+  }
+
+  &__iconBlank {
+    background-color: @blue;
+    background-image: url(../img/snoo-64.png);
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: 0 5px;
+  }
+
+  &__details {
+    max-width: 0px;
+    width: 100%;
+    padding-left: @grid-size;
+  }
+
+  &__name {
+    color: @off-black;
+  }
+
+  &__counts {
+    font-size: 12px;
+    color: @grey-text;
+  }
+
+  &__add {
+    width: 40px;
+    padding: 0 @grid-size;
+    text-align: center;
+  }
+
+  &__addIcon {
+    &[class*=" icon-"] {
+      font-size: 3 * @grid-size;
+    }
+  }
+
+  &__checkIcon {
+    &[class*=" icon-"] {
+      font-size: 3 * @grid-size;
+    }
+  }
+}

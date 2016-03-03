@@ -1,0 +1,77 @@
+import React from 'react';
+import formatNumber from '../../../lib/formatNumber';
+
+const T = React.PropTypes;
+
+function renderIcon(iconUrl, url, color) {
+  const style = color ? { backgroundColor: color } : null;
+
+  return (
+    <a className='CommunityRow__icon' href={ url }>
+      { iconUrl
+        ? <img className='CommunityRow__iconImg' src={ iconUrl } style={ style }/>
+        : <div className='CommunityRow__iconBlank' style={ style }/> }
+    </a>
+  );
+}
+
+function renderDetails(data) {
+  const { display_name, subscribers, accounts_active, url } = data;
+
+  return (
+    <a className='CommunityRow__details' href={ url }>
+      <div className='CommunityRow__name'>{ display_name }</div>
+      <div className='CommunityRow__counts'>
+        { [subscribers, accounts_active]
+          .filter(x => !!x)
+          .map(formatNumber)
+          .map((num, idx) => idx === 0 ? `${num} followers` : `${num} online`)
+          .join(' • ') }
+      </div>
+    </a>
+  );
+}
+
+function renderAdd(data, subscribed, onToggleSubscribe) {
+  const { name, url } = data;
+  const id = url.split('/')[2].toLowerCase();
+
+  function clickCallback() {
+    onToggleSubscribe({ id, name, subscribe: !subscribed });
+  }
+
+  return (
+    <div
+      className='CommunityRow__add'
+      onClick={ clickCallback }
+    >
+      { subscribed
+        ? <div className='CommunityRow__checkIcon icon-check-circled lime'/>
+        : <div className='CommunityRow__addIcon icon-follow blue'/> }
+    </div>
+  );
+}
+
+function CommunityRow(props) {
+  const { data, subscribed, onToggleSubscribe } = props;
+
+  return (
+    <div className='CommunityRow'>
+      { renderIcon(data.icon_img, data.url, data.key_color) }
+      { renderDetails(data) }
+      { renderAdd(data, subscribed, onToggleSubscribe) }
+    </div>
+  );
+}
+
+CommunityRow.propTypes = {
+  data: T.object.isRequired,
+  onToggleSubscribe: T.func.isRequired,
+  subscribed: T.bool,
+};
+
+CommunityRow.defaultProps = {
+  subscribed: false,
+};
+
+export default CommunityRow;

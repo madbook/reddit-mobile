@@ -3,14 +3,23 @@ import querystring from 'querystring';
 
 import BaseComponent from './BaseComponent';
 
+const T = React.PropTypes;
+
 class ListingPaginationButtons extends BaseComponent {
   static propTypes = {
-    compact: React.PropTypes.bool,
-    prevUrl: React.PropTypes.string,
-    nextUrl: React.PropTypes.string,
-    pageSize: React.PropTypes.number,
+    listings: T.array.isRequired,
+    compact: T.bool,
+    prevUrl: T.string,
+    nextUrl: T.string,
+    pageSize: T.number,
+    preventUrlCreation: T.bool,
   };
-  
+
+  static defaultProps = {
+    pageSize: 25,
+    preventUrlCreation: false,
+  };
+
   constructor(props) {
     super(props);
 
@@ -70,15 +79,16 @@ class ListingPaginationButtons extends BaseComponent {
     } = this.props;
 
     const {
+      preventUrlCreation,
       listings,
       pageSize = 25,
     } = this.props;
 
-    if (!prevUrl) {
+    if (!prevUrl && !preventUrlCreation) {
       prevUrl = this.buildPrevUrl();
     }
 
-    if (!nextUrl) {
+    if (!nextUrl && !preventUrlCreation) {
       nextUrl = this.buildNextUrl();
     }
 

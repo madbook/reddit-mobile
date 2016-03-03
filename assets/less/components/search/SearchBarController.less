@@ -1,0 +1,48 @@
+.SearchBarController {
+  height: 100%;
+
+  &__icon {
+    &, &:visited {
+      color: @neutral;
+
+      &:hover {
+        color: @gray;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 11;
+    background-color: @transparent-grey;
+  }
+
+  &__searchArea {
+    display: table;
+    background-color: white;
+    height: 6 * @grid-size;
+  }
+
+  &__close,
+  &__barContainer {
+    display: table-cell;
+  }
+
+  &__close {
+    padding-left: 2 * @grid-size;
+
+    &[class=" icon-"] {
+      font-size: 20px;
+      color: @grey-text;
+    }
+  }
+
+  &__barContainer {
+    width: 100%;
+  }
+}

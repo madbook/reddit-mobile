@@ -1,89 +1,153 @@
 import React from 'react';
 import querystring from 'querystring';
+import isEmpty from 'lodash/lang/isEmpty';
+import omit from 'lodash/object/omit';
+import { models } from 'snoode';
 
 import BasePage from './BasePage';
-import ListingContainer from '../components/ListingContainer';
 import Loading from '../components/Loading';
-import SearchSortSubnav from '../components/SearchSortSubnav';
-import SearchBar from '../components/SearchBar';
+import SortSelector from '../components/SortSelector';
+import ListingContainer from '../components/ListingContainer';
+import CommunityRow from '../components/communities/CommunityRow';
+import ListingPaginationButtons from '../components/ListingPaginationButtons';
+import constants from '../../constants';
+import { SORTS } from '../../sortValues';
 
-const _searchMinLength = 3;
-const _searchLimit = 25;
-// API hardcodes removing 3 (when using the default limit of 25) listing
-// results and turning those into recommended subreddits based on your search.
-const _searchLimitWithRecommendations = _searchLimit - 3;
+const T = React.PropTypes;
 
-class SearchPage extends BasePage {
-  static isNoRecordsFound(data) {
-    return ((data || {}).links || []).length === 0 &&
-           ((data || {}).subreddits || []).length === 0;
-  }
-  
-  static propTypes = {
-    after: React.PropTypes.string,
-    // apiOptions: React.PropTypes.object,
-    before: React.PropTypes.string,
-    data: React.PropTypes.object,
-    page: React.PropTypes.number.isRequired,
-    sort: React.PropTypes.string.isRequired,
-    subredditName: React.PropTypes.string,
-    subreddits: React.PropTypes.object,
-    time: React.PropTypes.string.isRequired,
+function extractSearchResults(data) {
+  return {
+    links: data.body.links,
+    subreddits: data.body.subreddits,
+    meta: data.body.meta,
   };
-  
-  constructor(props) {
-    super(props);
+}
 
-    if ((!this.state.data || !this.state.data.search) && props.ctx.query.q) {
-      this.state.loaded = false;
-      this._loadSearchResults();
-    }
+export default class SearchPage extends BasePage {
+  static propTypes = {
+    app: T.object.isRequired,
+    ctx: T.object.isRequired,
+    apiOptions: T.object.isRequired,
+    page: T.number.isRequired,
+    sort: T.string.isRequired,
+    time: T.string.isRequired,
+    query: T.string,
+    token: T.string,
+    after: T.string,
+    before: T.string,
+    data: T.object,
+    subredditName: T.string,
+    subreddits: T.object,
+  };
 
-    this.state.compact = props.compact;
-
-    this._lastQueryKey = null;
-
-    this.onSearch = this.onSearch.bind(this);
-    this._composeSortingUrl = this._composeSortingUrl.bind(this);
-    this.handleShowMoreClick = this.handleShowMoreClick.bind(this);
-  }
-
-  get track () {
+  get track() {
     return 'search';
   }
 
-  _loadSearchResults() {
-    this.props.data.get('search').then(function(results) {
-      const oldData = this.state.data;
-      const oldMeta = this.state.meta;
+  constructor(props) {
+    super(props);
 
-      this.setState({
-        data: Object.assign({}, oldData, {
-          search: results.body,
-        }),
-        meta: Object.assign({}, oldMeta, {
-          search: results.headers,
-        }),
-        loaded: true,
-      });
-    }.bind(this));
+    this.state = {
+      ...this.state,
+      isLoading: true,
+      searchResults: {},
+    };
+
+    this.handleSortChange = this.handleSortChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.handleSubscriptionToggle = this.handleSubscriptionToggle.bind(this);
   }
 
-  onSearch(value) {
-    // Let the input change handle submission
-    const props = this.props;
-
-    if (value !== props.ctx.query.q && (value || value.length >= _searchMinLength)) {
-      const url = this._composeUrl({
-        query: value,
-        subredditName: props.subredditName,
+  componentWillMount() {
+    const writeData = results => {
+      this.setState({
+        isLoading: false,
+        searchResults: {
+          links: results.links,
+          meta: results.meta,
+          communities: results.subreddits,
+        },
       });
+    };
 
-      this.props.app.redirect(url);
+    if (this.state.data.search) {
+      writeData(this.state.data.search);
+    } else if (this.props.data.get('search')) {
+      this.props.data.get('search')
+        .then(extractSearchResults)
+        .then(writeData);
+    } else { // blank search page w/ no query
+      this.setState({ isLoading: false });
     }
   }
 
-  _composeUrl(data) {
+  handleSortChange(sort) {
+    this.redirectAfterNewSort({ sort });
+  }
+
+  handleTimeChange(time) {
+    this.redirectAfterNewSort({ time });
+  }
+
+  redirectAfterNewSort({ sort, time }) {
+    this.props.app.redirect(this.composeUrl({
+      ...this.props,
+      sort: sort || this.props.sort,
+      time: time || this.props.time,
+      type: 'sr,link',
+    }));
+  }
+
+  async handleSubscriptionToggle({ id, name, subscribe }) {
+    if (this.props.app.needsToLogInUser()) { return; }
+    const { app, apiOptions } = this.props;
+    const currentSubscriptions = this.state.data.userSubscriptions;
+
+    // optimistically update ui
+    this.setState({
+      data: {
+        ...this.state.data,
+        userSubscriptions: subscribe
+          ? currentSubscriptions.concat({ id, name })
+          : currentSubscriptions.filter(us => us.name !== name),
+      },
+    });
+
+    // make the api call
+    try {
+      const response = await app.api.subscriptions.post({
+        ...apiOptions,
+        id,
+        model: new models.Subscription({
+          action: subscribe ? 'sub' : 'unsub',
+          sr: name,
+        }),
+      });
+
+      // if there is anything at all in the reponse, throw an error
+      if (Object.keys(response).length) {
+        throw new Error('Error');
+      }
+
+      // indicate that we have new user data
+      app.emit(constants.USER_DATA_CHANGED);
+    } catch (e) {
+      // undo any optimistic changes
+      this.setState({
+        data: {
+          ...this.state.data,
+          userSubscriptions: subscribe
+            ? currentSubscriptions.filter(us => us.name !== name)
+            : currentSubscriptions.concat({ id, name }),
+        },
+      });
+
+      // re throw the error
+      throw e;
+    }
+  }
+
+  composeUrl(data) {
     const qs = { q: data.query };
     if (data.after) { qs.after = data.after; }
     if (data.before) { qs.before = data.before; }
@@ -96,201 +160,234 @@ class SearchPage extends BasePage {
     return `${sub}/search?${querystring.stringify(qs)}`;
   }
 
-  _composeSortingUrl(data) {
-    const props = this.props;
-    const qs = { q: props.ctx.query.q };
-    if (props.after) { qs.after = props.after; }
-    if (props.before) { qs.before = props.before; }
-    if (props.page) { qs.page = props.page; }
+  render() {
+    const { subredditName, query } = this.props;
+    const { isLoading, searchResults } = this.state;
+    const { communities, links } = searchResults;
+    const noResults = isEmpty(links) && isEmpty(communities);
 
-    if (data.isSort) {
-      if (props.time) { qs.time = props.time; }
-    } else if (data.isTime) {
-      if (props.sort) { qs.sort = props.sort; }
+    return (
+      <div className='SearchPage'>
+        { isLoading ? this.renderLoading() : null }
+        { subredditName && links ? this.renderSubredditMessage() : null }
+        { !isEmpty(communities) ? this.renderCommunities() : null }
+        { !isEmpty(links) ? this.renderLinks(links) : null }
+        { noResults && !isLoading && query ? this.renderNoResults() : null }
+        { noResults && !isLoading && !query ? this.renderHelpfulMsg() : null }
+      </div>
+    );
+  }
+
+  renderLoading() {
+    return (
+      <div className='SearchPage__loading'>
+        <Loading />
+      </div>
+    );
+  }
+
+  renderSubredditMessage() {
+    const { subredditName } = this.props;
+    const { searchResults } = this.state;
+    const { links } = searchResults;
+    const linkMessage = 'Search all of reddit?';
+    const url = this.composeUrl(omit(this.props, ['subredditName']));
+    const linkCountText = links.length >= 25 ? '25+' : `${links.length}`;
+    const message = `${linkCountText} matches in r/${subredditName}. `;
+
+    return (
+      <div className='SearchPage__searchAll'>
+        { message }
+        <a className='SearchPage__searchAllLink' href={ url }>{ linkMessage }</a>
+      </div>
+    );
+  }
+
+  renderCommunities() {
+    const { page } = this.props;
+    const { searchResults, data } = this.state;
+    const { userSubscriptions } = data;
+    const { communities, links } = searchResults;
+    const onlyShowingCommunities = !(links && links.length);
+    const subscriptions = (userSubscriptions || []).reduce((prev, cur) => ({
+      ...prev,
+      [cur.name]: true,
+    }), {});
+
+    let prevUrl;
+    if (onlyShowingCommunities && communities.length && page > 0) {
+      prevUrl = this.composeUrl({
+        ...this.props,
+        before: page > 1 ? communities[0].name : null,
+        page: page > 1 ? page - 1 : null,
+        type: 'sr',
+      });
     }
 
-    const sub = (props.subredditName ? `/r/${props.subredditName}` : '');
-    return `${sub}/search?${querystring.stringify(qs)}`;
+    let nextUrl;
+    if (onlyShowingCommunities && communities.length >= 25) {
+      nextUrl = this.composeUrl({
+        ...this.props,
+        after: communities[communities.length - 1].name,
+        page: page + 1,
+        type: 'sr',
+      });
+    }
+
+    const drawPagination = (nextUrl || prevUrl) && communities.length;
+
+    return (
+      <div className='SearchPage__communities'>
+        <div className='SearchPage__communitiesHeader clearfix'>
+          <div className='SearchPage__communitiesHeaderTitle'>Communities</div>
+          { !onlyShowingCommunities ? this.renderCommunitySeeMore() : null }
+        </div>
+        <div className='SearchPage__communitiesResults'>
+          { communities.map(c => (
+            <div className='SearchPage__community' key={ c.id }>
+              <CommunityRow
+                data={ c }
+                subscribed={ !!subscriptions[c.name] }
+                onToggleSubscribe={ this.handleSubscriptionToggle }
+              />
+            </div>
+          )) }
+        </div>
+        { drawPagination ? this.renderCommunityNav(prevUrl, nextUrl, communities) : null }
+      </div>
+    );
   }
 
-  _generateUniqueKey() {
-    return Math.random().toString(36).substr(2, 9);
-  }
-
-  handleShowMoreClick() {
-    const props = this.props;
-
-    const url = this._composeUrl({
-      query: props.ctx.query.q,
+  renderCommunitySeeMore() {
+    const url = this.composeUrl({
+      ...this.props,
       type: 'sr',
     });
 
-    this.props.app.redirect(url);
+    return (
+      <a
+        className='SearchPage__communitiesHeaderMore'
+        href={ url }
+      >
+        View More
+        <div className='SearchPage__communitiesHeaderMoreIcon icon-nav-arrowforward'/>
+      </a>
+    );
   }
 
-  shouldShowNoResultsMessage(data) {
-    if (!data.search) {
-      return true;
-    }
-
-    const props = this.props;
-
-    // If we're searching within a subreddit and have no results don't
-    // render the banner. The generic case will handle linking to the
-    // site-wide search
-    const searchingInSubreddit = !!(props.subredditName && props.ctx.query.q);
-    return !data.search.links ||
-      (data.search.links.length === 0 && !searchingInSubreddit);
-  }
-
-  render() {
-    const state = this.state;
-    const data = state.data;
-    const props = this.props;
-    const app = this.props.app;
-    const apiOptions = props.apiOptions;
-    let controls;
-
-    if (!state.loaded && props.ctx.query && props.ctx.query.q) {
-      controls = (
-        <Loading />
-      );
-    } else if (this.shouldShowNoResultsMessage(data)) {
-      const noResClass = props.ctx.query.q ? '' : 'hidden';
-      controls = (
-        <div
-          className={ `container no-results text-right text-special ${noResClass}` }
-          key="search-no-results"
-        >
-          Sorry, we couldn't find anything.
-        </div>
-      );
-    } else {
-      // to make life easier
-      const searchResults = this.state.data.search;
-
-      const subreddits = searchResults.subreddits || [];
-      const listings = searchResults.links || [];
-      const noListResults = listings.length === 0;
-      const noSubResults = subreddits.length === 0;
-      const subredditResultsOnly = props.subredditName && props.ctx.query.q;
-      const compact = this.state.compact;
-
-      const page = props.page || 0;
-
-      const meta = state.data.subreddits ? state.data.subreddits.meta : {};
-
-      // API is messed up, so we have to do our own detection for the prev..
-      let prevUrl;
-      if (meta.before || listings.length && page > 0) {
-        prevUrl = this._composeUrl({
-          query: props.ctx.query.q,
-          subredditName: props.subredditName,
-          before: meta.before || listings[0].name,
-          page: page - 1,
-          sort: props.sort,
-          time: props.time,
-        });
-      }
-
-      // ..and of course for the next too :-\
-      let nextUrl;
-      if (meta.after || listings.length >= _searchLimitWithRecommendations) {
-        nextUrl = this._composeUrl({
-          query: props.ctx.query.q,
-          subredditName: props.subredditName,
-          after: meta.after || listings[listings.length - 1].name,
-          page: page + 1,
-          sort: props.sort,
-          time: props.time,
-        });
-      }
-
-      const subredditOnlyClass = subredditResultsOnly ? '' : 'hidden';
-      const showMoreClass = subreddits.length > 3 ? 'hidden' : '';
-      const noSubClass = noSubResults || (!noListResults && subredditResultsOnly) ? 'hidden' : '';
-
-      controls = [
-
-        <div
-          className={ `container subreddit-only text-left ${subredditOnlyClass}` }
-          key="search-subreddit-only"
-        >
-          <span>
-            { `${listings.length}${nextUrl ? '+' : ''} matches in /r/${props.subredditName}.` }
-          </span>
-          <a href={ this._composeUrl({ query: props.ctx.query.q }) }>Search all of reddit?</a>
-        </div>,
-
-        <div
-          className={ `container summary-container ${noSubClass}` }
-          ref='summary' key="search-summary"
-        >
-          <h4 className="text-center">Subreddits</h4>
-          <ul className="subreddits-list">
-            {
-              subreddits.map(function (subreddit, idx) {
-                return (
-                  <li className="subreddits-list-item" key={ `search-subreddit-${idx}` }>
-                    <a
-                      href={ subreddit.url }
-                      title={ subreddit.display_name }
-                      className="subreddit-link"
-                    >
-                      <span className="subreddit-name">{ subreddit.display_name } </span>
-                    </a>
-                  </li>
-                );
-              })
-            }
-          </ul>
-
-          <button
-            className={ `btn-show-more btn-link pull-right ${showMoreClass}` }
-            title="Show more"
-            onClick={ this.handleShowMoreClick }
-          >Show more</button>
-        </div>,
-
-        <div className='container'>
-          <h4 className='text-center'>Posts</h4>
-          <SearchSortSubnav
-            app={ app }
-            sort={ props.sort }
-            time={ props.time }
-            composeSortingUrl={ this._composeSortingUrl }
-          />
-        </div>,
-
-        <ListingContainer
-          app={ app }
-          ctx={ props.ctx }
-          listings={ listings }
-          apiOptions={ apiOptions }
-          user={ props.user }
-          token={ props.token }
-          winWidth={ props.ctx.winWidth }
-          compact={ compact }
+  renderCommunityNav(prevUrl, nextUrl, communities) {
+    return (
+      <div className='SearchPage__communitiesNav clearfix'>
+        <ListingPaginationButtons
+          compact={ true }
           prevUrl={ prevUrl }
           nextUrl={ nextUrl }
-          pageSize={ 22 }
-        />,
-      ];
+          pageSize={ 25 }
+          listings={ communities }
+          preventUrlCreation={ true }
+        />
+      </div>
+    );
+  }
+
+  renderLinks() {
+    const { sort, time, app, ctx, token, apiOptions, page } = this.props;
+    const { user, searchResults } = this.state;
+    const { links, meta } = searchResults;
+
+    // API is messed up, so we have to do our own detection for the prev..
+    let prevUrl;
+    if (meta.before || links.length && page > 0) {
+      prevUrl = this.composeUrl({
+        ...this.props,
+        before: page > 1 ? (meta.before || links[0].name) : null,
+        page: page > 1 ? page - 1 : null,
+        type: page > 1 ? 'link' : 'sr,link',
+      });
+    }
+
+    // ..and of course for the next too :-\
+    let nextUrl;
+    if (meta.after || links.length >= 22) {
+      nextUrl = this.composeUrl({
+        ...this.props,
+        after: meta.after || links[links.length - 1].name,
+        page: page + 1,
+        type: 'link',
+      });
     }
 
     return (
-      <div className='search-main'>
-        <div className="container search-bar-container">
-          <SearchBar action='/search'
-            onSearch={ this.onSearch }
-            defaultValue={ this.props.ctx.query.q }
+      <div className='SearchPage__links'>
+        <div className='SearchPage__linksHeader clearfix'>
+          <div className='SearchPage__linksHeaderTitle'>Posts</div>
+          <div className='SearchPage__linksHeaderTools'>
+            <div className='SearchPage__linksHeaderSort'>
+              <SortSelector
+                app={ app }
+                sortValue={ sort }
+                sortOptions={ [
+                  SORTS.RELEVANCE,
+                  SORTS.HOT,
+                  SORTS.NEW,
+                  SORTS.TOP,
+                  SORTS.COMMENTS,
+                ] }
+                onSortChange={ this.handleSortChange }
+              />
+            </div>
+            <div className='SearchPage__linksHeaderSort'>
+              <SortSelector
+                app={ app }
+                sortValue={ time }
+                sortOptions={ [
+                  SORTS.ALL_TIME,
+                  SORTS.PAST_YEAR,
+                  SORTS.PAST_MONTH,
+                  SORTS.PAST_WEEK,
+                  SORTS.PAST_DAY,
+                  SORTS.PAST_HOUR,
+                ] }
+                onSortChange={ this.handleTimeChange }
+              />
+            </div>
+          </div>
+        </div>
+        <div className='SearchPage__linksResults'>
+          <ListingContainer
+            app={ app }
+            ctx={ ctx }
+            listings={ links }
+            apiOptions={ apiOptions }
+            user={ user }
+            token={ token }
+            winWidth={ ctx.winWidth }
+            compact={ true }
+            pageSize={ 22 }
+            prevUrl={ prevUrl }
+            nextUrl={ nextUrl }
           />
         </div>
+      </div>
+    );
+  }
 
-        { controls }
+  renderNoResults() {
+    const { query } = this.props;
+
+    return (
+      <div className='SearchPage__noResults'>
+        <div className='SearchPage__noResultsMsg'>Sorry, we couldn't find any results for</div>
+        <div className='SearchPage__noresultsQuery'>'{ query }'</div>
+      </div>
+    );
+  }
+
+  renderHelpfulMsg() {
+    return (
+      <div className='SearchPage__helpfulMsg'>
+        Tap the <div className='SearchPage__helpfulIcon icon-search blue' /> icon to get started.
       </div>
     );
   }
 }
-
-export default SearchPage;
