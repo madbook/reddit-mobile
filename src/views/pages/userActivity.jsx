@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BasePage from './BasePage';
-import ListingContainer from '../components/ListingContainer';
+import ListingRedesignProxy from '../components/listings/ListingRedesignProxy';
 import Loading from '../components/Loading';
 import UserActivitySubnav from '../components/UserActivitySubnav';
 import { SORTS } from '../../sortValues';
@@ -67,8 +67,9 @@ class UserActivityPage extends BasePage {
           onActivitySortChange={ this.handleSortChange }
         />
 
-        <ListingContainer
+        <ListingRedesignProxy
           app={ app }
+          feature={ this.state.feature }
           compact={ compact }
           ctx={ ctx }
           listings={ activities }

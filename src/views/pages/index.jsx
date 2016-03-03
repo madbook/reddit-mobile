@@ -4,7 +4,7 @@ import querystring from 'querystring';
 import constants from '../../constants';
 
 import BasePage from './BasePage';
-import ListingContainer from '../components/ListingContainer';
+import ListingRedesignProxy from '../components/listings/ListingRedesignProxy';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 import Interstitial from '../components/Interstitial';
@@ -192,8 +192,9 @@ class IndexPage extends BasePage {
           excludedSorts={ excludedSorts }
         />
 
-        <ListingContainer
+        <ListingRedesignProxy
           { ...props }
+          feature={ this.state.feature }
           user={ user }
           showAds={ showAds }
           listings={ listings || [] }

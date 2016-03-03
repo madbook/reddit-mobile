@@ -4,13 +4,29 @@ import { models } from 'snoode';
 import constants from '../../constants';
 import BaseComponent from './BaseComponent';
 import Listing from './Listing';
+import Post from './listings/Post';
+
 import makeRequest from '../../lib/makeRequest';
+
+const T = React.PropTypes;
 
 class Ad extends BaseComponent {
   static propTypes = {
-    afterLoad: React.PropTypes.func.isRequired,
-    compact: React.PropTypes.bool.isRequired,
-    token: React.PropTypes.string,
+    listingRedesign: T.bool,
+    app: T.object.isRequired,
+    config: T.object.isRequired,
+    apiOptions: T.object.isRequired,
+    ctx: T.object.isRequired,
+    token: T.string,
+    loid: T.string,
+    compact: T.bool.isRequired,
+    srnames: T.arrayOf(T.string).isRequired,
+    subredditTitle: T.string,
+    afterLoad: T.func.isRequired,
+  };
+
+  static defaultProps = {
+    listingRedesign: false,
   };
 
   constructor (props) {
@@ -35,6 +51,10 @@ class Ad extends BaseComponent {
 
     if (!listing) {
       return true;
+    }
+
+    if (this.props.listingRedesign) {
+      return listing.loadContentIfNeeded(...arguments);
     }
 
     return listing.checkPos(...arguments);
@@ -168,6 +188,19 @@ class Ad extends BaseComponent {
 
     const props = this.props;
     const listing = Object.assign({}, this.state.ad, { compact: props.compact });
+
+    if (props.listingRedesign) {
+      return (
+        <Post
+          ref='listing'
+          {...props}
+          hideDomain={ true }
+          hideSubredditLabel={ true }
+          hidewhen={ true }
+          post={ listing }
+        />
+      );
+    }
 
     return (
       <Listing

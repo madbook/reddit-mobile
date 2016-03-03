@@ -24,7 +24,7 @@ class ListingList extends BaseComponent {
     showAds: Proptypes.bool,
     showHidden: Proptypes.bool,
   };
-  
+
   constructor(props) {
     super(props);
 

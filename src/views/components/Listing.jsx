@@ -12,11 +12,6 @@ import Vote from '../components/Vote';
 
 const PropTypes = React.PropTypes;
 
-// this is called in a commented out section below
-// function isImgurDomain(domain) {
-//   return (domain || '').indexOf('imgur.com') >= 0;
-// }
-
 function _isCompact(props) {
   return props.compact && !props.single;
 }
@@ -38,7 +33,7 @@ class Listing extends BaseComponent {
     toggleEdit: PropTypes.func,
     z: PropTypes.number,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -70,7 +65,6 @@ class Listing extends BaseComponent {
   }
 
   onReport() {
-    console.log('setting reported state');
     this.setState({ reported: true });
   }
 

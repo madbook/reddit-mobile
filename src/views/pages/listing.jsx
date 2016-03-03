@@ -2,22 +2,26 @@ import React from 'react';
 import remove from 'lodash/array/remove';
 import { models } from 'snoode';
 
+import constants from '../../constants';
 import { SORTS } from '../../sortValues';
 import BasePage from './BasePage';
 import LinkTools from '../components/LinkTools';
 import Comment from '../components/comment/Comment';
 import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
-import Listing from '../components/Listing';
+import PostRedesignProxy from '../components/listings/PostRedesignProxy';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
+const { LISTING_REDESIGN } = constants.flags;
+const T = React.PropTypes;
+
 class ListingPage extends BasePage {
   static propTypes = {
-    commentId: React.PropTypes.string,
-    data: React.PropTypes.object,
-    listingId: React.PropTypes.string.isRequired,
-    sort: React.PropTypes.string,
-    subredditName: React.PropTypes.string,
+    commentId: T.string,
+    data: T.object,
+    listingId: T.string.isRequired,
+    sort: T.string,
+    subredditName: T.string,
   };
 
   constructor(props) {
@@ -273,6 +277,8 @@ class ListingPage extends BasePage {
       );
     }
 
+    const listingRedesign = this.state.feature.enabled(LISTING_REDESIGN);
+
     return (
       <div className='listing-main'>
         <TopSubnav
@@ -282,9 +288,11 @@ class ListingPage extends BasePage {
           list='comments'
           hideSort={ true }
         />
-        <div className='container listing-content' key='container'>
+        <div className={ `listing-content ${!listingRedesign ? 'container' :''}` } key='container'>
           { googleCarousel }
-          <Listing
+          <PostRedesignProxy
+            feature={ this.state.feature }
+            compact={ false }
             app={ app }
             ctx={ ctx }
             apiOptions={ apiOptions }
@@ -299,20 +307,22 @@ class ListingPage extends BasePage {
             winWidth={ this.props.ctx.winWidth }
             toggleEdit={ this.toggleEdit }
           />
-          <div className="listing-content__tools">
-            <LinkTools
-              app={ app }
-              apiOptions={ apiOptions }
-              token={ token }
-              linkId={ listing.name }
-              isLocked={ listing.locked }
-              sort={ sort }
-              onNewComment={ this.onNewComment }
-              onSortChange={ this.handleSortChange }
-            />
+          <div className={ `${listingRedesign ? 'container' : ''}` }>
+            <div className="listing-content__tools">
+              <LinkTools
+                app={ app }
+                apiOptions={ apiOptions }
+                token={ token }
+                linkId={ listing.name }
+                isLocked={ listing.locked }
+                sort={ sort }
+                onNewComment={ this.onNewComment }
+                onSortChange={ this.handleSortChange }
+              />
+            </div>
+            { singleComment }
+            { commentsList }
           </div>
-          { singleComment }
-          { commentsList }
         </div>
       </div>
     );

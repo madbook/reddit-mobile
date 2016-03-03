@@ -37,6 +37,9 @@ global.document = {};
 // components
 require('./views/components/Modal');
 
+// components -> listings
+require('./views/components/listings/postUtils');
+require('./views/components/listings/mediaUtils');
 
 //Layouts
 require('./views/layouts/BodyLayout');

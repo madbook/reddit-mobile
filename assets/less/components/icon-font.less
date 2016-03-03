@@ -20,6 +20,18 @@
     color: white;
   }
 
+  &.nsfw {
+    color: @nsfw-salmon;
+  }
+
+  &.gold {
+    color: @gold;
+  }
+
+  &.warning-yellow {
+    color: @warning-yellow;
+  }
+
   &:before {
     vertical-align: inherit;
   }
@@ -40,6 +52,18 @@ button, a {
 
       &.lime {
         color: darken(@lime, 10%);
+      }
+
+      &.nsfw {
+        color: darken(@nsfw-salmon, 2%);
+      }
+
+      &.gold {
+        color: darken(@gold, 3%);
+      }
+
+      &.warning-yellow {
+        color: darken(@warning-yellow, 6%);
       }
     });
   }

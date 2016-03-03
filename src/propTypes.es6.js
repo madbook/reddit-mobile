@@ -60,90 +60,100 @@ const _subreddit = shape({
   related_subreddits: arrayOf(_subreddit),
 });
 
+const _comment = shape({
+  author: string.isRequired,
+  author_flair_text: string,
+  author_flair_css_class: string,
+  body: string.isRequired,
+  body_html: string.isRequired,
+  created_utc: number.isRequired,
+  distinguished: bool,
+  gilded: number.isRequired,
+  hidden: bool,
+  id: string.isRequired,
+  likes: oneOfType([
+    bool,
+    number,
+  ]),
+  link_title: string,
+  link_url: string,
+  name: string.isRequired,
+  replies: oneOfType([
+    array,
+    string,
+  ]).isRequired,
+  saved: bool.isRequired,
+  score: number.isRequired,
+});
+
+const _listing = shape({
+  _type: string.isRequired,
+  author: string.isRequired,
+  cleanPermalink: string.isRequired,
+  created_utc: number.isRequired,
+  distinguished: string,
+  domain: string.isRequired,
+  edited: oneOfType([
+    bool,
+    number,
+  ]).isRequired,
+  expandContent: string,
+  gilded: number.isRequired,
+  hidden: bool.isRequired,
+  id: string.isRequired,
+  is_self: bool.isRequired,
+  likes: oneOfType([
+    bool,
+    number,
+  ]),
+  link_flair_css_class: string,
+  link_flair_text: string,
+  media: shape({
+    oembed: shape({
+      height: number.isRequired,
+      html: string.isRequired,
+      thumbnail_url: string.isRequired,
+      type: string.isRequired,
+      width: number.isRequired,
+    }),
+  }),
+  name: string.isRequired,
+  num_comments: number.isRequired,
+  preview: shape({
+    images: arrayOf(shape({
+      source: _listingSource,
+      variants: _listingVariants,
+    })).isRequired,
+    variants: _listingVariants,
+    resolutions: _listingResolutions,
+    source: _listingSource,
+  }),
+  over_18: bool.isRequired,
+  promoted: bool,
+  saved: bool.isRequired,
+  selftext: string.isRequired,
+  sr_detail: shape({
+    icon_img: string,
+    key_color: string,
+  }),
+  subreddit: string,
+  thumbnail: string,
+  title: string.isRequired,
+  token: string,
+  url: string.isRequired,
+});
+
+const _postOrComment = oneOfType([_comment, _listing]);
+
 export default {
 
-  comment: shape({
-    author: string.isRequired,
-    author_flair_text: string,
-    author_flair_css_class: string,
-    body: string.isRequired,
-    body_html: string.isRequired,
-    created_utc: number.isRequired,
-    distinguished: bool,
-    gilded: number.isRequired,
-    hidden: bool,
-    id: string.isRequired,
-    likes: oneOfType([
-      bool,
-      number,
-    ]),
-    link_title: string,
-    link_url: string,
-    name: string.isRequired,
-    replies: oneOfType([
-      array,
-      string,
-    ]).isRequired,
-    saved: bool.isRequired,
-    score: number.isRequired,
-  }),
+  comment: _comment,
 
-  listing: shape({
-    _type: string.isRequired,
-    author: string.isRequired,
-    cleanPermalink: string.isRequired,
-    created_utc: number.isRequired,
-    distinguished: string,
-    domain: string.isRequired,
-    edited: oneOfType([
-      bool,
-      number,
-    ]).isRequired,
-    expandContent: string,
-    gilded: number.isRequired,
-    hidden: bool.isRequired,
-    id: string.isRequired,
-    is_self: bool.isRequired,
-    likes: oneOfType([
-      bool,
-      number,
-    ]),
-    link_flair_css_class: string,
-    link_flair_text: string,
-    media: shape({
-      oembed: shape({
-        height: number.isRequired,
-        html: string.isRequired,
-        thumbnail_url: string.isRequired,
-        type: string.isRequired,
-        width: number.isRequired,
-      }),
-    }),
-    name: string.isRequired,
-    num_comments: number.isRequired,
-    preview: shape({
-      images: arrayOf(shape({
-        source: _listingSource,
-        variants: _listingVariants,
-      })).isRequired,
-      variants: _listingVariants,
-      resolutions: _listingResolutions,
-      source: _listingSource,
-    }),
-    over_18: bool.isRequired,
-    promoted: bool,
-    saved: bool.isRequired,
-    selftext: string.isRequired,
-    sr_detail: shape({
-      icon_img: string,
-      key_color: string,
-    }),
-    subreddit: string,
-    thumbnail: string,
-    title: string.isRequired,
-    token: string,
-    url: string.isRequired,
-  }),
+  listing: _listing,
+
+  postOrComment: _postOrComment,
+
+  postsAndComments: arrayOf(_postOrComment),
 
   subscriptions: arrayOf(shape({
     display_name: string.isRequired,

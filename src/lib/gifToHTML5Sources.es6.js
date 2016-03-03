@@ -8,6 +8,8 @@ const _GIF_V_EXTENSION = /\.gifv$/;
 
 const _IMGUR_GALLERY_PATH = /\/gallery\//;
 
+const _IMGUR_GIFV_QUERY_PARAMS = /\.gif\?.*$/;
+
 function gfycatMP4Url(gfyCatUrl) {
   // gif doesn't seem to be there, so the .gif replace is a safety check
   return `${gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase)
@@ -52,12 +54,16 @@ export default function gifToHTML5Sources(url) {
   if (urlRoot === 'giphy.com' && _GIF_EXTENSION.test(url)) {
     return {
       mp4: url.replace(_GIF_EXTENSION, '.mp4'),
+      poster: url.replace(_GIF_EXTENSION, '_s.gif'),
     };
   }
 
   // If it's imgur, make a gifv link
   if (urlRoot === 'imgur.com') {
     let imgurURL = url;
+
+    // strip query params
+    imgurURL = imgurURL.replace(_IMGUR_GIFV_QUERY_PARAMS, '.gifv');
 
     // Sometimes we get imgur urls that have /gallery/ in them
     // when they should really point to just the gif. Sometimes they have the

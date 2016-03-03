@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 
-import { UserSavedPage, Loading, ListingContainer } from '../../helpers/components';
+import { UserSavedPage, Loading, ListingRedesignProxy } from '../../helpers/components';
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -55,7 +55,7 @@ describe('UserSaved page', () => {
     });
 
     it('should render ListingList', () => {
-      const listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
+      const listingContainer = shallowHelpers.findType(ctx.result, ListingRedesignProxy);
       expect(listingContainer).to.not.equal(undefined);
     });
   });

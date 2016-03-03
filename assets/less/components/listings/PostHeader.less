@@ -1,0 +1,181 @@
+.PostHeader {
+
+  // We can't easily tell from react if calling a component is null or not.
+  // we just get a tree that's a virtual dom descriptior for null.
+  // To make sure the compact header styles are applied only if we have a
+  // thubmanil we use the next-child selector
+  // This will be cleaner after PostContent is refactored to have
+  // representation of the preview state, then we can really
+  // know whether or not to apply .m-thumbnail-margin.
+  .PostContent.size-compact + &.m-thumbnail-margin {
+    @rendered-thumbnail-size: @new-compact-thumbnail-width + 2 * @grid-size;
+    margin-left: @rendered-thumbnail-size;
+    // make sure there's enough height so that expanded compact's
+    // media player doesn't overlap with the header at all.
+    min-height: @rendered-thumbnail-size + @grid-size; 
+
+    // & is that complex next child selector so reset the component name
+    .PostHeader {
+      &__post-descriptor-line-overflow,
+      &__post-title-line {
+        padding-left: 0;
+      }
+
+      &__post-title-line {
+        padding-top: 0;
+      }
+
+      &__post-link {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  &__post-descriptor-line-overflow,
+  &__post-title-line {
+    padding: @grid-size 2 * @grid-size;
+  }
+
+  &__post-link {
+    margin-left: 2 * @grid-size;
+  }
+
+  &__post-descriptor-line-overflow {
+    overflow-x: auto;
+  }
+
+  &__post-descriptor-line {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    color: @grey-text;
+    vertical-align: middle;
+
+    [class^="icon-"] {
+      vertical-align: text-bottom;
+      font-size: 18px;
+      line-height: 18px;
+
+      // spacing, need to make sure the next element
+      // isn't the seperator because it has a different
+      // visual whitespace then a normal element / text
+      margin-right: 2px;
+      & + :not(.PostHeader__flush-w-icon) {
+        margin-left: @grid-size - 2px;
+      }
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 3em;
+      z-index: 1;
+
+      #gradient > .horizontal(@start-color: rgba(255,255,255,0); @end-color: rgba(255,255,255,1); @end-percent: 70%);
+    }
+  }
+
+  &__subreddit-link {
+    &, &:visited, &:hover {
+      color: @blue;
+      text-decoration: none;
+    }
+  }
+
+  &__author-link {
+    &, &:visited {
+      color: @grey-text;
+    }
+
+    &:hover {
+      color: @dark-grey;
+      text-decoration: none;
+    }
+  }
+
+  &__link-flair {
+    margin-left: @grid-size;
+    padding: .2em .6em .3em;
+    border: 1px solid @grey-text;
+    background-color: @off-white;
+    color: @dark-grey;
+  }
+
+  &__sponsored-flair {
+    color: @blue;
+  }
+
+  &__mod-text {
+    &, a, a:visited, a:hover {
+      color: @lime;
+      text-decoration: none;
+    }
+  }
+
+  &__admin-text {
+    &, a, a:visited, a:hover {
+      color: @orangered;
+      text-decoration: none;
+    }
+  }
+
+  &__nsfw-text {
+    &, a, a:visited, a:hover {
+      color: @nsfw-salmon;
+      text-decoration: none;
+    }
+  }
+
+  &__post-title-line {
+    font-size: 16px;
+    display: block;
+    color: @semi-black-text;
+    overflow-x: hidden;
+
+    &.m-visited, &:visited {
+      color: @grey-text;
+    }
+
+    &:hover {
+      color: @alien-blue-text;
+      text-decoration: none;
+    }
+  }
+
+  &__seperator:after {
+    content: '●';
+    margin: 0 @half-grid-size;
+    font-size: 0.6em;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  &__post-link {
+    &, &:visited {
+      color: @grey-text;
+    }
+
+    &:hover {
+      color: @dark-grey;
+    }
+  }
+
+  &__post-link-icon {
+    position: relative;
+    bottom: 1px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:before {
+      margin-left: @half-grid-size;
+      vertical-align: text-bottom;
+    }
+  }
+}

@@ -6,7 +6,7 @@ import mobilify from '../../lib/mobilify';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
-import ListingContainer from '../components/ListingContainer';
+import ListingRedesignProxy from '../components/listings/ListingRedesignProxy';
 import TextSubNav from '../components/TextSubNav';
 
 const PAGETYPES = {
@@ -77,8 +77,9 @@ class WikiPageComp extends BasePage {
     }
 
     return (
-      <ListingContainer
+      <ListingRedesignProxy
         {...props}
+        feature={ this.state.feature }
         compact={ props.compact }
         user={ user || null }
         showAds={ false }

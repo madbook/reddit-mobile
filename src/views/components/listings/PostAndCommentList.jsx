@@ -1,0 +1,258 @@
+import React from 'react';
+import uniq from 'lodash/array/uniq';
+
+import constants from '../../../constants';
+import propTypes from '../../../propTypes';
+
+import BaseComponent from '../BaseComponent';
+import Post from './Post';
+import Ad from '../Ad';
+import CommentPreview from '../CommentPreview';
+
+const T = React.PropTypes;
+
+const _DEFAULT_WINDOW_WIDTH = 300;
+const _AD_LOCATION = 1;
+const _DEFAULT_PAGE_SIZE = 25;
+
+export default class PostAndCommentList extends BaseComponent {
+  static propTypes = {
+    postsAndComments: propTypes.postsAndComments.isRequired,
+    app: T.object.isRequired,
+    config: T.object, // required if showAds === true
+    ctx: T.object.isRequired,
+    user: propTypes.user,
+    token: T.string,
+    apiOptions: T.object.isRequired,
+    compact: T.bool.isRequired,
+    winWidth: T.number,
+    firstPage: T.number,
+    showAds: T.bool,
+    loid: T.string,
+    showHidden: T.bool,
+    hideSubredditLabel: T.bool,
+    subredditTitle: T.string,
+    subredditIsNSFW: T.bool,
+    showOver18Interstitial: T.bool,
+    className: T.string,
+  };
+
+  static defaultProps = {
+    firstPage: 0,
+    winWidth: _DEFAULT_WINDOW_WIDTH,
+    className: '',
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      adLocation: Math.min(_AD_LOCATION, props.postsAndComments.length),
+      compact: this.props.compact,
+    };
+
+    this.hasListeners = false;
+
+
+    this.lazyLoad = this.lazyLoad.bind(this);
+    this.afterAdDidLoad = this.afterAdDidLoad.bind(this);
+  }
+
+  computeSubredditNames() {
+    return uniq(this.props.postsAndComments.map(function(l) {
+      return l.subreddit;
+    }));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const compact = nextProps.compact;
+    if (compact !== 'undefined' && compact !== this.state.compact) {
+      this.setState({compact});
+    }
+  }
+
+  componentDidMount() {
+    this.addListeners();
+  }
+
+  componentWillUnmount() {
+    this.removeListeners();
+  }
+
+  addListeners() {
+    if (!this.hasListeners) {
+      this.hasListeners = true;
+      this.props.app.on(constants.SCROLL, this.lazyLoad);
+      this.props.app.on(constants.RESIZE, this.lazyLoad);
+      this.lazyLoad();
+    }
+  }
+
+  removeListeners() {
+    if (this.hasListeners) {
+      this.hasListeners = false;
+      this.props.app.off(constants.SCROLL, this.lazyLoad);
+      this.props.app.off(constants.RESIZE, this.lazyLoad);
+    }
+  }
+
+  hasAd() {
+    return this.props.showAds && this.refs.ad;
+  }
+
+  isIndexOfAd(index) {
+    return index === this.state.adLocation;
+  }
+
+  checkAdPos(loadedDistance) {
+    return this.refs.ad.checkPos(loadedDistance);
+  }
+
+  getLoadedDistance () {
+    return document.body.scrollTop + window.innerHeight * 2;
+  }
+
+  afterAdDidLoad() {
+    if (!this.hasAd()) { return; }
+    const loadedDistance = this.getLoadedDistance();
+    this.checkAdPos(loadedDistance);
+  }
+
+  buildAd() {
+    const {
+      app,
+      config,
+      apiOptions,
+      ctx,
+      loid,
+      token,
+      subredditTitle,
+    } = this.props;
+
+    const { compact } = this.state;
+
+    return (
+      <Ad
+        key='ad'
+        ref='ad'
+        listingRedesign={ true }
+        app={ app }
+        config={ config }
+        apiOptions={ apiOptions }
+        ctx={ ctx }
+        token={ token }
+        loid={ loid }
+        compact={ compact }
+        srnames={ this.computeSubredditNames() }
+        subredditTitle={ subredditTitle }
+        afterLoad={ this.afterAdDidLoad }
+      />
+    );
+  }
+
+  lazyLoad() {
+    const { postsAndComments } = this.props;
+    const loadedDistance = this.getLoadedDistance();
+
+    // We load one item at a time during scrolling to not be
+    // super load heavy. If we hit the bottom of the function
+    // everything is loaded and we can remove the loader listneners
+
+    const postsStillNeedToLoad = postsAndComments.some((postOrComment, i) => {
+      const postRef = this.refs[`post-${i}`];
+
+      if (!postRef) { return; } // CommentPreviews don't need lazy loading;
+
+      if (this.hasAd() && this.isIndexOfAd(i) && !this.checkAdPos(loadedDistance)) {
+        return true;
+      }
+
+      if (postRef.loadContentIfNeeded && !postRef.loadContentIfNeeded(loadedDistance)) {
+        return true;
+      }
+    });
+
+    if (!postsStillNeedToLoad) {
+      this.removeListeners();
+    }
+  }
+
+  render() {
+    const props = this.props;
+    const { postsAndComments } = props;
+
+    const renderedList = this.renderPostsAndComments(postsAndComments);
+
+    if (props.showAds && postsAndComments.length) {
+      renderedList.splice(this.state.adLocation, 0, this.buildAd());
+    }
+
+    return (
+      <div className={ `PostAndCommentList ${this.props.className}` }>
+        { renderedList }
+      </div>
+    );
+  }
+
+  renderPostsAndComments(postsAndComments) {
+    const length = postsAndComments.length;
+    const page = this.props.firstPage;
+    const compact = this.state.compact;
+
+    return postsAndComments.map((postOrComment, i) => {
+      return this.renderPostOrComment(postOrComment, i, page, length, compact);
+    });
+  }
+
+  renderPostOrComment(postOrComment, i, page, numListings, compact) {
+    const index = (page * _DEFAULT_PAGE_SIZE) + i;
+
+    if (postOrComment._type === 'Comment') {
+      return this.renderCommentPreview(postOrComment, index, page);
+    }
+
+    const zIndex = numListings - i;
+    return this.renderPost(postOrComment, index, zIndex, page, compact);
+  }
+
+  renderCommentPreview(comment, index, page) {
+    return (
+      <CommentPreview
+        comment={ comment }
+        key={ `page-comment-${index}` }
+        page={ page }
+      />
+    );
+  }
+
+  renderPost(post, index, zIndex, page, compact) {
+    const {
+      app,
+      apiOptions,
+      winWidth,
+      hideSubredditLabel,
+      subredditIsNSFW,
+      showOver18Interstitial,
+      user,
+      token,
+    } = this.props;
+
+    return (
+      <Post
+        post={ post }
+        ref={ `post-${index}` }
+        key={ `page-post-${index }` }
+        z={ zIndex }
+        compact={ compact }
+        app={ app }
+        user={ user }
+        token={ token }
+        apiOptions={ apiOptions }
+        winWidth={ winWidth }
+        hideSubredditLabel={ hideSubredditLabel }
+        subredditIsNSFW={ subredditIsNSFW }
+        showOver18Interstitial={ showOver18Interstitial }
+      />
+    );
+  }
+}

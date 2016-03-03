@@ -7,7 +7,7 @@ import { models } from 'snoode';
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
 import SortSelector from '../components/SortSelector';
-import ListingContainer from '../components/ListingContainer';
+import ListingRedesignProxy from '../components/listings/ListingRedesignProxy';
 import CommunityRow from '../components/communities/CommunityRow';
 import ListingPaginationButtons from '../components/ListingPaginationButtons';
 import constants from '../../constants';
@@ -354,7 +354,9 @@ export default class SearchPage extends BasePage {
           </div>
         </div>
         <div className='SearchPage__linksResults'>
-          <ListingContainer
+          <ListingRedesignProxy
+            forceCompact={ true }
+            feature={ this.state.feature }
             app={ app }
             ctx={ ctx }
             listings={ links }

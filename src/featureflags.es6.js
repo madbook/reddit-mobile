@@ -1,7 +1,12 @@
 import Feet from 'feet';
 
+import constants from './constants';
+
+const { BETA, LISTING_REDESIGN } = constants.flags;
+
 const config = {
-  beta: true,
+  [BETA]: true,
+  [LISTING_REDESIGN]: { employee: true },
 };
 
 const feet = new Feet(config);

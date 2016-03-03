@@ -5,7 +5,7 @@ import sinonChai from 'sinon-chai';
 import shallowHelpers from 'react-shallow-renderer-helpers';
 import renderWithProps from '../../helpers/renderWithProps';
 
-import { IndexPage, Loading, ListingContainer } from '../../helpers/components';
+import { IndexPage, Loading, ListingRedesignProxy } from '../../helpers/components';
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -38,7 +38,7 @@ describe('index page', () => {
     });
 
     it('renders a ListingList copmonent when listings are loaded', () => {
-      const listingContainer = shallowHelpers.findType(ctx.result, ListingContainer);
+      const listingContainer = shallowHelpers.findType(ctx.result, ListingRedesignProxy);
       expect(listingContainer).to.not.equal(undefined);
     });
   });
@@ -86,4 +86,3 @@ describe('index page', () => {
     });
   });
 });
-

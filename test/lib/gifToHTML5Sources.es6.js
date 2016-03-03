@@ -62,7 +62,7 @@ describe('lib: gifToHTML5Sources', () => {
   it('turns giphy links into mp4', () => {
     const giphyGif = 'http://i.giphy.com/l4Ki2xDVdr2YD1Hqw.gif';
     const giphySources = gifToHTML5Sources(giphyGif);
-    expect(giphySources).to.exist.and.to.include.keys(['mp4']);
+    expect(giphySources).to.exist.and.to.include.keys(['mp4', 'poster']);
     expect(giphySources.mp4).to.match(/\.mp4$/);
   });
 });

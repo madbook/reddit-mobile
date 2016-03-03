@@ -75,7 +75,7 @@ class TopNav extends BaseComponent {
     }
 
     let beta;
-    if (feature.enabled('beta')) {
+    if (feature.enabled(constants.flags.BETA)) {
       beta = (<div className='TopNav-beta'>beta</div>);
     }
 

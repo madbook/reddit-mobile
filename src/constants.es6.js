@@ -30,4 +30,12 @@ export default {
   },
   DEFAULT_KEY_COLOR: '#336699',
   SET_META_COLOR: 'setMetaColor',
+  // Post content
+  POST_COMPACT_THUMBNAIL_WIDTH: 70,
+
+  // feature flags
+  flags: {
+    BETA: 'beta',
+    LISTING_REDESIGN: 'listingRedesign',
+  },
 };

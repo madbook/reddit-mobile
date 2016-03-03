@@ -14,6 +14,7 @@ function content(content, fontSize) {
 function SquareButton(props) {
   let cls = 'SquareButton';
   if (!props.enabled) { cls += ' m-disabled'; }
+  if (props.modifier.length) { cls += ` ${props.modifier}`; }
 
   function fireClick(e) {
     if (props.enabled) { props.onClick(e); }
@@ -34,6 +35,7 @@ SquareButton.propTypes = {
   text: T.string.isRequired,
   type: T.string,
   enabled: T.bool,
+  modifier: T.string,
   onClick: T.func,
   fontSize: T.number,
 };
@@ -41,6 +43,7 @@ SquareButton.propTypes = {
 SquareButton.defaultProps = {
   type: 'button',
   enabled: true,
+  modifier: '',
   fontSize: 12,
   onClick: () => {},
 };

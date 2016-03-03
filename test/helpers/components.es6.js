@@ -38,6 +38,17 @@ import UserOverlayMenu from '../../src/views/components/UserOverlayMenu';
 import UserProfile from '../../src/views/components/UserProfile';
 import Vote from '../../src/views/components/Vote';
 
+// Listing Redesign, will re-alphabetize on final deploy
+import NewListing from '../../src/views/components/listings/NewListing';
+import PostAndCommentList from '../../src/views/components/listings/PostAndCommentList';
+import ListingRedesignProxy from '../../src/views/components/listings/ListingRedesignProxy';
+import PostRedesignProxy from '../../src/views/components/listings/PostRedesignProxy';
+import Post from '../../src/views/components/listings/Post';
+import PostHeader from '../../src/views/components/listings/PostHeader';
+import PostFooter from '../../src/views/components/listings/PostFooter';
+import PostDropdownController from '../../src/views/components/listings/PostDropdownController';
+import PostDropdown from '../../src/views/components/listings/PostDropdown';
+
 //pages
 
 import BasePage from '../../src/views/pages/BasePage';
@@ -100,6 +111,17 @@ export {
     UserOverlayMenu,
     UserProfile,
     Vote,
+
+    // Listing Redesign, will re-alphabetize at final deploy
+    NewListing,
+    PostAndCommentList,
+    ListingRedesignProxy,
+    PostRedesignProxy,
+    Post,
+    PostHeader,
+    PostFooter,
+    PostDropdownController,
+    PostDropdown,
 
     BasePage,
     ErrorPage,

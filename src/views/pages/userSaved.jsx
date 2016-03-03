@@ -3,7 +3,7 @@ import React from 'react';
 import constants from '../../constants';
 
 import BasePage from './BasePage';
-import ListingContainer from '../components/ListingContainer';
+import ListingRedesignProxy from '../components/listings/ListingRedesignProxy';
 import Loading from '../components/Loading';
 
 const PropTypes = React.PropTypes;
@@ -51,8 +51,9 @@ class UserSavedPage extends BasePage {
 
     return (
       <div className='user-page user-saved'>
-        <ListingContainer
+        <ListingRedesignProxy
           user={ user }
+          feature={ this.state.feature }
           app={ app }
           ctx={ ctx }
           showHidden={ true }

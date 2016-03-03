@@ -1,8 +1,9 @@
 import React from 'react';
 
-import SquareButton from '../formElements/SquareButton';
 import DropdownContent from '../dropdown/DropdownContent';
 import DropdownRow from '../dropdown/DropdownRow';
+import DropdownReportRow from '../dropdown/DropdownReportRow';
+import DropdownDeleteRow from '../dropdown/DropdownDeleteRow';
 
 const T = React.PropTypes;
 
@@ -29,92 +30,45 @@ export default class CommentDropdownContent extends React.Component {
     permalinkUrl: '',
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showReportForm: false,
-      reportReason: '',
-      reportEnabled: false,
-    };
-
-    this.toggleReportForm = this.toggleReportForm.bind(this);
-    this.handleReportReason = this.handleReportReason.bind(this);
-    this.handleReportSubmit = this.handleReportSubmit.bind(this);
-    this.handleReportClicked = this.handleReportClicked.bind(this);
-    this.handleInputDrawn = this.handleInputDrawn.bind(this);
-  }
-
-  toggleReportForm() {
-    this.setState({
-      showReportForm: !this.state.showReportForm,
-    });
-  }
-
-  handleReportReason(e) {
-    const value = e.target.value;
-
-    this.setState({
-      reportReason: value,
-      reportEnabled: !!value,
-    });
-  }
-
-  handleReportSubmit() {
-    this.props.onReportClicked(this.state.reportReason.trim());
-  }
-
-  handleReportClicked(e) {
-    e.stopPropagation();
-  }
-
-  handleInputDrawn(input) {
-    if (input) {
-      input.focus();
-    }
-  }
-
   render() {
     const { userOwned, userLoggedIn } = this.props;
 
     return (
-      <div className='CommentDropdownContent'>
-        <DropdownContent>
-          { userOwned ? this.renderEdit() : null }
-          { userOwned ? this.renderDelete() : null }
-          { !userOwned && false /* disabled for now */ ? this.renderGold() : null }
-          { this.renderShare() }
-          { userLoggedIn ? this.renderSave() : null }
-          { this.renderProfile() }
-          { userLoggedIn && !userOwned ? this.renderReport() : null }
-        </DropdownContent>
-      </div>
+      <DropdownContent>
+        { userOwned ? this.renderEdit() : null }
+        { userOwned ? this.renderDelete() : null }
+        { !userOwned && false /* disabled for now */ ? this.renderGold() : null }
+        { this.renderShare() }
+        { userLoggedIn ? this.renderSave() : null }
+        { this.renderProfile() }
+        { userLoggedIn && !userOwned ? this.renderReport() : null }
+      </DropdownContent>
     );
   }
 
   renderEdit() {
     return (
       <DropdownRow onClick={ this.props.onEditClicked }>
-        <div className='CommentDropdownContent__icon icon-post'/>
-        <div className='CommentDropdownContent__text'>Edit Comment</div>
+        <div className='DropdownRow__icon icon-post'/>
+        <div className='DropdownRow__text'>Edit Comment</div>
       </DropdownRow>
     );
   }
 
   renderDelete() {
     return (
-      <DropdownRow onClick={ this.props.onDeleteClicked }>
-        <div className='CommentDropdownContent__icon icon-x'/>
-        <div className='CommentDropdownContent__text'>Delete Comment</div>
-      </DropdownRow>
+      <DropdownDeleteRow
+        onDeleteClicked={ this.props.onDeleteClicked }
+        thingName='Comment'
+      />
     );
   }
 
   renderGold() {
     return (
       <DropdownRow onClick={ this.props.onGoldClicked }>
-        <div className='CommentDropdownContent__icon icon-gold-circled'/>
-        <div className='CommentDropdownContent__text'>Give Gold</div>
+        <div className='DropdownRow__icon icon-gold-circled'/>
+        <div className='DropdownRow__text'>Give Gold</div>
       </DropdownRow>
     );
   }
@@ -125,8 +79,8 @@ export default class CommentDropdownContent extends React.Component {
         onClick={ this.props.onShareClicked }
         href={ this.props.permalinkUrl }
       >
-        <div className='CommentDropdownContent__icon icon-link'/>
-        <div className='CommentDropdownContent__text' >
+        <div className='DropdownRow__icon icon-link'/>
+        <div className='DropdownRow__text' >
           Permalink
         </div>
       </DropdownRow>
@@ -136,13 +90,13 @@ export default class CommentDropdownContent extends React.Component {
   renderSave() {
     const { saved } = this.props;
 
-    let iconCls = 'CommentDropdownContent__icon icon-save';
-    if (saved) { iconCls += ' m-selected'; }
+    let iconCls = 'DropdownRow__icon icon-save';
+    if (saved) { iconCls += ' live'; }
 
     return (
       <DropdownRow onClick={ this.props.onSaveClicked }>
         <div className={ iconCls }/>
-        <div className='CommentDropdownContent__text'>{ saved ? 'Saved' : 'Save' }</div>
+        <div className='DropdownRow__text'>{ saved ? 'Saved' : 'Save' }</div>
       </DropdownRow>
     );
   }
@@ -153,8 +107,8 @@ export default class CommentDropdownContent extends React.Component {
         onClick={ this.props.onProfileClicked }
         href={ `/u/${this.props.username}` }
       >
-        <div className='CommentDropdownContent__icon icon-user-account'/>
-        <div className='CommentDropdownContent__text' >
+        <div className='DropdownRow__icon icon-user-account'/>
+        <div className='DropdownRow__text' >
           { `${this.props.username}'s profile` }
         </div>
       </DropdownRow>
@@ -162,49 +116,8 @@ export default class CommentDropdownContent extends React.Component {
   }
 
   renderReport() {
-    const { showReportForm } = this.state;
-    const icon = showReportForm ? 'icon-x' : 'icon-flag';
-    const iconCls = `CommentDropdownContent__icon ${icon}`;
-
     return (
-      <DropdownRow onClick={ this.toggleReportForm }>
-        <div className={ iconCls }/>
-        { showReportForm ? this.renderReportForm() : this.renderReportText() }
-      </DropdownRow>
-    );
-  }
-
-  renderReportText() {
-    return (
-      <div className='CommentDropdownContent__text' >
-        Report
-      </div>
-    );
-  }
-
-  renderReportForm() {
-    const { reportReason, reportEnabled } = this.state;
-
-    return (
-      <div
-        className='CommentDropdownContent__reportForm'
-        onClick={ this.handleReportClicked }
-      >
-        <input
-          className='CommentDropdownContent__reportInput'
-          value={ reportReason }
-          onChange={ this.handleReportReason }
-          ref={ this.handleInputDrawn }
-          placeholder='Reason for reporting'
-        />
-        <div className='CommentDropdownContent__reportButton'>
-          <SquareButton
-            text='Report'
-            enabled={ reportEnabled }
-            onClick={ this.handleReportSubmit }
-          />
-        </div>
-      </div>
+      <DropdownReportRow onReportClicked={ this.props.onReportClicked } />
     );
   }
 }
