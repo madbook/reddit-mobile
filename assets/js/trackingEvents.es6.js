@@ -141,7 +141,8 @@ function trackingEvents(app) {
       }
 
       if (props.data.search) {
-        data.sr_listing = props.data.search.subreddits.map(sr => sr.display_name).join(',');
+        data.sr_listing = props.data.search.subreddits.map(sr => sr.display_name);
+        data.target_type = 'search_results';
       }
     }
 
