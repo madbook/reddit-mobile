@@ -58,6 +58,10 @@ function TopSubnav(props) {
     leftLink = <div className='pull-left'>{ props.leftLink }</div>;
   }
 
+  if (!showSort && user) {
+    return <div />;
+  }
+
   return (
     <div className='TopSubnav'>
       { showSort ? renderSortSelector(props.sort, props.app, props.ctx.url) : null }
