@@ -213,13 +213,14 @@ function trackingEvents(app) {
   }
 
   function getBasePayload(props) {
-    const referrer = (props.ctx || {}).referrer || '';
+    const ctx = props.ctx || {};
+    const referrer = ctx.referrer || '';
     const domain = window.location.host;
     return {
       domain,
       geoip_country: props.country ||
                      props.app.getState('country') || null,
-      user_agent: props.app.getState('ctx').userAgent,
+      user_agent: ctx.userAgent || '',
       referrer_domain: url.parse(referrer).host || domain,
       referrer_url: referrer,
     };
@@ -247,9 +248,6 @@ function trackingEvents(app) {
     if (props.originalUrl) {
       payload.referrer_domain = payload.domain;
       payload.referrer_url = payload.domain + props.originalUrl;
-    } else if (props.ctx.referrer) {
-      payload.referrer_domain = url.parse(props.ctx.referrer).host;
-      payload.referrer_url = props.ctx.referrer;
     }
 
     return payload;
@@ -298,9 +296,28 @@ function trackingEvents(app) {
       post_id36: stripPrefix(link_id),
       post_fullname: link_id,
       post_created_ts: props.postCreated,
-      referrer_domain: url.parse(props.ctx.referrer).host,
-      referrer_url: props.ctx.referrer,
     };
+
+    return payload;
+  }
+
+  function buildSubmitData(props) {
+    const { post, user } = props;
+    const payload = {
+      ...getBasePayload(props),
+      user_id36: user.id,
+      user_name: user.name,
+      sr_name: post.sr,
+      post_id36: post.id,
+      post_fullname: post.name,
+      post_title: post.title,
+      post_type: post.kind,
+    };
+
+    addIfPresent(payload, 'post_target_url', post.url);
+    addIfPresent(payload, 'post_target_domain', url.parse(post.url).host);
+    addIfPresent(payload, 'post_body', post.text);
+    addIfPresent(payload, 'sr_id36', stripPrefix((props.subreddit || {}).name));
 
     return payload;
   }
@@ -392,8 +409,11 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'report');
   });
 
-  app.on('post:submit', function(subreddit) {
-    gaSend('send', 'event', 'post', 'submit', subreddit);
+  app.on('post:submit', function(eventData) {
+    const payload = buildSubmitData(eventData);
+    eventSend('submit_events', 'cs.submit', payload);
+
+    gaSend('send', 'event', 'post', 'submit', eventData.post.sr);
   });
 
   app.on('post:edit', function() {

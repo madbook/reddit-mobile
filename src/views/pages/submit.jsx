@@ -43,7 +43,7 @@ class SubmitPage extends BasePage {
       subredditSelectionOpen: false,
       title: props.postTitle || '',
       body: props.body || '',
-      kind: props.type || 'link',
+      kind: props.type || 'self',
       sendReplies: true,
       captchaIden: '',
       captchaAnswer: '',
@@ -130,15 +130,24 @@ class SubmitPage extends BasePage {
     return errors;
   }
 
-  _submitPost (thingId, body, title, kind) {
+  async _submitPost (thingId, body, title, kind) {
+    const { app, apiOptions } = this.props;
+    const {
+      subreddit,
+      sendReplies,
+      captchaIden,
+      captchaAnswer,
+      data,
+    } = this.state;
+
     const newLink = {
       title,
       kind,
-      sr: this.state.subreddit,
-      sendreplies: this.state.sendReplies,
+      sr: subreddit,
+      sendreplies: sendReplies,
       resubmit: false,
-      iden: this.state.captchaIden,
-      captcha: this.state.captchaAnswer,
+      iden: captchaIden,
+      captcha: captchaAnswer,
     };
 
 
@@ -153,26 +162,35 @@ class SubmitPage extends BasePage {
     const link = new models.Link(newLink);
 
     const options = {
-      ...this.props.app.api.buildOptions(this.props.apiOptions),
+      ...app.api.buildOptions(apiOptions),
       model: link,
     };
 
-    const deferred = this.props.app.api.links.post(options);
+    try {
+      const res = await app.api.links.post(options);
 
-    deferred.then(function(res) {
       if (res && res.url) {
         const url = res.url.replace(/^https?:\/\/(?:www\.)?reddit.com/, '');
 
-        this.props.app.redirect(url);
-        this.props.app.emit('post:submit', link.sr);
+        const eventData = {
+          ...this.props,
+          post: {
+            ...link.toJSON(),
+            id: res.id,
+            name: res.name,
+          },
+          user: data.user,
+          subreddit: data.subreddit,
+        };
+        app.emit('post:submit', eventData);
+        app.redirect(url);
       } else {
         this._handleApiErrors(res);
-        this.props.app.emit('post:error');
+        app.emit('post:error');
       }
-    }.bind(this),
-    function(err) {
+    } catch (err) {
       this._handleApiErrors(err);
-    }.bind(this));
+    }
   }
 
   _handleApiErrors (err) {
@@ -266,13 +284,11 @@ class SubmitPage extends BasePage {
 
   render () {
     const props = this.props;
-    const subredditName = this.state.subreddit;
-
-    const type = this.state.kind || 'link';
+    const { subredditName, kind } = this.state;
 
     let typeLabel = '';
     if (this.state.kind) {
-      typeLabel = (this.state.kind === 'self') ? 'text ' : 'link ';
+      typeLabel = (kind === 'self') ? 'text ' : 'link ';
     }
 
     const classes = {
@@ -369,7 +385,7 @@ class SubmitPage extends BasePage {
                   className='form-control Submit-body-text zoom-fix'
                   placeholder='share something interesting'
                   ref='body'
-                  name={ type }
+                  name={ kind }
                   onChange={ this.handleBodyChange }
                   value={ this.state.body }
                 ></textarea>
