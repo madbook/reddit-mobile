@@ -116,9 +116,13 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
 
       // If it has a target=_blank, or an 'external' data attribute, or it's
       // an absolute url, let the browser route rather than forcing a capture.
+      //
+      // Or, if a user has the control (or cmd key, OSX) down, then don't
+      // capture.
       if (
         ($link.target === '_blank' || $link.dataset.noRoute === 'true') ||
-        href.indexOf('//') > -1
+        href.indexOf('//') > -1 ||
+        (e.metaKey || e.ctrlKey)
       ) {
         return;
       }
