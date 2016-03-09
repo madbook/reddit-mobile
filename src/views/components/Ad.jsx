@@ -101,7 +101,7 @@ class Ad extends BaseComponent {
       .send(postData)
       .timeout(constants.DEFAULT_API_TIMEOUT)
       .then(function(res) {
-        if (!res || !res.body || res.state !== 200) {
+        if (!res || !res.body || res.status !== 200) {
           throw res;
         }
         const link = res.body.data;
