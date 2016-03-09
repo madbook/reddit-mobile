@@ -12,6 +12,10 @@ import Listing from '../components/Listing';
 const Proptypes = React.PropTypes;
 
 const _AD_LOCATION = 11;
+const FRONTPAGE_NAME = ' reddit.com';
+const FRONTPAGE_SUBREDDITS = {
+  'all': true,
+};
 
 class ListingList extends BaseComponent {
   static propTypes = {
@@ -116,9 +120,14 @@ class ListingList extends BaseComponent {
   }
 
   buildAd() {
-    const srnames = uniq(this.props.listings.map(function(l) {
-      return l.subreddit;
-    }));
+    let site = FRONTPAGE_NAME;
+
+    if (this.props.multi) {
+      site = `/user/${this.props.multiUser}/m/${this.props.multi}`
+    } else if (this.props.subredditName &&
+        !FRONTPAGE_SUBREDDITS[this.props.subredditName]) {
+      site = this.props.subredditName;
+    }
 
     return (
       <Ad
@@ -126,7 +135,7 @@ class ListingList extends BaseComponent {
         key='ad'
         ref='ad'
         {...this.props}
-        srnames={ srnames }
+        site={ site }
         afterLoad={ this._checkAdPos }
         compact={ this.state.compact }
       />

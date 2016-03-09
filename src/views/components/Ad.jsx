@@ -20,7 +20,7 @@ class Ad extends BaseComponent {
     token: T.string,
     loid: T.string,
     compact: T.bool.isRequired,
-    srnames: T.arrayOf(T.string).isRequired,
+    site: T.string.isRequired,
     subredditTitle: T.string,
     afterLoad: T.func.isRequired,
   };
@@ -61,7 +61,7 @@ class Ad extends BaseComponent {
   }
 
   getAd() {
-    let srnames = this.props.srnames;
+    const site = this.props.site;
     const specificAd = this.props.ctx.query.ad;
 
     if (specificAd) {
@@ -77,18 +77,12 @@ class Ad extends BaseComponent {
       }.bind(this));
     }
 
-    // If we're not on a sub/multi, we're on the front page, so get front page
-    // ads
-    if (!this.props.subredditTitle) {
-      srnames = ' reddit.com';
-    }
-
     const app = this.props.app;
     const loggedIn = !!this.props.token;
     const origin = (loggedIn ? app.config.authAPIOrigin : app.config.nonAuthAPIOrigin);
     const headers = {};
     const postData = {
-      srnames,
+      site,
       platform: 'mobile_web',
       raw_json: '1',
     };
