@@ -89,7 +89,7 @@ class Ad extends BaseComponent {
     const headers = {};
     const postData = {
       srnames,
-      is_mobile_web: true,
+      platform: 'mobile_web',
       raw_json: '1',
     };
 
