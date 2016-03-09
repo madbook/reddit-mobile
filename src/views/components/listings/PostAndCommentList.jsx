@@ -2,6 +2,7 @@ import React from 'react';
 import uniq from 'lodash/array/uniq';
 
 import constants from '../../../constants';
+import isFakeSubreddit from '../../../lib/isFakeSubreddit';
 import propTypes from '../../../propTypes';
 
 import BaseComponent from '../BaseComponent';
@@ -14,6 +15,7 @@ const T = React.PropTypes;
 const _DEFAULT_WINDOW_WIDTH = 300;
 const _AD_LOCATION = 1;
 const _DEFAULT_PAGE_SIZE = 25;
+const _FRONTPAGE_NAME = ' reddit.com';
 
 export default class PostAndCommentList extends BaseComponent {
   static propTypes = {
@@ -58,10 +60,17 @@ export default class PostAndCommentList extends BaseComponent {
     this.afterAdDidLoad = this.afterAdDidLoad.bind(this);
   }
 
-  computeSubredditNames() {
-    return uniq(this.props.postsAndComments.map(function(l) {
-      return l.subreddit;
-    }));
+  getSite() {
+    let site = _FRONTPAGE_NAME;
+
+    if (this.props.multi) {
+      site = `/user/${this.props.multiUser}/m/${this.props.multi}`
+    } else if (this.props.subredditName &&
+        !isFakeSubreddit(this.props.subredditName)) {
+      site = this.props.subredditName;
+    }
+
+    return site;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -143,7 +152,7 @@ export default class PostAndCommentList extends BaseComponent {
         token={ token }
         loid={ loid }
         compact={ compact }
-        srnames={ this.computeSubredditNames() }
+        site={ this.getSite() }
         subredditTitle={ subredditTitle }
         afterLoad={ this.afterAdDidLoad }
       />
