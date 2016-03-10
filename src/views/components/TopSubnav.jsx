@@ -63,9 +63,7 @@ function TopSubnav(props) {
         About this community
       </a>
     );
-  } else if (user) {
-    navLink = <a className='TopSubnav__a' href={ `/u/${user.name}` }>{ user.name }</a>;
-  } else {
+  } else if (!user) {
     navLink = (
       <a
         className='TopSubnav__a'
