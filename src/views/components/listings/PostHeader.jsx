@@ -66,7 +66,7 @@ function isValidKeyColorForRendering(keyColor) {
 }
 
 function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDistinguishing) {
-  if (hideSubredditLabel) { return; }
+  if (hideSubredditLabel || !subreddit) { return; }
 
   const keyColorStyle = {};
   if (!hasDistinguishing && sr_detail && sr_detail.key_color) {

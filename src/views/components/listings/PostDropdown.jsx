@@ -96,6 +96,10 @@ export default class PostDropdown extends BaseComponent {
   }
 
   renderSubredditLink(subreddit) {
+    if (!subreddit) {
+      return;
+    }
+
     const rSubreddit = `r/${subreddit}`;
 
     return (
