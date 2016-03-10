@@ -5,7 +5,7 @@ import BaseComponent from './BaseComponent';
 const T = React.PropTypes;
 
 const BaseRowProps = {
-  text: T.string.isRequired,
+  text: T.node.isRequired,
   icon: T.string,
   iconURL: T.string,
 };

@@ -44,7 +44,12 @@ class CommunityOverlayMenu extends BaseComponent {
                 key={ `OverlayMenu-row-subscription-${subreddit.url}` }
                 href={ subreddit.url }
                 icon='OverlayMenu-icon-following-snoo'
-                text={ subreddit.display_name }
+                text={ (
+                  <span>
+                    <span className='CommunityRow__rSlash'>r/</span>
+                    { subreddit.display_name }
+                  </span>
+                ) }
                 iconURL={ subreddit.icon_img }
                 iconBackgroundColor={ subreddit.key_color }
               />
