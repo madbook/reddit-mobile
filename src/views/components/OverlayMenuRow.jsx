@@ -2,6 +2,14 @@ import React from 'react';
 
 import BaseComponent from './BaseComponent';
 
+const T = React.PropTypes;
+
+const BaseRowProps = {
+  text: T.string.isRequired,
+  icon: T.string,
+  iconURL: T.string,
+};
+
 function iconOrSpacerFromProps(props) {
   if (props.subtext) {
     return false;
@@ -37,6 +45,11 @@ function iconOrSpacerFromProps(props) {
 }
 
 class ButtonRow extends BaseComponent {
+  static propTypes = {
+    ...BaseRowProps,
+    clickHandler: T.func.isRequired,
+  };
+
   render() {
     return (
       <li className='OverlayMenu-row'>
@@ -52,16 +65,16 @@ class ButtonRow extends BaseComponent {
       </li>
     );
   }
-
-  static propTypes = {
-    icon: React.PropTypes.string,
-    iconURL: React.PropTypes.string,
-    text: React.PropTypes.node.isRequired,
-    clickHandler: React.PropTypes.func.isRequired,
-  };
 }
 
 class LinkRow extends BaseComponent {
+  static propTypes = {
+    ...BaseRowProps,
+    href: T.string.isRequired,
+    noRoute: T.bool,
+    clickHandler: T.func,
+  };
+
   render() {
     return (
       <li className='OverlayMenu-row'>
@@ -77,18 +90,14 @@ class LinkRow extends BaseComponent {
       </li>
     );
   }
-
-  static propTypes = {
-    noRoute: React.PropTypes.bool,
-    clickHandler: React.PropTypes.func,
-    text: React.PropTypes.node.isRequired,
-    href: React.PropTypes.string.isRequired,
-    icon: React.PropTypes.string,
-    iconURL: React.PropTypes.string,
-  };
 }
 
 class ExpandoRow extends BaseComponent {
+  static propTypes = {
+    ...BaseRowProps,
+    subtext: T.string,
+  };
+
   constructor(props) {
     super(props);
 
@@ -141,13 +150,6 @@ class ExpandoRow extends BaseComponent {
       </li>
     );
   }
-
-  static propTypes = {
-    text: React.PropTypes.string.isRequired,
-    subtext: React.PropTypes.string,
-    icon: React.PropTypes.string,
-    iconURL: React.PropTypes.string,
-  };
 }
 
 export { ButtonRow, LinkRow, ExpandoRow };
