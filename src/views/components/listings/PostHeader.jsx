@@ -230,13 +230,14 @@ function renderPostHeaderLink(post) {
 }
 
 function renderPostTitleLink(post, single) {
-  const url = single ? mobilify(post.url) : mobilify(post.cleanPermalink);
+  const linkExternally = single || post.disable_comments;
+  const url = linkExternally ? mobilify(post.url) : mobilify(post.cleanPermalink);
   const { title } = post;
 
   const titleLinkClass = `PostHeader__post-title-line ${post.visited ? 'm-visited' : ''}`;
 
   return (
-    <a className={ titleLinkClass } href={ url } target={ single ? '_blank' : null }>
+    <a className={ titleLinkClass } href={ url } target={ linkExternally ? '_blank' : null }>
       { title }
     </a>
   );
