@@ -20,7 +20,10 @@ function renderDetails(data) {
 
   return (
     <a className='CommunityRow__details' href={ url }>
-      <div className='CommunityRow__name'>{ display_name }</div>
+      <div className='CommunityRow__name'>
+        <span className='CommunityRow__rSlash'>r/</span>
+        { display_name }
+      </div>
       <div className='CommunityRow__counts'>
         { [subscribers, accounts_active]
           .filter(x => !!x)
