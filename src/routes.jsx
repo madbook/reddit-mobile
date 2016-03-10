@@ -307,10 +307,16 @@ function routes(app) {
   router.use(defaultLayout);
   router.use(globalMessage);
 
+  function listingTime(query, sort) {
+    if (sort === SORTS.TOP || sort === SORTS.CONTROVERSIAL) {
+      return query.time || SORTS.PAST_DAY;
+    }
+  }
 
   function *indexPage () {
     const props = this.props;
-    const sort = this.query.sort || 'hot';
+    const sort = this.query.sort || SORTS.HOT;
+    const time = listingTime(this.query, sort);
 
     this.preServerRender = function indexPagePreRender() {
       // If we're on a next/prev for an invalid thing_id, so that no results are
@@ -325,6 +331,7 @@ function routes(app) {
 
     Object.assign(this.props, {
       sort,
+      time,
       multi: this.params.multi,
       multiUser: this.params.user,
       after: this.query.after,
@@ -347,6 +354,7 @@ function routes(app) {
         multiUser: props.multiUser,
         subredditName: props.subredditName,
         sort: props.sort,
+        t: props.time,
       },
     });
 

@@ -4,6 +4,7 @@
   max-width: @max-width;
   margin: 0 auto;
   height: 6 * @grid-size;
+  position: relative;
 
   .text-muted {
     margin-right: 5px;
@@ -30,7 +31,6 @@
     & + & {
       margin-left: @grid-size;
       padding-left: @grid-size;
-      border-left: 1px solid @pale-grey;
     }
   }
 
@@ -43,6 +43,24 @@
 
   &__activitySortText {
     margin-right: @grid-size;
+  }
+
+  &__navLink {
+    position: absolute;
+    right: @grid-size;
+    z-index: 2;
+    background-color: @off-white; // background of the topnav container
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -3em;
+      width: 3em;
+
+      #gradient > .horizontal(@start-color: fade(@off-white, 0%); @end-color: fade(@off-white, 100%););
+    }
   }
 }
 

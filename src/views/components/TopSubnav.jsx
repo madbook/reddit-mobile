@@ -4,26 +4,49 @@ import propTypes from '../../propTypes';
 import SortSelector from './SortSelector';
 import { SORTS } from '../../sortValues';
 
-function renderSortSelector(currentSort, app, baseUrl) {
+function renderSortSelector(currentSort, currentTime, app, baseUrl) {
   // define callback
   const handleSortChange = function(newSort) {
     app.redirect(`${baseUrl}?sort=${newSort}`);
   };
 
+  const handleTimeChange = function(newTime) {
+    app.redirect(`${baseUrl}?sort=${currentSort}&time=${newTime}`);
+  };
+
   return (
     <div className='pull-left'>
-      <SortSelector
-        app={ app }
-        sortValue={ currentSort }
-        sortOptions={ [
-          SORTS.HOT,
-          SORTS.TOP,
-          SORTS.NEW,
-          SORTS.CONTROVERSIAL,
-        ] }
-        onSortChange={ handleSortChange }
-        title='Sort posts by:'
-      />
+      <div className='TopSubnav__sortDropdown'>
+        <SortSelector
+          app={ app }
+          sortValue={ currentSort }
+          sortOptions={ [
+            SORTS.HOT,
+            SORTS.TOP,
+            SORTS.NEW,
+            SORTS.CONTROVERSIAL,
+          ] }
+          onSortChange={ handleSortChange }
+          title='Sort posts by:'
+        />
+      </div>
+      { currentTime
+        ? <div className='TopSubnav__sortDropdown'>
+            <SortSelector
+              app={ app }
+              sortValue={ currentTime }
+              sortOptions={ [
+                SORTS.ALL_TIME,
+                SORTS.PAST_YEAR,
+                SORTS.PAST_MONTH,
+                SORTS.PAST_WEEK,
+                SORTS.PAST_DAY,
+                SORTS.PAST_HOUR,
+              ] }
+              onSortChange={ handleTimeChange }
+            />
+          </div>
+        : null }
     </div>
   );
 }
@@ -64,9 +87,9 @@ function TopSubnav(props) {
 
   return (
     <div className='TopSubnav'>
-      { showSort ? renderSortSelector(props.sort, props.app, props.ctx.url) : null }
+      { showSort ? renderSortSelector(props.sort, props.time, props.app, props.ctx.url) : null }
       { leftLink }
-      <div className='pull-right'>{ navLink }</div>
+      <div className='TopSubnav__navLink'>{ navLink }</div>
     </div>
   );
 }
