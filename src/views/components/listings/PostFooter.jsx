@@ -80,6 +80,10 @@ export default class PostFooter extends BaseComponent {
   }
 
   renderCommentsLink(post) {
+    if (post.disable_comments) {
+      return;
+    }
+
     const { num_comments } = post;
 
     return (
