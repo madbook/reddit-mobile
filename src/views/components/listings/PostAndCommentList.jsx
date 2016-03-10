@@ -13,7 +13,7 @@ import CommentPreview from '../CommentPreview';
 const T = React.PropTypes;
 
 const _DEFAULT_WINDOW_WIDTH = 300;
-const _AD_LOCATION = 1;
+const _AD_LOCATION = 11;
 const _DEFAULT_PAGE_SIZE = 25;
 const _FRONTPAGE_NAME = ' reddit.com';
 
