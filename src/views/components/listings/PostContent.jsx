@@ -382,7 +382,7 @@ export default class PostContent extends BaseComponent {
       isCompact, playableType) {
     let playbackControlNode;
     if (playableType && !needsNSFWBlur) {
-      playbackControlNode = this.renderPlaybackIcon(playableType);
+      playbackControlNode = this.renderPlaybackIcon(playableType, isCompact);
     }
 
     let nsfwNode;
@@ -528,12 +528,12 @@ export default class PostContent extends BaseComponent {
     );
   }
 
-  renderPlaybackIcon(playableType) {
+  renderPlaybackIcon(playableType, isCompact) {
     if (playableType === PLAYABLE_TYPE.NOT_PLAYABLE) {
       return;
     }
 
-    let iconCls = 'PostContent__playback-action-icon blue';
+    let iconCls = 'PostContent__playback-action-icon darkgrey';
 
     if (playableType === PLAYABLE_TYPE.GALLERY) {
       iconCls += ' icon-gallery_squares';
@@ -541,8 +541,10 @@ export default class PostContent extends BaseComponent {
       iconCls += ' icon-play_triangle';
     }
 
+    const buttonCls = `PostContent__playback-action-circle  ${isCompact ? 'compact' : 'regular'}`;
+
     return (
-      <div className='PostContent__playback-action-circle'>
+      <div className={ buttonCls }>
         <span className={ iconCls } />
       </div>
     );
