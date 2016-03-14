@@ -92,9 +92,19 @@ export default class PostFooter extends BaseComponent {
         href={ post.cleanPermalink }
       >
         <span className='PostFooter__comments-icon icon-comment' />
-        { `${num_comments} comments` }
+        { this.numCommentsText(num_comments) }
       </a>
     );
+  }
+
+  numCommentsText(numberOfComments) {
+    if (numberOfComments === 0) {
+      return 'No Comments';
+    } else if (numberOfComments === 1) {
+      return '1 Comment';
+    }
+
+    return `${numberOfComments} Comments`;
   }
 
   renderToolsDropdown(dropdownTarget) {
