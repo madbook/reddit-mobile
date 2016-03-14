@@ -12,11 +12,23 @@
     }
   }
 
+  &__hit-area {
+    @size: @grid-size * 3;
+    line-height: @size;
+    min-height: @size;
+    min-width: @size;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
   &__comments-icon.icon-comment {
     margin: 0 @half-grid-size;
-    vertical-align: bottom;
-    font-size: 22px;
-    line-height: 22px;
+    position: relative;
+    top: -2px;
+
+    &:before {
+      font-size: 22px;
+    }
   }
 
   &__vote-and-tools-wrapper {
@@ -38,8 +50,7 @@
 
   &__dropdown-button.icon-seashells {
     font-size: 22px;
-    line-height: 18px;
-    vertical-align: text-bottom;
+    line-height: 22px;
   }
 
   &__vertical-divider {

@@ -87,7 +87,10 @@ export default class PostFooter extends BaseComponent {
     const { num_comments } = post;
 
     return (
-      <a className='PostFooter__comments-link' href={ post.cleanPermalink }>
+      <a
+        className='PostFooter__hit-area PostFooter__comments-link'
+        href={ post.cleanPermalink }
+      >
         <span className='PostFooter__comments-icon icon-comment' />
         { `${num_comments} comments` }
       </a>
@@ -141,7 +144,7 @@ export default class PostFooter extends BaseComponent {
     const wrapperClassName = `${VOTE_WRAPPER_CLS} ${upvoted ? 'upvoted' : ''}`;
 
     return (
-      <span className={ wrapperClassName } onClick={ this.onUpVote }>
+      <span className={ wrapperClassName }>
         <span className='icon-upvote blue' />
       </span>
     );
@@ -152,7 +155,7 @@ export default class PostFooter extends BaseComponent {
     const wrapperClassName = `${VOTE_WRAPPER_CLS} ${downvoted ? 'downvoted' : ''}`;
 
     return (
-      <span className={ wrapperClassName } onClick={ this.onDownVote }>
+      <span className={ wrapperClassName }>
         <span className='icon-downvote blue' />
       </span>
     );
@@ -171,9 +174,13 @@ export default class PostFooter extends BaseComponent {
 
     return (
       <span>
-        { this.renderScoreIfNotHidden(scoreHidden, score, voteClass) }
-        { this.renderUpvote(voteDirection) }
-        { this.renderDownVote(voteDirection) }
+        <div className='PostFooter__hit-area' onClick={ this.onUpVote }>
+          { this.renderScoreIfNotHidden(scoreHidden, score, voteClass) }
+          { this.renderUpvote(voteDirection) }
+        </div>
+        <div className='PostFooter__hit-area' onClick={ this.onDownVote }>
+          { this.renderDownVote(voteDirection) }
+        </div>
       </span>
     );
   }
@@ -192,8 +199,8 @@ export default class PostFooter extends BaseComponent {
       <footer className='PostFooter'>
         { this.renderCommentsLink(post, compact) }
         <div className='PostFooter__vote-and-tools-wrapper'>
-          <span
-            className='PostFooter__dropdown-button icon-seashells'
+          <div
+            className='PostFooter__dropdown-button PostFooter__hit-area icon-seashells'
             onClick={ this.onOpenDropdown }
           />
           { dropdownTarget ? this.renderToolsDropdown(dropdownTarget) : null }
