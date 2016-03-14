@@ -255,7 +255,6 @@ export default class PostAndCommentList extends BaseComponent {
         compact={ compact }
         app={ app }
         user={ user }
-        token={ token }
         apiOptions={ apiOptions }
         winWidth={ winWidth }
         hideSubredditLabel={ hideSubredditLabel }

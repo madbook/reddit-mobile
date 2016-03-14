@@ -17,7 +17,6 @@ class Ad extends BaseComponent {
     config: T.object.isRequired,
     apiOptions: T.object.isRequired,
     ctx: T.object.isRequired,
-    token: T.string,
     loid: T.string,
     compact: T.bool.isRequired,
     site: T.string.isRequired,
@@ -78,7 +77,8 @@ class Ad extends BaseComponent {
     }
 
     const app = this.props.app;
-    const loggedIn = !!this.props.token;
+    const token = this.props.ctx.token;
+    const loggedIn = !!token;
     const origin = (loggedIn ? app.config.authAPIOrigin : app.config.nonAuthAPIOrigin);
     const headers = {};
     const postData = {
@@ -89,7 +89,7 @@ class Ad extends BaseComponent {
 
     // If user is not logged in, send the loid in the promo request
     if (loggedIn) {
-      headers.authorization = `Bearer ${this.props.token}`;
+      headers.authorization = `Bearer ${token}`;
     } else {
       postData.loid = this.props.loid;
     }
