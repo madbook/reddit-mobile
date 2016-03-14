@@ -135,6 +135,10 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       e.preventDefault();
 
       const currentUrl = app.fullPathName();
+      if (currentUrl === href) {
+        return;
+      }
+
       app.scrollCache[currentUrl] = window.scrollY;
 
       if (href.indexOf('#') === 0) {
