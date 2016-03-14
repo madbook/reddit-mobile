@@ -1,32 +1,37 @@
 .IndexPage-buttons-holder-holder {
-  margin-left: 0;
+  margin: 0 2 * @grid-size;
 }
 
-  .IndexPage-buttons-holder {
-    padding: 0 !important;
-    margin-bottom: 30px;
+.IndexPage-buttons-holder {
+  padding: 0 !important;
+  margin-bottom: 30px;
+}
+
+.IndexPage-buttons {
+  .clearfix;
+
+  &.compact {
+    padding-top: 5px;
+  }
+}
+
+.IndexPage-button {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: @blue;
+  padding: 5px 10px;
+  line-height: 1.5em;
+  cursor: pointer;
+
+  &, &:visited, &:hover {
+    color: @white;
   }
 
-    .IndexPage-buttons {
+  &.next {
+    float: right;
+  }
 
-      &.compact {
-        padding-top: 5px;
-
-        @media (max-width: @max-width) {
-          .IndexPage-button {
-            margin-left: 5px;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-
-      .IndexPage-button {
-        &.next {
-          float: right;
-        }
-
-        &.prev {
-          float: left;
-        }
-      }
+  &.prev {
+    float: left;
+  }
+}

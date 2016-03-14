@@ -98,25 +98,25 @@ class ListingPaginationButtons extends BaseComponent {
 
     if (prevUrl) {
       prevButton = (
-        <a href={ prevUrl } rel='prev' className='btn btn-sm btn-primary IndexPage-button prev'>
+        <a href={ prevUrl } rel='prev' className='IndexPage-button prev'>
           <span className='glyphicon glyphicon-chevron-left'></span>
-            Previous Page
+          PREVIOUS
         </a>
       );
     }
 
     if (listings.length >= pageSize && nextUrl) {
       nextButton = (
-        <a href={ nextUrl } rel='next' className='btn btn-sm btn-primary IndexPage-button next'>
-          Next Page
+        <a href={ nextUrl } rel='next' className='IndexPage-button next'>
+          NEXT
           <span className='glyphicon glyphicon-chevron-right'></span>
         </a>
       );
     }
 
     return (
-      <div className='pageNav IndexPage-buttons-holder-holder'>
-        <div className='col-xs-12 IndexPage-buttons-holder'>
+      <div className='IndexPage-buttons-holder-holder'>
+        <div className='IndexPage-buttons-holder'>
            <p className={ `IndexPage-buttons${compact ? ' compact' : ''}` }>
               { prevButton } { nextButton }
             </p>
