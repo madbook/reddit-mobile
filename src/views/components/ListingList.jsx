@@ -1,5 +1,4 @@
 import React from 'react';
-import uniq from 'lodash/array/uniq';
 
 import constants from '../../constants';
 import propTypes from '../../propTypes';
@@ -123,7 +122,7 @@ class ListingList extends BaseComponent {
     let site = FRONTPAGE_NAME;
 
     if (this.props.multi) {
-      site = `/user/${this.props.multiUser}/m/${this.props.multi}`
+      site = `/user/${this.props.multiUser}/m/${this.props.multi}`;
     } else if (this.props.subredditName &&
         !FRONTPAGE_SUBREDDITS[this.props.subredditName]) {
       site = this.props.subredditName;

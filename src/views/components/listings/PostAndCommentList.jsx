@@ -1,5 +1,4 @@
 import React from 'react';
-import uniq from 'lodash/array/uniq';
 
 import constants from '../../../constants';
 import isFakeSubreddit from '../../../lib/isFakeSubreddit';
@@ -64,7 +63,7 @@ export default class PostAndCommentList extends BaseComponent {
     let site = _FRONTPAGE_NAME;
 
     if (this.props.multi) {
-      site = `/user/${this.props.multiUser}/m/${this.props.multi}`
+      site = `/user/${this.props.multiUser}/m/${this.props.multi}`;
     } else if (this.props.subredditName &&
         !isFakeSubreddit(this.props.subredditName)) {
       site = this.props.subredditName;
@@ -243,7 +242,6 @@ export default class PostAndCommentList extends BaseComponent {
       subredditIsNSFW,
       showOver18Interstitial,
       user,
-      token,
     } = this.props;
 
     return (
