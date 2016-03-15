@@ -5,6 +5,7 @@ import constants from '../../../constants';
 
 import {
   isPostDomainExternal,
+  postShouldRenderMediaFullbleed,
 } from './postUtils';
 
 import BaseComponent from '../BaseComponent';
@@ -56,11 +57,12 @@ export default class Post extends BaseComponent {
     super(props);
 
     const compact = _isCompact(props);
-    const externalDomain = isPostDomainExternal(props.post);
+    this.externalDomain = isPostDomainExternal(props.post);
+    this.renderMediaFullbleed = postShouldRenderMediaFullbleed(props.post);
+    this.forceHTTPS = this.shouldForceHTTPS(props.app);
 
     this.state = {
       compact,
-      externalDomain,
       showNSFW: !props.showOver18Interstitial && props.subredditIsNSFW,
       expanded: false,
       loaded: false,
@@ -182,14 +184,13 @@ export default class Post extends BaseComponent {
 
     const {
       compact,
-      externalDomain,
       showNSFW,
       expanded,
       z,
       width,
     } = this.state;
 
-    const forceHTTPS = this.shouldForceHTTPS(app);
+    const { externalDomain, renderMediaFullbleed, forceHTTPS } = this;
 
     let thumbnailOrNil;
     if (compact) {
@@ -208,6 +209,7 @@ export default class Post extends BaseComponent {
           saveUpdatedText={ saveUpdatedText }
           forceHTTPS={ forceHTTPS }
           isDomainExternal={ externalDomain }
+          renderMediaFullbleed={ renderMediaFullbleed }
         />
       );
     }
@@ -231,6 +233,7 @@ export default class Post extends BaseComponent {
           editError={ editError }
           forceHTTPS={ forceHTTPS }
           isDomainExternal={ externalDomain }
+          renderMediaFullbleed={ renderMediaFullbleed }
         />
       );
     }
@@ -248,6 +251,7 @@ export default class Post extends BaseComponent {
             hideWhen={ hideWhen }
             nextToThumbnail={ !!thumbnailOrNil }
             showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
+            renderMediaFullbleed={ renderMediaFullbleed }
           />
         </div>
         { contentOrNil }

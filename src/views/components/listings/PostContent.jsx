@@ -93,6 +93,7 @@ export default class PostContent extends BaseComponent {
     toggleEditing: T.func.isRequired,
     forceHTTPS: T.bool.isRequired,
     isDomainExternal: T.bool.isRequired,
+    renderMediaFullbleed: T.bool.isRequired,
   };
 
   constructor(props) {
@@ -168,16 +169,8 @@ export default class PostContent extends BaseComponent {
     const isCompact = this.isCompact();
     const { single, post, isDomainExternal } = this.props;
 
-    const permalink = mobilify(post.cleanPermalink);
-    const outboundLink = mobilify(post.url);
-
-    let linkDescriptor;
-    if (single || post.promoted) {
-      linkDescriptor = new LinkDescriptor(outboundLink, true);
-    } else {
-      linkDescriptor = new LinkDescriptor(permalink, false);
-    }
-
+    const outboundLink = mobilify(post.cleanUrl);
+    const linkDescriptor = new LinkDescriptor(outboundLink, true);
     const mediaContentNode = this.buildMediaContent(post, isCompact, linkDescriptor);
     const selftextNode = this.buildSelfTextContent(post, isCompact, single);
 
@@ -201,7 +194,7 @@ export default class PostContent extends BaseComponent {
   }
 
   renderMediaContent(mediaContentNode, isCompact, isDomainExternal, linkDisplayText, linkUrl) {
-    if (isCompact || !isDomainExternal) {
+    if (isCompact || !isDomainExternal || this.props.renderMediaFullbleed) {
       return mediaContentNode;
     }
 

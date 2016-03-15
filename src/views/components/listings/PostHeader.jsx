@@ -53,6 +53,7 @@ PostHeader.propTypes = {
   hideWhen: T.bool.isRequired,
   nextToThumbnail: T.bool.isRequired,
   showingLink: T.bool.isRequired,
+  renderMediaFullbleed: T.bool.isRequired,
 };
 
 function postTextColorClass(distinguished) {
@@ -161,7 +162,7 @@ function renderPostFlair(post, single) {
   );
 }
 
-function renderPostDescriptor(post, single, hideSubredditLabel, hideWhen) {
+function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) {
 
   const {
     distinguished,
@@ -187,12 +188,22 @@ function renderPostDescriptor(post, single, hideSubredditLabel, hideWhen) {
           { postFlairOrNil }
           { postFlairOrNil && subredditLabelOrNil ? SEPERATOR : null }
           { subredditLabelOrNil }
-          { (postFlairOrNil || subredditLabelOrNil) && authorOrNil ? SEPERATOR : null }
+          { (postFlairOrNil || subredditLabelOrNil) && renderMediaFullbleed ? SEPERATOR : null }
+          { renderMediaFullbleed ? renderPostDomain(post) : null }
+          { (renderMediaFullbleed || postFlairOrNil || subredditLabelOrNil) && authorOrNil ? SEPERATOR : null }
           { authorOrNil }
         </span>
         { !single ? renderLinkFlairText(post) : null }
       </div>
     </div>
+  );
+}
+
+function renderPostDomain(post) {
+  return (
+    <a className='PostHEader__author-link' href={ mobilify(post.cleanUrl) }>
+      { post.domain }
+    </a>
   );
 }
 
@@ -251,11 +262,12 @@ export default function PostHeader(props) {
     hideWhen,
     nextToThumbnail,
     showingLink,
+    renderMediaFullbleed,
   } = props;
 
   return (
     <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
-      { renderPostDescriptor(post, single, hideSubredditLabel, hideWhen) }
+      { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
       { renderPostTitleLink(post, single) }
       { showingLink ? renderPostHeaderLink(post) : null }
       { single ? renderDetailViewSubline(post, hideWhen) : null }
