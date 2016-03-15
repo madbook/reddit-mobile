@@ -243,8 +243,8 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
   );
 }
 
-function renderPostTitleLink(post, single, showLinksInNewTab) {
-  const linkExternally = single || post.disable_comments;
+function renderPostTitleLink(post, showLinksInNewTab) {
+  const linkExternally = post.disable_comments;
   const url = linkExternally ? mobilify(post.url) : mobilify(post.cleanPermalink);
   const { title } = post;
 
@@ -277,7 +277,7 @@ export default function PostHeader(props) {
   return (
     <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
       { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
-      { renderPostTitleLink(post, single, showLinksInNewTab) }
+      { renderPostTitleLink(post, showLinksInNewTab) }
       { showingLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
       { single ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
