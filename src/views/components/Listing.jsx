@@ -239,7 +239,7 @@ class Listing extends BaseComponent {
 
     if (gilded && single) {
       gildedNode = (
-        <li><span className='icon-gold-circled'/></li>
+        <li><span className='icon-circled-gold'/></li>
       );
     }
 

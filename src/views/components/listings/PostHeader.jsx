@@ -39,7 +39,7 @@ const MOD_FLAIR = (
 );
 
 const GILDED_FLAIR = (
-  <span className='icon-gold-circled gold' />
+  <span className='icon-circled-gold gold' />
 );
 
 const SPONSORED_FLAIR = (

@@ -67,7 +67,7 @@ export default class CommentDropdownContent extends React.Component {
   renderGold() {
     return (
       <DropdownRow onClick={ this.props.onGoldClicked }>
-        <div className='DropdownRow__icon icon-gold-circled'/>
+        <div className='DropdownRow__icon icon-circled-gold'/>
         <div className='DropdownRow__text'>Give Gold</div>
       </DropdownRow>
     );

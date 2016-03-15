@@ -86,7 +86,7 @@ function renderGold(gildCount) {
 }
 
 function renderGoldIcon() {
-  return <div className='CommentHeader__gold icon-gold-circled'></div>;
+  return <div className='CommentHeader__gold icon-circled-gold'></div>;
 }
 
 function renderGoldCount(gildCount) {
