@@ -24,18 +24,23 @@
   &__comments-icon.icon-comment {
     margin: 0 @half-grid-size;
     position: relative;
-    top: -2px;
+    top: -3px;
 
     &:before {
-      font-size: 22px;
+      font-size: 18px;
+      line-height: 18px;
     }
   }
 
   &__vote-and-tools-wrapper {
     float: right;
+    position: relative;
+    top: 2px;
   }
 
   &__vote-text {
+    display: inline-block;
+    vertical-align: middle;
     margin-right: @half-grid-size;
     color: @blue;
 
@@ -49,8 +54,14 @@
   }
 
   &__dropdown-button.icon-seashells {
-    font-size: 22px;
-    line-height: 21px;
+    &:before {
+      font-size: 18px;
+      line-height: 18px;
+    }
+
+    text-align: center;
+    position: relative;
+    top: 3px;
   }
 
   &__vertical-divider {
@@ -63,9 +74,9 @@
   &__vote-arrow-wrapper {
     display: inline-block;
     vertical-align: middle;
-    width: 2.2em;
-    height: 2.2em;
-    border-radius: 1.1em;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
     margin: 0 @half-grid-size;
     border: 1px solid @pale-grey;
     text-align: center;
@@ -99,7 +110,7 @@
     }
 
     [class^="icon-"] {
-      font-size: 2em;
+      font-size: 22px;
       line-height: 1em; // visually verticaly centering
     }
   }
