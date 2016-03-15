@@ -23,7 +23,6 @@ export default class PostAndCommentList extends BaseComponent {
     config: T.object, // required if showAds === true
     ctx: T.object.isRequired,
     user: propTypes.user,
-    token: T.string,
     apiOptions: T.object.isRequired,
     compact: T.bool.isRequired,
     winWidth: T.number,
@@ -133,7 +132,6 @@ export default class PostAndCommentList extends BaseComponent {
       apiOptions,
       ctx,
       loid,
-      token,
       subredditTitle,
     } = this.props;
 
@@ -148,7 +146,6 @@ export default class PostAndCommentList extends BaseComponent {
         config={ config }
         apiOptions={ apiOptions }
         ctx={ ctx }
-        token={ token }
         loid={ loid }
         compact={ compact }
         site={ this.getSite() }

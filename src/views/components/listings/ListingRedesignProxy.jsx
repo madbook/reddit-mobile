@@ -33,7 +33,6 @@ export default class ListingRedesignProxy extends BaseComponent {
       config,
       ctx,
       user,
-      token,
       showAds,
       loid,
       apiOptions,
@@ -64,7 +63,6 @@ export default class ListingRedesignProxy extends BaseComponent {
         config={ config }
         ctx={ ctx }
         user={ user }
-        token={ token }
         hideUser={ hideUser }
         showAds={ showAds }
         loid={ loid }

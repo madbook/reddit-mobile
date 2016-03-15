@@ -16,7 +16,6 @@ export default class NewListing extends BaseComponent {
     config: T.object,
     ctx: T.object.isRequired,
     user: propTypes.user,
-    token: T.string,
     showAds: T.bool,
     loid: T.string,
     apiOptions: T.object.isRequired,
