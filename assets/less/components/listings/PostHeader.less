@@ -31,9 +31,12 @@
     }
   }
 
-  &__post-descriptor-line-overflow,
-  &__post-title-line {
+  &__post-descriptor-line-overflow {
     padding: @grid-size 2 * @grid-size;
+  }
+
+  &__post-title-line {
+    padding: 0 2 * @grid-size @grid-size;
   }
 
   &__post-link {
@@ -104,6 +107,7 @@
     border: 1px solid @grey-text;
     background-color: @off-white;
     color: @dark-grey;
+    display: inline-block;
   }
 
   &__sponsored-flair {
@@ -154,6 +158,8 @@
     vertical-align: middle;
     display: inline-block;
     color: @neutral;
+    position: relative;
+    top: -1px;
   }
 
   &__post-link {
