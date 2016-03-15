@@ -59,6 +59,7 @@ export default {
   // overwrite the action methods. superagent uses a private reference to
   // Request, so we need to overwrite the methods to ensure our new version of
   // Request gets used instead.
+  head(url, data, fn) { return execute('HEAD', url, data, fn); },
   get(url, data, fn) { return execute('GET', url, data, fn); },
   post(url, data, fn) { return execute('POST', url, data, fn); },
   patch(url, data, fn) { return execute('PATCH', url, data, fn); },

@@ -367,6 +367,8 @@ function routes(app) {
   router.get('index', '/', indexPage);
 
   router.get('random', `/r/:randomSubreddit(${randomSubs.join('|')})`, function *() {
+    // This code is meant to be run on the server as sa.redirects works there
+    // as intended. We could modify it in the future to work on the client
     const ctx = this;
     const { origin, headers } = buildAPIOptions(this);
     const endpoint = `${origin}/r/${ctx.params.randomSubreddit}`;
@@ -379,10 +381,9 @@ function routes(app) {
     if (sa.redirects) {
       sa.redirects(0);
     }
-
     const randomRedirectResult = sa
-      .then(function() { return true; })
-      .catch(function() { return null; });
+      .then(function() { return true; },
+            function(resAndError) { return resAndError; });
 
     try {
       const result = yield randomRedirectResult;
@@ -718,8 +719,7 @@ function routes(app) {
         } else {
           return true;
         }
-      })
-      .catch(function() { return; });
+      });
   }
 
   function makeOptions(token, app) {
