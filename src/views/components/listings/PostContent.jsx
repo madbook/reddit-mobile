@@ -11,6 +11,7 @@ import SquareButton from '../formElements/SquareButton';
 import {
   isPostNSFW,
   cleanPostDomain,
+  cleanPostHREF,
 } from './postUtils';
 
 import {
@@ -170,7 +171,7 @@ export default class PostContent extends BaseComponent {
     const isCompact = this.isCompact();
     const { single, post, isDomainExternal } = this.props;
 
-    const outboundLink = mobilify(post.cleanUrl);
+    const outboundLink = cleanPostHREF(mobilify(post.cleanUrl));
     const linkDescriptor = new LinkDescriptor(outboundLink, true);
     const mediaContentNode = this.buildMediaContent(post, isCompact, linkDescriptor);
     const selftextNode = this.buildSelfTextContent(post, isCompact, single);

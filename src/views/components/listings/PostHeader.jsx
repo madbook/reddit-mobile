@@ -7,6 +7,7 @@ import mobilify from '../../../lib/mobilify';
 import {
   isPostNSFW,
   cleanPostDomain,
+  cleanPostHREF,
 } from './postUtils';
 
 const T = React.PropTypes;
@@ -227,7 +228,7 @@ function renderDetailViewSubline(post, hideWhen) {
 }
 
 function renderPostHeaderLink(post, showLinksInNewTab) {
-  const url = mobilify(post.url);
+  const url = cleanPostHREF(mobilify(post.url));
 
   if (!url) {
     return;
@@ -245,7 +246,7 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
 
 function renderPostTitleLink(post, showLinksInNewTab) {
   const linkExternally = post.disable_comments;
-  const url = linkExternally ? mobilify(post.url) : mobilify(post.cleanPermalink);
+  const url = cleanPostHREF(mobilify(linkExternally ? post.url : post.cleanPermalink));
   const { title } = post;
 
   const titleLinkClass = `PostHeader__post-title-line ${post.visited ? 'm-visited' : ''}`;
@@ -269,10 +270,6 @@ export default function PostHeader(props) {
     renderMediaFullbleed,
     showLinksInNewTab,
   } = props;
-
-  if (renderMediaFullbleed === undefined) {
-    debugger;
-  }
 
   return (
     <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
