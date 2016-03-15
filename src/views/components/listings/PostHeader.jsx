@@ -4,9 +4,9 @@ import propTypes from '../../../propTypes';
 import short from '../../../lib/formatDifference';
 import mobilify from '../../../lib/mobilify';
 
-
 import {
   isPostNSFW,
+  cleanPostDomain,
 } from './postUtils';
 
 const T = React.PropTypes;
@@ -203,7 +203,7 @@ function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditL
 function renderPostDomain(post) {
   return (
     <a className='PostHEader__author-link' href={ mobilify(post.cleanUrl) }>
-      { post.domain }
+      { cleanPostDomain(post.domain) }
     </a>
   );
 }
@@ -237,7 +237,7 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
 
   return (
     <a className='PostHeader__post-link' href={ url } target={ target }>
-      { post.domain }
+      { cleanPostDomain(post.domain) }
       <span className='PostHeader__post-link-icon icon-linkout blue' />
     </a>
   );

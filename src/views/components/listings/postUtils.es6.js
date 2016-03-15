@@ -19,3 +19,7 @@ export function postShouldRenderMediaFullbleed(post) {
 export function isPostDomainExternal(post) {
   return post.domain !== `self.${post.subreddit}`;
 }
+
+export function cleanPostDomain(domain) {
+  return domain.replace(/\.com$/, '');
+}

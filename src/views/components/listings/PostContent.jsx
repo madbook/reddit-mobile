@@ -10,6 +10,7 @@ import SquareButton from '../formElements/SquareButton';
 
 import {
   isPostNSFW,
+  cleanPostDomain,
 } from './postUtils';
 
 import {
@@ -187,7 +188,8 @@ export default class PostContent extends BaseComponent {
     return (
       <div className={ `PostContent ${isCompact ? 'size-compact' : 'size-default'}` }>
         { this.renderMediaContent(
-          mediaContentNode, isCompact, isDomainExternal, post.domain, outboundLink) }
+          mediaContentNode, isCompact, isDomainExternal, cleanPostDomain(post.domain),
+          outboundLink) }
         { selftextNode }
       </div>
     );
