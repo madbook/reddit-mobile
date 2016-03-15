@@ -105,7 +105,7 @@ class UserOverlayMenu extends BaseComponent {
       <ButtonRow
         key='compact-toggle'
         icon={ 'icon-compact icon-large blue' }
-        text={ `${compact ? 'List' : 'Compact'} view` }
+        text={ `${compact ? 'Card' : 'Compact'} view` }
         clickHandler={ this._viewPreferenceToggleClick }
       />,
       <LinkRow
