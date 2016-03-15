@@ -405,7 +405,7 @@ export default class PostContent extends BaseComponent {
       <a
         className={ linkClass }
         href={ linkDescriptor.url }
-        target={ linkDescriptor.outbound ? '_blank' : null }
+        target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
         data-no-route={ !!onClick }
       >
@@ -439,7 +439,7 @@ export default class PostContent extends BaseComponent {
       <a
         className={ linkClass }
         href={ linkDescriptor.url }
-        target={ linkDescriptor.outbound ? '_blank' : null }
+        target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
         data-no-route={ !!onClick }
         style={ style }
@@ -544,8 +544,10 @@ export default class PostContent extends BaseComponent {
   }
 
   renderLinkBar(displayText, href) {
+    const target = this.props.showLinksInNewTab ? '_blank' : null;
+
     return (
-      <a className='PostContent__link-bar' href={ href } target="_blank">
+      <a className='PostContent__link-bar' href={ href } target={ target }>
         <span className='PostContent__link-bar-text'>{ displayText }</span>
         <span className='PostContent__link-bar-icon icon-linkout blue' />
       </a>

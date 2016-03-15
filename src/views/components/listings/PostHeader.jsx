@@ -54,6 +54,7 @@ PostHeader.propTypes = {
   nextToThumbnail: T.bool.isRequired,
   showingLink: T.bool.isRequired,
   renderMediaFullbleed: T.bool.isRequired,
+  showLinksInNewTab: T.bool.isRequired,
 };
 
 function postTextColorClass(distinguished) {
@@ -225,30 +226,33 @@ function renderDetailViewSubline(post, hideWhen) {
   );
 }
 
-function renderPostHeaderLink(post) {
+function renderPostHeaderLink(post, showLinksInNewTab) {
   const url = mobilify(post.url);
 
   if (!url) {
     return;
   }
 
+  const target = showLinksInNewTab ? '_blank' : null;
+
   return (
-    <a className='PostHeader__post-link' href={ url } target='_blank'>
+    <a className='PostHeader__post-link' href={ url } target={ target }>
       { post.domain }
       <span className='PostHeader__post-link-icon icon-linkout blue' />
     </a>
   );
 }
 
-function renderPostTitleLink(post, single) {
+function renderPostTitleLink(post, single, showLinksInNewTab) {
   const linkExternally = single || post.disable_comments;
   const url = linkExternally ? mobilify(post.url) : mobilify(post.cleanPermalink);
   const { title } = post;
 
   const titleLinkClass = `PostHeader__post-title-line ${post.visited ? 'm-visited' : ''}`;
+  const target = linkExternally && showLinksInNewTab ? '_blank' : null;
 
   return (
-    <a className={ titleLinkClass } href={ url } target={ linkExternally ? '_blank' : null }>
+    <a className={ titleLinkClass } href={ url } target={ target }>
       { title }
     </a>
   );
@@ -263,13 +267,18 @@ export default function PostHeader(props) {
     nextToThumbnail,
     showingLink,
     renderMediaFullbleed,
+    showLinksInNewTab,
   } = props;
+
+  if (renderMediaFullbleed === undefined) {
+    debugger;
+  }
 
   return (
     <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
       { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
-      { renderPostTitleLink(post, single) }
-      { showingLink ? renderPostHeaderLink(post) : null }
+      { renderPostTitleLink(post, single, showLinksInNewTab) }
+      { showingLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
       { single ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
   );

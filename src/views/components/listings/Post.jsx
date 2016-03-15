@@ -23,6 +23,7 @@ export default class Post extends BaseComponent {
   static propTypes = {
     post: propTypes.listing.isRequired,
     app: T.object.isRequired,
+    ctx: T.object.isRequired,
     apiOptions: T.object.isRequired,
     user: propTypes.user,
     token: T.string,
@@ -60,6 +61,8 @@ export default class Post extends BaseComponent {
     this.externalDomain = isPostDomainExternal(props.post);
     this.renderMediaFullbleed = postShouldRenderMediaFullbleed(props.post);
     this.forceHTTPS = this.shouldForceHTTPS(props.app);
+    const isAndroid = props.ctx.userAgent && /android/i.test(props.ctx.userAgent);
+    this.showLinksInNewTab = this.externalDomain && isAndroid;
 
     this.state = {
       compact,
@@ -190,7 +193,8 @@ export default class Post extends BaseComponent {
       width,
     } = this.state;
 
-    const { externalDomain, renderMediaFullbleed, forceHTTPS } = this;
+    const { externalDomain, renderMediaFullbleed, forceHTTPS,
+      showLinksInNewTab } = this;
 
     let thumbnailOrNil;
     if (compact) {
@@ -210,6 +214,7 @@ export default class Post extends BaseComponent {
           forceHTTPS={ forceHTTPS }
           isDomainExternal={ externalDomain }
           renderMediaFullbleed={ renderMediaFullbleed }
+          showLinksInNewTab={ showLinksInNewTab }
         />
       );
     }
@@ -234,6 +239,7 @@ export default class Post extends BaseComponent {
           forceHTTPS={ forceHTTPS }
           isDomainExternal={ externalDomain }
           renderMediaFullbleed={ renderMediaFullbleed }
+          showLinksInNewTab={ showLinksInNewTab }
         />
       );
     }
@@ -252,6 +258,7 @@ export default class Post extends BaseComponent {
             nextToThumbnail={ !!thumbnailOrNil }
             showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
             renderMediaFullbleed={ renderMediaFullbleed }
+            showLinksInNewTab={ showLinksInNewTab }
           />
         </div>
         { contentOrNil }

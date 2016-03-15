@@ -233,6 +233,7 @@ export default class PostAndCommentList extends BaseComponent {
   renderPost(post, index, zIndex, page, compact) {
     const {
       app,
+      ctx,
       apiOptions,
       winWidth,
       hideSubredditLabel,
@@ -249,6 +250,7 @@ export default class PostAndCommentList extends BaseComponent {
         z={ zIndex }
         compact={ compact }
         app={ app }
+        ctx={ ctx }
         user={ user }
         apiOptions={ apiOptions }
         winWidth={ winWidth }
