@@ -21,9 +21,9 @@ export function isPostDomainExternal(post) {
 }
 
 export function cleanPostDomain(domain) {
-  return domain.replace(/\.com$/, '');
+  return (domain || '').replace(/\.com$/, '');
 }
 
 export function cleanPostHREF(href) {
-  return href.replace(/https?:\/\/i.imgur.com/, 'https://imgur.com');
+  return (href || '').replace(/https?:\/\/i.imgur.com/, 'https://imgur.com');
 }
