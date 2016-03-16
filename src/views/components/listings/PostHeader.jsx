@@ -271,11 +271,13 @@ export default function PostHeader(props) {
     showLinksInNewTab,
   } = props;
 
+  const showSourceLink = showingLink && !renderMediaFullbleed;
+
   return (
     <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
       { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
       { renderPostTitleLink(post, showLinksInNewTab) }
-      { showingLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
+      { showSourceLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
       { single ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
   );
