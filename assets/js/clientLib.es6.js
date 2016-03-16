@@ -120,28 +120,32 @@ export function refreshToken (app) {
     .then(res => {
       const token = res.body;
 
-      const now = new Date();
-      const expires = new Date(token.tokenExpires);
+      if (token && token.token) {
+        const now = new Date();
+        const expires = new Date(token.tokenExpires);
 
-      Object.assign(app.getState('ctx'), {
-        token: token.token,
-        tokenExpires: token.tokenExpires,
-      });
-
-      app.setState('refreshingToken', false);
-      app.emit('token:refresh', token);
-
-      window.setTimeout(function() {
-        refreshToken(app).then(function() {
-          Object.assign(app.getState('ctx'), {
-            token: token.token,
-            tokenExpires: token.tokenExpires,
-          });
-
-          app.setState('refreshingToken', false);
-          app.emit('token:refresh', token);
+        Object.assign(app.getState('ctx'), {
+          token: token.token,
+          tokenExpires: token.tokenExpires,
         });
-      }, (expires - now) * 0.9);
+
+        app.setState('refreshingToken', false);
+        app.emit('token:refresh', token);
+
+        window.setTimeout(function() {
+          refreshToken(app).then(function() {
+            Object.assign(app.getState('ctx'), {
+              token: token.token,
+              tokenExpires: token.tokenExpires,
+            });
+
+            app.setState('refreshingToken', false);
+            app.emit('token:refresh', token);
+          });
+        }, (expires - now) * 0.9);
+      } else {
+        app.setState('refreshingToken', false);
+      }
     });
 }
 
