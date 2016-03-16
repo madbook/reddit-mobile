@@ -6,6 +6,10 @@ import { SORTS, SORT_VALUES_MAP } from '../../sortValues';
 
 const T = React.PropTypes;
 
+const getSortValue = sortValue => {
+  return SORT_VALUES_MAP[sortValue] ? sortValue : SORTS.CONFIDENCE;
+};
+
 export default class SortSelector extends React.Component {
   static propTypes = {
     app: T.object.isRequired,
@@ -59,7 +63,7 @@ export default class SortSelector extends React.Component {
   }
 
   renderCurrentSort() {
-    const { sortValue } = this.props;
+    const sortValue = getSortValue(this.props.sortValue);
     const { text, icon } = SORT_VALUES_MAP[sortValue];
 
     return (
@@ -74,7 +78,7 @@ export default class SortSelector extends React.Component {
   }
 
   renderCurrentIcon() {
-    const { sortValue } = this.props;
+    const sortValue = getSortValue(this.props.sortValue);
     let { icon } = SORT_VALUES_MAP[sortValue];
     if (icon === 'icon-circle') { icon = 'icon-history'; }
     const iconCls = `SortSelector__currentIcon ${icon}`;
@@ -104,7 +108,7 @@ export default class SortSelector extends React.Component {
   }
 
   renderDropdownRow(sortName) {
-    const { sortValue } = this.props;
+    const sortValue = getSortValue(this.props.sortValue);
     const selected = sortName === sortValue;
 
     let icon = SORT_VALUES_MAP[sortName].icon;
