@@ -5,13 +5,13 @@ import propTypes from '../../../propTypes';
 
 import BaseComponent from '../BaseComponent';
 import PostAndCommentList from './PostAndCommentList';
-import ListingPaginationButtons from '../ListingPaginationButtons';
+import ListingPaginationButtons from './ListingPaginationButtons';
 
 const T = React.PropTypes;
 
-export default class NewListing extends BaseComponent {
+export default class Listing extends BaseComponent {
   static propTypes = {
-    postsAndComments: propTypes.postsAndComments.isRequired,
+    listings: propTypes.postsAndComments.isRequired,
     app: T.object.isRequired,
     config: T.object,
     ctx: T.object.isRequired,
@@ -69,7 +69,7 @@ export default class NewListing extends BaseComponent {
 
   render() {
     const {
-      postsAndComments,
+      listings,
       apiOptions,
       app,
       config,
@@ -89,13 +89,13 @@ export default class NewListing extends BaseComponent {
     } = this.props;
 
     const compact = this.state.compact || this.props.forceCompact;
-    const shouldRenderPaginationButtons = shouldPage && postsAndComments.length;
+    const shouldRenderPaginationButtons = shouldPage && listings.length;
 
     return (
-      <div className={ 'NewListing' }>
+      <div className={ 'Listing' }>
         <PostAndCommentList
           className={ listingClassName }
-          postsAndComments={ postsAndComments }
+          postsAndComments={ listings }
           apiOptions={ apiOptions }
           compact={ compact }
           winWidth={ winWidth }
@@ -119,7 +119,7 @@ export default class NewListing extends BaseComponent {
 
   renderPaginationButtons(compactState) {
     const {
-      postsAndComments,
+      listings,
       pagingPrefix,
       pageSize,
       prevUrl,
@@ -130,7 +130,7 @@ export default class NewListing extends BaseComponent {
     return (
       <ListingPaginationButtons
         pagingPrefix={ pagingPrefix }
-        listings={ postsAndComments }
+        listings={ listings }
         compact={ compactState }
         ctx={ ctx }
         pageSize={ pageSize }

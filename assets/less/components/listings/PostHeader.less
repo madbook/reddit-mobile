@@ -26,7 +26,7 @@
   // representation of the preview state, then we can really
   // know whether or not to apply .m-thumbnail-margin.
   .PostContent.size-compact + &.m-thumbnail-margin {
-    @rendered-thumbnail-size: @new-compact-thumbnail-width + 2 * @grid-size;
+    @rendered-thumbnail-size: @compact-listing-thumbnail-size + 2 * @grid-size;
     margin-left: @rendered-thumbnail-size;
     min-height: @rendered-thumbnail-size;
 

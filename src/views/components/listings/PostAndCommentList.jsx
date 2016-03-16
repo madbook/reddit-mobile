@@ -11,7 +11,6 @@ import CommentPreview from '../CommentPreview';
 
 const T = React.PropTypes;
 
-const _DEFAULT_WINDOW_WIDTH = 300;
 const _AD_LOCATION = 11;
 const _DEFAULT_PAGE_SIZE = 25;
 const _FRONTPAGE_NAME = ' reddit.com';
@@ -39,7 +38,7 @@ export default class PostAndCommentList extends BaseComponent {
 
   static defaultProps = {
     firstPage: 0,
-    winWidth: _DEFAULT_WINDOW_WIDTH,
+    winWidth: constants.POST_DEFAULT_WIDTH, 
     className: '',
   };
 
@@ -133,6 +132,7 @@ export default class PostAndCommentList extends BaseComponent {
       ctx,
       loid,
       subredditTitle,
+      winWidth,
     } = this.props;
 
     const { compact } = this.state;
@@ -141,7 +141,6 @@ export default class PostAndCommentList extends BaseComponent {
       <Ad
         key='ad'
         ref='ad'
-        listingRedesign={ true }
         app={ app }
         config={ config }
         apiOptions={ apiOptions }
@@ -151,6 +150,7 @@ export default class PostAndCommentList extends BaseComponent {
         site={ this.getSite() }
         subredditTitle={ subredditTitle }
         afterLoad={ this.afterAdDidLoad }
+        winWidth={ winWidth }
       />
     );
   }

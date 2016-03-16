@@ -2,11 +2,10 @@ import Feet from 'feet';
 
 import constants from './constants';
 
-const { BETA, LISTING_REDESIGN } = constants.flags;
+const { BETA } = constants.flags;
 
 const config = {
   [BETA]: true,
-  [LISTING_REDESIGN]: true,
 };
 
 const feet = new Feet(config);

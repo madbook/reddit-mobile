@@ -8,11 +8,10 @@ import BasePage from './BasePage';
 import LinkTools from '../components/LinkTools';
 import Comment from '../components/comment/Comment';
 import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
-import PostRedesignProxy from '../components/listings/PostRedesignProxy';
+import Post from '../components/listings/Post';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
 
-const { LISTING_REDESIGN } = constants.flags;
 const T = React.PropTypes;
 
 class ListingPage extends BasePage {
@@ -277,8 +276,6 @@ class ListingPage extends BasePage {
       );
     }
 
-    const listingRedesign = this.state.feature.enabled(LISTING_REDESIGN);
-
     return (
       <div className='listing-main'>
         <TopSubnav
@@ -288,9 +285,9 @@ class ListingPage extends BasePage {
           list='comments'
           hideSort={ true }
         />
-        <div className={ `listing-content ${!listingRedesign ? 'container' :''}` } key='container'>
+        <div className={ 'listing-content' } key='container'>
           { googleCarousel }
-          <PostRedesignProxy
+          <Post
             feature={ this.state.feature }
             compact={ false }
             app={ app }
@@ -298,16 +295,16 @@ class ListingPage extends BasePage {
             apiOptions={ apiOptions }
             editError={ linkEditError }
             editing={ editing }
-            listing={ listing }
+            post={ listing }
             onDelete={ this.onDelete }
             user={ user }
             token={ token }
             saveUpdatedText={ this.saveUpdatedText }
             single={ true }
-            winWidth={ this.props.ctx.winWidth }
+            winWidth={ constants.POST_DEFAULT_WIDTH }
             toggleEdit={ this.toggleEdit }
           />
-          <div className={ `${listingRedesign ? 'container' : ''}` }>
+          <div className={ 'container' }>
             <div className="listing-content__tools">
               <LinkTools
                 app={ app }

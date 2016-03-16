@@ -1,11 +1,11 @@
 import React from 'react';
 import querystring from 'querystring';
 
-import BaseComponent from './BaseComponent';
+import BaseComponent from '../BaseComponent';
 
 const T = React.PropTypes;
 
-class ListingPaginationButtons extends BaseComponent {
+export default class ListingPaginationButtons extends BaseComponent {
   static propTypes = {
     listings: T.array.isRequired,
     compact: T.bool,
@@ -125,5 +125,3 @@ class ListingPaginationButtons extends BaseComponent {
     );
   }
 }
-
-export default ListingPaginationButtons;

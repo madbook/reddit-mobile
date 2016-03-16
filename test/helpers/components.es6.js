@@ -12,12 +12,6 @@ import Dropdown from '../../src/views/components/Dropdown';
 import DropdownController from '../../src/views/components/dropdown/DropdownController';
 import GoogleCarouselMetadata from '../../src/views/components/GoogleCarouselMetadata';
 import Inbox from '../../src/views/components/Inbox';
-import Listing from '../../src/views/components/Listing';
-import ListingContainer from '../../src/views/components/ListingContainer';
-import ListingContent from '../../src/views/components/ListingContent';
-import ListingDropdown from '../../src/views/components/ListingDropdown';
-import ListingList from '../../src/views/components/ListingList';
-import ListingPaginationButtons from '../../src/views/components/ListingPaginationButtons';
 import Loading from '../../src/views/components/Loading';
 import MessageNav from '../../src/views/components/MessageNav';
 import MessagePreview from '../../src/views/components/MessagePreview';
@@ -39,10 +33,9 @@ import UserProfile from '../../src/views/components/UserProfile';
 import Vote from '../../src/views/components/Vote';
 
 // Listing Redesign, will re-alphabetize on final deploy
-import NewListing from '../../src/views/components/listings/NewListing';
+import Listing from '../../src/views/components/listings/Listing';
+import ListingPaginationButtons from '../../src/views/components/listings/ListingPaginationButtons';
 import PostAndCommentList from '../../src/views/components/listings/PostAndCommentList';
-import ListingRedesignProxy from '../../src/views/components/listings/ListingRedesignProxy';
-import PostRedesignProxy from '../../src/views/components/listings/PostRedesignProxy';
 import Post from '../../src/views/components/listings/Post';
 import PostHeader from '../../src/views/components/listings/PostHeader';
 import PostFooter from '../../src/views/components/listings/PostFooter';
@@ -86,12 +79,6 @@ export {
     DropdownController,
     GoogleCarouselMetadata,
     Inbox,
-    Listing,
-    ListingContainer,
-    ListingContent,
-    ListingDropdown,
-    ListingList,
-    ListingPaginationButtons,
     Loading,
     MessageNav,
     MessagePreview,
@@ -112,11 +99,10 @@ export {
     UserProfile,
     Vote,
 
-    // Listing Redesign, will re-alphabetize at final deploy
-    NewListing,
+    // Listing Redesign
+    Listing,
+    ListingPaginationButtons,
     PostAndCommentList,
-    ListingRedesignProxy,
-    PostRedesignProxy,
     Post,
     PostHeader,
     PostFooter,

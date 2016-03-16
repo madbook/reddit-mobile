@@ -32,10 +32,10 @@ export default {
   SET_META_COLOR: 'setMetaColor',
   // Post content
   POST_COMPACT_THUMBNAIL_WIDTH: 70,
+  POST_DEFAULT_WIDTH: 320,
 
   // feature flags
   flags: {
     BETA: 'beta',
-    LISTING_REDESIGN: 'listingRedesign',
   },
 };

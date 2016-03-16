@@ -3,7 +3,6 @@ import { models } from 'snoode';
 
 import constants from '../../constants';
 import BaseComponent from './BaseComponent';
-import Listing from './Listing';
 import Post from './listings/Post';
 
 import makeRequest from '../../lib/makeRequest';
@@ -12,7 +11,7 @@ const T = React.PropTypes;
 
 class Ad extends BaseComponent {
   static propTypes = {
-    listingRedesign: T.bool,
+    winWidth: T.number.isRequired,
     app: T.object.isRequired,
     config: T.object.isRequired,
     apiOptions: T.object.isRequired,
@@ -51,12 +50,8 @@ class Ad extends BaseComponent {
     if (!listing) {
       return true;
     }
-
-    if (this.props.listingRedesign) {
-      return listing.loadContentIfNeeded(...arguments);
-    }
-
-    return listing.checkPos(...arguments);
+    
+    return listing.loadContentIfNeeded(...arguments);
   }
 
   getAd() {
@@ -183,27 +178,14 @@ class Ad extends BaseComponent {
     const props = this.props;
     const listing = Object.assign({}, this.state.ad, { compact: props.compact });
 
-    if (props.listingRedesign) {
-      return (
-        <Post
-          ref='listing'
-          {...props}
-          hideDomain={ true }
-          hideSubredditLabel={ true }
-          hidewhen={ true }
-          post={ listing }
-        />
-      );
-    }
-
     return (
-      <Listing
+      <Post
         ref='listing'
         {...props}
         hideDomain={ true }
         hideSubredditLabel={ true }
-        hideWhen={ true }
-        listing={ listing }
+        hidewhen={ true }
+        post={ listing }
       />
     );
   }

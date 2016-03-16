@@ -39,7 +39,7 @@ export default class Post extends BaseComponent {
     onDelete: T.func,
     toggleEdit: T.func,
     saveUpdatedText: T.func,
-    editError: T.arrayOf(T.string),
+    editError: T.oneOf([T.arrayOf(T.string), T.object]),
     editing: T.bool,
   };
 

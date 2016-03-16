@@ -1,6 +1,9 @@
 import React from 'react';
 import URL from 'url';
 
+import { errors } from 'snoode';
+const { ResponseError } = errors;
+
 import mobilify from '../../../lib/mobilify';
 import gifToHTML5Sources from '../../../lib/gifToHTML5Sources';
 import { posterForHrefIfGiphyCat } from '../../../lib/gifToHTML5Sources';
@@ -90,7 +93,7 @@ export default class PostContent extends BaseComponent {
     toggleShowNSFW: T.func.isRequired,
     showNSFW: T.bool.isRequired,
     editing: T.bool.isRequired,
-    editError: T.arrayOf(T.string),
+    editError: T.oneOf([T.arrayOf(T.string), T.object]),
     saveUpdatedText: T.func.isRequired,
     toggleEditing: T.func.isRequired,
     forceHTTPS: T.bool.isRequired,
@@ -261,10 +264,17 @@ export default class PostContent extends BaseComponent {
   }
 
   renderEditingError(editError) {
+    let errorText;
+    if (Array.isArray(editError)) {
+      errorText = `${err[0]}: ${err[1]}`;
+    } else if (editError instanceof ResponseError) {
+      errorText = `Sorry, something went wrong with the server, status code: ${editError.status}`;
+    }
+
     const err = editError[0];
     return (
       <div className='alert alert-danger alert-bar'>
-        { `${err[0]}: ${err[1]}` }
+        { errorText }
       </div>
     );
   }
