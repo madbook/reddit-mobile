@@ -146,7 +146,9 @@ function renderPostFlair(post, single) {
     promoted,
   } = post;
 
-  if (!(stickied || (gilded && single) || distinguished || isNSFW || promoted)) {
+  const showingGilded = gilded && single;
+
+  if (!(stickied || showingGilded || locked || distinguished || isNSFW || promoted)) {
     return null;
   }
 
@@ -154,8 +156,8 @@ function renderPostFlair(post, single) {
     <span>
       { stickied ? STICKY_FLAIR : null }
       { locked ? LOCKED_FLAIR : null }
-      { gilded && single ? GILDED_FLAIR : null }
-      { gilded && single && gilded !== 1 ? gilded : null }
+      { showingGilded ? GILDED_FLAIR : null }
+      { showingGilded && gilded !== 1 ? gilded : null }
       { distinguished === 'moderator' ? MOD_FLAIR : null }
       { distinguished === 'admin' ? ADMIN_FLAIR : null }
       { isNSFW ? NSFW_FLAIR : null }
