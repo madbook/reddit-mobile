@@ -177,13 +177,12 @@ export default class PostContent extends BaseComponent {
     const selftextNode = this.buildSelfTextContent(post, isCompact, single);
 
     if (!mediaContentNode && !selftextNode) {
-      if (isDomainExternal && !isCompact) {
+      if (!isDomainExternal || isCompact) {
         // When in compact mode, the PostHeader Component is responsible for rendering
         // outbound links. But when in list mode, we are, so make sure we render
         // the linkbar to outbound links if needed.
-        return this.renderMediaContent(null, false, true, post.domain, outboundLink);
+        return null;
       }
-      return null;
     }
 
     return (
