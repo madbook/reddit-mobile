@@ -6,7 +6,7 @@ const { BETA, LISTING_REDESIGN } = constants.flags;
 
 const config = {
   [BETA]: true,
-  [LISTING_REDESIGN]: { employee: true },
+  [LISTING_REDESIGN]: true,
 };
 
 const feet = new Feet(config);
