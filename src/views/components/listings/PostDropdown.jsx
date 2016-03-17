@@ -141,7 +141,7 @@ export default class PostDropdown extends BaseComponent {
       <DropdownRow onClick={ this.props.handleHidePost }>
         <div className='DropdownRow__icon icon-hide' />
         <div className='DropdownRow__text'>
-          { 'Hide' }
+          'Hide'
         </div>
       </DropdownRow>
     );

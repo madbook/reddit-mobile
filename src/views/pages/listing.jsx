@@ -285,7 +285,7 @@ class ListingPage extends BasePage {
           list='comments'
           hideSort={ true }
         />
-        <div className={ 'listing-content' } key='container'>
+        <div className='listing-content' key='container'>
           { googleCarousel }
           <Post
             feature={ this.state.feature }
@@ -304,7 +304,7 @@ class ListingPage extends BasePage {
             winWidth={ constants.POST_DEFAULT_WIDTH }
             toggleEdit={ this.toggleEdit }
           />
-          <div className={ 'container' }>
+          <div className='container'>
             <div className="listing-content__tools">
               <LinkTools
                 app={ app }

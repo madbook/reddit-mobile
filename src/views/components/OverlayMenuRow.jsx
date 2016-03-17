@@ -142,7 +142,7 @@ class ExpandoRow extends BaseComponent {
         <button type='button' className='OverlayMenu-row-button' onClick={ this._onClick }>
           { iconOrSpacerFromProps(props) }
           { rowText }
-          <span className={ 'OverlayMenu-row-right-item' }>
+          <span className='OverlayMenu-row-right-item'>
             <span className={ `${expanded ? 'icon-nav-arrowup' : 'icon-nav-arrowdown'}` } />
           </span>
         </button>

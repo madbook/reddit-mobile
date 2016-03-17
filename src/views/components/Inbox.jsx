@@ -41,7 +41,7 @@ class Inbox extends BaseComponent {
     const onSubmit = this.onSubmit;
 
     return (
-      <div className={ 'Inbox' }>
+      <div className='Inbox'>
         {
           messages.map(function(m, i) {
             const isLastReply = (

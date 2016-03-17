@@ -65,7 +65,7 @@ class UserSavedPage extends BasePage {
           apiOptions={ apiOptions }
           winWidth={ ctx.winWidth }
           compact={ compact }
-          listingClassName={ 'vertical-spacing-top' }
+          listingClassName='vertical-spacing-top'
         />
       </div>
     );

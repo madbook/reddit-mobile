@@ -7,7 +7,7 @@ function UserProfile (props) {
   const created = moment(userProfile.created * 1000);
 
   return (
-    <article className={ 'UserProfile' }>
+    <article className='UserProfile'>
       <ul className='UserProfile-ul list-unstyled'>
         <li className='UserProfile-li h1'>
           <span className='icon-crown-circled'/>

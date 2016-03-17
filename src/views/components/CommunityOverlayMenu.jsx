@@ -34,8 +34,8 @@ class CommunityOverlayMenu extends BaseComponent {
       followingRow = (
         <ExpandoRow
           key='communities-row'
-          icon={ 'icon-settings' }
-          text={ 'Subscribed' }
+          icon='icon-settings'
+          text='Subscribed'
           subtext={ this.numCommunitiesText(subscriptions) }
         >
           { subscriptions.map((subreddit) => {

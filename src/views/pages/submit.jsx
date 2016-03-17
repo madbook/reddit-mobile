@@ -318,7 +318,7 @@ class SubmitPage extends BasePage {
             iden={ this.state.captchaIden }
             answer={ this.state.captchaAnswer }
             action={ this.submit }
-            actionName={ 'Post' }
+            actionName='Post'
             error={ showCaptchaError }
           />
         </Modal>
@@ -388,7 +388,7 @@ class SubmitPage extends BasePage {
                     onClick={ this.changeSendReplies }
                   >
                     <span >
-                      <span className={ `icon-check ${iconClass}` }>{ ' ' }</span>
+                      <span className={ `icon-check ${iconClass}` }>' '</span>
                        send replies to my inbox
                     </span>
                   </button>
@@ -404,7 +404,7 @@ class SubmitPage extends BasePage {
     }
 
     return (
-      <form className='Submit-form' action={ '/submit' } method='POST' >
+      <form className='Submit-form' action='/submit' method='POST' >
         { postForm }
           <SubredditSelectionButton
             {...props}

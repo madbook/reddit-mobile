@@ -75,7 +75,7 @@ const terms = (
     className='text-link'
     target='_blank'
   >
-    { 'Terms ' }
+    'Terms '
   </a>
 );
 const privacy = (
@@ -84,7 +84,7 @@ const privacy = (
     className='text-link'
     target='_blank'
   >
-    { 'Privacy Policy ' }
+    'Privacy Policy '
   </a>
 );
 const content = (
@@ -93,7 +93,7 @@ const content = (
     className='text-link'
     target='_blank'
   >
-    { 'Content Policy' }
+    'Content Policy'
   </a>
 );
 

@@ -92,7 +92,7 @@ export default class Listing extends BaseComponent {
     const shouldRenderPaginationButtons = shouldPage && listings.length;
 
     return (
-      <div className={ 'Listing' }>
+      <div className='Listing'>
         <PostAndCommentList
           className={ listingClassName }
           postsAndComments={ listings }

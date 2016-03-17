@@ -59,16 +59,16 @@ class UserOverlayMenu extends BaseComponent {
 
       <LinkRow
         key='saved'
-        text={ 'Saved' }
+        text='Saved'
         href={ `/u/${user.name}/saved` }
-        icon={ 'icon-save icon-large lime' }
+        icon='icon-save icon-large lime'
       />,
 
       <LinkRow
         key='settings'
-        text= { 'Settings' }
+        text= 'Settings'
         href={ `${this.props.config.reddit}/prefs` }
-        icon={ 'icon-settings icon-large blue ' }
+        icon='icon-settings icon-large blue '
       />,
     ];
   }
@@ -94,7 +94,7 @@ class UserOverlayMenu extends BaseComponent {
       userBasedRows = (
         <LinkRow
           key='login-row'
-          text={ 'Log in / sign up' }
+          text='Log in / sign up'
           icon={ userIconClassName }
           href={ config.loginPath }
         />);
@@ -104,14 +104,14 @@ class UserOverlayMenu extends BaseComponent {
       userBasedRows,
       <ButtonRow
         key='compact-toggle'
-        icon={ 'icon-compact icon-large blue' }
+        icon='icon-compact icon-large blue'
         text={ `${compact ? 'Card' : 'Compact'} view` }
         clickHandler={ this._viewPreferenceToggleClick }
       />,
       <LinkRow
         key='goto-desktop'
-        icon={ 'icon-desktop icon-large blue' }
-        text={ 'Desktop Site' }
+        icon='icon-desktop icon-large blue'
+        text='Desktop Site'
         href={ `https://www.reddit.com${this.props.ctx.url}` }
         clickHandler={ this._desktopSite }
       />,
