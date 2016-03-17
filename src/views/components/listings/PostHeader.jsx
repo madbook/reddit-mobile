@@ -168,7 +168,6 @@ function renderPostFlair(post, single) {
 }
 
 function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) {
-
   const {
     distinguished,
     sr_detail,
@@ -186,24 +185,41 @@ function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditL
     authorOrNil = renderAuthorAndTimeStamp(post, single, hideWhen);
   }
 
-  const havePreAuthor = renderMediaFullbleed || postFlairOrNil || subredditLabelOrNil;
+  const flairOrNil = renderLinkFlairText(post);
 
   return (
     <div className='PostHeader__post-descriptor-line'>
       <div className='PostHeader__post-descriptor-line-overflow'>
-        <span className={ distinguishingCssClass }>
-          { postFlairOrNil }
-          { postFlairOrNil && subredditLabelOrNil ? SEPERATOR : null }
-          { subredditLabelOrNil }
-          { (postFlairOrNil || subredditLabelOrNil) && renderMediaFullbleed ? SEPERATOR : null }
-          { renderMediaFullbleed ? renderPostDomain(post) : null }
-          { havePreAuthor && authorOrNil ? SEPERATOR : null }
-          { authorOrNil }
-        </span>
-        { !single ? renderLinkFlairText(post) : null }
+        <span
+          className={ distinguishingCssClass }
+          children={ renderWithSeparators([
+            hideSubredditLabel ? flairOrNil : null,
+            postFlairOrNil,
+            subredditLabelOrNil,
+            renderMediaFullbleed ? renderPostDomain(post) : null,
+            authorOrNil,
+            !hideSubredditLabel ? flairOrNil : null,
+          ]) }
+        />
       </div>
     </div>
   );
+}
+
+function renderWithSeparators(nullableThings) {
+  const separatedThings = [];
+
+  nullableThings.forEach((thingOrNil) => {
+    if (thingOrNil && separatedThings[separatedThings.length - 1]) {
+      separatedThings.push(SEPERATOR);
+    }
+
+    if (thingOrNil) {
+      separatedThings.push(thingOrNil);
+    }
+  });
+
+  return separatedThings;
 }
 
 function renderPostDomain(post) {
@@ -225,8 +241,7 @@ function renderDetailViewSubline(post, hideWhen) {
       <div className='PostHeader__post-descriptor-line-overflow'>
         <span className={ distinguishingCssClass }>
           { renderAuthorAndTimeStamp(post, true, hideWhen) }
-          </span>
-          { renderLinkFlairText(post) }
+        </span>
       </div>
     </div>
   );
