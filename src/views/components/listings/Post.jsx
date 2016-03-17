@@ -253,6 +253,7 @@ export default class Post extends BaseComponent {
           <PostHeader
             post={ post }
             single={ single }
+            compact={ compact }
             hideSubredditLabel={ hideSubredditLabel }
             hideWhen={ hideWhen }
             nextToThumbnail={ !!thumbnailOrNil }
@@ -265,6 +266,7 @@ export default class Post extends BaseComponent {
         <PostFooter
           user={ user }
           single={ single }
+          compact={ compact }
           post={ post }
           app={ app }
           token={ token }

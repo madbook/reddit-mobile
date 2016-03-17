@@ -13,6 +13,7 @@ export default class PostFooter extends BaseComponent {
   static propTypes = {
     user: T.object,
     single: T.bool.isRequired,
+    compact: T.bool.isRequired,
     post: propTypes.listing.isRequired,
     app: T.object.isRequired,
     token: T.string,
@@ -202,12 +203,11 @@ export default class PostFooter extends BaseComponent {
     } = this.props;
 
     const { dropdownTarget } = this.state;
-
     const scoreHidden = post.hide_score || post.score_hidden;
 
     return (
-      <footer className='PostFooter'>
-        { this.renderCommentsLink(post, compact) }
+      <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
+        { this.renderCommentsLink(post) }
         <div className='PostFooter__vote-and-tools-wrapper'>
           <div
             className='PostFooter__dropdown-button PostFooter__hit-area icon-seashells'

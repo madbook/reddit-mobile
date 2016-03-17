@@ -1,5 +1,23 @@
 .PostHeader {
 
+  &.size-compact {
+
+    .PostHeader {
+      &__post-title-line {
+        font-size: 14px;
+      }
+
+      &__post-descriptor-line-overflow,
+      &__post-title-line {
+        padding-bottom: @half-grid-size;
+      }
+
+      &__post-link {
+        margin-bottom: @half-grid-size;
+      }
+    }
+  }
+
   // We can't easily tell from react if calling a component is null or not.
   // we just get a tree that's a virtual dom descriptior for null.
   // To make sure the compact header styles are applied only if we have a
@@ -10,9 +28,7 @@
   .PostContent.size-compact + &.m-thumbnail-margin {
     @rendered-thumbnail-size: @new-compact-thumbnail-width + 2 * @grid-size;
     margin-left: @rendered-thumbnail-size;
-    // make sure there's enough height so that expanded compact's
-    // media player doesn't overlap with the header at all.
-    min-height: @rendered-thumbnail-size + @grid-size;
+    min-height: @rendered-thumbnail-size;
 
     // & is that complex next child selector so reset the component name
     .PostHeader {
@@ -163,6 +179,8 @@
   }
 
   &__post-link {
+    display: inline-block;
+
     &, &:visited {
       color: @grey-text;
     }

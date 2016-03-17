@@ -50,6 +50,7 @@ const SPONSORED_FLAIR = (
 PostHeader.propTypes = {
   post: propTypes.listing.isRequired,
   single: T.bool.isRequired,
+  compact: T.bool.isRequired,
   hideSubredditLabel: T.bool.isRequired,
   hideWhen: T.bool.isRequired,
   nextToThumbnail: T.bool.isRequired,
@@ -185,6 +186,8 @@ function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditL
     authorOrNil = renderAuthorAndTimeStamp(post, single, hideWhen);
   }
 
+  const havePreAuthor = renderMediaFullbleed || postFlairOrNil || subredditLabelOrNil;
+
   return (
     <div className='PostHeader__post-descriptor-line'>
       <div className='PostHeader__post-descriptor-line-overflow'>
@@ -194,7 +197,7 @@ function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditL
           { subredditLabelOrNil }
           { (postFlairOrNil || subredditLabelOrNil) && renderMediaFullbleed ? SEPERATOR : null }
           { renderMediaFullbleed ? renderPostDomain(post) : null }
-          { (renderMediaFullbleed || postFlairOrNil || subredditLabelOrNil) && authorOrNil ? SEPERATOR : null }
+          { havePreAuthor && authorOrNil ? SEPERATOR : null }
           { authorOrNil }
         </span>
         { !single ? renderLinkFlairText(post) : null }
@@ -265,6 +268,7 @@ export default function PostHeader(props) {
   const {
     post,
     single,
+    compact,
     hideSubredditLabel,
     hideWhen,
     nextToThumbnail,
@@ -274,9 +278,11 @@ export default function PostHeader(props) {
   } = props;
 
   const showSourceLink = showingLink && !renderMediaFullbleed;
+  const sizeClass = `${compact ? 'size-compact' : ''}`;
+  const thumbnailClass = `${nextToThumbnail ? 'm-thumbnail-margin' : ''}`;
 
   return (
-    <header className={ `PostHeader ${nextToThumbnail ? 'm-thumbnail-margin' : '' }` }>
+    <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
       { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
       { renderPostTitleLink(post, showLinksInNewTab) }
       { showSourceLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
