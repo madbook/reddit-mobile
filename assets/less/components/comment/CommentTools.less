@@ -4,53 +4,68 @@
   &__divider,
   &__score,
   &__upvote,
-  &__downvote {
+  &__downvote,
+  &__hit-area {
     display: inline-block;
     vertical-align: middle;
     color: @neutral;
   }
-  
+
   &__more,
   &__divider,
   &__score,
   &__upvote {
     margin-right: @grid-size;
   }
-  
+
   &__reply,
   &__more,
   &__upvote,
   &__downvote {
     text-align: center;
-    
+
     &[class*=" icon-"] {
       font-size: 24px;
       line-height: 24px;
       width: 3 * @grid-size;
     }
   }
-  
+
   &__reply {
     margin-right: 2 * @grid-size;
   }
-  
+
+  &__hit-area {
+    min-width: @min-hit-area;
+    min-height: @min-hit-area;
+    line-height: @min-hit-area;
+  }
+
   &__score {
     width: 32px;
     font-size: 14px;
     text-align: right;
+
+    &.upvoted {
+      color: @orangered;
+    }
+
+    &.downvoted {
+      color: @periwinkle;
+    }
   }
-  
+
   &__divider {
     border-right: 1px solid @pale-grey;
     height: 20px;
   }
-  
+
   &__upvote {
     &.m-selected {
-      color: @orange;
+      color: @orangered;
     }
   }
-  
+
   &__downvote {
     &.m-selected {
       color: @periwinkle;

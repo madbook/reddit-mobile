@@ -112,8 +112,7 @@ export default class CommentTools extends React.Component {
         { this.renderReply() }
         { this.renderSeashells() }
         { this.renderDivider() }
-        { this.renderScore() }
-        { this.renderUpvote() }
+        { this.renderScoreAndUpvote() }
         { this.renderDownvote() }
         { dropdownTarget ? this.renderDropdown() : null }
       </div>
@@ -142,10 +141,24 @@ export default class CommentTools extends React.Component {
     return <div className='CommentTools__divider' />;
   }
 
-  renderScore() {
-    const { score, scoreHidden } = this.props;
+  renderScoreAndUpvote() {
+    const { score, scoreHidden, voteDirection, onUpvote } = this.props;
 
-    return <div className='CommentTools__score'>{ scoreText(score, scoreHidden) }</div>;
+    let textColorCls;
+    if (voteDirection === 1) {
+      textColorCls = 'upvoted';
+    } else if (voteDirection === -1) {
+      textColorCls = 'downvoted';
+    }
+
+    return (
+      <div className='CommentTools__hit-area' onClick={ onUpvote }>
+        <div className={ `CommentTools__score ${textColorCls}` }>
+          { scoreText(score, scoreHidden) }
+        </div>
+        { this.renderUpvote() }
+      </div>
+    );
   }
 
   renderUpvote() {
@@ -154,16 +167,20 @@ export default class CommentTools extends React.Component {
     let cls = 'CommentTools__upvote icon-upvote';
     if (voteDirection === 1) { cls += ' m-selected'; }
 
-    return <div className={ cls } onClick={ this.props.onUpvote } />;
+    return <div className={ cls } />;
   }
 
   renderDownvote() {
-    const { voteDirection } = this.props;
+    const { voteDirection, onDownvote } = this.props;
 
     let cls = 'CommentTools__downvote icon-downvote';
     if (voteDirection === -1) { cls += ' m-selected'; }
 
-    return <div className={ cls } onClick={ this.props.onDownvote } />;
+    return (
+      <div className='CommentTools__hit-area' onClick={ onDownvote }>
+        <div className={ cls } />
+      </div>
+    );
   }
 
   renderDropdown() {
