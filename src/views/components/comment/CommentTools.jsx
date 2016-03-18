@@ -46,12 +46,19 @@ export default class CommentTools extends React.Component {
     permalinkUrl: '',
   };
 
+  componentDidMount() {
+    this.mounted = true;
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       dropdownTarget: null,
     };
+
+    this.mounted = false; // doesn't use state because we only webkit-animation
+    // to do animations on votes _after_ we're on the client
 
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleEditClicked = this.handleEditClicked.bind(this);
@@ -166,6 +173,7 @@ export default class CommentTools extends React.Component {
 
     let cls = 'CommentTools__upvote icon-upvote';
     if (voteDirection === 1) { cls += ' m-selected'; }
+    if (this.mounted) { cls += ' m-animated'; }
 
     return <div className={ cls } />;
   }
@@ -175,6 +183,7 @@ export default class CommentTools extends React.Component {
 
     let cls = 'CommentTools__downvote icon-downvote';
     if (voteDirection === -1) { cls += ' m-selected'; }
+    if (this.mounted) { cls += ' m-animated'; }
 
     return (
       <div className='CommentTools__hit-area' onClick={ onDownvote }>

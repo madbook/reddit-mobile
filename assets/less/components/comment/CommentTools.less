@@ -63,12 +63,20 @@
   &__upvote {
     &.m-selected {
       color: @orangered;
+
+      &.m-animated {
+        .upvoteBounceAnimation;
+      }
     }
   }
 
   &__downvote {
     &.m-selected {
       color: @periwinkle;
+
+      &.m-animated {
+        .downvoteBounceAnimation;
+      }
     }
   }
 }

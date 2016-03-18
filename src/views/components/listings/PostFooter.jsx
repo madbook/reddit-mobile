@@ -43,6 +43,11 @@ export default class PostFooter extends BaseComponent {
       this.props.apiOptions,
     );
 
+    this.mounted = false; // not state as setState calls for updating
+    // would force a re-render. We want this to make sure animations
+    // are only rendered on the client _after_ the first render
+    // so there are no bounces when you go between pages
+
     // state.saved is requried because the api doesn't always
     // update the state of the post properly. This is because
     // the post doesn't always get cached, and the model update/mergeProps
@@ -55,6 +60,10 @@ export default class PostFooter extends BaseComponent {
       voteDirection: this.voteController.voteDirection,
       dropdownTarget: false,
     };
+  }
+
+  componentDidMount() {
+    this.mounted = true;
   }
 
   onOpenDropdown(e) {
@@ -152,7 +161,8 @@ export default class PostFooter extends BaseComponent {
 
   renderUpvote(voteDirection) {
     const upvoted = voteDirection === 1;
-    const wrapperClassName = `${VOTE_WRAPPER_CLS} ${upvoted ? 'upvoted' : ''}`;
+    let wrapperClassName = `${VOTE_WRAPPER_CLS} ${upvoted ? 'upvoted' : ''}`;
+    if (this.mounted) { wrapperClassName += ' m-animated'; }
 
     return (
       <span className={ wrapperClassName }>
@@ -163,7 +173,8 @@ export default class PostFooter extends BaseComponent {
 
   renderDownVote(voteDirection) {
     const downvoted = voteDirection === -1;
-    const wrapperClassName = `${VOTE_WRAPPER_CLS} ${downvoted ? 'downvoted' : ''}`;
+    let wrapperClassName = `${VOTE_WRAPPER_CLS} ${downvoted ? 'downvoted' : ''}`;
+    if (this.mounted) { wrapperClassName += ' m-animated'; }
 
     return (
       <span className={ wrapperClassName }>
