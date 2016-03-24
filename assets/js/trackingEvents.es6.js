@@ -33,18 +33,22 @@ function postData(eventInfo) {
 }
 
 function trackingEvents(app) {
-  let trackerSecret = app.config.trackerClientSecret || '';
-  trackerSecret = new Buffer(trackerSecret, 'base64').toString();
+  let tracker;
   app.eventQueue = [];
 
-  const tracker = new EventTracker(
-    app.config.trackerKey,
-    trackerSecret,
-    postData,
-    app.config.trackerEndpoint,
-    app.config.trackerClientAppName,
-    calculateHash
-  );
+  if (app.config.trackerClientSecret) {
+    let trackerSecret = app.config.trackerClientSecret || '';
+    trackerSecret = new Buffer(trackerSecret, 'base64').toString();
+
+    tracker = new EventTracker(
+      app.config.trackerKey,
+      trackerSecret,
+      postData,
+      app.config.trackerEndpoint,
+      app.config.trackerClientAppName,
+      calculateHash
+    );
+  }
 
   function eventSend(topic, type, payload) {
     if (tracker) {
