@@ -28,7 +28,7 @@ import setLoggedOutCookies from '../lib/loid';
 
 import Config from '../config';
 
-const ignoreCSRF = ['/timings', '/error'];
+const ignoreCSRF = ['/timings', '/error', '/csp-report'];
 
 function getBucket(loid) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
@@ -57,7 +57,9 @@ function skipAuth(app, url) {
     url.indexOf('/login') === 0 ||
     url.indexOf('/register') === 0 ||
     url.indexOf('/oauth2') === 0 ||
-    url.indexOf('/timings') === 0
+    url.indexOf('/timings') === 0 ||
+    url.indexOf('/error') === 0 ||
+    url.indexOf('/csp-report') === 0
   );
 }
 
@@ -101,11 +103,14 @@ function setCompact(ctx, app) {
 const defaultConfig = Config;
 function formatBootstrap(props) {
   let p;
+
   for (p in props.config) {
     if (!defaultConfig.hasOwnProperty(p)) {
       delete props.config[p];
     }
   }
+
+  props.nonce = props.ctx.csrf;
 
   return props;
 }
@@ -322,6 +327,50 @@ class Server {
       this.set('X-Frame-Options', 'SAMEORIGIN');
       this.set('X-Content-Type-Options', 'nosniff');
       this.set('X-XSS-Protection', '1; mode=block');
+
+      let self;
+      let localhost;
+      let gaurl;
+      let secure = '';
+
+      if (!app.config.assetPath) {
+        self = `'self'`;
+        localhost = 'localhost:* ws://localhost:*';
+      }
+
+      if (app.config.https || app.config.httpsProxy) {
+        secure = 's';
+      }
+
+      if (app.config.googleAnalyticsId) {
+        gaurl = `http${secure}://www.google-analytics.com`;
+      }
+
+      const INLINE = `'unsafe-inline'`;
+      const ASSETS = app.config.assetPath;
+      const NONCE = `'nonce-${this.csrf}'`;
+      const ORIGIN = app.config.origin;
+      const API = `${app.config.nonAuthAPIOrigin} ${app.config.authAPIOrigin}`;
+      const IMAGE_HOST = '*.redditmedia.com thumbs.gfycat.com *.imgur.com *.giphy.com *.ytimg.com';
+      const FRAME_HOST = '*.embedly.com *.imgur.com *.gfycat.com  *.youtube.com';
+      const MEDIA_HOST = '*.embedly.com *.imgur.com *.gfycat.com *.giphy.com';
+
+      const cspRules = [
+        `report-uri /csp-report`,
+        `default-src ${self} ${localhost} ${ASSETS} ${API} ${ORIGIN}`,
+        `frame-src ${FRAME_HOST}`,
+        `child-src ${FRAME_HOST}`,
+        `media-src ${MEDIA_HOST}`,
+        `img-src ${self} ${ASSETS} ${ORIGIN} ${IMAGE_HOST}`,
+        `form-action ${self} ${ORIGIN} ${API}`,
+        `script-src ${self} ${localhost} ${ASSETS} ${gaurl} ${NONCE}`,
+        `style-src ${self} ${INLINE} ${ASSETS}`,
+        `font-src ${self} ${ASSETS}`,
+      ];
+
+      this.set('Content-Security-Policy-Report-Only', cspRules.join(';'));
+      // Enable this when report-only is removed
+      //this.set('X-WebKit-CSP', cspRules.join(';'));
 
       if (app.config.https || app.config.httpsProxy) {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
