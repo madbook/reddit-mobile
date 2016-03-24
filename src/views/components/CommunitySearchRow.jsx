@@ -36,6 +36,9 @@ class CommunitySearchRow extends BaseComponent {
               id='location-input'
               placeholder='find a community'
               name='location'
+              autoCorrect='off'
+              autoCapitalize='off'
+              spellCheck='false'
               onChange={ this._handleInputChange }
             />
             <span className='OverlayMenu-form-button right-arrow'>
