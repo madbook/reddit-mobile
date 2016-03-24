@@ -431,72 +431,67 @@ class LoginPage extends BasePage {
       (<p className='minimalInput__error-text'>{ errorMessage }</p>) : null;
 
     return (
-      <div className='login__wrapper'>
+      <div className='login'>
         <SnooIconHeader title={ action } close={ this.goBack } />
-        <div className='container'>
-          <div className='row'>
-            <div className='col-xs-12 col-sm-6 login'>
-              { this.renderLoginRegisterLink(mode, originalUrl) }
-              { globalError }
-              <form
-                action={ formUri }
-                method='POST'
-                onSubmit={ this.doAction }
-              >
-                <MinimalInput
-                  name='username'
-                  type='text'
-                  placeholder={ PLACEHOLDER_TXT[mode].USERNAME }
-                  showTopBorder={ true }
-                  onChange={ this.updateUsername }
-                  value={ username }
-                  error={ error.username ? errorMessage : '' }
-                >
-                  { error.username ? this.renderClear('clearUsername'): null }
-                </MinimalInput>
-                <MinimalInput
-                  name='password'
-                  type={ passwordFieldType }
-                  placeholder={ PLACEHOLDER_TXT[mode].PASSWORD }
-                  showTopBorder={ false }
-                  error={ error.password ? errorMessage : '' }
-                  onChange={ this.updatePassword }
-                  value={ password }
-                >
-                  { error.password ? this.renderClear('clearPassword') :
-                                     this.renderEye(blue, this.toggleType) }
-                </MinimalInput>
-                <input
-                  type='text'
-                  name='password2'
-                  value={ password }
-                  className='hidden'
-                />
-                { registerMode ? this.renderRegisterStuff(email,
-                                                          this.updateEmail,
-                                                          error,
-                                                          errorMessage,
-                                                          newsletter) : null }
-                <input
-                  name='_csrf'
-                  type='hidden'
-                  value={ ctx.csrf }
-                />
-                <input
-                  name='originalUrl'
-                  type='hidden'
-                  value={ originalUrl || '/' }
-                />
-                { !registerMode ?
-                    this.renderShowForgot(this.toggleShowForgot) : null }
-                <div className='login__submit-btn'>
-                  <SquareButton text={ action.toUpperCase() } type='submit'/>
-                </div>
-              </form>
-            </div>
+        { this.renderLoginRegisterLink(mode, originalUrl) }
+        { globalError }
+        <form
+          className='login__form'
+          action={ formUri }
+          method='POST'
+          onSubmit={ this.doAction }
+        >
+          <MinimalInput
+            name='username'
+            type='text'
+            placeholder={ PLACEHOLDER_TXT[mode].USERNAME }
+            showTopBorder={ true }
+            onChange={ this.updateUsername }
+            value={ username }
+            error={ error.username ? errorMessage : '' }
+          >
+            { error.username ? this.renderClear('clearUsername'): null }
+          </MinimalInput>
+          <MinimalInput
+            name='password'
+            type={ passwordFieldType }
+            placeholder={ PLACEHOLDER_TXT[mode].PASSWORD }
+            showTopBorder={ false }
+            error={ error.password ? errorMessage : '' }
+            onChange={ this.updatePassword }
+            value={ password }
+          >
+            { error.password ? this.renderClear('clearPassword') :
+                               this.renderEye(blue, this.toggleType) }
+          </MinimalInput>
+          <input
+            type='text'
+            name='password2'
+            value={ password }
+            className='hidden'
+          />
+          { registerMode ? this.renderRegisterStuff(email,
+                                                    this.updateEmail,
+                                                    error,
+                                                    errorMessage,
+                                                    newsletter) : null }
+          <input
+            name='_csrf'
+            type='hidden'
+            value={ ctx.csrf }
+          />
+          <input
+            name='originalUrl'
+            type='hidden'
+            value={ originalUrl || '/' }
+          />
+          { !registerMode ?
+              this.renderShowForgot(this.toggleShowForgot) : null }
+          <div className='login__submit-btn'>
+            <SquareButton text={ action.toUpperCase() } type='submit'/>
           </div>
-          { registerMode ? this.renderTerms(terms, privacy, content): null }
-        </div>
+        </form>
+        { registerMode ? this.renderTerms(terms, privacy, content): null }
         { forgotPassword }
       </div>
     );

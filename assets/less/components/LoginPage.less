@@ -1,13 +1,12 @@
+@login-width: 450px;
+
 .login {
-  margin: 0 auto;
-  float: none !important;
+  background-color: @off-white;
 
-  &__wrapper {
-    background-color: @off-white;
-
-    .row {
-      margin-right: -5px;
-    }
+  &__form {
+    max-width: @login-width;
+    margin: 0 auto;
+    padding: 0 5px;
   }
 
   &__register-link {
@@ -23,7 +22,6 @@
 
   &__forgot-link {
     color: @alien-blue-text;
-    // margin-top: 5px;
     padding: 6px 0;
   }
 
@@ -48,6 +46,8 @@
     .text-muted;
     .text-small;
     text-align: center;
+    margin: 10px auto 0;
+    max-width: @login-width;
   }
 
   &__checkbox-wrap {
