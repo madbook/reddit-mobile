@@ -517,7 +517,7 @@ const oauthRoutes = function(app) {
     const { username, password } = this.body;
 
     this.queryPath = getRedirectQueryParams(this);
-    this.isAjax = this.req.headers['content-type'] === 'application/json';
+    this.isAjax = this.req.headers['content-type'].includes('application/json');
 
     const urlOrRes = yield getLoginRedirectOrRes(username, password, this);
 
@@ -543,7 +543,7 @@ const oauthRoutes = function(app) {
     const endpoint = `${origin}/api/register`;
     const { password, username, email, newsletter } = this.body;
 
-    this.isAjax = this.req.headers['content-type'] === 'application/json';
+    this.isAjax = this.req.headers['content-type'].includes('application/json');
 
     this.queryPath = getRedirectQueryParams(this);
 
