@@ -10,7 +10,7 @@ const T = React.PropTypes;
 
 export default class LinkTools extends React.Component {
   static propTypes = {
-    userId: T.string,
+    user: T.object,
     app: T.object.isRequired,
     apiOptions: T.object.isRequired,
     linkId: T.string.isRequired,
@@ -26,6 +26,7 @@ export default class LinkTools extends React.Component {
     onSortChange: () => {},
     isLocked: false,
     sort: SORTS.CONFIDENCE,
+    user: {},
   };
 
   constructor(props) {
@@ -58,7 +59,7 @@ export default class LinkTools extends React.Component {
   }
 
   async submitNewComment() {
-    const { app, apiOptions, linkId, onNewComment, userId } = this.props;
+    const { app, apiOptions, linkId, onNewComment, user } = this.props;
     if (app.needsToLogInUser()) { return; }
 
     try {
@@ -81,7 +82,7 @@ export default class LinkTools extends React.Component {
       app.emit('comment:new', {
         ...this.props,
         comment: newComment,
-        user: { id: userId },
+        user: { id: user.id },
       });
 
       onNewComment(newComment);

@@ -309,7 +309,7 @@ class ListingPage extends BasePage {
             <div className="listing-content__tools">
               <LinkTools
                 ctx={ ctx }
-                userId={ user.id }
+                userId={ user }
                 app={ app }
                 apiOptions={ apiOptions }
                 token={ token }
