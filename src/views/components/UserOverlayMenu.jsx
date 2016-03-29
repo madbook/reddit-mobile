@@ -25,7 +25,7 @@ class UserOverlayMenu extends BaseComponent {
     };
 
     this._viewPreferenceToggleClick = this._viewPreferenceToggleClick.bind(this);
-    this.modePreferenceToggleClick = this.modePreferenceToggleClick.bind(this);
+    this.themePreferenceToggle = this.themePreferenceToggle.bind(this);
     this._gotoDesktopSiteClick = this._gotoDesktopSiteClick.bind(this);
     this.renderOverlayBody = this.renderOverlayBody.bind(this);
   }
@@ -116,7 +116,7 @@ class UserOverlayMenu extends BaseComponent {
         key='theme-toggle'
         icon='icon-settings icon-large'
         text={ `${theme === 'nightmode' ? 'Day' : 'Night'} Mode` }
-        clickHandler={ this.modePreferenceToggleClick }
+        clickHandler={ this.themePreferenceToggle }
       />,
       <LinkRow
         key='goto-desktop'
@@ -198,7 +198,7 @@ class UserOverlayMenu extends BaseComponent {
     this.setState({ compact: newCompact });
   }
 
-  modePreferenceToggleClick() {
+  themePreferenceToggle() {
     const { app } = this.props;
     const { theme } = this.state;
     const nextTheme = theme === 'nightmode' ? 'daymode' : 'nightmode';

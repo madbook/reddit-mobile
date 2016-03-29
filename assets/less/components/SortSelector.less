@@ -13,7 +13,10 @@
   &__currentIcon,
   &__dropdownIcon {
     font-size: 24px;
-    color: @grey-text;
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
     text-align: center;
     margin-left: -@half-grid-size;
 

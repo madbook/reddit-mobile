@@ -125,13 +125,20 @@ button, a {
   border-radius: 19px;
 }
 
-.icon-snoo-circled.orangered {
-  // hacks for nightmode
-  .icon-font({
-    background-color: @white;
+.icon-snoo-circled.orangered,
+.icon-gold, .icon-circled-gold {
+  // hacks for nightmode.
+  // makes the fill color white regardless of the background color;
+  // has to be a fancy pixel image because if you use background-color: white
+  // the white is antialiazed weird around the icon font shape and looks like a blurry pixelated border
+  // using a dataurl lets you size the background and center it so that doesn't happen
+  &:before {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P8////fwAKAAP+j4hsjgAAAABJRU5ErkJggg==');
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 1em;
-    border: 1px solid @orangered;
-  });
+  }
 }
 
 .icon-xxl {

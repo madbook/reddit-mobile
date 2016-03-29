@@ -71,6 +71,7 @@
     overflow: hidden;
     position: relative;
     vertical-align: middle;
+    padding-right: 3em;
 
     .themeify({
       color: @theme-meta-text-color;
@@ -143,21 +144,21 @@
 
   &__mod-text {
     &, a, a:visited, a:hover {
-      color: @lime;
+      color: @lime !important;
       text-decoration: none;
     }
   }
 
   &__admin-text {
     &, a, a:visited, a:hover {
-      color: @orangered;
+      color: @orangered !important;
       text-decoration: none;
     }
   }
 
   &__nsfw-text {
     &, a, a:visited, a:hover {
-      color: @nsfw-salmon;
+      color: @nsfw-salmon !important;
       text-decoration: none;
     }
   }
@@ -191,7 +192,9 @@
     font-size: 0.6em;
     vertical-align: middle;
     display: inline-block;
-    color: @neutral;
+    .themeify({
+      color: @theme-dark-line-color;
+    });
     position: relative;
     top: -1px;
   }
