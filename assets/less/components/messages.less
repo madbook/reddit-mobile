@@ -29,7 +29,11 @@
 
 .panel.message-preview {
   margin-bottom: 0;
-  border-bottom: solid 1px @gray-lighter;
+
+  .themeify({
+    border-bottom: @theme-border;
+  });
+
   box-shadow: none;
 
   .message-preview:last-child {

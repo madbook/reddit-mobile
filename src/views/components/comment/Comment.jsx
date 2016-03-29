@@ -385,6 +385,7 @@ export default class Comment extends BaseComponent {
         <CommentHeader
           author={ comment.author }
           authorType={ authorType }
+          topLevel={ nestingLevel === 0 }
           dots={ Math.max(nestingLevel - 6, 0) }
           flair={ comment.author_flair_text }
           created={ comment.created_utc }

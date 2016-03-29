@@ -159,7 +159,7 @@ export default class CommentTools extends React.Component {
     }
 
     return (
-      <div className='CommentTools__hit-area' onClick={ onUpvote }>
+      <div className={ `CommentTools__hit-area ${textColorCls}` } onClick={ onUpvote }>
         <div className={ `CommentTools__score ${textColorCls}` }>
           { scoreText(score, scoreHidden) }
         </div>
@@ -170,23 +170,21 @@ export default class CommentTools extends React.Component {
 
   renderUpvote() {
     const { voteDirection } = this.props;
-
     let cls = 'CommentTools__upvote icon-upvote';
-    if (voteDirection === 1) { cls += ' m-selected'; }
-    if (this.mounted) { cls += ' m-animated'; }
+    if (this.mounted && voteDirection === 1) { cls += ' m-animated'; }
 
     return <div className={ cls } />;
   }
 
   renderDownvote() {
-    const { voteDirection, onDownvote } = this.props;
+    const { onDownvote, voteDirection } = this.props;
 
     let cls = 'CommentTools__downvote icon-downvote';
-    if (voteDirection === -1) { cls += ' m-selected'; }
-    if (this.mounted) { cls += ' m-animated'; }
+    const voteCls = voteDirection === -1 ? 'downvoted' : '';
+    if (this.mounted && voteDirection === -1) { cls += ' m-animated'; }
 
     return (
-      <div className='CommentTools__hit-area' onClick={ onDownvote }>
+      <div className={ `CommentTools__hit-area ${voteCls}` } onClick={ onDownvote } >
         <div className={ cls } />
       </div>
     );

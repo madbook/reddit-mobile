@@ -19,13 +19,18 @@
     left: 0;
     right: 0;
     z-index: 11;
-    background-color: @transparent-grey;
+
+    .themeify({
+      background-color: @theme-overlay-color;
+    });
   }
 
   &__searchArea {
     display: table;
-    background-color: white;
     height: 6 * @grid-size;
+    .themeify({
+      background-color: @theme-comment-body-color;
+    })
   }
 
   &__close,
@@ -36,10 +41,9 @@
   &__close {
     padding-left: 2 * @grid-size;
 
-    &[class=" icon-"] {
+    .icon-font({
       font-size: 20px;
-      color: @grey-text;
-    }
+    });
   }
 
   &__barContainer {

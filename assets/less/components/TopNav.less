@@ -1,17 +1,24 @@
 .TopNav {
   height: @top-nav-height;
-  background-color: @white;
   position: fixed;
   width: 100%;
   z-index: 11;
   -webkit-user-select: none;
   top: 0;
 
+  .themeify({
+    background-color: @theme-nav-bar-color;
+  });
+
   &:after {
     content:'';
     position: absolute;
     height: 100%;
-    background-color: @white;
+
+    .themeify({
+      background-color: @theme-nav-bar-color;
+    });
+
     .shadow;
     z-index: -1;
     left: 0;
@@ -94,7 +101,9 @@
     right: @top-nav-height;
     position: absolute;
 
-    #gradient > .horizontal(@start-color: rgba(255, 255, 255, 0); @end-color: rgba(255, 255, 255, 1); @start-percent: 0%; @end-percent: 15%);
+    .themeify({
+      #gradient > .horizontal(@start-color: fade(@theme-nav-bar-color, 0%); @end-color: fade(@theme-nav-bar-color, 100%); @start-percent: 0%; @end-percent: 15%);
+    });
   }
 }
 
@@ -115,7 +124,10 @@
 
     margin-left: 4px;
 
-    border: 1px solid @pale-grey;
+    .themeify({
+      border: @theme-alt-border;
+    });
+
     border-radius: .6em;
     vertical-align: middle;
   }

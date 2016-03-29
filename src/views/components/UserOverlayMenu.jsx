@@ -19,9 +19,13 @@ class UserOverlayMenu extends BaseComponent {
   constructor(props) {
     super(props);
 
-    this.state.compact = props.compact;
+    this.state = {
+      compact: props.compact,
+      theme: props.theme,
+    };
 
     this._viewPreferenceToggleClick = this._viewPreferenceToggleClick.bind(this);
+    this.modePreferenceToggleClick = this.modePreferenceToggleClick.bind(this);
     this._gotoDesktopSiteClick = this._gotoDesktopSiteClick.bind(this);
     this.renderOverlayBody = this.renderOverlayBody.bind(this);
   }
@@ -84,7 +88,7 @@ class UserOverlayMenu extends BaseComponent {
 
   renderOverlayBody() {
     const { user, config } = this.props;
-    const compact = this.state.compact;
+    const { compact, theme } = this.state;
 
     let userBasedRows;
 
@@ -107,6 +111,12 @@ class UserOverlayMenu extends BaseComponent {
         icon='icon-compact icon-large blue'
         text={ `${compact ? 'Card' : 'Compact'} view` }
         clickHandler={ this._viewPreferenceToggleClick }
+      />,
+      <ButtonRow
+        key='theme-toggle'
+        icon='icon-settings icon-large'
+        text={ `${theme === 'nightmode' ? 'Day' : 'Night'} Mode` }
+        clickHandler={ this.modePreferenceToggleClick }
       />,
       <LinkRow
         key='goto-desktop'
@@ -157,27 +167,51 @@ class UserOverlayMenu extends BaseComponent {
       />);
   }
 
-  _viewPreferenceToggleClick() {
-    const {app, config } = this.props;
-    const compact = this.state.compact;
-
-    if (compact) {
-      cookies.expire('compact');
+  setCookie(name, value) {
+    if (typeof value === 'undefined') {
+      cookies.expire(name);
     } else {
+      const { config } = this.props;
       const date = new Date();
       date.setFullYear(date.getFullYear() + 2);
 
-      cookies.set('compact', true, {
+      cookies.set(name, value, {
         expires: date,
         secure: config.https || config.httpsProxy,
       });
     }
+  }
 
+  _viewPreferenceToggleClick() {
+    const { app } = this.props;
+    const compact = this.state.compact;
     const newCompact = !compact;
-    app.emit(constants.COMPACT_TOGGLE, newCompact);
 
+    if (newCompact) {
+      this.setCookie('compact', true);
+    } else {
+      this.setCookie('compact');
+    }
+
+    app.emit(constants.COMPACT_TOGGLE, newCompact);
     app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
-    this.setState({compact: newCompact});
+    this.setState({ compact: newCompact });
+  }
+
+  modePreferenceToggleClick() {
+    const { app } = this.props;
+    const { theme } = this.state;
+    const nextTheme = theme === 'nightmode' ? 'daymode' : 'nightmode';
+
+    if (nextTheme === 'nightmode') {
+      this.setCookie('theme', nextTheme);
+    } else {
+      this.setCookie('theme');
+    }
+
+    app.emit(constants.THEME_TOGGLE, nextTheme);
+    app.emit(constants.TOP_NAV_HAMBURGER_CLICK);
+    this.setState({ theme: nextTheme });
   }
 
   _gotoDesktopSiteClick(e) {

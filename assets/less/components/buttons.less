@@ -35,7 +35,10 @@
 }
 
 .btn-post {
-  .btn-reddit-mixin(@blue, @white);
+  .themeify({
+    .btn-reddit-mixin(@theme-button-color, @theme-button-text-color);
+  });
+
   padding: 6px 5px 1px;
   font-size: .8em;
 }

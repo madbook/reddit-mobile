@@ -16,7 +16,10 @@
   padding-bottom: @top-nav-height;
   overflow-y: auto;
 
-  background-color: @transparent-grey;
+  .themeify({
+    background-color: @theme-overlay-color;
+  });
+
   font-size: @overlay-menu-font-size;
   overflow-y: scroll;
   -webkit-overflow-scroll: touch;
@@ -34,7 +37,10 @@
 
 .OverlayMenu-row {
   .transform(translateZ(0));
-  background-color: @white;
+  .themeify({
+    background-color: @theme-comment-body-color;
+  });
+
   position: relative;
 
   &.top-border:before {
@@ -44,7 +50,10 @@
     left: @grid-size;
     right: @grid-size;
     height: 1px;
-    background: @pale-grey;
+
+    .themeify({
+      background: @theme-line-color;
+    });
   }
 
   &.bottom-border:after {
@@ -54,7 +63,10 @@
     left: @grid-size;
     right: @grid-size;
     height: 1px;
-    background: @pale-grey;
+
+    .themeify({
+      background: @theme-line-color;
+    });
   }
 
   .SVG-icon, .OverlayMenu-icon, .OverlayMenu-row-spacer {
@@ -88,7 +100,10 @@
   font-size: @font-size-base;
 
   &, &:hover, &:visited {
-    color: @grey-text;
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
     text-decoration: none;
   }
 }
@@ -96,7 +111,10 @@
 .OverlayMenu-row-text, .OverlayMenu-row-button {
   height: @overlay-menu-row-height;
   line-height: @overlay-menu-row-height;
-  color: @semi-black-text;
+
+  .themeify({
+    color: @theme-body-text-color;
+  });
 }
 
 .OverlayMenu-row-text {
@@ -113,7 +131,10 @@
   .subtext {
     font-size: @font-size-base;
     line-height: @font-size-base;
-    color: @grey-text;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
   }
 }
 

@@ -12,12 +12,20 @@
     width: 10px;
     height: 10px;
     position: absolute;
-    background: @white;
-    .rotate(45deg);
     left: 4px;
+
+    .rotate(45deg);
     .tween;
     .shadow;
-     border: @gray-border;
+    .themeify({
+      border: @theme-line-color;
+    },
+    @inDayMode: {
+      background: @theme-body-color;
+    },
+    @inNightMode: {
+      background: @theme-comment-body-color;
+    });
   }
 
   &.pull-right {
@@ -27,23 +35,23 @@
 }
 
 // teepee
-  .stalagmite {
-    bottom: 100%;
+.stalagmite {
+  bottom: 100%;
 
-    &:after {
-      bottom: -5px;
-    }
+  &:after {
+    bottom: -5px;
   }
+}
 
 // hangs
-  .stalactite {
-    top: 100%;
+.stalactite {
+  top: 100%;
 
-    &:after {
-      top: -5px;
-    }
-
-    &.hidden:after {
-      top: -10px;
-    }
+  &:after {
+    top: -5px;
   }
+
+  &.hidden:after {
+    top: -10px;
+  }
+}

@@ -1,8 +1,11 @@
 @bgColor: #e9f0f2;
 
 .TextSubNav {
-  background-color: @bgColor;
-  border-bottom: @gray-border;
+  .themeify({
+    background-color: @theme-comment-body-color;
+    border-bottom: @theme-border;
+  });
+
   margin-top: @top-nav-height;
   margin: 0 auto;
   position: relative;
@@ -39,19 +42,17 @@
 }
 
 .TextSubNav-a {
+  .themeify({
+    color: @theme-meta-text-color;
+
+    &:hover, &:visited {
+      text-decoration: none;
+      color: @theme-body-text-color;
+    }
+  });
+
   font-size: 14px;
   line-height: 45px;
-  color: @text-muted;
   font-weight: bold;
-  .tween;
   margin: 0 15px;
-
-  &:hover, &:visited {
-    text-decoration: none;
-    color: @black;
-  }
-
-  &:active {
-    color: lighten(@black, 20%);
-  }
 }

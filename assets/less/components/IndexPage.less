@@ -17,14 +17,17 @@
 .IndexPage-button {
   display: inline-block;
   vertical-align: middle;
-  background-color: @blue;
   padding: 5px 10px;
   line-height: 1.5em;
   cursor: pointer;
 
-  &, &:visited, &:hover {
-    color: @white;
-  }
+  .themeify({
+    background-color: @theme-button-color;
+
+    &, &:visited, &:hover {
+      color: @theme-button-text-color;
+    }
+  });
 
   &.next {
     float: right;

@@ -1,5 +1,8 @@
 .CommunityRow {
   display: table;
+  .themeify({
+    background-color: @theme-body-color;
+  });
 
   &__icon,
   &__details,
@@ -41,18 +44,26 @@
   }
 
   &__name {
-    color: @off-black;
+    .themeify({
+      color: @theme-body-text-color;
+    });
   }
 
   &__rSlash {
-    color: @grey-text;
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
     font-size: 12px;
     margin-right: 2px;
   }
 
   &__counts {
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
     font-size: 12px;
-    color: @grey-text;
   }
 
   &__add {

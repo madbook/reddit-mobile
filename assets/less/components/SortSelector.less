@@ -80,7 +80,13 @@
   }
 
   &__dropdownText {
-    color: @grey-text;
+    .themeify({
+      color: @theme-meta-text-color;
+
+      &.m-selected {
+        color: @theme-body-text-color;
+      }
+    });
 
     &.m-selected {
       color: @semi-black-text;
@@ -94,11 +100,14 @@
   &__title {
     padding: 0 @grid-size @grid-size;
     margin-bottom: @grid-size;
-    border-bottom: 1px solid @pale-grey;
     font-size: 10px;
     line-height: 3 * @grid-size;
     letter-spacing: 1.5;
-    color: @grey-text;
     font-weight: bold;
+
+    .themeify({
+      color: @theme-meta-text-color;
+      border-bottom: @theme-alt-border;
+    });
   }
 }

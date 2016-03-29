@@ -1,12 +1,22 @@
 @login-width: 450px;
 
 .login {
-  background-color: @off-white;
 
   &__form {
     max-width: @login-width;
     margin: 0 auto;
     padding: 0 5px;
+  }
+
+  &__register-link,
+  &__forgot-link {
+    a {
+      .themeify({
+        &, &:hover, &:visited {
+          color: @theme-link-text-color;
+        }
+      });
+    }
   }
 
   &__register-link {
@@ -21,7 +31,6 @@
   }
 
   &__forgot-link {
-    color: @alien-blue-text;
     padding: 6px 0;
   }
 

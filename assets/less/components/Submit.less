@@ -20,10 +20,13 @@
 }
 
 .Submit-header {
-  background-color: @white;
   padding: 8px 10px;
   height: @top-nav-height;
-  border-bottom: @gray-border;
+
+  .themeify({
+    border: @theme-alt-border;
+  });
+
   .flex(0, 0, 45px);
 
   .close {
@@ -36,7 +39,6 @@
 }
 
 .Submit-header-text {
-  color: @black;
   font-size: @font-size-h4;
   margin-left: 8px;
   position: relative;
@@ -50,6 +52,9 @@
 
 .Submit-close {
   font-size: 1.3em;
+  .themeify({
+    color: @theme-body-text-color;
+  });
 }
 
 .temp-icon {
@@ -85,7 +90,6 @@
 
 .form-control.Submit-body-text {
   padding: 10px;
-  border: none;
   resize: none;
 }
 

@@ -1,11 +1,13 @@
 .SearchPage {
-  background-color: @off-white;
-  height: 100%;
+    height: 100%;
   position: relative;
 
   &__searchBar {
     height: 6 * @grid-size;
-    border-bottom: 1px solid @pale-grey;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
   }
 
   &__loading {
@@ -20,9 +22,12 @@
 
   &__communitiesHeader,
   &__linksHeader {
+    .themeify({
+      background-color: @theme-comment-body-color;
+      color: @theme-meta-text-color;
+    });
+
     padding: 0 2 * @grid-size;
-    background-color: @off-white;
-    color: @grey-text;
     font-size: 2 * @grid-size;
     line-height: 2;
   }
@@ -52,9 +57,11 @@
 
   &__communitiesResults {
     padding: @half-grid-size;
-    border-top: 1px solid @pale-grey;
-    border-bottom: 1px solid @pale-grey;
-    background-color: @white;
+    .themeify({
+      background-color: @theme-body-color;
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    });
   }
 
   &__community {
@@ -77,14 +84,12 @@
     vertical-align: middle;
   }
 
-  &__linksResults {
-    background-color: @off-white;
-  }
-
   &__link {
-    background-color: white;
-    border-top: 1px solid @pale-grey;
-    border-bottom: 1px solid @pale-grey;
+    .themeify({
+      background-color: @theme-body-color;
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    });
 
     & ~ & {
       margin-top: @grid-size;

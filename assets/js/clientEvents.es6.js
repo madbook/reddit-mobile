@@ -43,6 +43,15 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     app.setState('compact', compact);
   });
 
+  app.on(constants.THEME_TOGGLE, function(theme) {
+    app.setState('theme', theme);
+    const body = document.body;
+    // old browsers don't support multiple arguments to add / remove;
+    body.classList.remove('nightmode');
+    body.classList.remove('daymode');
+    body.classList.add(theme);
+  });
+
   app.on(constants.TOGGLE_OVER_18, function(val) {
     cookies.set('over18', val);
   });

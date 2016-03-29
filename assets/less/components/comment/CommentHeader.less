@@ -55,12 +55,6 @@
   &__flair {
     &.m-highlight {
       color: @mango;
-
-      [class*=" icon-"] {
-        // need to user important to overcome all the default styling around
-        // icons
-        color: @mango !important;
-      }
     }
   }
 
@@ -77,21 +71,11 @@
 
   &__dots {
     margin-right: @half-grid-size;
-    color: @blue;
+    color: @mint;
   }
 
   &__caron {
     margin-right: @grid-size;
-
-    &[class*=" icon-"] {
-      color: @blue;
-    }
-
-    &.m-highlight {
-      &[class*=" icon-"] {
-        color: @mango;
-      }
-    }
 
     &.m-collapsed {
       transform: rotate(-90deg);
@@ -127,24 +111,6 @@
 
   &__usernameIcon {
     margin-left: @half-grid-size;
-
-    &[class*=" icon-"] {
-      &.icon-snoosilhouette {
-        color: @orangered;
-      }
-
-      &.icon-mod {
-        color: @lime;
-      }
-
-      &.icon-op {
-        color: @blue;
-      }
-
-      &.icon-user-account {
-        color: @mint;
-      }
-    }
   }
 
   &__gold,
@@ -158,7 +124,10 @@
   }
 
   &__goldCount {
-    color: @neutral;
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
     margin-left: @half-grid-size;
   }
 }

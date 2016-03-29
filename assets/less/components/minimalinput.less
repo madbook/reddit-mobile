@@ -19,7 +19,11 @@
     border-bottom-left-radius: 0px;
 
     background-image: none;
-    border-bottom: @gray-border;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
+
     width: 100%;
     background-color: transparent;
     font-size: 1.2em;
@@ -31,8 +35,11 @@
     }
 
     &.show-top {
+      .themeify({
+        border-top: @theme-border;
+      });
+
       background-image: none;
-      border-top: @gray-border;
     }
 
     &.error {

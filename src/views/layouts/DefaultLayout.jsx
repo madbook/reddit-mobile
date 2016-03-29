@@ -121,7 +121,7 @@ function DefaultLayout (props) {
         <link href={ `${assetPath}/favicon/152x152.png` } rel="apple-touch-icon" sizes="152x152" />
         <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
       </head>
-      <body className='navbar-offcanvas-target'>
+      <body className={ `navbar-offcanvas-target ${props.theme}` }>
         <div id='app-container'>
           !!CONTENT!!
         </div>

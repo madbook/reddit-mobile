@@ -8,7 +8,10 @@
   &__hit-area {
     display: inline-block;
     vertical-align: middle;
-    color: @neutral;
+
+    .themeify({
+      color: @theme-nav-icon-color;
+    });
   }
 
   &__more,
@@ -56,27 +59,22 @@
   }
 
   &__divider {
-    border-right: 1px solid @pale-grey;
+    .themeify({
+      border-right: @theme-border;
+    });
+
     height: 20px;
   }
 
   &__upvote {
-    &.m-selected {
-      color: @orangered;
-
-      &.m-animated {
-        .upvoteBounceAnimation;
-      }
+    &.m-animated {
+      .upvoteBounceAnimation;
     }
   }
 
   &__downvote {
-    &.m-selected {
-      color: @periwinkle;
-
-      &.m-animated {
-        .downvoteBounceAnimation;
-      }
+    &.m-animated {
+      .downvoteBounceAnimation;
     }
   }
 }

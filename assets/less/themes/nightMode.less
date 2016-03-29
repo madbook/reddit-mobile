@@ -1,0 +1,27 @@
+@import "fontBase.less";
+
+.nightMode {
+  .fontBase();
+
+  @theme-nav-text-color: @pale-grey;
+  @theme-light-nav-text-color: @pale-grey;
+  @theme-body-text-color: darken(spin(@pale-grey, 5), 5%);
+  @theme-meta-text-color: @dark-grey;
+  @theme-link-text-color: @blue;
+  @theme-button-text-color: @white;
+
+  @theme-nav-bar-color: @black;
+  @theme-nav-icon-color: @dark-grey;
+  @theme-body-color: @black;
+  @theme-comment-body-color: @semi-black-text;
+  @theme-line-color: @off-black;
+  @theme-dark-line-color: @dark-grey;
+  @theme-toast-color: @pale-grey;
+  @theme-dimmer-color: @semi-black-text;
+  @theme-button-color: @blue;
+  @theme-active-color: @mint;
+
+  @theme-overlay-color: rgba(0, 0, 0, 0.7);
+  @theme-border: 1px solid @theme-line-color;
+  @theme-alt-border: 1px solid @theme-dark-line-color;
+}

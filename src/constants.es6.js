@@ -13,6 +13,7 @@ export default {
   DROPDOWN_CSS_CLASS: 'Dropdown',
   DROPDOWN_OPEN: 'dropdownOpen',
   COMPACT_TOGGLE: 'compactToggle',
+  THEME_TOGGLE: 'themeToggle',
   TOP_NAV_HEIGHT: 45,
   RESIZE: 'resize',
   SCROLL: 'scroll',

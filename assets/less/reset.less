@@ -20,7 +20,17 @@ button, a {
 .form-control, .btn-default {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
-  border: @gray-border !important;
   outline: none !important;
   -webkit-appearance: none;
+
+  .themeify({
+    border: @theme-alt-border !important;
+  });
+}
+
+input, textarea {
+  .themeify({
+    background-color: @theme-comment-body-color;
+    color: @theme-body-text-color;
+  });
 }

@@ -2,7 +2,10 @@
   font-size: @icon-size;
   line-height: @icon-size;
   vertical-align: middle;
-  color: @neutral;
+
+  .themeify({
+    color: @theme-nav-icon-color;
+  });
 
   &.blue {
     color: @blue;
@@ -34,6 +37,14 @@
 
   &.warning-yellow {
     color: @warning-yellow;
+  }
+
+  &.mint {
+    color: @mint;
+  }
+
+  &.mango {
+    color: @mango;
   }
 
   &:before {
@@ -68,6 +79,14 @@ button, a {
 
       &.warning-yellow {
         color: darken(@warning-yellow, 6%);
+      }
+
+      &.mint {
+        color: darken(@mint, 5%);
+      }
+
+      &.mango {
+        color: darken(@mango, 5%);
       }
     });
   }
@@ -104,6 +123,15 @@ button, a {
   width: 38px;
   height: 38px;
   border-radius: 19px;
+}
+
+.icon-snoo-circled.orangered {
+  // hacks for nightmode
+  .icon-font({
+    background-color: @white;
+    border-radius: 1em;
+    border: 1px solid @orangered;
+  });
 }
 
 .icon-xxl {

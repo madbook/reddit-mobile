@@ -66,7 +66,7 @@ function postTextColorClass(distinguished) {
 
 function isValidKeyColorForRendering(keyColor) {
   // in the future do something fancier with hsl compared to background color... maybe...
-  return keyColor !== '#efefed';
+  return keyColor !== '#efefed' && keyColor !== '#222222';
 }
 
 function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDistinguishing) {

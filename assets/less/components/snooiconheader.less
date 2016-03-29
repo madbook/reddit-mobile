@@ -1,8 +1,10 @@
 .SnooIconHeader {
   &__wrapper {
     position: relative;
-    border-bottom: @gray-border;
-    background-color: @white;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
   }
 
   &__icon-box {
@@ -16,7 +18,10 @@
     position: absolute;
     left: 10px;
     font-size: 2.3em;
-    color: @grey-text;
+
+    .themeify({
+      color: @theme-nav-icon-color;
+    });
   }
 
   &__title {

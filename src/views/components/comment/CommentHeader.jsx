@@ -8,10 +8,10 @@ const separator = <div className='CommentHeader__separator'> • </div>;
 
 function getAuthorIcon(authorType) {
   switch (authorType) {
-    case 'self': return 'user-account';
-    case 'moderator': return 'mod';
-    case 'admin': return 'snoosilhouette';
-    case 'op': return 'op';
+    case 'self': return 'icon-user-account mint';
+    case 'moderator': return 'icon-mod lime';
+    case 'admin': return 'icon-snoosilhouette orangered';
+    case 'op': return 'icon-op blue';
     default: return '';
   }
 }
@@ -22,13 +22,17 @@ function renderDots(count) {
   return <div className='CommentHeader__dots'>{ content }</div>;
 }
 
-function renderCaron(collapsed, dots, highlight) {
+function renderCaron(collapsed, topLevel, dots, highlight) {
   const style = dots ? {width: 26 + (10 * dots)} : null;
 
   let headerCls = 'CommentHeader__caron icon-caron-circled tween';
   if (collapsed) { headerCls += ' m-collapsed'; }
-  if (highlight) { headerCls += ' m-highlight'; }
-
+  if (highlight) {
+    headerCls += ' mango';
+  } else if (topLevel) {
+    headerCls += ' mint';
+  }
+  
   return (
     <td className='CommentHeader__col1' style={ style }>
       { dots ? renderDots(dots) : null }
@@ -39,7 +43,7 @@ function renderCaron(collapsed, dots, highlight) {
 
 function renderInfo(author, flair, created, authorType, highlight, stickied) {
   const authorIcon = getAuthorIcon(authorType);
-  const authorIconCls = `CommentHeader__usernameIcon icon-${authorIcon}`;
+  const authorIconCls = `CommentHeader__usernameIcon ${authorIcon}`;
 
   let usernameCls = 'CommentHeader__username';
   if (highlight) {
@@ -96,6 +100,7 @@ function renderGoldCount(gildCount) {
 function CommentHeader(props) {
   const {
     collapsed,
+    topLevel,
     dots,
     highlight,
     author,
@@ -111,7 +116,7 @@ function CommentHeader(props) {
       <table className='CommentHeader__table'>
         <tbody>
           <tr>
-            { renderCaron(collapsed, dots, highlight) }
+            { renderCaron(collapsed, topLevel, dots, highlight) }
             { renderInfo(author, flair, created, authorType, highlight, stickied) }
             { gildCount ? renderGold(gildCount) : null }
           </tr>
@@ -128,6 +133,7 @@ CommentHeader.propTypes = {
   flair: T.string,
   gildCount: T.number,
   collapsed: T.bool,
+  topLevel: T.bool,
   dots: T.number,
   highlight: T.bool,
   stickied: T.bool,

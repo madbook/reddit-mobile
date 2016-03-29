@@ -102,6 +102,7 @@ export default function(app, $body, render, history) {
     ctx = Object.assign({}, baseCtx, ctx, {
       dataCache: app.getState('dataCache') || {},
       compact: (cookies.get('compact') || '').toString() === 'true',
+      theme: (cookies.get('theme') || '').toString() === 'nightmode' ? 'nightmode' : 'daymode', // just two themes for now...
       showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
       showEUCookieMessage: (EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
       showGlobalMessage: cookies.get((app.config.globalMessage || {}).key) === undefined,

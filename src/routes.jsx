@@ -110,6 +110,7 @@ export function buildProps(ctx, app) {
     dataCache: ctx.dataCache,
     ctx: filterContextProps(ctx),
     compact: ctx.compact,
+    theme: ctx.theme,
     experiments: ctx.experiments,
     token: ctx.token,
     loid: ctx.loid,

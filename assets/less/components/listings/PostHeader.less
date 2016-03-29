@@ -61,6 +61,7 @@
 
   &__post-descriptor-line-overflow {
     overflow-x: auto;
+    padding-right: 3em;
   }
 
   &__post-descriptor-line {
@@ -69,8 +70,11 @@
     white-space: nowrap;
     overflow: hidden;
     position: relative;
-    color: @grey-text;
     vertical-align: middle;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
 
     [class^="icon-"] {
       vertical-align: text-bottom;
@@ -95,24 +99,35 @@
       width: 3em;
       z-index: 1;
 
-      #gradient > .horizontal(@start-color: rgba(255,255,255,0); @end-color: rgba(255,255,255,1); @end-percent: 70%);
+      .themeify({
+        #gradient > .horizontal(@start-color: fade(@theme-body-color, 0%);
+          @end-color:fade(@theme-body-color, 100%) ; @end-percent: 70%);
+      });
     }
   }
 
   &__subreddit-link {
     &, &:visited, &:hover {
-      color: @blue;
+      .themeify({
+        color: @theme-link-text-color;
+      });
+
       text-decoration: none;
     }
   }
 
   &__author-link {
     &, &:visited {
-      color: @grey-text;
+      .themeify({
+        color: @theme-meta-text-color;
+      });
     }
 
     &:hover {
-      color: @dark-grey;
+      .themeify({
+        color: @theme-toast-color;
+      });
+
       text-decoration: none;
     }
   }
@@ -150,15 +165,22 @@
   &__post-title-line {
     font-size: 16px;
     display: block;
-    color: @semi-black-text;
+
+    .themeify({
+      color: @theme-body-text-color;
+
+      &.m-visited, &:visited {
+        color: @theme-meta-text-color;
+      }
+
+      &:hover {
+        color: @theme-link-text-color;
+      }
+    });
+
     overflow-x: hidden;
 
-    &.m-visited, &:visited {
-      color: @grey-text;
-    }
-
     &:hover {
-      color: @alien-blue-text;
       text-decoration: none;
     }
   }

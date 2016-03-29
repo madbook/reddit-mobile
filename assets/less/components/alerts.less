@@ -2,3 +2,36 @@
   text-align: center;
   border: 0px;
 }
+
+// override the alert styles from bootstrap for nightmode awesomeness
+
+.themed-alert(@base-color, @background-color, @text-color) {
+  .themeify(
+  @inDayMode: {
+    border-color: lighten(@base-color, 15%);
+    background-color: @background-color;
+    color: @text-color;
+  };
+  @inNightMode: {
+    border-color: darken(@base-color, 5%);
+    background-color: @theme-comment-body-color;
+    color: @base-color;
+  };
+  );
+}
+
+.alert-success {
+  .themed-alert(@dark-green, lighten(@dark-green, 60%), darken(@dark-green, 5%));
+}
+
+.alert-info {
+  .themed-alert(@blue, lighten(@blue, 40%), @alien-blue-text);
+}
+
+.alert-warning {
+  .themed-alert(@mango, lightne(@mango, 40%), darken(@brown, 5%));
+}
+
+.alert-danger {
+  .themed-alert(@ban-red, @red, @white);
+}

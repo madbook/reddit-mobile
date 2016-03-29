@@ -40,14 +40,7 @@ function formatProps (props = {}) {
 }
 
 function setExperiment(app, ctx, id, value) {
-  const cookieOptions = {
-    secure: app.getConfig('https'),
-    secureProxy: app.getConfig('httpsProxy'),
-    httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
-  };
-
-  ctx.cookies.set(id, value, cookieOptions);
+  ctx.cookies.set(id, value, makeCookieOptions(app));
   ctx.experiments.push({ id, value });
 }
 
@@ -63,6 +56,32 @@ function skipAuth(app, url) {
   );
 }
 
+function makeCookieOptions(app) {
+  return {
+    secure: app.getConfig('https'),
+    secureProxy: app.getConfig('httpsProxy'),
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
+  };
+}
+
+function setTheme(ctx, app) {
+  if (ctx.theme !== undefined) {
+    return;
+  }
+
+  const theme = (ctx.cookies.get('theme') || '').toString() === 'nightmode'
+    ? 'nightmode' : 'daymode';
+
+  if (theme === 'nightmode') {
+    ctx.cookies.set('theme', theme, makeCookieOptions(app));
+  } else {
+    ctx.cookies.set('theme');
+  }
+
+  ctx.theme = theme;
+}
+
 function setCompact(ctx, app) {
   if (ctx.compact !== undefined) {
     return;
@@ -70,12 +89,7 @@ function setCompact(ctx, app) {
 
   let compact = (ctx.cookies.get('compact') || '').toString() === 'true';
 
-  const cookieOptions = {
-    secure: app.getConfig('https'),
-    secureProxy: app.getConfig('httpsProxy'),
-    httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
-  };
+  const cookieOptions = makeCookieOptions(app);
 
   const ua = ctx.headers['user-agent'];
 
@@ -361,6 +375,7 @@ class Server {
   modifyRequest (app) {
     return function * (next) {
       setCompact(this, app);
+      setTheme(this, app);
 
       this.staticMarkup = true;
       this.env = 'SERVER';

@@ -1,7 +1,10 @@
 .listing-comment {
   padding-top: @grid-size;
   margin: @grid-size;
-  border-top: 1px solid @pale-grey;
+
+  .themeify({
+    border-top: @theme-border;
+  });
 }
 
 .listing-content__tools {

@@ -1,10 +1,13 @@
 .DropdownRow {
   display: block;
-  border-bottom: 1px solid @pale-grey;
   padding-bottom: @grid-size;
   margin-bottom: @grid-size;
   font-size: 2 * @grid-size;
   line-height: 4 * @grid-size;
+
+  .themeify({
+    border-bottom: @theme-border;
+  });
 
   &:last-child {
     border-bottom: none;
@@ -61,11 +64,11 @@
   }
 
   &__text {
-    color: @dark-grey;
-
-    &:visited {
-      color: @dark-grey;
-    }
+    .themeify({
+      &, &:visited {
+        color: @theme-body-text-color;
+      }
+    });
   }
 
   &__reportForm,

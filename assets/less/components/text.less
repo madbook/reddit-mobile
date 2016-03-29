@@ -1,16 +1,22 @@
 a {
-  color: @alien-blue-text;
-  .icon-inline { color: @blue; }
+  .themeify({
+    &, .icon-inline {
+      color: @theme-link-text-color;
+    }
 
-  &:active {
-    color: lighten( @alien-blue-text, 20%);
-    .icon-inline { color: lighten( @alien-blue-text, 20%); }
-  }
+    &:active {
+      &, .icon-inline {
+        color: lighten(@theme-link-text-color, 10%);
+      }
+    }
 
-  &:visited {
-    color: lighten(@alien-blue-text, 40%);
-    .icon-inline { color: lighten(@alien-blue-text, 40%); }
-  }
+    &:visited {
+      &, .icon-inline {
+        color: lighten(@theme-link-text-color, 20%);
+      }
+    }
+
+  });
 }
 
 .text-muted:hover [class*="icon-"] {

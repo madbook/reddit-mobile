@@ -4,8 +4,11 @@
 @spacer: @grid-size + @half-grid-size;
 
 .CommunityHeader {
-  background-color: @white;
-  border-bottom: 1px solid @pale-grey;
+  .themeify({
+    background-color: @theme-body-color;
+    border: @theme-border;
+  });
+
   padding-bottom: @spacer;
 
   &.with-error {
@@ -40,7 +43,10 @@
   bottom: -@spacer;
 
   border-radius: @community-icon-half-size;
-  border: 1px solid @white;
+
+  .themeify({
+    border-color: @theme-line-color;
+  });
 
   background: url(../img/snoo-128.png);
   background-color: inherit;
@@ -56,15 +62,21 @@
 
 .CommunityHeader-text-row {
   text-align: center;
-  color: @grey-text;
   font-size: @font-size-base - 1px;
+  
+  .themeify({
+    color: @theme-meta-text-color;
+  });
 }
 
 .CommunityHeader-community-title {
   font-size: 20px;
   font-weight: lighter;
-  color: @semi-black-text;
   margin: 0;
+
+  .themeify({
+    color: @theme-body-text-color;
+  });
 }
 
 .CommunityHeader-text-row-blue {

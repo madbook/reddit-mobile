@@ -1,7 +1,9 @@
 .PostFooter {
   .clearfix;
   padding: @grid-size 2 * @grid-size;
-  border-bottom: 1px solid @pale-grey;
+  .themeify({
+    border-bottom: @theme-border;
+  });
 
   &.size-compact {
     padding-top: 0px;
@@ -11,7 +13,10 @@
     margin-left: -2px;
 
     &, &:visited, &:hover {
-      color: @grey-text;
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+
       text-decoration: none;
     }
   }
@@ -45,15 +50,18 @@
     display: inline-block;
     vertical-align: middle;
     margin-right: @half-grid-size;
-    color: @blue;
+    .themeify({
+      color: @theme-link-text-color;
 
-    &.upvoted {
-      color: @orange;
-    }
+      // essentially overrides so they need to be here..
+      &.upvoted {
+        color: @orangered;
+      }
 
-    &.downvoted {
-      color: @periwinkle;
-    }
+      &.downvoted {
+        color: @periwinkle;
+      }
+    });
   }
 
   &__dropdown-button.icon-seashells {
@@ -69,9 +77,12 @@
 
   &__vertical-divider {
     height: 2em;
-    border-right: 1px solid @neutral;
     margin: 0 @grid-size;
     vertical-align: middle;
+
+    .themeify({
+      border-right: @theme-alt-border;
+    });
   }
 
   &__vote-arrow-wrapper {
@@ -81,9 +92,11 @@
     height: 24px;
     border-radius: 12px;
     margin: 0 @half-grid-size;
-    border: 1px solid @pale-grey;
     text-align: center;
 
+    .themeify({
+      border: @theme-alt-border;
+    });
 
     // There's nesting because we're fighting against icon-fonts.less,
     // which adds default styles for .upvoted and .downvoted.
