@@ -213,6 +213,35 @@ blockquote, table{
 blockquote {
   margin: .5rem 0 1rem .5rem;
   padding: .5rem 1rem;
+
+  .themeify({
+    border-left: 5px solid @theme-line-color;
+  });
+}
+
+pre {
+  .themeify({
+    border: @theme-alt-border;
+    color: @theme-body-text-color;
+  });
+}
+
+
+code, pre, pre code {
+  .themeify({
+    background-color: darken(@theme-comment-body-color, 3%);
+  });
+}
+
+code {
+  .themeify(
+  @inDayMode: {
+    background-color: lighten(@red, 40%);
+    color: @red;
+  };
+  @inNightMode: {
+    color: lighten(@red, 5%);
+  });
 }
 
 p {
