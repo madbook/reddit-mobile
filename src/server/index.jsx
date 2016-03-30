@@ -30,6 +30,8 @@ import Config from '../config';
 
 const ignoreCSRF = ['/timings', '/error', '/csp-report'];
 
+const { NIGHTMODE, DAYMODE } = constants.themes;
+
 function getBucket(loid) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
 }
@@ -70,10 +72,10 @@ function setTheme(ctx, app) {
     return;
   }
 
-  const theme = (ctx.cookies.get('theme') || '').toString() === 'nightmode'
-    ? 'nightmode' : 'daymode';
+  const theme = (ctx.cookies.get('theme') || '').toString() === NIGHTMODE
+    ? NIGHTMODE : DAYMODE;
 
-  if (theme === 'nightmode') {
+  if (theme === NIGHTMODE) {
     ctx.cookies.set('theme', theme, makeCookieOptions(app));
   } else {
     ctx.cookies.set('theme');

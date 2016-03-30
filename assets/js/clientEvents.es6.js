@@ -9,6 +9,7 @@ import { elementInOtherEl,
          stopScroll,
          setMetaColor } from './clientLib';
 
+const { NIGHTMODE, DAYMODE } = constants.themes;
 
 export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
   app.on('route:desktop', function(route) {
@@ -47,8 +48,8 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     app.setState('theme', theme);
     const body = document.body;
     // old browsers don't support multiple arguments to add / remove;
-    body.classList.remove('nightmode');
-    body.classList.remove('daymode');
+    body.classList.remove(NIGHTMODE);
+    body.classList.remove(DAYMODE);
     body.classList.add(theme);
   });
 

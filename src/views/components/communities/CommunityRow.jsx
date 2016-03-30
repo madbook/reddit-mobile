@@ -1,18 +1,21 @@
 import React from 'react';
 import formatNumber from '../../../lib/formatNumber';
 
+import constants from '../../../constants';
+const { NIGHTMODE } = constants.themes;
+
 const T = React.PropTypes;
 
 function renderIcon(iconUrl, url, color, theme) {
   let style;
   if (color) {
-    if (theme === 'nightmode' && !iconUrl) {
+    if (theme === NIGHTMODE && !iconUrl) {
       style = { borderColor: color };
     } else {
       style = { backgroundColor: color };
     }
   }
-  
+
   return (
     <a className='CommunityRow__icon' href={ url }>
       { iconUrl

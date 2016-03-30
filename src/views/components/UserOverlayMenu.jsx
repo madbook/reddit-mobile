@@ -13,6 +13,7 @@ import { LinkRow, ButtonRow, ExpandoRow } from './OverlayMenuRow';
 
 import menuItems from '../../userOverlayMenuItems';
 
+const { NIGHTMODE, DAYMODE } = constants.themes;
 const userIconClassName = 'icon-user-account icon-large blue';
 
 class UserOverlayMenu extends BaseComponent {
@@ -114,8 +115,8 @@ class UserOverlayMenu extends BaseComponent {
       />,
       <ButtonRow
         key='theme-toggle'
-        icon={ `icon-settings icon-large  ${theme === 'nightmode' ? 'warning-yellow' : 'black'}` }
-        text={ `${theme === 'nightmode' ? 'Day' : 'Night'} Mode` }
+        icon={ `icon-settings icon-large  ${theme === NIGHTMODE ? 'warning-yellow' : 'black'}` }
+        text={ `${theme === NIGHTMODE ? 'Day' : 'Night'} Mode` }
         clickHandler={ this.themePreferenceToggle }
       />,
       <LinkRow
@@ -201,9 +202,9 @@ class UserOverlayMenu extends BaseComponent {
   themePreferenceToggle() {
     const { app } = this.props;
     const { theme } = this.state;
-    const nextTheme = theme === 'nightmode' ? 'daymode' : 'nightmode';
+    const nextTheme = theme === NIGHTMODE ? DAYMODE : NIGHTMODE;
 
-    if (nextTheme === 'nightmode') {
+    if (nextTheme === NIGHTMODE) {
       this.setCookie('theme', nextTheme);
     } else {
       this.setCookie('theme');

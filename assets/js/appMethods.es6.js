@@ -5,6 +5,8 @@ import { setMetaColor, setTitle, refreshToken } from './clientLib';
 import constants from '../../src/constants';
 import EUCountries from '../../src/EUCountries';
 
+const { NIGHTMODE, DAYMODE } = constants.themes;
+
 
 export default function(app, $body, render, history) {
   app.pushState = (data, title, url) => {
@@ -102,7 +104,7 @@ export default function(app, $body, render, history) {
     ctx = Object.assign({}, baseCtx, ctx, {
       dataCache: app.getState('dataCache') || {},
       compact: (cookies.get('compact') || '').toString() === 'true',
-      theme: (cookies.get('theme') || '').toString() === 'nightmode' ? 'nightmode' : 'daymode', // just two themes for now...
+      theme: (cookies.get('theme') || '').toString() === NIGHTMODE ? NIGHTMODE : DAYMODE, // just two themes for now...
       showOver18Interstitial: (cookies.get('over18') || 'false').toString() === 'false',
       showEUCookieMessage: (EUCookie < constants.EU_COOKIE_HIDE_AFTER_VIEWS) && isEUCountry,
       showGlobalMessage: cookies.get((app.config.globalMessage || {}).key) === undefined,

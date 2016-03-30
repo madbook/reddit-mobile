@@ -7,6 +7,7 @@ import formatNumber from '../../lib/formatNumber';
 
 import BaseComponent from './BaseComponent';
 
+const { NIGHTMODE } = constants.themes;
 const UTF8Circle = '●';
 
 class CommunityHeader extends BaseComponent {
@@ -68,7 +69,7 @@ class CommunityHeader extends BaseComponent {
     const bannerClass = ['CommunityHeader-banner'];
 
     if (subreddit.key_color) {
-      if (theme === 'nightmode') {
+      if (theme === NIGHTMODE) {
         iconStyle.borderColor = subreddit.key_color;
 
         if (iconStyle.backgroundImage) {

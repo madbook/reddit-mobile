@@ -39,4 +39,9 @@ export default {
   flags: {
     BETA: 'beta',
   },
+
+  themes: {
+    NIGHTMODE: 'nightmode',
+    DAYMODE: 'daymode',
+  },
 };

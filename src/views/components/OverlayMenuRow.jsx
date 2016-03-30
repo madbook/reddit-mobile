@@ -1,6 +1,7 @@
 import React from 'react';
-
 import BaseComponent from './BaseComponent';
+import constants from '../../constants';
+const { NIGHTMODE } = constants.themes;
 
 const T = React.PropTypes;
 
@@ -24,7 +25,7 @@ function iconOrSpacerFromProps(props) {
     };
 
     if (props.iconBackgroundColor) {
-      if (props.theme === 'nightmode') {
+      if (props.theme === NIGHTMODE) {
         backgroundStyle.borderColor = props.iconBackgroundColor;
       }
 
@@ -40,7 +41,7 @@ function iconOrSpacerFromProps(props) {
     const iconStyles = {};
 
     if (props.iconBackgroundColor) {
-      if (props.theme === 'nightmode') {
+      if (props.theme === NIGHTMODE) {
         iconStyles.borderColor = props.iconBackgroundColor;
       } else {
         iconStyles.backgroundColor = props.iconBackgroundColor;
