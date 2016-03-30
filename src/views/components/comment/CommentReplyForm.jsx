@@ -13,36 +13,37 @@ export default class CommentReplyForm extends React.Component {
     buttonText: T.string,
     value: T.string,
     error: T.string,
+    submitting: T.bool,
   };
-  
+
   static defaultProps = {
     buttonText: 'Submit',
     value: '',
     error: '',
   };
-  
+
   constructor(props) {
     super(props);
-    
+
     this.state = {
       buttonEnabled: !!props.value,
     };
-    
+
     this.handleFormChange = this.handleFormChange.bind(this);
   }
-  
+
   handleFormChange(e) {
     const value = e.target.value;
     this.props.onContentChange(value);
-    
+
     this.setState({
       buttonEnabled: !!value,
     });
   }
-  
+
   render() {
     const { error } = this.props;
-    
+
     return (
       <div className='CommentReplyForm'>
         { this.renderTextBox() }
@@ -54,10 +55,10 @@ export default class CommentReplyForm extends React.Component {
       </div>
     );
   }
-  
+
   renderTextBox() {
     const { value } = this.props;
-    
+
     return (
       <div className='CommentReplyForm__textarea'>
         <TextField
@@ -68,13 +69,13 @@ export default class CommentReplyForm extends React.Component {
       </div>
     );
   }
-  
+
   renderError() {
     const { error } = this.props;
-    
+
     return <div className='CommentReplyForm__error'>{ error }</div>;
   }
-  
+
   renderClose() {
     return (
       <div
@@ -83,15 +84,16 @@ export default class CommentReplyForm extends React.Component {
       />
     );
   }
-  
+
   renderButton() {
-    const { buttonText } = this.props;
+    const { buttonText, submitting } = this.props;
     const { buttonEnabled } = this.state;
-    
+
+    const text = submitting ? 'submitting...' : buttonText;
     return (
       <div className='CommentReplyForm__button'>
         <SquareButton
-          text={ buttonText }
+          text={ text }
           enabled={ buttonEnabled }
           onClick={ this.props.onReplySubmit }
         />

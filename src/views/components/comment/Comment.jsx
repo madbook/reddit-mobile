@@ -81,6 +81,7 @@ export default class Comment extends BaseComponent {
         props.op,
         props.user,
       ),
+      waitingForRequest: false,
     };
 
     this.toggleCollapse = this.toggleCollapse.bind(this);
@@ -147,8 +148,10 @@ export default class Comment extends BaseComponent {
 
   async submitReply() {
     const { app } = this.props;
+    const { waitingForRequest } = this.state;
 
-    if (this.props.app.needsToLogInUser()) { return; }
+    if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
+    this.setState({ waitingForRequest: true });
 
     try {
       const options = {
@@ -171,10 +174,12 @@ export default class Comment extends BaseComponent {
         showReplyBox: false,
         replyBoxError: '',
         replyBoxContent: '',
+        waitingForRequest: false,
       });
     } catch (e) {
       this.setState({
         replyBoxError: extractErrorMsg(e),
+        waitingForRequest: false,
       });
     }
   }
@@ -252,7 +257,9 @@ export default class Comment extends BaseComponent {
   }
 
   async submitCommentEdit(newCommentText) {
-    if (this.props.app.needsToLogInUser()) { return; }
+    const { waitingForRequest } = this.state;
+    if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
+    this.setState({ waitingForRequest: true });
 
     try {
       const options = {
@@ -272,6 +279,7 @@ export default class Comment extends BaseComponent {
             replies: this.state.commentReplies,
           },
           editing: false,
+          waitingForRequest: false,
         });
 
         this.props.app.emit('comment:edit');
@@ -280,13 +288,16 @@ export default class Comment extends BaseComponent {
       }
     } catch (e) {
       this.setState({
+        waitingForRequest: false,
         editingError: extractErrorMsg(e),
       });
     }
   }
 
   async deleteComment() {
-    if (this.props.app.needsToLogInUser()) { return; }
+    const { waitingForRequest } = this.state;
+    if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
+    this.setState({ waitingForRequest: true });
 
     try {
       const options = {
@@ -303,15 +314,21 @@ export default class Comment extends BaseComponent {
           author: '[deleted]',
         },
         commentDeleted: true,
+        waitingForRequest: false,
       });
     } catch (e) {
       this.setState({
+        waitingForRequest: false,
         editingError: extractErrorMsg(e),
       });
     }
   }
 
   async saveComment() {
+    const { waitingForRequest } = this.state;
+    if (waitingForRequest) { return; }
+    this.setState({ waitingForRequest: true });
+
     try {
       const options = {
         ...this.buildApiOptions(),
@@ -326,6 +343,7 @@ export default class Comment extends BaseComponent {
             ...this.state.comment,
             saved: false,
           },
+          waitingForRequest: false,
         });
       } else {
         await this.props.app.api.saved.post(options);
@@ -333,6 +351,7 @@ export default class Comment extends BaseComponent {
           comment: {
             ...this.state.comment,
             saved: true,
+            waitingForRequest: false,
           },
         });
       }
@@ -470,7 +489,7 @@ export default class Comment extends BaseComponent {
   }
 
   renderReplyForm() {
-    const { replyBoxError, replyBoxContent } = this.state;
+    const { replyBoxError, replyBoxContent, waitingForRequest } = this.state;
 
     return (
       <div className='Comment__replyForm'>
@@ -481,6 +500,7 @@ export default class Comment extends BaseComponent {
           buttonText='ADD COMMENT'
           error={ replyBoxError }
           value={ replyBoxContent }
+          submitting={ waitingForRequest }
         />
       </div>
     );

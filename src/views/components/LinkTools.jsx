@@ -36,6 +36,7 @@ export default class LinkTools extends React.Component {
       showForm: false,
       commentValue: '',
       error: '',
+      waitingForRequest: false,
     };
 
     this.toggleForm = this.toggleForm.bind(this);
@@ -59,9 +60,10 @@ export default class LinkTools extends React.Component {
   }
 
   async submitNewComment() {
+    const { waitingForRequest } = this.state;
     const { app, apiOptions, linkId, onNewComment, user } = this.props;
-    if (app.needsToLogInUser()) { return; }
-
+    if (app.needsToLogInUser() || waitingForRequest) { return; }
+    this.setState({ waitingForRequest: true });
     try {
       const options = {
         ...app.api.buildOptions(apiOptions),
@@ -77,6 +79,7 @@ export default class LinkTools extends React.Component {
         showForm: false,
         commentValue: '',
         error: '',
+        waitingForRequest: false,
       });
 
       app.emit('comment:new', {
@@ -88,6 +91,7 @@ export default class LinkTools extends React.Component {
       onNewComment(newComment);
     } catch (e) {
       this.setState({
+        waitingForRequest: false,
         error: extractErrorMsg(e),
       });
     }
@@ -104,7 +108,7 @@ export default class LinkTools extends React.Component {
   }
 
   renderForm() {
-    const { commentValue, error } = this.state;
+    const { commentValue, error, waitingForRequest } = this.state;
 
     return (
       <CommentReplyForm
@@ -114,6 +118,7 @@ export default class LinkTools extends React.Component {
         buttonText='ADD COMMENT'
         value={ commentValue }
         error={ error }
+        submitting={ waitingForRequest }
       />
     );
   }
