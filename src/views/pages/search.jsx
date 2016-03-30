@@ -51,11 +51,13 @@ export default class SearchPage extends BasePage {
       ...this.state,
       isLoading: true,
       searchResults: {},
+      theme: props.theme,
     };
 
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleSubscriptionToggle = this.handleSubscriptionToggle.bind(this);
+    this.handleThemeChanged = this.handleThemeChanged.bind(this);
   }
 
   componentWillMount() {
@@ -79,6 +81,12 @@ export default class SearchPage extends BasePage {
     } else { // blank search page w/ no query
       this.setState({ isLoading: false });
     }
+
+    this.props.app.on(constants.THEME_TOGGLE, this.handleThemeChanged);
+  }
+
+  componentWillUnmount() {
+    this.props.app.off(constants.THEME_TOGGLE, this.handleThemeChanged);
   }
 
   handleSortChange(sort) {
@@ -87,6 +95,10 @@ export default class SearchPage extends BasePage {
 
   handleTimeChange(time) {
     this.redirectAfterNewSort({ time });
+  }
+
+  handleThemeChanged(theme) {
+    this.setState({ theme });
   }
 
   redirectAfterNewSort({ sort, time }) {
@@ -205,7 +217,7 @@ export default class SearchPage extends BasePage {
 
   renderCommunities() {
     const { page } = this.props;
-    const { searchResults, data } = this.state;
+    const { searchResults, data, theme } = this.state;
     const { userSubscriptions } = data;
     const { communities, links } = searchResults;
     const onlyShowingCommunities = !(links && links.length);
@@ -249,6 +261,7 @@ export default class SearchPage extends BasePage {
                 data={ c }
                 subscribed={ !!subscriptions[c.name] }
                 onToggleSubscribe={ this.handleSubscriptionToggle }
+                theme={ theme }
               />
             </div>
           )) }

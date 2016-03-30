@@ -152,13 +152,20 @@
 .OverlayMenu-icon-following-snoo {
   width: 32px;
   height: 32px;
-  background-color: @blue;
   border-radius: 16px;
   background-image: url(../img/snoo-64.png);
   background-size: 32px 32px;
   background-repeat: no-repeat;
-  background-position: 0 5px;
+  background-position: -1px 5px;
   vertical-align: middle;
+
+  .themeify(
+  @inDayMode: {
+    background-color: @blue;
+  };
+  @inNightMode: {
+    border: 1px solid @blue;
+  });
 }
 
 .OverlayMenu-form {

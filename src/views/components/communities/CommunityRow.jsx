@@ -3,9 +3,16 @@ import formatNumber from '../../../lib/formatNumber';
 
 const T = React.PropTypes;
 
-function renderIcon(iconUrl, url, color) {
-  const style = color ? { backgroundColor: color } : null;
-
+function renderIcon(iconUrl, url, color, theme) {
+  let style;
+  if (color) {
+    if (theme === 'nightmode' && !iconUrl) {
+      style = { borderColor: color };
+    } else {
+      style = { backgroundColor: color };
+    }
+  }
+  
   return (
     <a className='CommunityRow__icon' href={ url }>
       { iconUrl
@@ -56,11 +63,11 @@ function renderAdd(data, subscribed, onToggleSubscribe) {
 }
 
 function CommunityRow(props) {
-  const { data, subscribed, onToggleSubscribe } = props;
+  const { data, subscribed, onToggleSubscribe, theme } = props;
 
   return (
     <div className='CommunityRow'>
-      { renderIcon(data.icon_img, data.url, data.key_color) }
+      { renderIcon(data.icon_img, data.url, data.key_color, theme) }
       { renderDetails(data) }
       { renderAdd(data, subscribed, onToggleSubscribe) }
     </div>
@@ -71,6 +78,7 @@ CommunityRow.propTypes = {
   data: T.object.isRequired,
   onToggleSubscribe: T.func.isRequired,
   subscribed: T.bool,
+  theme: T.string,
 };
 
 CommunityRow.defaultProps = {

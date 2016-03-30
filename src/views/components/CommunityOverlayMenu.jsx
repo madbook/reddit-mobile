@@ -28,6 +28,7 @@ class CommunityOverlayMenu extends BaseComponent {
 
   renderOverlayBody() {
     const { user, subscriptions, app } = this.props;
+    const theme = app.getState('theme');
 
     let followingRow;
     if (subscriptions) {
@@ -52,6 +53,7 @@ class CommunityOverlayMenu extends BaseComponent {
                 ) }
                 iconURL={ subreddit.icon_img }
                 iconBackgroundColor={ subreddit.key_color }
+                theme={ theme }
               />
             ); }) }
         </ExpandoRow>

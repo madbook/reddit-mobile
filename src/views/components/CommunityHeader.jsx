@@ -13,11 +13,27 @@ class CommunityHeader extends BaseComponent {
   constructor(props) {
     super(props);
 
-    this.state.error = false;
+    this.state = {
+      error: false,
+      theme: props.theme,
+    };
 
     this.state.subreddit = props.subreddit;
     this._onSubscribeToggle = this._onSubscribeToggle.bind(this);
     this._removeErrorRow = this._removeErrorRow.bind(this);
+    this.updateTheme = this.updateTheme.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.app.on(constants.THEME_TOGGLE, this.updateTheme);
+  }
+
+  componentWillUnmount() {
+    this.props.app.off(constants.THEME_TOGGLE, this.updateTheme);
+  }
+
+  updateTheme(theme) {
+    this.setState({ theme });
   }
 
   renderErrorMessage(error) {
@@ -38,6 +54,7 @@ class CommunityHeader extends BaseComponent {
 
   renderBannerRow(subreddit) {
     const iconUrl = subreddit.icon_img;
+    const { theme } = this.state;
 
     const iconStyle = {};
     const iconClass = ['CommunityHeader-banner-icon-holder'];
@@ -51,10 +68,19 @@ class CommunityHeader extends BaseComponent {
     const bannerClass = ['CommunityHeader-banner'];
 
     if (subreddit.key_color) {
-      bannerStyle.backgroundColor = subreddit.key_color;
+      if (theme === 'nightmode') {
+        iconStyle.borderColor = subreddit.key_color;
+
+        if (iconStyle.backgroundImage) {
+          iconStyle.backgroundColor = subreddit.key_color;
+        }
+      } else {
+        bannerStyle.backgroundColor = subreddit.key_color;
+      }
     }
 
     if (subreddit.banner_img) {
+      bannerClass.push('m-with-banner');
       bannerStyle.backgroundImage = `url(${subreddit.banner_img})`;
     }
 

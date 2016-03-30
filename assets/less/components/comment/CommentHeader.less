@@ -65,7 +65,10 @@
   }
 
   &__flair {
-    border: 1px solid @pale-grey;
+    .themeify({
+      border: @theme-border;
+    });
+
     padding: 0 @half-grid-size;
   }
 

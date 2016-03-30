@@ -30,11 +30,19 @@
   }
 
   &__iconBlank {
-    background-color: @blue;
     background-image: url(../img/snoo-64.png);
     background-size: 32px 32px;
     background-repeat: no-repeat;
-    background-position: 0 5px;
+    background-position: 0px 5px;
+
+    .themeify(
+    @inDayMode: {
+      background-color: @blue;
+    };
+    @inNightMode: {
+      border: 1px solid @blue;
+      background-position-x: -1px;
+    });
   }
 
   &__details {

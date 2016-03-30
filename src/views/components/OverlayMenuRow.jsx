@@ -8,6 +8,7 @@ const BaseRowProps = {
   text: T.node.isRequired,
   icon: T.string,
   iconURL: T.string,
+  theme: T.string,
 };
 
 function iconOrSpacerFromProps(props) {
@@ -23,6 +24,10 @@ function iconOrSpacerFromProps(props) {
     };
 
     if (props.iconBackgroundColor) {
+      if (props.theme === 'nightmode') {
+        backgroundStyle.borderColor = props.iconBackgroundColor;
+      }
+
       backgroundStyle.backgroundColor = props.iconBackgroundColor;
     }
 
@@ -35,7 +40,11 @@ function iconOrSpacerFromProps(props) {
     const iconStyles = {};
 
     if (props.iconBackgroundColor) {
-      iconStyles.backgroundColor = props.iconBackgroundColor;
+      if (props.theme === 'nightmode') {
+        iconStyles.borderColor = props.iconBackgroundColor;
+      } else {
+        iconStyles.backgroundColor = props.iconBackgroundColor;
+      }
     }
 
     iconContent = <span className={ `OverlayMenu-icon ${props.icon}` } style={ iconStyles } />;

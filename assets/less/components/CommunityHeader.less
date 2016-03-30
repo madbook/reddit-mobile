@@ -6,7 +6,7 @@
 .CommunityHeader {
   .themeify({
     background-color: @theme-body-color;
-    border: @theme-border;
+    border-bottom: @theme-border;
   });
 
   padding-bottom: @spacer;
@@ -17,13 +17,24 @@
 }
 
 .CommunityHeader-banner {
-  background-color: @blue;
+  .themeify(
+  @inDayMode: {
+    background-color: @blue;
+  };
+  @inNightMode: {
+    background-color: @theme-comment-body-color;
+  });
 
   // use padding bottom to maintain aspect ratio
   // position relative and overflow for positioning the icon
   position: relative;
   width: 100%;
-  padding-bottom: 30%; // 10:3 aspect ratio
+
+  padding-bottom: 20%;
+
+  &.m-with-banner {
+    padding-bottom: 30%; // 10:3 aspect ratio
+  }
 
   // the icon holder bottom: -@spacer so @grid-size is the gap
   margin-bottom: @spacer + @grid-size;
@@ -43,16 +54,12 @@
   bottom: -@spacer;
 
   border-radius: @community-icon-half-size;
-
-  .themeify({
-    border-color: @theme-line-color;
-  });
-
+  border: 1px solid @white;
   background: url(../img/snoo-128.png);
   background-color: inherit;
   background-size: @community-icon-size @community-icon-size;
   background-repeat: no-repeat;
-  background-position: 0 12px;
+  background-position: -1px 12px;
 
   &.CommunityHeader-banner-icon-holder-image  {
     background-position: 0 0;
@@ -63,7 +70,7 @@
 .CommunityHeader-text-row {
   text-align: center;
   font-size: @font-size-base - 1px;
-  
+
   .themeify({
     color: @theme-meta-text-color;
   });
