@@ -12,7 +12,7 @@ class MessagePreview extends BaseComponent {
   static propTypes = {
     onSubmit: React.PropTypes.func.isRequired,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -167,7 +167,7 @@ class MessagePreview extends BaseComponent {
         </form>
       );
     } else {
-      if (!message.context && !message.replies && props.lastReply) {
+      if (!message.context && !message.replies.length && props.lastReply) {
         reply = (
           <a
             href={ link }
