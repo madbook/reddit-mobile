@@ -28,7 +28,7 @@ import setLoggedOutCookies from '../lib/loid';
 
 import Config from '../config';
 
-const ignoreCSRF = ['/timings', '/error'];
+const ignoreCSRF = ['/timings', '/error', '/csp-report'];
 
 function getBucket(loid) {
   return parseInt(loid.substring(loid.length - 4), 36) % 100;
@@ -57,7 +57,9 @@ function skipAuth(app, url) {
     url.indexOf('/login') === 0 ||
     url.indexOf('/register') === 0 ||
     url.indexOf('/oauth2') === 0 ||
-    url.indexOf('/timings') === 0
+    url.indexOf('/timings') === 0 ||
+    url.indexOf('/error') === 0 ||
+    url.indexOf('/csp-report') === 0
   );
 }
 
@@ -101,11 +103,14 @@ function setCompact(ctx, app) {
 const defaultConfig = Config;
 function formatBootstrap(props) {
   let p;
+
   for (p in props.config) {
     if (!defaultConfig.hasOwnProperty(p)) {
       delete props.config[p];
     }
   }
+
+  props.nonce = props.ctx.csrf;
 
   return props;
 }

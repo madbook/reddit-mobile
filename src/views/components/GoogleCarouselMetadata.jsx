@@ -92,7 +92,7 @@ function GoogleCarouselMetadata (props) {
   baseObject.comment['@list'] = formatComments(comments, props.origin);
 
   const googleScript = `
-    <script type='application/ld+json'>
+    <script type='application/ld+json' nonce=${props.nonce}>
       ${props.app.safeStringify(baseObject)}
     </script>
   `;
