@@ -124,6 +124,9 @@ class TopNav extends BaseComponent {
             <SearchBarController
               app={ this.props.app }
               ctx={ this.props.ctx }
+              user={ this.props.user }
+              loid={ this.props.loid }
+              loidcreated={ this.props.loidcreated }
             />
           </a>
           <button

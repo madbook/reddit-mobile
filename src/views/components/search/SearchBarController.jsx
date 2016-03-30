@@ -11,6 +11,9 @@ export default class SearchBarController extends React.Component {
   static propTypes = {
     app: T.object.isRequired,
     ctx: T.object.isRequired,
+    user: T.object,
+    loid: T.string,
+    loidcreated: T.string,
   };
 
   constructor(props) {
@@ -25,6 +28,17 @@ export default class SearchBarController extends React.Component {
     this.handleClearSearchForm = this.handleClearSearchForm.bind(this);
   }
 
+  eventFields() {
+    return {
+      ctx: this.props.ctx,
+      loid: this.props.loid,
+      loidcreated: this.props.loidcreated,
+      data: {
+        user: this.props.user,
+      },
+    };
+  }
+
   toggleSearchBar(e) {
     this.preventClose(e);
 
@@ -34,10 +48,16 @@ export default class SearchBarController extends React.Component {
 
     if (this.state.showSearchBar) { // going to close
       this.props.app.emit(constants.OVERLAY_MENU_OPEN, false);
-      this.props.app.emit('searchBar', { type: 'search_cancelled' });
+      this.props.app.emit('searchBar', {
+        ...this.eventFields(),
+        type: 'search_cancelled',
+      });
     } else { // going to open
       this.props.app.emit(constants.OVERLAY_MENU_OPEN, true);
-      this.props.app.emit('searchBar', { type: 'search_opened' });
+      this.props.app.emit('searchBar', {
+        ...this.eventFields(),
+        type: 'search_opened',
+      });
     }
   }
 
@@ -52,6 +72,7 @@ export default class SearchBarController extends React.Component {
     // release the scroll blocker
     this.props.app.emit(constants.OVERLAY_MENU_OPEN, false);
     this.props.app.emit('searchBar', {
+      ...this.eventFields(),
       type: 'search_executed',
       query_string: searchTerm,
       query_string_length: searchTerm.length,

@@ -445,7 +445,14 @@ function trackingEvents(app) {
   });
 
   app.on('searchBar', function(payload) {
-    eventSend('search_events', payload.type, omit(payload, 'type'));
+    // this isn't a pageview, but it still needs to send many of the same fields,
+    // so go ahead and treat it like a pageview
+    const data = {
+      ...omit(payload, 'type'),
+      ...buildPageviewData(omit(payload, 'type')),
+    };
+
+    eventSend('search_events', payload.type, data);
   });
 }
 
