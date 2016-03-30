@@ -4,15 +4,37 @@
   }
 }
 
-.user-activity {
-  .panel {
-    .themeify({
-      border: @theme-border;
-    });
+.CommentPreview {
+  .themeify({
+    background-color: @theme-body-color;
+  });
+  padding: 10px;
+  margin-bottom: 8px;
+  position: relative;
 
+  &__topWrap {
     margin-bottom: 10px;
   }
-}
 
-.user-gild {
+  &__score-date {
+    .text-muted;
+    .text-right;
+    position: absolute;
+    right: 10;
+    top: 10;
+  }
+
+  &__title {
+    margin-right: 70px;
+  }
+
+  &__divider {
+  .themeify({
+    border-right: @theme-border;
+  }
+  @inDayMode: {
+    border-right: @gray-border;
+  });
+    margin: 0 8px;
+  }
 }

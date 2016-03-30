@@ -439,14 +439,15 @@ function routes(app) {
 
     this.body = makeBody(ListingPage);
   }
-
-  router.get('comments.title', '/comments/:listingId/:listingTitle', commentsPage);
-  router.get('comments.listingid', '/comments/:listingId', commentsPage);
+  router.get('comments.permalinkActivity',
+             '/r/:subreddit/comments/:listingId/comment/:commentId', commentsPage);
   router.get('comments.permalink',
              '/r/:subreddit/comments/:listingId/:listingTitle/:commentId',
              commentsPage);
-  router.get('comments.index', '/r/:subreddit/comments/:listingId/:listingTitle', commentsPage);
-  router.get('comments.subreddit', '/r/:subreddit/comments/:listingId', commentsPage);
+
+  router.get('comments.title', '/comments/:listingId/:listingTitle?', commentsPage);
+  router.get('comments.subreddit',
+             '/r/:subreddit/comments/:listingId/:listingTitle?', commentsPage);
 
   router.get('subreddit.about', '/r/:subreddit/about', function *() {
     this.body = makeBody(SubredditAboutPage);
