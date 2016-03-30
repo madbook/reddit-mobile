@@ -261,7 +261,6 @@ class ListingPage extends BasePage {
       if (env === 'SERVER') {
         googleCarousel = (
           <GoogleCarouselMetadata
-            nonce={ this.props.ctx.csrf }
             url={ url }
             app={ app }
             origin={ origin }

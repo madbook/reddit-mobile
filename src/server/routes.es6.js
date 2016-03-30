@@ -93,26 +93,6 @@ const serverRoutes = function(app) {
     this.body = null;
     return;
   });
-
-  router.post('/csp-report', function* () {
-    // log it out if it's a legit origin
-    if (this.headers.origin &&
-        app.config.origin.indexOf(this.headers.origin) === 0) {
-
-      const report = this.body['csp-report'];
-
-      const log = [
-        'CSP REPORT',
-        report['document-uri'],
-        report['blocked-uri'],
-      ];
-
-      console.log(log.join('|'));
-    }
-
-    this.body = null;
-    return;
-  });
 };
 
 export default serverRoutes;

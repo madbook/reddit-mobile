@@ -12,7 +12,7 @@ function DefaultLayout (props) {
 
   let liveReload;
   if (config.liveReload) {
-    liveReload = (<LiveReload nonce={ props.ctx.csrf } />);
+    liveReload = (<LiveReload />);
   }
 
   if (config.minifyAssets) {
@@ -45,7 +45,7 @@ function DefaultLayout (props) {
     const googleAnalyticsId = config.googleAnalyticsId;
 
     const trackingCode = `
-      <script nonce=${props.ctx.csrf}>
+      <script>
       if (!window.DO_NOT_TRACK) {
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -68,7 +68,7 @@ function DefaultLayout (props) {
 
   if (config.googleTagManagerId && config.mediaDomain) {
     const gtmCode = `
-      <script nonce=${props.ctx.csrf}>
+      <script>
         if (!window.DO_NOT_TRACK) {
           var frame = document.createElement('iframe');
 
@@ -126,7 +126,7 @@ function DefaultLayout (props) {
           !!CONTENT!!
         </div>
 
-        <script src={ clientJS } async='true' nonce={ props.ctx.csrf }></script>
+        <script src={ clientJS } async='true'></script>
         { liveReload }
         { gtmTracking }
         { gaTracking }
