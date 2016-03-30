@@ -8,6 +8,8 @@ import makeRequest from '../../src/lib/makeRequest';
 import url from 'url';
 import gtm from './gtm';
 
+const { NIGHTMODE } = constants.themes;
+
 // Build a regex which can pull the base36 out of a prefixed or unprefixed id.
 const idRegex = /(?:t\d+_)?(.*)/;
 
@@ -160,6 +162,10 @@ function trackingEvents(app) {
     );
 
     data.compact_view = props.compact;
+
+    if (props.theme === NIGHTMODE) {
+      data.nightmode = true;
+    }
 
     if (target) {
       // Subreddit ids/names are swapped
