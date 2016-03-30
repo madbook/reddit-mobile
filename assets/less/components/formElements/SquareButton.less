@@ -5,7 +5,9 @@
   background-color: @blue;
 
   &.m-disabled {
-    background-color: @pale-grey;
+    .themeify({
+      background-color: @theme-line-color;
+    });
   }
 
   &.m-danger {
