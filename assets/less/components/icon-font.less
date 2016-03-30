@@ -47,6 +47,10 @@
     color: @mango;
   }
 
+  &.black {
+    color: @black;
+  }
+
   &:before {
     vertical-align: inherit;
   }
@@ -55,7 +59,9 @@
 button, a {
   &:hover {
     .icon-font({
-      color: @gray;
+      .themeify({
+        color: lighten(@theme-nav-icon-color, 5%);
+      });
 
       &.blue {
         color: darken(@blue, 5%);
@@ -87,6 +93,10 @@ button, a {
 
       &.mango {
         color: darken(@mango, 5%);
+      }
+
+      &.black {
+        color: lighten(@black, 2%);
       }
     });
   }
