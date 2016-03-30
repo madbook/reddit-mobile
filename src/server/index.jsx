@@ -328,45 +328,6 @@ class Server {
       this.set('X-Content-Type-Options', 'nosniff');
       this.set('X-XSS-Protection', '1; mode=block');
 
-      let self;
-      let localhost;
-      let gaurl;
-
-      if (!app.config.assetPath) {
-        self = `'self'`;
-        localhost = 'localhost:* ws://localhost:*';
-      }
-
-      if (app.config.googleAnalyticsId) {
-        gaurl = `google-analytics.com`;
-      }
-
-      const INLINE = `'unsafe-inline'`;
-      const ASSETS = `${app.config.assetPath}/`;
-      const NONCE = `'nonce-${this.csrf}'`;
-      const ORIGIN = app.config.origin;
-      const API = `${app.config.nonAuthAPIOrigin}/ ${app.config.authAPIOrigin}/`;
-      const IMAGE_HOST = '*.redditmedia.com thumbs.gfycat.com *.imgur.com *.giphy.com *.ytimg.com';
-      const FRAME_HOST = '*.embedly.com *.imgur.com *.gfycat.com  *.youtube.com';
-      const MEDIA_HOST = '*.embedly.com *.imgur.com *.gfycat.com *.giphy.com';
-
-      const cspRules = [
-        `report-uri /csp-report`,
-        `default-src ${self} ${localhost} ${ASSETS} ${API} ${ORIGIN}`,
-        `frame-src ${FRAME_HOST}`,
-        `child-src ${FRAME_HOST}`,
-        `media-src ${MEDIA_HOST}`,
-        `img-src ${self} ${ASSETS} ${ORIGIN} ${IMAGE_HOST}`,
-        `form-action ${self} ${ORIGIN} ${API}`,
-        `script-src ${self} ${localhost} ${ASSETS} ${gaurl} ${NONCE}`,
-        `style-src ${self} ${INLINE} ${ASSETS}`,
-        `font-src ${self} ${ASSETS}`,
-      ];
-
-      this.set('Content-Security-Policy-Report-Only', cspRules.join(';'));
-      // Enable this when report-only is removed
-      //this.set('X-WebKit-CSP', cspRules.join(';'));
-
       if (app.config.https || app.config.httpsProxy) {
         this.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       }
