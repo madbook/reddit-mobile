@@ -72,8 +72,12 @@ function setTheme(ctx, app) {
     return;
   }
 
-  const theme = (ctx.cookies.get('theme') || '').toString() === NIGHTMODE
+  let theme = (ctx.cookies.get('theme') || '').toString() === NIGHTMODE
     ? NIGHTMODE : DAYMODE;
+
+  if ([NIGHTMODE, DAYMODE].includes(ctx.query.theme)) {
+    theme = ctx.query.theme;
+  }
 
   if (theme === NIGHTMODE) {
     ctx.cookies.set('theme', theme, makeCookieOptions(app));
