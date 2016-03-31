@@ -16,7 +16,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     const options = {};
 
     const date = new Date();
-    date.setFullYear(date.getFullYear() + 2);
+    date.setDate(date.getDate() + 7);
     options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
