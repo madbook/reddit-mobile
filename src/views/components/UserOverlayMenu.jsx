@@ -115,7 +115,7 @@ class UserOverlayMenu extends BaseComponent {
       />,
       <ButtonRow
         key='theme-toggle'
-        icon={ `icon-settings icon-large  ${theme === NIGHTMODE ? 'warning-yellow' : 'black'}` }
+        icon={ `icon-spaceship icon-large  blue` }
         text={ `${theme === NIGHTMODE ? 'Day' : 'Night'} Theme` }
         clickHandler={ this.themePreferenceToggle }
       />,
