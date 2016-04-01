@@ -77,7 +77,7 @@
       color: @theme-meta-text-color;
     });
 
-    [class^="icon-"] {
+    .icon-font({
       vertical-align: text-bottom;
       font-size: 18px;
       line-height: 18px;
@@ -89,7 +89,12 @@
       & + :not(.PostHeader__flush-w-icon) {
         margin-left: @grid-size - 2px;
       }
-    }
+
+      &.icon-nsfw {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    });
 
     &:after {
       content: '';
@@ -158,6 +163,7 @@
 
   &__nsfw-text {
     &, a, a:visited, a:hover {
+      font-size: 11px;
       color: @nsfw-salmon !important;
       text-decoration: none;
     }

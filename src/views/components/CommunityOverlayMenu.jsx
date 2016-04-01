@@ -7,6 +7,7 @@ import BaseComponent from './BaseComponent';
 import OverlayMenu from './OverlayMenu';
 import { LinkRow, ExpandoRow } from './OverlayMenuRow';
 import CommunitySearchRow from './CommunitySearchRow';
+import NSFWFlair from './NSFWFlair';
 
 class CommunityOverlayMenu extends BaseComponent {
   constructor(props) {
@@ -14,7 +15,6 @@ class CommunityOverlayMenu extends BaseComponent {
 
     this.renderOverlayBody = this.renderOverlayBody.bind(this);
   }
-
 
   numCommunitiesText(subscriptions) {
     const num = subscriptions.length;
@@ -49,6 +49,7 @@ class CommunityOverlayMenu extends BaseComponent {
                   <span>
                     <span className='CommunityRow__rSlash'>r/</span>
                     { subreddit.display_name }
+                    { subreddit.over18 ? NSFWFlair : null }
                   </span>
                 ) }
                 iconURL={ subreddit.icon_img }

@@ -1,5 +1,6 @@
 import React from 'react';
 import formatNumber from '../../../lib/formatNumber';
+import NSFWFlair from '../NSFWFlair';
 
 import constants from '../../../constants';
 const { NIGHTMODE } = constants.themes;
@@ -26,13 +27,14 @@ function renderIcon(iconUrl, url, color, theme) {
 }
 
 function renderDetails(data) {
-  const { display_name, subscribers, accounts_active, url } = data;
+  const { display_name, subscribers, accounts_active, url, over18 } = data;
 
   return (
     <a className='CommunityRow__details' href={ url }>
       <div className='CommunityRow__name'>
         <span className='CommunityRow__rSlash'>r/</span>
         { display_name }
+        { over18 ? NSFWFlair : null }
       </div>
       <div className='CommunityRow__counts'>
         { [subscribers, accounts_active]
