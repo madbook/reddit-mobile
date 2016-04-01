@@ -39,7 +39,7 @@ class SubmitPage extends BasePage {
     super(props);
 
     Object.assign(this.state, {
-      subreddit: props.subredditName || 'choose a subreddit',
+      subredditName: props.subredditName || 'choose a subreddit',
       subredditSelectionOpen: false,
       title: props.postTitle || '',
       body: props.body || '',
@@ -222,7 +222,7 @@ class SubmitPage extends BasePage {
 
   changeSubreddit (newSub) {
     this.props.app.emit('post:selectSubreddit', newSub);
-    this.setState({ subreddit: newSub });
+    this.setState({ subredditName: newSub });
     this.setState({ subredditSelectionOpen: false });
   }
 
@@ -404,7 +404,7 @@ class SubmitPage extends BasePage {
                     onClick={ this.changeSendReplies }
                   >
                     <span >
-                      <span className={ `icon-check ${iconClass}` }>' '</span>
+                      <span className={ `icon-check ${iconClass}` }> </span>
                        send replies to my inbox
                     </span>
                   </button>
