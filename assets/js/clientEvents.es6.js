@@ -29,7 +29,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       options.domain = domain;
     }
 
-    cookies.set('__cf_mob_redir', '0', options);
+    cookies.set('mweb-no-redirect', '1', options);
 
     if (route.indexOf('?') === -1) {
       route += '?ref_source=mweb';
