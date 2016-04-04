@@ -32,9 +32,9 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     cookies.set('mweb-no-redirect', '1', options);
 
     if (route.indexOf('?') === -1) {
-      route += '?ref_source=mweb';
+      route += '?utm_source=mweb_navbar';
     } else {
-      route += '&ref_source=mweb';
+      route += '&utm_source=mweb_navbar';
     }
 
     window.location = `https://www.reddit.com${route}`;
