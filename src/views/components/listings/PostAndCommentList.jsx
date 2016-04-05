@@ -38,7 +38,7 @@ export default class PostAndCommentList extends BaseComponent {
 
   static defaultProps = {
     firstPage: 0,
-    winWidth: constants.POST_DEFAULT_WIDTH, 
+    winWidth: constants.POST_DEFAULT_WIDTH,
     className: '',
   };
 

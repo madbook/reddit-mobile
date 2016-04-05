@@ -137,6 +137,7 @@ class BasePage extends BaseComponent {
         this.props.app.emit('pageview', {
           ...this.props,
           data: this.state.data,
+          feature: this.state.feature,
         });
         this.setState({ finished: true });
       }
