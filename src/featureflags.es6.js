@@ -2,14 +2,10 @@ import Feet from 'feet';
 
 import constants from './constants';
 
-const { BETA, SMARTBANNER } = constants.flags;
+const { BETA } = constants.flags;
 
 const config = {
   [BETA]: true,
-  [SMARTBANNER]: {
-    // userAgentSubstr: ['iPhone', 'iPod'],
-    employee: true,
-  },
 };
 
 const feet = new Feet(config);
@@ -48,13 +44,6 @@ feet.addRule('url', function(query) {
   // turns { feature_thing: true, wat: 7 } into { thing: true }
   const parsedQuery = Feet.parseConfig(this.props.ctx.query);
   return Object.keys(parsedQuery).includes(query);
-});
-
-feet.addRule('userAgentSubstr', function(agents) {
-  return !!agents
-    .map(a => (this.props.ctx.userAgent || '').indexOf(a) > -1)
-    .filter(b => b === true)
-    .length;
 });
 
 export default feet;

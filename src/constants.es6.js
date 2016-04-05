@@ -35,27 +35,9 @@ export default {
   POST_COMPACT_THUMBNAIL_WIDTH: 70,
   POST_DEFAULT_WIDTH: 320,
 
-  /* eslint-disable max-len */
-  BANNER_URLS: {
-    FRONTPAGE: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
-    LISTING: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
-    COMMENTS: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
-  },
-  /* eslint-enable */
-
   // feature flags
   flags: {
     BETA: 'beta',
-    SMARTBANNER: 'banner',
   },
 
   themes: {
