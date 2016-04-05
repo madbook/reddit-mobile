@@ -6,6 +6,7 @@ import { sendTimings, onError, loadShimThenInitialize, onLoad, render } from './
 window.onerror = onError;
 
 import '../../src/lib/dnt';
+import initBanner from '../../src/lib/initBanner';
 
 import forOwn from 'lodash/object/forOwn';
 
@@ -24,6 +25,15 @@ import trackingEvents from './trackingEvents';
 
 import setAppMethods from './appMethods';
 import setEvents from './clientEvents';
+import constants from '../../src/constants';
+
+const APP_DOWNLOAD_URLS = {
+  'index': constants.BANNER_URLS.FRONTPAGE,
+  'index.subreddit': constants.BANNER_URLS.LISTING,
+  'comments.index': constants.BANNER_URLS.COMMENTS,
+};
+
+const SMARTBANNER_BUCKET = 5;
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
@@ -86,6 +96,21 @@ function initialize(bindLinks) {
 
   // env comes from bootstrap from the server, update now that the client is loading
   app.state.ctx.env = 'CLIENT';
+
+  app.emitter.once('pageview', data => {
+    // add a smart banner/toaster if the user lands on certain pages.
+    const userId = (data.data.loid || data.data.user.id);
+    const userIdSum = userId.split('').reduce((sum, chr) => sum + chr.charCodeAt(0), 0);
+    const bucket = userIdSum % 100;
+    const featureEnabled = data.feature.enabled(constants.flags.SMARTBANNER);
+    const downloadUrl = APP_DOWNLOAD_URLS[data.actionName];
+    const inBucket = data.actionName === 'comments.index' ? bucket < SMARTBANNER_BUCKET : true;
+
+    if (featureEnabled && downloadUrl && inBucket) {
+      const { IMPRESSION, CLICK } = downloadUrl;
+      initBanner(IMPRESSION, CLICK);
+    }
+  });
 
   if (window.bootstrap.config.googleAnalyticsId) {
     trackingEvents(app);
