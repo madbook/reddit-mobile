@@ -388,7 +388,7 @@ class Server {
 
       this.body = this.request.body;
       this.userAgent = this.headers['user-agent'] || '';
-      this.country = this.headers['cf-ipcountry'];
+      this.country = this.headers['cf-ipcountry'] || defaultConfig.defaultCountry;
       this.notifications = (this.cookies.get('notifications') || '').split(',');
 
       // reset notifications after read

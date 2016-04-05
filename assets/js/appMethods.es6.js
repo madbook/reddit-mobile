@@ -111,6 +111,7 @@ export default function(app, $body, render, history) {
       redirect: app.redirect,
       env: 'CLIENT',
       winWidth: window.innerWidth,
+      country: app.getState('country'),
       // pick up notifications off of the base for the intial load, since the
       // server sends a delete the first time. delete the basectx.notifications
       // after the first render.

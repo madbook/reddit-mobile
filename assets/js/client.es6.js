@@ -34,6 +34,7 @@ const APP_DOWNLOAD_URLS = {
 };
 
 const SMARTBANNER_BUCKET = 5;
+const SMARTBANNER_COUNTRIES = ['US', 'UK', 'AU', 'CA'];
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
@@ -99,14 +100,24 @@ function initialize(bindLinks) {
 
   app.emitter.once('pageview', data => {
     // add a smart banner/toaster if the user lands on certain pages.
-    const userId = (data.loid || data.data.user.id);
-    const userIdSum = userId.split('').reduce((sum, chr) => sum + chr.charCodeAt(0), 0);
-    const bucket = userIdSum % 100;
+    // 1) bucket the user
+    let inBucket = data.actionName !== 'comments.index';
+    if (data.actionName === 'comments.index' && (data.loid || data.data.user)) {
+      const userId = (data.loid || data.data.user.id);
+      const userIdSum = userId.split('').reduce((sum, chr) => sum + chr.charCodeAt(0), 0);
+      const bucket = userIdSum % 100;
+      inBucket = bucket < SMARTBANNER_BUCKET;
+    }
+
+    // 2) geo tag to make sure only certain people see it. this can't be a
+    // feature flag because those OR, and we want to AND all these checks.
+    const inCountry = SMARTBANNER_COUNTRIES.indexOf(data.country) > -1;
+
+    // 3) feature is enabled
     const featureEnabled = data.feature.enabled(constants.flags.SMARTBANNER);
     const downloadUrl = APP_DOWNLOAD_URLS[data.actionName];
-    const inBucket = data.actionName === 'comments.index' ? bucket < SMARTBANNER_BUCKET : true;
 
-    if (featureEnabled && downloadUrl && inBucket) {
+    if (featureEnabled && downloadUrl && inBucket && inCountry) {
       const { IMPRESSION, CLICK } = downloadUrl;
       initBanner(IMPRESSION, CLICK);
     }

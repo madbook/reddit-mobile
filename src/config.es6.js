@@ -67,6 +67,8 @@ function config() {
 
     appName: process.env.APP_NAME || 'mweb',
 
+    defaultCountry: process.env.DEFAULT_COUNTRY || 'US',
+
     // hack for now for global messages displayed with the infobar component.
     globalMessage,
   };
