@@ -44,6 +44,16 @@ function routes(app) {
     const url = this.params[0];
     return this.redirect(`/wiki/${url}`);
   });
+
+  app.router.get('/rules', function*() {
+    return this.redirect('/wiki/contentpolicy');
+  });
+
+  app.router.get('/live/:idOrFilter?', function*() {
+    const { idOrFilter } = this.params;
+    const id = idOrFilter ? `/${idOrFilter}` : '';
+    return this.redirect(`${app.config.reddit}/live${id}`);
+  });
 }
 
 export default routes;
