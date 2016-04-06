@@ -26,6 +26,7 @@ import trackingEvents from './trackingEvents';
 import setAppMethods from './appMethods';
 import setEvents from './clientEvents';
 import { shouldShowBanner } from '../../src/lib/smartBannerState';
+import constants from '../../src/constants';
 
 // A few es5 sanity checks
 if (!Object.create || !Array.prototype.map || !Object.freeze) {
@@ -90,6 +91,8 @@ function initialize(bindLinks) {
   app.state.ctx.env = 'CLIENT';
 
   app.emitter.once('pageview', data => {
+    if (!data.feature.enabled(constants.flags.SMARTBANNER)) { return; }
+
     const {
       show,
       impressionUrl,
