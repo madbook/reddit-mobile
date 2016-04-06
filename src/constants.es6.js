@@ -36,19 +36,13 @@ export default {
   POST_DEFAULT_WIDTH: 320,
 
   /* eslint-disable max-len */
-  BANNER_URLS: {
-    FRONTPAGE: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
-    LISTING: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
-    COMMENTS: {
-      IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-      CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=121809&site_id_android=122129&site_id_ios=121809',
-    },
+  BANNER_URLS_TUNE: {
+    IMPRESSION: 'https://293679.measurementapi.com/serve?action=impression&publisher_id=293679&site_id=122129&site_id_ios=121809',
+    CLICK: 'https://293679.measurementapi.com/serve?action=click&publisher_id=293679&site_id=122129&site_id_ios=121809',
+  },
+  BANNER_URLS_DIRECT: {
+    IOS: 'https://itunes.apple.com/us/app/reddit-the-official-app/id1064216828',
+    ANDROID: 'https://play.google.com/store/apps/details?id=com.reddit.frontpage',
   },
   /* eslint-enable */
 

@@ -7,7 +7,6 @@ const { BETA, SMARTBANNER } = constants.flags;
 const config = {
   [BETA]: true,
   [SMARTBANNER]: {
-    // userAgentSubstr: ['iPhone', 'iPod'],
     employee: true,
   },
 };
