@@ -1,5 +1,5 @@
 // Redirect desktop urls to mobile-web urls.
-const SORTS = ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'];
+const SORTS = 'hot|new|rising|controversial|top|gilded';
 
 function redirectSort(ctx, sort, subreddit) {
   let url = `?sort=${sort}`;
@@ -14,14 +14,14 @@ function redirectSort(ctx, sort, subreddit) {
 }
 
 function routes(app) {
-  SORTS.forEach(function(sort) {
-    app.router.get(`/${sort}`, function *() {
-      redirectSort(this, 'hot', this.params.subreddit);
-    });
+  app.router.get(`/:sort(${SORTS})`, function *() {
+    const { sort, subreddit} = this.params;
+    redirectSort(this, sort, subreddit);
+  });
 
-    app.router.get(`/r/:subreddit/${sort}`, function *() {
-      redirectSort(this, sort, this.params.subreddit);
-    });
+  app.router.get(`/r/:subreddit/:sort(${SORTS})`, function *() {
+    const { sort, subreddit} = this.params;
+    redirectSort(this, sort, subreddit);
   });
 
   app.router.get('/user/:user', function *() {
