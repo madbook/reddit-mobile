@@ -37,8 +37,8 @@ export default {
 
   /* eslint-disable max-len */
   BANNER_URLS_TUNE: {
-    IMPRESSION: 'https://293679.measurementapi.com/serve?action=impression&publisher_id=293679&site_id=122129&site_id_ios=121809',
-    CLICK: 'https://293679.measurementapi.com/serve?action=click&publisher_id=293679&site_id=122129&site_id_ios=121809',
+    IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=122129&site_id_ios=121809',
+    CLICK: 'https://249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=122129&site_id_ios=121809',
   },
   BANNER_URLS_DIRECT: {
     IOS: 'https://itunes.apple.com/us/app/reddit-the-official-app/id1064216828',
