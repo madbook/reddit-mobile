@@ -6,9 +6,7 @@ const { BETA, SMARTBANNER } = constants.flags;
 
 const config = {
   [BETA]: true,
-  [SMARTBANNER]: {
-    employee: true,
-  },
+  [SMARTBANNER]: true,
 };
 
 const feet = new Feet(config);

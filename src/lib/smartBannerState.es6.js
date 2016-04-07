@@ -28,7 +28,7 @@ const ANDROID_USER_AGENTS = [
 
 const ALLOWED_DEVICES = IOS_USER_AGENTS.concat(ANDROID_USER_AGENTS);
 
-const ALLOWED_COUNTRIES = new Set(['US', 'UK', 'AU', 'CA']);
+const ALLOWED_COUNTRIES = new Set(['US', 'GB', 'AU', 'CA']);
 
 const PAGE_PERCENTAGES = {
   'comments.subreddit': 5,

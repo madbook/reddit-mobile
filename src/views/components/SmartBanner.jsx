@@ -2,8 +2,8 @@ import React from 'react';
 import SnooIcon from './icons/SnooIcon';
 
 const T = React.PropTypes;
-const TITLE = 'Reddit anywhere';
-const SUBTITLE = 'With the official app';
+const TITLE = 'Reddit';
+const SUBTITLE = 'Get the official mobile app';
 const CTA = 'GET THE APP';
 
 export default class SmartBanner extends React.Component {
