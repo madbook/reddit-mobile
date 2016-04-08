@@ -66,13 +66,15 @@ const serverRoutes = function(app) {
         .end(function() { });
   });
 
-
+  const EXCLUDED_ROUTES = ['*', '/robots.txt', '/live/:idOrFilter?',
+                           '/goto', '/faq', '/health', '/routes'];
   router.get('/routes', function *() {
     this.body = app.router.stack.routes
       .filter(function(r) {
         return (
           r.methods.indexOf('GET') > -1 && // only map GET requests
-          r.path !== '*' // ignore the 404 catch-all route
+          !r.path.includes('/oauth2/') &&
+          !EXCLUDED_ROUTES.includes(r.path)
         );
       })
       .map(function(r) {
