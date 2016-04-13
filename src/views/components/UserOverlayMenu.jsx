@@ -124,7 +124,7 @@ class UserOverlayMenu extends BaseComponent {
         icon='icon-desktop icon-large blue'
         text='Desktop Site'
         href={ `https://www.reddit.com${this.props.ctx.url}` }
-        clickHandler={ this._desktopSite }
+        clickHandler={ this._gotoDesktopSiteClick }
       />,
       <ExpandoRow
         key='about-reddit'
