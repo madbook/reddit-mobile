@@ -95,7 +95,7 @@ class SubmitPage extends BasePage {
     });
 
     let title = this.refs.title.value.trim();
-    const sub = this.state.subreddit;
+    const sub = this.state.subredditName;
     const body = this.refs.body.value.trim();
 
     const kind = _determineKind(body);
