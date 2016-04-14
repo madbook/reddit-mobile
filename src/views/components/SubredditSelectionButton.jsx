@@ -20,7 +20,7 @@ class SubredditSelectionButton extends BaseComponent {
     subscriptions: propTypes.subscriptions,
     toggleOpen: React.PropTypes.func.isRequired,
   };
-  
+
   constructor(props) {
     super(props);
 
@@ -66,6 +66,7 @@ class SubredditSelectionButton extends BaseComponent {
             icon_img: sub.icon_img,
             icon_size: sub.icon_size,
             submit_text: sub.submit_text,
+            id: sub.id,
           };
         });
 
@@ -80,7 +81,7 @@ class SubredditSelectionButton extends BaseComponent {
   _handleSelect (e) {
     const sub = this.getSub(e.currentTarget);
 
-    this.props.changeSubreddit(sub.display_name);
+    this.props.changeSubreddit(sub.display_name, sub.id);
   }
 
   toggle () {

@@ -134,6 +134,7 @@ class SubmitPage extends BasePage {
     const { app, apiOptions } = this.props;
     const {
       subredditName,
+      subredditId,
       sendReplies,
       captchaIden,
       captchaAnswer,
@@ -180,7 +181,7 @@ class SubmitPage extends BasePage {
             name: res.name,
           },
           user: data.user,
-          subreddit: data.subreddit,
+          subreddit: subredditId ? { name: subredditId } : data.subreddit,
         };
         app.emit('post:submit', eventData);
         app.redirect(url);
@@ -220,10 +221,13 @@ class SubmitPage extends BasePage {
     }
   }
 
-  changeSubreddit (newSub) {
+  changeSubreddit (newSub, subId) {
     this.props.app.emit('post:selectSubreddit', newSub);
-    this.setState({ subredditName: newSub });
-    this.setState({ subredditSelectionOpen: false });
+    this.setState({
+      subredditName: newSub,
+      subredditId: subId,
+      subredditSelectionOpen: false,
+    });
   }
 
   toggleSubSelect () {
