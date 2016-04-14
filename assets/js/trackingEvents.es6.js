@@ -232,10 +232,6 @@ function trackingEvents(app) {
     };
   }
 
-  function stripPrefix(str) {
-    return str.replace(/(t[1-8]_)\w/, '');
-  }
-
   function buildLoginData(props) {
     const payload = {
       ...getBasePayload(props),
@@ -243,7 +239,7 @@ function trackingEvents(app) {
       user_name: props.user.name,
     };
 
-    addIfPresent(payload, 'user_id36', props.user.id);
+    addIfPresent(payload, 'user_id', convertId(props.user.id));
     addIfPresent(payload, 'loid', props.loid);
     addIfPresent(payload, 'loid_created', props.loidcreated);
     addIfPresent(payload, 'process_notes', props.process_notes);
@@ -290,16 +286,16 @@ function trackingEvents(app) {
     const payload = {
       ...getBasePayload(props),
       user_name: author,
-      user_id36: props.user.id,
+      user_id: convertId(props.user.id),
       sr_name: subreddit,
-      sr_id36: stripPrefix(subreddit_id),
-      comment_id36: stripPrefix(name),
+      sr_id: convertId(subreddit_id),
+      comment_id: convertId(name),
       comment_fullname: name,
       comment_body: body,
-      parent_id36: stripPrefix(parent_id),
+      parent_id: convertId(parent_id),
       parent_fullname: parent_id,
       parent_created_ts: props.parentCreated,
-      post_id36: stripPrefix(link_id),
+      post_id: convertId(link_id),
       post_fullname: link_id,
       post_created_ts: props.postCreated,
     };
@@ -311,10 +307,10 @@ function trackingEvents(app) {
     const { post, user } = props;
     const payload = {
       ...getBasePayload(props),
-      user_id36: user.id,
+      user_id: convertId(user.id),
       user_name: user.name,
       sr_name: post.sr,
-      post_id36: post.id,
+      post_id: convertId(post.id),
       post_fullname: post.name,
       post_title: post.title,
       post_type: post.kind,
@@ -323,7 +319,7 @@ function trackingEvents(app) {
     addIfPresent(payload, 'post_target_url', post.url);
     addIfPresent(payload, 'post_target_domain', url.parse(post.url).host);
     addIfPresent(payload, 'post_body', post.text);
-    addIfPresent(payload, 'sr_id36', stripPrefix((props.subreddit || {}).name));
+    addIfPresent(payload, 'sr_id', convertId(props.subreddit.name));
 
     return payload;
   }
