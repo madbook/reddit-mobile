@@ -133,7 +133,7 @@ class SubmitPage extends BasePage {
   async _submitPost (thingId, body, title, kind) {
     const { app, apiOptions } = this.props;
     const {
-      subreddit,
+      subredditName,
       sendReplies,
       captchaIden,
       captchaAnswer,
@@ -143,7 +143,7 @@ class SubmitPage extends BasePage {
     const newLink = {
       title,
       kind,
-      sr: subreddit,
+      sr: subredditName,
       sendreplies: sendReplies,
       resubmit: false,
       iden: captchaIden,
