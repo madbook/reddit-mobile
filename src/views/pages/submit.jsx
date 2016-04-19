@@ -1,5 +1,5 @@
 import React from 'react';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 import throttle from 'lodash/function/throttle';
 
 import BasePage from './BasePage';

@@ -1,4 +1,4 @@
-import Feet from 'feet';
+import Flags from '@r/flags';
 
 import constants from './constants';
 
@@ -9,7 +9,7 @@ const config = {
   [SMARTBANNER]: true,
 };
 
-const feet = new Feet(config);
+const flags = new Flags(config);
 
 function extractUser(ctx) {
   const state = ctx.state;
@@ -20,38 +20,38 @@ function extractUser(ctx) {
   return state.data.user;
 }
 
-feet.addRule('loggedin', function(val) {
+flags.addRule('loggedin', function(val) {
   return !!this.props.ctx.token === val;
 });
 
-feet.addRule('users', function(users) {
+flags.addRule('users', function(users) {
   const user = extractUser(this);
   return users.includes(user.name);
 });
 
-feet.addRule('employee', function(val) {
+flags.addRule('employee', function(val) {
   return extractUser(this).is_employee === val;
 });
 
-feet.addRule('admin', function(val) {
+flags.addRule('admin', function(val) {
   return extractUser(this).is_admin === val;
 });
 
-feet.addRule('beta', function(val) {
+flags.addRule('beta', function(val) {
   return extractUser(this).is_beta === val;
 });
 
-feet.addRule('url', function(query) {
+flags.addRule('url', function(query) {
   // turns { feature_thing: true, wat: 7 } into { thing: true }
-  const parsedQuery = Feet.parseConfig(this.props.ctx.query);
+  const parsedQuery = Flags.parseConfig(this.props.ctx.query);
   return Object.keys(parsedQuery).includes(query);
 });
 
-feet.addRule('userAgentSubstr', function(agents) {
+flags.addRule('userAgentSubstr', function(agents) {
   return !!agents
     .map(a => (this.props.ctx.userAgent || '').indexOf(a) > -1)
     .filter(b => b === true)
     .length;
 });
 
-export default feet;
+export default flags;

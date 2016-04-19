@@ -2,7 +2,7 @@ import React from 'react';
 import querystring from 'querystring';
 import isEmpty from 'lodash/lang/isEmpty';
 import omit from 'lodash/object/omit';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';

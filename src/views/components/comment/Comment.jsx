@@ -1,5 +1,5 @@
 import React from 'react';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 import without from 'lodash/array/without';
 
 import mobilify from '../../../lib/mobilify';

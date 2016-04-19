@@ -1,6 +1,6 @@
 import React from 'react';
 import remove from 'lodash/array/remove';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 
 import constants from '../../constants';
 import { SORTS } from '../../sortValues';

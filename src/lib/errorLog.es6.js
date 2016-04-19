@@ -1,4 +1,4 @@
-import { errors } from 'snoode';
+import { errors } from '@r/api-client';
 import makeRequest from './makeRequest';
 
 const { ResponseError } = errors;

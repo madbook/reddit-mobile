@@ -1,7 +1,7 @@
 import React from 'react';
 import URL from 'url';
 
-import { errors } from 'snoode';
+import { errors } from '@r/api-client';
 const { ResponseError } = errors;
 
 import mobilify from '../../../lib/mobilify';

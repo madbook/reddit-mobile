@@ -1,5 +1,5 @@
 import React from 'react';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 import moment from 'moment';
 import process from 'reddit-text-js';
 

@@ -1,4 +1,4 @@
-import { ServerReactApp } from 'horse-react';
+import { ServerReactApp } from '@r/horse-react';
 
 import mixin from '../../src/app-mixin';
 import { buildProps } from '../../src/routes';

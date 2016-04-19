@@ -10,7 +10,7 @@ import initBanner from '../../src/lib/initBanner';
 
 import forOwn from 'lodash/object/forOwn';
 
-import ClientReactApp from 'horse-react/src/client';
+import ClientReactApp from '@r/horse-react/src/client';
 import attachFastClick from 'fastclick';
 import mixin from '../../src/app-mixin';
 

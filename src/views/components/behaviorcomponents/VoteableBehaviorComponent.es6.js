@@ -1,5 +1,5 @@
 import React from 'react'; // for type checking
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 
 import propTypes from '../../../propTypes';
 import validatePropTypes from '../../../lib/validatePropTypes';

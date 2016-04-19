@@ -13,7 +13,7 @@ import compress from 'koa-compress';
 import koasession from 'koa-session';
 import StatsdClient from 'statsd-client';
 
-import ServerReactApp from 'horse-react/src/server';
+import ServerReactApp from '@r/horse-react/src/server';
 import mixin from '../app-mixin';
 
 const App = mixin(ServerReactApp);

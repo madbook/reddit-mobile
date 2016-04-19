@@ -7,7 +7,7 @@ import redirects from './redirects';
 
 // Import the api instance; we're going to share an instance between the
 // plugins.
-import { v1 as V1Api } from 'snoode';
+import { v1 as V1Api } from '@r/api-client';
 
 import BodyLayout from './views/layouts/BodyLayout';
 import ErrorPage from './views/pages/error';

@@ -1,7 +1,7 @@
 import React from 'react';
 import constants from '../../constants';
 import propTypes from '../../propTypes';
-import { models } from 'snoode';
+import { models } from '@r/api-client';
 
 import formatNumber from '../../lib/formatNumber';
 
