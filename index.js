@@ -66,19 +66,22 @@ const config = require('./src/server/config').default(numCPUs);
 
 const errorLog = require('./src/lib/errorLog').default;
 
+function parseStack(err) {
+  if (err.stack) {
+    const location = err.stack.split('\n')[1].split(':');
+    return { url: location[0], line: location[1]};
+  }
+  return {};
+}
+
 // If we miss catching an exception, format and log it before exiting the
 // process.
 process.on('uncaughtException', function (err) {
   console.log('Caught exception', err, err.stack);
 
-  let url;
-  let line;
-
-  if (err.stack) {
-    let location = err.stack.split('\n')[1];
-    url = location.split(':')[0];
-    line = location.split(':')[1];
-  }
+  const parsed = parseStack(err);
+  const line = parsed.line;
+  const url = parsed.url;
 
   if (config) {
     errorLog({
@@ -93,6 +96,25 @@ process.on('uncaughtException', function (err) {
   }
 
   process.exit();
+});
+
+process.on('unhandledRejection', function(reason) {
+  const parsed = parseStack(reason);
+  const line = parsed.line;
+  const url = parsed.url;
+  const message = typeof reason === 'object' ? JSON.stringify(reason) : reason;
+
+  if (config) {
+    errorLog({
+      url,
+      line,
+      error: 'Unhandled Promise rejection',
+      userAgent: 'SERVER',
+      message: 'Unhandled Promise rejection: ' + message,
+    }, {
+      hivemind: config.statsURL,
+    });
+  }
 });
 
 // Check node version

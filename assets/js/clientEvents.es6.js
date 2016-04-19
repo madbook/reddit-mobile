@@ -211,4 +211,11 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       app.emit(constants.RESIZE);
     }
   }, 100));
+
+  window.addEventListener('unhandledrejection', event => {
+    app.error(event, this, app, {
+      replaceBody: false,
+      redirect: false,
+    });
+  });
 }
