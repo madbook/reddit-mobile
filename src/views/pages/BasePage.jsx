@@ -125,8 +125,10 @@ class BasePage extends BaseComponent {
       // the promise.
       if (!promise.failed) {
         promise.failed = true;
-        this.props.app.error(e, this.props.ctx, this.props.app);
-        this.props.app.forceRender(this.props.ctx.body, this.props);
+        this.props.app.error(e, this.props.ctx, this.props.app, {
+          redirect: false,
+          replaceBody: true,
+        });
       }
     });
   }
