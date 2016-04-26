@@ -78,6 +78,7 @@ function DefaultLayout (props) {
           frame.name = JSON.stringify({
             subreddit: '${subredditName || ''}',
             origin: location.origin,
+            pathname: location.pathname,
           });
           frame.src = '//${config.mediaDomain}/gtm/jail?id=${config.googleTagManagerId}';
           document.body.appendChild(frame);

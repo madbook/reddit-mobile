@@ -330,7 +330,10 @@ function trackingEvents(app) {
     eventSend('screenview_events', 'cs.screenview', payload);
     handleLogin(props);
     clearEventQueue();
-    gtm.trigger('pageview', { subreddit: props.ctx.params.subreddit || '' });
+    gtm.trigger('pageview', {
+      subreddit: props.ctx.params.subreddit || '',
+      pathname: props.ctx.path || '/',
+    });
   });
 
   app.on('route:start', function(ctx) {
