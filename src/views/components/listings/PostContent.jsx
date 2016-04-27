@@ -5,6 +5,7 @@ import { errors } from '@r/api-client';
 const { ResponseError } = errors;
 
 import mobilify from '../../../lib/mobilify';
+import blankTargets from '../../../lib/blankTargets';
 import gifToHTML5Sources from '../../../lib/gifToHTML5Sources';
 import { posterForHrefIfGiphyCat } from '../../../lib/gifToHTML5Sources';
 import propTypes from '../../../propTypes';
@@ -220,7 +221,7 @@ export default class PostContent extends BaseComponent {
 
     if (!post.selftext) { return; }
 
-    const mobileSelfText = mobilify(post.expandContent);
+    const mobileSelfText = mobilify(blankTargets(post.expandContent));
     return (
       <div
         className='PostContent__selftext'

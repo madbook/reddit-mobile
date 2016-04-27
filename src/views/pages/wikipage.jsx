@@ -1,8 +1,8 @@
 import React from 'react';
-import process from 'reddit-text-js';
 import moment from 'moment';
 
 import mobilify from '../../lib/mobilify';
+import blankTargets from '../../lib/blankTargets';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
@@ -107,8 +107,8 @@ class WikiPageComp extends BasePage {
   }
 
   renderWikiPage(wikiPage) {
-    const { content_md, revision_by, revision_date } = wikiPage;
-    const body = content_md || MESSAGES.NO_MARKDOWN;
+    const { content_html, revision_by, revision_date } = wikiPage;
+    const body = content_html || MESSAGES.NO_MARKDOWN;
     const editor = revision_by ? revision_by.name: 'Unknown';
     const date = moment(revision_date * 1000).fromNow();
 
@@ -117,7 +117,7 @@ class WikiPageComp extends BasePage {
         <div className='wikiPage-container'>
           <div
             className='wikiPage-html'
-            dangerouslySetInnerHTML={ { __html: process(mobilify(body)) } }
+            dangerouslySetInnerHTML={ { __html: blankTargets(mobilify(body)) } }
           />
         </div>
         <p className='wikiPage-last-edit'>

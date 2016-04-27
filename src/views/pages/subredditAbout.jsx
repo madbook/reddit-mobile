@@ -1,7 +1,7 @@
 import React from 'react';
-import process from 'reddit-text-js';
 
 import formatNumber from '../../lib/formatNumber';
+import blankTargets from '../../lib/blankTargets';
 
 import BasePage from './BasePage';
 import Loading from '../components/Loading';
@@ -47,7 +47,7 @@ class SubredditAboutPage extends BasePage {
       <div
         className='subreddit-about-rules'
         key='subreddit-about-rules'
-        dangerouslySetInnerHTML={ { __html: process(data.description) } }
+        dangerouslySetInnerHTML={ { __html: blankTargets(data.description_html) } }
       />,
     ];
 

@@ -1,16 +1,22 @@
 import React from 'react';
-import process from 'reddit-text-js';
 import cookies from 'cookies-js';
 import { find as _find, filter as _filter } from 'lodash/collection';
 
 import BaseComponent from './BaseComponent';
 import constants from '../../constants';
+import blankTargets from '../../lib/blankTargets';
 
 const PropTypes = React.PropTypes;
 
-const EU_COOKIE_MESSAGE = 'Cookies help us deliver our Services. By ' +
-  'using our Services, you agree to our use of cookies. ' +
-  '[Learn More](https://www.reddit.com/help/privacypolicy)';
+const EU_COOKIE_MESSAGE = (
+  <p>Cookies help us deliver our Services.
+     By using our Services, you agree to our use of cookies. <a
+       target="_blank" href="https://www.reddit.com/help/privacypolicy"
+     >
+       Learn More
+     </a>
+  </p>
+);
 
 let InfoBarEUCookieFirstShow = true;
 
@@ -121,14 +127,16 @@ class InfoBar extends BaseComponent {
 
     if (message) {
       if (message.type === constants.messageTypes.EU_COOKIE) {
-        message.text = EU_COOKIE_MESSAGE;
-      }
-
-      if (message.text) {
+        content = (
+          <div className='infobar-html'>
+            { EU_COOKIE_MESSAGE }
+          </div>
+        );
+      } else if (message.text_html) {
         content = (
           <div
             className='infobar-html'
-            dangerouslySetInnerHTML={ {__html: process(message.text)} }
+            dangerouslySetInnerHTML={ {__html: blankTargets(message.text_html)} }
           />
         );
       } else if (message.plainText) {

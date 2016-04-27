@@ -1,7 +1,7 @@
 import React from 'react';
-import process from 'reddit-text-js';
 
 import propTypes from '../../propTypes';
+import blankTargets from '../../lib/blankTargets';
 
 import BaseComponent from './BaseComponent';
 import Loading from '../components/Loading';
@@ -65,7 +65,7 @@ class SubredditSelectionButton extends BaseComponent {
             display_name: sub.display_name,
             icon_img: sub.icon_img,
             icon_size: sub.icon_size,
-            submit_text: sub.submit_text,
+            submit_text_html: sub.submit_text_html,
             id: sub.id,
           };
         });
@@ -93,14 +93,14 @@ class SubredditSelectionButton extends BaseComponent {
   }
 
   openSubmitRules (e) {
-    const { submit_text, display_name } = this.getSub(e.currentTarget);
+    const { submit_text_html, display_name } = this.getSub(e.currentTarget);
 
     if (this.state.submitRules.name === display_name) {
       this.setState({submitRules: {name: '', text: ''}});
     } else {
       this.setState({
         submitRules: {
-          text: submit_text,
+          text: submit_text_html,
           name: display_name,
         },
       });
@@ -125,7 +125,7 @@ class SubredditSelectionButton extends BaseComponent {
           expandContent = (
             <div className='container sub-selection-rules'>
 
-              <div dangerouslySetInnerHTML={ {__html: process(text)} } />
+              <div dangerouslySetInnerHTML={ {__html: blankTargets(text)} } />
               <button
                 type='button'
                 data-index={ i }

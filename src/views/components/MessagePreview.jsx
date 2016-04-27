@@ -1,10 +1,11 @@
 import React from 'react';
 import { models } from '@r/api-client';
 import moment from 'moment';
-import process from 'reddit-text-js';
 
 import BaseComponent from './BaseComponent';
 import Inbox from '../components/Inbox';
+
+import blankTargets from '../../lib/blankTargets';
 
 const subredditRegex = /\/r\/([^/]*)/;
 
@@ -238,7 +239,7 @@ class MessagePreview extends BaseComponent {
             <div className='col-xs-12'>
               <div
                 className='message-body vertical-spacing-top'
-                dangerouslySetInnerHTML={ {__html: process(message.body)} }
+                dangerouslySetInnerHTML={ {__html: blankTargets(message.body_html)} }
               />
             </div>
 

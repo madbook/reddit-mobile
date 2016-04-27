@@ -56,7 +56,6 @@ module.exports = function buildJS(gulp, options) {
       .require('moment')
       .require('react')
       .require('react-dom')
-      .require('reddit-text-js')
       .require('superagent');
 
     bundler.add(entryFile);
@@ -78,7 +77,7 @@ module.exports = function buildJS(gulp, options) {
     bundler
       .transform(babelify.configure({
         plugins,
-        ignore: /.+node_modules\/(moment|q|react|reddit-text-js|superagent|lodash|snuownd)\/.+/i,
+        ignore: /.+node_modules\/(moment|q|react|superagent|lodash|snuownd)\/.+/i,
         extensions: ['.js', '.es6.js', '.jsx' ],
         sourceMap: options.debug,
         presets: [

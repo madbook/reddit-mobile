@@ -222,7 +222,7 @@ class ListingPage extends BasePage {
       commentsList = comments.map((comment, i) => {
         const key = `comment-${i}`;
 
-        if (comment && comment.bodyHtml !== undefined) {
+        if (comment && comment.body_html !== undefined) {
           return (
             <div className='listing-comment' key={ comment.id } >
               <Comment

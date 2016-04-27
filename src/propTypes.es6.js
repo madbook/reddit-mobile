@@ -35,6 +35,7 @@ const _subreddit = shape({
   accounts_active: number,
   lang: string,
   over18: bool,
+  description: string,
 
   banner_img: string,
   banner_size: arrayOf(number),
@@ -44,6 +45,7 @@ const _subreddit = shape({
   user_is_subscriber: bool,
   user_is_moderator: bool,
   submit_text: string,
+  submit_text_html: string,
   submission_type: string,
 
   collapse_deleted_comments: bool,
@@ -132,6 +134,7 @@ const _listing = shape({
   promoted: bool,
   saved: bool.isRequired,
   selftext: string.isRequired,
+  selftext_html: string,
   sr_detail: shape({
     icon_img: string,
     key_color: string,
