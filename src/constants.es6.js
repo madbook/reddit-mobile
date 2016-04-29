@@ -19,7 +19,7 @@ export default {
   SCROLL: 'scroll',
   ICON_SHRUNK_SIZE: 16,
   CACHEABLE_COOKIES: ['compact'],
-  DEFAULT_API_TIMEOUT: 10000,
+  DEFAULT_API_TIMEOUT: 1000,
   HIDE_GLOBAL_MESSAGE: 'hideGlobalMessage',
   // number of views before we hide stop showing EU cookie notice,
   // or when user clicks close.

@@ -34,14 +34,6 @@ class BodyLayout extends BasePage {
     const app = this.props.app;
     app.on(constants.USER_DATA_CHANGED, this._updateUserState);
     app.on(constants.TOASTER, this.toggleToaster);
-
-    // TODO: remove before deploying
-    window.test = type => {
-      app.emit(constants.TOASTER, {
-        type: type || constants.TOASTER_TYPES.ERROR,
-        message: 'This is simply a test. Pay no regard to the contents of this message',
-      });
-    };
   }
 
   componentWillUnmount() {
