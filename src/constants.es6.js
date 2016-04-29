@@ -34,6 +34,12 @@ export default {
   // Post content
   POST_COMPACT_THUMBNAIL_WIDTH: 70,
   POST_DEFAULT_WIDTH: 320,
+  TOASTER: 'toaster',
+  TOASTER_TYPES: {
+    FRIENDLY: 'friendly',
+    ERROR: 'error',
+    SUCCESS: 'success',
+  },
 
   /* eslint-disable max-len */
   BANNER_URLS_TUNE: {
