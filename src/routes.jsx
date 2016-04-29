@@ -437,6 +437,15 @@ function routes(app) {
 
     props.data.set('listing', app.api.links.get(listingOpts));
 
+    this.preServerRender = function commentsPagePreRender() {
+      const { listing } = this.props.dataCache;
+
+      if (listing) {
+        this.props.title = listing.title;
+        this.props.metaDescription = `${listing.title} | r/${listing.subreddit} at reddit.com`;
+      }
+    };
+
     this.body = makeBody(ListingPage);
   }
   router.get('comments.permalinkActivity',
