@@ -97,7 +97,7 @@ function setCompact(ctx, app) {
 
   const cookieOptions = makeCookieOptions(app);
 
-  const ua = ctx.headers['user-agent'];
+  const ua = ctx.headers['user-agent'].toLowerCase();
 
   // Set compact for opera mini
   if (ua && ua.match(/(opera mini|android 2)/i)) {
@@ -216,6 +216,7 @@ class Server {
       server.use(koaStatic(`${__dirname}/../../build`));
     }
 
+    server.use(this.shouldPreload(app));
     server.use(this.checkToken(app));
     server.use(this.convertSession(app));
     server.use(this.setLOID(app));
@@ -440,6 +441,40 @@ class Server {
       }
 
       yield next;
+    };
+  }
+
+  shouldPreload (app) {
+    return function * (next) {
+      this.skipServerPreload = true;
+
+      const forceLoad = this.query.nojs || this.cookies.get('nojs');
+
+      if (this.query.nojs) {
+        this.cookies.set('nojs', 'true', makeCookieOptions(app));
+        this.skipServerPreload = false;
+        return yield next;
+      }
+
+      if (this.cookies.get('nojs')) {
+        this.skipServerPreload = false;
+        return yield next;
+      }
+
+      if (forceLoad) {
+        this.skipServerPreload = false;
+        return yield next;
+      }
+
+      const ua = this.headers['user-agent'].toLowerCase();
+
+      // should catch pretty much everything
+      if (ua.indexOf('bot') > -1) {
+        this.skipServerPreload = false;
+        return yield next;
+      }
+
+      return yield next;
     };
   }
 
