@@ -442,7 +442,7 @@ function routes(app) {
 
       if (listing) {
         this.props.title = listing.title;
-        this.props.metaDescription = `${listing.title} | r/${listing.subreddit} at reddit.com`;
+        this.props.metaDescription = ListingPage.buildMeta(listing);
       }
     };
 

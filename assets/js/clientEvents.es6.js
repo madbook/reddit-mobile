@@ -1,4 +1,5 @@
 import constants from '../../src/constants';
+import { setTitle } from './clientLib';
 
 import cookies from 'cookies-js';
 import throttle from 'lodash/function/throttle';
@@ -12,6 +13,8 @@ import { elementInOtherEl,
 const { NIGHTMODE, DAYMODE } = constants.themes;
 
 export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
+  app.on('setTitle', setTitle);
+
   app.on('route:desktop', function(route) {
     const options = {};
 
@@ -61,7 +64,9 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     app.setNotification(cookies, notification);
   });
 
-  app.on('pageview', function() {
+  app.on('pageload', function(props) {
+    setTitle(props);
+
     // reset notifications once the page loads
     cookies.set('notifications');
 

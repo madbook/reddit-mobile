@@ -135,12 +135,18 @@ class BasePage extends BaseComponent {
 
   finish () {
     if (this.props.ctx.env !== 'SERVER') {
+      const data = {
+        ...this.props,
+        data: this.state.data,
+        feature: this.state.feature,
+      };
+
+      // pageload fires any time a page is finished loading
+      this.props.app.emit('pageload', data);
+
+      // pageview fires when we should track a pageview
       if (this.state.finished === false && this.track) {
-        this.props.app.emit('pageview', {
-          ...this.props,
-          data: this.state.data,
-          feature: this.state.feature,
-        });
+        this.props.app.emit('pageview', data);
         this.setState({ finished: true });
       }
     }

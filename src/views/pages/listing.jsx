@@ -23,6 +23,10 @@ class ListingPage extends BasePage {
     subredditName: T.string,
   };
 
+  static buildMeta = (listing) => {
+    return `${listing.title} | r/${listing.subreddit} at reddit.com`;
+  }
+
   constructor(props) {
     super(props);
 
@@ -180,6 +184,8 @@ class ListingPage extends BasePage {
 
     const { user, listing, comments } = data;
     const { author, permalink } = listing;
+
+    app.emit('setTitle', { title: listing.title });
 
     let singleComment;
     if (commentId) {
