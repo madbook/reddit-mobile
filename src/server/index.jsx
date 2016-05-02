@@ -112,7 +112,7 @@ function setCompact(ctx, app) {
 
   if (compact) {
     ctx.cookies.set('compact', compact, cookieOptions);
-  } else if (ctx.cookies.get('compact') === 'false') {
+  } else {
     ctx.cookies.set('compact');
   }
 
