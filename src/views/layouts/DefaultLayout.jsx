@@ -105,6 +105,20 @@ function DefaultLayout (props) {
   query.nojs = true;
 
   const nojspath = `${path}?${qs.stringify(query)}`;
+  let noscript;
+
+  if (!props.ctx.nojs) {
+    noscript = (
+      <noscript>
+        <h2>It appears you do not have javscript enabled.</h2>
+        <a href={ nojspath } className='SquareButton SquareButton__flexible'>
+          <span className='SquareButton__content SquareButton__flexible__content'>
+            Reload the page in no-javascript mode
+          </span>
+        </a>
+      </noscript>
+    );
+  }
 
   return (
     <html>
@@ -130,14 +144,7 @@ function DefaultLayout (props) {
         <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
       </head>
       <body className={ `DefaultLayout navbar-offcanvas-target ${props.theme}` }>
-        <noscript>
-          <p>
-            It appears you do not have javscript enabled.
-            <a href={ nojspath }>
-              Click here to reload the page in no-javascript mode.
-            </a>
-          </p>
-        </noscript>
+        { noscript }
 
         <div id='app-container'>
           !!CONTENT!!

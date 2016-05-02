@@ -52,8 +52,9 @@ function SVG (props) {
   return <span className='placeholder'/>;
 }
 
-SVG.ENABLED = typeof document !== 'undefined' &&
+SVG.ENABLED = typeof document === 'undefined' ||
               (!!document.createElementNS && !!document.createElementNS(_NS, 'svg').createSVGRect);
+
 SVG.ICON_SIZE = 20;
 
 export default SVG;

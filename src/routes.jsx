@@ -91,6 +91,7 @@ function filterContextProps(ctx) {
     redirect: ctx.redirect,
     env: ctx.env,
     notifications: ctx.notifications,
+    nojs: ctx.nojs,
   };
 }
 

@@ -448,21 +448,16 @@ class Server {
     return function * (next) {
       this.skipServerPreload = true;
 
-      const forceLoad = this.query.nojs || this.cookies.get('nojs');
-
       if (this.query.nojs) {
         this.cookies.set('nojs', 'true', makeCookieOptions(app));
         this.skipServerPreload = false;
+        this.nojs = true;
         return yield next;
       }
 
       if (this.cookies.get('nojs')) {
         this.skipServerPreload = false;
-        return yield next;
-      }
-
-      if (forceLoad) {
-        this.skipServerPreload = false;
+        this.nojs = true;
         return yield next;
       }
 
