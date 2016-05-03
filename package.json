@@ -1,0 +1,38 @@
+{
+  "name": "r-project-blackbird",
+  "version": "0.0.1",
+  "description": "the newer, better, faster, stronger reddit-mobile",
+  "author": "reddit <schwers@reddit.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "blueprints -w",
+    "build": "blueprints",
+    "prod-build": "blueprints -p",
+    "dev-server": "nodemon ./bin/Server.js",
+    "server": "node ./bin/ProductionServer.js"
+  },
+  "dependencies": {
+    "@r/api-client": "~3.7.0",
+    "@r/build": "0.0.12",
+    "@r/middleware": "0.5.3",
+    "@r/platform": "0.0.24",
+    "@r/private": "~0.1.0",
+    "atob": "2.0.3",
+    "autoprefixer": "6.3.6",
+    "babel-polyfill": "^6.7.4",
+    "fs": "0.0.2",
+    "koa": "2.0.0",
+    "koa-bodyparser": "3.0.0",
+    "koa-router": "7.0.1",
+    "koa-static": "3.0.0",
+    "lodash": "4.11.1",
+    "nodemon": "^1.9.1",
+    "react": "15.0.1",
+    "react-dom": "15.0.1",
+    "react-redux": "4.4.5",
+    "redux": "3.5.2",
+    "reselect": "2.5.1",
+    "superagent": "1.8.3",
+    "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
+  }
+}
