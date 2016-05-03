@@ -305,6 +305,7 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
 .icon-x:before {
 	content: "\F160";
 }
-.App {
-  background-color: red;
+.icon-gold,
+.icon-gold:before {
+  color: #FFD635;
 }

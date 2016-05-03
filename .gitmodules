@@ -1,0 +1,3 @@
+[submodule "lib/art-gallery"]
+	path = lib/art-gallery
+	url = git@github.com:schwers/art-gallery.git
