@@ -12,9 +12,6 @@ import { elementInOtherEl,
 
 const { NIGHTMODE, DAYMODE } = constants.themes;
 
-const DISCONNECTED_MESSAGE = 'You have been disconnected from the internet.';
-const CONNECTED_MESSAGE = 'You have been reconected to the internet.';
-
 export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
   app.on('setTitle', setTitle);
 
@@ -224,20 +221,6 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     app.error(event, this, app, {
       replaceBody: false,
       redirect: false,
-    });
-  });
-
-  window.addEventListener('online', () => {
-    app.emit(constants.TOASTER, {
-      type: constants.TOASTER_TYPES.FRIENDLY,
-      message: CONNECTED_MESSAGE,
-    });
-  });
-
-  window.addEventListener('offline', () => {
-    app.emit(constants.TOASTER, {
-      type: constants.TOASTER_TYPES.ERROR,
-      message: DISCONNECTED_MESSAGE,
     });
   });
 }

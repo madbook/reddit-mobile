@@ -90,10 +90,6 @@ function mixin (App) {
     }
 
     error (e, ctx, app, options={}) {
-
-
-      const TIMEOUT_MESSAGE = 'We were unable to contact the server. ' +
-                              'Please check your internet connection, or try again.';
       // API error
       if (e.status) {
         // Don't redirect if abort === false
@@ -105,13 +101,6 @@ function mixin (App) {
 
       if (!e.status || (e.status !== 429 && e.status !== 504)) {
         logError(e, ctx, app.config);
-      }
-
-      if (e.status === 503 || e.status === 504) {
-        return app.emit(constants.TOASTER, {
-          type: constants.TOASTER_TYPES.ERROR,
-          message: TIMEOUT_MESSAGE,
-        });
       }
 
       if (options.replaceBody !== false) {

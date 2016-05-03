@@ -40,7 +40,7 @@ class BasePage extends BaseComponent {
     if (props.dataCache) {
       let k;
       for (k in props.dataCache) {
-        props.data.set(k, () => Promise.resolve(props.dataCache[k]));
+        props.data.set(k, Promise.resolve(props.dataCache[k ]));
 
         if (props.dataCache[k] && props.dataCache[k].body) {
           this.state.data[k] = props.dataCache[k].body;
@@ -80,7 +80,7 @@ class BasePage extends BaseComponent {
   }
 
   watch (property) {
-    const promise = this.props.data.get(property)();
+    const promise = this.props.data.get(property);
 
     promise.then((p) => {
       let data;

@@ -1,7 +1,6 @@
 import React from 'react';
 import LiveReload from '../components/LiveReload';
 import constants from '../../constants';
-import qs from 'querystring';
 
 function DefaultLayout (props) {
   const config = props.config;
@@ -100,26 +99,6 @@ function DefaultLayout (props) {
     keyColor = props.dataCache.subreddit.key_color;
   }
 
-  const path = props.ctx.path;
-  const query = props.ctx.query;
-  query.nojs = true;
-
-  const nojspath = `${path}?${qs.stringify(query)}`;
-  let noscript;
-
-  if (!props.ctx.nojs) {
-    noscript = (
-      <noscript>
-        <h2>It appears you do not have javscript enabled.</h2>
-        <a href={ nojspath } className='SquareButton SquareButton__flexible'>
-          <span className='SquareButton__content SquareButton__flexible__content'>
-            Reload the page in no-javascript mode
-          </span>
-        </a>
-      </noscript>
-    );
-  }
-
   return (
     <html>
       <head>
@@ -144,8 +123,6 @@ function DefaultLayout (props) {
         <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
       </head>
       <body className={ `DefaultLayout navbar-offcanvas-target ${props.theme}` }>
-        { noscript }
-
         <div id='app-container'>
           !!CONTENT!!
         </div>

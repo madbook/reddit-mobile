@@ -40,9 +40,9 @@ function setData(ctx, key, endpoint, options) {
 
   if (ctx.props.dataCache && ctx.props.dataCache[key]) {
     api.hydrate(endpoint, options, ctx.props.dataCache[key]);
-    ctx.props.data.set(key, () => Promise.resolve(ctx.props.dataCache[key]));
+    ctx.props.data.set(key, Promise.resolve(ctx.props.dataCache[key]));
   } else {
-    ctx.props.data.set(key, () => api[endpoint].get(options));
+    ctx.props.data.set(key, api[endpoint].get(options));
   }
 }
 
@@ -91,7 +91,6 @@ function filterContextProps(ctx) {
     redirect: ctx.redirect,
     env: ctx.env,
     notifications: ctx.notifications,
-    nojs: ctx.nojs,
   };
 }
 
@@ -430,13 +429,13 @@ function routes(app) {
       commentsOpts.query.context = this.query.context || 1;
     }
 
-    props.data.set('comments', () => app.api.comments.get(commentsOpts));
+    props.data.set('comments', app.api.comments.get(commentsOpts));
 
     const listingOpts = buildAPIOptions(ctx, {
       id: `t3_${ctx.params.listingId}`,
     });
 
-    props.data.set('listing', () => app.api.links.get(listingOpts));
+    props.data.set('listing', app.api.links.get(listingOpts));
 
     this.preServerRender = function commentsPagePreRender() {
       const { listing } = this.props.dataCache;
@@ -492,7 +491,7 @@ function routes(app) {
         },
       });
 
-      this.props.data.set('search', () => app.api.search.get(searchOpts));
+      this.props.data.set('search', app.api.search.get(searchOpts));
     }
 
     this.body = makeBody(SearchPage);
@@ -543,7 +542,7 @@ function routes(app) {
       user: ctx.params.user,
     });
 
-    this.props.data.set('userProfile', () => app.api.users.get(userOpts));
+    this.props.data.set('userProfile', app.api.users.get(userOpts));
 
     const subNavProps = {
       children: userProfileSubnav('about', ctx.params.user),
@@ -597,7 +596,7 @@ function routes(app) {
       user: ctx.params.user,
     });
 
-    this.props.data.set('activities', () => app.api.activities.get(activitiesOpts));
+    this.props.data.set('activities', app.api.activities.get(activitiesOpts));
 
     const subNavProps = {
       children: userProfileSubnav('activity', ctx.params.user),
@@ -672,7 +671,7 @@ function routes(app) {
       user: props.userName,
     });
 
-    this.props.data.set('activities', () => saved.get(savedOpts));
+    this.props.data.set('activities', saved.get(savedOpts));
 
     this.body = makeBody(UserSavedPage);
   }
@@ -840,7 +839,7 @@ function routes(app) {
       view: props.view,
     });
 
-    this.props.data.set('messages', () => app.api.messages.get(listingOpts));
+    this.props.data.set('messages', app.api.messages.get(listingOpts));
 
     this.body = makeBody(MessagesPage);
   });
@@ -869,7 +868,7 @@ function routes(app) {
       },
     });
 
-    const wikiGet = () => new Promise(function(resolve, reject) {
+    const wikiGet = new Promise(function(resolve, reject) {
       app.api.wiki.get(options).then(resolve, function(e) {
         // handle api crap. otherwise user gets redirected to auth if loggedout and wiki is disabled.
         if (e.status === 403) {

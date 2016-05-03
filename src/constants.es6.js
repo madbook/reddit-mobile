@@ -19,7 +19,7 @@ export default {
   SCROLL: 'scroll',
   ICON_SHRUNK_SIZE: 16,
   CACHEABLE_COOKIES: ['compact'],
-  DEFAULT_API_TIMEOUT: 20000,
+  DEFAULT_API_TIMEOUT: 10000,
   HIDE_GLOBAL_MESSAGE: 'hideGlobalMessage',
   // number of views before we hide stop showing EU cookie notice,
   // or when user clicks close.
@@ -34,12 +34,6 @@ export default {
   // Post content
   POST_COMPACT_THUMBNAIL_WIDTH: 70,
   POST_DEFAULT_WIDTH: 320,
-  TOASTER: 'toaster',
-  TOASTER_TYPES: {
-    FRIENDLY: 'friendly',
-    ERROR: 'error',
-    SUCCESS: 'success',
-  },
 
   /* eslint-disable max-len */
   BANNER_URLS_TUNE: {
