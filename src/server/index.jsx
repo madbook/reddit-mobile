@@ -97,7 +97,7 @@ function setCompact(ctx, app) {
 
   const cookieOptions = makeCookieOptions(app);
 
-  const ua = ctx.headers['user-agent'].toLowerCase();
+  const ua = (ctx.headers['user-agent'] || '').toLowerCase();
 
   // Set compact for opera mini
   if (ua && ua.match(/(opera mini|android 2)/i)) {
@@ -461,7 +461,7 @@ class Server {
         return yield next;
       }
 
-      const ua = this.headers['user-agent'].toLowerCase();
+      const ua = (this.headers['user-agent'] || '').toLowerCase();
 
       // should catch pretty much everything
       if (ua.indexOf('bot') > -1) {
