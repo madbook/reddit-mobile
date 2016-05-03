@@ -75,7 +75,7 @@ export default class SearchPage extends BasePage {
     if (this.state.data.search) {
       writeData(this.state.data.search);
     } else if (this.props.data.get('search')) {
-      this.props.data.get('search')
+      this.props.data.get('search')()
         .then(extractSearchResults)
         .then(writeData);
     } else { // blank search page w/ no query
