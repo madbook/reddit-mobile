@@ -11,14 +11,42 @@ import GoogleCarouselMetadata from '../components/GoogleCarouselMetadata';
 import Post from '../components/listings/Post';
 import Loading from '../components/Loading';
 import TopSubnav from '../components/TopSubnav';
+import RelevantContent from '../components/listings/RelevantContent';
 
 const T = React.PropTypes;
+
+function limitTrees(limit, trees) {
+  if (limit === 0 || !trees || trees.length === 0) {
+    return [0, []];
+  }
+  const first = trees[0];
+  const rest = trees.slice(1);
+  const [count, pruned] = limitTree(limit, first);
+  if (limit > count) {
+    const [restCount, restPruned] = limitTrees(limit - count, rest);
+    return [count + restCount, [pruned].concat(restPruned)];
+  }
+  return [count, [pruned]];
+}
+
+function limitTree(limit, tree) {
+  if (limit === 0) {
+    return [0, null];
+  } else if (limit === 1) {
+    return [1, { ...tree, replies: [] }];
+  }
+  const [count, children] = limitTrees(limit - 1, tree.replies);
+  return [count + 1, { ...tree, replies: children }];
+}
+
 
 class ListingPage extends BasePage {
   static propTypes = {
     commentId: T.string,
     data: T.object,
     listingId: T.string.isRequired,
+    loid: T.string.isRequired,
+    loidcreated: T.string.isRequired,
     sort: T.string,
     subredditName: T.string,
   };
@@ -34,6 +62,7 @@ class ListingPage extends BasePage {
       ...this.state,
       editing: false,
       loadingMoreComments: false,
+      expandComments: false,
     };
 
     this.onNewComment = this.onNewComment.bind(this);
@@ -42,6 +71,7 @@ class ListingPage extends BasePage {
     this.onDelete = this.onDelete.bind(this);
     this.loadMore = this.loadMore.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
+    this.expandComments = this.expandComments.bind(this);
   }
 
   get track () {
@@ -161,8 +191,12 @@ class ListingPage extends BasePage {
     }
   }
 
+  expandComments() {
+    this.setState({ expandComments: true });
+  }
+
   render() {
-    const { data, editing, loadingMoreComments, linkEditError } = this.state;
+    const { data, editing, loadingMoreComments, linkEditError, expandComments } = this.state;
 
     const {
       app,
@@ -171,6 +205,9 @@ class ListingPage extends BasePage {
       ctx,
       token,
       subredditName,
+      listingId,
+      loid,
+      loidcreated,
     } = this.props;
 
     const sort = this.props.sort || SORTS.CONFIDENCE;
@@ -182,8 +219,8 @@ class ListingPage extends BasePage {
       return (<Loading />);
     }
 
-    const { user, listing, comments } = data;
-    const { author, permalink } = listing;
+    const { user, listing, comments, relevant, subreddit } = data;
+    const { author, permalink, is_self: isSelfText } = listing;
 
     app.emit('setTitle', { title: listing.title });
 
@@ -202,6 +239,12 @@ class ListingPage extends BasePage {
     let commentsList;
     let googleCarousel;
 
+    const abbreviateComments =
+      !expandComments &&
+      (this.state.feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP) ||
+       this.state.feature.enabled(constants.flags.VARIANT_RELEVANCY_RELATED) ||
+       this.state.feature.enabled(constants.flags.VARIANT_RELEVANCY_ENGAGING));
+
     /*
       comments can be in one of three states:
         1) it is an array of comments
@@ -219,8 +262,14 @@ class ListingPage extends BasePage {
       draw a loading state.
     */
     if (Array.isArray(comments)) {
-      commentsList = comments.map((comment, i) => {
-        const key = `comment-${i}`;
+      let commentsTrees = comments;
+
+      if (abbreviateComments) {
+        [, commentsTrees] = limitTrees(3, comments);
+      }
+
+      commentsList = commentsTrees.map((comment, i) => {
+        const key = `comment-${i}-${abbreviateComments}`;
 
         if (comment && comment.body_html !== undefined) {
           return (
@@ -263,6 +312,19 @@ class ListingPage extends BasePage {
         );
       });
 
+      if (abbreviateComments) {
+        commentsList = [commentsList,
+          <a
+            className='listing-comment-collapsed-more'
+            onClick={ this.expandComments }
+            href='#'
+            key='comment-collapsed-more'
+          >
+            Read More
+          </a>,
+        ];
+      }
+
       // Show google crawler metadata when the server renders
       if (env === 'SERVER') {
         googleCarousel = (
@@ -278,6 +340,30 @@ class ListingPage extends BasePage {
       }
     } else if (!comments) {
       commentsList = (
+        <div className='Loading-Container'>
+          <Loading />
+        </div>
+      );
+    }
+
+    let relevantContent;
+    if (relevant) {
+      relevantContent = (
+        <RelevantContent
+          feature={ this.state.feature }
+          relevant={ relevant }
+          width={ constants.POST_DEFAULT_WIDTH }
+          subredditName={ subredditName }
+          subreddit={ subreddit }
+          listingId={ listingId }
+          isSelfText={ isSelfText }
+          app={ app }
+          loid={ loid }
+          loidcreated={ loidcreated }
+        />
+      );
+    } else {
+      relevantContent = (
         <div className='Loading-Container'>
           <Loading />
         </div>
@@ -330,6 +416,7 @@ class ListingPage extends BasePage {
             { singleComment }
             { commentsList }
           </div>
+          { relevantContent }
         </div>
       </div>
     );

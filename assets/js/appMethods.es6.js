@@ -119,10 +119,8 @@ export default function(app, $body, render, history) {
                     (decodeURIComponent(cookies.get('notifications') || '')).split(','),
     });
 
-    if (!ctx.token) {
-      ctx.loid = cookies.get('loid');
-      ctx.loidcreated = cookies.get('loidcreated');
-    }
+    ctx.loid = cookies.get('loid');
+    ctx.loidcreated = cookies.get('loidcreated');
 
     ctx.headers.referer = app.getState('referrer');
 

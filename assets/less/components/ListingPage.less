@@ -12,3 +12,37 @@
   min-height: 4 * @grid-size;
   line-height: 4 * @grid-size;
 }
+
+.listing-comment-collapsed-more {
+  display: block;
+
+  text-align: center;
+  text-transform: uppercase;
+  font-size: @font-size-h4;
+  font-weight: bold;
+
+  margin-top: 3 * @grid-size;
+  margin-right: @grid-size;
+  margin-bottom: 3 * @grid-size;
+  margin-left: @grid-size;
+  padding: 2 * @grid-size;
+
+  .themeify({
+    color: @theme-meta-text-color;
+    border: @theme-border;
+  });
+
+  &:visited {
+    text-decoration: none;
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+
+  &:hover {
+    text-decoration: none;
+    .themeify({
+      color: @theme-link-text-color;
+    });
+  }
+}

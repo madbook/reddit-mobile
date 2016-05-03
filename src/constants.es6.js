@@ -56,6 +56,9 @@ export default {
   flags: {
     BETA: 'beta',
     SMARTBANNER: 'banner',
+    VARIANT_RELEVANCY_TOP: 'experimentRelevancyTop',
+    VARIANT_RELEVANCY_ENGAGING: 'experimentRelevancyEngaging',
+    VARIANT_RELEVANCY_RELATED: 'experimentRelevancyRelated',
   },
 
   themes: {

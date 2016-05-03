@@ -1,0 +1,150 @@
+.RelevantContent {
+  padding: @grid-size;
+
+  .themeify({
+    border-top: @theme-border;
+  },
+  @inDayMode: {
+    background-color: @pale-grey;
+  },
+  @inNightMode: {
+    background-color: @black;
+  });
+
+  .RelevantContent-action {
+    display: block;
+    font-size: @font-size-base;
+    text-align: center;
+    text-transform: uppercase;
+    color: @white;
+    background: @blue;
+    margin-top: 3*@grid-size;
+    margin-bottom: 3*@grid-size;
+    margin-left: @grid-size;
+    margin-right: @grid-size;
+    padding-top: @grid-size;
+    padding-bottom: @grid-size;
+  }
+
+}
+
+.RelevantContent-header {
+  font-size: @font-size-h4;
+  text-align: center;
+
+  position: relative;
+
+  padding-top: @grid-size;
+  padding-bottom: @grid-size;
+
+  &.top-border:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: @grid-size;
+    right: @grid-size;
+    height: 1px;
+
+    .themeify({
+      background: @theme-line-color;
+    });
+  }
+
+  &.bottom-border:after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: @grid-size;
+    right: @grid-size;
+    height: 1px;
+
+    .themeify({
+      background: @theme-line-color;
+    });
+  }
+
+  .SVG-icon, .RelevantContent-icon, .RelevantContent-row-spacer {
+    display:inline-block;
+  }
+
+  .RelevantContent-icon {
+    .icon-snoo, .icon-gaming {
+      font-size: 28px;
+    }
+  }
+
+  .RelevantContent-row-spacer {
+    width: 8 * @grid-size;
+    text-align: center;
+  }
+
+  .badge-with-spacing {
+    margin-left: 4px
+  }
+}
+
+.RelevantContent-icon-img {
+  background-repeat: none;
+  background-size: cover;
+  background-position: 0 0;
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+  border-radius: 32px;
+}
+
+.RelevantContent-row-text, .RelevantContent-row-button {
+  height: @overlay-menu-row-height;
+  line-height: @overlay-menu-row-height;
+
+  .themeify({
+    color: @theme-body-text-color;
+  });
+}
+
+.RelevantContent-row-text {
+  vertical-align: middle;
+
+  &.with-subtext {
+    line-height: @overlay-menu-font-size;
+  }
+
+  &.with-subtext, .subtext {
+    padding-left: 2 * @grid-size;
+  }
+
+  .subtext {
+    font-size: @font-size-base;
+    line-height: @font-size-base;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+}
+
+.RelevantContent .Post,
+.RelevantContent .SearchPage__community {
+  border-width: 2px;
+  border-style: solid;
+  margin-bottom: @grid-size;
+  padding-left: 2 * @grid-size;
+
+  .themeify({
+    background-color: @theme-body-color;
+  },
+  @inDayMode: {
+    border-color: lighten(@gray-base, 85%);
+  },
+  @inNightMode: {
+    border-color: @gray-darker;
+  });
+}
+
+.RelevantContent .SearchPage__community:last-child {
+  margin-bottom: 4 * @grid-size;
+}
+
+.RelevantContent .PostHeader__post-title-line {
+  color: @grey-text;
+}

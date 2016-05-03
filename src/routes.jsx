@@ -32,6 +32,7 @@ import defaultConfig from './config';
 import { SORTS } from './sortValues';
 import isFakeSubreddit, { randomSubs } from './lib/isFakeSubreddit';
 import makeRequest from './lib/makeRequest';
+import features from './featureflags';
 
 const config = defaultConfig;
 
@@ -62,6 +63,10 @@ function buildAPIOptions(ctx, options={}) {
 
   if (ctx.token) {
     apiOptions.headers.Authorization = `bearer ${ctx.token}`;
+  }
+
+  if ((ctx.env === 'SERVER') && ctx.loid) {
+    apiOptions.headers.cookie = `loid=${ctx.loid}; loidcreated=${ctx.loidcreated}`;
   }
 
   if (app.config.apiPassThroughHeaders) {
@@ -186,6 +191,11 @@ export function userData(ctx, app) {
     subOptions.headers['user-agent'] = userAgent;
     setData(ctx, 'userSubscriptions', 'subreddits', subOptions);
   } else {
+    const userOptions = Object.assign({}, apiOptions, {
+      loggedOut: true,
+    });
+
+    setData(ctx, 'loggedOutUser', 'users', userOptions);
     const subOptions = Object.assign({}, apiOptions, {
       query: {
         sort: 'default',
@@ -436,6 +446,51 @@ function routes(app) {
     });
 
     props.data.set('listing', app.api.links.get(listingOpts));
+
+    // Wait until we have the experiment variant data before fetching the
+    // experiment-specific requests.
+    const user = props.data.get('user') || props.data.get('loggedOutUser');
+    const relevantPromise = user.then(data => {
+      const feature = features.withContext({
+        props,
+        state: {
+          data: { user: data.body },
+          meta: {},
+          loaded: !!props.dataCache,
+          finished: false,
+        },
+      });
+      if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP)) {
+        const linkOpts = buildAPIOptions(ctx, {
+          query: {
+            subredditName: props.subredditName,
+            sort: 'hot',
+          },
+        });
+
+        return app.api.links.get(linkOpts).then(data => ({ topLinks: data.body }));
+      }
+      if (feature.enabled(constants.flags.VARIANT_RELEVANCY_RELATED)) {
+        const subreddits = ['xboxone', 'PS4', 'pcgaming'];
+        return Promise.all(subreddits.map(id =>
+          app.api.subreddits.get(buildAPIOptions(ctx, {
+            id,
+          }))
+        )).then(communities => ({ communities }));
+      }
+
+      if (feature.enabled(constants.flags.VARIANT_RELEVANCY_ENGAGING)) {
+        const subreddits = ['GamePhysics', 'iama', 'gadgets'];
+        return Promise.all(subreddits.map(id =>
+          app.api.subreddits.get(buildAPIOptions(ctx, {
+            id,
+          }))
+        )).then(communities => ({ communities }));
+      }
+
+      return {};
+    });
+    props.data.set('relevant', relevantPromise);
 
     this.preServerRender = function commentsPagePreRender() {
       const { listing } = this.props.dataCache;

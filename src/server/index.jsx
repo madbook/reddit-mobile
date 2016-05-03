@@ -276,12 +276,19 @@ class Server {
 
   setLOID (app) {
     return function * (next) {
-      if (!this.cookies.get('loid')) {
+      const loid = this.cookies.get('loid');
+
+      if (loid) {
+        this.loid = loid;
+        this.loidcreated = this.cookies.get('loidcreated');
+      } else {
         const cookies = setLoggedOutCookies(this.cookies, app);
 
         // koa doesn't return cookies set within the
         // same request, cache it for later
         this._loid = cookies.loid;
+        this.loid = cookies.loid;
+        this.loidcreated = cookies.loidcreated;
       }
 
       yield next;

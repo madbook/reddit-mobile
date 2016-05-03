@@ -2,6 +2,7 @@ import querystring from 'querystring';
 import crypto from 'crypto';
 import EventTracker from 'event-tracker';
 import omit from 'lodash/object/omit';
+
 import constants from '../../src/constants';
 import addIfPresent from '../../src/lib/addIfPresent';
 import makeRequest from '../../src/lib/makeRequest';
@@ -452,6 +453,74 @@ function trackingEvents(app) {
     };
 
     eventSend('search_events', payload.type, data);
+  });
+
+  app.on('bucket', function (data) {
+    const { experiment_id, experiment_name, variant, loid, loidcreated } = data;
+    const payload = {
+      experiment_id,
+      experiment_name,
+      variant,
+      loid,
+      loid_created: loidcreated,
+      loid_new: false,
+    };
+
+    eventSend('bucketing_events', 'bucket', payload);
+  });
+
+  app.on('click:experiment', function (data) {
+    const {
+      eventType,
+      loid,
+      loidcreated: loid_created,
+      experimentName: experiment_name,
+      listingName: listing_name,
+      linkIndex: link_index,
+      linkName: link_name,
+      refererPageType: referer_page_type,
+      targetId: target_id,
+      targetFullname: target_fullname,
+      targetUrl: url,
+      targetName: target_name,
+      targetType: target_type,
+      userId: user_id,
+      userName: user_name,
+    } = data;
+
+    const URL = window.URL || window.webkitURL;
+    let target_url;
+    if (URL) {
+      target_url = (new URL(url, window.location.href)).href;
+    } else {
+      target_url = url;
+    }
+
+
+    const payload = {
+      app_name: 'm.reddit.com',
+      // path (after reddit.com) from which the event is sent
+      // (eg. /r/BeachParty/new)
+      experiment_name,
+      listing_name, // "frontpage", "all", or a subreddit name.
+      link_index, // top link is 1
+      link_name, // human-readable name of the link clicked
+      loid,
+      loid_created,
+      referer_page_type, // "listing", "link", "self", "comment"
+      target_id, // base-10 id of the target (used for subreddits only)
+      // fullname (prefix+base-36 id) of the content at the target location
+      // Currently skipped for subreddit targets to circumvent a data
+      // processing issue
+      target_fullname,
+      target_url, // clickthrough url of the click
+      // human-readable name of the target (only applicable to subreddits)
+      target_name,
+      target_type, // "subreddit", "link", "self", "subscribe"
+      user_id, // base-10 user id
+      user_name, // human-readable name of the user sending the event
+    };
+    eventSend('internal_click_events', eventType, payload);
   });
 }
 
