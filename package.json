@@ -9,11 +9,12 @@
     "build": "blueprints",
     "prod-build": "blueprints -p",
     "dev-server": "nodemon ./bin/Server.js",
-    "server": "node ./bin/ProductionServer.js"
+    "server": "node ./bin/ProductionServer.js",
+    "fonts": "webfonts"
   },
   "dependencies": {
     "@r/api-client": "~3.7.0",
-    "@r/build": "0.0.12",
+    "@r/build": "0.3.1",
     "@r/middleware": "0.5.3",
     "@r/platform": "0.0.24",
     "@r/private": "~0.1.0",

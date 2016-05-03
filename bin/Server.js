@@ -21111,9 +21111,21 @@
 
 
 
-	var _ref = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__components_login_Login__["a"], {});
+	var _ref = _jsx('span', {
+	  className: 'icon icon-gold'
+	});
 
-	var _ref2 = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_platform_components__["UrlSync"], {});
+	var _ref2 = _jsx('span', {
+	  className: 'icon icon-comment'
+	});
+
+	var _ref3 = _jsx('span', {
+	  className: 'icon icon-upvote'
+	});
+
+	var _ref4 = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__components_login_Login__["a"], {});
+
+	var _ref5 = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_platform_components__["UrlSync"], {});
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21130,7 +21142,7 @@
 	      return _jsx('div', {}, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__r_platform_page__["PageSelector"], {}, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__r_platform_page__["Page"], {
 	        url: '/',
 	        component: function component(pageData) {
-	          return _jsx('div', {}, void 0, _jsx('div', {}, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_platform_components__["Anchor"], {
+	          return _jsx('div', {}, void 0, _jsx('div', {}, void 0, _ref, _ref2, _ref3, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_platform_components__["Anchor"], {
 	            href: '/r/cfb?foo=bar'
 	          }, void 0, 'Go to r/cfb')), _jsx('div', {}, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_platform_components__["Anchor"], {
 	            href: '/login'
@@ -21146,9 +21158,9 @@
 	      }), _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__r_platform_page__["Page"], {
 	        url: '/login',
 	        component: function component(pageData) {
-	          return _ref;
+	          return _ref4;
 	        }
-	      })), _ref2);
+	      })), _ref5);
 	    }
 	  }]);
 

@@ -14,6 +14,9 @@ export default class App extends React.Component {
             component={pageData => (
               <div>
                 <div>
+                  <span className='icon icon-gold' />
+                  <span className='icon icon-comment' />
+                  <span className='icon icon-upvote' />
                   <Anchor href='/r/cfb?foo=bar'>Go to r/cfb</Anchor>
                 </div>
                 <div>
