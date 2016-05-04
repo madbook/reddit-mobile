@@ -1,5 +1,7 @@
 import './PostHeader.less';
 import React from 'react';
+import { Anchor } from '@r/platform/components';
+
 import short from '../../../../lib/formatDifference';
 import mobilify from '../../../../lib/mobilify';
 
@@ -20,29 +22,29 @@ const SEPERATOR = (
 
 const NSFW_FLAIR = (
   <span className='PostHeader__nsfw-text'>
-    <span className='icon-nsfw nsfw' />
+    <span className='icon icon-nsfw nsfw' />
     <span className='PostHeader__flush-w-icon'>NSFW</span>
   </span>
 );
 
 const STICKY_FLAIR = (
-  <span className='icon-sticky lime' />
+  <span className='icon icon-sticky lime' />
 );
 
 const LOCKED_FLAIR = (
-  <span className='icon-lock warning-yellow' />
+  <span className='icon icon-lock warning-yellow' />
 );
 
 const ADMIN_FLAIR = (
-  <span className='icon-snoosilhouette orangered' />
+  <span className='icon icon-snoosilhouette orangered' />
 );
 
 const MOD_FLAIR = (
-  <span className='icon-mod lime' />
+  <span className='icon icon-mod lime' />
 );
 
 const GILDED_FLAIR = (
-  <span className='icon-circled-gold gold' />
+  <span className='icon icon-circled-gold gold' />
 );
 
 const SPONSORED_FLAIR = (
@@ -85,9 +87,9 @@ function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDis
   const rSubreddit = `r/${subreddit}`;
 
   return (
-    <a className='PostHeader__subreddit-link' href={ `/${rSubreddit}` } style={ keyColorStyle }>
+    <Anchor className='PostHeader__subreddit-link' href={ `/${rSubreddit}` } style={ keyColorStyle }>
       { rSubreddit }
-    </a>
+    </Anchor>
   );
 }
 
@@ -110,9 +112,9 @@ function renderAuthorAndTimeStamp(post, single, hideWhen) {
   } = post;
 
   const authorLink = (
-    <a className='PostHeader__author-link' href={ `/u/${author}` }>
+    <Anchor className='PostHeader__author-link' href={ `/u/${author}` }>
       { `u/${author}` }
-    </a>
+    </Anchor>
   );
 
   if (hideWhen) {
@@ -226,7 +228,7 @@ function renderWithSeparators(nullableThings) {
 
 function renderPostDomain(post) {
   return (
-    <a className='PostHEader__author-link' href={ mobilify(post.cleanUrl) }>
+    <a className='PostHeader__author-link' href={ mobilify(post.cleanUrl) }>
       { cleanPostDomain(post.domain) }
     </a>
   );
@@ -261,7 +263,7 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
   return (
     <a className='PostHeader__post-link' href={ url } target={ target }>
       { cleanPostDomain(post.domain) }
-      <span className='PostHeader__post-link-icon icon-linkout blue' />
+      <span className='PostHeader__post-link-icon icon icon-linkout blue' />
     </a>
   );
 }
@@ -275,9 +277,9 @@ function renderPostTitleLink(post, showLinksInNewTab) {
   const target = linkExternally && showLinksInNewTab ? '_blank' : null;
 
   return (
-    <a className={ titleLinkClass } href={ url } target={ target }>
+    <Anchor className={ titleLinkClass } href={ url } target={ target }>
       { title }
-    </a>
+    </Anchor>
   );
 }
 

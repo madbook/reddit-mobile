@@ -305,6 +305,97 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
 .icon-x:before {
 	content: "\F160";
 }
+.icon {
+  font-size: 16px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+.dayMode .icon {
+  color: #CCCCCA;
+}
+.nightMode .icon {
+  color: #545452;
+}
+.icon.blue {
+  color: #24A0ED;
+}
+.icon.orangered {
+  color: #FF4500;
+}
+.icon.darkgrey {
+  color: #545452;
+}
+.icon.lime {
+  color: #94E044;
+}
+.icon.white {
+  color: white;
+}
+.icon.nsfw {
+  color: #FF585B;
+}
+.icon.gold {
+  color: #DDBD37;
+}
+.icon.warning-yellow {
+  color: #FFD635;
+}
+.icon.mint {
+  color: #0DD3BB;
+}
+.icon.mango {
+  color: #FFB000;
+}
+.icon.black {
+  color: #000;
+}
+.icon:before {
+  vertical-align: inherit;
+}
+.dayMode button:hover .icon-foint,
+.dayMode a:hover .icon-foint {
+  color: #d9d9d7;
+}
+.nightMode button:hover .icon-foint,
+.nightMode a:hover .icon-foint {
+  color: #61615f;
+}
+button:hover .icon-foint.blue,
+a:hover .icon-foint.blue {
+  color: #1394e5;
+}
+button:hover .icon-foint.orangered,
+a:hover .icon-foint.orangered {
+  color: #f54200;
+}
+button:hover .icon-foint.lime,
+a:hover .icon-foint.lime {
+  color: #7bcf22;
+}
+button:hover .icon-foint.nsfw,
+a:hover .icon-foint.nsfw {
+  color: #ff4e51;
+}
+button:hover .icon-foint.gold,
+a:hover .icon-foint.gold {
+  color: #dbb92a;
+}
+button:hover .icon-foint.warning-yellow,
+a:hover .icon-foint.warning-yellow {
+  color: #ffd016;
+}
+button:hover .icon-foint.mint,
+a:hover .icon-foint.mint {
+  color: #0cbba6;
+}
+button:hover .icon-foint.mango,
+a:hover .icon-foint.mango {
+  color: #e69e00;
+}
+button:hover .icon-foint.black,
+a:hover .icon-foint.black {
+  color: #050505;
+}
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
