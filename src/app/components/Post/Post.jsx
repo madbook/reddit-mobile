@@ -12,7 +12,9 @@ export class Post extends React.Component {
     return (
       <div className='Post'>
         <div className='Post__header'>
-          { post.subreddit }
+          <Anchor href={ `/r/${post.subreddit}` }>
+            { `r/${post.subreddit}` }
+          </Anchor>
           { post.author }
         </div>
         <Anchor href={ post.cleanPermalink } />
