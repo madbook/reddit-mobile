@@ -1,5 +1,7 @@
 @import "../../assets/fonts/rfont.css";
-@import "../../lib/art-gallery/assets/less/variables.less";
+@import (reference) "./art-gallery-link/assets/less/variables.less";
+@import "./art-gallery-link/assets/less/normalizers/normalize.less";
+
 
 .icon-gold {
   &, &:before {
@@ -8,5 +10,6 @@
 }
 
 .App {
-
+  font-family: @font-family-sans-serif;
+  font-size: @font-size-base;
 }

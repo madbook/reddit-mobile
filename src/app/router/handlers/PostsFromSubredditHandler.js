@@ -3,7 +3,7 @@ import * as platformActions from '@r/platform/actions';
 
 import * as postsListActions from '../../actions/postsListActions';
 
-import { cleanObject } from '../../../utils/cleanObject';
+import { cleanObject } from '../../../lib/cleanObject';
 
 export default class PostsFromSubredditHandler extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {

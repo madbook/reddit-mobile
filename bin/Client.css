@@ -305,9 +305,195 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
 .icon-x:before {
 	content: "\F160";
 }
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
 .icon-gold,
 .icon-gold:before {
   color: #FFD635;
+}
+.App {
+  font-family: helvetica, arial, sans-serif;
+  font-size: 13px;
 }
 .Post {
   margin-bottom: 8px;
@@ -323,4 +509,208 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
 }
 .Post__header-wrapper {
   position: relative;
+}
+.PostHeader.size-compact .PostHeader__post-title-line {
+  font-size: 14px;
+}
+.PostHeader.size-compact .PostHeader__post-descriptor-line-overflow,
+.PostHeader.size-compact .PostHeader__post-title-line {
+  padding-bottom: 4px;
+}
+.PostHeader.size-compact .PostHeader__post-link {
+  margin-bottom: 4px;
+}
+.PostContent.size-compact + .PostHeader.m-thumbnail-margin {
+  margin-left: 86px;
+  min-height: 86px;
+}
+.PostContent.size-compact + .PostHeader.m-thumbnail-margin .PostHeader__post-descriptor-line-overflow,
+.PostContent.size-compact + .PostHeader.m-thumbnail-margin .PostHeader__post-title-line {
+  padding-left: 0;
+}
+.PostContent.size-compact + .PostHeader.m-thumbnail-margin .PostHeader__post-title-line {
+  padding-top: 0;
+}
+.PostContent.size-compact + .PostHeader.m-thumbnail-margin .PostHeader__post-link {
+  margin-left: 0px;
+}
+.PostHeader__post-descriptor-line-overflow {
+  padding: 8px 16px;
+}
+.PostHeader__post-title-line {
+  padding: 0 16px 8px;
+}
+.PostHeader__post-link {
+  margin-left: 16px;
+}
+.PostHeader__post-descriptor-line-overflow {
+  overflow-x: auto;
+  padding-right: 3em;
+}
+.PostHeader__post-descriptor-line {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  vertical-align: middle;
+  padding-right: 3em;
+}
+.dayMode .PostHeader__post-descriptor-line {
+  color: #A5A4A4;
+}
+.nightMode .PostHeader__post-descriptor-line {
+  color: #A5A4A4;
+}
+.PostHeader__post-descriptor-line .icon:before {
+  vertical-align: text-bottom;
+  font-size: 18px;
+  line-height: 18px;
+  margin-right: 2px;
+}
+.PostHeader__post-descriptor-line .icon:before + :not(.PostHeader__flush-w-icon) {
+  margin-left: 6px;
+}
+.PostHeader__post-descriptor-line .icon:before.icon-nsfw {
+  font-size: 12px;
+  line-height: 14px;
+}
+.PostHeader__post-descriptor-line:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3em;
+  z-index: 1;
+}
+.dayMode .PostHeader__post-descriptor-line:after {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 70%);
+}
+.nightMode .PostHeader__post-descriptor-line:after {
+  background: linear-gradient(to right, rgba(20, 20, 20, 0) 0%, #141414 70%);
+}
+.PostHeader__subreddit-link,
+.PostHeader__subreddit-link:visited,
+.PostHeader__subreddit-link:hover {
+  text-decoration: none;
+}
+.dayMode .PostHeader__subreddit-link,
+.dayMode .PostHeader__subreddit-link:visited,
+.dayMode .PostHeader__subreddit-link:hover {
+  color: #0079D3;
+}
+.nightMode .PostHeader__subreddit-link,
+.nightMode .PostHeader__subreddit-link:visited,
+.nightMode .PostHeader__subreddit-link:hover {
+  color: #24A0ED;
+}
+.dayMode .PostHeader__author-link,
+.dayMode .PostHeader__author-link:visited {
+  color: #A5A4A4;
+}
+.nightMode .PostHeader__author-link,
+.nightMode .PostHeader__author-link:visited {
+  color: #A5A4A4;
+}
+.PostHeader__author-link:hover {
+  text-decoration: none;
+}
+.dayMode .PostHeader__author-link:hover {
+  color: #545452;
+}
+.nightMode .PostHeader__author-link:hover {
+  color: #EFEFED;
+}
+.PostHeader__link-flair {
+  display: inline-block;
+  color: #0DD3BB;
+}
+.PostHeader__sponsored-flair {
+  color: #24A0ED;
+}
+.PostHeader__mod-text,
+.PostHeader__mod-text a,
+.PostHeader__mod-text a:visited,
+.PostHeader__mod-text a:hover {
+  color: #94E044 !important;
+  text-decoration: none;
+}
+.PostHeader__admin-text,
+.PostHeader__admin-text a,
+.PostHeader__admin-text a:visited,
+.PostHeader__admin-text a:hover {
+  color: #FF4500 !important;
+  text-decoration: none;
+}
+.PostHeader__nsfw-text,
+.PostHeader__nsfw-text a,
+.PostHeader__nsfw-text a:visited,
+.PostHeader__nsfw-text a:hover {
+  font-size: 11px;
+  color: #FF585B !important;
+  text-decoration: none;
+}
+.PostHeader__post-title-line {
+  font-size: 16px;
+  display: block;
+  overflow-x: hidden;
+}
+.dayMode .PostHeader__post-title-line {
+  color: #222;
+}
+.dayMode .PostHeader__post-title-line.m-visited,
+.dayMode .PostHeader__post-title-line:visited {
+  color: #A5A4A4;
+}
+.dayMode .PostHeader__post-title-line:hover {
+  color: #0079D3;
+}
+.nightMode .PostHeader__post-title-line {
+  color: #cfd0ca;
+}
+.nightMode .PostHeader__post-title-line.m-visited,
+.nightMode .PostHeader__post-title-line:visited {
+  color: #A5A4A4;
+}
+.nightMode .PostHeader__post-title-line:hover {
+  color: #24A0ED;
+}
+.PostHeader__post-title-line:hover {
+  text-decoration: none;
+}
+.PostHeader__seperator:after {
+  content: '\25CF';
+  margin: 0 4px;
+  font-size: 0.6em;
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+}
+.dayMode .PostHeader__seperator:after {
+  color: #CCCCCA;
+}
+.nightMode .PostHeader__seperator:after {
+  color: #545452;
+}
+.PostHeader__post-link {
+  display: inline-block;
+}
+.PostHeader__post-link,
+.PostHeader__post-link:visited {
+  color: #A5A4A4;
+}
+.PostHeader__post-link:hover {
+  color: #545452;
+}
+.PostHeader__post-link-icon {
+  position: relative;
+  bottom: 1px;
+}
+.PostHeader__post-link-icon:hover {
+  text-decoration: none;
+}
+.PostHeader__post-link-icon:before {
+  margin-left: 4px;
+  font-size: 13px;
 }

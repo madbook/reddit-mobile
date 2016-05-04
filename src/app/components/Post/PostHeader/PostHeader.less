@@ -1,0 +1,237 @@
+@import (reference) "../../../art-gallery-link/assets/less/variables";
+@import (reference) "../../../art-gallery-link/assets/less/themes/themeify";
+
+.PostHeader {
+
+  &.size-compact {
+
+    .PostHeader {
+      &__post-title-line {
+        font-size: 14px;
+      }
+
+      &__post-descriptor-line-overflow,
+      &__post-title-line {
+        padding-bottom: @half-grid-size;
+      }
+
+      &__post-link {
+        margin-bottom: @half-grid-size;
+      }
+    }
+  }
+
+  // We can't easily tell from react if calling a component is null or not.
+  // we just get a tree that's a virtual dom descriptior for null.
+  // To make sure the compact header styles are applied only if we have a
+  // thubmanil we use the next-child selector
+  // This will be cleaner after PostContent is refactored to have
+  // representation of the preview state, then we can really
+  // know whether or not to apply .m-thumbnail-margin.
+  .PostContent.size-compact + &.m-thumbnail-margin {
+    @rendered-thumbnail-size: @compact-listing-thumbnail-size + 2 * @grid-size;
+    margin-left: @rendered-thumbnail-size;
+    min-height: @rendered-thumbnail-size;
+
+    // & is that complex next child selector so reset the component name
+    .PostHeader {
+      &__post-descriptor-line-overflow,
+      &__post-title-line {
+        padding-left: 0;
+      }
+
+      &__post-title-line {
+        padding-top: 0;
+      }
+
+      &__post-link {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  &__post-descriptor-line-overflow {
+    padding: @grid-size 2 * @grid-size;
+  }
+
+  &__post-title-line {
+    padding: 0 2 * @grid-size @grid-size;
+  }
+
+  &__post-link {
+    margin-left: 2 * @grid-size;
+  }
+
+  &__post-descriptor-line-overflow {
+    overflow-x: auto;
+    padding-right: 3em;
+  }
+
+  &__post-descriptor-line {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+    padding-right: 3em;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
+    .icon:before {
+      vertical-align: text-bottom;
+      font-size: 18px;
+      line-height: 18px;
+
+      // spacing, need to make sure the next element
+      // isn't the seperator because it has a different
+      // visual whitespace then a normal element / text
+      margin-right: 2px;
+      & + :not(.PostHeader__flush-w-icon) {
+        margin-left: @grid-size - 2px;
+      }
+
+      &.icon-nsfw {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    };
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 3em;
+      z-index: 1;
+
+      .themeify({
+        background: linear-gradient(to right,
+          fade(@theme-body-color, 0%) 0%,
+          fade(@theme-body-color, 100%) 70%);
+      });
+    }
+  }
+
+  &__subreddit-link {
+    &, &:visited, &:hover {
+      .themeify({
+        color: @theme-link-text-color;
+      });
+
+      text-decoration: none;
+    }
+  }
+
+  &__author-link {
+    &, &:visited {
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+    }
+
+    &:hover {
+      .themeify({
+        color: @theme-toast-color;
+      });
+
+      text-decoration: none;
+    }
+  }
+
+  &__link-flair {
+    display: inline-block;
+    color: @mint;
+  }
+
+  &__sponsored-flair {
+    color: @blue;
+  }
+
+  &__mod-text {
+    &, a, a:visited, a:hover {
+      color: @lime !important;
+      text-decoration: none;
+    }
+  }
+
+  &__admin-text {
+    &, a, a:visited, a:hover {
+      color: @orangered !important;
+      text-decoration: none;
+    }
+  }
+
+  &__nsfw-text {
+    &, a, a:visited, a:hover {
+      font-size: 11px;
+      color: @nsfw-salmon !important;
+      text-decoration: none;
+    }
+  }
+
+  &__post-title-line {
+    font-size: 16px;
+    display: block;
+
+    .themeify({
+      color: @theme-body-text-color;
+
+      &.m-visited, &:visited {
+        color: @theme-meta-text-color;
+      }
+
+      &:hover {
+        color: @theme-link-text-color;
+      }
+    });
+
+    overflow-x: hidden;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__seperator:after {
+    content: '●';
+    margin: 0 @half-grid-size;
+    font-size: 0.6em;
+    vertical-align: middle;
+    display: inline-block;
+    .themeify({
+      color: @theme-dark-line-color;
+    });
+    position: relative;
+    top: -1px;
+  }
+
+  &__post-link {
+    display: inline-block;
+
+    &, &:visited {
+      color: @grey-text;
+    }
+
+    &:hover {
+      color: @dark-grey;
+    }
+  }
+
+  &__post-link-icon {
+    position: relative;
+    bottom: 1px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:before {
+      margin-left: @half-grid-size;
+      font-size: 13px;
+    }
+  }
+}
