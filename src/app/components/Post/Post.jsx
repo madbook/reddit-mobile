@@ -5,6 +5,11 @@ import { Anchor } from '@r/platform/components';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import {
+  isPostDomainExternal,
+  postShouldRenderMediaFullbleed,
+} from './postUtils';
+
 export class Post extends React.Component {
   render() {
     const { post } = this.props;
