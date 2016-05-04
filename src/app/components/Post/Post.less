@@ -1,6 +1,18 @@
-@import "../../../../lib/art-gallery/assets/less/variables.less";
+@import (reference) "../../art-gallery-link/assets/less/variables";
+@import (reference) "../../art-gallery-link/assets/less/themes/themeify";
 
 .Post {
-  padding: @grid-size;
-  border-bottom: 1px solid @neutral;
+  .themeify({
+    background-color: @theme-body-color;
+  });
+
+  margin-bottom: @grid-size;
+
+  &.size-compact {
+    margin-bottom: 0px;
+  }
+
+  &__header-wrapper {
+    position: relative;
+  }
 }

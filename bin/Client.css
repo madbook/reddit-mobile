@@ -310,6 +310,17 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
   color: #FFD635;
 }
 .Post {
-  padding: 8px;
-  border-bottom: 1px solid #CCCCCA;
+  margin-bottom: 8px;
+}
+.dayMode .Post {
+  background-color: #FFF;
+}
+.nightMode .Post {
+  background-color: #141414;
+}
+.Post.size-compact {
+  margin-bottom: 0px;
+}
+.Post__header-wrapper {
+  position: relative;
 }

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@r/api-client": "~3.7.2",
-    "@r/build": "0.3.4",
+    "@r/build": "0.3.6",
     "@r/middleware": "0.5.3",
     "@r/platform": "0.0.25",
     "@r/private": "~0.1.0",
