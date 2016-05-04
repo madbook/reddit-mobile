@@ -14,6 +14,7 @@ import {
 } from './postUtils';
 
 import PostHeader from './PostHeader/PostHeader';
+import PostFooter from './PostFooter/PostFooter';
 
 const T = React.PropTypes;
 
@@ -174,6 +175,13 @@ export class Post extends React.Component {
             showLinksInNewTab={ showLinksInNewTab }
             />
         </div>
+        <PostFooter
+          user={ user }
+          single={ single }
+          compact={ compact }
+          post={ post }
+          viewComments={ !single }
+        />
       </article>
     );
   }

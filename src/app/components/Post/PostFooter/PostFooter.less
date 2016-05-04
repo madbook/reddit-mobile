@@ -1,0 +1,146 @@
+@import (reference) '../../../art-gallery-link/assets/less/variables.less';
+@import (reference) '../../../art-gallery-link/assets/less/mixins.less';
+@import (reference) '../../../art-gallery-link/assets/less/themes/themeify.less';
+@import (reference) '../../../art-gallery-link/assets/less/animations/voteBounce.less';
+
+.PostFooter {
+  .clearfix;
+  padding: @grid-size 2 * @grid-size;
+  .themeify({
+    border-bottom: @theme-border;
+  });
+
+  &.size-compact {
+    padding-top: 0px;
+  }
+
+  &__comments-link {
+    margin-left: -2px;
+
+    &, &:visited, &:hover {
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+
+      text-decoration: none;
+    }
+  }
+
+  &__hit-area {
+    line-height: @min-hit-area;
+    min-height: @min-hit-area;
+    min-width: @min-hit-area;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__comments-icon.icon-comment {
+    margin: 0 @half-grid-size;
+    position: relative;
+    top: -3px;
+
+    &:before {
+      font-size: 18px;
+      line-height: 18px;
+    }
+  }
+
+  &__vote-and-tools-wrapper {
+    float: right;
+    position: relative;
+    top: 2px;
+  }
+
+  &__vote-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: @half-grid-size;
+    .themeify({
+      color: @theme-link-text-color;
+
+      // essentially overrides so they need to be here..
+      &.upvoted {
+        color: @orangered;
+      }
+
+      &.downvoted {
+        color: @periwinkle;
+      }
+    });
+  }
+
+  &__dropdown-button.icon-seashells {
+    &:before {
+      font-size: 18px;
+      line-height: 18px;
+    }
+
+    text-align: center;
+    position: relative;
+    top: 3px;
+  }
+
+  &__vertical-divider {
+    height: 2em;
+    margin: 0 @grid-size;
+    vertical-align: middle;
+
+    .themeify({
+      border-right: @theme-alt-border;
+    });
+  }
+
+  &__vote-arrow-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    margin: 0 @half-grid-size;
+    text-align: center;
+
+    .themeify({
+      border: @theme-border;
+    });
+
+    // There's nesting because we're fighting against icon-fonts.less,
+    // which adds default styles for .upvoted and .downvoted.
+    // We can't use those because in this design there's a border
+    // around the vote arrows. When a vote is cast in a specific
+    // direction it becomes filled in. Using icon-(upvote|downvote)-circled
+    // doesn't work because its border doesn't line up exactly with
+    // the border we draw in the default state, so it's easier
+    // to 'flip the colors' of the normal icon.
+
+    &.upvoted {
+      border-color: @orangered;
+      background-color: @orangered;
+
+      .icon-upvote:before {
+        color: @white;
+      }
+
+      &.m-animated {
+        .upvoteBounceAnimation;
+      }
+    }
+
+    &.downvoted {
+      border-color: @periwinkle;
+      background-color: @periwinkle;
+
+      .icon-downvote:before {
+        color: @white;
+      }
+
+      &.m-animated {
+        .downvoteBounceAnimation;
+      }
+    }
+
+    [class^="icon-"] {
+      font-size: 22px;
+      line-height: 1em; // visually verticaly centering
+    }
+  }
+}

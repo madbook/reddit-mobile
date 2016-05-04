@@ -55846,6 +55846,7 @@
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_5__r_api_client___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_5__r_api_client___default });
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__postUtils__ = __webpack_require__(571);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__ = __webpack_require__(1001);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PostFooter_PostFooter__ = __webpack_require__(1681);
 	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -55865,6 +55866,7 @@
 
 
 	var PostModel = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__r_api_client__["models"].PostModel;
+
 
 
 
@@ -56018,7 +56020,14 @@
 	          showingLink: !!(compact && !hasExpandedCompact && externalDomain),
 	          renderMediaFullbleed: renderMediaFullbleed,
 	          showLinksInNewTab: showLinksInNewTab
-	        }))
+	        })),
+	        _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostFooter_PostFooter__["a"], {
+	          user: user,
+	          single: single,
+	          compact: compact,
+	          post: post,
+	          viewComments: !single
+	        })
 	      );
 	    }
 	  }]);
@@ -84259,6 +84268,313 @@
 	  }
 	};
 
+
+/***/ },
+/* 1660 */,
+/* 1661 */,
+/* 1662 */,
+/* 1663 */,
+/* 1664 */,
+/* 1665 */,
+/* 1666 */,
+/* 1667 */,
+/* 1668 */,
+/* 1669 */,
+/* 1670 */,
+/* 1671 */,
+/* 1672 */,
+/* 1673 */,
+/* 1674 */,
+/* 1675 */,
+/* 1676 */,
+/* 1677 */,
+/* 1678 */,
+/* 1679 */,
+/* 1680 */,
+/* 1681 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PostFooter_less__ = __webpack_require__(1682);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PostFooter_less___default = __WEBPACK_IMPORTED_MODULE_0__PostFooter_less__ && __WEBPACK_IMPORTED_MODULE_0__PostFooter_less__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0__PostFooter_less__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0__PostFooter_less__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0__PostFooter_less___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0__PostFooter_less___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(31);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __WEBPACK_IMPORTED_MODULE_1_react__ && __WEBPACK_IMPORTED_MODULE_1_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_react___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_react___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__r_platform_components__ = __webpack_require__(210);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__r_platform_components___default = __WEBPACK_IMPORTED_MODULE_2__r_platform_components__ && __WEBPACK_IMPORTED_MODULE_2__r_platform_components__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2__r_platform_components__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2__r_platform_components__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2__r_platform_components___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2__r_platform_components___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__r_api_client__ = __webpack_require__(168);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__r_api_client___default = __WEBPACK_IMPORTED_MODULE_3__r_api_client__ && __WEBPACK_IMPORTED_MODULE_3__r_api_client__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_3__r_api_client__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_3__r_api_client__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_3__r_api_client___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_3__r_api_client___default });
+	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+	var PostModel = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_api_client__["models"].PostModel;
+
+	// import PostDropdownController from './PostDropdownController';
+
+	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.PropTypes;
+	var VOTE_WRAPPER_CLS = 'PostFooter__vote-arrow-wrapper';
+
+	var _ref = _jsx('span', {
+	  className: 'PostFooter__comments-icon icon icon-comment'
+	});
+
+	var _ref2 = _jsx('span', {
+	  className: 'icon icon-upvote blue'
+	});
+
+	var _ref3 = _jsx('span', {
+	  className: 'icon icon-downvote blue'
+	});
+
+	var _ref4 = _jsx('span', {
+	  className: 'PostFooter__vertical-divider'
+	});
+
+	var PostFooter = function (_React$Component) {
+	  _inherits(PostFooter, _React$Component);
+
+	  function PostFooter(props) {
+	    _classCallCheck(this, PostFooter);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PostFooter).call(this, props));
+
+	    _this.onScoreChanged = _this.onScoreChanged.bind(_this);
+	    _this.onOpenDropdown = _this.onOpenDropdown.bind(_this);
+	    _this.onDropdownClosed = _this.onDropdownClosed.bind(_this);
+	    _this.onScoreChanged = _this.onScoreChanged.bind(_this);
+	    _this.onUpVote = _this.onVote.bind(_this, 1);
+	    _this.onDownVote = _this.onVote.bind(_this, -1);
+	    _this.onSave = _this.onSave.bind(_this);
+
+	    _this.mounted = false; // not state as setState calls for updating
+	    // would force a re-render. We want this to make sure animations
+	    // are only rendered on the client _after_ the first render
+	    // so there are no bounces when you go between pages
+
+	    // state.saved is requried because the api doesn't always
+	    // update the state of the post properly. This is because
+	    // the post doesn't always get cached, and the model update/mergeProps
+	    // rely on the object that's been updated being in cache.
+	    // store the saved state ourselves so that saved renders
+	    // as expected on search pages and other non-listing pages
+	    _this.state = {
+	      saved: props.post.saved,
+	      score: props.post.score,
+	      voteDirection: props.post.likes,
+	      dropdownTarget: false
+	    };
+	    return _this;
+	  }
+
+	  _createClass(PostFooter, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.mounted = true;
+	    }
+	  }, {
+	    key: 'onOpenDropdown',
+	    value: function onOpenDropdown(e) {
+	      this.setState({ dropdownTarget: e.target });
+	    }
+	  }, {
+	    key: 'onDropdownClosed',
+	    value: function onDropdownClosed() {
+	      this.setState({ dropdownTarget: null });
+	    }
+	  }, {
+	    key: 'onSave',
+	    value: function onSave(saved) {
+	      this.setState({ saved: saved });
+	    }
+	  }, {
+	    key: 'onScoreChanged',
+	    value: function onScoreChanged(voteController) {
+	      // this.setState({
+	      //   score: voteController.score,
+	      //   voteDirection: voteController.voteDirection,
+	      // });
+	    }
+	  }, {
+	    key: 'onVote',
+	    value: function onVote(direction) {
+	      // this.voteController.userCastVote(direction);
+	    }
+	  }, {
+	    key: 'renderCommentsLink',
+	    value: function renderCommentsLink(post) {
+	      if (post.disable_comments) {
+	        return;
+	      }
+
+	      var numComments = post.numComments;
+
+
+	      return _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_2__r_platform_components__["Anchor"], {
+	        className: 'PostFooter__hit-area PostFooter__comments-link',
+	        href: post.cleanPermalink
+	      }, void 0, _ref, this.numCommentsText(numComments));
+	    }
+	  }, {
+	    key: 'numCommentsText',
+	    value: function numCommentsText(numberOfComments) {
+	      if (numberOfComments === 0) {
+	        return 'No Comments';
+	      } else if (numberOfComments === 1) {
+	        return '1 Comment';
+	      }
+
+	      return numberOfComments + ' Comments';
+	    }
+
+	    // renderToolsDropdown(dropdownTarget) {
+	    //   const {
+	    //     post,
+	    //     user,
+	    //     single,
+	    //     app,
+	    //     apiOptions,
+	    //     viewComments,
+	    //     onReport,
+	    //     onHide,
+	    //     onEdit,
+	    //     onDelete,
+	    //   } = this.props;
+	    //
+	    //   const { saved } = this.state;
+	    //
+	    //   return (
+	    //     <PostDropdownController
+	    //       dropdownTarget={ dropdownTarget }
+	    //       post={ post }
+	    //       user={ user }
+	    //       single={ single }
+	    //       saved={ saved }
+	    //       onCloseDropdown={ this.onDropdownClosed }
+	    //       app={ app }
+	    //       apiOptions={ apiOptions }
+	    //       viewComments={ viewComments }
+	    //       onReport={ onReport }
+	    //       onHide={ onHide }
+	    //       onEdit={ onEdit }
+	    //       onDelete={ onDelete }
+	    //       onSave={ this.onSave }
+	    //     />
+	    //   );
+	    // }
+
+	  }, {
+	    key: 'voteClass',
+	    value: function voteClass(voteDirection) {
+	      if (voteDirection === 1) {
+	        return 'upvoted';
+	      }
+	      if (voteDirection === -1) {
+	        return 'downvoted';
+	      }
+	      return '';
+	    }
+	  }, {
+	    key: 'renderUpvote',
+	    value: function renderUpvote(voteDirection) {
+	      var upvoted = voteDirection === 1;
+	      var wrapperClassName = VOTE_WRAPPER_CLS + ' ' + (upvoted ? 'upvoted' : '');
+	      if (this.mounted) {
+	        wrapperClassName += ' m-animated';
+	      }
+
+	      return _jsx('span', {
+	        className: wrapperClassName
+	      }, void 0, _ref2);
+	    }
+	  }, {
+	    key: 'renderDownVote',
+	    value: function renderDownVote(voteDirection) {
+	      var downvoted = voteDirection === -1;
+	      var wrapperClassName = VOTE_WRAPPER_CLS + ' ' + (downvoted ? 'downvoted' : '');
+	      if (this.mounted) {
+	        wrapperClassName += ' m-animated';
+	      }
+
+	      return _jsx('span', {
+	        className: wrapperClassName
+	      }, void 0, _ref3);
+	    }
+	  }, {
+	    key: 'renderScoreIfNotHidden',
+	    value: function renderScoreIfNotHidden(scoreHidden, score, voteClass) {
+	      return _jsx('span', {
+	        className: 'PostFooter__vote-text ' + voteClass
+	      }, void 0, scoreHidden ? '●' : score);
+	    }
+	  }, {
+	    key: 'renderScoreAndVotes',
+	    value: function renderScoreAndVotes(scoreHidden, score, voteDirection) {
+	      var voteClass = this.voteClass(voteDirection);
+
+	      return _jsx('span', {}, void 0, _jsx('div', {
+	        className: 'PostFooter__hit-area',
+	        onClick: this.onUpVote
+	      }, void 0, this.renderScoreIfNotHidden(scoreHidden, score, voteClass), this.renderUpvote(voteDirection)), _jsx('div', {
+	        className: 'PostFooter__hit-area',
+	        onClick: this.onDownVote
+	      }, void 0, this.renderDownVote(voteDirection)));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var post = _props.post;
+	      var compact = _props.compact;
+	      var dropdownTarget = this.state.dropdownTarget;
+	      // { dropdownTarget ? this.renderToolsDropdown(dropdownTarget) : null }
+
+	      var scoreHidden = post.hide_score || post.score_hidden;
+
+	      return _jsx('footer', {
+	        className: 'PostFooter ' + (compact ? 'size-compact' : '')
+	      }, void 0, this.renderCommentsLink(post), _jsx('div', {
+	        className: 'PostFooter__vote-and-tools-wrapper'
+	      }, void 0, _jsx('div', {
+	        className: 'PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells',
+	        onClick: this.onOpenDropdown
+	      }), _ref4, this.renderScoreAndVotes(scoreHidden, this.state.score, this.state.voteDirection)));
+	    }
+	  }]);
+
+	  return PostFooter;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.Component);
+
+	PostFooter.propTypes = {
+	  user: T.object,
+	  single: T.bool.isRequired,
+	  compact: T.bool.isRequired,
+	  post: T.instanceOf(PostModel),
+	  viewComments: T.bool.isRequired,
+	  onReport: T.func.isRequired,
+	  onHide: T.func.isRequired,
+	  onEdit: T.func.isRequired,
+	  onDelete: T.func.isRequired
+	};
+	/* harmony default export */ exports["a"] = PostFooter;
+
+/***/ },
+/* 1682 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
