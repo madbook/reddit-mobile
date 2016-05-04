@@ -1,9 +1,9 @@
-import Frontpage from './handlers/Frontpage';
+import PostsFromSubredditHandler from './handlers/PostsFromSubredditHandler';
 import Login from './handlers/Login';
 
 export default [
-  ['/', Frontpage],
-  ['/r/:subredditName', Frontpage],
-  ['/u/:user/m/:multi', Frontpage],
+  ['/', PostsFromSubredditHandler],
+  ['/r/:subredditName', PostsFromSubredditHandler],
+  ['/u/:user/m/:multi', PostsFromSubredditHandler],
   ['/login', Login],
 ];

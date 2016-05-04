@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@r/api-client": "~3.7.1",
-    "@r/build": "0.3.2",
+    "@r/build": "0.3.4",
     "@r/middleware": "0.5.3",
     "@r/platform": "0.0.25",
     "@r/private": "~0.1.0",
@@ -22,6 +22,7 @@
     "autoprefixer": "6.3.6",
     "babel-polyfill": "^6.7.4",
     "fs": "0.0.2",
+    "json-stable-stringify": "^1.0.1",
     "koa": "2.0.0",
     "koa-bodyparser": "3.0.0",
     "koa-router": "7.0.1",
@@ -33,6 +34,7 @@
     "react-redux": "4.4.5",
     "redux": "3.5.2",
     "reselect": "2.5.1",
+    "sha1": "^1.1.1",
     "superagent": "1.8.3",
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
   }

@@ -309,3 +309,7 @@ url("/fonts/rfont.svg?41b6d176c233ab3f4fa38a286c0010d3#rfont") format("svg");
 .icon-gold:before {
   color: #FFD635;
 }
+.Post {
+  padding: 8px;
+  border-bottom: 1px solid #CCCCCA;
+}

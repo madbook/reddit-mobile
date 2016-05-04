@@ -1,6 +1,7 @@
 import { models } from '@r/api-client';
 import session from './session';
-import { apiResponseReducerMaker } from './apiResponse';
+import { apiResponseReducerMaker } from './apiResponseReducer';
+import postsLists from './postsListsReducer';
 
 const { ModelTypes } = models;
 
@@ -11,6 +12,7 @@ const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
 
 export default {
   session,
+  postsLists,
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),
   [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),

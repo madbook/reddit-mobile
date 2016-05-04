@@ -1,5 +1,5 @@
 import merge from '@r/platform/merge';
-import * as apiResponseActions from '../actions/apiResponse'
+import * as apiResponseActions from '../actions/apiResponseActions'
 
 export const apiResponseReducerMaker = (key, kind) => {
   if (!kind) {
@@ -15,9 +15,7 @@ export const apiResponseReducerMaker = (key, kind) => {
         const apiResponseStore = apiResponse[kind];
 
         if (apiResponseStore && Object.keys(apiResponseStore).length) {
-          return merge(state, {
-            [kind]: apiResponseStore
-          });
+          return merge(state, apiResponseStore);
         }
 
         return state;
