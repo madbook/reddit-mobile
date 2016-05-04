@@ -14,6 +14,7 @@ import {
 } from './postUtils';
 
 import PostHeader from './PostHeader/PostHeader';
+import PostContent from './PostContent/PostContent';
 import PostFooter from './PostFooter/PostFooter';
 
 const T = React.PropTypes;
@@ -153,16 +154,62 @@ export class Post extends React.Component {
       expanded,
       z,
       width,
+      editing,
     } = this.state;
 
     const { externalDomain, renderMediaFullbleed, forceHTTPS,
       showLinksInNewTab } = this;
+
+    let thumbnailOrNil;
+    if (compact) {
+      thumbnailOrNil = (
+        <PostContent
+          post={ post }
+          single={ single }
+          compact={ true }
+          expandedCompact={ false }
+          onTapExpand={ this.toggleExpanded }
+          width={ width }
+          toggleShowNSFW={ this.toggleShowNSFW }
+          showNSFW={ showNSFW }
+          editing={ false }
+          forceHTTPS={ forceHTTPS }
+          isDomainExternal={ externalDomain }
+          renderMediaFullbleed={ renderMediaFullbleed }
+          showLinksInNewTab={ showLinksInNewTab }
+        />
+      );
+    }
+
+    const hasExpandedCompact = compact && expanded;
+    let contentOrNil;
+    if (!compact || hasExpandedCompact) {
+      contentOrNil = (
+        <PostContent
+          post={ post }
+          single={ single }
+          compact={ compact }
+          expandedCompact={ hasExpandedCompact }
+          onTapExpand={ this.toggleExpanded }
+          width={ width }
+          showNSFW={ showNSFW }
+          toggleShowNSFW={ this.toggleShowNSFW }
+          editing={ editing }
+          forceHTTPS={ forceHTTPS }
+          isDomainExternal={ externalDomain }
+          renderMediaFullbleed={ renderMediaFullbleed }
+          showLinksInNewTab={ showLinksInNewTab }
+        />
+      );
+    }
+
 
     const postCssClass = `Post ${compact ? 'size-compact' : 'size-default'}`;
 
     return (
       <article ref='rootNode' className={ postCssClass } style={ { zIndex: z} }>
         <div className='Post__header-wrapper'>
+          { thumbnailOrNil }
           <PostHeader
             post={ post }
             single={ single }
@@ -175,6 +222,7 @@ export class Post extends React.Component {
             showLinksInNewTab={ showLinksInNewTab }
             />
         </div>
+        { contentOrNil }
         <PostFooter
           user={ user }
           single={ single }

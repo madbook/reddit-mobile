@@ -55846,7 +55846,8 @@
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_5__r_api_client___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_5__r_api_client___default });
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__postUtils__ = __webpack_require__(571);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__ = __webpack_require__(1001);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PostFooter_PostFooter__ = __webpack_require__(1681);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__ = __webpack_require__(1688);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__PostFooter_PostFooter__ = __webpack_require__(1681);
 	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -55866,6 +55867,7 @@
 
 
 	var PostModel = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__r_api_client__["models"].PostModel;
+
 
 
 
@@ -55997,11 +55999,51 @@
 	      var expanded = _state.expanded;
 	      var z = _state.z;
 	      var width = _state.width;
+	      var editing = _state.editing;
 	      var externalDomain = this.externalDomain;
 	      var renderMediaFullbleed = this.renderMediaFullbleed;
 	      var forceHTTPS = this.forceHTTPS;
 	      var showLinksInNewTab = this.showLinksInNewTab;
 
+
+	      var thumbnailOrNil = void 0;
+	      if (compact) {
+	        thumbnailOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
+	          post: post,
+	          single: single,
+	          compact: true,
+	          expandedCompact: false,
+	          onTapExpand: this.toggleExpanded,
+	          width: width,
+	          toggleShowNSFW: this.toggleShowNSFW,
+	          showNSFW: showNSFW,
+	          editing: false,
+	          forceHTTPS: forceHTTPS,
+	          isDomainExternal: externalDomain,
+	          renderMediaFullbleed: renderMediaFullbleed,
+	          showLinksInNewTab: showLinksInNewTab
+	        });
+	      }
+
+	      var hasExpandedCompact = compact && expanded;
+	      var contentOrNil = void 0;
+	      if (!compact || hasExpandedCompact) {
+	        contentOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
+	          post: post,
+	          single: single,
+	          compact: compact,
+	          expandedCompact: hasExpandedCompact,
+	          onTapExpand: this.toggleExpanded,
+	          width: width,
+	          showNSFW: showNSFW,
+	          toggleShowNSFW: this.toggleShowNSFW,
+	          editing: editing,
+	          forceHTTPS: forceHTTPS,
+	          isDomainExternal: externalDomain,
+	          renderMediaFullbleed: renderMediaFullbleed,
+	          showLinksInNewTab: showLinksInNewTab
+	        });
+	      }
 
 	      var postCssClass = 'Post ' + (compact ? 'size-compact' : 'size-default');
 
@@ -56010,7 +56052,7 @@
 	        { ref: 'rootNode', className: postCssClass, style: { zIndex: z } },
 	        _jsx('div', {
 	          className: 'Post__header-wrapper'
-	        }, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__["a"], {
+	        }, void 0, thumbnailOrNil, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__["a"], {
 	          post: post,
 	          single: single,
 	          compact: compact,
@@ -56021,7 +56063,8 @@
 	          renderMediaFullbleed: renderMediaFullbleed,
 	          showLinksInNewTab: showLinksInNewTab
 	        })),
-	        _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostFooter_PostFooter__["a"], {
+	        contentOrNil,
+	        _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_9__PostFooter_PostFooter__["a"], {
 	          user: user,
 	          single: single,
 	          compact: compact,
@@ -84572,6 +84615,948 @@
 
 /***/ },
 /* 1682 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 1683 */,
+/* 1684 */,
+/* 1685 */,
+/* 1686 */,
+/* 1687 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rootDomain__ = __webpack_require__(1012);
+	/* harmony export */ exports["a"] = gifToHTML5Sources;
+
+	var _gfyCatRegex = /^https?:\/\/(.*\.?)gfycat.com/;
+	var _gfycatMobileBase = 'https://thumbs.gfycat.com';
+	var _gfycatWebmBase = 'https://zippy.gfycat.com';
+	var _GIF_EXTENSION = /\.gif$/;
+	var _GIF_V_EXTENSION = /\.gifv$/;
+
+	var _IMGUR_GALLERY_PATH = /\/gallery\//;
+
+	var _IMGUR_GIFV_QUERY_PARAMS = /\.gif\?.*$/;
+
+	function gfycatMP4Url(gfyCatUrl) {
+	  // gif doesn't seem to be there, so the .gif replace is a safety check
+	  return gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase).replace(_GIF_EXTENSION, '') + '-mobile.mp4';
+	}
+
+	function gfyCatWebmURL(gfyCatUrl) {
+	  // gif doesn't seem to be there, so the .gif replace is a safety check
+	  return gfyCatUrl.replace(_gfyCatRegex, _gfycatWebmBase).replace(_GIF_EXTENSION, '') + '.webm';
+	}
+
+	function gfycatPosterUrl(gfyCatUrl) {
+	  // gif doesn't seem to be there, so the .gif replace is a safety check
+	  return gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase).replace(_GIF_EXTENSION, '') + '-mobile.jpg';
+	}
+
+	function posterForHrefIfGiphyCat(url) {
+	  var urlRoot = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__rootDomain__["a"].bind()(url);
+	  if (urlRoot === 'gfycat.com') {
+	    return gfycatPosterUrl(url);
+	  }
+	}
+
+
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return posterForHrefIfGiphyCat; }});
+
+	function gifToHTML5Sources(url) {
+	  var urlRoot = /* harmony import */__WEBPACK_IMPORTED_MODULE_0__rootDomain__["a"].bind()(url);
+	  if (!urlRoot) {
+	    return;
+	  }
+
+	  if (urlRoot === 'gfycat.com') {
+	    return {
+	      mp4: gfycatMP4Url(url),
+	      webm: gfyCatWebmURL(url),
+	      poster: gfycatPosterUrl(url)
+	    };
+	  }
+
+	  if (urlRoot === 'giphy.com' && _GIF_EXTENSION.test(url)) {
+	    return {
+	      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
+	      poster: url.replace(_GIF_EXTENSION, '_s.gif')
+	    };
+	  }
+
+	  // If it's imgur, make a gifv link
+	  if (urlRoot === 'imgur.com') {
+	    var imgurURL = url;
+
+	    // strip query params
+	    imgurURL = imgurURL.replace(_IMGUR_GIFV_QUERY_PARAMS, '.gifv');
+
+	    // Sometimes we get imgur urls that have /gallery/ in them
+	    // when they should really point to just the gif. Sometimes they have the
+	    // wrong extension and maybe include query params. Clean that all up
+	    if (_IMGUR_GALLERY_PATH.test(imgurURL) || /\.jpg(\?.*$)$/.test(imgurURL)) {
+	      imgurURL = imgurURL.replace(_IMGUR_GALLERY_PATH, '/').replace(/\.(jpg|gif|gifv)(\?.*$)?/, '');
+	      imgurURL = imgurURL + '.gifv';
+	    }
+
+	    if (_GIF_V_EXTENSION.test(imgurURL)) {
+	      return {
+	        webm: imgurURL.replace(_GIF_V_EXTENSION, '.webm'),
+	        mp4: imgurURL.replace(_GIF_V_EXTENSION, '.mp4'),
+	        poster: imgurURL.replace(_GIF_V_EXTENSION, 'h.jpg')
+	      };
+	    }
+	  }
+	}
+
+/***/ },
+/* 1688 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PostContent_less__ = __webpack_require__(1691);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__PostContent_less___default = __WEBPACK_IMPORTED_MODULE_0__PostContent_less__ && __WEBPACK_IMPORTED_MODULE_0__PostContent_less__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0__PostContent_less__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0__PostContent_less__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_0__PostContent_less___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_0__PostContent_less___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(31);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __WEBPACK_IMPORTED_MODULE_1_react__ && __WEBPACK_IMPORTED_MODULE_1_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_react___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_react___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_url__ = __webpack_require__(270);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_url___default = __WEBPACK_IMPORTED_MODULE_2_url__ && __WEBPACK_IMPORTED_MODULE_2_url__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_url__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_url__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_2_url___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_2_url___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__r_api_client__ = __webpack_require__(168);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__r_api_client___default = __WEBPACK_IMPORTED_MODULE_3__r_api_client__ && __WEBPACK_IMPORTED_MODULE_3__r_api_client__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_3__r_api_client__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_3__r_api_client__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_3__r_api_client___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_3__r_api_client___default });
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_mobilify__ = __webpack_require__(1010);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_gifToHTML5Sources__ = __webpack_require__(1687);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__postUtils__ = __webpack_require__(571);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__mediaUtils__ = __webpack_require__(1689);
+	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+	var ResponseError = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_api_client__["errors"].ResponseError;
+	var PostModel = /* harmony import */__WEBPACK_IMPORTED_MODULE_3__r_api_client__["models"].PostModel;
+
+
+
+
+
+
+	// import SquareButton from '../formElements/SquareButton';
+
+
+
+
+
+	var T = /* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.PropTypes;
+
+	function autoPlayGif(gif) {
+	  if (!gif) {
+	    return;
+	  }
+
+	  // need this to make iOS really autoplay the gif
+	  gif.play();
+	}
+
+	function forceProtocol(url, https) {
+	  var urlObj = /* harmony import */__WEBPACK_IMPORTED_MODULE_2_url___default.a.parse(url);
+	  urlObj.protocol = https ? 'https:' : urlObj.protocol;
+	  return /* harmony import */__WEBPACK_IMPORTED_MODULE_2_url___default.a.format(urlObj);
+	}
+
+	// NOTE: Playable Type and LinkDescriptor will move into the new
+	// representation for PostMediaState (temporary name) once that's
+	// refactored out into its own real file
+	var PLAYABLE_TYPE = {
+	  GALLERY: 'gallery',
+	  INLINE: 'inline',
+	  NOT_PLAYABLE: 'not-playable'
+	};
+
+	function postToPlayableType(post) {
+	  var media = post.media;
+	  if (media && media.oembed) {
+	    var type = media.oembed.type;
+	    if (type === 'gallery') {
+	      return PLAYABLE_TYPE.GALLERY;
+	    } else if (type === 'rich' && media.oembed.provider_name.toLowerCase() === 'imgur') {
+	      return PLAYABLE_TYPE.GALLERY;
+	    } else if (type !== 'image') {
+	      return PLAYABLE_TYPE.INLINE;
+	    }
+	  }
+
+	  if (post.url && post.url.indexOf('.gif') > -1) {
+	    return PLAYABLE_TYPE.INLINE;
+	  }
+
+	  return PLAYABLE_TYPE.NOT_PLAYABLE;
+	}
+
+	var LinkDescriptor = function LinkDescriptor(url, outbound) {
+	  _classCallCheck(this, LinkDescriptor);
+
+	  this.url = url;
+	  this.outbound = outbound;
+	};
+
+	// PostContent is used to render:
+	//  * Post thumbnail, if there is one
+	//  * Post Preview/Link Bar (includes playable gif / video / gallery etc)
+
+	var _ref = _jsx('span', {
+	  className: 'PostContent__link-bar-icon icon icon-linkout blue'
+	});
+
+	var PostContent = function (_React$Component) {
+	  _inherits(PostContent, _React$Component);
+
+	  function PostContent(props) {
+	    _classCallCheck(this, PostContent);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PostContent).call(this, props));
+
+	    _this.state = {
+	      playing: props.expandedCompact };
+
+	    // we want things to autoplay in expanded compact mode
+	    // autoplay if you tapped the play icon to expand
+	    _this.togglePlaying = _this.togglePlaying.bind(_this);
+	    _this.saveText = _this.saveText.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(PostContent, [{
+	    key: 'togglePlaying',
+	    value: function togglePlaying(e) {
+	      e.preventDefault();
+	      this.setState({ playing: !this.state.playing });
+	    }
+	  }, {
+	    key: 'saveText',
+	    value: function saveText() {
+	      var updatedText = this.refs.selfTextEditor.value.trim();
+	      this.props.saveUpdatedText(updatedText);
+	    }
+	  }, {
+	    key: 'useOurOwnPlayingOrPreviewing',
+	    value: function useOurOwnPlayingOrPreviewing(oembed, url) {
+	      if (!this.state.playing || !oembed) {
+	        return true;
+	      }
+
+	      // we want to use our own previewing for gifs which will be
+	      // type 'video', so make sure we don't accidently catch
+	      // anything else like an imgur gallery (type 'rich')
+	      if (oembed.type !== 'video') {
+	        return false;
+	      }
+
+	      var provider = oembed.provider_name.toLowerCase();
+	      return provider === 'gfycat' || provider === 'imgur' || /\.gif$/.test(url);
+	    }
+	  }, {
+	    key: 'isCompact',
+	    value: function isCompact() {
+	      var props = this.props;
+	      return props.compact && !props.expandedCompact;
+	    }
+	  }, {
+	    key: 'needsNSFWBlur',
+	    value: function needsNSFWBlur(isNSFW, showNSFW) {
+	      return isNSFW && !showNSFW;
+	    }
+	  }, {
+	    key: 'getAspectRatio',
+	    value: function getAspectRatio(single, width, height) {
+	      if (width && height) {
+	        return single ? width / height : /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["a"].bind()(width / height);
+	      }
+
+	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["b"];
+	    }
+	  }, {
+	    key: 'heightStyle',
+	    value: function heightStyle(aspectRatio) {
+	      if (this.props.single && aspectRatio) {
+	        return 1 / aspectRatio * this.props.width + 'px';
+	      }
+	    }
+	  }, {
+	    key: 'baseStyleFromAspectRatio',
+	    value: function baseStyleFromAspectRatio(aspectRatio) {
+	      var style = {};
+	      var heightStyle = this.heightStyle(aspectRatio);
+	      if (heightStyle) {
+	        style.height = heightStyle;
+	      }
+
+	      return style;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var isCompact = this.isCompact();
+	      var _props = this.props;
+	      var single = _props.single;
+	      var post = _props.post;
+	      var isDomainExternal = _props.isDomainExternal;
+
+
+	      var outboundLink = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["c"].bind()(/* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_mobilify__["a"].bind()(post.cleanUrl));
+	      var linkDescriptor = new LinkDescriptor(outboundLink, true);
+	      var mediaContentNode = this.buildMediaContent(post, isCompact, linkDescriptor);
+	      var selftextNode = this.buildSelfTextContent(post, isCompact, single);
+
+	      if (!mediaContentNode && !selftextNode) {
+	        if (!isDomainExternal || isCompact) {
+	          // When in compact mode, the PostHeader Component is responsible for rendering
+	          // outbound links. But when in list mode, we are, so make sure we render
+	          // the linkbar to outbound links if needed.
+	          return null;
+	        }
+	      }
+
+	      return _jsx('div', {
+	        className: 'PostContent ' + (isCompact ? 'size-compact' : 'size-default')
+	      }, void 0, this.renderMediaContent(mediaContentNode, isCompact, isDomainExternal, /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["b"].bind()(post.domain), outboundLink), selftextNode);
+	    }
+	  }, {
+	    key: 'renderMediaContent',
+	    value: function renderMediaContent(mediaContentNode, isCompact, isDomainExternal, linkDisplayText, linkUrl) {
+	      if (isCompact || !isDomainExternal || this.props.renderMediaFullbleed) {
+	        return mediaContentNode;
+	      }
+
+	      return _jsx('div', {
+	        className: 'PostContent__media-wrapper'
+	      }, void 0, mediaContentNode, this.renderLinkBar(linkDisplayText, linkUrl));
+	    }
+	  }, {
+	    key: 'buildSelfTextContent',
+	    value: function buildSelfTextContent(post, isCompact, single) {
+	      if (isCompact || !single) {
+	        return;
+	      }
+
+	      if (this.props.editing) {
+	        return this.renderTextEditor(post.selftext);
+	      }
+
+	      if (!post.selftext) {
+	        return;
+	      }
+
+	      var mobileSelfText = /* harmony import */__WEBPACK_IMPORTED_MODULE_4__lib_mobilify__["a"].bind()(post.expandContent);
+	      return _jsx('div', {
+	        className: 'PostContent__selftext',
+	        dangerouslySetInnerHTML: { __html: mobileSelfText }
+	      });
+	    }
+	  }, {
+	    key: 'renderTextEditor',
+	    value: function renderTextEditor(selfText) {
+	      // const {
+	      //   editError,
+	      //   toggleEditing,
+	      // } = this.props;
+	      //
+	      // return (
+	      //   <div className='PostContent__edit-wrapper'>
+	      //     <div className='PostContent__textarea-holder'>
+	      //       <textarea
+	      //         className='PostContent__textarea form-control'
+	      //         defaultValue={ selfText }
+	      //         ref='selfTextEditor'
+	      //       />
+	      //     </div>
+	      //     { editError ? this.renderEditingError(editError) : null }
+	      //     <div className='PostContent__edit-controls'>
+	      //       <div className='PostContent__edit-button'>
+	      //         <SquareButton
+	      //           text='Cancel'
+	      //           onClick={ toggleEditing }
+	      //         />
+	      //       </div>
+	      //       <div className='PostContent__edit-button'>
+	      //         <SquareButton
+	      //           text='Save'
+	      //           onClick={ this.saveText }
+	      //         />
+	      //       </div>
+	      //     </div>
+	      //   </div>
+	      // );
+	    }
+	  }, {
+	    key: 'renderEditingError',
+	    value: function renderEditingError(editError) {
+	      var errorText = void 0;
+	      if (Array.isArray(editError)) {
+	        errorText = err[0] + ': ' + err[1];
+	      } else if (editError instanceof ResponseError) {
+	        errorText = 'Sorry, something went wrong with the server, status code: ' + editError.status;
+	      }
+
+	      var err = editError[0];
+	      return _jsx('div', {
+	        className: 'alert alert-danger alert-bar'
+	      }, void 0, errorText);
+	    }
+	  }, {
+	    key: 'buildMediaContent',
+	    value: function buildMediaContent(post, isCompact, linkDescriptor) {
+	      var oembed = post.media ? post.media.oembed : null;
+
+	      if (isCompact && !(post.preview || oembed)) {
+	        return null; // Compact mode only renders thumbnails _if_ there's a preview
+	      }
+
+	      var _props2 = this.props;
+	      var width = _props2.width;
+	      var showNSFW = _props2.showNSFW;
+
+	      var isNSFW = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["a"].bind()(post);
+	      var needsNSFWBlur = this.needsNSFWBlur(isNSFW, showNSFW);
+	      var playableType = postToPlayableType(post);
+
+	      var previewImage = void 0;
+	      if (post.preview || oembed) {
+	        previewImage = /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["c"].bind()(isCompact, post.preview, post.thumbnail, oembed, width, needsNSFWBlur);
+	      }
+
+	      // if we got a preview image that's a gif, convert it to a still image if possible
+	      if (previewImage && previewImage.url) {
+	        var html5VideoSources = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_gifToHTML5Sources__["a"].bind()(previewImage.url);
+	        if (html5VideoSources && html5VideoSources.poster) {
+	          previewImage.url = html5VideoSources.poster;
+	        }
+	      }
+
+	      var onTapExpand = this.props.onTapExpand;
+
+	      var sourceURL = post.cleanUrl;
+
+	      if (isCompact) {
+	        // the thumbnail
+	        return this.renderImage(previewImage, sourceURL, linkDescriptor, onTapExpand, needsNSFWBlur, true, playableType);
+	      }
+
+	      // handles:
+	      //  * image preview of playabe image / video
+	      //  * a gif that we're playing ourselves with html5 video or inline
+	      if (playableType !== PLAYABLE_TYPE.NOT_PLAYABLE && previewImage && this.useOurOwnPlayingOrPreviewing(oembed, sourceURL)) {
+	        return this.buildImagePreview(previewImage, sourceURL, linkDescriptor, this.togglePlaying, needsNSFWBlur, isCompact, playableType);
+	      }
+
+	      if (oembed) {
+	        return this.buildMediaPreview(post, sourceURL, oembed);
+	      }
+
+	      if (previewImage) {
+	        var callback = isNSFW ? this.props.toggleShowNSFW : null;
+	        return this.buildImagePreview(previewImage, sourceURL, linkDescriptor, callback, needsNSFWBlur, isCompact, playableType);
+	      }
+	    }
+	  }, {
+	    key: 'buildImagePreview',
+	    value: function buildImagePreview(previewImage, imageURL, linkDescriptor, callback, needsNSFWBlur, isCompact, playableType) {
+	      var html5sources = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_gifToHTML5Sources__["a"].bind()(imageURL);
+	      var single = this.props.single;
+
+
+	      if (this.state.playing && html5sources) {
+	        var aspectRatio = this.getAspectRatio(single, previewImage.width, previewImage.height);
+
+	        if (html5sources.iframe) {
+	          return this.renderIframe(html5sources.iframe, aspectRatio);
+	        }
+
+	        var generatedSrc = {
+	          webm: html5sources.webm,
+	          mp4: html5sources.mp4,
+	          width: previewImage.width,
+	          height: previewImage.height
+	        };
+
+	        return this.renderVideo(generatedSrc, html5sources.poster, aspectRatio);
+	      }
+
+	      return this.renderImage(previewImage, imageURL, linkDescriptor, callback, needsNSFWBlur, isCompact, playableType);
+	    }
+	  }, {
+	    key: 'buildMediaPreview',
+	    value: function buildMediaPreview(post, sourceURL, oembed) {
+	      var single = this.props.single.single;
+
+	      var aspectRatio = this.getAspectRatio(single, oembed.width, oembed.height);
+
+	      switch (oembed.type) {
+	        case 'image':
+	          return this.renderIframe(sourceURL, aspectRatio);
+	        case 'video':
+	          return this.renderRawHTML(post.expandContent, aspectRatio);
+	        case 'rich':
+	          return this.renderRichOembed(oembed.html, aspectRatio);
+	      }
+	    }
+	  }, {
+	    key: 'renderRichOembed',
+	    value: function renderRichOembed(oembedHtml, aspectRatio) {
+	      var findSrc = oembedHtml.match(/src="([^"]*)/);
+
+	      if (findSrc && findSrc[1]) {
+	        var frameUrl = findSrc[1].replace('&amp;', '&');
+	        return this.renderIframe(frameUrl, aspectRatio);
+	      }
+	    }
+	  }, {
+	    key: 'renderImage',
+	    value: function renderImage(previewImage, imageURL, linkDescriptor, onClick, needsNSFWBlur, isCompact, playableType) {
+	      var playbackControlNode = void 0;
+	      if (playableType && !needsNSFWBlur) {
+	        playbackControlNode = this.renderPlaybackIcon(playableType, isCompact);
+	      }
+
+	      var nsfwNode = void 0;
+	      if (needsNSFWBlur) {
+	        nsfwNode = this.renderNSFWWarning(isCompact);
+	      }
+
+	      var single = this.props.single;
+
+	      var aspectRatio = this.getAspectRatio(single, previewImage.width, previewImage.height);
+
+	      if (previewImage && previewImage.url && !aspectRatio) {
+	        return this.renderImageOfUknownSize(previewImage.url, linkDescriptor, onClick, playbackControlNode, nsfwNode);
+	      }
+
+	      return this.renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor, aspectRatio, onClick, isCompact, playbackControlNode, nsfwNode);
+	    }
+	  }, {
+	    key: 'baseImageLinkClass',
+	    value: function baseImageLinkClass(imageUrl, hasNSFWBlur) {
+	      return 'PostContent__image-link ' + (hasNSFWBlur && !imageUrl ? 'placeholder' : '');
+	    }
+	  }, {
+	    key: 'renderImageOfUknownSize',
+	    value: function renderImageOfUknownSize(imageURL, linkDescriptor, onClick, playbackControlNode, nsfwNode) {
+	      var linkClass = this.baseImageLinkClass(imageURL, !!nsfwNode);
+	      return _jsx('a', {
+	        className: linkClass,
+	        href: linkDescriptor.url,
+	        target: this.props.showLinksInNewTab ? '_blank' : null,
+	        onClick: onClick,
+	        'data-no-route': !!onClick
+	      }, void 0, _jsx('img', {
+	        className: 'PostContent__image-img',
+	        src: imageURL
+	      }), playbackControlNode, nsfwNode);
+	    }
+	  }, {
+	    key: 'renderImageWithAspectRatio',
+	    value: function renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor, aspectRatio, onClick, isCompact, playbackControlNode, nsfwNode) {
+	      var forceHTTPS = this.props.forceHTTPS;
+
+
+	      var style = this.baseStyleFromAspectRatio(aspectRatio);
+
+	      if (previewImage.url) {
+	        var giphyPosterHref = /* harmony import */__WEBPACK_IMPORTED_MODULE_5__lib_gifToHTML5Sources__["b"].bind()(imageURL);
+	        var backgroundImage = giphyPosterHref && !nsfwNode ? giphyPosterHref : previewImage.url;
+	        style.backgroundImage = 'url("' + forceProtocol(backgroundImage, forceHTTPS) + '")';
+	      }
+
+	      var linkClass = this.baseImageLinkClass(previewImage.url, !!nsfwNode);
+	      if (!isCompact) {
+	        linkClass += ' ' + /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["d"].bind()(aspectRatio);
+	      }
+
+	      var isPlaying = this.state.playing && playbackControlNode; // make sure we're
+	      // really playing as opposed to showing the expanded compact version of the image
+	      return _jsx('a', {
+	        className: linkClass,
+	        href: linkDescriptor.url,
+	        target: this.props.showLinksInNewTab ? '_blank' : null,
+	        onClick: onClick,
+	        'data-no-route': !!onClick,
+	        style: style
+	      }, void 0, isPlaying ? _jsx('img', {
+	        className: 'PostContent__inline-gif',
+	        src: imageURL
+	      }) : playbackControlNode, nsfwNode);
+	    }
+	  }, {
+	    key: 'renderIframe',
+	    value: function renderIframe(src, aspectRatio) {
+	      var style = this.baseStyleFromAspectRatio(aspectRatio);
+
+	      return _jsx('div', {
+	        className: 'PostContent__iframe-wrapper ' + /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["d"].bind()(aspectRatio),
+	        style: style
+	      }, void 0, _jsx('iframe', {
+	        className: 'PostContent__iframe',
+	        src: src,
+	        frameBorder: '0',
+	        allowFullScreen: '',
+	        sandbox: 'allow-scripts allow-forms allow-same-origin'
+	      }));
+	    }
+	  }, {
+	    key: 'renderVideo',
+	    value: function renderVideo(videoSpec, posterImage, aspectRatio) {
+	      var style = this.baseStyleFromAspectRatio(aspectRatio);
+
+	      return _jsx('div', {
+	        className: 'PostContent__video-wrapper ' + /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["d"].bind()(aspectRatio),
+	        style: style
+	      }, void 0, /* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+	        'video',
+	        {
+	          className: 'PostContent__video',
+	          poster: posterImage,
+	          loop: 'true',
+	          muted: 'true',
+	          controls: 'true',
+	          autoPlay: 'true',
+	          ref: autoPlayGif
+	        },
+	        this.buildVideoSources(videoSpec)
+	      ));
+	    }
+	  }, {
+	    key: 'buildVideoSources',
+	    value: function buildVideoSources(videoSpec) {
+	      var sources = [];
+	      ['mp4', 'webm'].forEach(function (videoType) {
+	        var source = videoSpec[videoType];
+	        if (source) {
+	          sources.push(_jsx('source', {
+	            type: 'video/' + videoType,
+	            src: source
+	          }, 'video-src-' + videoType));
+	        }
+	      });
+
+	      return sources;
+	    }
+	  }, {
+	    key: 'renderRawHTML',
+	    value: function renderRawHTML(htmlContent, aspectRatio) {
+	      return _jsx('div', {
+	        className: 'PostContent__html ' + /* harmony import */__WEBPACK_IMPORTED_MODULE_7__mediaUtils__["d"].bind()(aspectRatio),
+	        dangerouslySetInnerHTML: { __html: htmlContent }
+	      });
+	    }
+	  }, {
+	    key: 'renderPlaybackIcon',
+	    value: function renderPlaybackIcon(playableType, isCompact) {
+	      if (playableType === PLAYABLE_TYPE.NOT_PLAYABLE) {
+	        return;
+	      }
+
+	      var iconCls = 'PostContent__playback-action-icon darkgrey';
+
+	      if (playableType === PLAYABLE_TYPE.GALLERY) {
+	        iconCls += ' icon icon-gallery_squares';
+	      } else if (playableType === PLAYABLE_TYPE.INLINE) {
+	        iconCls += ' icon icon-play_triangle';
+	      }
+
+	      var buttonCls = 'PostContent__playback-action-circle  ' + (isCompact ? 'compact' : 'regular');
+
+	      return _jsx('div', {
+	        className: buttonCls
+	      }, void 0, _jsx('span', {
+	        className: iconCls
+	      }));
+	    }
+	  }, {
+	    key: 'renderLinkBar',
+	    value: function renderLinkBar(displayText, href) {
+	      var target = this.props.showLinksInNewTab ? '_blank' : null;
+
+	      return _jsx('a', {
+	        className: 'PostContent__link-bar',
+	        href: href,
+	        target: target
+	      }, void 0, _jsx('span', {
+	        className: 'PostContent__link-bar-text'
+	      }, void 0, displayText), _ref);
+	    }
+	  }, {
+	    key: 'renderNSFWWarning',
+	    value: function renderNSFWWarning(isCompact) {
+	      if (isCompact) {
+	        return _jsx('div', {
+	          className: 'PostContent__nsfw-warning'
+	        }, void 0, _jsx('p', {
+	          className: 'PostContent__nsfw-warning-text'
+	        }, void 0, 'NSFW'));
+	      }
+
+	      return _jsx('div', {
+	        className: 'PostContent__nsfw-warning'
+	      }, void 0, _jsx('p', {
+	        className: 'PostContent__nsfw-warning-text'
+	      }, void 0, 'This post is marked as NSFW'), _jsx('p', {
+	        className: 'PostContent__nsfw-warning-button'
+	      }, void 0, 'Show Post?'));
+	    }
+	  }]);
+
+	  return PostContent;
+	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.Component);
+
+	PostContent.porpTypes = {
+	  post: T.instanceOf(PostModel),
+	  compact: T.bool.isRequired,
+	  single: T.bool.isRequired,
+	  onTapExpand: T.func.isRequired,
+	  expandedCompact: T.bool.isRequired,
+	  loaded: T.bool.isRequired,
+	  width: T.number.isRequired,
+	  toggleShowNSFW: T.func.isRequired,
+	  showNSFW: T.bool.isRequired,
+	  editing: T.bool.isRequired,
+	  editError: T.oneOf([T.arrayOf(T.string), T.object]),
+	  saveUpdatedText: T.func.isRequired,
+	  toggleEditing: T.func.isRequired,
+	  forceHTTPS: T.bool.isRequired,
+	  isDomainExternal: T.bool.isRequired,
+	  renderMediaFullbleed: T.bool.isRequired
+	};
+	/* harmony default export */ exports["a"] = PostContent;
+
+/***/ },
+/* 1689 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(1690);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object__ = __webpack_require__(256);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_object___default = __WEBPACK_IMPORTED_MODULE_1_lodash_object__ && __WEBPACK_IMPORTED_MODULE_1_lodash_object__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_lodash_object__; }
+	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_1_lodash_object___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_1_lodash_object___default });
+	/* harmony export */ exports["a"] = limitAspectRatio;/* harmony export */ exports["d"] = aspectRatioClass;/* harmony export */ exports["c"] = findPreviewImage;
+
+
+	var DEFAULT_ASPECT_RATIO = 16 / 9;
+	/* harmony export */ Object.defineProperty(exports, "b", {configurable: false, enumerable: true, get: function() { return DEFAULT_ASPECT_RATIO; }});
+
+	//there are css values in aspect-ratio.less that must correlate with _WIDEST and _TALLEST
+	var _WIDEST = 3;/* unused harmony export _WIDEST */
+	var _TALLEST = 1 / 3;/* unused harmony export _TALLEST */
+
+	function limitAspectRatio(aspectRatio) {
+	  return Math.min(Math.max(_TALLEST, aspectRatio), _WIDEST);
+	}
+
+	//there are css values in aspect-ratio.less that must correlate with _INCREMENT and _HEIGHT
+	var _INCREMENT = 40;
+	var _HEIGHT = 1080;
+
+	// Calculate the lowest common denominator
+	function euclid(a, b) {
+	  if (b === 0) {
+	    return a;
+	  }
+
+	  return euclid(b, a % b);
+	}
+
+	// Get a number rounded to the nearest increment
+	function incrRound(n, incr) {
+	  return Math.round(n / incr) * incr;
+	}
+
+	function aspectRatioClass(ratio) {
+	  if (!ratio) {
+	    return 'aspect-ratio-16x9';
+	  }
+
+	  var w = incrRound(ratio * _HEIGHT, _INCREMENT);
+	  var lcd = euclid(w, _HEIGHT);
+
+	  return 'aspect-ratio-' + w / lcd + 'x' + _HEIGHT / lcd;
+	}
+
+	function findPreviewImage(isCompact, preview, thumbnail, oembed, width, needsNSFWBlur) {
+	  var imageWidth = isCompact ? /* harmony import */__WEBPACK_IMPORTED_MODULE_0__constants__["a"] : width;
+
+	  if (isCompact && thumbnail && !needsNSFWBlur) {
+	    return {
+	      url: thumbnail,
+	      width: /* harmony import */__WEBPACK_IMPORTED_MODULE_0__constants__["a"],
+	      height: /* harmony import */__WEBPACK_IMPORTED_MODULE_0__constants__["a"]
+	    };
+	  }
+
+	  if (preview) {
+	    if (preview.images.length) {
+	      var bestFitPreviewImage = findBestFitPreviewImage(isCompact, preview.images[0], imageWidth, needsNSFWBlur);
+
+	      if (bestFitPreviewImage) {
+	        return bestFitPreviewImage;
+	      }
+	    }
+	  }
+
+	  if (oembed) {
+	    return oembedPreviewImage(oembed, needsNSFWBlur);
+	  }
+	}
+
+	function findBestFitPreviewImage(isCompact, previewImage, imageWidth, needsNSFWBlur) {
+	  if (needsNSFWBlur) {
+	    // for logged out users and users who have the 'make safer for work'
+	    // option enabled there will be no nsfw variants returned.
+	    if (/* harmony import */__WEBPACK_IMPORTED_MODULE_1_lodash_object__["has"].bind()(previewImage, 'variants.nsfw.resolutions')) {
+	      previewImage = previewImage.variants.nsfw;
+	    } else {
+	      return {};
+	    }
+	  }
+
+	  var resolutions = previewImage.resolutions;
+	  if (resolutions) {
+	    var bestFit = resolutions.sort(function (a, b) {
+	      return a.width - b.width;
+	    }).find(function (r) {
+	      if (isCompact) {
+	        return r.width >= imageWidth && r.height >= imageWidth;
+	      }
+
+	      return r.width >= imageWidth;
+	    });
+
+	    if (bestFit) {
+	      return bestFit;
+	    }
+	  }
+
+	  if (previewImage.source) {
+	    return previewImage.source;
+	  }
+	}
+
+	function oembedPreviewImage(oembed, needsNSFWBlur) {
+	  if (!needsNSFWBlur) {
+	    return {
+	      url: oembed.thumbnail_url,
+	      width: oembed.thumbnail_width,
+	      height: oembed.thumbnail_height
+	    };
+	  }
+
+	  return {};
+	}
+
+/***/ },
+/* 1690 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	var TOGGLE_OVER_18 = 'toggleOver18';/* unused harmony export TOGGLE_OVER_18 */
+
+	var USER_MENU_TOGGLE = 'sideNavToggle';/* unused harmony export USER_MENU_TOGGLE */
+
+	var COMMUNITY_MENU_TOGGLE = 'community`MenuToggle';/* unused harmony export COMMUNITY_MENU_TOGGLE */
+
+	var TOP_NAV_HAMBURGER_CLICK = 'topNavHamburgerClick';/* unused harmony export TOP_NAV_HAMBURGER_CLICK */
+
+	var TOP_NAV_COMMUNITY_CLICK = 'topNavCommunityClick';/* unused harmony export TOP_NAV_COMMUNITY_CLICK */
+
+	var USER_DATA_CHANGED = 'userDataChanged';/* unused harmony export USER_DATA_CHANGED */
+
+	var VOTE = 'vote';/* unused harmony export VOTE */
+
+	var OVERLAY_MENU_OPEN = 'overlayMenuOpen';/* unused harmony export OVERLAY_MENU_OPEN */
+
+	var OVERLAY_MENU_OFFSET = -10;/* unused harmony export OVERLAY_MENU_OFFSET */ // from cs;
+
+	var OVERLAY_MENU_CSS_CLASS = 'OverlayMenu';/* unused harmony export OVERLAY_MENU_CSS_CLASS */
+
+	var OVERLAY_MENU_VISIBLE_CSS_CLASS = 'OverlayMenu-visible';/* unused harmony export OVERLAY_MENU_VISIBLE_CSS_CLASS */
+
+	var DROPDOWN_CSS_CLASS = 'Dropdown';/* unused harmony export DROPDOWN_CSS_CLASS */
+
+	var DROPDOWN_OPEN = 'dropdownOpen';/* unused harmony export DROPDOWN_OPEN */
+
+	var COMPACT_TOGGLE = 'compactToggle';/* unused harmony export COMPACT_TOGGLE */
+
+	var THEME_TOGGLE = 'themeToggle';/* unused harmony export THEME_TOGGLE */
+
+	var TOP_NAV_HEIGHT = 45;/* unused harmony export TOP_NAV_HEIGHT */
+
+	var RESIZE = 'resize';/* unused harmony export RESIZE */
+
+	var SCROLL = 'scroll';/* unused harmony export SCROLL */
+
+	var ICON_SHRUNK_SIZE = 16;/* unused harmony export ICON_SHRUNK_SIZE */
+
+	var CACHEABLE_COOKIES = ['compact'];/* unused harmony export CACHEABLE_COOKIES */
+
+	var DEFAULT_API_TIMEOUT = 10000;/* unused harmony export DEFAULT_API_TIMEOUT */
+
+	var HIDE_GLOBAL_MESSAGE = 'hideGlobalMessage';/* unused harmony export HIDE_GLOBAL_MESSAGE */
+
+	var EU_COOKIE_HIDE_AFTER_VIEWS = 3;/* unused harmony export EU_COOKIE_HIDE_AFTER_VIEWS */
+
+	var NEW_INFOBAR_MESSAGE = 'newInfoBarMessage';/* unused harmony export NEW_INFOBAR_MESSAGE */
+
+	var messageTypes = {
+	  GLOBAL: 'global',
+	  EU_COOKIE: 'euCookie'
+	};/* unused harmony export messageTypes */
+
+	var DEFAULT_KEY_COLOR = '#336699';/* unused harmony export DEFAULT_KEY_COLOR */
+
+	var SET_META_COLOR = 'setMetaColor';/* unused harmony export SET_META_COLOR */
+
+	// Post content
+
+	var POST_COMPACT_THUMBNAIL_WIDTH = 70;
+	/* harmony export */ Object.defineProperty(exports, "a", {configurable: false, enumerable: true, get: function() { return POST_COMPACT_THUMBNAIL_WIDTH; }});
+
+	var POST_DEFAULT_WIDTH = 320;/* unused harmony export POST_DEFAULT_WIDTH */
+
+	/* eslint-disable max-len */
+	var BANNER_URLS_TUNE = {
+	  IMPRESSION: 'https =//249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=122129&site_id_ios=121809',
+	  CLICK: 'https =//249639.measurementapi.com/serve?action=click&publisher_id=249639&site_id=122129&site_id_ios=121809'
+	};/* unused harmony export BANNER_URLS_TUNE */
+
+	var BANNER_URLS_DIRECT = {
+	  IOS: 'https =//itunes.apple.com/us/app/reddit-the-official-app/id1064216828',
+	  ANDROID: 'https =//play.google.com/store/apps/details?id=com.reddit.frontpage'
+	};/* unused harmony export BANNER_URLS_DIRECT */
+	/* eslint-enable */
+
+	// feature flags
+	var flags = {
+	  BETA: 'beta',
+	  SMARTBANNER: 'banner'
+	};/* unused harmony export flags */
+
+	var themes = {
+	  NIGHTMODE: 'nightmode',
+	  DAYMODE: 'daymode'
+	};/* unused harmony export themes */
+
+/***/ },
+/* 1691 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
