@@ -6,32 +6,44 @@ import { map } from 'lodash/collection';
 
 import Comment from '../Comment/Comment';
 
-export default class CommentsList extends React.Component {
-  render() {
-    const { comments } = this.props;
+export const CommentsList = (props) => {
+  const { comments, parentComment, postCreated, user, op, nestingLevel } = props;
 
-    return (
-      <div className='CommentsList'>
-        { this.renderCommentsList(comments) }
-      </div>
-    );
+  return (
+    <div className='CommentsList'>
+      { map(comments, comment => {
+        if (comment.bodyHTML !== undefined) {
+          return (
+            <Comment
+              key={ `comment-id-${comment.name}` }
+              comment={ comment }
+              parentComment={ parentComment }
+              postCreated={ postCreated }
+              user={ user }
+              op={ op}
+              nestingLevel={ nestingLevel }
+              />
+            );
+        } else {
+          return (
+            <div className='comment-more'>
+              { `Load more comments (${Math.random(10)})` }
+            </div>
+          )
+        }
+      }) }
+    </div>
+  );
+};
+
+const commentsListSelector = createSelector(
+  (state, props) => props,
+  (state, props) => props.comments,
+  (state, props) => state.comments,
+  (props, commentRecords, commentsStore) => {
+    const comments = map(commentRecords, r => commentsStore[r.uuid]);
+    return { ...props, comments };
   }
+)
 
-  renderCommentsList(comments) {
-    const { parentComment, postCreated, user, op, nestingLevel } = this.props;
-
-    return map(comments, commentRecord => {
-      return (
-        <Comment
-          key={ `comment-id-${commentRecord.uuid}` }
-          commentId={ commentRecord.uuid }
-          parentComment={ parentComment }
-          postCreated={ postCreated }
-          user={ user }
-          op={ op}
-          nestingLevel={ nestingLevel }
-        />
-      );
-    });
-  }
-}
+export default connect(commentsListSelector)(CommentsList);

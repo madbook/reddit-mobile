@@ -32,7 +32,7 @@ function determineAuthorType(distinguished, author, op, user) {
   return '';
 }
 
-export class Comment extends React.Component {
+export default class Comment extends React.Component {
   static propTypes = {
     parentCreated: T.number,
     postCreated: T.number,
@@ -270,11 +270,17 @@ export class Comment extends React.Component {
     if (collapsed) { cls += ' m-hidden'; }
     if (nestingLevel > 5) { cls += ' m-no-indent'; }
 
+    if (nestingLevel > 10) {
+      return (
+        <div className='see-more-comment'>See More Placeholder</div>
+      );
+    }
+
     return (
       <div className={ cls }>
         <CommentsList
           parentComment={ comment }
-          nestingLevel={ nestingLevel }
+          nestingLevel={ nestingLevel + 1 }
           comments={ comment.replies }
         />
       </div>
@@ -289,7 +295,7 @@ export class Comment extends React.Component {
     let cls = 'Comment__reply';
     if (reply.id === highlightedComment) { cls += ' m-highlight'; }
 
-    if (reply && reply.body_html !== undefined) {
+    if (reply && reply.bodyHTML !== undefined) {
       return (
         <div className={ cls } key={ reply.id } >
           <Comment
@@ -332,4 +338,4 @@ const commentSelector = createSelector(
   },
 );
 
-export default connect(commentSelector)(Comment);
+export const connectedComment = connect(commentSelector)(Comment);
