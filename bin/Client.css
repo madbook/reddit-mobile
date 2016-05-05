@@ -916,6 +916,115 @@ main {
   text-align: right;
   color: #CCCCCA;
 }
+.CommentHeader__table {
+  width: 100%;
+}
+.CommentHeader__col1,
+.CommentHeader__col2,
+.CommentHeader__col3 {
+  vertical-align: top;
+}
+.CommentHeader__col1 {
+  width: 20px;
+}
+.CommentHeader__col2 {
+  max-width: 0px;
+}
+.CommentHeader__col3 {
+  width: 45px;
+  text-align: right;
+}
+.CommentHeader__username,
+.CommentHeader__usernameIcon,
+.CommentHeader__flair,
+.CommentHeader__timestamp,
+.CommentHeader__separator,
+.CommentHeader__caron,
+.CommentHeader__dots,
+.CommentHeader__sticky {
+  display: inline-block;
+  vertical-align: middle;
+}
+.CommentHeader__username,
+.CommentHeader__flair,
+.CommentHeader__timestamp,
+.CommentHeader__separator {
+  margin-right: 4px;
+}
+.CommentHeader__username,
+.CommentHeader__flair,
+.CommentHeader__timestamp {
+  color: #A5A4A4;
+}
+.CommentHeader__username.m-highlight,
+.CommentHeader__flair.m-highlight {
+  color: #FFB000;
+}
+.CommentHeader__sticky {
+  margin-right: 4px;
+  font-size: 20px;
+  color: inherit !important;
+}
+.CommentHeader__flair {
+  padding: 0 4px;
+}
+.dayMode .CommentHeader__flair {
+  border: 1px solid #EFEFED;
+}
+.nightMode .CommentHeader__flair {
+  border: 1px solid #353535;
+}
+.CommentHeader__dots {
+  margin-right: 4px;
+  color: #0DD3BB;
+}
+.CommentHeader__caron {
+  margin-right: 8px;
+}
+.CommentHeader__caron.m-collapsed {
+  transform: rotate(-90deg);
+}
+.CommentHeader__separator {
+  color: #EFEFED;
+}
+.CommentHeader__username {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.CommentHeader__username.m-admin {
+  color: #FF4500;
+}
+.CommentHeader__username.m-moderator {
+  color: #94E044;
+}
+.CommentHeader__username.m-op {
+  color: #24A0ED;
+}
+.CommentHeader__username.m-self {
+  color: #0DD3BB;
+}
+.CommentHeader__usernameIcon {
+  margin-left: 4px;
+}
+.CommentHeader__gold,
+.CommentHeader__goldCount {
+  display: inline-block;
+  vertical-align: middle;
+}
+.CommentHeader__gold {
+  color: #DDBD37;
+}
+.CommentHeader__goldCount {
+  margin-left: 4px;
+}
+.dayMode .CommentHeader__goldCount {
+  color: #A5A4A4;
+}
+.nightMode .CommentHeader__goldCount {
+  color: #A5A4A4;
+}
 .Post {
   margin-bottom: 8px;
 }

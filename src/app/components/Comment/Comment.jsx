@@ -11,7 +11,7 @@ import mobilify from '../../../lib/mobilify';
 import extractErrorMsg from '../../../lib/extractErrorMsg';
 import CommentsList from '../CommentsList/CommentsList';
 
-// import CommentHeader from './CommentHeader';
+import CommentHeader from './CommentHeader/CommentHeader';
 // import CommentTools from './CommentTools';
 // import CommentReplyForm from './CommentReplyForm';
 // import CommentSeeMore from './CommentSeeMore';
@@ -131,7 +131,7 @@ export default class Comment extends React.Component {
 
     return (
       <div className='Comment'>
-        {/*{ this.renderHeader() }*/}
+        { this.renderHeader() }
         { editing ? this.renderEditForm() : this.renderBody() }
         {/*{ !commentDeleted ? this.renderTools() : null }*/}
         {/*{ !collapsed && showReplyBox ? this.renderReplyArea() : null }*/}
@@ -141,8 +141,8 @@ export default class Comment extends React.Component {
   }
 
   renderHeader() {
-    const { nestingLevel, highlightedComment } = this.props;
-    const { collapsed, authorType, comment } = this.state;
+    const { nestingLevel, highlightedComment, comment } = this.props;
+    const { collapsed, authorType  } = this.state;
 
     return (
       <div className='Comment__header' onClick={ this.toggleCollapse } >
