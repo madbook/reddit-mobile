@@ -805,6 +805,230 @@ th {
   margin-left: 4px;
   font-size: 13px;
 }
+[class^="aspect-ratio-"]:before,
+[class*=" aspect-ratio-"]:before {
+  content: "";
+  display: block;
+}
+.aspect-ratio-1x3:before {
+  padding-top: 300%;
+}
+.aspect-ratio-10x27:before {
+  padding-top: 270%;
+}
+.aspect-ratio-11x27:before {
+  padding-top: 245.45454545%;
+}
+.aspect-ratio-4x9:before {
+  padding-top: 225%;
+}
+.aspect-ratio-13x27:before {
+  padding-top: 207.69230769%;
+}
+.aspect-ratio-14x27:before {
+  padding-top: 192.85714286%;
+}
+.aspect-ratio-5x9:before {
+  padding-top: 180%;
+}
+.aspect-ratio-16x27:before {
+  padding-top: 168.75%;
+}
+.aspect-ratio-17x27:before {
+  padding-top: 158.82352941%;
+}
+.aspect-ratio-2x3:before {
+  padding-top: 150%;
+}
+.aspect-ratio-19x27:before {
+  padding-top: 142.10526316%;
+}
+.aspect-ratio-20x27:before {
+  padding-top: 135%;
+}
+.aspect-ratio-7x9:before {
+  padding-top: 128.57142857%;
+}
+.aspect-ratio-22x27:before {
+  padding-top: 122.72727273%;
+}
+.aspect-ratio-23x27:before {
+  padding-top: 117.39130435%;
+}
+.aspect-ratio-8x9:before {
+  padding-top: 112.5%;
+}
+.aspect-ratio-25x27:before {
+  padding-top: 108%;
+}
+.aspect-ratio-26x27:before {
+  padding-top: 103.84615385%;
+}
+.aspect-ratio-1x1:before {
+  padding-top: 100%;
+}
+.aspect-ratio-28x27:before {
+  padding-top: 96.42857143%;
+}
+.aspect-ratio-29x27:before {
+  padding-top: 93.10344828%;
+}
+.aspect-ratio-10x9:before {
+  padding-top: 90%;
+}
+.aspect-ratio-31x27:before {
+  padding-top: 87.09677419%;
+}
+.aspect-ratio-32x27:before {
+  padding-top: 84.375%;
+}
+.aspect-ratio-11x9:before {
+  padding-top: 81.81818182%;
+}
+.aspect-ratio-34x27:before {
+  padding-top: 79.41176471%;
+}
+.aspect-ratio-35x27:before {
+  padding-top: 77.14285714%;
+}
+.aspect-ratio-4x3:before {
+  padding-top: 75%;
+}
+.aspect-ratio-37x27:before {
+  padding-top: 72.97297297%;
+}
+.aspect-ratio-38x27:before {
+  padding-top: 71.05263158%;
+}
+.aspect-ratio-13x9:before {
+  padding-top: 69.23076923%;
+}
+.aspect-ratio-40x27:before {
+  padding-top: 67.5%;
+}
+.aspect-ratio-41x27:before {
+  padding-top: 65.85365854%;
+}
+.aspect-ratio-14x9:before {
+  padding-top: 64.28571429%;
+}
+.aspect-ratio-43x27:before {
+  padding-top: 62.79069767%;
+}
+.aspect-ratio-44x27:before {
+  padding-top: 61.36363636%;
+}
+.aspect-ratio-5x3:before {
+  padding-top: 60%;
+}
+.aspect-ratio-46x27:before {
+  padding-top: 58.69565217%;
+}
+.aspect-ratio-47x27:before {
+  padding-top: 57.44680851%;
+}
+.aspect-ratio-16x9:before {
+  padding-top: 56.25%;
+}
+.aspect-ratio-49x27:before {
+  padding-top: 55.10204082%;
+}
+.aspect-ratio-50x27:before {
+  padding-top: 54%;
+}
+.aspect-ratio-17x9:before {
+  padding-top: 52.94117647%;
+}
+.aspect-ratio-52x27:before {
+  padding-top: 51.92307692%;
+}
+.aspect-ratio-53x27:before {
+  padding-top: 50.94339623%;
+}
+.aspect-ratio-2x1:before {
+  padding-top: 50%;
+}
+.aspect-ratio-55x27:before {
+  padding-top: 49.09090909%;
+}
+.aspect-ratio-56x27:before {
+  padding-top: 48.21428571%;
+}
+.aspect-ratio-19x9:before {
+  padding-top: 47.36842105%;
+}
+.aspect-ratio-58x27:before {
+  padding-top: 46.55172414%;
+}
+.aspect-ratio-59x27:before {
+  padding-top: 45.76271186%;
+}
+.aspect-ratio-20x9:before {
+  padding-top: 45%;
+}
+.aspect-ratio-61x27:before {
+  padding-top: 44.26229508%;
+}
+.aspect-ratio-62x27:before {
+  padding-top: 43.5483871%;
+}
+.aspect-ratio-7x3:before {
+  padding-top: 42.85714286%;
+}
+.aspect-ratio-64x27:before {
+  padding-top: 42.1875%;
+}
+.aspect-ratio-65x27:before {
+  padding-top: 41.53846154%;
+}
+.aspect-ratio-22x9:before {
+  padding-top: 40.90909091%;
+}
+.aspect-ratio-67x27:before {
+  padding-top: 40.29850746%;
+}
+.aspect-ratio-68x27:before {
+  padding-top: 39.70588235%;
+}
+.aspect-ratio-23x9:before {
+  padding-top: 39.13043478%;
+}
+.aspect-ratio-70x27:before {
+  padding-top: 38.57142857%;
+}
+.aspect-ratio-71x27:before {
+  padding-top: 38.02816901%;
+}
+.aspect-ratio-8x3:before {
+  padding-top: 37.5%;
+}
+.aspect-ratio-73x27:before {
+  padding-top: 36.98630137%;
+}
+.aspect-ratio-74x27:before {
+  padding-top: 36.48648649%;
+}
+.aspect-ratio-25x9:before {
+  padding-top: 36%;
+}
+.aspect-ratio-76x27:before {
+  padding-top: 35.52631579%;
+}
+.aspect-ratio-77x27:before {
+  padding-top: 35.06493506%;
+}
+.aspect-ratio-26x9:before {
+  padding-top: 34.61538462%;
+}
+.aspect-ratio-79x27:before {
+  padding-top: 34.17721519%;
+}
+.aspect-ratio-80x27:before {
+  padding-top: 33.75%;
+}
+.aspect-ratio-3x1:before {
+  padding-top: 33.33333333%;
+}
 .PostContent table {
   margin: 1em 0;
   width: 100%;

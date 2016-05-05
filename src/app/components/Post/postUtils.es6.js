@@ -9,7 +9,7 @@ export function isPostNSFW(post) {
 }
 
 export function postShouldRenderMediaFullbleed(post) {
-  const postHint = post.post_hint;
+  const postHint = post.postHint;
   const media = post.media;
   return !!(postHint && postHint !== 'link' && postHint !== 'self' ||
     media && media.oembed && media.oembed.type !== 'rich' ||
