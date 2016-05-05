@@ -97,7 +97,7 @@ function setCompact(ctx, app) {
 
   const cookieOptions = makeCookieOptions(app);
 
-  const ua = ctx.headers['user-agent'];
+  const ua = (ctx.headers['user-agent'] || '').toLowerCase();
 
   // Set compact for opera mini
   if (ua && ua.match(/(opera mini|android 2)/i)) {

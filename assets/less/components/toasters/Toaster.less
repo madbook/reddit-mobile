@@ -1,0 +1,64 @@
+.Toaster {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  background-color: @off-black;
+
+  &__iconMoose {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    background-color: @red;
+  }
+
+  &__iconCheck {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    background-color: @lime;
+
+    &[class*=" icon-"] {
+      font-size: 54px;
+      line-height: 80px;
+    }
+  }
+
+  @iconSize: 60px;
+  @snooBoxSize: 80px;
+  &__iconSnoo {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: @snooBoxSize;
+    height: @snooBoxSize;
+    background-color: @orangered;
+    text-align: center;
+
+    .SnooIcon {
+      width: @iconSize;
+      height: @iconSize;
+      margin-top: (@snooBoxSize - @iconSize) / 2;
+      color: @orangered;
+      line-height: @iconSize;
+      font-size: @iconSize;
+    }
+  }
+
+  &__message {
+    width: 100%;
+    padding: @grid-size;
+    color: @white;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  &__close {
+    padding: @grid-size;
+    font-size: 16px;
+  }
+}

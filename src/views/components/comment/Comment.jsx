@@ -4,6 +4,7 @@ import without from 'lodash/array/without';
 
 import mobilify from '../../../lib/mobilify';
 import { SORTS } from '../../../sortValues';
+import constants from '../../../constants';
 import extractErrorMsg from '../../../lib/extractErrorMsg';
 import BaseComponent from '../BaseComponent';
 import CommentHeader from './CommentHeader';
@@ -70,11 +71,9 @@ export default class Comment extends BaseComponent {
       collapsed: false,
       showReplyBox: false,
       replyBoxContent: '',
-      replyBoxError: '',
       voteDirection: determineVoteDirection(comment.likes),
       loadingMoreComments: false,
       editing: false,
-      editingError: '',
       authorType: determineAuthorType(
         comment.distinguished,
         comment.author,
@@ -153,6 +152,9 @@ export default class Comment extends BaseComponent {
     if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
     this.setState({ waitingForRequest: true });
 
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
+
     try {
       const options = {
         ...this.buildApiOptions(),
@@ -172,20 +174,26 @@ export default class Comment extends BaseComponent {
       this.setState({
         commentReplies: [newComment].concat(this.state.commentReplies),
         showReplyBox: false,
-        replyBoxError: '',
         replyBoxContent: '',
         waitingForRequest: false,
       });
     } catch (e) {
       this.setState({
-        replyBoxError: extractErrorMsg(e),
         waitingForRequest: false,
+      });
+
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
       });
     }
   }
 
   async submitVote(delta) {
     if (this.props.app.needsToLogInUser()) { return; }
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
 
     const currentScore = this.state.commentScore;
     const currentVoteDirection = this.state.voteDirection;
@@ -226,11 +234,19 @@ export default class Comment extends BaseComponent {
           commentScore: currentScore,
         });
       }
+
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        messasge: 'Voting failed. Try refreshing the page',
+      });
     }
   }
 
   async loadMoreComments(commentStub) {
     if (this.state.loadingMoreComments) { return; }
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
 
     this.setState({
       loadingMoreComments: true,
@@ -253,12 +269,21 @@ export default class Comment extends BaseComponent {
       this.setState({
         loadingMoreComments: false,
       });
+
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
+      });
     }
   }
 
   async submitCommentEdit(newCommentText) {
     const { waitingForRequest } = this.state;
     if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
+
     this.setState({ waitingForRequest: true });
 
     try {
@@ -289,7 +314,11 @@ export default class Comment extends BaseComponent {
     } catch (e) {
       this.setState({
         waitingForRequest: false,
-        editingError: extractErrorMsg(e),
+      });
+
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
       });
     }
   }
@@ -298,6 +327,9 @@ export default class Comment extends BaseComponent {
     const { waitingForRequest } = this.state;
     if (this.props.app.needsToLogInUser() || waitingForRequest) { return; }
     this.setState({ waitingForRequest: true });
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
 
     try {
       const options = {
@@ -319,7 +351,11 @@ export default class Comment extends BaseComponent {
     } catch (e) {
       this.setState({
         waitingForRequest: false,
-        editingError: extractErrorMsg(e),
+      });
+
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
       });
     }
   }
@@ -328,6 +364,9 @@ export default class Comment extends BaseComponent {
     const { waitingForRequest } = this.state;
     if (waitingForRequest) { return; }
     this.setState({ waitingForRequest: true });
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
 
     try {
       const options = {
@@ -356,12 +395,18 @@ export default class Comment extends BaseComponent {
         });
       }
     } catch (e) {
-      // Do nothing
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
+      });
     }
   }
 
   async reportComment(reportReason) {
     if (this.props.app.needsToLogInUser()) { return; }
+
+    // kill any toasts
+    this.props.app.emit(constants.TOASTER);
 
     try {
       const options = {
@@ -377,7 +422,10 @@ export default class Comment extends BaseComponent {
 
       this.props.app.emit('report', this.state.comment.id);
     } catch (e) {
-      // do nothing;
+      this.props.app.emit(constants.TOASTER, {
+        type: constants.TOASTER_TYPES.ERROR,
+        message: extractErrorMsg(e),
+      });
     }
   }
 

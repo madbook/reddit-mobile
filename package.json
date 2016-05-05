@@ -50,6 +50,7 @@
     "react-addons-perf": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "react-dom": "^15.0.1",
+    "react-motion": "0.4.2",
     "scmp": "1.0.0",
     "semver": "5.0.3",
     "simple-oauth2": "0.2.1",
