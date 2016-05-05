@@ -1,3 +1,4 @@
+import './ListOfPosts.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -10,7 +11,7 @@ export class ListOfPosts extends React.Component {
     const { postsList } = this.props;
 
     return (
-      <div className='ListOfPosts'>
+      <div className='ListOfPosts PostAndCommentList'>
         { !postsList || postsList.loading
           ? this.renderLoading()
           : this.renderPostsList(postsList) }

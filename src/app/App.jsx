@@ -8,7 +8,7 @@ import { PostsFromSubredditPage } from './pages/PostsFromSubredditPage';
 export default class App extends React.Component {
   render() {
     return (
-      <div className="App dayMode">
+      <div className="App">
         <PageSelector>
           <Page url='/' component={ PostsFromSubredditPage } />
           <Page url='/r/:subredditName' component={ PostsFromSubredditPage } />

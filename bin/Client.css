@@ -586,6 +586,32 @@ th {
   font-family: helvetica, arial, sans-serif;
   font-size: 13px;
 }
+body.dayMode {
+  background-color: #FCFCFB;
+  color: #222;
+  fill: #222;
+}
+body.nightMode {
+  background-color: #222;
+  color: #cfd0ca;
+  fill: #cfd0ca;
+}
+main {
+  position: relative;
+}
+.footer {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+.center-image {
+  margin: auto;
+}
+.dayMode .PostAndCommentList {
+  background-color: #EFEFED;
+}
+.nightMode .PostAndCommentList {
+  background-color: #353535;
+}
 .Post {
   margin-bottom: 8px;
 }
