@@ -22,19 +22,31 @@ export default class App extends React.Component {
           />
           <Page
             url='/r/:subredditName/comments/:postId/comment/:commentId'
-            component={ CommentsPage }
+            component={ (pageProps) => {
+              return (<CommentsPage { ...pageProps } />);
+              }
+            }
           />
           <Page
             url='/r/:subredditName/comments/:postId/:postTitle/:commentId'
-            component={ CommentsPage }
+            component={ (pageProps) => {
+              return (<CommentsPage { ...pageProps } />);
+              }
+            }
           />
           <Page
             url='/r/:subredditName/comments/:postId/:postTitle?'
-            component={ CommentsPage }
+            component={ (pageProps) => {
+              return (<CommentsPage { ...pageProps } />);
+              }
+            }
           />
           <Page
             url='/comments/:postId/:postTitle?'
-            component={ CommentsPage }
+            component={ (pageProps) => {
+              return (<CommentsPage { ...pageProps } />);
+              }
+            }
           />
           <Page
             url='/login'
