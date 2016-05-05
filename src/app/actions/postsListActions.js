@@ -7,8 +7,6 @@ import { last } from 'lodash/array';
 
 const { PostsEndpoint } = endpoints;
 
-export const POSTS_FROM_SUBREDDIT = 'postsFromSubreddit';
-
 export const FETCHING_POSTS_LIST = 'FETCHING_POSTS_LIST';
 
 export const fetchingSubredditPosts = (postsListId, postsParams) => ({

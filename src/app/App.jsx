@@ -3,6 +3,8 @@ import React from 'react';
 import Login from './components/login/Login';
 import { Anchor, UrlSync } from '@r/platform/components';
 import { PageSelector, Page } from '@r/platform/page';
+
+import { CommentsPage } from './pages/CommentsPage';
 import { PostsFromSubredditPage } from './pages/PostsFromSubredditPage';
 
 export default class App extends React.Component {
@@ -10,8 +12,30 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <PageSelector>
-          <Page url='/' component={ PostsFromSubredditPage } />
-          <Page url='/r/:subredditName' component={ PostsFromSubredditPage } />
+          <Page
+            url='/'
+            component={ PostsFromSubredditPage }
+          />
+          <Page
+            url='/r/:subredditName'
+            component={ PostsFromSubredditPage }
+          />
+          <Page
+            url='/r/:subredditName/comments/:postId/comment/:commentId'
+            component={ CommentsPage }
+          />
+          <Page
+            url='/r/:subredditName/comments/:postId/:postTitle/:commentId'
+            component={ CommentsPage }
+          />
+          <Page
+            url='/r/:subredditName/comments/:postId/:postTitle?'
+            component={ CommentsPage }
+          />
+          <Page
+            url='/comments/:postId/:postTitle?'
+            component={ CommentsPage }
+          />
           <Page
             url='/login'
             component={pageData => (

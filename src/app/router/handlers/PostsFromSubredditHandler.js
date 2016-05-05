@@ -1,6 +1,5 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
-
 import * as postsListActions from '../../actions/postsListActions';
 
 import { cleanObject } from '../../../lib/cleanObject';
@@ -9,8 +8,7 @@ export default class PostsFromSubredditHandler extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {
     const { subredditName, multi, multiUser } = urlParams;
     const { sort, t, after, before } = queryParams;
-    console.log('subredditName?', subredditName);
-
+    
     return cleanObject({
       subredditName,
       multi,

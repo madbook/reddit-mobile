@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ListOfPosts from '../components/ListOfPosts/ListOfPosts';
+import PostsList from '../components/PostsList/PostsList';
 
 import PostsFromSubredditHandler from '../router/handlers/PostsFromSubredditHandler';
 import { paramsToPostsListsId } from '../models/PostsListModel';
@@ -15,7 +15,7 @@ export const PostsFromSubredditPage = (props) => {
     <div className='PostsFromSubredditPage'>
       <div className='PostsFromSubredditPage__header'>
         { `Posts from r/${postsListParams.subredditName || 'frontpage'} `}
-        <ListOfPosts postsListId={ postsListId } />
+        <PostsList postsListId={ postsListId } />
       </div>
     </div>
   );

@@ -606,12 +606,6 @@ main {
 .center-image {
   margin: auto;
 }
-.dayMode .PostAndCommentList {
-  background-color: #EFEFED;
-}
-.nightMode .PostAndCommentList {
-  background-color: #353535;
-}
 .Post {
   margin-bottom: 8px;
 }
@@ -1447,4 +1441,10 @@ main {
 .PostFooter__vote-arrow-wrapper [class^="icon-"] {
   font-size: 22px;
   line-height: 1em;
+}
+.dayMode .PostAndCommentList {
+  background-color: #EFEFED;
+}
+.nightMode .PostAndCommentList {
+  background-color: #353535;
 }

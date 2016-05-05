@@ -1,4 +1,4 @@
-import './ListOfPosts.less';
+import './PostsList.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -6,12 +6,12 @@ import { createSelector } from 'reselect';
 import Post from '../Post/Post';
 import { map } from 'lodash/collection';
 
-export class ListOfPosts extends React.Component {
+export class PostsList extends React.Component {
   render() {
     const { postsList } = this.props;
 
     return (
-      <div className='ListOfPosts PostAndCommentList'>
+      <div className='PostsList PostAndCommentList'>
         { !postsList || postsList.loading
           ? this.renderLoading()
           : this.renderPostsList(postsList) }
@@ -20,7 +20,7 @@ export class ListOfPosts extends React.Component {
   }
 
   renderLoading() {
-    return <div className='ListOfPosts__loading' />;
+    return <div className='PostsList__loading' />;
   }
 
   renderPostsList(postsList) {
@@ -40,4 +40,4 @@ const listSelector = createSelector(
   (postsListsId, postsList) => ({ postsListsId, postsList })
 );
 
-export default connect(listSelector)(ListOfPosts);
+export default connect(listSelector)(PostsList);
