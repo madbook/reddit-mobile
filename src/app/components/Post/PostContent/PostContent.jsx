@@ -216,12 +216,12 @@ export default class PostContent extends React.Component {
     if (isCompact || !single) { return; }
 
     if (this.props.editing) {
-      return this.renderTextEditor(post.selftext);
+      return this.renderTextEditor(post.selfTextHTML);
     }
 
-    if (!post.selftext) { return; }
+    if (!post.selfTextHTML) { return; }
 
-    const mobileSelfText = mobilify(post.expandContent);
+    const mobileSelfText = mobilify(post.expandedContent);
     return (
       <div
         className='PostContent__selftext'

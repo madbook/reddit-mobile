@@ -578,6 +578,250 @@ td,
 th {
   padding: 0;
 }
+html {
+  -webkit-font-smoothing: antialiased;
+}
+.dayMode a,
+.dayMode a .icon-inline {
+  color: #0079D3;
+}
+.dayMode a:active,
+.dayMode a:active .icon-inline {
+  color: #0795ff;
+}
+.dayMode a:visited,
+.dayMode a:visited .icon-inline {
+  color: #3aabff;
+}
+.nightMode a,
+.nightMode a .icon-inline {
+  color: #24A0ED;
+}
+.nightMode a:active,
+.nightMode a:active .icon-inline {
+  color: #53b4f1;
+}
+.nightMode a:visited,
+.nightMode a:visited .icon-inline {
+  color: #82c9f5;
+}
+a.voted.text-upvote:hover,
+a.voted.text-upvote:focus,
+button.upvoted:hover .icon-upvote-circled,
+.text-upvote {
+  color: #FF4500;
+}
+a.voted.text-downvote:hover,
+a.voted.text-downvote:focus,
+button.downvoted:hover .icon-downvote-circled,
+.text-downvote {
+  color: #7193FF;
+}
+.label.label-large {
+  font-size: 100%;
+}
+.label a:hover {
+  text-decoration: none;
+}
+.text-admin {
+  color: #FF4500;
+}
+.text-admin:after {
+  content: ' [A]';
+}
+.text-moderator {
+  color: #94E044;
+}
+.text-moderator:after {
+  content: ' [M]';
+}
+.linkbar {
+  display: inline-block;
+  margin: 4px 0 0 0;
+  padding: 0;
+}
+.linkbar > li {
+  padding: 0;
+  display: inline-block;
+  margin-right: .5em;
+  vertical-align: bottom;
+}
+.linkbar > li:nth-child(n+2)::before {
+  content: '\B7';
+  padding-right: .5em;
+}
+.linkbar-single-line {
+  height: 1.5em;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+.linkbar-single-line:after {
+  content: '';
+  position: absolute;
+  height: 2em;
+  z-index: 1;
+  bottom: 0;
+  right: 0;
+  width: 3em;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff);
+}
+.linkbar-single-line > .linkbar {
+  width: 1000%;
+}
+.linkbar > li.linkbar-item-no-seperator::before {
+  content: '';
+  padding-right: 0;
+}
+.linkbar-compact {
+  vertical-align: middle;
+  margin: 0;
+}
+.linkbar-compact li:before {
+  display: none;
+}
+.linkbar-compact > li:nth-child(n+2)::before {
+  content: '';
+  padding-right: 0;
+}
+.linkbar-spread {
+  width: 100%;
+  text-align: center;
+  padding: 0;
+}
+.linkbar-spread > li {
+  float: left;
+}
+.linkbar-spread.linkbar-spread-5 > li {
+  width: 20%;
+}
+.linkbar-spread.linkbar-spread-5 > .linkbar-spread-li-double {
+  width: 40%;
+}
+.text-inverted {
+  color: #FFF;
+}
+.text-muted a:active {
+  color: #A5A4A4;
+}
+.text-link,
+.text-muted .text-link {
+  color: #0079D3;
+}
+.logo-reddit {
+  background: url('/img/snoo-32.png') center right no-repeat;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.logo-reddit.logo-small {
+  width: 16px;
+  height: 16px;
+  background-size: 16px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2) {
+  .logo-reddit {
+    background: url('/img/snoo-64.png') center right no-repeat;
+    background-size: 32px;
+  }
+  .logo-reddit.logo-small {
+    background: url('/img/snoo-32.png') center right no-repeat;
+    background-size: 16px;
+  }
+}
+blockquote,
+table {
+  font-size: inherit;
+}
+blockquote {
+  margin: .5rem 0 1rem .5rem;
+  padding: .5rem 1rem;
+}
+.dayMode blockquote {
+  border-left: 5px solid #EFEFED;
+}
+.nightMode blockquote {
+  border-left: 5px solid #353535;
+}
+.dayMode pre {
+  border: 1px solid #CCCCCA;
+  color: #222;
+}
+.nightMode pre {
+  border: 1px solid #545452;
+  color: #cfd0ca;
+}
+.dayMode code,
+.dayMode pre,
+.dayMode pre code {
+  background-color: #f5f5f2;
+}
+.nightMode code,
+.nightMode pre,
+.nightMode pre code {
+  background-color: #1a1a1a;
+}
+.dayMode code {
+  background-color: #fbeaea;
+  color: #d84141;
+}
+.nightMode code {
+  color: #dc5656;
+}
+p {
+  word-wrap: break-word;
+  word-break: keep-all;
+}
+.text-small {
+  font-size: 12px;
+}
+.text-small [class*=" icon-"] {
+  line-height: 13px;
+}
+.text-super-large {
+  font-size: 128px;
+}
+.text-mirror {
+  transform: scale(-1, 1);
+}
+.encircle-icon {
+  padding: 3px;
+  color: #FFF;
+}
+dd {
+  margin-bottom: 1em;
+}
+.title {
+  color: #0079D3;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+@media screen and (min-width: 0px) {
+  .jumbotron {
+    padding: 1em;
+    margin-bottom: 0;
+  }
+  .jumbotron h1 {
+    font-size: 18px;
+  }
+  .jumbotron p {
+    font-size: 13px;
+  }
+}
+.sponsored-label {
+  color: #3aabff;
+  text-transform: uppercase;
+}
+.blue {
+  color: #24A0ED;
+}
+.red {
+  color: #d84141;
+}
 .icon-gold,
 .icon-gold:before {
   color: #FFD635;
