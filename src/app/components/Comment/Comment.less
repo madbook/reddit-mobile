@@ -1,0 +1,69 @@
+@import (reference) "../../art-gallery-link/assets/less/variables";
+@import (reference) '../../art-gallery-link/assets/less/mixins/importAll.less';
+@import (reference) "../../art-gallery-link/assets/less/themes/themeify";
+
+.Comment {
+  .themeify({
+    background-color: @theme-comment-body-color;
+  });
+
+  &__body,
+  &__toolsContainer,
+  &__replies {
+    &.m-hidden {
+      display: none;
+    }
+  }
+
+  &__body {
+    padding-top: @grid-size;
+    overflow-x: hidden;
+    .table();
+
+    a {
+      color: @blue;
+    }
+  }
+
+  &__tools {
+    float: right;
+  }
+
+  &__edit {
+    margin: (2 * @grid-size) 0;
+
+    &.m-hidden {
+      display: none;
+    }
+  }
+
+  &__replyForm {
+    margin-top: @grid-size;
+  }
+
+  &__replies {
+    margin-left: @grid-size;
+
+    &.m-no-indent {
+      margin-left: 0;
+    }
+  }
+
+  &__reply,
+  &__seemore {
+    margin-top: @grid-size;
+    padding-top: @grid-size;
+    .themeify({
+      border-top: @theme-border;
+    });
+
+    &.m-highlight {
+      border-color: @mango;
+    }
+  }
+
+  &__replyFormLocked {
+    text-align: right;
+    color: @neutral;
+  }
+}

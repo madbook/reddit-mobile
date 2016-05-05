@@ -4,7 +4,9 @@ import { createSelector } from 'reselect';
 
 import { map } from 'lodash/collection';
 
-export class CommentsList extends React.Component {
+import Comment from '../Comment/Comment';
+
+export default class CommentsList extends React.Component {
   render() {
     const { comments } = this.props;
 
@@ -16,28 +18,20 @@ export class CommentsList extends React.Component {
   }
 
   renderCommentsList(comments) {
-    return map(comments, comment => {
+    const { parentComment, postCreated, user, op, nestingLevel } = this.props;
+
+    return map(comments, commentRecord => {
       return (
-        <div className='Comment' key={ `comment-${comment.name}` }>
-          { comment.author || 'load more' }
-          <div
-            dangerouslySetInnerHTML={
-              { __html: comment.bodyHTML || '<div>so many more comments</div>' }
-            }
-          />ch
-        </div>
+        <Comment
+          key={ `comment-id-${commentRecord.uuid}` }
+          commentId={ commentRecord.uuid }
+          parentComment={ parentComment }
+          postCreated={ postCreated }
+          user={ user }
+          op={ op}
+          nestingLevel={ nestingLevel }
+        />
       );
     });
   }
 }
-
-const listSelector = createSelector(
-  (state, props) => props.comments,
-  (state, props) => state.comments,
-  (commentRecords, commentsStore) => {
-    const comments = map(commentRecords, r => commentsStore[r.uuid]);
-    return { comments };
-  },
-);
-
-export default connect(listSelector)(CommentsList);

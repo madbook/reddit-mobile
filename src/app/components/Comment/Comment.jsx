@@ -1,11 +1,15 @@
-import React from 'react';
-import { models } from '@r/api-client';
-import without from 'lodash/array/without';
+import './Comment.less';
 
+import React from 'react';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { models } from '@r/api-client';
+import { without } from 'lodash/array';
 import mobilify from '../../../lib/mobilify';
 
 import extractErrorMsg from '../../../lib/extractErrorMsg';
-
+import CommentsList from '../CommentsList/CommentsList';
 
 // import CommentHeader from './CommentHeader';
 // import CommentTools from './CommentTools';
@@ -14,6 +18,7 @@ import extractErrorMsg from '../../../lib/extractErrorMsg';
 // import CommentEditForm from './CommentEditForm';
 
 const T = React.PropTypes;
+const { CommentModel } = models;
 
 function determineAuthorType(distinguished, author, op, user) {
   if (distinguished) {
@@ -27,11 +32,11 @@ function determineAuthorType(distinguished, author, op, user) {
   return '';
 }
 
-export default class Comment extends BaseComponent {
+export class Comment extends React.Component {
   static propTypes = {
     parentCreated: T.number,
     postCreated: T.number,
-    comment: T.object.isRequired,
+    comment: T.instanceOf(CommentModel),
     user: T.object,
     op: T.string,
     nestingLevel: T.number,
@@ -52,14 +57,12 @@ export default class Comment extends BaseComponent {
     const { comment } = props;
 
     this.state = {
-      comment: props.comment, // set as state since editing can change this
       commentScore: comment.score,
       commentDeleted: comment.author === '[deleted]', // there has GOT to be a better way
       collapsed: false,
       showReplyBox: false,
       replyBoxContent: '',
       replyBoxError: '',
-      voteDirection: determineVoteDirection(comment.likes),
       loadingMoreComments: false,
       editing: false,
       editingError: '',
@@ -72,19 +75,19 @@ export default class Comment extends BaseComponent {
       waitingForRequest: false,
     };
 
-    this.toggleCollapse = this.toggleCollapse.bind(this);
-    this.toggleReplyForm = this.toggleReplyForm.bind(this);
-    this.toggleEditForm = this.toggleEditForm.bind(this);
-    this.submitReply = this.submitReply.bind(this);
-    this.handleUpvote = this.handleUpvote.bind(this);
-    this.handleDownvote = this.handleDownvote.bind(this);
-    this.handleReplyBoxContent = this.handleReplyBoxContent.bind(this);
-    this.loadMoreComments = this.loadMoreComments.bind(this);
-    this.renderReply = this.renderReply.bind(this);
-    this.submitCommentEdit = this.submitCommentEdit.bind(this);
-    this.deleteComment = this.deleteComment.bind(this);
-    this.saveComment = this.saveComment.bind(this);
-    this.reportComment = this.reportComment.bind(this);
+    // this.toggleCollapse = this.toggleCollapse.bind(this);
+    // this.toggleReplyForm = this.toggleReplyForm.bind(this);
+    // this.toggleEditForm = this.toggleEditForm.bind(this);
+    // this.submitReply = this.submitReply.bind(this);
+    // this.handleUpvote = this.handleUpvote.bind(this);
+    // this.handleDownvote = this.handleDownvote.bind(this);
+    // this.handleReplyBoxContent = this.handleReplyBoxContent.bind(this);
+    // this.loadMoreComments = this.loadMoreComments.bind(this);
+    // this.renderReply = this.renderReply.bind(this);
+    // this.submitCommentEdit = this.submitCommentEdit.bind(this);
+    // this.deleteComment = this.deleteComment.bind(this);
+    // this.saveComment = this.saveComment.bind(this);
+    // this.reportComment = this.reportComment.bind(this);
   }
 
   toggleCollapse(e) {
@@ -122,20 +125,17 @@ export default class Comment extends BaseComponent {
     });
   }
 
-  buildApiOptions() {
-    return this.props.app.api.buildOptions(this.props.apiOptions);
-  }
-
   render() {
-    const { commentReplies, editing, commentDeleted, collapsed, showReplyBox } = this.state;
+    const { comment } = this.props;
+    const { editing, commentDeleted, collapsed, showReplyBox } = this.state;
 
     return (
       <div className='Comment'>
-        { this.renderHeader() }
+        {/*{ this.renderHeader() }*/}
         { editing ? this.renderEditForm() : this.renderBody() }
-        { !commentDeleted ? this.renderTools() : null }
-        { !collapsed && showReplyBox ? this.renderReplyArea() : null }
-        { commentReplies.length ? this.renderReplies() : null }
+        {/*{ !commentDeleted ? this.renderTools() : null }*/}
+        {/*{ !collapsed && showReplyBox ? this.renderReplyArea() : null }*/}
+        { !collapsed && comment.replies.length ? this.renderReplies() : null }
       </div>
     );
   }
@@ -181,8 +181,9 @@ export default class Comment extends BaseComponent {
   }
 
   renderBody() {
-    const { collapsed, comment } = this.state;
-    const bodyText = mobilify(comment.body_html);
+    const { comment } = this.props;
+    const { collapsed } = this.state;
+    const bodyText = mobilify(comment.bodyHTML);
 
     let cls = 'Comment__body';
     if (collapsed) { cls += ' m-hidden'; }
@@ -262,8 +263,8 @@ export default class Comment extends BaseComponent {
   }
 
   renderReplies() {
-    const { nestingLevel } = this.props;
-    const { commentReplies, collapsed } = this.state;
+    const { nestingLevel, comment } = this.props;
+    const { collapsed } = this.state;
 
     let cls = 'Comment__replies';
     if (collapsed) { cls += ' m-hidden'; }
@@ -271,7 +272,11 @@ export default class Comment extends BaseComponent {
 
     return (
       <div className={ cls }>
-        { commentReplies.map(this.renderReply) }
+        <CommentsList
+          parentComment={ comment }
+          nestingLevel={ nestingLevel }
+          comments={ comment.replies }
+        />
       </div>
     );
   }
@@ -292,10 +297,6 @@ export default class Comment extends BaseComponent {
             postCreated={ this.props.postCreated }
             comment={ reply }
             apiOptions={ this.props.apiOptions }
-            app={ this.props.app }
-            ctx={ this.props.ctx }
-            sort={ this.props.sort }
-            token={ this.props.token }
             op={ this.props.op }
             user={ this.props.user }
             nestingLevel={ nestingLevel + 1 }
@@ -319,3 +320,16 @@ export default class Comment extends BaseComponent {
     );
   }
 }
+
+const commentSelector = createSelector(
+  (state, props) => props,
+  (state, props) => state.comments,
+  (props, commentsStore) => {
+    const commentId = props.commentId;
+    const comment = commentsStore[commentId];
+    const { parentCreated, postCreated, user, op, nestingLevel } = props;
+    return { comment, parentCreated, postCreated, user, op, nestingLevel };
+  },
+);
+
+export default connect(commentSelector)(Comment);

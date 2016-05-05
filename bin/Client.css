@@ -850,6 +850,72 @@ main {
 .center-image {
   margin: auto;
 }
+.dayMode .Comment {
+  background-color: #FCFCFB;
+}
+.nightMode .Comment {
+  background-color: #222;
+}
+.Comment__body.m-hidden,
+.Comment__toolsContainer.m-hidden,
+.Comment__replies.m-hidden {
+  display: none;
+}
+.Comment__body {
+  padding-top: 8px;
+  overflow-x: hidden;
+}
+.Comment__body table {
+  margin: 1em 0;
+  width: 100%;
+}
+.Comment__body td,
+.Comment__body th {
+  padding: .25em;
+  border-bottom: solid 1px #CCCCCA;
+}
+.Comment__body a {
+  color: #24A0ED;
+}
+.Comment__tools {
+  float: right;
+}
+.Comment__edit {
+  margin: 16px 0;
+}
+.Comment__edit.m-hidden {
+  display: none;
+}
+.Comment__replyForm {
+  margin-top: 8px;
+}
+.Comment__replies {
+  margin-left: 8px;
+}
+.Comment__replies.m-no-indent {
+  margin-left: 0;
+}
+.Comment__reply,
+.Comment__seemore {
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.dayMode .Comment__reply,
+.dayMode .Comment__seemore {
+  border-top: 1px solid #EFEFED;
+}
+.nightMode .Comment__reply,
+.nightMode .Comment__seemore {
+  border-top: 1px solid #353535;
+}
+.Comment__reply.m-highlight,
+.Comment__seemore.m-highlight {
+  border-color: #FFB000;
+}
+.Comment__replyFormLocked {
+  text-align: right;
+  color: #CCCCCA;
+}
 .Post {
   margin-bottom: 8px;
 }
