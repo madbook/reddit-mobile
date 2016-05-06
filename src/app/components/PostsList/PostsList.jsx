@@ -6,32 +6,30 @@ import { createSelector } from 'reselect';
 import Post from '../Post/Post';
 import { map } from 'lodash/collection';
 
-export class PostsList extends React.Component {
-  render() {
-    const { postsList } = this.props;
+export function PostsList (props) {
+  const { postsList } = props;
+
+  return (
+    <div className='PostsList PostAndCommentList'>
+      { !postsList || postsList.loading
+        ? renderLoading()
+        : renderPostsList(postsList) }
+    </div>
+  );
+}
+
+function renderLoading() {
+  return <div className='PostsList__loading' />;
+}
+
+function renderPostsList(postsList) {
+  return map(postsList.results, postRecord => {
+    const postId = postRecord.uuid;
 
     return (
-      <div className='PostsList PostAndCommentList'>
-        { !postsList || postsList.loading
-          ? this.renderLoading()
-          : this.renderPostsList(postsList) }
-      </div>
+      <Post postId={ postId } key={ `post-id-${postId}` } />
     );
-  }
-
-  renderLoading() {
-    return <div className='PostsList__loading' />;
-  }
-
-  renderPostsList(postsList) {
-    return map(postsList.results, postRecord => {
-      const postId = postRecord.uuid;
-
-      return (
-        <Post postId={ postId } key={ `post-id-${postId}` } />
-      );
-    });
-  }
+  });
 }
 
 const listSelector = createSelector(

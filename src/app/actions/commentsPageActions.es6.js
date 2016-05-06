@@ -1,5 +1,5 @@
 import APIOptions from '@r/api-client';
-import { endpoints } from '@r/api-client'
+import { endpoints } from '@r/api-client';
 import { paramsToCommentsPageId } from '../models/CommentsPageModel';
 import { receivedResponse } from './apiResponseActions';
 
@@ -36,4 +36,4 @@ export const fetchCommentsPage = commentsPageParams => async (dispatch, getState
   const apiResponse = await CommentsEndpoint.get(APIOptions, commentsPageParams);
   dispatch(receivedResponse(apiResponse));
   dispatch(receivedCommentsPage(commentsPageId, apiResponse.results));
-}
+};

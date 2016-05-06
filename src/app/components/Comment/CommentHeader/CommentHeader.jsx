@@ -99,7 +99,7 @@ function renderGoldCount(gildCount) {
   return <div className='CommentHeader__goldCount'>{ gildCount }</div>;
 }
 
-function CommentHeader(props) {
+export default function CommentHeader(props) {
   const {
     collapsed,
     topLevel,
@@ -149,5 +149,3 @@ CommentHeader.defaultProps = {
   highlight: false,
   stickied: false,
 };
-
-export default CommentHeader;

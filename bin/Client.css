@@ -578,6 +578,12 @@ td,
 th {
   padding: 0;
 }
+a {
+  text-decoration: none;
+}
+a:focus {
+  text-decoration: underline;
+}
 html {
   -webkit-font-smoothing: antialiased;
 }
@@ -850,6 +856,10 @@ main {
 .center-image {
   margin: auto;
 }
+.CommentsList {
+  padding-top: 8px;
+  margin: 8px;
+}
 .dayMode .Comment {
   background-color: #FCFCFB;
 }
@@ -915,6 +925,10 @@ main {
 .Comment__replyFormLocked {
   text-align: right;
   color: #CCCCCA;
+}
+.CommentsList {
+  padding-top: 8px;
+  margin: 8px;
 }
 .CommentHeader__table {
   width: 100%;
