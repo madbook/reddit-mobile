@@ -22,19 +22,30 @@ const commentsPageSelector = createSelector(
       ? []
       : commentsPage.results;
 
-    return { commentsPageParams, commentsPage, commentsPageId, topLevelComments };
+    const permalinkBase = pageProps.url;
+
+    return {
+      commentsPageParams,
+      commentsPage,
+      commentsPageId,
+      permalinkBase,
+      topLevelComments
+    };
   },
 );
 
 export const CommentsPage = connect(commentsPageSelector)((props) => {
-  const { commentsPage, commentsPageParams, topLevelComments } = props;
+  const { commentsPage, commentsPageParams, topLevelComments, permalinkBase } = props;
 
   return (
     <div className='CommentsPage'>
       <Post postId={ commentsPageParams.id } single={ true } />
       { !commentsPage || commentsPage.loading
         ? <div className='CommentsPage__loading' />
-        : <CommentsList comments={ topLevelComments } /> }
+        : <CommentsList
+            comments={ topLevelComments }
+            permalinkBase={ permalinkBase }
+          /> }
     </div>
   );
 });

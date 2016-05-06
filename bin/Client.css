@@ -1025,6 +1025,90 @@ main {
 .nightMode .CommentHeader__goldCount {
   color: #A5A4A4;
 }
+.CommentTools__reply,
+.CommentTools__more,
+.CommentTools__divider,
+.CommentTools__score,
+.CommentTools__upvote,
+.CommentTools__downvote,
+.CommentTools__hit-area {
+  display: inline-block;
+  vertical-align: middle;
+}
+.dayMode .CommentTools__reply,
+.dayMode .CommentTools__more,
+.dayMode .CommentTools__divider,
+.dayMode .CommentTools__score,
+.dayMode .CommentTools__upvote,
+.dayMode .CommentTools__downvote,
+.dayMode .CommentTools__hit-area {
+  color: #CCCCCA;
+}
+.nightMode .CommentTools__reply,
+.nightMode .CommentTools__more,
+.nightMode .CommentTools__divider,
+.nightMode .CommentTools__score,
+.nightMode .CommentTools__upvote,
+.nightMode .CommentTools__downvote,
+.nightMode .CommentTools__hit-area {
+  color: #545452;
+}
+.CommentTools__more,
+.CommentTools__divider,
+.CommentTools__score,
+.CommentTools__upvote {
+  margin-right: 8px;
+}
+.CommentTools__reply,
+.CommentTools__more,
+.CommentTools__upvote,
+.CommentTools__downvote {
+  text-align: center;
+}
+.CommentTools__reply.icon,
+.CommentTools__more.icon,
+.CommentTools__upvote.icon,
+.CommentTools__downvote.icon {
+  font-size: 24px;
+  line-height: 24px;
+  width: 24px;
+}
+.CommentTools__reply {
+  margin-right: 16px;
+}
+.CommentTools__hit-area {
+  min-width: 24px;
+  min-height: 24px;
+  line-height: 24px;
+}
+.CommentTools__score {
+  width: 32px;
+  font-size: 14px;
+  text-align: right;
+}
+.CommentTools__score.upvoted {
+  color: #FF4500;
+}
+.CommentTools__score.downvoted {
+  color: #7193FF;
+}
+.CommentTools__divider {
+  height: 20px;
+}
+.dayMode .CommentTools__divider {
+  border-right: 1px solid #EFEFED;
+}
+.nightMode .CommentTools__divider {
+  border-right: 1px solid #353535;
+}
+.CommentTools__upvote.m-animated {
+  -webkit-animation: bounceUp 0.4s 1 ease-out;
+  animation: bounceUp 0.4s 1 ease-out;
+}
+.CommentTools__downvote.m-animated {
+  -webkit-animation: bounceDown 0.4s 1 ease-out;
+  animation: bounceDown 0.4s 1 ease-out;
+}
 .Post {
   margin-bottom: 8px;
 }

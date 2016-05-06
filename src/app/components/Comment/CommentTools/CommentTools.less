@@ -1,0 +1,84 @@
+@import (reference) '../../../art-gallery-link/assets/less/variables.less';
+@import (reference) '../../../art-gallery-link/assets/less/themes/themeify.less';
+@import (reference) '../../../art-gallery-link/assets/less/animations/voteBounce.less';
+
+.CommentTools {
+  &__reply,
+  &__more,
+  &__divider,
+  &__score,
+  &__upvote,
+  &__downvote,
+  &__hit-area {
+    display: inline-block;
+    vertical-align: middle;
+
+    .themeify({
+      color: @theme-nav-icon-color;
+    });
+  }
+
+  &__more,
+  &__divider,
+  &__score,
+  &__upvote {
+    margin-right: @grid-size;
+  }
+
+  &__reply,
+  &__more,
+  &__upvote,
+  &__downvote {
+    text-align: center;
+
+    &.icon {
+      font-size: 24px;
+      line-height: 24px;
+      width: 3 * @grid-size;
+    }
+  }
+
+  &__reply {
+    margin-right: 2 * @grid-size;
+  }
+
+  &__hit-area {
+    min-width: @min-hit-area;
+    min-height: @min-hit-area;
+    line-height: @min-hit-area;
+  }
+
+  &__score {
+    width: 32px;
+    font-size: 14px;
+    text-align: right;
+
+    &.upvoted {
+      color: @orangered;
+    }
+
+    &.downvoted {
+      color: @periwinkle;
+    }
+  }
+
+  &__divider {
+    .themeify({
+      border-right: @theme-border;
+    });
+
+    height: 20px;
+  }
+
+  &__upvote {
+    &.m-animated {
+      .upvoteBounceAnimation;
+    }
+  }
+
+  &__downvote {
+    &.m-animated {
+      .downvoteBounceAnimation;
+    }
+  }
+}

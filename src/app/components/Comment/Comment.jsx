@@ -12,7 +12,7 @@ import extractErrorMsg from '../../../lib/extractErrorMsg';
 import CommentsList from '../CommentsList/CommentsList';
 
 import CommentHeader from './CommentHeader/CommentHeader';
-// import CommentTools from './CommentTools';
+import CommentTools from './CommentTools/CommentTools';
 // import CommentReplyForm from './CommentReplyForm';
 // import CommentSeeMore from './CommentSeeMore';
 // import CommentEditForm from './CommentEditForm';
@@ -133,7 +133,7 @@ export default class Comment extends React.Component {
       <div className='Comment'>
         { this.renderHeader() }
         { editing ? this.renderEditForm() : this.renderBody() }
-        {/*{ !commentDeleted ? this.renderTools() : null }*/}
+        { !commentDeleted ? this.renderTools() : null }
         {/*{ !collapsed && showReplyBox ? this.renderReplyArea() : null }*/}
         { !collapsed && comment.replies.length ? this.renderReplies() : null }
       </div>
@@ -197,20 +197,19 @@ export default class Comment extends React.Component {
   }
 
   renderTools() {
-    const { user, permalinkBase } = this.props;
-    const { commentScore, voteDirection, collapsed, comment } = this.state;
+    const { user, permalinkBas, comment, permalinkBase } = this.props;
+    const { collapsed } = this.state;
 
     let cls = 'Comment__toolsContainer clearfix';
     if (collapsed) { cls += ' m-hidden'; }
-
+    
     return (
       <div className={ cls }>
         <div className='Comment__tools'>
           <CommentTools
-            score={ commentScore }
-            scoreHidden={ comment.score_hidden }
-            voteDirection={ voteDirection }
-            app={ this.props.app }
+            score={ comment.score }
+            scoreHidden={ comment.scoreHidden }
+            voteDirection={ comment.likes }
             commentAuthor={ comment.author }
             username={ user ? user.name : null }
             saved={ comment.saved }
@@ -263,7 +262,7 @@ export default class Comment extends React.Component {
   }
 
   renderReplies() {
-    const { nestingLevel, comment } = this.props;
+    const { nestingLevel, comment, permalinkBase } = this.props;
     const { collapsed } = this.state;
 
     let cls = 'Comment__replies';
@@ -280,6 +279,7 @@ export default class Comment extends React.Component {
       <div className={ cls }>
         <CommentsList
           parentComment={ comment }
+          permalinkBase={ permalinkBase }
           nestingLevel={ nestingLevel + 1 }
           comments={ comment.replies }
         />
