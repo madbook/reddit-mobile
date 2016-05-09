@@ -920,10 +920,6 @@ main {
   text-align: right;
   color: #CCCCCA;
 }
-.CommentsList {
-  padding-top: 8px;
-  margin: 8px;
-}
 .CommentHeader__table {
   width: 100%;
 }

@@ -138,7 +138,6 @@ export class Post extends React.Component {
     this.setState(newState);
   }
 
-
   render() {
     const {
       post,
@@ -202,7 +201,6 @@ export class Post extends React.Component {
         />
       );
     }
-
 
     const postCssClass = `Post ${compact ? 'size-compact' : 'size-default'}`;
 

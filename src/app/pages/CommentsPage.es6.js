@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import CommentsList from '../components/commentsList/CommentsList';
+import CommentsList from '../components/CommentsList/CommentsList';
 import Post from '../components/Post/Post';
 
 import CommentsPageHandler from '../router/handlers/CommentsPageHandler';
