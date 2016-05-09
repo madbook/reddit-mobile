@@ -3,8 +3,12 @@
 @import (reference) "../../art-gallery-link/assets/less/themes/themeify";
 
 .Comment {
+  margin-top: @grid-size;
+  padding-top: @grid-size;
+
   .themeify({
     background-color: @theme-comment-body-color;
+    border-top: @theme-border;
   });
 
   &__body,
@@ -13,10 +17,16 @@
     &.m-hidden {
       display: none;
     }
+
+    overflow: auto;
+
+    &:after {
+      content: " ";
+      display: table;
+    }
   }
 
   &__body {
-    padding-top: @grid-size;
     overflow-x: hidden;
     .table();
 
@@ -42,8 +52,6 @@
   }
 
   &__replies {
-    margin-left: @grid-size;
-
     &.m-no-indent {
       margin-left: 0;
     }

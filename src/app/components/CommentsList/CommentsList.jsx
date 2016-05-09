@@ -1,8 +1,6 @@
 import './CommentsList.less';
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { map } from 'lodash/collection';
 
@@ -12,12 +10,12 @@ export default (props) => {
   const { commentRecords, parentComment, postCreated, user, op, nestingLevel } = props;
 
   return (
-    <div className='CommentsList'>
+    <div className={ `CommentsList ${props.className || ''}` }>
 
       { map(commentRecords, record => {
         return (
           <Comment
-            key={ `comment-id-${record.uuid}`}
+            key={ `comment-id-${record.uuid}` }
             commentId={ record.uuid }
             parentComment= { parentComment }
             postCreated={ postCreated }

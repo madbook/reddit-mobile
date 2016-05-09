@@ -8,13 +8,11 @@ import Post from '../components/Post/Post';
 import CommentsPageHandler from '../router/handlers/CommentsPageHandler';
 import { paramsToCommentsPageId } from '../models/CommentsPageModel';
 
-import { map } from 'lodash/collection';
-
 const commentsPageSelector = createSelector(
   (state, props) => props,
-  (state, props) => state.commentsPages,
-  (state, props) => state.comments,
-  (pageProps, commentsPages, commentsStore) => {
+  (state, /*props*/) => state.commentsPages,
+  (state, /*props*/) => state.comments,
+  (pageProps, commentsPages/*, commentsStore*/) => {
     const commentsPageParams = CommentsPageHandler.PageParamsToCommentsPageParams(pageProps);
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
     const commentsPage = commentsPages[commentsPageId];
@@ -29,7 +27,7 @@ const commentsPageSelector = createSelector(
       commentsPage,
       commentsPageId,
       permalinkBase,
-      topLevelComments
+      topLevelComments,
     };
   },
 );
@@ -40,12 +38,13 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
   return (
     <div className='CommentsPage'>
       <Post postId={ commentsPageParams.id } single={ true } />
-      { !commentsPage || commentsPage.loading
-        ? <div className='CommentsPage__loading' />
-        : <CommentsList
-            commentRecords={ topLevelComments }
-            permalinkBase={ permalinkBase }
-          /> }
+      { !commentsPage || commentsPage.loading ?
+        <div className='CommentsPage__loading' /> :
+        <CommentsList
+          commentRecords={ topLevelComments }
+          permalinkBase={ permalinkBase }
+          className={ 'CommentsList__topLevel' }
+        /> }
     </div>
   );
 });

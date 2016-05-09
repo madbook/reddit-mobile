@@ -47,7 +47,7 @@ function renderHeader(props) {
         topLevel={ nestingLevel === 0 }
         dots={ Math.max(nestingLevel - 6, 0) }
         flair={ comment.author_flair_text }
-        created={ comment.created_utc }
+        created={ comment.createdUTC }
         gildCount={ comment.gilded }
         collapsed={ collapsed }
         highlight={ comment.id === highlightedComment }
