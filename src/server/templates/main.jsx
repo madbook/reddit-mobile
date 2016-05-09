@@ -10,6 +10,12 @@ export default function(data, store) {
         <title>Reddit</title>
         <meta charSet="utf8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <script
+          id='data'
+          dangerouslySetInnerHTML={ {
+            __html: `window.___r = ${JSON.stringify(data)}`,
+          } }
+        ></script>
         <link rel='stylesheet' href='/Client.css'/>
       </head>
       <body className='nightMode'>
@@ -23,11 +29,6 @@ export default function(data, store) {
             ),
           } }
         />
-        <script
-          id='data'
-          type='application/json'
-          dangerouslySetInnerHTML={ { __html: JSON.stringify(data) } }
-        ></script>
         <script type="text/javascript" src="/Client.js"></script>
       </body>
     </html>
