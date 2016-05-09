@@ -6,6 +6,9 @@ import React from 'react';
 
 const T = React.PropTypes;
 
+function onToggleReplyForm () { console.log('toggle reply form'); }
+function onToggleDropdown () { console.log('toggle dropdown'); }
+
 function scoreText(score, scoreHidden) {
   if (scoreHidden) {
     return '–';
@@ -19,25 +22,21 @@ function scoreText(score, scoreHidden) {
 }
 
 function renderReply () {
-  /*
   return (
     <div
       className='CommentTools__reply icon icon-reply2'
       onClick={ onToggleReplyForm }
     />
   );
-  */
 }
 
 function renderSeashells() {
-  /*
   return (
     <div
       className='CommentTools__more icon icon-seashells'
-      onClick={ this.toggleDropdown }
+      onClick={ onToggleDropdown }
     />
   );
-  */
 }
 
 function renderDivider() {
