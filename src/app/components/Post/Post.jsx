@@ -147,11 +147,11 @@ export function Post(props) {
   );
 }
 
-const postIdSelector = (state, props) => props.postId;
+const postIdSelector = (/*state*/, props) => props.postId;
 
 const postModelSelector = (state, props) => state.posts[props.postId];
 
-const singleSelector = (state, props) => props.singled;
+const singleSelector = (/*state*/, props) => props.singled;
 
 const combineSelectors = (postId, post, single) => ({
   postId, post, single,
