@@ -15514,15 +15514,7 @@
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__ = __webpack_require__(303);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__ = __webpack_require__(301);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__PostFooter_PostFooter__ = __webpack_require__(302);
-	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	/* unused harmony export Post */var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 
 
@@ -15547,202 +15539,9 @@
 	  return props.compact && !props.single;
 	}
 
-	var Post = function (_React$Component) {
-	  _inherits(Post, _React$Component);
-
-	  function Post(props) {
-	    _classCallCheck(this, Post);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Post).call(this, props));
-
-	    var userAgent = global.navigator && global.navigator.userAgent ? global.navigator.userAgent : '';
-
-	    var compact = _isCompact(props);
-	    _this.externalDomain = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["d"].bind()(props.post);
-	    _this.renderMediaFullbleed = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["e"].bind()(props.post);
-	    _this.forceHTTPS = _this.shouldForceHTTPS({ https: true });
-	    var isAndroid = userAgent && /android/i.test(userAgent);
-	    _this.showLinksInNewTab = _this.externalDomain && isAndroid;
-
-	    _this.state = {
-	      compact: compact,
-	      showNSFW: !props.showOver18Interstitial && props.subredditIsNSFW,
-	      expanded: false,
-	      loaded: false,
-	      reported: props.post.reported,
-	      hidden: props.post.hidden,
-	      width: props.winWidth,
-	      editing: false
-	    };
-
-	    _this.onReport = _this.onReport.bind(_this);
-	    _this.onHide = _this.onHide.bind(_this);
-	    _this.toggleExpanded = _this.toggleExpanded.bind(_this);
-	    _this.toggleShowNSFW = _this.toggleShowNSFW.bind(_this);
-	    _this.onResize = _this.onResize.bind(_this);
-	    _this.loadContentIfNeeded = _this.loadContentIfNeeded.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(Post, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      if (this.props.single) {
-	        this.loadContentIfNeeded();
-	        this.onResize();
-	      }
-	    }
-	  }, {
-	    key: 'onReport',
-	    value: function onReport() {
-	      this.setState({ reported: true });
-	    }
-	  }, {
-	    key: 'onHide',
-	    value: function onHide() {
-	      this.setState({ hidden: true });
-	    }
-	  }, {
-	    key: 'toggleExpanded',
-	    value: function toggleExpanded(e) {
-	      e.preventDefault();
-	      this.setState({ expanded: !this.state.expanded });
-	    }
-	  }, {
-	    key: 'toggleShowNSFW',
-	    value: function toggleShowNSFW(e) {
-	      e.preventDefault();
-	      this.setState({ showNSFW: !this.state.showNSFW });
-	    }
-	  }, {
-	    key: 'shouldForceHTTPS',
-	    value: function shouldForceHTTPS(config) {
-	      return config.https || config.httpsProxy;
-	    }
-	  }, {
-	    key: 'loadContentIfNeeded',
-	    value: function loadContentIfNeeded(windowOffset) {
-	      if (this.state.loaded) {
-	        return true;
-	      }
-
-	      if (!this.refs.rootNode) {
-	        return false;
-	      }
-
-	      var top = this.refs.rootNode.getBoundingClientRect().top;
-	      if (top < windowOffset) {
-	        this.setState({ loaded: true }, this.onResize);
-	        return true;
-	      }
-
-	      return false;
-	    }
-	  }, {
-	    key: 'onResize',
-	    value: function onResize() {
-	      var node = this.refs.rootNode;
-	      if (!node) {
-	        return;
-	      }
-
-	      var newState = {};
-	      newState.width = node.offsetWidth;
-	      this.setState(newState);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var post = _props.post;
-	      var user = _props.user;
-	      var single = _props.single;
-	      var hideSubredditLabel = _props.hideSubredditLabel;
-	      var hideWhen = _props.hideWhen;
-	      var _state = this.state;
-	      var compact = _state.compact;
-	      var showNSFW = _state.showNSFW;
-	      var expanded = _state.expanded;
-	      var z = _state.z;
-	      var width = _state.width;
-	      var editing = _state.editing;
-	      var externalDomain = this.externalDomain;
-	      var renderMediaFullbleed = this.renderMediaFullbleed;
-	      var forceHTTPS = this.forceHTTPS;
-	      var showLinksInNewTab = this.showLinksInNewTab;
-
-
-	      var thumbnailOrNil = void 0;
-	      if (compact) {
-	        thumbnailOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
-	          post: post,
-	          single: single,
-	          compact: true,
-	          expandedCompact: false,
-	          onTapExpand: this.toggleExpanded,
-	          width: width,
-	          toggleShowNSFW: this.toggleShowNSFW,
-	          showNSFW: showNSFW,
-	          editing: false,
-	          forceHTTPS: forceHTTPS,
-	          isDomainExternal: externalDomain,
-	          renderMediaFullbleed: renderMediaFullbleed,
-	          showLinksInNewTab: showLinksInNewTab
-	        });
-	      }
-
-	      var hasExpandedCompact = compact && expanded;
-	      var contentOrNil = void 0;
-	      if (!compact || hasExpandedCompact) {
-	        contentOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
-	          post: post,
-	          single: single,
-	          compact: compact,
-	          expandedCompact: hasExpandedCompact,
-	          onTapExpand: this.toggleExpanded,
-	          width: width,
-	          showNSFW: showNSFW,
-	          toggleShowNSFW: this.toggleShowNSFW,
-	          editing: editing,
-	          forceHTTPS: forceHTTPS,
-	          isDomainExternal: externalDomain,
-	          renderMediaFullbleed: renderMediaFullbleed,
-	          showLinksInNewTab: showLinksInNewTab
-	        });
-	      }
-
-	      var postCssClass = 'Post ' + (compact ? 'size-compact' : 'size-default');
-
-	      return /* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-	        'article',
-	        { ref: 'rootNode', className: postCssClass, style: { zIndex: z } },
-	        _jsx('div', {
-	          className: 'Post__header-wrapper'
-	        }, void 0, thumbnailOrNil, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__["a"], {
-	          post: post,
-	          single: single,
-	          compact: compact,
-	          hideSubredditLabel: hideSubredditLabel,
-	          hideWhen: hideWhen,
-	          nextToThumbnail: false,
-	          showingLink: !!(compact && !hasExpandedCompact && externalDomain),
-	          renderMediaFullbleed: renderMediaFullbleed,
-	          showLinksInNewTab: showLinksInNewTab
-	        })),
-	        contentOrNil,
-	        _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_9__PostFooter_PostFooter__["a"], {
-	          user: user,
-	          single: single,
-	          compact: compact,
-	          post: post,
-	          viewComments: !single
-	        })
-	      );
-	    }
-	  }]);
-
-	  return Post;
-	}(/* harmony import */__WEBPACK_IMPORTED_MODULE_1_react___default.a.Component);/* unused harmony export Post */
+	var shouldForceHTTPS = function shouldForceHTTPS(config) {
+	  return config.https || config.httpsProxy;
+	};
 
 	Post.propTypes = {
 	  post: T.instanceOf(PostModel),
@@ -15757,6 +15556,7 @@
 	  single: T.bool,
 	  z: T.number
 	};
+
 	Post.defaultProps = {
 	  z: 1,
 	  hideWhen: false,
@@ -15766,6 +15566,98 @@
 	  showOver18Interstitial: false,
 	  winWidth: 360
 	};
+
+	function Post(props) {
+	  var userAgent = global.navigator && global.navigator.userAgent ? global.navigator.userAgent : '';
+
+	  var compact = _isCompact(props);
+	  var externalDomain = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["d"].bind()(props.post);
+	  var renderMediaFullbleed = /* harmony import */__WEBPACK_IMPORTED_MODULE_6__postUtils__["e"].bind()(props.post);
+	  var forceHTTPS = shouldForceHTTPS({ https: true });
+	  var isAndroid = userAgent && /android/i.test(userAgent);
+	  var showLinksInNewTab = externalDomain && isAndroid;
+	  var showNSFW = !props.showOver18Interstitial && props.subredditIsNSFW;
+	  var expanded = props.expanded;
+	  var editing = props.editing;
+	  var winWidth = props.winWidth;
+	  var z = props.z;
+
+
+	  var toggleExpanded = function toggleExpanded() {};
+	  var toggleShowNSFW = function toggleShowNSFW() {};
+
+	  var post = props.post;
+	  var user = props.user;
+	  var single = props.single;
+	  var hideSubredditLabel = props.hideSubredditLabel;
+	  var hideWhen = props.hideWhen;
+
+
+	  var thumbnailOrNil = void 0;
+	  if (compact) {
+	    thumbnailOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
+	      post: post,
+	      single: single,
+	      compact: true,
+	      expandedCompact: false,
+	      onTapExpand: toggleExpanded,
+	      width: winWidth,
+	      toggleShowNSFW: toggleShowNSFW,
+	      showNSFW: showNSFW,
+	      editing: false,
+	      forceHTTPS: forceHTTPS,
+	      isDomainExternal: externalDomain,
+	      renderMediaFullbleed: renderMediaFullbleed,
+	      showLinksInNewTab: showLinksInNewTab
+	    });
+	  }
+
+	  var hasExpandedCompact = compact && expanded;
+	  var contentOrNil = void 0;
+	  if (!compact || hasExpandedCompact) {
+	    contentOrNil = _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_8__PostContent_PostContent__["a"], {
+	      post: post,
+	      single: single,
+	      compact: compact,
+	      expandedCompact: hasExpandedCompact,
+	      onTapExpand: toggleExpanded,
+	      width: winWidth,
+	      showNSFW: showNSFW,
+	      toggleShowNSFW: toggleShowNSFW,
+	      editing: editing,
+	      forceHTTPS: forceHTTPS,
+	      isDomainExternal: externalDomain,
+	      renderMediaFullbleed: renderMediaFullbleed,
+	      showLinksInNewTab: showLinksInNewTab
+	    });
+	  }
+
+	  var postCssClass = 'Post ' + (compact ? 'size-compact' : 'size-default');
+
+	  return _jsx('article', {
+	    className: postCssClass,
+	    style: { zIndex: z }
+	  }, void 0, _jsx('div', {
+	    className: 'Post__header-wrapper'
+	  }, void 0, thumbnailOrNil, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_7__PostHeader_PostHeader__["a"], {
+	    post: post,
+	    single: single,
+	    compact: compact,
+	    hideSubredditLabel: hideSubredditLabel,
+	    hideWhen: hideWhen,
+	    nextToThumbnail: false,
+	    showingLink: !!(compact && !hasExpandedCompact && externalDomain),
+	    renderMediaFullbleed: renderMediaFullbleed,
+	    showLinksInNewTab: showLinksInNewTab
+	  })), contentOrNil, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_9__PostFooter_PostFooter__["a"], {
+	    user: user,
+	    single: single,
+	    compact: compact,
+	    post: post,
+	    viewComments: !single
+	  }));
+	}
+
 	var postIdSelector = function postIdSelector(state, props) {
 	  return props.postId;
 	};
