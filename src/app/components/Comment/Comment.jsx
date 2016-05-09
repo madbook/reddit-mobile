@@ -154,17 +154,6 @@ function renderReplies(props) {
   );
 }
 
-const commentSelector = createSelector(
-  (state, props) => props,
-  (state) => state.comments,
-  (props, commentsStore) => {
-    const commentId = props.commentId;
-    const comment = commentsStore[commentId];
-    const { parentCreated, postCreated, user, op, nestingLevel } = props;
-    return { comment, parentCreated, postCreated, user, op, nestingLevel };
-  },
-);
-
 Comment.propTypes = {
   parentCreated: T.number,
   postCreated: T.number,
@@ -184,7 +173,7 @@ Comment.defaultProps = {
 };
 
 const commentIdSelector = (state, props) => props.commentId;
-const commentModdelSelector = (state, props) => state.comments[props.commentId];
+const commentModelSelector = (state, props) => state.comments[props.commentId];
 const parentCommentSelector = (state, props) => props.parentComment;
 const postCreatedSelector = (state, props) => props.postCreated;
 const userSelector = (state, props) => props.user;
@@ -197,7 +186,7 @@ const combineSelectors = (commentId, comment, parentComment, postCreated, user, 
 const makeConnectedCommentSelector = () => {
   return createSelector([
     commentIdSelector,
-    commentModdelSelector,
+    commentModelSelector,
     parentCommentSelector,
     postCreatedSelector,
     userSelector,
