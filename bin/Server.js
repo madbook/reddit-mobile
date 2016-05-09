@@ -15766,17 +15766,29 @@
 	  showOver18Interstitial: false,
 	  winWidth: 360
 	};
-	var postSelector = /* harmony import */__WEBPACK_IMPORTED_MODULE_4_reselect__["createSelector"].bind()(function (state, props) {
+	var postIdSelector = function postIdSelector(state, props) {
 	  return props.postId;
-	}, function (state, props) {
-	  return state.posts[props.postId];
-	}, function (state, props) {
-	  return props.single;
-	}, function (postId, post, single) {
-	  return { postId: postId, post: post, single: single };
-	});
+	};
 
-	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"].bind()(postSelector)(Post);
+	var postModelSelector = function postModelSelector(state, props) {
+	  return state.posts[props.postId];
+	};
+
+	var singleSelector = function singleSelector(state, props) {
+	  return props.singled;
+	};
+
+	var combineSelectors = function combineSelectors(postId, post, single) {
+	  return {
+	    postId: postId, post: post, single: single
+	  };
+	};
+
+	var makeConnectedPostSelector = function makeConnectedPostSelector() {
+	  return /* harmony import */__WEBPACK_IMPORTED_MODULE_4_reselect__["createSelector"].bind()([postIdSelector, postModelSelector, singleSelector], combineSelectors);
+	};
+
+	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"].bind()(makeConnectedPostSelector)(Post);
 
 /***/ },
 /* 170 */

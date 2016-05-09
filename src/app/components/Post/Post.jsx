@@ -233,11 +233,19 @@ export class Post extends React.Component {
   }
 }
 
-const postSelector = createSelector(
-  (state, props) => props.postId,
-  (state, props) => state.posts[props.postId],
-  (state, props) => props.single,
-  (postId, post, single) => ({ postId, post, single }),
-);
+const postIdSelector = (state, props) => props.postId;
 
-export default connect(postSelector)(Post);
+const postModelSelector = (state, props) => state.posts[props.postId];
+
+const singleSelector = (state, props) => props.singled;
+
+const combineSelectors = (postId, post, single) => ({
+  postId, post, single,
+});
+
+const makeConnectedPostSelector = () => {
+  return createSelector([postIdSelector, postModelSelector, singleSelector],
+    combineSelectors);
+};
+
+export default connect(makeConnectedPostSelector)(Post);
