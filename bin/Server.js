@@ -15258,7 +15258,7 @@
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__CommentsList_CommentsList__ = __webpack_require__(300);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__CommentHeader_CommentHeader__ = __webpack_require__(298);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__CommentTools_CommentTools__ = __webpack_require__(299);
-	/* harmony export */ exports["a"] = Comment;var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
+	/* unused harmony export Comment */var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 
 
@@ -15444,10 +15444,10 @@
 	  return _jsx('div', {
 	    className: cls
 	  }, void 0, _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_6__CommentsList_CommentsList__["a"], {
+	    commentRecords: comment.replies,
 	    parentComment: comment,
 	    permalinkBase: permalinkBase,
-	    nestingLevel: nestingLevel + 1,
-	    comments: comment.replies
+	    nestingLevel: nestingLevel + 1
 	  }), renderLoadMore(comment));
 	}
 
@@ -15485,7 +15485,36 @@
 	  highlightedComment: ''
 	};
 
-	var connectedComment = /* harmony import */__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"].bind()(commentSelector)(Comment);/* unused harmony export connectedComment */
+	var commentIdSelector = function commentIdSelector(state, props) {
+	  return props.commentId;
+	};
+	var commentModdelSelector = function commentModdelSelector(state, props) {
+	  return state.comments[props.commentId];
+	};
+	var parentCommentSelector = function parentCommentSelector(state, props) {
+	  return props.parentComment;
+	};
+	var postCreatedSelector = function postCreatedSelector(state, props) {
+	  return props.postCreated;
+	};
+	var userSelector = function userSelector(state, props) {
+	  return props.user;
+	};
+	var nestingLevelSelector = function nestingLevelSelector(state, props) {
+	  return props.nestingLevel;
+	};
+
+	var combineSelectors = function combineSelectors(commentId, comment, parentComment, postCreated, user, nestingLevel) {
+	  return {
+	    commentId: commentId, comment: comment, parentComment: parentComment, postCreated: postCreated, user: user, nestingLevel: nestingLevel
+	  };
+	};
+
+	var makeConnectedCommentSelector = function makeConnectedCommentSelector() {
+	  return /* harmony import */__WEBPACK_IMPORTED_MODULE_3_reselect__["createSelector"].bind()([commentIdSelector, commentModdelSelector, parentCommentSelector, postCreatedSelector, userSelector, nestingLevelSelector], combineSelectors);
+	};
+
+	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"].bind()(makeConnectedCommentSelector)(Comment);
 
 /***/ },
 /* 169 */
@@ -22940,8 +22969,6 @@
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_collection___default = __WEBPACK_IMPORTED_MODULE_4_lodash_collection__ && __WEBPACK_IMPORTED_MODULE_4_lodash_collection__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_4_lodash_collection__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_4_lodash_collection__; }
 	/* harmony import */ Object.defineProperty(__WEBPACK_IMPORTED_MODULE_4_lodash_collection___default, 'a', { get: __WEBPACK_IMPORTED_MODULE_4_lodash_collection___default });
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Comment_Comment__ = __webpack_require__(168);
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _jsx = function () { var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7; return function createRawReactElement(type, props, key, children) { var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = {}; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }; }();
 
 
@@ -22954,8 +22981,8 @@
 
 
 
-	var CommentsList = function CommentsList(props) {
-	  var comments = props.comments;
+	/* harmony default export */ exports["a"] = function (props) {
+	  var commentRecords = props.commentRecords;
 	  var parentComment = props.parentComment;
 	  var postCreated = props.postCreated;
 	  var user = props.user;
@@ -22965,34 +22992,17 @@
 
 	  return _jsx('div', {
 	    className: 'CommentsList'
-	  }, void 0, /* harmony import */__WEBPACK_IMPORTED_MODULE_4_lodash_collection__["map"].bind()(comments, function (comment) {
-	    if (comment.bodyHTML !== undefined) {
-	      return _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__Comment_Comment__["a"], {
-	        comment: comment,
-	        parentComment: parentComment,
-	        postCreated: postCreated,
-	        user: user,
-	        op: op,
-	        nestingLevel: nestingLevel
-	      }, 'comment-id-' + comment.name);
-	    }
+	  }, void 0, /* harmony import */__WEBPACK_IMPORTED_MODULE_4_lodash_collection__["map"].bind()(commentRecords, function (record) {
+	    return _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_5__Comment_Comment__["a"], {
+	      commentId: record.uuid,
+	      parentComment: parentComment,
+	      postCreated: postCreated,
+	      user: user,
+	      op: op,
+	      nestingLevel: nestingLevel
+	    }, 'comment-id-' + record.uuid);
 	  }));
-	};/* unused harmony export CommentsList */
-
-	var commentsListSelector = /* harmony import */__WEBPACK_IMPORTED_MODULE_3_reselect__["createSelector"].bind()(function (state, props) {
-	  return props;
-	}, function (state, props) {
-	  return props.comments;
-	}, function (state) {
-	  return state.comments;
-	}, function (props, commentRecords, commentsStore) {
-	  var comments = /* harmony import */__WEBPACK_IMPORTED_MODULE_4_lodash_collection__["map"].bind()(commentRecords, function (r) {
-	    return commentsStore[r.uuid];
-	  });
-	  return _extends({}, props, { comments: comments });
-	});
-
-	/* harmony default export */ exports["a"] = /* harmony import */__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"].bind()(commentsListSelector)(CommentsList);
+	};
 
 /***/ },
 /* 301 */
@@ -24627,7 +24637,7 @@
 	    postId: commentsPageParams.id,
 	    single: true
 	  }), !commentsPage || commentsPage.loading ? _ref : _jsx(/* harmony import */__WEBPACK_IMPORTED_MODULE_3__components_CommentsList_CommentsList__["a"], {
-	    comments: topLevelComments,
+	    commentRecords: topLevelComments,
 	    permalinkBase: permalinkBase
 	  }));
 	});

@@ -43,7 +43,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
       { !commentsPage || commentsPage.loading
         ? <div className='CommentsPage__loading' />
         : <CommentsList
-            comments={ topLevelComments }
+            commentRecords={ topLevelComments }
             permalinkBase={ permalinkBase }
           /> }
     </div>

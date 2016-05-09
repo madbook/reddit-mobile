@@ -18,7 +18,7 @@ import CommentTools from './CommentTools/CommentTools';
 const T = React.PropTypes;
 const { CommentModel } = models;
 
-export default function Comment (props) {
+export function Comment (props) {
   const { comment, editing, commentDeleted, collapsed } = props;
 
   return (
@@ -144,10 +144,10 @@ function renderReplies(props) {
   return (
     <div className={ cls }>
       <CommentsList
+        commentRecords={ comment.replies }
         parentComment={ comment }
         permalinkBase={ permalinkBase }
         nestingLevel={ nestingLevel + 1 }
-        comments={ comment.replies }
       />
       { renderLoadMore(comment) }
     </div>
@@ -183,4 +183,28 @@ Comment.defaultProps = {
   highlightedComment: '',
 };
 
-export const connectedComment = connect(commentSelector)(Comment);
+const commentIdSelector = (state, props) => props.commentId;
+const commentModdelSelector = (state, props) => state.comments[props.commentId];
+const parentCommentSelector = (state, props) => props.parentComment;
+const postCreatedSelector = (state, props) => props.postCreated;
+const userSelector = (state, props) => props.user;
+const nestingLevelSelector = (state, props) => props.nestingLevel;
+
+const combineSelectors = (commentId, comment, parentComment, postCreated, user, nestingLevel) => ({
+  commentId, comment, parentComment, postCreated, user, nestingLevel,
+});
+
+const makeConnectedCommentSelector = () => {
+  return createSelector([
+    commentIdSelector,
+    commentModdelSelector,
+    parentCommentSelector,
+    postCreatedSelector,
+    userSelector,
+    nestingLevelSelector,
+  ],
+  combineSelectors,
+  );
+};
+
+export default connect(makeConnectedCommentSelector)(Comment);
