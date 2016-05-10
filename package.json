@@ -13,7 +13,7 @@
     "fonts": "webfonts"
   },
   "dependencies": {
-    "@r/api-client": "~3.7.4",
+    "@r/api-client": "~3.7.5",
     "@r/build": "0.3.6",
     "@r/middleware": "0.5.4",
     "@r/platform": "0.0.27",
