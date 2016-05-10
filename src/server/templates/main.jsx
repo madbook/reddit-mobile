@@ -5,11 +5,11 @@ import App from '../../app/App';
 
 export default function(data, store) {
   return ReactServerDom.renderToStaticMarkup(
-    <html lang="en">
+    <html lang='en'>
       <head>
         <title>Reddit</title>
-        <meta charSet="utf8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta charSet='utf8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1'/>
         <script
           id='data'
           dangerouslySetInnerHTML={ {
@@ -20,7 +20,7 @@ export default function(data, store) {
       </head>
       <body className='nightMode'>
         <div
-          id="container"
+          id='container'
           dangerouslySetInnerHTML={ {
             __html: ReactServerDom.renderToString(
               <Provider store={ store }>
@@ -29,7 +29,7 @@ export default function(data, store) {
             ),
           } }
         />
-        <script type="text/javascript" src="/Client.js"></script>
+        <script type='text/javascript' src='/Client.js'></script>
       </body>
     </html>
   );
