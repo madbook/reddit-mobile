@@ -1,4 +1,3 @@
-import moment from 'moment';
 import localStorageAvailable from './localStorageAvailable';
 import constants from '../constants';
 
@@ -8,8 +7,7 @@ const BASE_VAL = {
   clickUrl: '',
 };
 
-const TIME_LIMIT = 2;
-const TIME_INTERVAL = 'weeks';
+const TIME_LIMIT = 2 * 7 * 24 * 60 * 60;
 
 const ALLOWED_PAGES = new Set([
   'index',
@@ -47,8 +45,9 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
 
   // 2) Check if it's been dismissed recently
   const lastClosedStr = localStorage.getItem('bannerLastClosed');
-  const lastClosed = lastClosedStr ? moment(lastClosedStr) : null;
-  if (lastClosed && moment() < lastClosed.add(TIME_LIMIT, TIME_INTERVAL)) {
+  const lastClosed = lastClosedStr ? new Date(lastClosedStr) : null;
+  const lastClosedLimit = lastClosed.addSeconds(lastClosed.getSeconds(), TIME_LIMIT);
+  if (lastClosed && new Date() < lastClosedLimit) {
     return BASE_VAL;
   }
 
@@ -68,7 +67,7 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
   const bucket = userIdSum % 100;
 
   // 6) only show to a certain % of users that land on a given page
-  for (let pageName in PAGE_PERCENTAGES) {
+  for (const pageName in PAGE_PERCENTAGES) {
     if ((actionName === pageName) && (bucket > PAGE_PERCENTAGES[pageName])) {
       return BASE_VAL;
     }
@@ -112,5 +111,5 @@ export function markBannerClosed() {
   if (!localStorageAvailable()) { return false; }
 
   // note that we dismissed the banner
-  localStorage.setItem('bannerLastClosed', moment());
+  localStorage.setItem('bannerLastClosed', new Date());
 }
