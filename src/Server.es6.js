@@ -10,6 +10,7 @@ import loginproxy from './server/session/loginproxy';
 import logoutproxy from './server/session/logoutproxy';
 import refreshproxy from './server/session/refreshproxy';
 import dispatchSession from './server/session/dispatchSession';
+import dispatchInitialTheme from './server/initialState/dispatchInitialTheme';
 
 const binFiles = KoaStatic('bin');
 const assetFiles = KoaStatic('assets');
@@ -32,6 +33,7 @@ Server({
   reducers: allReducers,
   dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
     await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
+    await dispatchInitialTheme(ctx, dispatchSession, ConfigedAPIOptions);
   },
   preRouteServerMiddleware: [
     binFiles,

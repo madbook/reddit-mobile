@@ -2,6 +2,7 @@ import React from 'react';
 import ReactServerDom from 'react-dom/server';
 import { Provider } from 'react-redux';
 import App from '../../app/App';
+import { themeClass } from './themeClass';
 
 export default function(data, store) {
   return ReactServerDom.renderToStaticMarkup(
@@ -18,7 +19,7 @@ export default function(data, store) {
         ></script>
         <link rel='stylesheet' href='/Client.css'/>
       </head>
-      <body className='nightMode'>
+      <body className={ themeClass(data.theme) }>
         <div
           id='container'
           dangerouslySetInnerHTML={ {
