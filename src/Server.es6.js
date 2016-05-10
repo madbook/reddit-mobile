@@ -30,7 +30,7 @@ Server({
   routes,
   template: main,
   reducers: allReducers,
-  dispatchBeforeNavigation: async (ctx, dispatch, getState, utils) => {
+  dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
     await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
   },
   preRouteServerMiddleware: [
@@ -43,5 +43,5 @@ Server({
     logoutproxy(router, ConfigedAPIOptions);
     // registerproxy(router, ConfigedAPIOptions);
     refreshproxy(router, ConfigedAPIOptions);
-  }
+  },
 })();

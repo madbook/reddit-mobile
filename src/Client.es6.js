@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import React from 'react';
 import Client from '@r/platform/client';
 import { isEmpty } from 'lodash/lang';
 
