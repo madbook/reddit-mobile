@@ -33,7 +33,7 @@ Server({
   reducers: allReducers,
   dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
     await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
-    await dispatchInitialTheme(ctx, dispatchSession, ConfigedAPIOptions);
+    await dispatchInitialTheme(ctx, dispatch, ConfigedAPIOptions);
   },
   preRouteServerMiddleware: [
     binFiles,

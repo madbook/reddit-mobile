@@ -27,7 +27,7 @@ const archiver = (data) => {
 };
 
 export const DomModifier = makeStateArchiver(
-  themeSelector,
+  [ themeSelector ],
   combiner,
   archiver,
 );
