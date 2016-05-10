@@ -1,20 +1,24 @@
-import moment from 'moment';
+const SECONDS = 1000;
+const MINUTES = 60 * SECONDS;
+const HOURS = 60 * MINUTES;
+const DAYS = 24 * HOURS;
 
 function short(date) {
   let shortString = '';
-  const now = moment();
+  const now = new Date();
+  now.setMinutes(now.getMinutes(), -1 * now.getTimezoneOffset());
 
-  date = moment(date);
+  const diff = (now - date);
 
-  const days = now.diff(date, 'days');
-  const hours = now.diff(date, 'hours') - (days * 24);
-  const minutes = now.diff(date, 'minutes') - (hours * 24);
+  const days = parseInt(diff / DAYS);
+  const hours = parseInt((diff % DAYS) / HOURS);
+  const minutes = parseInt((diff % HOURS) / MINUTES);
 
-  if (days > 0) {
+  if (days !== 0) {
     shortString += `${days}d`;
   }
 
-  if (hours > 0) {
+  if (hours !== 0) {
     if (shortString) {
       shortString += ', ';
     }
