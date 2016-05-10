@@ -230,7 +230,7 @@ export default class PostContent extends React.Component {
     );
   }
 
-  renderTextEditor(selfText) {
+  renderTextEditor(/*selfText*/) {
     // const {
     //   editError,
     //   toggleEditing,

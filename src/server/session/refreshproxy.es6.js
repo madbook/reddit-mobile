@@ -2,7 +2,7 @@ import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
 export default (router, apiOptions) => {
-  router.post('/refreshproxy', async (ctx, next) => {
+  router.post('/refreshproxy', async (ctx/*, next*/) => {
     const { refreshToken } = ctx.request.body;
 
     try {
@@ -17,4 +17,4 @@ export default (router, apiOptions) => {
       ctx.throw(400, 'Error');
     }
   });
-}
+};

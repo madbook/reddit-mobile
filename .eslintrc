@@ -13,6 +13,13 @@
 
   "extends": "eslint:recommended",
 
+  "globals": {
+    // having some trouble getting eslint to recognize es6 features
+    "Promise": false,
+    "Set": false,
+    "Map": flase,
+  },
+
   // plugins let use use custom rules below
   "plugins": [
     "babel",

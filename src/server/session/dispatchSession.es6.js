@@ -11,7 +11,7 @@ export default async (ctx, dispatch, apiOptions) => {
     // try to create a session from the existing cookie
     // if the session is malformed somehow, the catch will trigger when trying
     // to access it
-    console.log("cookies????", ctx.cookies);
+    console.log('cookies????', ctx.cookies);
     const sessionData = JSON.parse(atob(ctx.cookies.get('token')));
     let session = new Session(sessionData);
 
@@ -34,4 +34,4 @@ export default async (ctx, dispatch, apiOptions) => {
     console.log(e.stack);
     // ignore for now.
   }
-}
+};

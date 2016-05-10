@@ -1,4 +1,4 @@
-import "./PostFooter.less";
+import './PostFooter.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
@@ -68,14 +68,14 @@ export default class PostFooter extends React.Component {
     this.setState({ saved });
   }
 
-  onScoreChanged(voteController) {
+  onScoreChanged(/*voteController*/) {
     // this.setState({
     //   score: voteController.score,
     //   voteDirection: voteController.voteDirection,
     // });
   }
 
-  onVote(direction) {
+  onVote(/*direction*/) {
     // this.voteController.userCastVote(direction);
   }
 
@@ -203,8 +203,6 @@ export default class PostFooter extends React.Component {
       compact,
     } = this.props;
 
-    const { dropdownTarget } = this.state;
-    // { dropdownTarget ? this.renderToolsDropdown(dropdownTarget) : null }
     const scoreHidden = post.hide_score || post.score_hidden;
 
     return (

@@ -25,7 +25,7 @@ export default class Session {
   static async fromLogin(username, password) {
     const data = await fetchLogin(username, password);
     return new Session(data.session);
-  };
+  }
 
   constructor(data) {
     Object.assign(this, data);

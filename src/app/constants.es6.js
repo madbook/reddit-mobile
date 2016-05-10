@@ -79,7 +79,7 @@ export const BANNER_URLS_DIRECT = {
 export const flags = {
   BETA: 'beta',
   SMARTBANNER: 'banner',
-}
+};
 
 export const themes = {
   NIGHTMODE: 'nightmode',

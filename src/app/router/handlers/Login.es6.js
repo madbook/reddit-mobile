@@ -5,11 +5,11 @@ import Session from './../../models/Session';
 import * as sessionActions from '../../actions/session';
 
 export default class Login extends BaseHandler {
-  async [METHODS.GET](dispatch, getState, utils) {
+  // async [METHODS.GET](dispatch, getState, utils) {
+  //
+  // }
 
-  }
-
-  async [METHODS.POST](dispatch, getState, utils) {
+  async [METHODS.POST](dispatch/*, getState, utils*/) {
     const { username, password } = this.bodyParams;
 
     try {
@@ -17,7 +17,7 @@ export default class Login extends BaseHandler {
       dispatch(sessionActions.setSession(newSession));
       dispatch(platformActions.setPage('/'));
     } catch (e) {
-
+      return; // do nothing until session is better
     }
   }
 }

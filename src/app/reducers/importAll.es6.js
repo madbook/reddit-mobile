@@ -8,7 +8,7 @@ import themeReducer from './themeReducer';
 const { ModelTypes } = models;
 
 // todo, handle the plurarlity in api-client maybe?
-const COMMENTS = `${ModelTypes.COMMENT}s`
+const COMMENTS = `${ModelTypes.COMMENT}s`;
 const POSTS = `${ModelTypes.POST}s`;
 const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
 

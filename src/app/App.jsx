@@ -1,7 +1,7 @@
 import './App.less';
 import React from 'react';
 
-import { Anchor, UrlSync } from '@r/platform/components';
+import { UrlSync } from '@r/platform/components';
 import { AppMainPage } from './pages/AppMainPage';
 import { CookieSync } from './CookieSync';
 import { DomModifier } from './DomModifier';

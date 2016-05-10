@@ -49,7 +49,7 @@ export default (state=DEFAULT, action={}) => {
 
       const newPostResults = currentPostsList.results.slice();
       const currentPosts = new Set(newPostResults.map(result => result.uuid));
-      each(postsListsResults, result => {
+      each(postsListResults, result => {
         if (!currentPosts.has(result.uuid)) {
           currentPosts.add(result.uuid);
           newPostResults.push(result);

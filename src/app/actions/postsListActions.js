@@ -1,5 +1,5 @@
 import APIOptions from '@r/api-client';
-import { endpoints } from '@r/api-client'
+import { endpoints } from '@r/api-client';
 import { paramsToPostsListsId } from '../models/PostsListModel';
 import { receivedResponse } from './apiResponseActions';
 
@@ -54,12 +54,12 @@ export const addMorePostsFromSubreddit = postsParams => async (dispatch, getStat
   const state = getState();
   const postsListId = paramsToPostsListsId(postsParams);
   const postsList = state.postsLists[postsListId];
-  if (!postsLists || postsList.loadingMore) { return; }
+  if (!postsList || postsList.loadingMore) { return; }
 
   dispatch(loadingMorePosts(postsListId));
 
   const after = last(postsList.results).uuid;
   const apiResponse = await PostsEndpoint.get(APIOptions, { ...postsParams, after});
-  dispatch(receievedResponse(apiResponse));
+  dispatch(receivedResponse(apiResponse));
   dispatch(receievedMorePosts(postsListId, apiResponse.results));
-}
+};

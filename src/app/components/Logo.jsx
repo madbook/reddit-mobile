@@ -28,4 +28,4 @@ export default function Logo (props) {
       </g>
   </SVG>
   );
-};
+}

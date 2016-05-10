@@ -1,5 +1,4 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
 import * as postsListActions from '../../actions/postsListActions';
 
 import { cleanObject } from '../../../lib/cleanObject';
@@ -8,7 +7,7 @@ export default class PostsFromSubredditHandler extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {
     const { subredditName, multi, multiUser } = urlParams;
     const { sort, t, after, before } = queryParams;
-    
+
     return cleanObject({
       subredditName,
       multi,
@@ -20,7 +19,7 @@ export default class PostsFromSubredditHandler extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch, getState, utils) {
+  async [METHODS.GET](dispatch/*, getState, utils*/) {
     const subredditPostsParams = PostsFromSubredditHandler.PageParamsToSubredditPostsParams(this);
 
     dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams));

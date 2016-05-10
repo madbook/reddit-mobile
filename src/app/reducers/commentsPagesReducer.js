@@ -1,7 +1,6 @@
 import merge from '@r/platform/merge';
 import * as commentsPageActions from '../actions/commentsPageActions';
 import { newCommentsPage } from '../models/CommentsPageModel';
-import { each } from 'lodash/array';
 
 const DEFAULT = {};
 

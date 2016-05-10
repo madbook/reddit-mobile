@@ -11,4 +11,4 @@ export default (ctx, session) => {
     expires: session.expires,
     maxAge: session.expires * 1000,
   });
-}
+};

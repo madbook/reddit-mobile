@@ -10,6 +10,7 @@
     "prod-build": "blueprints -p",
     "dev-server": "nodemon ./bin/Server.js",
     "lint": "eslint src --ext .js,.jsx",
+    "lint-fixup": "eslint src --ext .js,.jsx --fix",
     "server": "node ./bin/ProductionServer.js",
     "fonts": "webfonts"
   },
@@ -42,6 +43,7 @@
     "superagent-retry": "git://github.com/ajacksified/superagent-retry#d39d7adbcd021d8ed09df440dba970c91fed9cd4"
   },
   "devDependencies": {
+    "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "eslint": "^2.9.0",
     "eslint-plugin-babel": "^3.2.0",

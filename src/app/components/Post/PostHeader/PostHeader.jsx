@@ -87,7 +87,11 @@ function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDis
   const rSubreddit = `r/${subreddit}`;
 
   return (
-    <Anchor className='PostHeader__subreddit-link' href={ `/${rSubreddit}` } style={ keyColorStyle }>
+    <Anchor
+      className='PostHeader__subreddit-link'
+      href={ `/${rSubreddit}` }
+      style={ keyColorStyle }
+    >
       { rSubreddit }
     </Anchor>
   );

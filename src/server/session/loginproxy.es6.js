@@ -2,7 +2,7 @@ import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
 export default (router, apiOptions) => {
-  router.post('/loginproxy', async (ctx, next) => {
+  router.post('/loginproxy', async (ctx/*, next*/) => {
     const { username, password } = ctx.request.body;
 
     try {
@@ -17,4 +17,4 @@ export default (router, apiOptions) => {
       ctx.throw(401, 'Incorrect username or password');
     }
   });
-}
+};

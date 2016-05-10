@@ -1,7 +1,6 @@
 import './Post.less';
 
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
@@ -39,7 +38,7 @@ Post.propTypes = {
   showOver18Interstitial: T.bool,
   single: T.bool,
   z: T.number,
-}
+};
 
 Post.defaultProps = {
   z: 1,
@@ -52,7 +51,9 @@ Post.defaultProps = {
 };
 
 export function Post(props) {
-  const userAgent = global.navigator && global.navigator.userAgent ? global.navigator.userAgent : '';
+  const userAgent = global.navigator && global.navigator.userAgent
+    ? global.navigator.userAgent
+    : '';
 
   const compact = _isCompact(props);
   const externalDomain = isPostDomainExternal(props.post);
@@ -133,7 +134,7 @@ export function Post(props) {
           showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
-          />
+        />
       </div>
       { contentOrNil }
       <PostFooter

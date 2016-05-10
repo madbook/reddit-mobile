@@ -1,5 +1,4 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
 import { cleanObject } from '../../../lib/cleanObject';
 import * as commentsPageActions from '../../actions/commentsPageActions';
@@ -11,7 +10,7 @@ const ensurePostTypePrefix = postId => {
   if (PostIdRegExp.test(postId)) { return postId; }
 
   return `${POST_TYPE}_${postId}`;
-}
+};
 
 export default class CommentsPageHandler extends BaseHandler {
   static PageParamsToCommentsPageParams({ urlParams, queryParams}) {
@@ -36,7 +35,7 @@ export default class CommentsPageHandler extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch, getState, utils) {
+  async [METHODS.GET](dispatch/*, getState, utils*/) {
     const commentsPageParams = CommentsPageHandler.PageParamsToCommentsPageParams(this);
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));

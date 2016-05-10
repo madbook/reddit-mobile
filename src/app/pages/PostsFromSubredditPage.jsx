@@ -14,7 +14,7 @@ export const PostsFromSubredditPage = (props) => {
   return (
     <div className='PostsFromSubredditPage'>
       <div className='PostsFromSubredditPage__header'>
-        { `Posts from r/${postsListParams.subredditName || 'frontpage'} `}
+        { `Posts from r/${postsListParams.subredditName || 'frontpage'} ` }
         <PostsList postsListId={ postsListId } />
       </div>
     </div>

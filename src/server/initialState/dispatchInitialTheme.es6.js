@@ -14,15 +14,14 @@ const makeThemeCookieOptions = () => {
     ...COOKIE_OPTIONS,
     expires: date,
   };
-}
+};
 
-
-export default async (ctx, dispatch, apiOptions) => {
+export default async (ctx, dispatch) => {
   const themeCookie = ctx.cookies.get('theme');
   const themeFromQuery = ctx.query.theme;
   let theme = themeFromQuery || themeCookie;
 
-  if (!(theme === themeActions.NIGHTMODE || theme == themeActions.DAYMODE)) {
+  if (!(theme === themeActions.NIGHTMODE || theme === themeActions.DAYMODE)) {
     theme = themeActions.DAYMODE;
   }
 

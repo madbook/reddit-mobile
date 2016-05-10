@@ -9,7 +9,7 @@ export const TopNav = (props) => {
     <button onClick={ props.setDayTheme }>Day Theme</button>
     <button onClick={ props.setNightTheme }>Night Theme</button>
   </nav>
-);}
+);};
 
 const mapDispatchToProps = (dispatch) => ({
   setDayTheme: () => dispatch(themeActions.setTheme(themeActions.DAYMODE)),

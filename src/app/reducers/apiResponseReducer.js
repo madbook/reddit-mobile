@@ -1,5 +1,5 @@
 import merge from '@r/platform/merge';
-import * as apiResponseActions from '../actions/apiResponseActions'
+import * as apiResponseActions from '../actions/apiResponseActions';
 
 export const apiResponseReducerMaker = (key, kind) => {
   if (!kind) {
@@ -9,7 +9,7 @@ export const apiResponseReducerMaker = (key, kind) => {
   const DEFAULT = {};
 
   return (state=DEFAULT, action={}) => {
-    switch(action.type) {
+    switch (action.type) {
       case apiResponseActions.RECEIEVED_API_RESPONSE: {
         const { apiResponse } = action;
         const apiResponseStore = apiResponse[kind];
