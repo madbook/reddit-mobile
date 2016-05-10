@@ -111,10 +111,11 @@ export default function CommentHeader(props) {
     authorType,
     gildCount,
     stickied,
+    id,
   } = props;
 
   return (
-    <div className='CommentHeader'>
+    <div className='CommentHeader' onClick={ props.onToggleCollapse }>
       <table className='CommentHeader__table'>
         <tbody>
           <tr>

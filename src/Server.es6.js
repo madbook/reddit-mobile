@@ -12,6 +12,9 @@ import refreshproxy from './server/session/refreshproxy';
 import dispatchSession from './server/session/dispatchSession';
 import dispatchInitialTheme from './server/initialState/dispatchInitialTheme';
 
+import dispatchInitialCollapsedComments from
+  './server/initialState/dispatchInitialCollapsedComments';
+
 const binFiles = KoaStatic('bin');
 const assetFiles = KoaStatic('assets');
 
@@ -33,7 +36,8 @@ Server({
   reducers: allReducers,
   dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
     await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
-    await dispatchInitialTheme(ctx, dispatch, ConfigedAPIOptions);
+    await dispatchInitialTheme(ctx, dispatch);
+    await dispatchInitialCollapsedComments(ctx, dispatch);
   },
   preRouteServerMiddleware: [
     binFiles,

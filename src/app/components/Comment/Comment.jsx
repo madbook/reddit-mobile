@@ -5,12 +5,17 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { models } from '@r/api-client';
+
 import mobilify from '../../../lib/mobilify';
+
+import * as commentActions from '../../actions/commentActions';
 
 import CommentsList from '../CommentsList/CommentsList';
 
 import CommentHeader from './CommentHeader/CommentHeader';
 import CommentTools from './CommentTools/CommentTools';
+
+
 // import CommentReplyForm from './CommentReplyForm';
 // import CommentSeeMore from './CommentSeeMore';
 // import CommentEditForm from './CommentEditForm';
@@ -19,29 +24,25 @@ const T = React.PropTypes;
 const { CommentModel } = models;
 
 export function Comment (props) {
-  const { comment, editing, commentDeleted, collapsed } = props;
+  const { comment, editing, commentDeleted, commentCollapsed } = props;
 
   return (
     <div className='Comment'>
       { renderHeader(props) }
       { editing ? renderEditForm(props) : renderBody(props) }
       { !commentDeleted ? renderTools(props) : null }
-      { !collapsed && comment.replies.length ? renderReplies(props) : null }
+      { !commentCollapsed && comment.replies.length ? renderReplies(props) : null }
     </div>
   );
 }
 
-
-function toggleCollapse () {
-  console.log('clicked collapse');
-}
-
 function renderHeader(props) {
-  const { nestingLevel, highlightedComment, comment, collapsed, authorType } = props;
+  const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType } = props;
 
   return (
-    <div className='Comment__header' onClick={ toggleCollapse } >
+    <div className='Comment__header'>
       <CommentHeader
+        id={ comment.id }
         author={ comment.author }
         authorType={ authorType }
         topLevel={ nestingLevel === 0 }
@@ -49,9 +50,10 @@ function renderHeader(props) {
         flair={ comment.author_flair_text }
         created={ comment.createdUTC }
         gildCount={ comment.gilded }
-        collapsed={ collapsed }
+        collapsed={ commentCollapsed }
         highlight={ comment.id === highlightedComment }
         stickied={ comment.stickied }
+        onToggleCollapse={ () => props.toggleCollapse(!commentCollapsed) }
       />
     </div>
   );
@@ -62,11 +64,11 @@ function renderEditForm() {
 }
 
 function renderBody(props) {
-  const { comment, collapsed } = props;
+  const { comment, commentCollapsed } = props;
   const bodyText = mobilify(comment.bodyHTML);
 
   let cls = 'Comment__body';
-  if (collapsed) { cls += ' m-hidden'; }
+  if (commentCollapsed) { cls += ' m-hidden'; }
 
   return (
     <div
@@ -77,10 +79,10 @@ function renderBody(props) {
 }
 
 function renderTools(props) {
-  const { user, permalinkBase, comment, collapsed } = props;
+  const { user, permalinkBase, comment, commentCollapsed } = props;
 
   let cls = 'Comment__toolsContainer clearfix';
-  if (collapsed) { cls += ' m-hidden'; }
+  if (commentCollapsed) { cls += ' m-hidden'; }
 
   return (
     <div className={ cls }>
@@ -93,25 +95,29 @@ function renderTools(props) {
           username={ user ? user.name : null }
           saved={ comment.saved }
           permalinkUrl={ `${permalinkBase}${comment.id}` }
-          onToggleReplyForm={ toggleReplyForm }
-          onEditComment={ toggleEditForm }
-          onDeleteComment={ deleteComment }
-          onSaveComment={ saveComment }
-          onReportComment={ reportComment }
-          onUpvote={ handleUpvote }
-          onDownvote={ handleDownvote }
+          onToggleReplyForm={ props.toggleReplyForm }
+          onEditComment={ props.toggleEditForm }
+          onDeleteComment={ props.deleteComment }
+          onSaveComment={ props.saveComment }
+          onReportComment={ props.reportComment }
+          onUpvote={ props.handleUpvote }
+          onDownvote={ props.handleDownvote }
         />
       </div>
     </div>
   );
 }
 
-function renderLoadMore ({ numReplies, showLoadMore=loadMore, permalink }) {
-  if (!showLoadMore) { return; }
+function handleLoadMore(fn, id) {
+  return () => { fn(id); };
+}
+
+function renderLoadMore ({ numReplies, loadMore, permalink, id }, onLoadMore) {
+  if (!loadMore) { return; }
 
   return (
     <div className='Comment__loadMore'>
-      <a href={ permalink } onClick={ loadMore }>
+      <a href={ permalink } onClick={ handleLoadMore(onLoadMore, id) }>
         { 'More Comments ' }
         { numReplies ? ` (${numReplies})` : '' }
       </a>
@@ -119,20 +125,11 @@ function renderLoadMore ({ numReplies, showLoadMore=loadMore, permalink }) {
   );
 }
 
-function toggleReplyForm () { console.log('toggleReplyForm'); }
-function toggleEditForm () { console.log('toggleEditForm'); }
-function deleteComment () { console.log('deleteComment'); }
-function saveComment () { console.log('saveComment'); }
-function reportComment () { console.log('reportComment'); }
-function handleUpvote () { console.log('handleUpvote'); }
-function handleDownvote () { console.log('handleDownvote'); }
-function loadMore () { console.log('loadMore'); }
-
 function renderReplies(props) {
-  const { nestingLevel, comment, permalinkBase, collapsed } = props;
+  const { nestingLevel, comment, permalinkBase, commentCollapsed } = props;
 
   let cls = 'Comment__replies';
-  if (collapsed) { cls += ' m-hidden'; }
+  if (commentCollapsed) { cls += ' m-hidden'; }
   if (nestingLevel > 5) { cls += ' m-no-indent'; }
 
   if (nestingLevel > 100) {
@@ -149,7 +146,7 @@ function renderReplies(props) {
         permalinkBase={ permalinkBase }
         nestingLevel={ nestingLevel + 1 }
       />
-      { renderLoadMore(comment) }
+      { renderLoadMore(comment, props.loadMore) }
     </div>
   );
 }
@@ -178,10 +175,12 @@ const parentCommentSelector = (state, props) => props.parentComment;
 const postCreatedSelector = (state, props) => props.postCreated;
 const userSelector = (state, props) => props.user;
 const nestingLevelSelector = (state, props) => props.nestingLevel;
+const commentCollapsedSelector = (state, props) => state.collapsedComments[props.commentId];
 
-const combineSelectors = (commentId, comment, parentComment, postCreated, user, nestingLevel) => ({
-  commentId, comment, parentComment, postCreated, user, nestingLevel,
-});
+const combineSelectors = (
+  commentId, comment, parentComment, postCreated, user, nestingLevel, commentCollapsed) => ({
+    commentId, comment, parentComment, postCreated, user, nestingLevel, commentCollapsed,
+  });
 
 const makeConnectedCommentSelector = () => {
   return createSelector([
@@ -191,9 +190,22 @@ const makeConnectedCommentSelector = () => {
     postCreatedSelector,
     userSelector,
     nestingLevelSelector,
+    commentCollapsedSelector,
   ],
   combineSelectors,
   );
 };
 
-export default connect(makeConnectedCommentSelector)(Comment);
+const mapDispatchToProps = (dispatch, { commentId }) => ({
+  toggleCollapse: (collapse) => dispatch(commentActions.toggleCollapse(commentId, collapse)),
+  toggleReplyForm: () => dispatch(commentActions.toggleReplyForm(commentId)),
+  toggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
+  deleteComment: () => dispatch(commentActions.del(commentId)),
+  saveComment: () => dispatch(commentActions.save(commentId)),
+  reportComment: (reason) => dispatch(commentActions.report(commentId, reason)),
+  handleUpvote: (upvoted=true) => dispatch(commentActions.upvote(commentId, upvoted)),
+  handleDownvote: (downvoted=true) => dispatch(commentActions.downvote(commentId, downvoted)),
+  loadMore: (ids) => dispatch(commentActions.loadMore(ids)),
+});
+
+export default connect(makeConnectedCommentSelector, mapDispatchToProps)(Comment);

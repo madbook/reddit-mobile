@@ -6,6 +6,7 @@ import { PageSelector, Page } from '@r/platform/page';
 import { UrlSync } from '@r/platform/components';
 import { AppMainPage } from './pages/AppMainPage';
 import { CookieSync } from './CookieSync';
+import { LocalStorageSync } from './LocalStorageSync';
 import { DomModifier } from './DomModifier';
 import TopNav from './components/TopNav/TopNav';
 
@@ -28,6 +29,7 @@ export default class App extends React.Component {
         <AppMainPage />
         <UrlSync/>
         <CookieSync />
+        <LocalStorageSync />
         <DomModifier />
       </div>
     );

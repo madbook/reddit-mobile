@@ -5,6 +5,7 @@ import commentsPagesReducer from './commentsPagesReducer';
 import postsListsReducer from './postsListsReducer';
 import subscribedSubredditsReducer from './subscribedSubredditsReducer';
 import themeReducer from './themeReducer';
+import collapsedCommentsReducer from './collapsedCommentsReducer';
 
 const { ModelTypes } = models;
 
@@ -22,4 +23,5 @@ export default {
   [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),
   subscribedSubreddits: subscribedSubredditsReducer,
   theme: themeReducer,
+  collapsedComments: collapsedCommentsReducer,
 };
