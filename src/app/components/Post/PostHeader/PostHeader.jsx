@@ -108,7 +108,7 @@ function renderLinkFlairText(post) {
 function renderAuthorAndTimeStamp(post, single, hideWhen) {
   const {
     author,
-    created_utc,
+    createdUTC,
   } = post;
 
   const authorLink = (
@@ -126,14 +126,14 @@ function renderAuthorAndTimeStamp(post, single, hideWhen) {
       <span>
         { authorLink }
         { SEPERATOR }
-        { short(created_utc * 1000) }
+        { short(createdUTC * 1000) }
       </span>
    );
   }
 
   return (
     <span>
-      { short(created_utc * 1000) }
+      { short(createdUTC * 1000) }
       { SEPERATOR }
       { authorLink }
     </span>
