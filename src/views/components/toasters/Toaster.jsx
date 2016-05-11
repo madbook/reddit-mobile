@@ -33,7 +33,7 @@ export default class Toaster extends React.Component {
       case constants.TOASTER_TYPES.FRIENDLY:
         return <div className='Toaster__iconSnoo'><SnooIcon /></div>;
       default:
-        return <div className='Toaster__iconMoose'/>;
+        return <div className='Toaster__iconMoose icon-alert-moose white'/>;
     }
   }
 }
