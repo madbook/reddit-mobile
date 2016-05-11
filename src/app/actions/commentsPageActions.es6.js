@@ -1,4 +1,4 @@
-import APIOptions from '@r/api-client';
+import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
 import { paramsToCommentsPageId } from '../models/CommentsPageModel';
 import { receivedResponse } from './apiResponseActions';
@@ -33,7 +33,8 @@ export const fetchCommentsPage = commentsPageParams => async (dispatch, getState
   // note that the comments endpoint returns the post, so we don't have to also
   // fetch that somewere else. it's in the api response so the apiResponseReducers
   // will automatically update the post slice of the store
-  const apiResponse = await CommentsEndpoint.get(APIOptions, commentsPageParams);
+  const apiOptions = apiOptionsFromState(state);
+  const apiResponse = await CommentsEndpoint.get(apiOptions, commentsPageParams);
   dispatch(receivedResponse(apiResponse));
   dispatch(receivedCommentsPage(commentsPageId, apiResponse.results));
 };

@@ -1,4 +1,4 @@
-import APIOptions from '@r/api-client';
+import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
 import { paramsToPostsListsId } from '../models/PostsListModel';
 import { receivedResponse } from './apiResponseActions';
@@ -32,7 +32,8 @@ export const fetchPostsFromSubreddit = postsParams => async (dispatch, getState)
 
   dispatch(fetchingSubredditPosts(postsListId, postsParams));
 
-  const apiResponse = await PostsEndpoint.get(APIOptions, postsParams);
+  const apiOptions = apiOptionsFromState(state);
+  const apiResponse = await PostsEndpoint.get(apiOptions, postsParams);
   dispatch(receivedResponse(apiResponse));
   dispatch(recievedPostList(postsListId, apiResponse.results));
 };
@@ -59,7 +60,8 @@ export const addMorePostsFromSubreddit = postsParams => async (dispatch, getStat
   dispatch(loadingMorePosts(postsListId));
 
   const after = last(postsList.results).uuid;
-  const apiResponse = await PostsEndpoint.get(APIOptions, { ...postsParams, after});
+  const apiOptions = apiOptionsFromState(state);
+  const apiResponse = await PostsEndpoint.get(apiOptions, { ...postsParams, after});
   dispatch(receivedResponse(apiResponse));
   dispatch(receievedMorePosts(postsListId, apiResponse.results));
 };
