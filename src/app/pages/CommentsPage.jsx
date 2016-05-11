@@ -36,7 +36,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
   const { commentsPage, commentsPageParams, topLevelComments, permalinkBase } = props;
 
   return (
-    <div className='CommentsPage'>
+    <div className='CommentsPage BelowTopNav'>
       <Post postId={ commentsPageParams.id } single={ true } />
       { !commentsPage || commentsPage.loading ?
         <div className='CommentsPage__loading' /> :

@@ -12,7 +12,7 @@ export const PostsFromSubredditPage = (props) => {
   const postsListId = paramsToPostsListsId(postsListParams);
 
   return (
-    <div className='PostsFromSubredditPage'>
+    <div className='PostsFromSubredditPage BelowTopNav'>
       <div className='PostsFromSubredditPage__header'>
         { `Posts from r/${postsListParams.subredditName || 'frontpage'} ` }
         <PostsList postsListId={ postsListId } />

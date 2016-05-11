@@ -1,0 +1,178 @@
+@import (reference) "../../art-gallery-link/assets/less/variables";
+@import (reference) '../../art-gallery-link/assets/less/mixins/importAll.less';
+@import (reference) "../../art-gallery-link/assets/less/themes/themeify";
+
+.TopNav {
+  height: @top-nav-height;
+  position: fixed;
+  width: 100%;
+  z-index: 11;
+  -webkit-user-select: none;
+  top: 0;
+
+  .themeify({
+    background-color: @theme-nav-bar-color;
+  });
+
+  &:after {
+    content:'';
+    position: absolute;
+    height: 100%;
+
+    .themeify({
+      background-color: @theme-nav-bar-color;
+    });
+
+    .shadow;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    .tween;
+  }
+}
+
+.TopNav ~ .BelowTopNav {
+  margin-top: @top-nav-height;
+}
+
+.TopNav-left {
+  max-width: calc(100% ~'-' @top-nav-height);
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+
+  .Logo {
+    line-height: @top-nav-height;
+  }
+}
+
+.TopNav-snoo {
+  display: inline-block;
+  height: 100%;
+  vertical-align: bottom;
+
+  .SnooIcon {
+    @size: 30px;
+    width: @size;
+    height: @size;
+    margin-top: 7px;
+    color: @orangered;
+    line-height: @size;
+    font-size: @size;
+
+    .SVG-fill {
+      fill: @orangered !important;
+    }
+  }
+}
+
+.TopNav-padding, .TopNav .Dropdown {
+  padding: 0 @half-grid-size;
+}
+
+.TopNav-floaty {
+  float: left;
+  height: 100%;
+  padding: 0 5px;
+}
+
+.TopNav-right {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-left: 30px;
+
+  &:before {
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    right: @top-nav-height;
+    position: absolute;
+
+    .themeify({
+      background: linear-gradient(to right,
+        fade(@theme-nav-bar-color, 0%) 0%,
+        fade(@theme-nav-bar-color, 100%) 15%);
+    });
+  }
+}
+
+
+
+.MobileButton {
+  display: inline-block;
+
+  &.community-button {
+    text-align: center;
+
+    // size is based on holding an icon font
+    width: 1.2em;
+    height: 1.2em;
+
+    .icon-nav-arrowdown {
+      line-height: 1.3em;
+    }
+
+    margin-left: 4px;
+
+    .themeify({
+      border: @theme-alt-border;
+    });
+
+    border-radius: .6em;
+    vertical-align: middle;
+  }
+
+  &.twirlyIcon-open {
+    .rotate(180deg);
+  }
+
+  .icon-search,
+  .icon-menu,
+  .icon-post_edit {
+    position: relative;
+    top: 16px;
+  }
+}
+
+.TopNav-text {
+  font-size: @font-size-base + 7px;
+  color: @black;
+  margin: 0;
+  line-height: @top-nav-height;
+  display: inline-block;
+
+  .TopNav-text-vcentering {
+    display:inline-block;
+    vertical-align: middle;
+    height: 100%;
+    line-height: 100%;
+  }
+
+  svg, .fallbackImg {
+    position: relative;
+    top: 50%;
+  }
+
+  svg {
+    margin-top: -12px;
+  }
+
+  .fallbackImg {
+    margin-top: -11px;
+  }
+}
+
+.TopNav-a, .TopNav-a:hover, .TopNav-a:visited {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  height: 100%;
+}
+
+.TopNav-a:active {
+  .themeify({
+    color: @theme-nav-icon-color;
+  });
+}
