@@ -2,6 +2,7 @@ import { BaseHandler, METHODS } from '@r/platform/router';
 import * as postsListActions from '../../actions/postsListActions';
 
 import { cleanObject } from '../../../lib/cleanObject';
+import { fetchUserBasedData } from './handlerCommon';
 
 export default class PostsFromSubredditHandler extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {
@@ -23,5 +24,6 @@ export default class PostsFromSubredditHandler extends BaseHandler {
     const subredditPostsParams = PostsFromSubredditHandler.PageParamsToSubredditPostsParams(this);
 
     dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams));
+    fetchUserBasedData(dispatch);
   }
 }

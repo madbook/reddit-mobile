@@ -2,6 +2,7 @@ import { BaseHandler, METHODS } from '@r/platform/router';
 import { models } from '@r/api-client';
 import { cleanObject } from '../../../lib/cleanObject';
 import * as commentsPageActions from '../../actions/commentsPageActions';
+import { fetchUserBasedData } from './handlerCommon';
 
 const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
@@ -39,5 +40,6 @@ export default class CommentsPageHandler extends BaseHandler {
     const commentsPageParams = CommentsPageHandler.PageParamsToCommentsPageParams(this);
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));
+    fetchUserBasedData(dispatch);
   }
 }

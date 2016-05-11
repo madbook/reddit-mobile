@@ -3,6 +3,7 @@ import session from './session';
 import { apiResponseReducerMaker } from './apiResponseReducer';
 import commentsPagesReducer from './commentsPagesReducer';
 import postsListsReducer from './postsListsReducer';
+import subscribedSubredditsReducer from './subscribedSubredditsReducer';
 import themeReducer from './themeReducer';
 
 const { ModelTypes } = models;
@@ -19,5 +20,6 @@ export default {
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),
   [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),
+  subscribedSubreddits: subscribedSubredditsReducer,
   theme: themeReducer,
 };
