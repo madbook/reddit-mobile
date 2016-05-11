@@ -151,6 +151,7 @@ export default class PostAndCommentList extends BaseComponent {
         subredditTitle={ subredditTitle }
         afterLoad={ this.afterAdDidLoad }
         winWidth={ winWidth }
+        things={ this.props.postsAndComments }
       />
     );
   }

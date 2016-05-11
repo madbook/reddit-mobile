@@ -1,5 +1,6 @@
 import React from 'react';
 import { models } from '@r/api-client';
+import propTypes from '../../propTypes';
 
 import constants from '../../constants';
 import BaseComponent from './BaseComponent';
@@ -21,6 +22,7 @@ class Ad extends BaseComponent {
     site: T.string.isRequired,
     subredditTitle: T.string,
     afterLoad: T.func.isRequired,
+    things: propTypes.postsAndComments.isRequired,
   };
 
   static defaultProps = {
@@ -78,6 +80,7 @@ class Ad extends BaseComponent {
     const headers = {};
     const postData = {
       site,
+      dt: this.props.things.map((thing) => thing.name),
       platform: 'mobile_web',
       raw_json: '1',
     };
