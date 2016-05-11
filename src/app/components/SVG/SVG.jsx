@@ -2,7 +2,6 @@ import React from 'react';
 
 const _NS = 'http://www.w3.org/2000/svg';
 
-
 function SVG (props) {
   const width = props.width || SVG.ICON_SIZE;
   const height = props.height || SVG.ICON_SIZE;
