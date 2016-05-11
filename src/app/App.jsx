@@ -1,31 +1,18 @@
 import './App.less';
 import React from 'react';
 
-import { PageSelector, Page } from '@r/platform/page';
-
 import { UrlSync } from '@r/platform/components';
 import { AppMainPage } from './pages/AppMainPage';
 import { CookieSync } from './CookieSync';
 import { LocalStorageSync } from './LocalStorageSync';
 import { DomModifier } from './DomModifier';
-import TopNav from './components/TopNav/TopNav';
-
-
-const TopNavRenderer = () => (
-  <PageSelector>
-    <Page url='/login' component={ () => null } />
-    <Page
-      url='*'
-      component={ () => (<TopNav />) }
-    />
-  </PageSelector>
-);
+import { AppTopNav } from './components/AppTopNav/AppTopNav';
 
 export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <TopNavRenderer />
+        <AppTopNav />
         <AppMainPage />
         <UrlSync />
         <CookieSync />
