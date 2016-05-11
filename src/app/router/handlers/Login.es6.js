@@ -5,9 +5,9 @@ import Session from './../../models/Session';
 import * as sessionActions from '../../actions/session';
 
 export default class Login extends BaseHandler {
-  // async [METHODS.GET](dispatch, getState, utils) {
-  //
-  // }
+  async [METHODS.GET](/*dispatch, getState, utils*/) {
+    return;
+  }
 
   async [METHODS.POST](dispatch/*, getState, utils*/) {
     const { username, password } = this.bodyParams;
