@@ -1,4 +1,5 @@
 import * as themeActions from '../../app/actions/themeActions';
+import { themes } from '../../app/constants';
 
 const COOKIE_OPTIONS = {
   httpOnly: false,
@@ -21,8 +22,8 @@ export default async (ctx, dispatch) => {
   const themeFromQuery = ctx.query.theme;
   let theme = themeFromQuery || themeCookie;
 
-  if (!(theme === themeActions.NIGHTMODE || theme === themeActions.DAYMODE)) {
-    theme = themeActions.DAYMODE;
+  if (!(theme === themes.NIGHTMODE || theme === themes.DAYMODE)) {
+    theme = themes.DAYMODE;
   }
 
   ctx.cookies.set('theme', theme, makeThemeCookieOptions());

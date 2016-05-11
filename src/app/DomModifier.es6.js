@@ -1,15 +1,15 @@
 import { makeStateArchiver } from '@r/redux-state-archiver';
 import { themeClass } from '../server/templates/themeClass';
-import * as themeActions from './actions/themeActions';
+import { themes } from './constants';
 
 const themeSelector = (state) => state.theme;
 const combiner = (theme) => ({ theme });
 
 const updateTheme = ($body, newTheme) => {
   const nextThemeClass = themeClass(newTheme);
-  const oldThemeClass = themeClass(newTheme === themeActions.NIGHTMODE
-    ? themeActions.DAYMODE
-    : themeActions.NIGHTMODE
+  const oldThemeClass = themeClass(newTheme === themes.NIGHTMODE
+    ? themes.DAYMODE
+    : themes.NIGHTMODE
   );
 
   $body.classList.remove(oldThemeClass);

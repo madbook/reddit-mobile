@@ -1,0 +1,202 @@
+@import (reference) "../../art-gallery-link/assets/less/variables";
+@import (reference) "../../art-gallery-link/assets/less/themes/themeify";
+@import (reference) "../../art-gallery-link/assets/less/mixins/mixins";
+
+@overlay-menu-row-height: 6 * @grid-size;
+@overlay-menu-icon-size: 3 * @grid-size;
+@overlay-menu-font-size: @font-size-base + 2px;
+
+.OverlayMenu-visible {
+  overflow: hidden;
+}
+
+.OverlayMenu {
+  z-index: 10;
+  position: fixed;
+  top: @top-nav-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: @top-nav-height;
+  overflow-y: auto;
+
+  .themeify({
+    background-color: @theme-overlay-color;
+  });
+
+  font-size: @overlay-menu-font-size;
+  overflow-y: scroll;
+  -webkit-overflow-scroll: touch;
+}
+
+.OverlayMenu-ul {
+  margin-bottom: 0;
+  z-index: 2;
+}
+
+.OverlayMenu-row {
+  .transform(translateZ(0));
+  .themeify({
+    background-color: @theme-comment-body-color;
+  });
+
+  position: relative;
+
+  &.top-border:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: @grid-size;
+    right: @grid-size;
+    height: 1px;
+
+    .themeify({
+      background: @theme-line-color;
+    });
+  }
+
+  &.bottom-border:after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: @grid-size;
+    right: @grid-size;
+    height: 1px;
+
+    .themeify({
+      background: @theme-line-color;
+    });
+  }
+
+  .SVG-icon, .OverlayMenu-icon, .OverlayMenu-row-spacer {
+    display:inline-block;
+  }
+
+  .OverlayMenu-row-spacer {
+    width: 8 * @grid-size;
+    text-align: center;
+  }
+
+  .badge-with-spacing {
+    margin-left: 4px
+  }
+}
+
+.OverlayMenu-icon-img {
+  background-repeat: none;
+  background-size: cover;
+  background-position: 0 0;
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+  border-radius: 32px;
+}
+
+.OverlayMenu-row-right-item {
+  position: absolute;
+  right: 3 * @grid-size;
+  top: 1.25em;
+  font-size: @font-size-base;
+
+  &, &:hover, &:visited {
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
+    text-decoration: none;
+  }
+}
+
+.OverlayMenu-row-text, .OverlayMenu-row-button {
+  height: @overlay-menu-row-height;
+  line-height: @overlay-menu-row-height;
+
+  .themeify({
+    color: @theme-body-text-color;
+  });
+}
+
+.OverlayMenu-row-text {
+  vertical-align: middle;
+
+  &.with-subtext {
+    line-height: @overlay-menu-font-size;
+  }
+
+  &.with-subtext, .subtext {
+    padding-left: 2 * @grid-size;
+  }
+
+  .subtext {
+    font-size: @font-size-base;
+    line-height: @font-size-base;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+}
+
+.OverlayMenu-row-button {
+  width: 100%;
+  display:block;
+  text-align: left;
+
+  &:hover, &:visited {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.OverlayMenu-icon-following-snoo {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-image: url('/img/snoo-64.png');
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  background-position: -1px 5px;
+  vertical-align: middle;
+
+  .themeify(
+  @inDayMode: {
+    background-color: @blue;
+  };
+  @inNightMode: {
+    border: 1px solid @blue;
+  });
+}
+
+.OverlayMenu-form {
+  padding-left: 2 * @grid-size;
+  padding-right: 2 * @grid-size;
+  margin: 0px;
+}
+
+.OverlayMenu-form-input-group {
+  display: table;
+  width: 100%;
+}
+
+.OverlayMenu-form-input {
+  display: table-cell;
+  width: 100%;
+  line-height: @overlay-menu-row-height;
+  border-width: 0px;
+  outline: 0px;
+}
+
+.OverlayMenu-form-button {
+  display: table-cell;
+  line-height: @overlay-menu-row-height;
+  text-align: right;
+}
+
+.OverlayMenu-form-label {
+  display: table-cell;
+  line-height: @overlay-menu-row-height;
+
+  &.r-label {
+    width: 8px;
+  }
+}

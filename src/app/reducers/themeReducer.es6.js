@@ -1,6 +1,7 @@
 import * as themeActions from '../actions/themeActions';
+import { themes } from '../constants';
 
-const DEFAULT = themeActions.DAYMODE;
+const DEFAULT = themes.DAYMODE;
 
 export default (state=DEFAULT, action={}) => {
   switch (action.type) {
