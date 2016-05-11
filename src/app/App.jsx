@@ -27,7 +27,7 @@ export default class App extends React.Component {
       <div className="App">
         <TopNavRenderer />
         <AppMainPage />
-        <UrlSync/>
+        <UrlSync />
         <CookieSync />
         <LocalStorageSync />
         <DomModifier />
