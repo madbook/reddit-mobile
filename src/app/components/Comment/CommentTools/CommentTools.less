@@ -70,9 +70,20 @@
     height: 20px;
   }
 
+  &__upvote, &__downvote {
+    padding: 0;
+    background: transparent;
+    margin: 0;
+    border: none;
+  }
+
   &__upvote {
     &.m-animated {
       .upvoteBounceAnimation;
+    }
+
+    &.upvoted {
+      color: @orangered;
     }
   }
 
@@ -80,5 +91,13 @@
     &.m-animated {
       .downvoteBounceAnimation;
     }
+
+    &.downvoted {
+      color: @periwinkle;
+    }
   }
+
+   &__Vote {
+     display: inline;
+   }
 }

@@ -1,6 +1,7 @@
 import CommentsPageHandler from './handlers/CommentsPageHandler';
 import PostsFromSubredditHandler from './handlers/PostsFromSubredditHandler';
 import Login from './handlers/Login';
+import Vote from './handlers/Vote';
 
 export default [
   ['/', PostsFromSubredditHandler],
@@ -11,4 +12,5 @@ export default [
   ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/login', Login],
+  ['/vote/:thingId', Vote],
 ];

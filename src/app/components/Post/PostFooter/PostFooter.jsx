@@ -2,6 +2,8 @@ import './PostFooter.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
+import Vote from '../../Vote/Vote';
+
 const { PostModel } = models;
 
 // import PostDropdownController from './PostDropdownController';
@@ -143,12 +145,6 @@ export default class PostFooter extends React.Component {
   //   );
   // }
 
-  voteClass(voteDirection) {
-    if (voteDirection === 1) { return 'upvoted'; }
-    if (voteDirection === -1) { return 'downvoted'; }
-    return '';
-  }
-
   renderUpvote(voteDirection) {
     const upvoted = voteDirection === 1;
     let wrapperClassName = `${VOTE_WRAPPER_CLS} ${upvoted ? 'upvoted' : ''}`;
@@ -157,42 +153,6 @@ export default class PostFooter extends React.Component {
     return (
       <span className={ wrapperClassName }>
         <span className='icon icon-upvote blue' />
-      </span>
-    );
-  }
-
-  renderDownVote(voteDirection) {
-    const downvoted = voteDirection === -1;
-    let wrapperClassName = `${VOTE_WRAPPER_CLS} ${downvoted ? 'downvoted' : ''}`;
-    if (this.mounted) { wrapperClassName += ' m-animated'; }
-
-    return (
-      <span className={ wrapperClassName }>
-        <span className='icon icon-downvote blue' />
-      </span>
-    );
-  }
-
-  renderScoreIfNotHidden(scoreHidden, score, voteClass) {
-    return (
-      <span className={ `PostFooter__vote-text ${voteClass}` }>
-        { scoreHidden ? '●' : score }
-      </span>
-    );
-  }
-
-  renderScoreAndVotes(scoreHidden, score, voteDirection) {
-    const voteClass = this.voteClass(voteDirection);
-
-    return (
-      <span>
-        <div className='PostFooter__hit-area' onClick={ this.onUpVote }>
-          { this.renderScoreIfNotHidden(scoreHidden, score, voteClass) }
-          { this.renderUpvote(voteDirection) }
-        </div>
-        <div className='PostFooter__hit-area' onClick={ this.onDownVote }>
-          { this.renderDownVote(voteDirection) }
-        </div>
       </span>
     );
   }
@@ -215,7 +175,14 @@ export default class PostFooter extends React.Component {
           />
 
           <span className='PostFooter__vertical-divider' />
-          { this.renderScoreAndVotes(scoreHidden, this.state.score, this.state.voteDirection) }
+          <Vote
+            thingId = { post.name }
+            classPrefix='PostFooter'
+            score={ this.state.score }
+            scoreHidden={ scoreHidden }
+            voteDirection={ post.likes }
+            onUpvote={ this.onUpvote }
+          />
         </div>
       </footer>
     );

@@ -1,4 +1,4 @@
-import APIOptions from '@r/api-client';
+import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
 import { receivedResponse } from './apiResponseActions';
 
@@ -9,7 +9,6 @@ export const toggleReplyForm = id => ({ type: TOGGLE_REPLY_FORM, id });
 
 export const TOGGLE_EDIT_FORM = 'TOGGLE_EDIT_FORM';
 export const toggleEditForm = id => ({ type: TOGGLE_EDIT_FORM, id });
-
 
 export const TOGGLE_COLLAPSE = 'TOGGLE_COLLAPSE';
 
@@ -30,11 +29,12 @@ export const saving = (id, save) => ({
   save,
 });
 
-export const save = (id, save=true) => async (dispatch) => {
+export const save = (id, save=true) => async (dispatch, getState) => {
   dispatch(saving(id));
 
+  const state = getState();
   const method = save ? 'post' : 'del';
-  const apiResponse = await SavedEndpoint[method](APIOptions, { id });
+  const apiResponse = await SavedEndpoint[method](apiOptionsFromState(state), { id });
   dispatch(receivedResponse(apiResponse));
   dispatch(saved(id, apiResponse.results));
 };
@@ -57,20 +57,8 @@ export const report = (id, reason) => async (dispatch, getState) => {
   console.log(id, reason, getState());
 };
 
-export const UPVOTING = 'UPVOTING';
-export const UPVOTED = 'UPVOTED';
-export const upvote = (id, upvoted) => async (dispatch, getState) => {
-  console.log(id, upvoted, getState());
-};
-
-export const DOWNVOTING = 'DOWNVOTING';
-export const DOWNVOTED = 'DOWNVOTED';
-export const downvote = (id, downvoted) => async (dispatch, getState) => {
-  console.log(id, downvoted, getState());
-};
-
-export const LOADING_MORES = 'LOADING_MORES';
-export const LOADED_MORES = 'LOADED_MORES';
+export const LOADING_MORE = 'LOADING_MORE';
+export const LOADED_MORE = 'LOADED_MORE';
 export const loadMore = ids => async (dispatch, getState) => {
   console.log(ids, getState());
 };

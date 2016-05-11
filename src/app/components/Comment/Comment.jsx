@@ -88,6 +88,7 @@ function renderTools(props) {
     <div className={ cls }>
       <div className='Comment__tools'>
         <CommentTools
+          id={ comment.name }
           score={ comment.score }
           scoreHidden={ comment.scoreHidden }
           voteDirection={ comment.likes }
@@ -100,8 +101,6 @@ function renderTools(props) {
           onDeleteComment={ props.deleteComment }
           onSaveComment={ props.saveComment }
           onReportComment={ props.reportComment }
-          onUpvote={ props.handleUpvote }
-          onDownvote={ props.handleDownvote }
         />
       </div>
     </div>
@@ -203,8 +202,6 @@ const mapDispatchToProps = (dispatch, { commentId }) => ({
   deleteComment: () => dispatch(commentActions.del(commentId)),
   saveComment: () => dispatch(commentActions.save(commentId)),
   reportComment: (reason) => dispatch(commentActions.report(commentId, reason)),
-  handleUpvote: (upvoted=true) => dispatch(commentActions.upvote(commentId, upvoted)),
-  handleDownvote: (downvoted=true) => dispatch(commentActions.downvote(commentId, downvoted)),
   loadMore: (ids) => dispatch(commentActions.loadMore(ids)),
 });
 

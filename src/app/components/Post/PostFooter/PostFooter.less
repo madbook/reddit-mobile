@@ -51,7 +51,7 @@
     top: 2px;
   }
 
-  &__vote-text {
+  &__score {
     display: inline-block;
     vertical-align: middle;
     margin-right: @half-grid-size;
@@ -90,17 +90,22 @@
     });
   }
 
-  &__vote-arrow-wrapper {
+  &__upvote, &__downvote {
     display: inline-block;
     vertical-align: middle;
     width: 24px;
     height: 24px;
+    font-size: 22px;
+    line-height: 22px;
     border-radius: 12px;
     margin: 0 @half-grid-size;
     text-align: center;
+    background: transparent;
+    padding: 0;
 
     .themeify({
       border: @theme-border;
+      color: @theme-link-text-color;
     });
 
     // There's nesting because we're fighting against icon-fonts.less,
@@ -115,10 +120,7 @@
     &.upvoted {
       border-color: @orangered;
       background-color: @orangered;
-
-      .icon-upvote:before {
-        color: @white;
-      }
+      color: @white;
 
       &.m-animated {
         .upvoteBounceAnimation;
@@ -128,10 +130,7 @@
     &.downvoted {
       border-color: @periwinkle;
       background-color: @periwinkle;
-
-      .icon-downvote:before {
-        color: @white;
-      }
+      color: @white;
 
       &.m-animated {
         .downvoteBounceAnimation;
@@ -143,4 +142,8 @@
       line-height: 1em; // visually verticaly centering
     }
   }
+
+   &__Vote {
+     display: inline;
+   }
 }

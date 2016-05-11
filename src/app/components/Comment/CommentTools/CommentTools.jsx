@@ -1,6 +1,8 @@
 import './CommentTools.less';
 import React from 'react';
 
+import Vote from '../../Vote/Vote';
+
 // import CommentDropdownContent from './CommentDropdownContent';
 // import DropdownController from '../dropdown/DropdownController';
 
@@ -8,18 +10,6 @@ const T = React.PropTypes;
 
 function onToggleReplyForm () { console.log('toggle reply form'); }
 function onToggleDropdown () { console.log('toggle dropdown'); }
-
-function scoreText(score, scoreHidden) {
-  if (scoreHidden) {
-    return '–';
-  } else if (score < 1000) {
-    return `${score}`;
-  } else if (score < 1100) {
-    return '1k';
-  }
-
-  return `${(score/1000).toFixed(1)}k`;
-}
 
 function renderReply () {
   return (
@@ -41,48 +31,6 @@ function renderSeashells() {
 
 function renderDivider() {
   return <div className='CommentTools__divider' />;
-}
-
-function renderScoreAndUpvote(props) {
-  const { score, scoreHidden, voteDirection, onUpvote } = props;
-
-  let textColorCls;
-  if (voteDirection === 1) {
-    textColorCls = 'upvoted';
-  } else if (voteDirection === -1) {
-    textColorCls = 'downvoted';
-  }
-
-  return (
-    <div className={ `CommentTools__hit-area ${textColorCls}` } onClick={ onUpvote }>
-      <div className={ `CommentTools__score ${textColorCls}` }>
-        { scoreText(score, scoreHidden) }
-      </div>
-      { renderUpvote(props) }
-    </div>
-  );
-}
-
-function renderUpvote (props) {
-  const { voteDirection } = props;
-  let cls = 'CommentTools__upvote icon icon-upvote';
-  if (voteDirection === 1) { cls += ' m-animated'; }
-
-  return <div className={ cls } />;
-}
-
-function renderDownvote (props) {
-  const { onDownvote, voteDirection } = props;
-
-  let cls = 'CommentTools__downvote icon icon-downvote';
-  const voteCls = voteDirection === -1 ? 'downvoted' : '';
-  if (voteDirection === -1) { cls += ' m-animated'; }
-
-  return (
-    <div className={ `CommentTools__hit-area ${voteCls}` } onClick={ onDownvote } >
-      <div className={ cls } />
-    </div>
-  );
 }
 
 function renderDropdown(/*props*/) {
@@ -110,13 +58,20 @@ function renderDropdown(/*props*/) {
 }
 
 export default function CommentTools (props) {
+  const { score, scoreHidden, voteDirection, id } = props;
+
   return (
     <div className='CommentTools'>
       { renderReply(props) }
       { renderSeashells(props) }
       { renderDivider(props) }
-      { renderScoreAndUpvote(props) }
-      { renderDownvote(props) }
+      <Vote
+        thingId={ id }
+        classPrefix='CommentTools'
+        score={ score }
+        scoreHidden={ scoreHidden }
+        voteDirection={ voteDirection }
+      />
       { props.dropdownTarget ? renderDropdown(props) : null }
     </div>
   );
