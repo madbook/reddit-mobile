@@ -4,8 +4,8 @@ import { createSelector } from 'reselect';
 
 import * as overlayMenuUrlsAndActions from 'app/actions/overlayMenu';
 
-import CommunityOverlayMenu from '../CommunityOverlayMenu';
-import SettingsOverlayMenu from '../SettingsOverlayMenu';
+import CommunityOverlayMenu from 'app/components/CommunityOverlayMenu';
+import SettingsOverlayMenu from 'app/components/SettingsOverlayMenu';
 
 export const AppOverlayMenu = (props) => {
   const overlayMenu = props.pageData.queryParams[overlayMenuUrlsAndActions.OVERLAY_MENU_PARAMETER];

@@ -3,11 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import titleCase from 'app/../lib/titleCase';
-import { urlWith } from 'app/../lib/urlWith';
+import titleCase from 'lib/titleCase';
+import { urlWith } from 'lib/urlWith';
 
-import OverlayMenu from '../OverlayMenu';
-import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
+import OverlayMenu from 'app/components/OverlayMenu';
+import { LinkRow, ButtonRow, ExpandoRow } from 'app/components/OverlayMenu/OverlayMenuRow';
 
 import menuItems from './SettingsOverlayMenuItems';
 

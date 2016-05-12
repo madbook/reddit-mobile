@@ -3,8 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import Post from '../Post';
-import Loading from '../Loading';
+import Post from 'app/components/Post';
+import Loading from 'app/components/Loading';
 
 import { map } from 'lodash/collection';
 

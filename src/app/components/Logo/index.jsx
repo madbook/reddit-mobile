@@ -1,6 +1,6 @@
 /*eslint max-len: 0*/
 import React from 'react';
-import SVG from '../SVG';
+import SVG from 'app/components/SVG';
 
 export default function Logo (props) {
   return (

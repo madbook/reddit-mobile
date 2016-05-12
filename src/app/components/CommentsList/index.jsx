@@ -4,7 +4,7 @@ import React from 'react';
 
 import { map } from 'lodash/collection';
 
-import Comment from '../Comment';
+import Comment from 'app/components/Comment';
 
 export default (props) => {
   const { commentRecords, parentComment, postCreated, user, op, nestingLevel } = props;

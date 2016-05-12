@@ -6,11 +6,11 @@ import { createSelector } from 'reselect';
 
 import { models } from '@r/api-client';
 
-import mobilify from 'app/../lib/mobilify';
+import mobilify from 'lib/mobilify';
 
 import * as commentActions from 'app/actions/comment';
 
-import CommentsList from '../CommentsList';
+import CommentsList from 'app/components/CommentsList';
 
 import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';

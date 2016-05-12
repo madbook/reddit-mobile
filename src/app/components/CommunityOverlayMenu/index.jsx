@@ -5,9 +5,9 @@ import { createSelector } from 'reselect';
 
 import { map } from 'lodash';
 
-import NSFWFlair from '../NSFWFlair';
-import OverlayMenu from '../OverlayMenu';
-import { LinkRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
+import NSFWFlair from 'app/components/NSFWFlair';
+import OverlayMenu from 'app/components/OverlayMenu';
+import { LinkRow, ExpandoRow } from 'app/components/OverlayMenu/OverlayMenuRow';
 import CommunitySearchRow from './CommunitySearchRow';
 
 const numCommunitiesText = (subscriptions, loading) => {

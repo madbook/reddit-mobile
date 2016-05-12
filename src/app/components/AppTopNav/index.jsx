@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageSelector, Page } from '@r/platform/page';
-import TopNav from '../TopNav';
+import TopNav from 'app/components/TopNav';
 
 const renderNothing = () => null;
 const renderTopNav = () => (<TopNav />);
