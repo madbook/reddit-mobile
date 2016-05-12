@@ -1,4 +1,4 @@
-import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
 import { receivedResponse } from './apiResponse';
 
@@ -35,5 +35,3 @@ export const vote = (id, direction) => async (dispatch, getState) => {
   dispatch(receivedResponse(apiResponse));
   dispatch(voted(id, direction));
 };
-
-

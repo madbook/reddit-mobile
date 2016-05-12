@@ -1,7 +1,7 @@
 import { navigateToUrl } from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
-import { urlWith, urlWithQueryParamToggled } from '../../lib/urlWith';
+import { urlWith, urlWithQueryParamToggled } from 'lib/urlWith';
 import { omit } from 'lodash/object';
 
 export const OVERLAY_MENU_PARAMETER = 'overlayMenu';

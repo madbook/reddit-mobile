@@ -2,7 +2,7 @@ import { requestUtils } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
-import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 const { rawSend } = requestUtils;
 

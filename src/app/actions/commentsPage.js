@@ -1,4 +1,4 @@
-import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
 import { paramsToCommentsPageId } from '../models/CommentsPage';
 import { receivedResponse } from './apiResponse';
