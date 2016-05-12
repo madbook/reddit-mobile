@@ -2,6 +2,7 @@ import { models } from '@r/api-client';
 import session from './session';
 import { apiResponseReducerMaker } from './apiResponseReducer';
 import commentsPagesReducer from './commentsPagesReducer';
+import compactReducer from './compactReducer';
 import postsListsReducer from './postsListsReducer';
 import subscribedSubredditsReducer from './subscribedSubredditsReducer';
 import themeReducer from './themeReducer';
@@ -17,6 +18,7 @@ const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
 export default {
   session,
   commentsPages: commentsPagesReducer,
+  compact: compactReducer,
   postsLists: postsListsReducer,
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),

@@ -10,6 +10,7 @@ import loginproxy from './server/session/loginproxy';
 import logoutproxy from './server/session/logoutproxy';
 import refreshproxy from './server/session/refreshproxy';
 import dispatchSession from './server/session/dispatchSession';
+import { dispatchInitialCompact } from './server/initialState/dispatchInitialCompact';
 import { dispatchInitialTheme } from './server/initialState/dispatchInitialTheme';
 
 import dispatchInitialCollapsedComments from
@@ -38,6 +39,7 @@ Server({
     await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
     await dispatchInitialTheme(ctx, dispatch);
     await dispatchInitialCollapsedComments(ctx, dispatch);
+    await dispatchInitialCompact(ctx, dispatch);
   },
   preRouteServerMiddleware: [
     binFiles,

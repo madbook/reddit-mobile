@@ -1,6 +1,7 @@
 import CommentsPageHandler from './handlers/CommentsPageHandler';
 import PostsFromSubredditHandler from './handlers/PostsFromSubredditHandler';
 import Login from './handlers/Login';
+import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggleHandler';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggleHandler';
 import Vote from './handlers/Vote';
 
@@ -16,5 +17,6 @@ export default [
 
   // actions
   ['/vote/:thingId', Vote],
+  ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
 ];

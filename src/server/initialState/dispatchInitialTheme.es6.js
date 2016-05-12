@@ -1,21 +1,7 @@
 import * as themeActions from '../../app/actions/themeActions';
 import { themes } from '../../app/constants';
-
-const COOKIE_OPTIONS = {
-  httpOnly: false,
-  overwrite: true,
-  maxAge: 1000 * 60 * 60,
-};
-
-const makeThemeCookieOptions = () => {
-  const date = new Date();
-  date.setFullYear(date.getFullYear() + 2);
-
-  return {
-    ...COOKIE_OPTIONS,
-    expires: date,
-  };
-};
+import { DEFAULT } from '../../app/reducers/themeReducer';
+import { permanentCookieOptions } from './permanentCookieOptions';
 
 export const dispatchInitialTheme = async (ctx, dispatch) => {
   const themeCookie = ctx.cookies.get('theme');
@@ -23,11 +9,11 @@ export const dispatchInitialTheme = async (ctx, dispatch) => {
   let theme = themeFromQuery || themeCookie;
 
   if (!(theme === themes.NIGHTMODE || theme === themes.DAYMODE)) {
-    theme = themes.DAYMODE;
+    theme = DEFAULT;
   }
 
   if (theme !== themeCookie) {
-    ctx.cookies.set('theme', theme, makeThemeCookieOptions());
+    ctx.cookies.set('theme', theme, permanentCookieOptions());
   }
 
   dispatch(themeActions.setTheme(theme));

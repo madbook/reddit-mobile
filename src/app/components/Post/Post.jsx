@@ -148,18 +148,26 @@ export function Post(props) {
   );
 }
 
-const postIdSelector = (/*state, */ props) => props.postId;
+const postIdSelector = (_, props) => props.postId;
+
+const compactSeletor = (state) => state.compact;
+
+const singleSelector = (_, props) => props.single;
 
 const postModelSelector = (state, props) => state.posts[props.postId];
 
-const singleSelector = (/*state, */ props) => props.singled;
-
-const combineSelectors = (postId, post, single) => ({
-  postId, post, single,
+const combineSelectors = (postId, compact, single, post) => ({
+  postId, compact, single, post,
 });
 
 const makeConnectedPostSelector = () => {
-  return createSelector([postIdSelector, postModelSelector, singleSelector],
+  return createSelector(
+    [
+      postIdSelector,
+      compactSeletor,
+      singleSelector,
+      postModelSelector,
+    ],
     combineSelectors);
 };
 

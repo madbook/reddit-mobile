@@ -23,6 +23,12 @@ export const SettingsOverlayMenu = (props) => {
   return (
     <OverlayMenu>
       <ButtonRow
+        key='compact-toggle'
+        action='/actions/overlay-compact-toggle'
+        icon='icon-compact icon-large blue'
+        text={ `${compact ? 'Card' : 'Compact'} view` }
+      />
+      <ButtonRow
         key='theme-toggle'
         action='/actions/overlay-theme-toggle'
         icon={ 'icon-spaceship icon-large  blue' }
