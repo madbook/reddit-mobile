@@ -15,7 +15,7 @@
     "fonts": "webfonts"
   },
   "dependencies": {
-    "@r/api-client": "~3.8.0",
+    "@r/api-client": "~3.8.1",
     "@r/build": "~0.4.0",
     "@r/middleware": "0.5.4",
     "@r/platform": "0.0.28",
