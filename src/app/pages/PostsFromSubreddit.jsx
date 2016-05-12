@@ -1,9 +1,9 @@
 import React from 'react';
 
-import PostsList from '../components/PostsList';
+import PostsList from 'app/components/PostsList';
 
-import PostsFromSubredditHandler from '../router/handlers/PostsFromSubreddit';
-import { paramsToPostsListsId } from '../models/PostsList';
+import PostsFromSubredditHandler from 'app/router/handlers/PostsFromSubreddit';
+import { paramsToPostsListsId } from 'app/models/PostsList';
 
 
 // props is pageData

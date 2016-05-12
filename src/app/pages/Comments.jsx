@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import CommentsList from '../components/CommentsList';
-import Post from '../components/Post';
-import Loading from '../components/Loading';
+import CommentsList from 'app/components/CommentsList';
+import Post from 'app/components/Post';
+import Loading from 'app/components/Loading';
 
-import CommentsPageHandler from '../router/handlers/CommentsPage';
-import { paramsToCommentsPageId } from '../models/CommentsPage';
+import CommentsPageHandler from 'app/router/handlers/CommentsPage';
+import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 
 const commentsPageSelector = createSelector(
   (state, props) => props,

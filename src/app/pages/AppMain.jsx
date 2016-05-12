@@ -5,7 +5,7 @@ import { PageSelector, Page } from '@r/platform/page';
 import { CommentsPage } from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
 
-import Login from '../components/Login';
+import Login from 'app/components/Login';
 
 const renderCommentsPage = (pageProps) => {
   return (<CommentsPage { ...pageProps} />);
