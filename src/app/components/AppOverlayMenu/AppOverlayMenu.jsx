@@ -4,11 +4,16 @@ import { createSelector } from 'reselect';
 
 import * as overlayMenuUrlsAndActions from '../../actions/overlayMenuUrlsAndActions';
 
+import CommunityOverlayMenu from '../CommunityOverlayMenu/CommunityOverlayMenu';
 import SettingsOverlayMenu from '../SettingsOverlayMenu/SettingsOverlayMenu';
 
 export const AppOverlayMenu = (props) => {
   const overlayMenu = props.pageData.queryParams[overlayMenuUrlsAndActions.OVERLAY_MENU_PARAMETER];
-    switch (overlayMenu) {
+
+  switch (overlayMenu) {
+    case overlayMenuUrlsAndActions.COMMUNITY_MENU:
+      return <CommunityOverlayMenu />;
+
     case overlayMenuUrlsAndActions.SETTINGS_MENU:
       return <SettingsOverlayMenu />;
 
