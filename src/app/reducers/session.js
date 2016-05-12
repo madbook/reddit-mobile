@@ -1,4 +1,4 @@
-import * as sessionActions from '../actions/session';
+import * as sessionActions from 'app/actions/session';
 
 const DEFAULT = {};
 

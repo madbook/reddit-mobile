@@ -1,6 +1,6 @@
 import merge from '@r/platform/merge';
-import * as postsListActions from '../actions/postsList';
-import { newPostsList } from '../models/PostsList';
+import * as postsListActions from 'app/actions/postsList';
+import { newPostsList } from 'app/models/PostsList';
 import { each } from 'lodash/array';
 
 const DEFAULT = {};

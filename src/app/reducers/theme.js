@@ -1,5 +1,5 @@
-import * as themeActions from '../actions/theme';
-import { themes } from '../constants';
+import * as themeActions from 'app/actions/theme';
+import { themes } from 'app/constants';
 
 export const DEFAULT = themes.DAYMODE;
 

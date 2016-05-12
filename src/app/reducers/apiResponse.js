@@ -1,6 +1,6 @@
 import merge from '@r/platform/merge';
 
-import * as apiResponseActions from '../actions/apiResponse';
+import * as apiResponseActions from 'app/actions/apiResponse';
 
 export const apiResponseReducerMaker = (key, kind) => {
   if (!kind) {
