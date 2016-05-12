@@ -1,4 +1,4 @@
-import './OverlayMenu.less';
+import './styles.less';
 
 import React from 'react';
 import { Anchor, Form } from '@r/platform/components';

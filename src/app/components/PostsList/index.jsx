@@ -1,10 +1,10 @@
-import './PostsList.less';
+import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import Post from '../Post/Post';
-import Loading from '../Loading/Loading';
+import Post from '../Post';
+import Loading from '../Loading';
 
 import { map } from 'lodash/collection';
 

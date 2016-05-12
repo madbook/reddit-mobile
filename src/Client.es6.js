@@ -5,9 +5,9 @@ import { isEmpty } from 'lodash/lang';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 
-import routes from './app/router/routes';
-import App from './app/App';
-import allReducers from './app/reducers/importAll';
+import routes from './app/router';
+import App from './app';
+import allReducers from './app/reducers';
 import Session from './app/models/Session';
 
 Client({

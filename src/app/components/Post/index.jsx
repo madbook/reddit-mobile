@@ -1,4 +1,4 @@
-import './Post.less';
+import './styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -12,9 +12,9 @@ import {
   postShouldRenderMediaFullbleed,
 } from './postUtils';
 
-import PostHeader from './PostHeader/PostHeader';
-import PostContent from './PostContent/PostContent';
-import PostFooter from './PostFooter/PostFooter';
+import PostHeader from './PostHeader';
+import PostContent from './PostContent';
+import PostFooter from './PostFooter';
 
 const T = React.PropTypes;
 

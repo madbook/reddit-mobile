@@ -1,13 +1,14 @@
-import './App.less';
+import './styles.less';
 import React from 'react';
 
+import { UrlSync } from '@r/platform/components';
+
 import { AppMainPage } from './pages/AppMain';
-import AppOverlayMenu from './components/AppOverlayMenu/AppOverlayMenu';
-import { AppTopNav } from './components/AppTopNav/AppTopNav';
+import AppOverlayMenu from './components/AppOverlayMenu';
+import { AppTopNav } from './components/AppTopNav';
 import { CookieSync } from './CookieSync';
 import { DomModifier } from './DomModifier';
 import { LocalStorageSync } from './LocalStorageSync';
-import { UrlSync } from '@r/platform/components';
 
 export default class App extends React.Component {
   render() {

@@ -1,8 +1,8 @@
-import './PostFooter.less';
+import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
-import Vote from '../../Vote/Vote';
+import Vote from '../../Vote';
 
 const { PostModel } = models;
 

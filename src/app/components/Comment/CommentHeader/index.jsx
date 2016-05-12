@@ -1,4 +1,4 @@
-import './CommentHeader.less';
+import './styles.less';
 
 import React from 'react';
 import { fill } from 'lodash/array';
@@ -111,7 +111,6 @@ export default function CommentHeader(props) {
     authorType,
     gildCount,
     stickied,
-    id,
   } = props;
 
   return (

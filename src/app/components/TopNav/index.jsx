@@ -1,4 +1,4 @@
-import "./TopNav.less";
+import './styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -11,8 +11,8 @@ import {
   urlWithCommunityMenuToggled,
 } from '../../actions/overlayMenu';
 
-import Logo from '../Logo/Logo';
-import SnooIcon from '../SnooIcon/SnooIcon';
+import Logo from '../Logo';
+import SnooIcon from '../SnooIcon';
 // import SearchBarController from '../components/search/SearchBarController';
 
 export const TopNav = (props) => {
@@ -119,7 +119,7 @@ const mapStateToProps = createSelector(
   combineSelectors,
 );
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (/*dispatch*/) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopNav);

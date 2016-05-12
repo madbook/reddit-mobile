@@ -1,4 +1,4 @@
-import './PostContent.less';
+import './styles.less';
 import React from 'react';
 import URL from 'url';
 

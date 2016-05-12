@@ -1,7 +1,7 @@
-import './CommentTools.less';
+import './styles.less';
 import React from 'react';
 
-import Vote from '../../Vote/Vote';
+import Vote from '../../Vote';
 
 // import CommentDropdownContent from './CommentDropdownContent';
 // import DropdownController from '../dropdown/DropdownController';

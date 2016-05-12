@@ -1,4 +1,4 @@
-import './Vote.less';
+import './styles.less';
 import React from 'react';
 import { METHODS } from '@r/platform/router';
 import { Form } from '@r/platform/components';

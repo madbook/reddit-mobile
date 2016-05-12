@@ -5,12 +5,9 @@ import { createSelector } from 'reselect';
 
 import { map } from 'lodash';
 
-import titleCase from '../../../lib/titleCase';
-import { urlWith } from '../../../lib/urlWith';
-
-import NSFWFlair from '../NSFWFlair/NSFWFlair';
-import OverlayMenu from '../OverlayMenu/OverlayMenu';
-import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
+import NSFWFlair from '../NSFWFlair';
+import OverlayMenu from '../OverlayMenu';
+import { LinkRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
 import CommunitySearchRow from './CommunitySearchRow';
 
 const numCommunitiesText = (subscriptions, loading) => {

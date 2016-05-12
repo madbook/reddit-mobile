@@ -1,8 +1,7 @@
-import './OverlayMenu.less';
+import './styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import * as overlayMenuActions from '../../actions/overlayMenu';
 

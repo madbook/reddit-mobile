@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import CommentsList from '../components/CommentsList/CommentsList';
-import Post from '../components/Post/Post';
-import Loading from '../components/Loading/Loading';
+import CommentsList from '../components/CommentsList';
+import Post from '../components/Post';
+import Loading from '../components/Loading';
 
 import CommentsPageHandler from '../router/handlers/CommentsPage';
 import { paramsToCommentsPageId } from '../models/CommentsPage';

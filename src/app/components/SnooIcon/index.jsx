@@ -1,6 +1,6 @@
 /*eslint max-len: 0*/
 import React from 'react';
-import SVG from '../SVG/SVG';
+import SVG from '../SVG';
 
 export default function SnooIcon () {
   return (

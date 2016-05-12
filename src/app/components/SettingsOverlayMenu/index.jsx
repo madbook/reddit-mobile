@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import titleCase from '../../../lib/titleCase';
 import { urlWith } from '../../../lib/urlWith';
 
-import OverlayMenu from '../OverlayMenu/OverlayMenu';
+import OverlayMenu from '../OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
 
 import menuItems from './SettingsOverlayMenuItems';
@@ -14,7 +14,7 @@ import menuItems from './SettingsOverlayMenuItems';
 import { themes } from '../../constants';
 
 const { NIGHTMODE } = themes;
-const userIconClassName = 'icon icon-user-account icon-large blue';
+//const userIconClassName = 'icon icon-user-account icon-large blue';
 
 export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
   const url = item.url;

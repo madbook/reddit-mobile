@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PostsList from '../components/PostsList/PostsList';
+import PostsList from '../components/PostsList';
 
 import PostsFromSubredditHandler from '../router/handlers/PostsFromSubreddit';
 import { paramsToPostsListsId } from '../models/PostsList';

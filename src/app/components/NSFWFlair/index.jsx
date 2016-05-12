@@ -1,3 +1,4 @@
+import './styles.less';
 import React from 'react';
 
 export default (

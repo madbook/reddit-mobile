@@ -1,7 +1,7 @@
-import './Loading.less';
+import './styles.less';
 import React from 'react';
 
-import SnooIcon from '../SnooIcon/SnooIcon';
+import SnooIcon from '../SnooIcon';
 
 export default function Loading() {
   return (

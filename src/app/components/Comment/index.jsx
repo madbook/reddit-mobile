@@ -1,4 +1,4 @@
-import './Comment.less';
+import './styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,10 +10,10 @@ import mobilify from '../../../lib/mobilify';
 
 import * as commentActions from '../../actions/comment';
 
-import CommentsList from '../CommentsList/CommentsList';
+import CommentsList from '../CommentsList';
 
-import CommentHeader from './CommentHeader/CommentHeader';
-import CommentTools from './CommentTools/CommentTools';
+import CommentHeader from './CommentHeader';
+import CommentTools from './CommentTools';
 
 
 // import CommentReplyForm from './CommentReplyForm';
