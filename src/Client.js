@@ -5,10 +5,10 @@ import { isEmpty } from 'lodash/lang';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 
-import routes from './app/router';
-import App from './app';
-import reducers from './app/reducers';
-import Session from './app/models/Session';
+import routes from 'app/router';
+import App from 'app';
+import reducers from 'app/reducers';
+import Session from 'app/models/Session';
 
 Client({
   routes,

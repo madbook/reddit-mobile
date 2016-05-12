@@ -3,18 +3,18 @@ import Server from '@r/platform/server';
 import APIOptions from '@r/api-client';
 import KoaStatic from 'koa-static';
 
-import routes from './app/router';
-import main from './server/templates/main';
-import allReducers from './app/reducers';
-import loginproxy from './server/session/loginproxy';
-import logoutproxy from './server/session/logoutproxy';
-import refreshproxy from './server/session/refreshproxy';
-import dispatchSession from './server/session/dispatchSession';
-import { dispatchInitialCompact } from './server/initialState/dispatchInitialCompact';
-import { dispatchInitialTheme } from './server/initialState/dispatchInitialTheme';
+import routes from 'app/router';
+import main from 'server/templates/main';
+import allReducers from 'app/reducers';
+import loginproxy from 'server/session/loginproxy';
+import logoutproxy from 'server/session/logoutproxy';
+import refreshproxy from 'server/session/refreshproxy';
+import dispatchSession from 'server/session/dispatchSession';
+import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
+import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 
 import dispatchInitialCollapsedComments from
-  './server/initialState/dispatchInitialCollapsedComments';
+  'server/initialState/dispatchInitialCollapsedComments';
 
 const binFiles = KoaStatic('bin');
 const assetFiles = KoaStatic('assets');

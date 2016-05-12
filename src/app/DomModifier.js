@@ -1,6 +1,6 @@
 import { makeStateArchiver } from '@r/redux-state-archiver';
-import { themeClass } from '../server/templates/themeClass';
-import { themes } from './constants';
+import { themeClass } from 'server/templates/themeClass';
+import { themes } from 'app/constants';
 
 const themeSelector = (state) => state.theme;
 const combiner = (theme) => ({ theme });
