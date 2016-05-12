@@ -130,7 +130,7 @@ export function Post(props) {
           compact={ compact }
           hideSubredditLabel={ hideSubredditLabel }
           hideWhen={ hideWhen }
-          nextToThumbnail={ false }
+          nextToThumbnail={ !!thumbnailOrNil }
           showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
