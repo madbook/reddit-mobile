@@ -11,6 +11,7 @@ import { urlWith } from '../../../lib/urlWith';
 import NSFWFlair from '../NSFWFlair/NSFWFlair';
 import OverlayMenu from '../OverlayMenu/OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
+import CommunitySearchRow from './CommunitySearchRow';
 
 const numCommunitiesText = (subscriptions, loading) => {
   const num = subscriptions.length;
@@ -57,6 +58,7 @@ export const CommunityOverlayMenu = (props) => {
 
   return (
     <OverlayMenu>
+      <CommunitySearchRow />
       <LinkRow
         key='front-page-row'
         text={ `${user ? 'My ' :''}Front Page` }
