@@ -1,7 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as postsListActions from '../../actions/postsList';
+import * as postsListActions from 'app/actions/postsList';
 
-import { cleanObject } from '../../../lib/cleanObject';
+import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
 
 export default class PostsFromSubreddit extends BaseHandler {

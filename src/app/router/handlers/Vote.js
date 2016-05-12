@@ -1,7 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
 
-import * as voteActions from '../../actions/vote';
+import * as voteActions from 'app/actions/vote';
 
 export default class Vote extends BaseHandler {
   async [METHODS.POST](dispatch, getState/*, utils*/) {

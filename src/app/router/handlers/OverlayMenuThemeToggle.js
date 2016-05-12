@@ -1,7 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 
-import { toggleTheme } from '../../actions/theme';
-import { closeOverlayMenu } from '../../actions/overlayMenu';
+import { toggleTheme } from 'app/actions/theme';
+import { closeOverlayMenu } from 'app/actions/overlayMenu';
 
 export default class OverlayMenuThemeToggle extends BaseHandler {
   async [METHODS.POST](dispatch) {

@@ -1,8 +1,8 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
 
-import Session from './../../models/Session';
-import * as sessionActions from '../../actions/session';
+import Session from 'app/models/Session';
+import * as sessionActions from 'app/actions/session';
 
 export default class Login extends BaseHandler {
   async [METHODS.GET](/*dispatch, getState, utils*/) {
