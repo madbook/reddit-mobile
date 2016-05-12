@@ -11,8 +11,8 @@ import {
   urlWithCommunityMenuToggled,
 } from '../../actions/overlayMenuUrlsAndActions';
 
-import { Logo } from '../Logo/Logo';
-import { SnooIcon } from '../SnooIcon/SnooIcon';
+import Logo from '../Logo/Logo';
+import SnooIcon from '../SnooIcon/SnooIcon';
 // import SearchBarController from '../components/search/SearchBarController';
 
 export const TopNav = (props) => {

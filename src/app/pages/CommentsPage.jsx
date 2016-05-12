@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import CommentsList from '../components/CommentsList/CommentsList';
 import Post from '../components/Post/Post';
+import Loading from '../components/Loading/Loading';
 
 import CommentsPageHandler from '../router/handlers/CommentsPageHandler';
 import { paramsToCommentsPageId } from '../models/CommentsPageModel';
@@ -39,7 +40,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
     <div className='CommentsPage BelowTopNav'>
       <Post postId={ commentsPageParams.id } single={ true } />
       { !commentsPage || commentsPage.loading ?
-        <div className='CommentsPage__loading' /> :
+        <Loading /> :
         <CommentsList
           commentRecords={ topLevelComments }
           permalinkBase={ permalinkBase }

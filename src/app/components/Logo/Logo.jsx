@@ -2,7 +2,7 @@
 import React from 'react';
 import SVG from '../SVG/SVG';
 
-export const Logo = (props) => {
+export default function Logo (props) {
   return (
     <SVG
       className='Logo SVG-icon'
@@ -22,7 +22,7 @@ export const Logo = (props) => {
       </g>
   </SVG>
   );
-};
+}
 
 Logo.propTypes = {
   assetPath: React.PropTypes.string.isRequired,

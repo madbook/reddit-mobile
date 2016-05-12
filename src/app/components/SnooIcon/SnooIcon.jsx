@@ -2,7 +2,7 @@
 import React from 'react';
 import SVG from '../SVG/SVG';
 
-export const SnooIcon = () => {
+export default function SnooIcon () {
   return (
     <SVG className='SVG-icon SnooIcon' fallbackIcon='icon icon-snoo-circled orangered'>
         <g>
@@ -11,4 +11,4 @@ export const SnooIcon = () => {
         </g>
     </SVG>
   );
-};
+}

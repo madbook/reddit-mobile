@@ -1,0 +1,50 @@
+@import (reference) "../../art-gallery-link/assets/less/variables";
+@import (reference) '../../art-gallery-link/assets/less/mixins/importAll.less';
+@import (reference) "../../art-gallery-link/assets/less/themes/themeify";
+
+@size: @grid-size*6;
+
+.Loading {
+  padding: @size;
+  text-align: center;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: @size;
+    height: @size;
+    background-color: @orangered;
+    opacity: .75;
+    border-radius: 100%;
+    -webkit-animation: scaleout 1.5s infinite ease-in-out;
+    animation: scaleout 1.5s infinite ease-in-out;
+  }
+
+  .SnooIcon {
+    margin: auto;
+    height: @size;
+    width: @size;
+    position: relative;
+  }
+}
+
+@-webkit-keyframes scaleout {
+  0% { -webkit-transform: scale(1) }
+  100% {
+    -webkit-transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}

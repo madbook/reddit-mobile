@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import Post from '../Post/Post';
+import Loading from '../Loading/Loading';
+
 import { map } from 'lodash/collection';
 
 export function PostsList (props) {
@@ -19,7 +21,7 @@ export function PostsList (props) {
 }
 
 function renderLoading() {
-  return <div className='PostsList__loading' />;
+  return <Loading />;
 }
 
 function renderPostsList(postsList) {
