@@ -1,5 +1,5 @@
-import * as compactActions from '../../app/actions/compactActions';
-import { DEFAULT } from '../../app/reducers/compactReducer';
+import * as compactActions from '../../app/actions/compact';
+import { DEFAULT } from '../../app/reducers/compact';
 import { permanentCookieOptions } from './permanentCookieOptions';
 
 export const dispatchInitialCompact = async (ctx, dispatch) => {

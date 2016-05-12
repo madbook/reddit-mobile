@@ -1,4 +1,3 @@
-
 export const TOGGLE_OVER_18 = 'toggleOver18';
 
 export const USER_MENU_TOGGLE = 'sideNavToggle';

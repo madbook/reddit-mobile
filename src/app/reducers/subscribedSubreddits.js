@@ -1,8 +1,8 @@
 import merge from '@r/platform/merge';
 import { each } from 'lodash/collection';
 
-import * as subscribedSubredditsActions from '../actions/subscribedSubredditsActions';
-import { newSubscribedSubredditsModel } from '../models/SubscribedSubredditsModel';
+import * as subscribedSubredditsActions from '../actions/subscribedSubreddits';
+import { newSubscribedSubredditsModel } from '../models/SubscribedSubreddits';
 
 
 const DEFAULT = newSubscribedSubredditsModel();

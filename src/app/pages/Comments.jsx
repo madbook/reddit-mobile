@@ -6,8 +6,8 @@ import CommentsList from '../components/CommentsList/CommentsList';
 import Post from '../components/Post/Post';
 import Loading from '../components/Loading/Loading';
 
-import CommentsPageHandler from '../router/handlers/CommentsPageHandler';
-import { paramsToCommentsPageId } from '../models/CommentsPageModel';
+import CommentsPageHandler from '../router/handlers/CommentsPage';
+import { paramsToCommentsPageId } from '../models/CommentsPage';
 
 const commentsPageSelector = createSelector(
   (state, props) => props,

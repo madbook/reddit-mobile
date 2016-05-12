@@ -1,6 +1,6 @@
 import merge from '@r/platform/merge';
-import * as commentsPageActions from '../actions/commentsPageActions';
-import { newCommentsPage } from '../models/CommentsPageModel';
+import * as commentsPageActions from '../actions/commentsPage';
+import { newCommentsPage } from '../models/CommentsPage';
 
 const DEFAULT = {};
 

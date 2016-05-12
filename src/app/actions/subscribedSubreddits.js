@@ -1,7 +1,7 @@
 import { collections } from '@r/api-client';
 import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
-import { receivedResponse } from './apiResponseActions';
-import { OVERLAY_MENU_PARAMETER, COMMUNITY_MENU } from './overlayMenuUrlsAndActions';
+import { receivedResponse } from './apiResponse';
+import { OVERLAY_MENU_PARAMETER, COMMUNITY_MENU } from './overlayMenu';
 
 const { SubscribedSubreddits } = collections;
 

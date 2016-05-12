@@ -1,6 +1,6 @@
 import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
-import { receivedResponse } from './apiResponseActions';
+import { receivedResponse } from './apiResponse';
 
 const { SavedEndpoint } = endpoints;
 

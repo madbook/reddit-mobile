@@ -8,7 +8,7 @@ import { models } from '@r/api-client';
 
 import mobilify from '../../../lib/mobilify';
 
-import * as commentActions from '../../actions/commentActions';
+import * as commentActions from '../../actions/comment';
 
 import CommentsList from '../CommentsList/CommentsList';
 

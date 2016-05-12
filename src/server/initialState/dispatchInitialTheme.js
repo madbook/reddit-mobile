@@ -1,6 +1,6 @@
-import * as themeActions from '../../app/actions/themeActions';
+import * as themeActions from '../../app/actions/theme';
 import { themes } from '../../app/constants';
-import { DEFAULT } from '../../app/reducers/themeReducer';
+import { DEFAULT } from '../../app/reducers/theme';
 import { permanentCookieOptions } from './permanentCookieOptions';
 
 export const dispatchInitialTheme = async (ctx, dispatch) => {

@@ -1,4 +1,4 @@
-import { resetCollapse } from '../../app/actions/commentActions';
+import { resetCollapse } from '../../app/actions/comment';
 
 export default async (ctx, dispatch) => {
   dispatch(resetCollapse({}));

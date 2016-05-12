@@ -1,5 +1,5 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as communityGotoActions from '../../actions/communityGotoActions';
+import * as communityGotoActions from '../../actions/communityGoto';
 
 export default class CommunityGotoActionHandler extends BaseHandler {
   async [METHODS.POST](disaptch) {

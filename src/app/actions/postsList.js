@@ -1,7 +1,7 @@
 import { apiOptionsFromState } from '../../lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
-import { paramsToPostsListsId } from '../models/PostsListModel';
-import { receivedResponse } from './apiResponseActions';
+import { paramsToPostsListsId } from '../models/PostsList';
+import { receivedResponse } from './apiResponse';
 
 import { last } from 'lodash/array';
 

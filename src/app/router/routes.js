@@ -1,9 +1,9 @@
-import CommentsPageHandler from './handlers/CommentsPageHandler';
-import CommunityGotoActionHandler from './handlers/CommunityGotoActionHandler';
-import PostsFromSubredditHandler from './handlers/PostsFromSubredditHandler';
+import CommentsPageHandler from './handlers/CommentsPage';
+import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
+import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
-import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggleHandler';
-import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggleHandler';
+import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
+import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
 import Vote from './handlers/Vote';
 
 export default [

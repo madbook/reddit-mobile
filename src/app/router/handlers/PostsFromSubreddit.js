@@ -1,5 +1,5 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as postsListActions from '../../actions/postsListActions';
+import * as postsListActions from '../../actions/postsList';
 
 import { cleanObject } from '../../../lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';

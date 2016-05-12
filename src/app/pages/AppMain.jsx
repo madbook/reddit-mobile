@@ -2,8 +2,8 @@ import React from 'react';
 
 import { PageSelector, Page } from '@r/platform/page';
 
-import { CommentsPage } from './CommentsPage';
-import { PostsFromSubredditPage } from './PostsFromSubredditPage';
+import { CommentsPage } from './Comments';
+import { PostsFromSubredditPage } from './PostsFromSubreddit';
 
 import Login from '../components/login/Login';
 

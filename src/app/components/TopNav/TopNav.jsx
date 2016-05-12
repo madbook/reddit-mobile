@@ -9,7 +9,7 @@ import {
   OVERLAY_MENU_PARAMETER,
   urlWithSettingsMenuToggled,
   urlWithCommunityMenuToggled,
-} from '../../actions/overlayMenuUrlsAndActions';
+} from '../../actions/overlayMenu';
 
 import Logo from '../Logo/Logo';
 import SnooIcon from '../SnooIcon/SnooIcon';

@@ -1,12 +1,12 @@
 import { models } from '@r/api-client';
 import session from './session';
-import { apiResponseReducerMaker } from './apiResponseReducer';
-import commentsPagesReducer from './commentsPagesReducer';
-import compactReducer from './compactReducer';
-import postsListsReducer from './postsListsReducer';
-import subscribedSubredditsReducer from './subscribedSubredditsReducer';
-import themeReducer from './themeReducer';
-import collapsedCommentsReducer from './collapsedCommentsReducer';
+import { apiResponseReducerMaker } from './apiResponse';
+import commentsPagesReducer from './commentsPages';
+import compactReducer from './compact';
+import postsListsReducer from './postsLists';
+import subscribedSubredditsReducer from './subscribedSubreddits';
+import themeReducer from './theme';
+import collapsedCommentsReducer from './collapsedComments';
 
 const { ModelTypes } = models;
 

@@ -1,5 +1,5 @@
 import merge from '@r/platform/merge';
-import * as CommentActions from '../actions/commentActions';
+import * as CommentActions from '../actions/comment';
 
 const DEFAULT = {};
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import * as overlayMenuActions from '../../actions/overlayMenuUrlsAndActions';
+import * as overlayMenuActions from '../../actions/overlayMenu';
 
 import { OVERLAY_MENU_CSS_CLASS } from '../../constants';
 

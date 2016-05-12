@@ -1,4 +1,4 @@
-import * as themeActions from '../actions/themeActions';
+import * as themeActions from '../actions/theme';
 import { themes } from '../constants';
 
 export const DEFAULT = themes.DAYMODE;

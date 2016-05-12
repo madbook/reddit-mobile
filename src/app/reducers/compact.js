@@ -1,4 +1,4 @@
-import * as compactActions from '../actions/compactActions';
+import * as compactActions from '../actions/compact';
 
 export const DEFAULT = false;
 

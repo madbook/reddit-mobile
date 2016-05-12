@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import * as overlayMenuUrlsAndActions from '../../actions/overlayMenuUrlsAndActions';
+import * as overlayMenuUrlsAndActions from '../../actions/overlayMenu';
 
 import CommunityOverlayMenu from '../CommunityOverlayMenu/CommunityOverlayMenu';
 import SettingsOverlayMenu from '../SettingsOverlayMenu/SettingsOverlayMenu';
