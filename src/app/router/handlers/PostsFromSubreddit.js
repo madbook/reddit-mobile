@@ -4,7 +4,7 @@ import * as postsListActions from '../../actions/postsList';
 import { cleanObject } from '../../../lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
 
-export default class PostsFromSubredditHandler extends BaseHandler {
+export default class PostsFromSubreddit extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {
     const { subredditName, multi, multiUser } = urlParams;
     const { sort, t, after, before } = queryParams;
@@ -21,7 +21,7 @@ export default class PostsFromSubredditHandler extends BaseHandler {
   }
 
   async [METHODS.GET](dispatch/*, getState, utils*/) {
-    const subredditPostsParams = PostsFromSubredditHandler.PageParamsToSubredditPostsParams(this);
+    const subredditPostsParams = PostsFromSubreddit.PageParamsToSubredditPostsParams(this);
 
     dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams));
     fetchUserBasedData(dispatch);

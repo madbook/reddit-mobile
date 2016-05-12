@@ -1,7 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as communityGotoActions from '../../actions/communityGoto';
 
-export default class CommunityGotoActionHandler extends BaseHandler {
+export default class CommunityGotoAction extends BaseHandler {
   async [METHODS.POST](disaptch) {
     const location = (this.bodyParams.location || '').trim();
     disaptch(communityGotoActions.gotoLocation(location));

@@ -3,7 +3,7 @@ import * as platformActions from '@r/platform/actions';
 
 import * as voteActions from '../../actions/vote';
 
-export default class Login extends BaseHandler {
+export default class Vote extends BaseHandler {
   async [METHODS.POST](dispatch, getState/*, utils*/) {
     const { thingId } = this.urlParams;
     const direction = parseInt(this.bodyParams.direction);
