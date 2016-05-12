@@ -4,7 +4,12 @@ import { Provider } from 'react-redux';
 import App from '../../app';
 import { themeClass } from './themeClass';
 
+const env = process.env.NODE_ENV || 'production';
+const clientJsSrc = env === 'production' ? 'ProductionClient.js' : 'Client.js';
+
 export default function(data, store) {
+  const assetPath = data.assetPath || '';
+
   return ReactServerDom.renderToStaticMarkup(
     <html lang='en'>
       <head>
@@ -30,7 +35,7 @@ export default function(data, store) {
             ),
           } }
         />
-        <script type='text/javascript' src='/Client.js'></script>
+        <script type='text/javascript' src={ `${assetPath}/${clientJsSrc}` }></script>
       </body>
     </html>
   );
