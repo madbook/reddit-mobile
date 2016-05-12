@@ -1,6 +1,6 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
-import { paramsToCommentsPageId } from '../models/CommentsPage';
+import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 import { receivedResponse } from './apiResponse';
 
 const { CommentsEndpoint } = endpoints;

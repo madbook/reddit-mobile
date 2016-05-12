@@ -1,4 +1,4 @@
-import { themes } from '../constants';
+import { themes } from 'app/constants';
 const { NIGHTMODE, DAYMODE } = themes;
 
 export const SET_THEME = 'SET_THEME';

@@ -1,6 +1,6 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { endpoints } from '@r/api-client';
-import { paramsToPostsListsId } from '../models/PostsList';
+import { paramsToPostsListsId } from 'app/models/PostsList';
 import { receivedResponse } from './apiResponse';
 
 import { last } from 'lodash/array';
