@@ -12,22 +12,25 @@ import NSFWFlair from '../NSFWFlair/NSFWFlair';
 import OverlayMenu from '../OverlayMenu/OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
 
-const numCommunitiesText = (subscriptions) => {
+const numCommunitiesText = (subscriptions, loading) => {
   const num = subscriptions.length;
   if (num > 1) {
     return `${num} Communities`;
   } else if (num === 1) {
     return '1 Community';
+  } else if (loading) {
+    return 'Loading Subscriptions';
   }
+
   return 'No Communities';
 };
 
-const renderSubscriptions = (subscriptions, theme) => (
+const renderSubscriptions = (subscriptions, loading, theme) => (
   <ExpandoRow
     key='communities-row'
     icon='icon-settings'
     text='Subscribed'
-    subtext={ numCommunitiesText(subscriptions) }
+    subtext={ numCommunitiesText(subscriptions, loading) }
   >
     { map(subscriptions, subreddit => (
         <LinkRow
@@ -50,7 +53,7 @@ const renderSubscriptions = (subscriptions, theme) => (
 );
 
 export const CommunityOverlayMenu = (props) => {
-  const { user, subscriptions, theme } = props;
+  const { user, subscriptions, subscriptionsLoading, theme } = props;
 
   return (
     <OverlayMenu>
@@ -66,12 +69,13 @@ export const CommunityOverlayMenu = (props) => {
         href='/r/all'
         icon='icon-bar-chart orangered-circled-xl'
       />
-      { renderSubscriptions(subscriptions, theme) }
+      { renderSubscriptions(subscriptions, subscriptionsLoading, theme) }
     </OverlayMenu>
   );
 };
 
 const subscribedSubredditsSelector = (state) => state.subscribedSubreddits.subreddits;
+const subscriptionsLoadingSelector = (state) => state.subscribedSubreddits.fetching;
 const subredditStoreSelector = (state) => state.subreddits;
 const themeSelector = (state) => state.theme;
 
@@ -88,15 +92,16 @@ const compareDisplayName = (a, b) => {
   return 0;
 };
 
-const combineSelectors = (subredditRecords, subredditStore, theme) => {
-  const subscriptions = map(subredditRecords, r => subredditStore[r.uuid]);
+const combineSelectors = (subscriptionRecords, subscriptionsLoading, subredditStore, theme) => {
+  const subscriptions = map(subscriptionRecords, r => subredditStore[r.uuid]);
   subscriptions.sort(compareDisplayName);
 
-  return { subscriptions, theme };
+  return { subscriptions, subscriptionsLoading, theme };
 };
 
 const mapStateToProps = createSelector(
   subscribedSubredditsSelector,
+  subscriptionsLoadingSelector,
   subredditStoreSelector,
   themeSelector,
   combineSelectors,
