@@ -1,4 +1,5 @@
 import CommentsPageHandler from './handlers/CommentsPageHandler';
+import CommunityGotoActionHandler from './handlers/CommunityGotoActionHandler';
 import PostsFromSubredditHandler from './handlers/PostsFromSubredditHandler';
 import Login from './handlers/Login';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggleHandler';
@@ -17,6 +18,7 @@ export default [
 
   // actions
   ['/vote/:thingId', Vote],
+  ['/actions/community-goto', CommunityGotoActionHandler],
   ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
 ];
