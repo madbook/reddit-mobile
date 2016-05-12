@@ -1,4 +1,4 @@
-import { objectToHash } from '../../lib/objectToHash';
+import { objectToHash } from 'lib/objectToHash';
 import { omit } from 'lodash/object';
 
 export const paramsToPostsListsParams = (params) => {

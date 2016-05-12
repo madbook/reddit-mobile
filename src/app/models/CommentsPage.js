@@ -1,4 +1,4 @@
-import { objectToHash } from '../../lib/objectToHash';
+import { objectToHash } from 'lib/objectToHash';
 
 export const paramsToCommentsPageParams = (params) => {
   // use this for caching and de-duping later
