@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import querystring from 'querystring';
 
 import titleCase from '../../../lib/titleCase';
+import { urlWith } from '../../../lib/urlWith';
 
 import OverlayMenu from '../OverlayMenu/OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
@@ -30,7 +31,8 @@ export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) =
 };
 
 export const SettingsOverlayMenu = (props) => {
-  const { compact, theme } = props;
+  const { compact, theme, pageData } = props;
+  const { url, queryParams } = pageData;
 
   return (
     <OverlayMenu>
@@ -45,6 +47,13 @@ export const SettingsOverlayMenu = (props) => {
         action='/actions/overlay-theme-toggle'
         icon={ 'icon-spaceship icon-large  blue' }
         text={ `${theme === NIGHTMODE ? 'Day' : 'Night'} Theme` }
+      />
+      <LinkRow
+        key='goto-desktop'
+        text='Desktop Site'
+        icon='icon-desktop icon-large blue'
+        noRoute={ true }
+        href={ `https://www.reddit.com${urlWith(url, queryParams)}` }
       />
       <ExpandoRow
         key='about-reddit'
@@ -80,12 +89,14 @@ export const SettingsOverlayMenu = (props) => {
 
 const compactSelector = (state) => state.compact;
 const themeSelector = (state) => state.theme;
+const pageDataSelector = (state) => state.platform.currentPage;
 
-const combineSelectors = (compact, theme) => ({compact, theme});
+const combineSelectors = (compact, theme, pageData) => ({compact, theme, pageData});
 
 const mapStateToProps = createSelector(
   compactSelector,
   themeSelector,
+  pageDataSelector,
   combineSelectors,
 );
 
