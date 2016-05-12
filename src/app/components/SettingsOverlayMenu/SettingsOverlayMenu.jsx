@@ -3,8 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import querystring from 'querystring';
-
 import titleCase from '../../../lib/titleCase';
 import { urlWith } from '../../../lib/urlWith';
 
@@ -15,7 +13,7 @@ import menuItems from './SettingsOverlayMenuItems';
 
 import { themes } from '../../constants';
 
-const { NIGHTMODE, DAYMODE } = themes;
+const { NIGHTMODE } = themes;
 const userIconClassName = 'icon icon-user-account icon-large blue';
 
 export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
