@@ -6,9 +6,9 @@ import { createSelector } from 'reselect';
 
 import { models } from '@r/api-client';
 
-import mobilify from '../../../lib/mobilify';
+import mobilify from 'app/../lib/mobilify';
 
-import * as commentActions from '../../actions/comment';
+import * as commentActions from 'app/actions/comment';
 
 import CommentsList from '../CommentsList';
 

@@ -3,9 +3,9 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as overlayMenuActions from '../../actions/overlayMenu';
+import * as overlayMenuActions from 'app/actions/overlayMenu';
 
-import { OVERLAY_MENU_CSS_CLASS } from '../../constants';
+import { OVERLAY_MENU_CSS_CLASS } from 'app/constants';
 
 const stopClickPropagation = (e) => {
   e.stopPropagation();

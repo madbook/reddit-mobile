@@ -5,7 +5,7 @@ import { Anchor, Form } from '@r/platform/components';
 
 import { map } from 'lodash/collection';
 
-import { themes } from '../../constants';
+import { themes } from 'app/constants';
 const { NIGHTMODE } = themes;
 
 const T = React.PropTypes;

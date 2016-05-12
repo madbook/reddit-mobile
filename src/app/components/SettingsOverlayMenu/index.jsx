@@ -3,15 +3,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import titleCase from '../../../lib/titleCase';
-import { urlWith } from '../../../lib/urlWith';
+import titleCase from 'app/../lib/titleCase';
+import { urlWith } from 'app/../lib/urlWith';
 
 import OverlayMenu from '../OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from '../OverlayMenu/OverlayMenuRow';
 
 import menuItems from './SettingsOverlayMenuItems';
 
-import { themes } from '../../constants';
+import { themes } from 'app/constants';
 
 const { NIGHTMODE } = themes;
 //const userIconClassName = 'icon icon-user-account icon-large blue';

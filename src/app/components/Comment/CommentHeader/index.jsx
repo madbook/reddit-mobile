@@ -3,7 +3,7 @@ import './styles.less';
 import React from 'react';
 import { fill } from 'lodash/array';
 
-import short from '../../../../lib/formatDifference';
+import short from 'lib/formatDifference';
 
 const T = React.PropTypes;
 const separator = <div className='CommentHeader__separator'> • </div>;

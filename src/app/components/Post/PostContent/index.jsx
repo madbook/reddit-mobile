@@ -6,9 +6,9 @@ import { errors, models } from '@r/api-client';
 const { ResponseError } = errors;
 const { PostModel } = models;
 
-import mobilify from '../../../../lib/mobilify';
-import gifToHTML5Sources from '../../../../lib/gifToHTML5Sources';
-import { posterForHrefIfGiphyCat } from '../../../../lib/gifToHTML5Sources';
+import mobilify from 'lib/mobilify';
+import gifToHTML5Sources from 'lib/gifToHTML5Sources';
+import { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
 
 // import SquareButton from '../formElements/SquareButton';
 

@@ -2,8 +2,8 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 
-import short from '../../../../lib/formatDifference';
-import mobilify from '../../../../lib/mobilify';
+import short from 'lib/formatDifference';
+import mobilify from 'lib/mobilify';
 
 import { models } from '@r/api-client';
 const { PostModel } = models;
