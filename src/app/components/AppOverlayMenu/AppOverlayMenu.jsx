@@ -4,13 +4,16 @@ import { createSelector } from 'reselect';
 
 import * as overlayMenuUrlsAndActions from '../../actions/overlayMenuUrlsAndActions';
 
-import OverlayMenu from '../OverlayMenu/OverlayMenu';
+import SettingsOverlayMenu from '../SettingsOverlayMenu/SettingsOverlayMenu';
 
 export const AppOverlayMenu = (props) => {
   const overlayMenu = props.pageData.queryParams[overlayMenuUrlsAndActions.OVERLAY_MENU_PARAMETER];
-  if (!overlayMenu) { return null; }
+    switch (overlayMenu) {
+    case overlayMenuUrlsAndActions.SETTINGS_MENU:
+      return <SettingsOverlayMenu />;
 
-  return <OverlayMenu />;
+    default: return null;
+  }
 };
 
 const selector = createSelector(

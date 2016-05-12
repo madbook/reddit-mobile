@@ -2,16 +2,25 @@ import "./TopNav.less";
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { Anchor } from '@r/platform/components';
+
+import {
+  OVERLAY_MENU_PARAMETER,
+  urlWithSettingsMenuToggled,
+  urlWithCommunityMenuToggled,
+} from '../../actions/overlayMenuUrlsAndActions';
 
 import { Logo } from '../Logo/Logo';
 import { SnooIcon } from '../SnooIcon/SnooIcon';
 // import SearchBarController from '../components/search/SearchBarController';
 
 export const TopNav = (props) => {
+  console.log('topnav props', props);
+
   let { assetPath } = props;
   assetPath = assetPath ? assetPath : '';
-  const { overlayMenu, subredditName } = props;
+  const { overlayMenu, subredditName, url, queryParams } = props;
 
   let currentSubredditPath = '';
   if (subredditName) {
@@ -53,7 +62,7 @@ export const TopNav = (props) => {
         <h1 className='TopNav-text TopNav-padding'>
           <Anchor
             className='TopNav-text-community-menu-button TopNav-text-vcentering'
-            href='/?overlayMenu=communityMenu'
+            href={ urlWithCommunityMenuToggled(url, queryParams) }
           >
             <div className='TopNav-text-vcentering'>
               <Logo assetPath={ assetPath } />
@@ -86,7 +95,7 @@ export const TopNav = (props) => {
         </Anchor>
         <Anchor
           className='MobileButton TopNav-floaty'
-          href="/?overlayMenu=userMenu"
+          href={ urlWithSettingsMenuToggled(url, queryParams) }
         >
           <span className={ sideNavIcon }></span>
           { notificationsCount }
@@ -96,8 +105,23 @@ export const TopNav = (props) => {
   );
 };
 
+const pageParamsSelector = (state) => state.platform.currentPage;
+const combineSelectors = (pageParams) => {
+  const { url, urlParams, queryParams } = pageParams;
+  const overlayMenu = queryParams[OVERLAY_MENU_PARAMETER];
+  const { subredditName } = urlParams;
+
+  console.log('combine selectors props', pageParams);
+
+  return { overlayMenu, subredditName, url, queryParams };
+};
+
+const mapStateToProps = createSelector(
+  pageParamsSelector,
+  combineSelectors,
+);
 
 const mapDispatchToProps = (dispatch) => ({
 });
 
-export default connect(() => ({}), mapDispatchToProps)(TopNav);
+export default connect(mapStateToProps, mapDispatchToProps)(TopNav);

@@ -1,9 +1,12 @@
 import './OverlayMenu.less';
 
 import React from 'react';
-import { Anchor } from '@r/platform/components';
-import constants from '../../constants';
-const { NIGHTMODE } = constants.themes;
+import { Anchor, Form } from '@r/platform/components';
+
+import { map } from 'lodash/collection';
+
+import { themes } from '../../constants';
+const { NIGHTMODE } = themes;
 
 const T = React.PropTypes;
 
@@ -56,23 +59,33 @@ function iconOrSpacerFromProps(props) {
   return (<span className='OverlayMenu-row-spacer'>{ iconContent }</span>);
 }
 
+const paramsToInputs = (params) => {
+  const keys = Object.keys(params);
+  return map(keys, key => (
+    <input type='hidden' key={ `button-row-input-${key}` }name={ key } value={ params[key] } />
+  ));
+};
+
 ButtonRow.propTypes = {
   ...BaseRowProps,
-  clickHandler: T.func.isRequired,
+  action: T.string.isRequired,
+  params: T.object,
 };
 
 function ButtonRow(props) {
   return (
     <li className='OverlayMenu-row'>
-      <button
-        type='button'
+      <Form
+        action={ props.action }
         className='OverlayMenu-row-button'
-        onClick={ props.clickHandler }
       >
-        { iconOrSpacerFromProps(props) }
-        <span className='OverlayMenu-row-text'>{ props.text }</span>
-      </button>
-      { props.children }
+        { paramsToInputs(props.parms || {}) }
+        <button type='submit' className='OverlayMenu-row-button'>
+          { iconOrSpacerFromProps(props) }
+          <span className='OverlayMenu-row-text'>{ props.text }</span>
+          { props.children }
+        </button>
+      </Form>
     </li>
   );
 }

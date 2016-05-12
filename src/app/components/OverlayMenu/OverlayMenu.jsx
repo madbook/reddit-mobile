@@ -14,8 +14,8 @@ const stopClickPropagation = (e) => {
 
 export const OverlayMenu = (props) => (
   <nav
-    className={ `${OVERLAY_MENU_CSS_CLASS} tween` }
-    onClick={ this._closeIfClickedOut }
+    className={ OVERLAY_MENU_CSS_CLASS }
+    onClick={ props.closeOverlayMenu }
   >
     <ul className='OverlayMenu-ul list-unstyled' onClick={ stopClickPropagation }>
       { props.children }
@@ -23,13 +23,8 @@ export const OverlayMenu = (props) => (
   </nav>
 );
 
-const selector = createSelector(
-  (_, props) => props.children,
-  (children) => ({ children }),
-);
-
 const mapDispatchProps = (dispatch) => ({
-  closeOverlayMenu: dispatch(overlayMenuActions.closeOverlayMenu()),
+  closeOverlayMenu: () => dispatch(overlayMenuActions.closeOverlayMenu()),
 });
 
-export default connect(selector, mapDispatchProps)(OverlayMenu);
+export default connect(() => ({}), mapDispatchProps)(OverlayMenu);
