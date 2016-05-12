@@ -1,7 +1,7 @@
 import './styles.less';
 import React from 'react';
 
-import Vote from '../../Vote';
+import Vote from 'app/components/Vote';
 
 // import CommentDropdownContent from './CommentDropdownContent';
 // import DropdownController from '../dropdown/DropdownController';
