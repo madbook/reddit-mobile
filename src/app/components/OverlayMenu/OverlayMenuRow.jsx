@@ -127,7 +127,9 @@ class ExpandoRow extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state.expanded = false;
+    this.state = {
+      expanded: false,
+    };
 
     this._onClick = this._onClick.bind(this);
   }
@@ -145,7 +147,7 @@ class ExpandoRow extends React.Component {
     if (expanded) {
       body = (
         <ul className='OverlayMenu-ul list-unstyled'>
-          { this.props.children }
+          { props.children }
         </ul>
       );
     }

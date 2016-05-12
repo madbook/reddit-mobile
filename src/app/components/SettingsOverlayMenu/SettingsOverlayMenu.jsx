@@ -17,6 +17,18 @@ import { themes } from '../../constants';
 const { NIGHTMODE, DAYMODE } = themes;
 const userIconClassName = 'icon icon-user-account icon-large blue';
 
+export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
+  const url = item.url;
+  if (url.indexOf('/help') !== -1 || url.indexOf('/wiki') !== -1) {
+    return { href: item.url };
+  }
+
+  return {
+    href: `${config.reddit}${item.url}`,
+    noRoute: true,
+  };
+};
+
 export const SettingsOverlayMenu = (props) => {
   const { compact, theme } = props;
 
@@ -34,6 +46,34 @@ export const SettingsOverlayMenu = (props) => {
         icon={ 'icon-spaceship icon-large  blue' }
         text={ `${theme === NIGHTMODE ? 'Day' : 'Night'} Theme` }
       />
+      <ExpandoRow
+        key='about-reddit'
+        icon='icon-info icon-large'
+        text='About Reddit'
+      >
+        { menuItems.aboutItems.map((item) => {
+          return (
+            <LinkRow
+              { ...menuItemUrl(item) }
+              key = { item.url }
+              text={ titleCase(item.title) }
+            />);
+        }) }
+      </ExpandoRow>
+      <ExpandoRow
+        key='reddit-rules'
+        icon='icon-rules icon-large'
+        text='Reddit Rules'
+      >
+        { menuItems.ruleItems.map((item) => {
+          return (
+            <LinkRow
+              { ...menuItemUrl(item) }
+              key={ item.url }
+              text={ titleCase(item.title) }
+            />);
+        }) }
+      </ExpandoRow>
     </OverlayMenu>
   );
 };

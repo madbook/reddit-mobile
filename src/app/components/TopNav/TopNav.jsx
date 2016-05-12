@@ -111,8 +111,6 @@ const combineSelectors = (pageParams) => {
   const overlayMenu = queryParams[OVERLAY_MENU_PARAMETER];
   const { subredditName } = urlParams;
 
-  console.log('combine selectors props', pageParams);
-
   return { overlayMenu, subredditName, url, queryParams };
 };
 
