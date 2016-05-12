@@ -5,13 +5,14 @@
   "author": "reddit <schwers@reddit.com>",
   "license": "MIT",
   "scripts": {
-    "watch": "blueprints -w",
-    "build": "blueprints",
-    "prod-build": "blueprints -p",
-    "dev-server": "nodemon ./bin/Server.js",
+    "start": "NODE_ENV=production npm run server",
+    "build": "NODE_ENV=production blueprints -p",
+    "server": "NODE_ENV=production node ./bin/ProductionServer.js",
+    "watch": "NODE_ENV=development blueprints -w",
+    "dev-build": "NODE_ENV=development blueprints",
+    "dev-server": "NODE_ENV=development nodemon ./bin/Server.js",
     "lint": "eslint src --ext .js,.jsx",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
-    "server": "node ./bin/ProductionServer.js",
     "fonts": "webfonts"
   },
   "dependencies": {
