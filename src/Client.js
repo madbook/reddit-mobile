@@ -7,12 +7,12 @@ import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 
 import routes from './app/router';
 import App from './app';
-import allReducers from './app/reducers';
+import reducers from './app/reducers';
 import Session from './app/models/Session';
 
 Client({
   routes,
-  reducers: allReducers,
+  reducers,
   modifyData: data => {
     if (!isEmpty(data.session)) {
       data.session = new Session(data.session);
