@@ -13,7 +13,7 @@ import { elementInOtherEl,
 const { NIGHTMODE, DAYMODE } = constants.themes;
 
 const DISCONNECTED_MESSAGE = 'You have been disconnected from the internet.';
-const CONNECTED_MESSAGE = 'You have been reconected to the internet.';
+const CONNECTED_MESSAGE = 'You have been reconnected to the internet.';
 
 export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
   app.on('setTitle', setTitle);
