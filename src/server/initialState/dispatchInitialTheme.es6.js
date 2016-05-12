@@ -17,7 +17,7 @@ const makeThemeCookieOptions = () => {
   };
 };
 
-export default async (ctx, dispatch) => {
+export const dispatchInitialTheme = async (ctx, dispatch) => {
   const themeCookie = ctx.cookies.get('theme');
   const themeFromQuery = ctx.query.theme;
   let theme = themeFromQuery || themeCookie;
@@ -26,6 +26,9 @@ export default async (ctx, dispatch) => {
     theme = themes.DAYMODE;
   }
 
-  ctx.cookies.set('theme', theme, makeThemeCookieOptions());
+  if (theme !== themeCookie) {
+    ctx.cookies.set('theme', theme, makeThemeCookieOptions());
+  }
+
   dispatch(themeActions.setTheme(theme));
 };

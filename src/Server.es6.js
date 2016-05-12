@@ -10,7 +10,7 @@ import loginproxy from './server/session/loginproxy';
 import logoutproxy from './server/session/logoutproxy';
 import refreshproxy from './server/session/refreshproxy';
 import dispatchSession from './server/session/dispatchSession';
-import dispatchInitialTheme from './server/initialState/dispatchInitialTheme';
+import { dispatchInitialTheme } from './server/initialState/dispatchInitialTheme';
 
 import dispatchInitialCollapsedComments from
   './server/initialState/dispatchInitialCollapsedComments';
