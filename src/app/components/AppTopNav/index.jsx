@@ -1,13 +1,10 @@
 import React from 'react';
-import { PageSelector, Page } from '@r/platform/page';
+import { UrlSwitch, Case } from '@r/platform/url';
 import TopNav from 'app/components/TopNav';
 
-const renderNothing = () => null;
-const renderTopNav = () => (<TopNav />);
-
 export const AppTopNav = () => (
-  <PageSelector>
-    <Page url='/login' component={ renderNothing } />
-    <Page url='*' component={ renderTopNav } />
-  </PageSelector>
+  <UrlSwitch>
+    <Case url='/login' exec={ () => null } />
+    <Case url='*' exec={ () => <TopNav /> } />
+  </UrlSwitch>
 );

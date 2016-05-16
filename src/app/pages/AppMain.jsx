@@ -1,20 +1,14 @@
 import React from 'react';
 
-import { PageSelector, Page } from '@r/platform/page';
+import { UrlSwitch, Page } from '@r/platform/url';
 
 import { CommentsPage } from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
 
 import Login from 'app/components/Login';
 
-const renderCommentsPage = (pageProps) => {
-  return (<CommentsPage { ...pageProps} />);
-};
-
-const renderLoginPage = () => (<Login />);
-
 export const AppMainPage = () => (
-  <PageSelector>
+  <UrlSwitch>
     <Page
       url='/'
       component={ PostsFromSubredditPage }
@@ -25,23 +19,23 @@ export const AppMainPage = () => (
     />
     <Page
       url='/r/:subredditName/comments/:postId/comment/:commentId'
-      component={ renderCommentsPage }
+      component={ CommentsPage }
     />
     <Page
       url='/r/:subredditName/comments/:postId/:postTitle/:commentId'
-      component={ renderCommentsPage }
+      component={ CommentsPage }
     />
     <Page
       url='/r/:subredditName/comments/:postId/:postTitle?'
-      component={ renderCommentsPage }
+      component={ CommentsPage }
     />
     <Page
       url='/comments/:postId/:postTitle?'
-      component={ renderCommentsPage }
+      component={ CommentsPage }
     />
     <Page
       url='/login'
-      component={ renderLoginPage }
+      component={ Login }
     />
-  </PageSelector>
+  </UrlSwitch>
 );
