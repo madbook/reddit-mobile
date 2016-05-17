@@ -22,7 +22,7 @@ export default async (ctx, dispatch, apiOptions) => {
   // session.
   if (!session.isValid) {
     const data = await PrivateAPI.refreshToken(apiOptions, sessionData.refreshToken);
-    session = makeSessionFromData({ ...data, refreshToken: sessionData.refreshToken });
+    session = makeSessionFromData({ ...data, refresh_token: sessionData.refreshToken });
 
     // don't forget to set the cookies with the new session, or the session
     // will remain invalid the next time the page is fetched
