@@ -25,9 +25,7 @@ export const gotoSubreddit = (queriedName, waitForAction) => async (dispatch, ge
   dispatch(subredditActions.fetchSubreddit(name));
 
   await waitForAction(
-    subredditActions.receivedSubreddit(),
-    () => {}, // do nothing in a callback, do it here,
-    () => {}, // do nothing when state fails, wait for it to fetch
+    (action) => action.type === subredditActions.RECEIEVED_SUBREDDIT && action.name === name,
   );
 
   if (subredditExists(name, getState())) {
