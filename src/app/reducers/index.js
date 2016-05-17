@@ -4,6 +4,7 @@ import session from './session';
 import { apiResponseReducerMaker } from './apiResponse';
 import commentsPages from './commentsPages';
 import compact from './compact';
+import loid from './loid';
 import postsLists from './postsLists';
 import subscribedSubreddits from './subscribedSubreddits';
 import subredditRequests from './subredditRequests';
@@ -21,6 +22,7 @@ export default {
   session,
   commentsPages,
   compact,
+  loid,
   postsLists,
   theme,
   collapsedComments,

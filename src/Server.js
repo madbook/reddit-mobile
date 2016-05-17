@@ -17,6 +17,7 @@ import logoutproxy from 'server/session/logoutproxy';
 import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
+import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 
 import dispatchInitialCollapsedComments from
@@ -45,6 +46,7 @@ export function startServer() {
     reducers: allReducers,
     dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
       await dispatchInitialShell(ctx, dispatch);
+      await dispatchInitialLoid(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
       await dispatchInitialTheme(ctx, dispatch);
       await dispatchInitialCollapsedComments(ctx, dispatch);

@@ -1,12 +1,12 @@
 import randomString from './randomString';
 
-function setLoggedOutCookies(cookies, app) {
+export function setLoggedOutCookies(cookies, config) {
   const loid = randomString(18);
   const loidcreated = (new Date()).toISOString();
 
   const options = {
-    secure: app.getConfig('https'),
-    secureProxy: app.getConfig('httpsProxy'),
+    secure: config.https,
+    secureProxy: config.httpsProxy,
     httpOnly: false,
     maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
   };
@@ -20,5 +20,3 @@ function setLoggedOutCookies(cookies, app) {
     options,
   };
 }
-
-export default setLoggedOutCookies;
