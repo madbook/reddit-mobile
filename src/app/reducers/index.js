@@ -6,6 +6,7 @@ import commentsPages from './commentsPages';
 import compact from './compact';
 import postsLists from './postsLists';
 import subscribedSubreddits from './subscribedSubreddits';
+import subredditRequests from './subredditRequests';
 import theme from './theme';
 import collapsedComments from './collapsedComments';
 
@@ -24,6 +25,7 @@ export default {
   theme,
   collapsedComments,
   subscribedSubreddits,
+  subredditRequests,
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),
   [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),

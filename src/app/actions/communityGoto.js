@@ -1,54 +1,47 @@
-import { requestUtils } from '@r/api-client';
+import { models } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
-import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import * as subredditActions from './subreddits';
 
-const { rawSend } = requestUtils;
+const { Subreddit } = models;
 
-const tryLoad = (url, apiOptions) => {
-  return new Promise((resolve, reject) => {
-    rawSend(apiOptions, 'head', url, {}, 'query', (err, res/*, req*/) => {
-      if (err || !res || !res.ok) {
-        reject(new Error('no response'));
-      }
-
-      resolve(true);
-    });
-  });
+const gotoSubredditPage = (subredditName, dispatch) => {
+  dispatch(platformActions.navigateToUrl(METHODS.GET, `/r/${subredditName}`, {}));
 };
 
-export const gotoLocation = (queriedLocation) => async (dispatch, getState) => {
-  const apiOptions = apiOptionsFromState(getState());
-  let location = queriedLocation;
+const subredditExists = (subredditName, state) => {
+  return !!state.subreddits[subredditName];
+};
 
-  if (location.match(/.\/.+/)) {
-    if (location.indexOf('/') !== 0) {
-      location = `/${location}`;
-    }
+export const gotoSubreddit = (queriedName, waitForAction) => async (dispatch, getState) => {
+  const name = Subreddit.cleanName(queriedName);
 
-    if ([0,1].indexOf(location.indexOf('u/')) !== -1) {
-      location = location.replace(/u\//, 'user/');
-    }
-  } else {
-    location = `/r/${location}`;
-  }
-
-  try {
-    await tryLoad(location, apiOptions);
-    dispatch(platformActions.navigateToUrl(METHODS.GET, location, {}));
+  if (subredditExists(name, getState())) {
+    gotoSubredditPage(name, dispatch);
     return;
-  } catch (e) {
-    console.log(e, e.stack);
   }
 
-  let locationQuery = queriedLocation;
+  dispatch(subredditActions.fetchSubreddit(name));
 
-  if (locationQuery.indexOf('/') !== -1) {
-    locationQuery = this.query.location.split('/')[1];
+  await waitForAction(
+    subredditActions.receivedSubreddit(),
+    () => {}, // do nothing in a callback, do it here,
+    () => {}, // do nothing when state fails, wait for it to fetch
+  );
+
+  if (subredditExists(name, getState())) {
+    gotoSubredditPage(name, dispatch);
+    return;
   }
 
-  const queryParams = { q: locationQuery };
+  let query = queriedName;
+
+  if (query.indexOf('/') !== -1) {
+    query = query.location.split('/')[1];
+  }
+
+  const queryParams = { q: query };
 
   dispatch(platformActions.navigateToUrl(METHODS.GET, '/search', { queryParams }));
 };
