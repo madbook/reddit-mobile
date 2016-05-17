@@ -14,7 +14,7 @@ import menuItems from './SettingsOverlayMenuItems';
 import { themes } from 'app/constants';
 
 const { NIGHTMODE } = themes;
-//const userIconClassName = 'icon icon-user-account icon-large blue';
+const userIconClassName = 'icon-user-account icon-large blue';
 
 export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
   const url = item.url;
@@ -28,12 +28,21 @@ export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) =
   };
 };
 
+export const renderLoginRow = () => (
+  <LinkRow
+    text='Log in / sign up'
+    icon={ userIconClassName }
+    href={ '/login' }
+  />
+);
+
 export const SettingsOverlayMenu = (props) => {
   const { compact, theme, pageData } = props;
   const { url, queryParams } = pageData;
 
   return (
     <OverlayMenu>
+      { renderLoginRow() }
       <ButtonRow
         key='compact-toggle'
         action='/actions/overlay-compact-toggle'

@@ -3,6 +3,7 @@ import * as platformActions from '@r/platform/actions';
 
 import Session from 'app/models/Session';
 import * as sessionActions from 'app/actions/session';
+import * as loginActions from 'app/actions/login';
 
 export default class Login extends BaseHandler {
   async [METHODS.GET](/*dispatch, getState, utils*/) {
@@ -15,7 +16,8 @@ export default class Login extends BaseHandler {
     try {
       const newSession = await Session.fromLogin(username, password);
       dispatch(sessionActions.setSession(newSession));
-      dispatch(platformActions.setPage('/'));
+      dispatch(loginActions.loggedIn());
+      dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
     } catch (e) {
       return; // do nothing until session is better
     }

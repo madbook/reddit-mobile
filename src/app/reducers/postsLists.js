@@ -1,5 +1,7 @@
 import merge from '@r/platform/merge';
 import * as postsListActions from 'app/actions/postsList';
+import * as loginActions from 'app/actions/login';
+
 import { newPostsList } from 'app/models/PostsList';
 import { each } from 'lodash/array';
 
@@ -7,6 +9,11 @@ const DEFAULT = {};
 
 export default (state=DEFAULT, action={}) => {
   switch (action.type) {
+    case loginActions.LOGGED_IN:
+    case loginActions.LOGGED_OUT: {
+      return DEFAULT;
+    }
+
     case postsListActions.FETCHING_POSTS_LIST: {
       const { postsListId, postsParams } = action;
       const currentPostsList = state[postsListId];

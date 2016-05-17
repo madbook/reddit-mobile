@@ -16,8 +16,6 @@ import SnooIcon from 'app/components/SnooIcon';
 // import SearchBarController from 'app/components/components/search/SearchBarController';
 
 export const TopNav = (props) => {
-  console.log('topnav props', props);
-
   let { assetPath } = props;
   assetPath = assetPath ? assetPath : '';
   const { overlayMenu, subredditName, url, queryParams } = props;
