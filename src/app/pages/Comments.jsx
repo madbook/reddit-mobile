@@ -12,8 +12,8 @@ import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 const commentsPageSelector = createSelector(
   (state, props) => props,
   (state, /*props*/) => state.commentsPages,
-  (state, /*props*/) => state.comments,
-  (pageProps, commentsPages/*, commentsStore*/) => {
+  (state, /*props*/) => state.posts,
+  (pageProps, commentsPages, posts) => {
     const commentsPageParams = CommentsPageHandler.PageParamsToCommentsPageParams(pageProps);
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
     const commentsPage = commentsPages[commentsPageId];
@@ -24,6 +24,7 @@ const commentsPageSelector = createSelector(
     const permalinkBase = pageProps.url;
 
     return {
+      postLoaded: !!posts[commentsPageParams.id],
       commentsPageParams,
       commentsPage,
       commentsPageId,
@@ -34,11 +35,14 @@ const commentsPageSelector = createSelector(
 );
 
 export const CommentsPage = connect(commentsPageSelector)((props) => {
-  const { commentsPage, commentsPageParams, topLevelComments, permalinkBase } = props;
+  const { commentsPage, commentsPageParams, topLevelComments, permalinkBase, postLoaded } = props;
 
   return (
     <div className='CommentsPage BelowTopNav'>
-      <Post postId={ commentsPageParams.id } single={ true } />
+      { !postLoaded ?
+        <Loading /> :
+        <Post postId={ commentsPageParams.id } single={ true } />
+      }
       { !commentsPage || commentsPage.loading ?
         <Loading /> :
         <CommentsList

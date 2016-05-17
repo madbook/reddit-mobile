@@ -20,9 +20,11 @@ export default class PostsFromSubreddit extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch/*, getState, utils*/) {
-    const subredditPostsParams = PostsFromSubreddit.PageParamsToSubredditPostsParams(this);
+  async [METHODS.GET](dispatch, getState/*, utils*/) {
+    const state = getState();
+    if (state.platform.shell) { return; }
 
+    const subredditPostsParams = PostsFromSubreddit.PageParamsToSubredditPostsParams(this);
     dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams));
     fetchUserBasedData(dispatch);
   }

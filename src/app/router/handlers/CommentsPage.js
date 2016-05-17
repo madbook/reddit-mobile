@@ -36,7 +36,10 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch/*, getState, utils*/) {
+  async [METHODS.GET](dispatch, getState/*, utils*/) {
+    const state = getState();
+    if (state.platform.shell) { return; }
+
     const commentsPageParams = CommentsPage.PageParamsToCommentsPageParams(this);
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));

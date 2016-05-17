@@ -1,10 +1,13 @@
 import 'babel-polyfill';
-import Server from '@r/platform/server';
-import APIOptions from '@r/api-client';
-import KoaStatic from 'koa-static';
 
+import KoaStatic from 'koa-static';
 import cluster from 'cluster';
 import { cpus } from 'os';
+
+import Server from '@r/platform/server';
+import { dispatchInitialShell } from '@r/platform/plugins';
+import APIOptions from '@r/api-client';
+
 
 import routes from 'app/router';
 import main from 'server/templates/main';
@@ -41,6 +44,7 @@ export function startServer() {
     template: main,
     reducers: allReducers,
     dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
+      await dispatchInitialShell(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
       await dispatchInitialTheme(ctx, dispatch);
       await dispatchInitialCollapsedComments(ctx, dispatch);

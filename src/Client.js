@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import Client from '@r/platform/client';
+import * as actions from '@r/platform/actions';
 import { isEmpty } from 'lodash/lang';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
@@ -10,7 +11,7 @@ import App from 'app';
 import reducers from 'app/reducers';
 import Session from 'app/models/Session';
 
-Client({
+const client = Client({
   routes,
   reducers,
   modifyData: data => {
@@ -27,9 +28,10 @@ Client({
       } catch (e) { console.log(e); }
     }
 
-    console.log(data);
     return data;
   },
   appComponent: <App/>,
   debug: true,
 })();
+
+client.dispatch(actions.activateClient());
