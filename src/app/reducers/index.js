@@ -2,6 +2,7 @@ import { models } from '@r/api-client';
 
 import session from './session';
 import { apiResponseReducerMaker } from './apiResponse';
+import accountRequests from './accountRequests';
 import commentsPages from './commentsPages';
 import compact from './compact';
 import loid from './loid';
@@ -17,9 +18,11 @@ const { ModelTypes } = models;
 const COMMENTS = `${ModelTypes.COMMENT}s`;
 const POSTS = `${ModelTypes.POST}s`;
 const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
+const ACCOUNTS = `${ModelTypes.ACCOUNT}s`;
 
 export default {
   session,
+  accountRequests,
   commentsPages,
   compact,
   loid,
@@ -28,6 +31,7 @@ export default {
   collapsedComments,
   subscribedSubreddits,
   subredditRequests,
+  [ACCOUNTS]: apiResponseReducerMaker(ACCOUNTS),
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),
   [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),
