@@ -3,7 +3,7 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
+import { Anchor, BackAnchor } from '@r/platform/components';
 
 import {
   OVERLAY_MENU_PARAMETER,
@@ -58,7 +58,7 @@ export const TopNav = (props) => {
           <SnooIcon />
         </Anchor>
         <h1 className='TopNav-text TopNav-padding'>
-          <Anchor
+          <BackAnchor
             className='TopNav-text-community-menu-button TopNav-text-vcentering'
             href={ urlWithCommunityMenuToggled(url, queryParams) }
           >
@@ -68,7 +68,7 @@ export const TopNav = (props) => {
             <div className='MobileButton community-button'>
               <span className={ communityMenuIcon } />
             </div>
-          </Anchor>
+          </BackAnchor>
         </h1>
       </div>
       <div className='TopNav-padding TopNav-right' key='topnav-actions'>
@@ -91,13 +91,13 @@ export const TopNav = (props) => {
             loidcreated={ this.props.loidcreated }
           />*/}
         </Anchor>
-        <Anchor
+        <BackAnchor
           className='MobileButton TopNav-floaty'
           href={ urlWithSettingsMenuToggled(url, queryParams) }
         >
           <span className={ sideNavIcon }></span>
           { notificationsCount }
-        </Anchor>
+        </BackAnchor>
       </div>
     </nav>
   );
