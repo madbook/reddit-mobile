@@ -45,12 +45,12 @@ export function startServer() {
     template: main,
     reducers: allReducers,
     dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
-      await dispatchInitialShell(ctx, dispatch);
-      await dispatchInitialLoid(ctx, dispatch);
+      dispatchInitialShell(ctx, dispatch);
+      dispatchInitialLoid(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
-      await dispatchInitialTheme(ctx, dispatch);
-      await dispatchInitialCollapsedComments(ctx, dispatch);
-      await dispatchInitialCompact(ctx, dispatch);
+      dispatchInitialTheme(ctx, dispatch);
+      dispatchInitialCollapsedComments(ctx, dispatch);
+      dispatchInitialCompact(ctx, dispatch);
     },
     preRouteServerMiddleware: [
       binFiles,
