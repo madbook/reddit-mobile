@@ -1,16 +1,17 @@
 import { models } from '@r/api-client';
 
-import session from './session';
 import { apiResponseReducerMaker } from './apiResponse';
 import accountRequests from './accountRequests';
+import collapsedComments from './collapsedComments';
 import commentsPages from './commentsPages';
 import compact from './compact';
 import loid from './loid';
 import postsLists from './postsLists';
+import session from './session';
 import subscribedSubreddits from './subscribedSubreddits';
 import subredditRequests from './subredditRequests';
 import theme from './theme';
-import collapsedComments from './collapsedComments';
+import user from './user';
 
 const { ModelTypes } = models;
 
@@ -21,16 +22,17 @@ const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
 const ACCOUNTS = `${ModelTypes.ACCOUNT}s`;
 
 export default {
-  session,
   accountRequests,
+  collapsedComments,
   commentsPages,
   compact,
   loid,
   postsLists,
-  theme,
-  collapsedComments,
+  session,
   subscribedSubreddits,
   subredditRequests,
+  theme,
+  user,
   [ACCOUNTS]: apiResponseReducerMaker(ACCOUNTS),
   [COMMENTS]: apiResponseReducerMaker(COMMENTS),
   [POSTS]: apiResponseReducerMaker(POSTS),

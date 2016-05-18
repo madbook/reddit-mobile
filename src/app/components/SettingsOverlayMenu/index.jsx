@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from '@r/platform/components';
 
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -36,13 +37,65 @@ export const renderLoginRow = () => (
   />
 );
 
+export const renderLoggedInUserRows = (user) => {
+  const { inboxCount } = user;
+  let badge;
+
+  if (inboxCount) {
+    badge = (
+      <span className='badge badge-orangered badge-with-spacing'>
+        { inboxCount }
+      </span>
+    );
+  }
+
+  return [
+    <LinkRow
+      key='account'
+      text={ user.name }
+      href={ `/u/${user.name}` }
+      icon={ userIconClassName }
+    >
+      <Form className='OverlayMenu-row-right-item' action='/logout'>
+        <button type='submit'>
+          Log out
+        </button>
+      </Form>
+    </LinkRow>,
+
+    <LinkRow
+      key='inbox'
+      text={ ['Inbox', badge] }
+      href='/message/inbox'
+      icon={ `icon-message icon-large ${inboxCount ? 'orangered' : 'blue'}` }
+    />,
+
+    <LinkRow
+      key='saved'
+      text='Saved'
+      href={ `/u/${user.name}/saved` }
+      icon='icon-save icon-large lime'
+    />,
+
+    <LinkRow
+      key='settings'
+      text= 'Settings'
+      noRoute={ true }
+      href={ 'https://www.reddit.com/prefs' }
+      icon='icon-settings icon-large blue'
+    />,
+  ];
+};
+
 export const SettingsOverlayMenu = (props) => {
-  const { compact, theme, pageData } = props;
+  const { compact, theme, pageData, user } = props;
   const { url, queryParams } = pageData;
 
   return (
     <OverlayMenu>
-      { renderLoginRow() }
+      {
+        user ? renderLoggedInUserRows(user) : renderLoginRow()
+      }
       <ButtonRow
         key='compact-toggle'
         action='/actions/overlay-compact-toggle'
@@ -97,13 +150,24 @@ export const SettingsOverlayMenu = (props) => {
 const compactSelector = (state) => state.compact;
 const themeSelector = (state) => state.theme;
 const pageDataSelector = (state) => state.platform.currentPage;
+const userAccountSelector = (state) => {
+  const { user } = state;
+  if (user.loggedOut) { return; }
+  const { name } = user;
+  if (!name) { return; }
 
-const combineSelectors = (compact, theme, pageData) => ({compact, theme, pageData});
+  return state.accounts[name];
+};
+
+const combineSelectors = (compact, theme, pageData, user) => ({
+  compact, theme, pageData, user,
+});
 
 const mapStateToProps = createSelector(
   compactSelector,
   themeSelector,
   pageDataSelector,
+  userAccountSelector,
   combineSelectors,
 );
 
