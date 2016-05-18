@@ -14,7 +14,7 @@ const subredditExists = (subredditName, state) => {
   return !!state.subreddits[subredditName];
 };
 
-export const gotoSubreddit = (queriedName, waitForAction) => async (dispatch, getState) => {
+export const gotoSubreddit = (queriedName) => async (dispatch, getState, { waitForAction }) => {
   const name = Subreddit.cleanName(queriedName);
 
   if (subredditExists(name, getState())) {
