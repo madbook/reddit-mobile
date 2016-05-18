@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form } from '@r/platform/components';
 
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -56,11 +55,11 @@ export const renderLoggedInUserRows = (user) => {
       href={ `/u/${user.name}` }
       icon={ userIconClassName }
     >
-      <Form className='OverlayMenu-row-right-item' action='/logout'>
+      <form className='OverlayMenu-row-right-item' action='/logout' method='POST'>
         <button type='submit'>
           Log out
         </button>
-      </Form>
+      </form>
     </LinkRow>,
 
     <LinkRow
