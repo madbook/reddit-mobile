@@ -12,18 +12,18 @@ export default function (state=DEFAULT, action={}) {
     }
 
     case accountActions.FETCHING_ACCOUNT: {
-      const { name } = action;
+      const { name, loggedOut } = action;
       if (name === 'me' && !state.loading) {
-        return newUserModel({});
+        return newUserModel({ loggedOut });
       }
 
       return state;
     }
 
     case accountActions.RECEIEVED_ACCOUNT: {
-      const { name, result } = action;
+      const { name, loggedOut, result } = action;
       if (name === 'me' && result.uuid !== state.name) {
-        return newUserModel({ name: result.uuid, loading: false });
+        return newUserModel({ name: result.uuid, loading: false, loggedOut });
       }
 
       return state;

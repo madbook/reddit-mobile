@@ -6,8 +6,6 @@ export const fetchUserBasedData = (dispatch) => {
 
   dispatch(async (d, getState) => {
     const state = getState();
-    if (state.session.accessToken) {
-      d(accountActions.fetch('me'));
-    }
+    d(accountActions.fetch({ name: 'me', loggedOut: !state.session.accessToken }));
   });
 };
