@@ -11,7 +11,7 @@ const overlayOpenSelector = (state) => {
   return !!state.platform.currentPage.queryParams[OVERLAY_MENU_PARAMETER];
 };
 
-const combiner = (theme, overlayOpen ) => ({ theme, overlayOpen });
+const combiner = (theme, overlayOpen) => ({ theme, overlayOpen });
 
 const updateTheme = ($body, newTheme) => {
   const nextThemeClass = themeClass(newTheme);
