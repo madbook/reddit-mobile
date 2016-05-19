@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import * as sessionActions from 'app/actions/session';
+import * as sessionRefreshingActions from 'app/actions/sessionRefreshing';
 
 class _SessionRefresh extends React.Component {
   constructor(props) {
@@ -23,22 +23,7 @@ class _SessionRefresh extends React.Component {
     if (session.refreshToken) {
       const now = new Date();
       const when = (new Date(session.expires) - now) * 0.9;
-      this.timeoutId = setTimeout(this.refreshSession, when);
-    }
-  }
-
-  refreshSession = async (retrying=false) => {
-    if (!this.props.session.refresh) { console.log('no session'); return; }
-    try {
-      const refreshed = await this.props.session.refresh();
-      this.props.onRefreshed(refreshed);
-    } catch (e) {
-      if (!retrying) {
-        // retry, only once, somewhere between 1 and 3 seconds later
-        this.timeoutId = setTimeout(this.refreshSession,
-          Math.floor(1000 * Math.random() * 2000),
-        );
-      }
+      this.timeoutId = setTimeout(this.props.refreshSession, when);
     }
   }
 
@@ -59,7 +44,7 @@ const mapStateToProps = createSelector(
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  onRefreshed: (session) => dispatch(sessionActions.setSession(session)),
+  refreshSession: () => dispatch(sessionRefreshingActions.refresh()),
 });
 
 export const SessionRefresher = connect(mapStateToProps, mapDispatchToProps)(_SessionRefresh);
