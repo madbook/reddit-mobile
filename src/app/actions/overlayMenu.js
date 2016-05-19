@@ -5,7 +5,6 @@ import { urlWith, urlWithQueryParamToggled } from 'lib/urlWith';
 import { omit } from 'lodash/object';
 import { isEqual } from 'lodash/lang';
 
-
 export const OVERLAY_MENU_PARAMETER = 'overlayMenu';
 export const SETTINGS_MENU = 'settings';
 export const COMMUNITY_MENU = 'community';
@@ -36,9 +35,10 @@ export const closeOverlayMenu = () => async (dispatch, getState) => {
 
   if (shouldGoBack(url, newParams, urlHistory)) {
     history.back();
-  } else {
-    dispatch(navigateToUrl(METHODS.GET, url, newParams));
+    return;
   }
+
+  dispatch(navigateToUrl(METHODS.GET, url, newParams));
 };
 
 const shouldGoBack = (url, queryParams, urlHistory) => {
