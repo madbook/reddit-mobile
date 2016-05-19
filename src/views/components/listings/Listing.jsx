@@ -22,6 +22,7 @@ export default class Listing extends BaseComponent {
     firstPage: T.number,
     page: T.number,
     hideSubredditLabel: T.bool,
+    subredditName: T.string,
     subredditTitle: T.string,
     subredditIsNSFW: T.bool,
     showOver18Interstitial: T.bool,
@@ -82,6 +83,7 @@ export default class Listing extends BaseComponent {
       firstPage,
       winWidth,
       hideSubredditLabel,
+      subredditName,
       subredditTitle,
       subredditIsNSFW,
       showOver18Interstitial,
@@ -108,6 +110,7 @@ export default class Listing extends BaseComponent {
           loid={ loid }
           showHidden={ showHidden }
           hideSubredditLabel={ hideSubredditLabel }
+          subredditName={ subredditName }
           subredditTitle={ subredditTitle }
           subredditIsNSFW={ subredditIsNSFW }
           showOver18Interstitial={ showOver18Interstitial }

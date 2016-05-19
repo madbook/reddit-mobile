@@ -30,6 +30,7 @@ export default class PostAndCommentList extends BaseComponent {
     loid: T.string,
     showHidden: T.bool,
     hideSubredditLabel: T.bool,
+    subredditName: T.string,
     subredditTitle: T.string,
     subredditIsNSFW: T.bool,
     showOver18Interstitial: T.bool,
