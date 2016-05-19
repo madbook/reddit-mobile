@@ -1,0 +1,121 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+
+@community-icon-size: 64px;
+@community-icon-half-size: floor(@community-icon-size / 2);
+@community-subscribe-button-size: 19px;
+@spacer: @grid-size + @half-grid-size;
+
+.CommunityHeader {
+  .themeify({
+    background-color: @theme-body-color;
+    border-bottom: @theme-border;
+  });
+
+  padding-bottom: @spacer;
+
+  &.with-error {
+    padding-bottom: 0;
+  }
+}
+
+.CommunityHeader-banner {
+  .themeify(
+  @inDayMode: {
+    background-color: @blue;
+  };
+  @inNightMode: {
+    background-color: @theme-comment-body-color;
+  });
+
+  // use padding bottom to maintain aspect ratio
+  // position relative and overflow for positioning the icon
+  position: relative;
+  width: 100%;
+
+  padding-bottom: 20%;
+
+  &.m-with-banner {
+    padding-bottom: 30%; // 10:3 aspect ratio
+  }
+
+  // the icon holder bottom: -@spacer so @grid-size is the gap
+  margin-bottom: @spacer + @grid-size;
+
+  background-position: center;
+  background-size: cover;
+  overflow-y: visible;
+}
+
+.CommunityHeader-banner-icon-holder {
+  width: @community-icon-size;
+  height: @community-icon-size;
+  position: absolute;
+
+  left: 50%;
+  margin-left: -@community-icon-half-size;
+  bottom: -@spacer;
+
+  border-radius: @community-icon-half-size;
+  border: 1px solid @white;
+  background: url(/img/snoo-128.png);
+  background-color: inherit;
+  background-size: @community-icon-size @community-icon-size;
+  background-repeat: no-repeat;
+  background-position: -1px 12px;
+
+  &.CommunityHeader-banner-icon-holder-image  {
+    background-position: 0 0;
+    background-size: 100%;
+  }
+}
+
+.CommunityHeader-text-row {
+  text-align: center;
+  font-size: @font-size-base - 1px;
+
+  .themeify({
+    color: @theme-meta-text-color;
+  });
+}
+
+.CommunityHeader-community-title {
+  font-size: 20px;
+  font-weight: lighter;
+  margin: 0;
+
+  .themeify({
+    color: @theme-body-text-color;
+  });
+}
+
+.CommunityHeader-text-row-blue {
+  color: @blue;
+}
+
+.CommunityHeader-subscribe-button {
+  // size prevents cropping in safari
+  width: @community-subscribe-button-size;
+  height: @community-subscribe-button-size;
+  line-height: 0;
+  vertical-align: middle;
+
+  [class*=" icon-"] {
+    font-size: @community-subscribe-button-size;
+    line-height: 0;
+  }
+}
+
+.CommunityHeader-error {
+  margin-bottom: 0px;
+  margin-top: @half-grid-size;
+}
+
+.CommunityHeader-clear-error-icon {
+  margin-left: @half-grid-size;
+
+  &[class*=" icon-"] {
+    vertical-align: text-bottom;
+  }
+}
