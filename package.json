@@ -20,7 +20,7 @@
     "@r/build": "^0.6.0",
     "@r/flags": "^1.4.0",
     "@r/middleware": "~0.6.1",
-    "@r/platform": "~0.2.0",
+    "@r/platform": "~0.4.1",
     "@r/private": "~0.1.0",
     "@r/redux-state-archiver": "~0.0.5",
     "atob": "2.0.3",
