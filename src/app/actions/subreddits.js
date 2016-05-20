@@ -46,7 +46,7 @@ export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) =>
     dispatch(updatedModel(stub, SUBREDDIT));
 
     try {
-      const resolved = await stub.promise;
+      const resolved = await stub.promise();
       dispatch(updatedModel(resolved, SUBREDDIT));
     } catch (e) {
       dispatch(updatedModel(subreddit, SUBREDDIT));
