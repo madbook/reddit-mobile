@@ -1,5 +1,6 @@
 import { navigateToUrl } from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
+import shouldGoBack from '@r/platform/shouldGoBack'
 
 import { urlWith, urlWithQueryParamToggled } from 'lib/urlWith';
 import { omit } from 'lodash/object';
@@ -32,25 +33,12 @@ export const closeOverlayMenu = () => async (dispatch, getState) => {
   const { url, queryParams } = state.platform.currentPage;
   const newParams = omit(queryParams, OVERLAY_MENU_PARAMETER);
   const urlHistory = state.platform.history;
+  const currentIndex = state.platform.currentPageIndex;
 
-  if (shouldGoBack(url, newParams, urlHistory)) {
+  if (shouldGoBack(urlHistory, currentIndex, url, newParams)) {
     history.back();
     return;
   }
 
   dispatch(navigateToUrl(METHODS.GET, url, newParams));
-};
-
-const shouldGoBack = (url, queryParams, urlHistory) => {
-  const existsHistoryAPI = (typeof history !== 'undefined') && history.back && history.state;
-  const existsUrlHistory = urlHistory && urlHistory.length > 1;
-
-  if (existsHistoryAPI && existsUrlHistory) {
-    const prevHist = urlHistory[urlHistory.length - 2];
-    if (isEqual(prevHist.url, url) && isEqual(prevHist.queryParams, queryParams)) {
-      return true;
-    }
-  }
-
-  return false;
 };
