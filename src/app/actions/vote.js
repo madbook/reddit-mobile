@@ -1,5 +1,6 @@
-import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints } from '@r/api-client';
+//import { endpoints } from '@r/api-client';
+
+//import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { receivedResponse } from './apiResponse';
 
 // const { VoteEndpoint } = endpoints;
@@ -25,12 +26,12 @@ export const VOTE = 'VOTE';
 export const voting = (id, direction) => ({ type: VOTING, id, direction });
 export const voted = (id, direction) => ({ type: VOTED, id, direction });
 export const vote = (id, direction) => async (dispatch, getState) => {
+  const state = getState();
+
   dispatch(voting(id, direction));
 
-  const state = getState();
   //const apiResponse = await VoteEndpoint.post(apiOptionsFromState(state), { id, direction });
   const apiResponse = await makeFakeResponse(id, direction, state);
-  console.log(apiResponse);
 
   dispatch(receivedResponse(apiResponse));
   dispatch(voted(id, direction));

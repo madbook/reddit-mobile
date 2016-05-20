@@ -10,6 +10,10 @@ export default class Vote extends BaseHandler {
 
     const state = getState();
 
+    if (!state.session.isValid) {
+      return dispatch(platformActions.setPage('/login'));
+    }
+
     try {
       dispatch(voteActions.vote(thingId, direction));
       dispatch(platformActions.gotoPageIndex(state.platform.history.length - 1));
