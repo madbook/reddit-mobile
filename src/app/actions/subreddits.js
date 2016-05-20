@@ -13,7 +13,9 @@ export const receivedSubreddit = (name) => ({ type: RECEIEVED_SUBREDDIT, name })
 export const fetchSubreddit = (name) => async (dispatch, getState) => {
   const state = getState();
   const pendingRequest = state.subredditRequests[name];
-  if (pendingRequest && pendingRequest.loading) { return; }
+  if (pendingRequest && !pendingRequest.failed && !pendingRequest.loading) {
+    return;
+  }
 
   dispatch(fetchingSubreddit(name));
 
