@@ -1,6 +1,6 @@
-import { endpoints } from '@r/api-client';
+import { endpoints, models } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { receivedResponse } from './apiResponse';
+import { receivedResponse, updatedModel } from './apiResponse';
 
 const { SubredditEndpoint } = endpoints;
 
@@ -25,4 +25,31 @@ export const fetchSubreddit = (name) => async (dispatch, getState) => {
     // add a failed state explicitly?
     dispatch(receivedSubreddit(name));
   }
+};
+
+const { Subreddit, ModelTypes } = models;
+const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
+
+export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) => {
+  // we take the fullName and isSubscriber so we don't have to make any api calls
+  // on the server to lookup the subreddit;
+  return async (dispatch, getState) => {
+    const state = getState();
+    let subreddit = state.subreddits[subredditName];
+    if (!subreddit) {
+      subreddit = Subreddit.fromJSON({ name: fullName, user_is_subscriber: isSubscriber });
+    }
+
+    const stub = subreddit.toggleSubscribed(apiOptionsFromState(state));
+    dispatch(updatedModel(stub, SUBREDDITS));
+
+    try {
+      const resolved = await stub.promise;
+      dispatch(updatedModel(resolved, SUBREDDITS));
+    } catch (e) {
+      dispatch(updatedModel(subreddit, SUBREDDITS));
+    }
+
+    // todo redirect based on referrer;
+  };
 };

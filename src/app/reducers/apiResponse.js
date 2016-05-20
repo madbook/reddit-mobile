@@ -28,6 +28,15 @@ export const apiResponseReducerMaker = (key, kind) => {
         return state;
       }
 
+      case apiResponseActions.UPDATED_MODEL: {
+        const { model, kind: actionKind } = action;
+        if (actionKind === kind && model.uuid) {
+          return merge(state, { [model.uuid]: model });
+        }
+
+        return state;
+      }
+
       default: return state;
     }
   };

@@ -94,6 +94,14 @@
   color: @blue;
 }
 
+.CommunityHeader-no-outline {
+  outline: none;
+}
+
+.CommunityHeader-subscribe-form {
+  display: inline-block;
+}
+
 .CommunityHeader-subscribe-button {
   // size prevents cropping in safari
   width: @community-subscribe-button-size;
@@ -101,9 +109,11 @@
   line-height: 0;
   vertical-align: middle;
 
-  [class*=" icon-"] {
+  .icon {
     font-size: @community-subscribe-button-size;
     line-height: 0;
+    position: relative;
+    top: -3px;
   }
 }
 

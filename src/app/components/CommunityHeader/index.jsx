@@ -1,11 +1,11 @@
-import'./styles.less';
+import './styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Form } from '@r/platform/components';
 
 import { themes } from 'app/constants';
-
 import formatNumber from 'lib/formatNumber';
 
 import Loading from 'app/components/Loading';
@@ -73,7 +73,6 @@ const CommunityHeader = (props) => {
     subreddit,
     subscribeError,
     theme,
-    onSubscribeToggle,
   } = props;
 
   if (!subreddit) {
@@ -105,21 +104,24 @@ const CommunityHeader = (props) => {
 
       <div className='CommunityHeader-text-row'>
         <span>{ `${formatNumber(subreddit.subscribers)} subscribers` }</span>
-        { onlineCount }
+      { onlineCount }
         { ` ${UTF8Circle}` }
-        <span
-          className='CommunityHeader-text-row-blue'
-          onClick={ onSubscribeToggle }
+        <Form
+          action='/actions/toggle-subreddit-subscription'
+          className='CommunityHeader-subscribe-form CommunityHeader-no-outline'
         >
-          { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
-          <button
-            className='CommunityHeader-subscribe-button'
-          >
-            <span
-              className={ `CommunityHeader-subscribe-icon icon ${followIcon}` }
-            />
+          <input type='hidden' name='subredditName' value={ subreddit.uuid } />
+          <input type='hidden' name='fullName' value={ subreddit.name } />
+          <input type='hidden' name='isSubscriber' value={ subreddit.userIsSubscriber } />
+          <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
+            { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
+            <span className='CommunityHeader-subscribe-button' >
+              <span
+                className={ `CommunityHeader-subscribe-icon icon ${followIcon}` }
+              />
+            </span>
           </button>
-        </span>
+        </Form>
       </div>
       { errorMessageOrFalse }
     </div>
@@ -133,62 +135,4 @@ const mapStateToProps = createSelector(
   (subreddit, subscribeError, theme) => ({ subreddit, subscribeError, theme }),
 );
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchSubscribeToggle: (subredditName) => dispatch({ type: 'SUBSCRIBED', subredditName }),
-});
-
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const onSubscribeToggle = () => dispatchProps(ownProps.subredditName);
-
-  return {
-    ...stateProps,
-    onSubscribeToggle,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(CommunityHeader);
-
-// _toggleSubredditSubscribedState() {
-//   const subreddit = this.state.subreddit;
-//   this.setState({ subreddit: {
-//     ...subreddit,
-//     user_is_subscriber: !subreddit.user_is_subscriber,
-//   }});
-// }
-//
-// _removeErrorRow() {
-//   this.setState({ error: false });
-// }
-//
-// _onSubscribeToggle() {
-//   if (this.props.app.needsToLogInUser()) { return; }
-//
-//   const subreddit = this.state.subreddit;
-//   const props = this.props;
-//
-//   const subscription = new models.Subscription({
-//     action: subreddit.user_is_subscriber ? 'unsub' : 'sub',
-//     sr: subreddit.name,
-//   });
-//
-//   const options = {
-//     ...this.props.apiOptions,
-//     model: subscription,
-//     id: subreddit.id,
-//   };
-//
-//   // toggle the ui for now, including clearing the error, until we get a response
-//   this._toggleSubredditSubscribedState();
-//   this.setState({ error: false });
-//
-//   props.app.api.subscriptions.post(options)
-//     .then(function (data) {
-//       // if it fails revert back to the original state
-//       if (Object.keys(data).length) {
-//         this._toggleSubredditSubscribedState();
-//         this.setState({ error: true });
-//       } else {
-//         this.props.app.emit(constants.USER_DATA_CHANGED);
-//       }
-//     }.bind(this));
-// }
+export default connect(mapStateToProps)(CommunityHeader);

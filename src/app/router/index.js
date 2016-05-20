@@ -4,6 +4,7 @@ import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
+import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
 import Vote from './handlers/Vote';
 
 export default [
@@ -21,4 +22,5 @@ export default [
   ['/actions/community-goto', CommunityGotoActionHandler],
   ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
+  ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler]
 ];
