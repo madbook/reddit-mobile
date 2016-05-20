@@ -3,11 +3,7 @@ import merge from '@r/platform/merge';
 import * as apiResponseActions from 'app/actions/apiResponse';
 import * as loginActions from 'app/actions/login';
 
-export const apiResponseReducerMaker = (key, kind) => {
-  if (!kind) {
-    kind = key;
-  }
-
+export const apiResponseReducerMaker = (kind) => {
   const DEFAULT = {};
 
   return (state=DEFAULT, action={}) => {
@@ -19,7 +15,7 @@ export const apiResponseReducerMaker = (key, kind) => {
 
       case apiResponseActions.RECEIEVED_API_RESPONSE: {
         const { apiResponse } = action;
-        const apiResponseStore = apiResponse[kind];
+        const apiResponseStore = apiResponse.typeToTable[kind];
 
         if (apiResponseStore && Object.keys(apiResponseStore).length) {
           return merge(state, apiResponseStore);

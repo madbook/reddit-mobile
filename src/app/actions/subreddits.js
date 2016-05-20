@@ -30,7 +30,7 @@ export const fetchSubreddit = (name) => async (dispatch, getState) => {
 };
 
 const { Subreddit, ModelTypes } = models;
-const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
+const { SUBREDDIT } = ModelTypes;
 
 export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) => {
   // we take the fullName and isSubscriber so we don't have to make any api calls
@@ -43,13 +43,13 @@ export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) =>
     }
 
     const stub = subreddit.toggleSubscribed(apiOptionsFromState(state));
-    dispatch(updatedModel(stub, SUBREDDITS));
+    dispatch(updatedModel(stub, SUBREDDIT));
 
     try {
       const resolved = await stub.promise;
-      dispatch(updatedModel(resolved, SUBREDDITS));
+      dispatch(updatedModel(resolved, SUBREDDIT));
     } catch (e) {
-      dispatch(updatedModel(subreddit, SUBREDDITS));
+      dispatch(updatedModel(subreddit, SUBREDDIT));
     }
 
     // todo redirect based on referrer;

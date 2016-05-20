@@ -15,12 +15,7 @@ import theme from './theme';
 import user from './user';
 
 const { ModelTypes } = models;
-
-// todo, handle the plurarlity in api-client maybe?
-const COMMENTS = `${ModelTypes.COMMENT}s`;
-const POSTS = `${ModelTypes.POST}s`;
-const SUBREDDITS = `${ModelTypes.SUBREDDIT}s`;
-const ACCOUNTS = `${ModelTypes.ACCOUNT}s`;
+const { COMMENT, POST, SUBREDDIT, ACCOUNT } = ModelTypes;
 
 export default {
   accountRequests,
@@ -35,8 +30,8 @@ export default {
   subredditRequests,
   theme,
   user,
-  [ACCOUNTS]: apiResponseReducerMaker(ACCOUNTS),
-  [COMMENTS]: apiResponseReducerMaker(COMMENTS),
-  [POSTS]: apiResponseReducerMaker(POSTS),
-  [SUBREDDITS]: apiResponseReducerMaker(SUBREDDITS),
+  [`${ACCOUNT}s`]: apiResponseReducerMaker(ACCOUNT),
+  [`${COMMENT}s`]: apiResponseReducerMaker(COMMENT),
+  [`${POST}s`]: apiResponseReducerMaker(POST),
+  [`${SUBREDDIT}s`]: apiResponseReducerMaker(SUBREDDIT),
 };

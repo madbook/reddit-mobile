@@ -7,7 +7,7 @@ import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
 import * as apiResponseActions from 'app/actions/apiResponse';
 import { newSubscribedSubredditsModel } from 'app/models/SubscribedSubreddits';
 
-const SUBREDDITS = `${models.ModelTypes.SUBREDDIT}s`;
+const { SUBREDDIT } = models.ModelTypes;
 
 const DEFAULT = newSubscribedSubredditsModel();
 
@@ -75,7 +75,7 @@ export default(state=DEFAULT, action={}) => {
     case apiResponseActions.UPDATED_MODEL: {
       if (!state.loaded) { return state; }
       const { kind, model } = action;
-      if (kind !== SUBREDDITS) { return state; }
+      if (kind !== SUBREDDIT) { return state; }
       return updateStateFromSubreddits(state, { [model.uuid]: model });
 
     }
