@@ -16,7 +16,7 @@
     "fonts": "webfonts"
   },
   "dependencies": {
-    "@r/api-client": "~3.10.0",
+    "@r/api-client": "~3.10.1",
     "@r/build": "^0.6.0",
     "@r/flags": "^1.4.0",
     "@r/middleware": "~0.6.1",
