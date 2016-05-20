@@ -15,6 +15,7 @@ export default [
   ['/r/:subredditName/comments/:postId/:postTitle/:commentId', CommentsPageHandler],
   ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
+  ['/comments', CommentsPageHandler],
   ['/login', Login],
 
   // actions

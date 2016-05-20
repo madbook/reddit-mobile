@@ -1,0 +1,46 @@
+@import (reference) '~art-gallery/assets/less/mixins/clearfix';
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+@import (reference) '~art-gallery/assets/less/animations/voteBounce';
+
+.CommentReplyForm {
+  &__textarea {
+    width: 100%;
+    height: 10em;
+  }
+
+  textarea {
+    width: 100%;
+    height: 100%;
+
+    .themeify({
+      border: @theme-border;
+    });
+  }
+
+  &__close {
+    margin-top: 2px;
+    padding: 0.5em 0 0;
+    float: left;
+
+    &[class*=" icon-"] {
+      color: @neutral;
+      font-size: 32px;
+      font-weight: 800;
+    }
+  }
+
+  &__button {
+    float: right;
+    margin: @grid-size 0 0;
+  }
+
+  &__error {
+    color: @ban-red;
+    padding: @half-grid-size;
+  }
+
+   &__footer {
+     .clearfix;
+   }
+}

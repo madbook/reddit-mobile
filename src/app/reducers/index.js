@@ -7,6 +7,7 @@ import commentsPages from './commentsPages';
 import compact from './compact';
 import loid from './loid';
 import postsLists from './postsLists';
+import replying from './replying';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
 import subscribedSubreddits from './subscribedSubreddits';
@@ -24,6 +25,7 @@ export default {
   compact,
   loid,
   postsLists,
+  replying,
   session,
   sessionRefresing,
   subscribedSubreddits,

@@ -62,3 +62,23 @@ export const LOADED_MORE = 'LOADED_MORE';
 export const loadMore = ids => async (dispatch, getState) => {
   console.log(ids, getState());
 };
+
+export const REPLYING = 'REPLYING';
+export const REPLIED = 'REPLIED';
+export const REPLY = 'REPLY';
+
+export const replying = (id, text) => ({ type: REPLYING, id, text });
+export const replied = (id, text) => ({ type: REPLIED, id, text });
+export const reply = (id, text) => async (dispatch, getState) => {
+  const state = getState();
+
+  if (state.replying[id]) { return; }
+
+  dispatch(replying(id, text));
+
+  //const apiResponse = await commentEndpoint.post(apiOptionsFromState(state), { id, text });
+  //const apiResponse = await makeFakeResponse(id, text, state);
+
+  //dispatch(receivedResponse(apiResponse));
+  dispatch(replied(id, text));
+};

@@ -1,5 +1,7 @@
 import './styles.less';
 import React from 'react';
+import { Anchor } from '@r/platform/components';
+import { urlFromPage } from '@r/platform/pageUtils';
 
 import Vote from 'app/components/Vote';
 
@@ -8,14 +10,21 @@ import Vote from 'app/components/Vote';
 
 const T = React.PropTypes;
 
-function onToggleReplyForm () { console.log('toggle reply form'); }
 function onToggleDropdown () { console.log('toggle dropdown'); }
 
-function renderReply () {
+function renderReply ({ currentPage, id, commentReplying }) {
+  const href = urlFromPage(currentPage, { queryParams: { commentReply: id } });
+
+  let className = 'CommentTools__reply icon icon-reply2';
+
+  if (commentReplying) {
+    className += ' CommentTools__reply__replying';
+  }
+
   return (
-    <div
-      className='CommentTools__reply icon icon-reply2'
-      onClick={ onToggleReplyForm }
+    <Anchor
+      href= { href }
+      className={ className }
     />
   );
 }

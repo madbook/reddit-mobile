@@ -14,9 +14,8 @@ import CommentsList from 'app/components/CommentsList';
 
 import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';
+import CommentReplyForm from './CommentReplyForm';
 
-
-// import CommentReplyForm from './CommentReplyForm';
 // import CommentSeeMore from './CommentSeeMore';
 // import CommentEditForm from './CommentEditForm';
 
@@ -24,13 +23,14 @@ const T = React.PropTypes;
 const { CommentModel } = models;
 
 export function Comment (props) {
-  const { comment, editing, commentDeleted, commentCollapsed } = props;
+  const { comment, editing, commentDeleted, commentCollapsed, commentReplying } = props;
 
   return (
     <div className='Comment'>
       { renderHeader(props) }
       { editing ? renderEditForm(props) : renderBody(props) }
       { !commentDeleted ? renderTools(props) : null }
+      { commentReplying ? renderCommentReply(props) : null }
       { !commentCollapsed && comment.replies.length ? renderReplies(props) : null }
     </div>
   );
@@ -40,7 +40,7 @@ function renderHeader(props) {
   const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType } = props;
 
   return (
-    <div className='Comment__header'>
+    <div className='Comment__header' id={ comment.id }>
       <CommentHeader
         id={ comment.id }
         author={ comment.author }
@@ -79,7 +79,7 @@ function renderBody(props) {
 }
 
 function renderTools(props) {
-  const { user, permalinkBase, comment, commentCollapsed } = props;
+  const { user, permalinkBase, comment, commentCollapsed, currentPage, commentReplying } = props;
 
   let cls = 'Comment__toolsContainer clearfix';
   if (commentCollapsed) { cls += ' m-hidden'; }
@@ -95,8 +95,9 @@ function renderTools(props) {
           commentAuthor={ comment.author }
           username={ user ? user.name : null }
           saved={ comment.saved }
+          currentPage = { currentPage }
+          replying={ commentReplying }
           permalinkUrl={ `${permalinkBase}${comment.id}` }
-          onToggleReplyForm={ props.toggleReplyForm }
           onEditComment={ props.toggleEditForm }
           onDeleteComment={ props.deleteComment }
           onSaveComment={ props.saveComment }
@@ -121,6 +122,17 @@ function renderLoadMore ({ numReplies, loadMore, permalink, id }, onLoadMore) {
         { numReplies ? ` (${numReplies})` : '' }
       </a>
     </div>
+  );
+}
+
+function renderCommentReply(props) {
+  const { savedReplyContent, comment, currentPage } = props;
+  return (
+    <CommentReplyForm
+      currentPage={ currentPage }
+      parentId={ comment.name }
+      savedReply={ savedReplyContent }
+    />
   );
 }
 
@@ -175,29 +187,52 @@ const postCreatedSelector = (state, props) => props.postCreated;
 const userSelector = (state, props) => props.user;
 const nestingLevelSelector = (state, props) => props.nestingLevel;
 const commentCollapsedSelector = (state, props) => state.collapsedComments[props.commentId];
+const currentPageSelector = (state) => state.platform.currentPage;
+
+const commentReplyingSelector = (state, props) =>
+  state.platform.currentPage.queryParams.commentReply === props.commentId;
 
 const combineSelectors = (
-  commentId, comment, parentComment, postCreated, user, nestingLevel, commentCollapsed) => ({
-    commentId, comment, parentComment, postCreated, user, nestingLevel, commentCollapsed,
-  });
+  commentId,
+  comment,
+  parentComment,
+  postCreated,
+  user,
+  nestingLevel,
+  commentCollapsed,
+  currentPage,
+  commentReplying
+) => ({
+  commentId,
+  comment,
+  parentComment,
+  postCreated,
+  user,
+  nestingLevel,
+  commentCollapsed,
+  currentPage,
+  commentReplying,
+});
 
 const makeConnectedCommentSelector = () => {
-  return createSelector([
-    commentIdSelector,
-    commentModelSelector,
-    parentCommentSelector,
-    postCreatedSelector,
-    userSelector,
-    nestingLevelSelector,
-    commentCollapsedSelector,
-  ],
-  combineSelectors,
+  return createSelector(
+    [
+      commentIdSelector,
+      commentModelSelector,
+      parentCommentSelector,
+      postCreatedSelector,
+      userSelector,
+      nestingLevelSelector,
+      commentCollapsedSelector,
+      currentPageSelector,
+      commentReplyingSelector,
+    ],
+    combineSelectors,
   );
 };
 
 const mapDispatchToProps = (dispatch, { commentId }) => ({
   toggleCollapse: (collapse) => dispatch(commentActions.toggleCollapse(commentId, collapse)),
-  toggleReplyForm: () => dispatch(commentActions.toggleReplyForm(commentId)),
   toggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
   deleteComment: () => dispatch(commentActions.del(commentId)),
   saveComment: () => dispatch(commentActions.save(commentId)),

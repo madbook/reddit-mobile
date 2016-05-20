@@ -1,7 +1,10 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
+import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
+
 import { cleanObject } from 'lib/cleanObject';
 import * as commentsPageActions from 'app/actions/commentsPage';
+import * as commentActions from 'app/actions/comment';
 import { fetchUserBasedData } from './handlerCommon';
 
 const { POST_TYPE } = models.ModelTypes;
@@ -36,6 +39,7 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
+
   async [METHODS.GET](dispatch, getState/*, utils*/) {
     const state = getState();
     if (state.platform.shell) { return; }
@@ -44,5 +48,31 @@ export default class CommentsPage extends BaseHandler {
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));
     fetchUserBasedData(dispatch);
+  }
+
+  async [METHODS.POST](dispatch, getState/*, utils*/) {
+    const { thingId, text } = this.bodyParams;
+
+    const state = getState();
+
+    if (!state.session.isValid) {
+      return dispatch(platformActions.setPage('/login'));
+    }
+
+    try {
+      dispatch(commentActions.reply(thingId, text));
+
+      // Go back to the state before the comment form was opened, if we can go
+      // back. Otherwise, redirect to the redirectUrl passed in.
+      if (history && state.platform.history.length) {
+        return history.go(-1);
+      } else {
+        // todo fix after implementing referrer
+        // dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
+      }
+    } catch (e) {
+      console.log('Error commenting');
+      console.log(e);
+    }
   }
 }
