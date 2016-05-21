@@ -40,7 +40,7 @@ export default class CommentsPage extends BaseHandler {
   }
 
 
-  async [METHODS.GET](dispatch, getState/*, utils*/) {
+  async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (state.platform.shell) { return; }
 
@@ -50,7 +50,7 @@ export default class CommentsPage extends BaseHandler {
     fetchUserBasedData(dispatch);
   }
 
-  async [METHODS.POST](dispatch, getState/*, utils*/) {
+  async [METHODS.POST](dispatch, getState, { waitForState }) {
     const { thingId, text } = this.bodyParams;
 
     const state = getState();
@@ -59,20 +59,22 @@ export default class CommentsPage extends BaseHandler {
       return dispatch(platformActions.setPage('/login'));
     }
 
-    try {
-      dispatch(commentActions.reply(thingId, text));
+    await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {
+      try {
+        dispatch(commentActions.reply(thingId, text));
 
-      // Go back to the state before the comment form was opened, if we can go
-      // back. Otherwise, redirect to the redirectUrl passed in.
-      if (history && state.platform.history.length) {
-        return history.go(-1);
-      } else {
-        // todo fix after implementing referrer
-        // dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
+        // Go back to the state before the comment form was opened, if we can go
+        // back. Otherwise, redirect to the redirectUrl passed in.
+        if (history && state.platform.history.length) {
+          return history.go(-1);
+        } else {
+          // todo fix after implementing referrer
+          // dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
+        }
+      } catch (e) {
+        console.log('Error commenting');
+        console.log(e);
       }
-    } catch (e) {
-      console.log('Error commenting');
-      console.log(e);
-    }
+    });
   }
 }
