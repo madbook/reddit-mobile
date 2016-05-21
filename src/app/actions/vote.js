@@ -1,23 +1,6 @@
-//import { endpoints } from '@r/api-client';
-
-//import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { receivedResponse } from './apiResponse';
-
-// const { VoteEndpoint } = endpoints;
-export const makeFakeResponse = async (id, direction, state) => {
-  const type = id.indexOf('t1') === 0 ? 'comments' : 'posts';
-  const oldThing = state[type][id];
-
-  return {
-    [type]: {
-      [id]: {
-        ...oldThing,
-        likes: direction,
-        score: oldThing.score + (direction - oldThing.likes),
-      },
-    },
-  };
-};
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import { updatedModel } from './apiResponse';
+import { models } from '@r/api-client';
 
 export const VOTING = 'VOTING';
 export const VOTED = 'VOTED';
@@ -27,12 +10,17 @@ export const voting = (id, direction) => ({ type: VOTING, id, direction });
 export const voted = (id, direction) => ({ type: VOTED, id, direction });
 export const vote = (id, direction) => async (dispatch, getState) => {
   const state = getState();
+  const type = models.ModelTypes.thingType(id);
+  const thing = state[`${type}s`][id];
 
-  dispatch(voting(id, direction));
+  const stub = thing._vote(apiOptionsFromState(state), direction);
+  dispatch(updatedModel(stub, type));
 
-  //const apiResponse = await VoteEndpoint.post(apiOptionsFromState(state), { id, direction });
-  const apiResponse = await makeFakeResponse(id, direction, state);
-
-  dispatch(receivedResponse(apiResponse));
-  dispatch(voted(id, direction));
+  try {
+    const resolved = await stub.promise();
+    dispatch(updatedModel(resolved, type));
+  } catch (e) {
+    dispatch(updatedModel(thing, type));
+  }
 };
+
