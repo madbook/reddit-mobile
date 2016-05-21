@@ -27,7 +27,6 @@
     "autoprefixer": "6.3.6",
     "babel-polyfill": "^6.7.4",
     "cluster": "^0.7.7",
-    "fs": "0.0.2",
     "js-cookie": "^2.1.1",
     "json-stable-stringify": "^1.0.1",
     "koa": "2.0.0",
