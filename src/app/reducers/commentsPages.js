@@ -7,7 +7,7 @@ import * as commentsPageActions from 'app/actions/commentsPage';
 import * as loginActions from 'app/actions/login';
 import * as apiResponseActions from 'app/actions//apiResponse';
 
-const { COMMENT, thingType } = models.ModelTypes;
+const { COMMENT } = models.ModelTypes;
 
 const DEFAULT = {};
 
@@ -44,21 +44,22 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case apiResponseActions.NEW_MODEL: {
-      if (!state.loaded) { return state; }
       const { kind, model } = action;
       if (kind !== COMMENT) { return state; }
 
+      const currentPage = state[state.current];
+      if (!currentPage) { return state; }
+
       // We want to add the comment to position 0 in the comments page result
-      // list, _only_ if it doesn't have a parent (meaning that it's a top
-      // level comment).
-      if (model.parentId && thingType(model.parentId) === COMMENT) { return state; }
+      // list, _only_ if its parent is the link id for the comment page).
+      if (currentPage.postId !== model.parentId) { return state; }
 
       const record = model.toRecord();
-      const currentPage = state[state.current].splice(0, 0, record);
+      const pageRecords = [record, ...state[state.current].results];
 
       return merge(state, {
         [state.current]: {
-          results: currentPage,
+          results: pageRecords,
         },
       });
     }
