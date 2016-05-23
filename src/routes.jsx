@@ -33,6 +33,7 @@ import { SORTS } from './sortValues';
 import isFakeSubreddit, { randomSubs } from './lib/isFakeSubreddit';
 import makeRequest from './lib/makeRequest';
 import features from './featureflags';
+import { getVisitedPosts, setVisitedPosts } from './lib/visitedPosts';
 
 const config = defaultConfig;
 
@@ -452,6 +453,9 @@ function routes(app) {
       commentId: ctx.params.commentId,
     });
 
+    const visited = getVisitedPosts();
+    setVisitedPosts([ctx.params.listingId].concat(visited));
+
     const commentsOpts = buildAPIOptions(ctx, {
       linkId: ctx.params.listingId,
       sort: ctx.query.sort || 'confidence',
@@ -472,7 +476,11 @@ function routes(app) {
     props.data.set('listing', app.api.links.get(listingOpts));
 
     const relevantPromise = featureWithUserContext(props).then(feature => {
-      if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP)) {
+      if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP) ||
+          feature.enabled(constants.flags.VARIANT_NEXTCONTENT_BOTTOM) ||
+          feature.enabled(constants.flags.VARIANT_NEXTCONTENT_BANNER) ||
+          feature.enabled(constants.flags.VARIANT_NEXTCONTENT_TOP3) ||
+          feature.enabled(constants.flags.VARIANT_NEXTCONTENT_MIDDLE)) {
         const linkOpts = buildAPIOptions(ctx, {
           query: {
             subredditName: props.subredditName,

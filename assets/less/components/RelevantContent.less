@@ -14,18 +14,27 @@
   .RelevantContent-action {
     display: block;
     font-size: @font-size-base;
+    font-weight: bold;
     text-align: center;
     text-transform: uppercase;
     color: @white;
     background: @blue;
     margin-top: 3*@grid-size;
     margin-bottom: 3*@grid-size;
-    margin-left: @grid-size;
-    margin-right: @grid-size;
     padding-top: @grid-size;
     padding-bottom: @grid-size;
+    line-height: 1.8;
   }
 
+  & .no-thumbs {
+    .PostContent.size-compact + .PostHeader {
+      margin-left: 0;
+      min-height: @font-size-base * @line-height-base * 3 + 2 * @grid-size;
+    }
+    .PostContent {
+      display: none;
+    }
+  }
 }
 
 .RelevantContent-header {
@@ -74,7 +83,7 @@
   }
 
   .RelevantContent-row-spacer {
-    width: 8 * @grid-size;
+    width: 6 * @grid-size;
     text-align: center;
   }
 
@@ -125,7 +134,7 @@
 
 .RelevantContent .Post,
 .RelevantContent .SearchPage__community {
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   margin-bottom: @grid-size;
   padding-left: 2 * @grid-size;
@@ -141,6 +150,13 @@
   });
 }
 
+.RelevantContent .Post {
+  padding-left: 0;
+  &.no-thumbs {
+    padding-left: 2 * @grid-size;
+  }
+}
+
 .RelevantContent .SearchPage__community:last-child {
   margin-bottom: 4 * @grid-size;
 }
@@ -148,3 +164,4 @@
 .RelevantContent .PostHeader__post-title-line {
   color: @grey-text;
 }
+

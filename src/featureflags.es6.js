@@ -8,6 +8,10 @@ const {
   VARIANT_RELEVANCY_TOP,
   VARIANT_RELEVANCY_ENGAGING,
   VARIANT_RELEVANCY_RELATED,
+  VARIANT_NEXTCONTENT_BOTTOM,
+  VARIANT_NEXTCONTENT_MIDDLE,
+  VARIANT_NEXTCONTENT_BANNER,
+  VARIANT_NEXTCONTENT_TOP3,
 } = constants.flags;
 
 const config = {
@@ -42,6 +46,34 @@ const config = {
         variant: 'relevancy_mweb:related',
       }],
     },
+  },
+  [VARIANT_NEXTCONTENT_BOTTOM]: {
+    url: 'experimentnextcontentbottom',
+    and: [{
+      variant: 'nextcontent_mweb:bottom',
+      loggedin: false,
+    }],
+  },
+  [VARIANT_NEXTCONTENT_MIDDLE]: {
+    url: 'experimentnextcontentmiddle',
+    and: [{
+      variant: 'nextcontent_mweb:middle',
+      loggedin: false,
+    }],
+  },
+  [VARIANT_NEXTCONTENT_BANNER]: {
+    url: 'experimentnextcontentbanner',
+    and: [{
+      variant: 'nextcontent_mweb:banner',
+      loggedin: false,
+    }],
+  },
+  [VARIANT_NEXTCONTENT_TOP3]: {
+    url: 'experimentnextcontenttop3',
+    and: [{
+      variant: 'nextcontent_mweb:top3',
+      loggedin: false,
+    }],
   },
 };
 
@@ -111,7 +143,7 @@ flags.addRule('userAgentSubstr', function(agents) {
 });
 
 flags.addRule('subreddit', function (name) {
-  return this.props.subredditName && this.props.subredditName === name;
+  return this.props.subredditName && this.props.subredditName.toLowerCase() === name.toLowerCase();
 });
 
 flags.addRule('variant', function (name) {

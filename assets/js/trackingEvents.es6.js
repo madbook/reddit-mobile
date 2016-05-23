@@ -478,7 +478,8 @@ function trackingEvents(app) {
       listingName: listing_name,
       linkIndex: link_index,
       linkName: link_name,
-      refererPageType: referer_page_type,
+      referrerPageType: referrer_page_type,
+      referrerUrl: referrer_url,
       targetId: target_id,
       targetFullname: target_fullname,
       targetUrl: url,
@@ -507,7 +508,8 @@ function trackingEvents(app) {
       link_name, // human-readable name of the link clicked
       loid,
       loid_created,
-      referer_page_type, // "listing", "link", "self", "comment"
+      referrer_page_type, // "listing", "link", "self", "comment"
+      referrer_url, // full url of the referrer of the user clicking
       target_id, // base-10 id of the target (used for subreddits only)
       // fullname (prefix+base-36 id) of the content at the target location
       // Currently skipped for subreddit targets to circumvent a data

@@ -41,6 +41,9 @@ export default {
     SUCCESS: 'success',
   },
 
+  VISITED_POST_COUNT: 20,
+  VISITED_POSTS_KEY: 'visitedPosts',
+
   /* eslint-disable max-len */
   BANNER_URLS_TUNE: {
     IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=122129&site_id_ios=121809',
@@ -59,6 +62,10 @@ export default {
     VARIANT_RELEVANCY_ENGAGING: 'experimentRelevancyEngaging',
     VARIANT_RELEVANCY_RELATED: 'experimentRelevancyRelated',
     NO_ADS: 'experimentNoAds',
+    VARIANT_NEXTCONTENT_BOTTOM: 'experimentNextContentBottom',
+    VARIANT_NEXTCONTENT_MIDDLE: 'experimentNextContentMiddle',
+    VARIANT_NEXTCONTENT_BANNER: 'experimentNextContentBanner',
+    VARIANT_NEXTCONTENT_TOP3: 'experimentNextContentTop3',
   },
 
   themes: {
