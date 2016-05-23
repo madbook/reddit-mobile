@@ -28,7 +28,7 @@ const ANDROID_USER_AGENTS = [
 
 const ALLOWED_DEVICES = IOS_USER_AGENTS.concat(ANDROID_USER_AGENTS);
 
-const ALLOWED_COUNTRIES = new Set(['US', 'GB', 'AU', 'CA']);
+const DISALLOWED_COUNTRIES = new Set(['BR', 'CU', 'DE', 'FR', 'ID', 'IR', 'MM', 'SD']);
 
 const PAGE_PERCENTAGES = {
   'comments.subreddit': 5,
@@ -58,8 +58,8 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
   // 4) Check the user agent
   if (!checkDeviceType(ALLOWED_DEVICES, userAgent)) { return BASE_VAL; }
 
-  // 5) only show the banner to people from certain countries
-  if (!ALLOWED_COUNTRIES.has(country)) { return BASE_VAL; }
+  // 5) Don't show banner to people from certain countries
+  if (DISALLOWED_COUNTRIES.has(country)) { return BASE_VAL; }
 
   // Create a bucket; a few rules are going to depend on that
   let userId = '';
