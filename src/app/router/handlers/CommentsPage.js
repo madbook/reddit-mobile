@@ -67,10 +67,10 @@ export default class CommentsPage extends BaseHandler {
         // back. Otherwise, redirect to the redirectUrl passed in.
         if (history && state.platform.history.length) {
           return history.go(-1);
-        } else {
+        }/* else {
           // todo fix after implementing referrer
           // dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
-        }
+        }*/
       } catch (e) {
         console.log('Error commenting');
         console.log(e);

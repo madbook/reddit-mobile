@@ -24,14 +24,16 @@ export const apiResponseReducerMaker = (kind) => {
         return state;
       }
 
-      case apiResponseActions.UPDATED_MODEL: {
-        const { model, kind: actionKind } = action;
-        if (actionKind === kind && model.uuid) {
-          return merge(state, { [model.uuid]: model });
-        }
+      case apiResponseActions.UPDATED_MODEL:
+      case apiResponseActions.NEW_MODEL:
+        {
+          const { model, kind: actionKind } = action;
+          if (actionKind === kind && model.uuid) {
+            return merge(state, { [model.uuid]: model });
+          }
 
-        return state;
-      }
+          return state;
+        }
 
       default: return state;
     }

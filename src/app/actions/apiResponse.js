@@ -10,3 +10,10 @@ export const updatedModel = (model, kind) => ({
   kind,
   model,
 });
+
+export const NEW_MODEL = 'NEW_MODEL';
+export const newModel = (model, kind) => ({
+  type: NEW_MODEL,
+  kind,
+  model,
+});

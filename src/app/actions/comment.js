@@ -1,6 +1,7 @@
+import { endpoints, models } from '@r/api-client';
+
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints } from '@r/api-client';
-import { receivedResponse } from './apiResponse';
+import { receivedResponse, updatedModel } from './apiResponse';
 
 const { SavedEndpoint } = endpoints;
 
@@ -72,13 +73,26 @@ export const replied = (id, text) => ({ type: REPLIED, id, text });
 export const reply = (id, text) => async (dispatch, getState) => {
   const state = getState();
 
-  if (state.replying[id]) { return; }
+  if (state.replying[id] || !text || !id) { return; }
+
+  text = text.trim();
+
+  const type = models.ModelTypes.thingType(id);
+  const objects = state[`${type}s`];
+  const thing = objects[id];
 
   dispatch(replying(id, text));
 
-  //const apiResponse = await commentEndpoint.post(apiOptionsFromState(state), { id, text });
-  //const apiResponse = await makeFakeResponse(id, text, state);
+  const apiResponse = await thing.reply(apiOptionsFromState(state), text);
+  const newRecord = apiResponse.results[0];
 
-  //dispatch(receivedResponse(apiResponse));
+  // add the new model
+  dispatch(receivedResponse(apiResponse, models.ModelTypes.COMMENT));
+
+  const stub = thing.stub({ replies: [newRecord, ...thing.replies] }, async () => stub);
+
+  // update the parent with the new reply
+  dispatch(updatedModel(stub, type));
+
   dispatch(replied(id, text));
 };
