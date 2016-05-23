@@ -7,13 +7,13 @@ import { Anchor, BackAnchor } from '@r/platform/components';
 
 import {
   OVERLAY_MENU_PARAMETER,
-  urlWithSettingsMenuToggled,
   urlWithCommunityMenuToggled,
+  urlWithSearchBarToggled,
+  urlWithSettingsMenuToggled,
 } from 'app/actions/overlayMenu';
 
 import Logo from 'app/components/Logo';
 import SnooIcon from 'app/components/SnooIcon';
-// import SearchBarController from 'app/components/components/search/SearchBarController';
 
 export const TopNav = (props) => {
   let { assetPath } = props;
@@ -78,19 +78,12 @@ export const TopNav = (props) => {
         >
           <span className='icon icon-post_edit icon-large' />
         </Anchor>
-        <Anchor
+        <BackAnchor
           className='MobileButton TopNav-floaty'
-          href={ `${currentSubredditPath}/search` }
-          data-no-route={ true }
+          href={ urlWithSearchBarToggled(url, queryParams) }
         >
-          {/*<SearchBarController
-            app={ this.props.app }
-            ctx={ this.props.ctx }
-            user={ this.props.user }
-            loid={ this.props.loid }
-            loidcreated={ this.props.loidcreated }
-          />*/}
-        </Anchor>
+          <span className='icon icon-search icon-large' />
+        </BackAnchor>
         <BackAnchor
           className='MobileButton TopNav-floaty'
           href={ urlWithSettingsMenuToggled(url, queryParams) }

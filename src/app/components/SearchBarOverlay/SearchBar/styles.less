@@ -1,0 +1,34 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.SearchBar {
+  position: relative;
+  height: 100%;
+
+  &__input {
+    width: 100%;
+    height: 100%;
+    padding: 0 7 * @grid-size 0 2 * @grid-size;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-radius: 0;
+    color: @off-black;
+  }
+
+  &__reset {
+    position: absolute;
+    height: 4 * @grid-size;
+    width: 4 * @grid-size;
+    top: 50%;
+    right: 12px;
+    margin-top: -2 * @grid-size;
+    text-align: center;
+
+    &[class*=" icon-"] {
+      font-size: 2 * @grid-size;
+      line-height: 4 * @grid-size;
+      color: @grey-text;
+    }
+  }
+}

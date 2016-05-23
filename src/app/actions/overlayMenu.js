@@ -6,15 +6,20 @@ import { urlWith, urlWithQueryParamToggled } from 'lib/urlWith';
 import { omit } from 'lodash/object';
 
 export const OVERLAY_MENU_PARAMETER = 'overlayMenu';
-export const SETTINGS_MENU = 'settings';
 export const COMMUNITY_MENU = 'community';
-
-export const urlWithSettingsMenuToggled = (url, queryParams) => {
-  return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, SETTINGS_MENU);
-};
+export const SEARCH_BAR = 'search';
+export const SETTINGS_MENU = 'settings';
 
 export const urlWithCommunityMenuToggled = (url, queryParams) => {
   return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, COMMUNITY_MENU);
+};
+
+export const urlWithSearchBarToggled = (url, queryParams) => {
+  return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, SEARCH_BAR);
+}
+
+export const urlWithSettingsMenuToggled = (url, queryParams) => {
+  return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, SETTINGS_MENU);
 };
 
 export const urlWithoutOverlayMenu = (url, queryParams) => {

@@ -11,12 +11,17 @@
 }
 
 .OverlayMenu {
-  z-index: 10;
+  z-index: 11;
   position: fixed;
-  top: @top-nav-height;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+
+  &.m-with-top-nav {
+    top: @top-nav-height;
+  }
+
   padding-bottom: @top-nav-height;
   overflow-y: auto;
 
