@@ -8,6 +8,7 @@ import compact from './compact';
 import loid from './loid';
 import postsLists from './postsLists';
 import replying from './replying';
+import searchRequests from './searchRequests';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
 import subscribedSubreddits from './subscribedSubreddits';
@@ -26,6 +27,7 @@ export default {
   loid,
   postsLists,
   replying,
+  searchRequests,
   session,
   sessionRefresing,
   subscribedSubreddits,

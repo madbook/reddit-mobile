@@ -4,6 +4,7 @@ import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
+import SearchPageHandler from './handlers/SearchPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
 import Vote from './handlers/Vote';
 
@@ -14,6 +15,8 @@ export default [
   ['/r/:subredditName/comments/:postId/comment/:commentId', CommentsPageHandler],
   ['/r/:subredditName/comments/:postId/:postTitle/:commentId', CommentsPageHandler],
   ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler],
+  ['/search', SearchPageHandler],
+  ['/r/:subredditName/search', SearchPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments', CommentsPageHandler],
   ['/login', Login],

@@ -12,13 +12,13 @@ function focusInput(x) {
 export default class SearchBar extends React.Component {
   static propTypes = {
 //    onClear: T.func.isRequired, // TODO: uncomment this when we have tracking?
-    formUrl: T.string,
+    subreddit: T.string,
     initialValue: T.string,
     placeholder: T.string,
   };
 
   static defaultProps = {
-    formUrl: '',
+    subreddit: '',
     initialValue: '',
     placeholder: 'Search Reddit',
   };
@@ -40,13 +40,14 @@ export default class SearchBar extends React.Component {
   }
 
   render() {
-    const { placeholder, initialValue, formUrl } = this.props;
+    const { placeholder, initialValue, subreddit } = this.props;
 
     return (
       <Form
         className='SearchBar'
-        action={ formUrl }
+        action={ '/search' }
       >
+        <input type='hidden' name='subreddit' value={ subreddit } />
         <input
           className='SearchBar__input'
           defaultValue={ initialValue }

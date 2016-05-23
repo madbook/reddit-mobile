@@ -13,11 +13,6 @@ import {
   urlWithSearchBarToggled,
 } from 'app/actions/overlayMenu';
 
-const searchUrl = (subredditOrNil) => {
-  const sub = subredditOrNil ? `/r/${subredditOrNil}` : '';
-  return `${sub}/search`;
-};
-
 export const SearchBarOverlay = (props) => {
   const { pageData } = props;
   const { url, queryParams, urlParams } = pageData;
@@ -35,7 +30,7 @@ export const SearchBarOverlay = (props) => {
         </BackAnchor>
         <div className='SearchBarOverlay__barContainer'>
           <SearchBar
-            formUrl={ searchUrl(subredditName) }
+            subreddit={ subredditName }
             initialValue={ initialQuery }
           />
         </div>
