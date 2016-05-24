@@ -17,7 +17,7 @@
     "test": "blueprints -t"
   },
   "dependencies": {
-    "@r/api-client": "~3.11.0",
+    "@r/api-client": "~3.12.0",
     "@r/build": "^0.6.0",
     "@r/flags": "^1.4.0",
     "@r/middleware": "~0.6.1",
