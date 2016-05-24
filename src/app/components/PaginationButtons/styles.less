@@ -1,0 +1,48 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+@import (reference) '~art-gallery/assets/less/mixins/clearfix';
+
+@button-padding: 5px;
+
+.PaginationButtons {
+  margin: 0 2 * @grid-size;
+
+  &__buttons {
+    .clearfix;
+    vertical-align: middle;
+
+    padding-top: @button-padding;
+
+    &.m-compact {
+      padding-top: 2 * @button-padding;
+    }
+
+    padding-bottom: 2 * @button-padding;
+  }
+
+  &__button {
+    background-color: @blue;
+    display: inline-block;
+    vertical-align: middle;
+    padding: @button-padding 2 * @button-padding;
+    line-height: 1.5em;
+    cursor: pointer;
+
+    &, &:visited, &:hover {
+      color: white !important;
+      text-decoration: none;
+    }
+
+    .icon {
+      vertical-align: text-bottom;
+    }
+
+    &.m-next {
+      float: right;
+    }
+
+    &.m-prev {
+      float: left;
+    }
+  }
+}
