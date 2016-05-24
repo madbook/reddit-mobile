@@ -45,12 +45,11 @@ const communityResults = (subredditRecords) => (
 );
 
 const communitySeeMore = pageProps => {
-  // TODO: build the real view more url here
-  // const url = this.composeUrl({
-  //   ...this.props,
-  //   type: 'sr',
-  // });
-  const url = `/search?q=${pageProps.queryParams.q}`;
+  const { urlParams, queryParams } = pageProps;
+  const url = SearchPageHandler.buildURL(urlParams, {
+    ...queryParams,
+    type: 'sr',
+  });
 
   return (
     <Anchor
