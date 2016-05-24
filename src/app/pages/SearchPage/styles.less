@@ -1,0 +1,146 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+@import (reference) '~art-gallery/assets/less/mixins/clearfix';
+
+.SearchPage {
+  height: 100%;
+  position: relative;
+
+  &__searchBar {
+    height: 6 * @grid-size;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
+  }
+
+  &__loading {
+    position: absolute;
+    top: 50%;
+  }
+  &__communities,
+  &__links {
+    max-width: @max-width;
+    margin: 0 auto;
+  }
+
+  &__communitiesHeader,
+  &__linksHeader {
+    .clearfix;
+
+    .themeify({
+      background-color: @theme-comment-body-color;
+      color: @theme-meta-text-color;
+    });
+
+    padding: 0 2 * @grid-size;
+    font-size: 2 * @grid-size;
+    line-height: 2;
+  }
+
+  &__communitiesHeaderTitle {
+    float: left;
+  }
+
+  &__communitiesHeaderMore {
+    float: right;
+    font-size: @font-size-base;
+    line-height: 32px;
+
+    &, &:visited {
+      color: @grey-text;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__communitiesHeaderMoreIcon {
+    display: inline-block;
+    margin-left: @grid-size;
+  }
+
+  &__communitiesResults {
+    padding: @half-grid-size;
+    .themeify({
+      background-color: @theme-body-color;
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    });
+  }
+
+  &__community {
+    padding: @grid-size @half-grid-size;
+  }
+
+  &__linksHeaderTitle {
+    float: left;
+  }
+
+  &__linksHeaderTools {
+    float: right;
+    font-size: @font-size-base;
+    line-height: 32px;
+  }
+
+  &__linksHeaderSort {
+    margin-left: @grid-size;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__link {
+    .themeify({
+      background-color: @theme-body-color;
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    });
+
+    & ~ & {
+      margin-top: @grid-size;
+    }
+  }
+
+  &__searchAll {
+    padding: @grid-size;
+    text-align: center;
+  }
+
+  &__searchAllLink {
+    &, &:visited {
+      color: @blue;
+    }
+  }
+
+  &__noResults {
+    padding: 6 * @grid-size @grid-size;
+    text-align: center;
+  }
+
+  &__noResultsMsg {
+    font-size: 14px;
+    line-height: 1.5;
+    color: @grey-text;
+  }
+
+  &__noResultsQuery {
+    font-size: 18px;
+    line-height: 1.5;
+    color: @blue;
+  }
+
+  &__helpfulMsg {
+    padding: 6 * @grid-size @grid-size;
+    text-align: center;
+    color: @grey-text;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__helpfulIcon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 33px;
+  }
+}

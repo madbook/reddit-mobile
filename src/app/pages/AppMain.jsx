@@ -4,6 +4,7 @@ import { UrlSwitch, Page } from '@r/platform/url';
 
 import { CommentsPage } from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
+import { SearchPage } from './SearchPage';
 
 import Login from 'app/components/Login';
 
@@ -29,6 +30,8 @@ export const AppMainPage = () => (
       url='/r/:subredditName/comments/:postId/:postTitle?'
       component={ CommentsPage }
     />
+    <Page url='/search' component={ SearchPage } />
+    <Page url='/r/:subredditName/search' component={ SearchPage } />
     <Page
       url='/comments/:postId/:postTitle?'
       component={ CommentsPage }

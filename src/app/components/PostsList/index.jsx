@@ -9,35 +9,35 @@ import Loading from 'app/components/Loading';
 import { map } from 'lodash/collection';
 
 export function PostsList (props) {
-  const { postsList } = props;
+  const { loading, postRecords } = props;
 
   return (
     <div className='PostsList PostAndCommentList'>
-      { !postsList || postsList.loading
-        ? renderLoading()
-        : renderPostsList(postsList) }
+      { loading ? renderLoading() : renderPostsList(postRecords) }
     </div>
   );
 }
 
-function renderLoading() {
+const renderLoading = () => {
   return <Loading />;
-}
+};
 
-function renderPostsList(postsList) {
-  return map(postsList.results, postRecord => {
+const renderPostsList = (records) => {
+  return map(records, postRecord => {
     const postId = postRecord.uuid;
 
     return (
       <Post postId={ postId } key={ `post-id-${postId}` } />
     );
   });
-}
+};
 
 const listSelector = createSelector(
-  (state, props) => props.postsListId,
   (state, props) => state.postsLists[props.postsListId],
-  (postsListsId, postsList) => ({ postsListsId, postsList })
+  (postsList) => ({
+    loading: postsList && postsList.loading,
+    postRecords: postsList ? postsList.results : [],
+  }),
 );
 
 export default connect(listSelector)(PostsList);

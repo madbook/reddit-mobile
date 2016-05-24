@@ -1,0 +1,115 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.CommunityRow {
+  display: table;
+
+  .themeify({
+    background-color: @theme-body-color;
+  });
+
+  &__icon,
+  &__details,
+  &__add {
+    display: table-cell;
+    vertical-align: middle;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+  }
+
+  &__iconImg,
+  &__iconBlank {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+  }
+
+  &__iconImg-large,
+  &__iconBlank-large {
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+  }
+
+  &__iconBlank-large {
+    background-image: url(/img/snoo-64.png);
+    background-size: 70px 70px;
+    background-repeat: no-repeat;
+    background-position: 0px 5px;
+
+    .themeify(
+    @inDayMode: {
+      background-color: @blue;
+    };
+    @inNightMode: {
+      border: 1px solid @blue;
+      background-position-x: -1px;
+    });
+  }
+
+  &__iconBlank {
+    background-image: url(/img/snoo-64.png);
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: 0px 5px;
+
+    .themeify(
+    @inDayMode: {
+      background-color: @blue;
+    };
+    @inNightMode: {
+      border: 1px solid @blue;
+      background-position-x: -1px;
+    });
+  }
+
+  &__details {
+    max-width: 0px;
+    width: 100%;
+    padding-left: @grid-size;
+  }
+
+  &__name {
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+
+  &__rSlash {
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
+  &__counts {
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
+    font-size: 12px;
+  }
+
+  &__add {
+    width: 40px;
+    padding: 0 @grid-size;
+    text-align: center;
+  }
+
+  &__subscriptionButton  {
+    outline: none;
+    font-size: 3 * @grid-size;
+    line-height: 3 * @grid-size;
+  }
+}

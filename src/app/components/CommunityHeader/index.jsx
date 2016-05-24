@@ -9,6 +9,7 @@ import { themes } from 'app/constants';
 import formatNumber from 'lib/formatNumber';
 
 import Loading from 'app/components/Loading';
+import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';
 
 const { NIGHTMODE } = themes;
 const UTF8Circle = '●';
@@ -67,6 +68,20 @@ const renderBannerRow = (subreddit, theme) => {
   );
 };
 
+const followIconClass = (subscriber) => {
+  return subscriber ? 'icon-check-circled lime' : 'icon-follow blue';
+}
+
+const renderSubscribeButton = (subscriber) => (
+  <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
+    { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
+    <span className='CommunityHeader-subscribe-button' >
+      <span
+        className={ `CommunityHeader-subscribe-icon icon ${followIconClass(subscriber)}` }
+      />
+    </span>
+  </button>
+);
 
 const CommunityHeader = (props) => {
   const {
@@ -86,42 +101,26 @@ const CommunityHeader = (props) => {
     onlineCount = ` ${UTF8Circle} ${formatNumber(subreddit.accountsActive)} online`;
   }
 
-  const followIcon = subscriber ? 'icon-check-circled lime' : 'icon-follow blue';
   const errorMessageOrFalse = renderErrorMessage(subscribeError);
-
   const banner = renderBannerRow(subreddit, theme);
-
 
   return (
     <div className={ `CommunityHeader ${ subscribeError ? 'with-error' : '' }` }>
       { banner }
-
       <div className='CommunityHeader-text-row'>
         <h4 className='CommunityHeader-community-title'>
           { subreddit.displayName }
         </h4>
       </div>
-
       <div className='CommunityHeader-text-row'>
         <span>{ `${formatNumber(subreddit.subscribers)} subscribers` }</span>
       { onlineCount }
         { ` ${UTF8Circle}` }
-        <Form
-          action='/actions/toggle-subreddit-subscription'
+        <SubredditSubscribeForm
+          subredditName={ subreddit.uuid }
           className='CommunityHeader-subscribe-form CommunityHeader-no-outline'
-        >
-          <input type='hidden' name='subredditName' value={ subreddit.uuid } />
-          <input type='hidden' name='fullName' value={ subreddit.name } />
-          <input type='hidden' name='isSubscriber' value={ subreddit.userIsSubscriber } />
-          <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
-            { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
-            <span className='CommunityHeader-subscribe-button' >
-              <span
-                className={ `CommunityHeader-subscribe-icon icon ${followIcon}` }
-              />
-            </span>
-          </button>
-        </Form>
+          renderBody={ renderSubscribeButton }
+        />
       </div>
       { errorMessageOrFalse }
     </div>
