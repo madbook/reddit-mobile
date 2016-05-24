@@ -195,12 +195,27 @@ const showNoResults = (query) => {
   return query ? noResultsMsg(query) : helpfulMsg();
 };
 
+const allOfRedditMessage = (query, numPosts, subredditName) => {
+  const linkMessage = 'Search all of reddit';
+  const url = SearchPageHandler.buildURL({}, { q: query });
+  const linkCountText = numPosts >= 25 ? '25+' : `${numPosts}`;
+  const message = `${linkCountText} matches in r/${subredditName} `
+
+  return (
+    <div className='SearchPage__searchAll'>
+      { message }
+      <Anchor className='SearchPage__searchAllLink' href={ url }>{ linkMessage }</Anchor>
+    </div>
+  );
+}
+
 const searchResults = (pageData, searchRequest) => {
   const { posts, subreddits }= searchRequest;
   const renderingPosts = !!posts.length;
   const renderingSubreddits = !!subreddits.length;
   const noResults = !(searchRequest.loading || renderingPosts || renderingSubreddits);
-  const query = pageData.queryParams.q;
+  const { subredditName } = pageData.urlParams;
+  const { q: query } = pageData.queryParams;
 
   if (noResults) {
     return showNoResults(query);
@@ -209,10 +224,15 @@ const searchResults = (pageData, searchRequest) => {
   return (
     <div>
       { renderingSubreddits ? renderCommunities(pageData, subreddits, renderingPosts) : null }
+      { subredditName && !renderingSubreddits
+        ? allOfRedditMessage(query, posts.length, subredditName)
+        : null }
       { renderingPosts ? postResults(pageData, posts) : null }
     </div>
   );
 };
+
+
 
 const _SearchPage = (props) => {
   const { pageData, searchRequest } = props;
