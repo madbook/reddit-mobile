@@ -1,7 +1,7 @@
 import { omitBy } from 'lodash/object';
 
-const nonNullValue = (_, value) => {
-  return value === undefined && value === null;
+const nonNullValue = value => {
+  return value === undefined || value === null;
 };
 
 export const cleanObject = (object) => {
