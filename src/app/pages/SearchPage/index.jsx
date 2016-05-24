@@ -11,6 +11,7 @@ import SearchPageHandler from 'app/router/handlers/SearchPage';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';
 
 import CommunityRow from 'app/components/CommunityRow';
+import PaginationButtons from 'app/components/PaginationButtons';
 import Loading from 'app/components/Loading';
 import { PostsList } from 'app/components/PostsList';
 // ^^ we're not using the connected version intentionally, for now
@@ -69,11 +70,56 @@ const communitiesHeader = (renderingPosts, pageProps) => (
   </div>
 );
 
+
+const shouldPaginateCommunities = (pageData, subredditRecords, renderingPosts) => {
+  return !renderingPosts && (subredditRecords.length >= 25 ||
+      (subredditRecords.length && pageData.queryParams.page > 0));
+};
+
+const communitiesPaginationButtons = (pageData, subredditRecords) => {
+  const { urlParams, queryParams } = pageData;
+  const page = parseInt(queryParams.page || 0);
+
+  let prevUrl;
+  if (page > 0 && subredditRecords.length) {
+    prevUrl = SearchPageHandler.buildURL(urlParams, {
+      ...queryParams,
+      before: subredditRecords[0].paginationId,
+      after: undefined,
+      page: page - 1,
+      type: 'sr',
+    });
+  }
+
+  let nextUrl;
+  if (subredditRecords.length >= 25) {
+    nextUrl = SearchPageHandler.buildURL(urlParams, {
+      ...queryParams,
+      before: undefined,
+      after: subredditRecords[subredditRecords.length - 1].paginationId,
+      page: page + 1,
+      type: 'sr',
+    });
+  }
+
+  return (
+    <div className='SearchPage__communitiesNav'>
+      <PaginationButtons
+        preventUrlCreation={ true }
+        compact={ true }
+        nextUrl={ nextUrl }
+        prevUrl={ prevUrl }
+      />
+    </div>
+  );
+};
+
 const renderCommunities = (pageData, subredditRecords, renderingPosts) => (
   <div className='SearchPage__communities'>
     { communitiesHeader(renderingPosts, pageData) }
     { communityResults(subredditRecords) }
-    {/*{ drawPagination ? this.renderCommunityNav(prevUrl, nextUrl, communities) : null }*/}
+    { shouldPaginateCommunities(pageData, subredditRecords, renderingPosts)
+      ? communitiesPaginationButtons(pageData, subredditRecords) : null }
   </div>
 );
 

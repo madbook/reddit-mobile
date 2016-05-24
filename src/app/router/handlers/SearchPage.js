@@ -43,7 +43,7 @@ const removeDefaultables = (params) => {
 
     newObject[key] = value;
   });
-  
+
   return newObject;
 };
 
