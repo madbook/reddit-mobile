@@ -76,31 +76,39 @@ const shouldPaginateCommunities = (pageData, subredditRecords, renderingPosts) =
       (subredditRecords.length && pageData.queryParams.page > 0));
 };
 
-const communitiesPaginationButtons = (pageData, subredditRecords) => {
+const paginationUrls = (pageData, records, { type, pageSize }) => {
   const { urlParams, queryParams } = pageData;
   const page = parseInt(queryParams.page || 0);
 
   let prevUrl;
-  if (page > 0 && subredditRecords.length) {
+  if (page > 0 && records.length) {
     prevUrl = SearchPageHandler.buildURL(urlParams, {
       ...queryParams,
-      before: subredditRecords[0].paginationId,
+      before: records[0].paginationId,
       after: undefined,
       page: page - 1,
-      type: 'sr',
+      type,
     });
   }
 
   let nextUrl;
-  if (subredditRecords.length >= 25) {
+  if (records.length >= pageSize) {
     nextUrl = SearchPageHandler.buildURL(urlParams, {
       ...queryParams,
       before: undefined,
-      after: subredditRecords[subredditRecords.length - 1].paginationId,
+      after: records[records.length - 1].paginationId,
       page: page + 1,
-      type: 'sr',
+      type,
     });
   }
+
+  return { nextUrl, prevUrl };
+};
+
+const communitiesPaginationButtons = (pageData, subredditRecords) => {
+  const { nextUrl, prevUrl } = paginationUrls(pageData, subredditRecords, {
+    type: 'sr', pageSize: 25,
+  });
 
   return (
     <div className='SearchPage__communitiesNav'>
@@ -161,11 +169,23 @@ const linksHeader = (sort, time) => (
 );
 
 const postResults = (pageData, postRecords) => {
+  // we have to build the urls here as well. The api reserves 3 slots for subreddit responses
+  // so we can't use the default page size
+  const { nextUrl, prevUrl } = paginationUrls(pageData, postRecords, {
+    type: 'link', pageSize: 22,
+  });
+
   return (
     <div className='SearchPage__links'>
       { linksHeader() }
       <div className='SearchPage__linksResults'>
-        <PostsList loading={ false } postRecords={ postRecords } />
+        <PostsList
+          loading={ false }
+          postRecords={ postRecords }
+          forceCompact={ true }
+          nextUrl={ nextUrl }
+          prevUrl={ prevUrl }
+        />
       </div>
     </div>
   );

@@ -106,12 +106,16 @@ const currentQueryParamsSelector = (state, props) => {
   return props.queryParams || state.platform.currentPage.queryParams;
 };
 
+const pagingPrefixSelector = (state, props) => {
+  if (props.preventUrlCreation) { return null; }
+  return props.pagingPrefix || state.platform.currentPage.url;
+}
+
 const propsSelector = propName => (_, props) => props[propName];
 
 const recordsSelector = propsSelector('records');
 const pageSizeSelector = propsSelector('pageSize');
 const preventUrlCreationSelector = propsSelector('preventUrlCreation');
-const pagingPrefixSelector = propsSelector('pagingPrefix');
 
 const combineSelectors = (compact, currentQueryParams, records, preventUrlCreation,
   pageSize, pagingPrefix) =>

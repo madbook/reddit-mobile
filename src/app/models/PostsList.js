@@ -1,8 +1,9 @@
 import { objectToHash } from 'lib/objectToHash';
-import { omit } from 'lodash/object';
+// import { omit } from 'lodash/object';
 
 export const paramsToPostsListsParams = (params) => {
-  return omit(params, 'before', 'after');
+  return params;
+  // return omit(params, 'before', 'after'); if we want infinite scroll, do something like this
 };
 
 export const paramsToPostsListsId = (params) => {

@@ -150,7 +150,7 @@ export function Post(props) {
 
 const postIdSelector = (_, props) => props.postId;
 
-const compactSeletor = (state) => state.compact;
+const compactSeletor = (state, props) => props.forceCompact || state.compact;
 
 const singleSelector = (_, props) => props.single;
 
