@@ -31,7 +31,7 @@ export const SearchBarOverlay = (props) => {
         <div className='SearchBarOverlay__barContainer'>
           <SearchBar
             subreddit={ subredditName }
-            initialValue={ initialQuery }
+            initialValue={ initialQuery ? decodeURIComponent(initialQuery) : '' }
           />
         </div>
       </div>

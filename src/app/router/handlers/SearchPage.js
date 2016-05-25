@@ -70,7 +70,10 @@ export default class SearchPage extends BaseHandler {
     if (state.platform.shell) { return; }
 
     const searchParams = SearchPage.PageParamsToSearchRequestParams(this);
-    dispatch(searchActions.search(searchParams));
+    const { q: query } = searchParams;
+    if (query && query.length > SEARCH_MIN_LENGTH) {
+      dispatch(searchActions.search(searchParams));
+    }
 
     fetchUserBasedData(dispatch);
   }
@@ -80,7 +83,7 @@ export default class SearchPage extends BaseHandler {
     let { q } = this.bodyParams;
     q = q && q.length ? q.trim() : '';
 
-    if (q < SEARCH_MIN_LENGTH) {
+    if (q.length < SEARCH_MIN_LENGTH) {
       // redirect to the referrer page, maybe there
       // maybe there should be some sort of inline-error
       // telling the searcher they need to enter a longer query string

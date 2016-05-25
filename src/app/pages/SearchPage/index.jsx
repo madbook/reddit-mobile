@@ -199,7 +199,7 @@ const allOfRedditMessage = (query, numPosts, subredditName) => {
   const linkMessage = 'Search all of reddit';
   const url = SearchPageHandler.buildURL({}, { q: query });
   const linkCountText = numPosts >= 25 ? '25+' : `${numPosts}`;
-  const message = `${linkCountText} matches in r/${subredditName} `
+  const message = `${linkCountText} matches in r/${subredditName} `;
 
   return (
     <div className='SearchPage__searchAll'>
@@ -207,7 +207,7 @@ const allOfRedditMessage = (query, numPosts, subredditName) => {
       <Anchor className='SearchPage__searchAllLink' href={ url }>{ linkMessage }</Anchor>
     </div>
   );
-}
+};
 
 const searchResults = (pageData, searchRequest) => {
   const { posts, subreddits }= searchRequest;
@@ -232,16 +232,16 @@ const searchResults = (pageData, searchRequest) => {
   );
 };
 
-
-
 const _SearchPage = (props) => {
   const { pageData, searchRequest } = props;
 
   return (
     <div className='SearchPage BelowTopNav'>
-      { !searchRequest || searchRequest.loading
-        ? searchLoading()
-        : searchResults(pageData, searchRequest) }
+      { !searchRequest
+        ? helpfulMsg()
+        : searchRequest.loading
+          ? searchLoading()
+          : searchResults(pageData, searchRequest) }
     </div>
   );
 };

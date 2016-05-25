@@ -9,7 +9,7 @@ const { SUBREDDIT, POST } = models.ModelTypes;
 
 const filtered = (records, type) => {
   return records.filter(r => r.type === type);
-}
+};
 
 const subredditFilter = records => filtered(records, SUBREDDIT);
 const postFilter = records => filtered(records, POST);
