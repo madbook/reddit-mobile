@@ -10,6 +10,8 @@ import {
   urlWithCommunityMenuToggled,
   urlWithSearchBarToggled,
   urlWithSettingsMenuToggled,
+  COMMUNITY_MENU,
+  SETTINGS_MENU,
 } from 'app/actions/overlayMenu';
 
 import Logo from 'app/components/Logo';
@@ -34,21 +36,21 @@ export const TopNav = (props) => {
     );
   }
 
-  const sideNavOpen = overlayMenu === 'userMenu';
-  const communityMenuOpen = overlayMenu === 'communityMenu';
+  const settingsOpen = overlayMenu === SETTINGS_MENU;
+  const communityMenuOpen = overlayMenu === COMMUNITY_MENU;
 
   let sideNavIcon = 'icon icon-menu icon-large';
-  if (sideNavOpen) {
+  if (settingsOpen) {
     sideNavIcon += ' blue';
   }
 
   let communityMenuIcon = 'icon icon-nav-arrowdown';
   if (communityMenuOpen) {
-    communityMenuIcon = 'icon icon-nav-arrowup blue';
+    communityMenuIcon += 'icon icon-nav-arrowup blue';
   }
 
   return (
-    <nav className={ `TopNav${sideNavOpen ? ' opened' : ''}` }>
+    <nav className={ `TopNav${settingsOpen ? ' opened' : ''}` }>
       <div className='pull-left TopNav-padding TopNav-left' key='topnav-menu'>
         <Anchor
           className='MobileButton TopNav-padding TopNav-snoo'

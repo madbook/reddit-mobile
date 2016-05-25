@@ -27,7 +27,7 @@
     z-index: -1;
     left: 0;
     right: 0;
-    
+
     .tween;
   }
 }
@@ -104,6 +104,10 @@
 .MobileButton {
   display: inline-block;
 
+  &, &:hover, &:visited {
+    text-decoration: none;
+  }
+
   &.community-button {
     text-align: center;
 
@@ -111,7 +115,7 @@
     width: 1.2em;
     height: 1.2em;
 
-    .icon-nav-arrowdown {
+    .icon-nav-arrowdown, .icon-nav-arrowup {
       line-height: 1.3em;
     }
 
@@ -122,7 +126,7 @@
     });
 
     border-radius: .6em;
-    vertical-align: middle;
+    vertical-align: text-bottom;
   }
 
   &.twirlyIcon-open {
