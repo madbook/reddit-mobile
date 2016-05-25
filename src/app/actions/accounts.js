@@ -7,8 +7,8 @@ const { AccountsEndpoint } = endpoints;
 export const FETCHING_ACCOUNT = 'FETCHING_ACCOUNT';
 export const fetching = (options) => ({ type: FETCHING_ACCOUNT, ...options });
 
-export const RECEIEVED_ACCOUNT = 'RECEIEVED_ACCOUNT';
-export const receieved = (options, result) => ({ type: RECEIEVED_ACCOUNT, ...options, result });
+export const RECEIVED_ACCOUNT = 'RECEIVED_ACCOUNT';
+export const received = (options, result) => ({ type: RECEIVED_ACCOUNT, ...options, result });
 
 export const fetch = (options) => async (dispatch, getState) => {
   const { name, loggedOut } = options;
@@ -24,5 +24,5 @@ export const fetch = (options) => async (dispatch, getState) => {
 
   const { results } = apiResponse;
   const result = results.length ? results[0] : {};
-  dispatch(receieved(options, result));
+  dispatch(received(options, result));
 };

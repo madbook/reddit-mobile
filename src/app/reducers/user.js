@@ -20,7 +20,7 @@ export default function (state=DEFAULT, action={}) {
       return state;
     }
 
-    case accountActions.RECEIEVED_ACCOUNT: {
+    case accountActions.RECEIVED_ACCOUNT: {
       const { name, loggedOut, result } = action;
       if (name === 'me' && result.uuid !== state.name) {
         return newUserModel({ name: result.uuid, loading: false, loggedOut });

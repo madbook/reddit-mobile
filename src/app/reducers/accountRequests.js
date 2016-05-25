@@ -22,7 +22,7 @@ export default function (state=DEFAULT, action={}) {
       });
     }
 
-    case accountActions.RECEIEVED_ACCOUNT: {
+    case accountActions.RECEIVED_ACCOUNT: {
       const { name, result } = action;
       const request = state[name];
       if (!request) {
