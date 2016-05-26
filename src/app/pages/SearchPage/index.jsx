@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Anchor } from '@r/platform/components';
 
-
 import SearchPageHandler from 'app/router/handlers/SearchPage';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';
 
@@ -14,7 +13,8 @@ import CommunityRow from 'app/components/CommunityRow';
 import PaginationButtons from 'app/components/PaginationButtons';
 import Loading from 'app/components/Loading';
 import { PostsList } from 'app/components/PostsList';
-// ^^ we're not using the connected version intentionally, for now
+// This is intentionally the non-connected version because search requests aren't loaded in the same
+// way as subreddit listings
 
 const searchLoading = () => (
   <div className='SearchPage__loading'>
@@ -69,7 +69,6 @@ const communitiesHeader = (renderingPosts, pageProps) => (
     { renderingPosts ? communitySeeMore(pageProps) : null }
   </div>
 );
-
 
 const shouldPaginateCommunities = (pageData, subredditRecords, renderingPosts) => {
   return !renderingPosts && (subredditRecords.length >= 25 ||
