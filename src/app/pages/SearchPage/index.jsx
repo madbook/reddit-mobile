@@ -130,7 +130,7 @@ const renderCommunities = (pageData, subredditRecords, renderingPosts) => (
   </div>
 );
 
-const linksHeader = (sort, time) => (
+const linksHeader = (/*sort, time*/) => (
   <div className='SearchPage__linksHeader clearfix'>
   <div className='SearchPage__linksHeaderTitle'>Posts</div>
   <div className='SearchPage__linksHeaderTools'>

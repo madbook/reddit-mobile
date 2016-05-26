@@ -109,7 +109,7 @@ const currentQueryParamsSelector = (state, props) => {
 const pagingPrefixSelector = (state, props) => {
   if (props.preventUrlCreation) { return null; }
   return props.pagingPrefix || state.platform.currentPage.url;
-}
+};
 
 const propsSelector = propName => (_, props) => props[propName];
 

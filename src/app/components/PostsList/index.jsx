@@ -54,7 +54,7 @@ const renderPagination = (postRecords, nextUrl, prevUrl) => (
   <PaginationButtons
     preventUrlCreation={ !!(nextUrl || prevUrl) }
     nextUrl={ nextUrl }
-    prevUrl={ prevUrl  }
+    prevUrl={ prevUrl }
     records={ postRecords }
   />
 );
@@ -66,6 +66,8 @@ const listSelector = createSelector(
   (postsList, nextUrl, prevUrl) => ({
     loading: postsList && postsList.loading,
     postRecords: postsList ? postsList.results : [],
+    prevUrl,
+    nextUrl,
   }),
 );
 

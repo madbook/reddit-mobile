@@ -5,7 +5,6 @@ import { urlWith } from 'lib/urlWith';
 import { cleanObject } from 'lib/cleanObject';
 import * as searchActions from 'app/actions/search';
 import { fetchUserBasedData } from './handlerCommon';
-import { filter } from 'lodash/collection';
 
 import { SORTS } from 'app/sortValues';
 

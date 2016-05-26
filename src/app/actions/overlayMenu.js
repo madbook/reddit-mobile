@@ -16,7 +16,7 @@ export const urlWithCommunityMenuToggled = (url, queryParams) => {
 
 export const urlWithSearchBarToggled = (url, queryParams) => {
   return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, SEARCH_BAR);
-}
+};
 
 export const urlWithSettingsMenuToggled = (url, queryParams) => {
   return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, SETTINGS_MENU);

@@ -3,7 +3,6 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Form } from '@r/platform/components';
 
 import { themes } from 'app/constants';
 import formatNumber from 'lib/formatNumber';
@@ -70,7 +69,7 @@ const renderBannerRow = (subreddit, theme) => {
 
 const followIconClass = (subscriber) => {
   return subscriber ? 'icon-check-circled lime' : 'icon-follow blue';
-}
+};
 
 const renderSubscribeButton = (subscriber) => (
   <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
@@ -93,8 +92,6 @@ const CommunityHeader = (props) => {
   if (!subreddit) {
     return <Loading />;
   }
-
-  const subscriber = subreddit.userIsSubscriber;
 
   let onlineCount;
   if (subreddit.accountsActive) {
