@@ -1,7 +1,8 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import isFakeSubreddit from '../../src/lib/isFakeSubreddit';
-import { fakeSubs } from '../../src/lib/isFakeSubreddit';
+
+import isFakeSubreddit, { FAKE_SUBS } from 'lib/isFakeSubreddit';
+
 
 chai.use(sinonChai);
 const expect = chai.expect;
@@ -21,7 +22,7 @@ describe('lib: isFakeSubreddit', () => {
   });
 
   it('returns true for any of the special fake fubs', () => {
-    fakeSubs.forEach((fakeSub) => {
+    FAKE_SUBS.forEach((fakeSub) => {
       expect(isFakeSubreddit(fakeSub)).to.be.true;
     });
   });

@@ -4,10 +4,13 @@ import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
 
 import { cleanObject } from 'lib/cleanObject';
-import * as commentsPageActions from 'app/actions/commentsPage';
-import * as replyActions from 'app/actions/reply';
 import { fetchUserBasedData } from './handlerCommon';
+import * as commentsPageActions from 'app/actions/commentsPage';
+import * as subredditActions from 'app/actions/subreddits';
+import * as replyActions from 'app/actions/reply';
+import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
+
 
 const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
@@ -18,7 +21,9 @@ const ensurePostTypePrefix = postId => {
   return `${POST_TYPE}_${postId}`;
 };
 
+
 export default class CommentsPage extends BaseHandler {
+
   static pageParamsToCommentsPageParams({ urlParams, queryParams}) {
     let { postId } = urlParams;
     const { commentId } = urlParams;
@@ -41,23 +46,28 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch, getState, { waitForState }) {
+  async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (state.platform.shell) { return; }
 
     const commentsPageParams = CommentsPage.pageParamsToCommentsPageParams(this);
-
-    dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));
-    fetchUserBasedData(dispatch);
-
-    dispatch(commentsPageActions.fetchRelevantContent());
-    dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId));
-
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
-    await waitForState(state => {
-      const commentsPage = state.commentsPages[commentsPageId];
-      return commentsPage && !!commentsPage.responseCode;
-    }, state => dispatch(setStatus(state.commentsPages[commentsPageId].responseCode)));
+    const { subredditName } = state.platform.currentPage.urlParams;
+
+    await Promise.all([
+      dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams)),
+      fetchUserBasedData(dispatch),
+
+      dispatch(commentsPageActions.fetchRelevantContent()),
+      dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId)),
+
+      dispatch(subredditActions.fetchSubreddit(subredditName)),
+    ]);
+
+    dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
+
+    const _tempState = getState();
+    logClientScreenView(buildScreenViewData(getState()), _tempState);
   }
 
   async [METHODS.POST](dispatch, getState, { waitForState }) {
@@ -87,4 +97,22 @@ export default class CommentsPage extends BaseHandler {
       }
     });
   }
+}
+
+
+function buildScreenViewData(state) {
+  const { currentPage: { queryParams, urlParams } } = state.platform;
+  const fullName =`t3_${urlParams.postId}`;
+  const post = state.posts[fullName];
+
+  return cleanObject({
+    target_fullname: fullName,
+    target_id: convertId(post.id),
+    target_type: post.isSelf ? 'self' : 'link',
+    target_sort: queryParams.sort || 'confidence',
+    target_url: post.cleanUrl,
+    target_filter_time: queryParams.sort === 'top' ? (queryParams.time || 'all') : null,
+    ...buildSubredditData(state),
+    ...getBasePayload(state),
+  });
 }

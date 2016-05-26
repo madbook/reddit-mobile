@@ -1,8 +1,9 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
-import * as subredditActions from 'app/actions/subreddits';
 
+import * as subredditActions from 'app/actions/subreddits';
 import { fetchUserBasedData } from 'app/router/handlers/handlerCommon';
+import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
 
 export class PostSubmitHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -11,7 +12,11 @@ export class PostSubmitHandler extends BaseHandler {
       dispatch(platformActions.setPage('/login'));
       return;
     }
-    fetchUserBasedData(dispatch);
+
+    await fetchUserBasedData(dispatch);
+
+    const _tempState = getState();
+    logClientScreenView(getBasePayload(getState()), _tempState);
   }
 }
 
@@ -23,10 +28,13 @@ export class PostSubmitCommunityHandler extends BaseHandler {
       return;
     }
 
-    fetchUserBasedData(dispatch);
-
     state.recentSubreddits.forEach(subredditName => {
       dispatch(subredditActions.fetchSubreddit(subredditName));
     });
+
+    await fetchUserBasedData(dispatch);
+
+    const _tempState = getState();
+    logClientScreenView(getBasePayload(getState()), _tempState);
   }
 }

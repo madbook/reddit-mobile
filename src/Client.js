@@ -1,4 +1,6 @@
 import 'babel-polyfill';
+import './lib/dnt';
+
 import React from 'react';
 import Client from '@r/platform/Client';
 import * as actions from '@r/platform/actions';

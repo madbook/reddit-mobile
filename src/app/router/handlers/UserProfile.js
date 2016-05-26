@@ -1,7 +1,10 @@
+import find from 'lodash/find';
+
 import { BaseHandler, METHODS } from '@r/platform/router';
 
 import * as accountActions from 'app/actions/accounts';
 import { fetchUserBasedData } from './handlerCommon';
+import { getBasePayload, convertId, logClientScreenView } from 'lib/eventUtils';
 
 export default class UserProfilerHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -9,7 +12,26 @@ export default class UserProfilerHandler extends BaseHandler {
     if (state.platform.shell) { return; }
 
     const { userName } = this.urlParams;
-    dispatch(accountActions.fetch({ name: userName }));
-    fetchUserBasedData(dispatch);
+
+    await Promise.all([
+      dispatch(accountActions.fetch({ name: userName })),
+      fetchUserBasedData(dispatch),
+    ]);
+
+    const _tempState = getState();
+    logClientScreenView(buildScreenViewData(getState()), _tempState);
   }
+}
+
+function buildScreenViewData(state) {
+  const { userName: name } = state.platform.currentPage.urlParams;
+  const user = find(state.accounts, (_, k) => k.toLowerCase() === name.toLowerCase());
+
+  return {
+    target_name: user.name,
+    target_fullname: user.id,
+    target_type: 'account',
+    target_id: convertId(user.id),
+    ...getBasePayload(state),
+  };
 }

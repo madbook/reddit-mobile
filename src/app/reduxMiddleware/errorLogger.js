@@ -20,7 +20,7 @@ import * as subscribedSubredditActions from 'app/actions/subscribedSubreddits';
 import * as voteActions from 'app/actions/vote';
 import * as wikiActions from 'app/actions/wiki';
 
-export const errorLogger = () => {
+export default function errorLogger() {
   const actionStack = new ActionStack(config.reduxActionLogSize, [
     platformActions.SET_PAGE,
     accountActions.FETCHING_ACCOUNT,
@@ -67,7 +67,7 @@ export const errorLogger = () => {
       logErrorWithConfig(error, store.getState(), actionStack);
     }
   };
-};
+}
 
 const checkForSpecificErrors = action => {
   switch (action.type) {

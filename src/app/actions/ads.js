@@ -70,7 +70,7 @@ const nextAdId = () => (uniqueId('ad_'));
 // We could look up page params from state, but having them passed in
 // is more explicit and safer if the page were to change while we await.
 export const fetchNewAdForPostsList = (postsListId, pageParams) =>
-  async (dispatch, getState, { waitForState }) => {
+  async (dispatch, getState) => {
     const state = getState();
     const adRequest = state.adRequests[postsListId];
     if (adRequest && adRequest.loading) { return; }
@@ -78,13 +78,6 @@ export const fetchNewAdForPostsList = (postsListId, pageParams) =>
     const adId = nextAdId();
 
     dispatch(fetching(adId, postsListId));
-
-    // We don't want to show ads if there are no posts to render, so we need
-    // to wait for the postsList to load.
-    await waitForState(state => {
-      const postList = state.postsLists[postsListId];
-      return postList && !postList.loading;
-    });
 
     const loadedState = getState();
     const postsList = loadedState.postsLists[postsListId];
