@@ -4,7 +4,7 @@ import KoaStatic from 'koa-static';
 import cluster from 'cluster';
 import { cpus } from 'os';
 
-import Server from '@r/platform/server';
+import Server from '@r/platform/Server';
 import { dispatchInitialShell } from '@r/platform/plugins';
 import APIOptions from '@r/api-client';
 
