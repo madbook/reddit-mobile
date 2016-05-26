@@ -23,5 +23,5 @@ export default [
   ['/actions/community-goto', CommunityGotoActionHandler],
   ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
-  ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler]
+  ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler],
 ];

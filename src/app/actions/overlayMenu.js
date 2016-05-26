@@ -1,10 +1,9 @@
 import { navigateToUrl } from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
-import shouldGoBack from '@r/platform/shouldGoBack'
+import shouldGoBack from '@r/platform/shouldGoBack';
 
 import { urlWith, urlWithQueryParamToggled } from 'lib/urlWith';
 import { omit } from 'lodash/object';
-import { isEqual } from 'lodash/lang';
 
 export const OVERLAY_MENU_PARAMETER = 'overlayMenu';
 export const SETTINGS_MENU = 'settings';

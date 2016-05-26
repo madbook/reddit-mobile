@@ -62,7 +62,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
             replying={ replying }
             currentPage={ currentPage }
             id={ commentsPageParams.id }
-          />
+          />,
         ]
       }
 

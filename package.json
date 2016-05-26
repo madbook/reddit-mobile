@@ -13,7 +13,8 @@
     "dev-server": "NODE_ENV=development nodemon ./bin/Server.js",
     "lint": "eslint src --ext .js,.jsx",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
-    "fonts": "webfonts"
+    "fonts": "webfonts",
+    "test": "blueprints -t"
   },
   "dependencies": {
     "@r/api-client": "~3.11.0",
