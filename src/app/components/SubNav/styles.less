@@ -1,0 +1,32 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.Subnav {
+  line-height: 4 * @grid-size;
+  padding: @grid-size;
+  max-width: @max-width;
+  margin: 0 auto;
+  height: 6 * @grid-size;
+  position: relative;
+
+  &__navLink {
+    position: absolute;
+    right: @grid-size;
+    z-index: 2;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -3em;
+      width: 3em;
+
+      .themeify({
+        background: linear-gradient(to right,
+          fade(@theme-comment-body-color, 0%) 0%,
+          fade(@theme-comment-body-color, 100%) 70%);
+      });
+    }
+  }
+}

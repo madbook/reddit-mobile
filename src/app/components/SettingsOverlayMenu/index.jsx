@@ -16,6 +16,8 @@ import { themes } from 'app/constants';
 const { NIGHTMODE } = themes;
 const userIconClassName = 'icon-user-account icon-large blue';
 
+import { userAccountSelector } from 'app/selectors/userAccount';
+
 export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
   const url = item.url;
   if (url.indexOf('/help') !== -1 || url.indexOf('/wiki') !== -1) {
@@ -149,14 +151,6 @@ export const SettingsOverlayMenu = (props) => {
 const compactSelector = (state) => state.compact;
 const themeSelector = (state) => state.theme;
 const pageDataSelector = (state) => state.platform.currentPage;
-const userAccountSelector = (state) => {
-  const { user } = state;
-  if (user.loggedOut) { return; }
-  const { name } = user;
-  if (!name) { return; }
-
-  return state.accounts[name];
-};
 
 const combineSelectors = (compact, theme, pageData, user) => ({
   compact, theme, pageData, user,
