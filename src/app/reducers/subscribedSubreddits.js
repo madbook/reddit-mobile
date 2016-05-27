@@ -66,7 +66,7 @@ export default(state=DEFAULT, action={}) => {
 
     // if theres any api response containing a subreddit and we've
     // already fetched all of the subscribed subreddits, update
-    case apiResponseActions.RECEIEVED_API_RESPONSE: {
+    case apiResponseActions.RECEIVED_API_RESPONSE: {
       if (!state.loaded) { return state; }
       const { subreddits } = action.apiResponse;
       return updateStateFromSubreddits(state, subreddits);

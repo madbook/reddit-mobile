@@ -13,7 +13,7 @@ export const apiResponseReducerMaker = (kind) => {
         return DEFAULT;
       }
 
-      case apiResponseActions.RECEIEVED_API_RESPONSE: {
+      case apiResponseActions.RECEIVED_API_RESPONSE: {
         const { apiResponse } = action;
         const apiResponseStore = apiResponse.typeToTable[kind];
 
