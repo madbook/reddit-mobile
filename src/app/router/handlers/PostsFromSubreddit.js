@@ -4,7 +4,6 @@ import * as subredditActions from 'app/actions/subreddits';
 
 import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
-import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 export default class PostsFromSubreddit extends BaseHandler {
   static PageParamsToSubredditPostsParams({ urlParams, queryParams}) {
@@ -32,10 +31,7 @@ export default class PostsFromSubreddit extends BaseHandler {
     dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams));
 
     const { subredditName } = subredditPostsParams;
-    if (!isFakeSubreddit(subredditName)) {
-      dispatch(subredditActions.fetchSubreddit(subredditName));
-    }
-
+    dispatch(subredditActions.fetchSubreddit(subredditName));
     fetchUserBasedData(dispatch);
   }
 }

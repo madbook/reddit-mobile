@@ -30,7 +30,7 @@ export const OverlayMenu = (props) => (
     className={ overlayClassName(props) }
     onClick={ props.closeOverlayMenu }
   >
-    <ul className='OverlayMenu-ul' onClick={ stopClickPropagation }>
+    <ul className='OverlayMenu-ul list-unstyled' onClick={ stopClickPropagation }>
       { props.children }
     </ul>
   </nav>

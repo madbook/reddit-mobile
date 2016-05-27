@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { themes } from 'app/constants';
-import formatNumber from 'lib/formatNumber';
+import { formatNumber } from 'lib/formatNumber';
 
 import Loading from 'app/components/Loading';
 import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';

@@ -1,6 +1,7 @@
 import { endpoints, models } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { receivedResponse, updatedModel } from './apiResponse';
+import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { SubredditEndpoint } = endpoints;
 
@@ -11,6 +12,8 @@ export const RECEIEVED_SUBREDDIT = 'RECEIEVED_SUBREDDIT';
 export const receivedSubreddit = (name) => ({ type: RECEIEVED_SUBREDDIT, name });
 
 export const fetchSubreddit = (name) => async (dispatch, getState) => {
+  if (isFakeSubreddit(name)) { return; }
+
   const state = getState();
   const pendingRequest = state.subredditRequests[name];
   if (pendingRequest && !pendingRequest.failed && !pendingRequest.loading) {
@@ -36,6 +39,8 @@ export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) =>
   // we take the fullName and isSubscriber so we don't have to make any api calls
   // on the server to lookup the subreddit;
   return async (dispatch, getState) => {
+    if (isFakeSubreddit(subredditName)) { return; }
+
     const state = getState();
     let subreddit = state.subreddits[subredditName];
     if (!subreddit) {

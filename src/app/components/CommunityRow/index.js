@@ -8,7 +8,7 @@ import { Anchor } from '@r/platform/components';
 import NSFWFlair from 'app/components/NSFWFlair';
 import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';
 import { themes } from 'app/constants';
-import formatNumber from 'lib/formatNumber';
+import { formatNumber } from 'lib/formatNumber';
 
 const renderIcon = (iconUrl, url, color, theme) => {
   let style;
