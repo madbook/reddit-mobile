@@ -13,10 +13,10 @@ export const fetchingCommentsPage = (commentsPageId, commentsPageParams) => ({
   commentsPageParams,
 });
 
-export const RECEIEVED_COMMENTS_PAGE = 'RECEIEVED_COMMENTS_PAGE';
+export const RECEIVED_COMMENTS_PAGE = 'RECEIVED_COMMENTS_PAGE';
 
 export const receivedCommentsPage = (commentsPageId, commentsPageResults) => ({
-  type: RECEIEVED_COMMENTS_PAGE,
+  type: RECEIVED_COMMENTS_PAGE,
   commentsPageId,
   commentsPageResults,
 });

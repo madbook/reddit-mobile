@@ -29,7 +29,7 @@ export default (state=DEFAULT, action={}) => {
       });
     }
 
-    case commentsPageActions.RECEIEVED_COMMENTS_PAGE: {
+    case commentsPageActions.RECEIVED_COMMENTS_PAGE: {
       const { commentsPageId, commentsPageResults } = action;
       const currentCommentsPage = state[commentsPageId];
       if (!currentCommentsPage) { return state; }
@@ -37,8 +37,10 @@ export default (state=DEFAULT, action={}) => {
       return merge(state, {
         [commentsPageId]: {
           loading: false,
+          // TODO: what happens if a user adds a comment before results come back?
           results: commentsPageResults,
         },
+        // TODO: this feels inherently race condition-ish
         current: commentsPageId,
       });
     }
