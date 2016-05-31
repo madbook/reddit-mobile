@@ -3,7 +3,6 @@ import * as postsListActions from 'app/actions/postsList';
 import * as loginActions from 'app/actions/login';
 
 import { newPostsList } from 'app/models/PostsList';
-import each from 'lodash/each';
 
 const DEFAULT = {};
 
@@ -24,7 +23,7 @@ export default (state=DEFAULT, action={}) => {
       });
     }
 
-    case postsListActions.RECEIEVED_POSTS_LIST: {
+    case postsListActions.RECEIVED_POSTS_LIST: {
       const { postsListId, postsListResults } = action;
       const currentPostsList = state[postsListId];
       if (!currentPostsList) { return state; }
@@ -49,14 +48,14 @@ export default (state=DEFAULT, action={}) => {
       });
     }
 
-    case postsListActions.RECEIEVED_MORE_POSTS: {
+    case postsListActions.RECEIVED_MORE_POSTS: {
       const { postsListId, postsListResults } = action;
       const currentPostsList = state[postsListId];
       if (!currentPostsList) { return state; }
 
       const newPostResults = currentPostsList.results.slice();
       const currentPosts = new Set(newPostResults.map(result => result.uuid));
-      each(postsListResults, result => {
+      postsListResults.forEach(result => {
         if (!currentPosts.has(result.uuid)) {
           currentPosts.add(result.uuid);
           newPostResults.push(result);

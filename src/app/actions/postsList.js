@@ -15,10 +15,10 @@ export const fetchingSubredditPosts = (postsListId, postsParams) => ({
   postsParams,
 });
 
-export const RECEIEVED_POSTS_LIST = 'RECEIEVED_POSTS_LIST';
+export const RECEIVED_POSTS_LIST = 'RECEIVED_POSTS_LIST';
 
-export const recievedPostList = (postsListId, postsListResults) => ({
-  type: RECEIEVED_POSTS_LIST,
+export const receivedPostList = (postsListId, postsListResults) => ({
+  type: RECEIVED_POSTS_LIST,
   postsListId,
   postsListResults,
 });
@@ -35,7 +35,7 @@ export const fetchPostsFromSubreddit = postsParams => async (dispatch, getState)
   const apiOptions = apiOptionsFromState(state);
   const apiResponse = await PostsEndpoint.get(apiOptions, postsParams);
   dispatch(receivedResponse(apiResponse));
-  dispatch(recievedPostList(postsListId, apiResponse.results));
+  dispatch(receivedPostList(postsListId, apiResponse.results));
 };
 
 export const LOADING_MORE_POSTS = 'LOADING_MORE_POSTS';
@@ -44,9 +44,9 @@ export const loadingMorePosts = postsListId => ({
   postsListId,
 });
 
-export const RECEIEVED_MORE_POSTS = 'RECEIEVED_MORE_POSTS';
-export const receievedMorePosts = (postsListId, postsListResults) => ({
-  type: RECEIEVED_MORE_POSTS,
+export const RECEIVED_MORE_POSTS = 'RECEIVED_MORE_POSTS';
+export const receivedMorePosts = (postsListId, postsListResults) => ({
+  type: RECEIVED_MORE_POSTS,
   postsListId,
   postsListResults,
 });
@@ -63,5 +63,5 @@ export const addMorePostsFromSubreddit = postsParams => async (dispatch, getStat
   const apiOptions = apiOptionsFromState(state);
   const apiResponse = await PostsEndpoint.get(apiOptions, { ...postsParams, after});
   dispatch(receivedResponse(apiResponse));
-  dispatch(receievedMorePosts(postsListId, apiResponse.results));
+  dispatch(receivedMorePosts(postsListId, apiResponse.results));
 };
