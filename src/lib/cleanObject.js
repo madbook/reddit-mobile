@@ -1,4 +1,4 @@
-import { omitBy } from 'lodash/object';
+import omitBy from 'lodash/omitBy';
 
 const nonNullValue = value => {
   return value === undefined || value === null;

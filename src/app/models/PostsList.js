@@ -1,5 +1,5 @@
 import { objectToHash } from 'lib/objectToHash';
-// import { omit } from 'lodash/object';
+// import omit from 'lodash/omit';
 
 export const paramsToPostsListsParams = (params) => {
   return params;

@@ -3,7 +3,7 @@ import { endpoints } from '@r/api-client';
 import { paramsToPostsListsId } from 'app/models/PostsList';
 import { receivedResponse } from './apiResponse';
 
-import { last } from 'lodash/array';
+import last from 'lodash/last';
 
 const { PostsEndpoint } = endpoints;
 

@@ -1,6 +1,6 @@
 import merge from '@r/platform/merge';
 import { models } from '@r/api-client';
-import { each } from 'lodash/collection';
+import each from 'lodash/each';
 
 import * as loginActions from 'app/actions/login';
 import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';

@@ -1,7 +1,7 @@
 import './styles.less';
 
 import React from 'react';
-import { fill } from 'lodash/array';
+import fill from 'lodash/fill';
 
 import short from 'lib/formatDifference';
 

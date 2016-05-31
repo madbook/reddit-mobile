@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import Client from '@r/platform/Client';
 import * as actions from '@r/platform/actions';
-import { isEmpty } from 'lodash/lang';
+import isEmpty from 'lodash/isEmpty';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 

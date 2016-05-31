@@ -1,5 +1,5 @@
 import { POST_COMPACT_THUMBNAIL_WIDTH } from '../../constants';
-import { has } from 'lodash/object';
+import has from 'lodash/has';
 
 export const DEFAULT_ASPECT_RATIO = 16 / 9;
 

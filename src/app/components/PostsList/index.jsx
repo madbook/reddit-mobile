@@ -7,7 +7,7 @@ import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
 
-import { map } from 'lodash/collection';
+import map from 'lodash/map';
 
 const T = React.PropTypes;
 

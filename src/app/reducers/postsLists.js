@@ -3,7 +3,7 @@ import * as postsListActions from 'app/actions/postsList';
 import * as loginActions from 'app/actions/login';
 
 import { newPostsList } from 'app/models/PostsList';
-import { each } from 'lodash/array';
+import each from 'lodash/each';
 
 const DEFAULT = {};
 

@@ -1,4 +1,4 @@
-import { throttle } from 'lodash/function';
+import throttle from 'lodash/throttle';
 
 const elementCanScroll = (el) => {
   const top = el.scrollTop;

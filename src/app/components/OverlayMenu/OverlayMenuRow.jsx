@@ -3,7 +3,7 @@ import './styles.less';
 import React from 'react';
 import { Anchor, Form } from '@r/platform/components';
 
-import { map } from 'lodash/collection';
+import map from 'lodash/map';
 
 import { themes } from 'app/constants';
 const { NIGHTMODE } = themes;

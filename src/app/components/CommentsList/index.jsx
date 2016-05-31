@@ -2,7 +2,7 @@ import './styles.less';
 
 import React from 'react';
 
-import { map } from 'lodash/collection';
+import map from 'lodash/map';
 
 import Comment from 'app/components/Comment';
 

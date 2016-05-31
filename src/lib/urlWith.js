@@ -1,5 +1,5 @@
-import { map } from 'lodash/collection';
-import { omit } from 'lodash/object';
+import map from 'lodash/map';
+import omit from 'lodash/omit';
 
 const queryStringFromDictionary = (queryParams) => {
   const keys = Object.keys(queryParams);
