@@ -3,6 +3,24 @@ import crypto from 'crypto';
 
 import constants from '../constants';
 
+// Static file needed to support deep links on iOS
+const appleAppSiteAssociation = JSON.stringify({
+  webcredentials: {
+    apps: [
+      '2TDUX39LX8.com.reddit.Reddit',
+    ],
+  },
+  applinks: {
+    apps: [],
+    detail: [
+      {
+        appID: '2TDUX39LX8.com.reddit.Reddit',
+        paths: [ '/', '/r/*', '/u/*', '/user/*' ],
+      },
+    ],
+  },
+});
+
 // set up server-only routes
 const serverRoutes = function(app) {
   const router = app.router;
@@ -36,6 +54,11 @@ const serverRoutes = function(app) {
     `;
   });
 
+  router.get('/apple-app-site-association', function * () {
+    this.body = appleAppSiteAssociation;
+    this.type = 'application/json';
+  });
+
   router.post('/timings', function *() {
     const statsURL = app.config.statsURL;
     const timings = this.request.body.rum;
@@ -67,7 +90,8 @@ const serverRoutes = function(app) {
   });
 
   const EXCLUDED_ROUTES = ['*', '/robots.txt', '/live/:idOrFilter?',
-                           '/goto', '/faq', '/health', '/routes'];
+                           '/goto', '/faq', '/health', '/routes',
+                           '/apple-app-site-association'];
   router.get('/routes', function *() {
     this.body = app.router.stack.routes
       .filter(function(r) {
