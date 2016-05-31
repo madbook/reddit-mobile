@@ -85,11 +85,17 @@ const renderSubscribeButton = (subscriber) => (
 const CommunityHeader = (props) => {
   const {
     subreddit,
+    subredditRequest,
     subscribeError,
     theme,
   } = props;
 
+
   if (!subreddit) {
+    if (subredditRequest && subredditRequest.failed) {
+      return null;
+    }
+    
     return <Loading />;
   }
 
@@ -126,9 +132,11 @@ const CommunityHeader = (props) => {
 
 const mapStateToProps = createSelector(
   (state, props) => state.subreddits[props.subredditName],
+  (state, props) => state.subredditRequests[props.subredditName],
   () => (false), // return the subscrition error or etc here??,
   state => state.theme,
-  (subreddit, subscribeError, theme) => ({ subreddit, subscribeError, theme }),
+  (subreddit, subredditRequest, subscribeError, theme) => ({
+    subreddit, subredditRequest, subscribeError, theme }),
 );
 
 export default connect(mapStateToProps)(CommunityHeader);

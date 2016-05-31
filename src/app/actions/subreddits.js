@@ -6,10 +6,13 @@ import isFakeSubreddit from 'lib/isFakeSubreddit';
 const { SubredditEndpoint } = endpoints;
 
 export const FETCHING_SUBREDDIT = 'FETCHING_SUBREDDIT';
-export const fetchingSubreddit = (name) => ({ type: FETCHING_SUBREDDIT, name });
+export const fetchingSubreddit = name => ({ type: FETCHING_SUBREDDIT, name });
 
 export const RECEIEVED_SUBREDDIT = 'RECEIEVED_SUBREDDIT';
-export const receivedSubreddit = (name) => ({ type: RECEIEVED_SUBREDDIT, name });
+export const receivedSubreddit = name => ({ type: RECEIEVED_SUBREDDIT, name });
+
+export const FAILED_SUBREDDIT = 'FAILED_SUBREDDIT';
+export const failedSubreddit = name => ({ type: FAILED_SUBREDDIT, name });
 
 export const fetchSubreddit = (name) => async (dispatch, getState) => {
   if (isFakeSubreddit(name)) { return; }
@@ -27,8 +30,7 @@ export const fetchSubreddit = (name) => async (dispatch, getState) => {
     dispatch(receivedResponse(response));
     dispatch(receivedSubreddit(name));
   } catch (e) {
-    // add a failed state explicitly?
-    dispatch(receivedSubreddit(name));
+    dispatch(failedSubreddit(name));
   }
 };
 

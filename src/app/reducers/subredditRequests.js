@@ -24,6 +24,13 @@ export default (state=DEFAULT, action={}) => {
       return merge(state, { [name]: { loading: false } });
     }
 
+    case subredditActions.FAILED_SUBREDDIT: {
+      const { name } = action;
+      const currentRequest = state[name];
+      if (!(currentRequest && currentRequest.loading)) { return state; }
+
+      return merge(state, { [name]: { loading: false, failed: true } });
+    }
     default: return state;
   }
 };

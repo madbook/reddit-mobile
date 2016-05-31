@@ -2,4 +2,14 @@
 
 .SubredditAbout {
   padding: @grid-size;
+
+  &__loading-error {
+    font-size: @font-size-h4;
+    word-wrap: break-word; // in practice this will break the subredditName
+    // into multiple lines if needed
+  }
+
+  &__try-logging-in {
+    margin-top: 2 * @grid-size;
+  }
 }

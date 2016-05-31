@@ -21,7 +21,6 @@ const backToSubredditLink = subredditName => (
 
 export const SubredditAboutPage = props => {
   const { subredditName } = props.urlParams;
-  console.log('subreddit page sees', subredditName, props);
 
   if (isFakeSubreddit(subredditName)) {
     return backToSubredditLink(subredditName);

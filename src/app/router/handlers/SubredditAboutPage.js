@@ -6,7 +6,7 @@ import { fetchUserBasedData } from './handlerCommon';
 export default class SubredditAboutPage extends BaseHandler {
   async [METHODS.GET](dispatch, getState/*, utils*/) {
     const state = getState();
-    if (state.platform.shell) { console.log('shell1!!!'); return; }
+    if (state.platform.shell) { return; }
 
     const { subredditName } = this.urlParams;
     dispatch(subredditActions.fetchSubreddit(subredditName));
