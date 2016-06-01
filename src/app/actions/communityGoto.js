@@ -25,7 +25,7 @@ export const gotoSubreddit = (queriedName) => async (dispatch, getState, { waitF
   dispatch(subredditActions.fetchSubreddit(name));
 
   await waitForAction(
-    (action) => action.type === subredditActions.RECEIEVED_SUBREDDIT && action.name === name,
+    (action) => action.type === subredditActions.RECEIVED_SUBREDDIT && action.name === name,
   );
 
   if (subredditExists(name, getState())) {

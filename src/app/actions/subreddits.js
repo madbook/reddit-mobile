@@ -8,8 +8,8 @@ const { SubredditEndpoint } = endpoints;
 export const FETCHING_SUBREDDIT = 'FETCHING_SUBREDDIT';
 export const fetchingSubreddit = name => ({ type: FETCHING_SUBREDDIT, name });
 
-export const RECEIEVED_SUBREDDIT = 'RECEIEVED_SUBREDDIT';
-export const receivedSubreddit = name => ({ type: RECEIEVED_SUBREDDIT, name });
+export const RECEIVED_SUBREDDIT = 'RECEIVED_SUBREDDIT';
+export const receivedSubreddit = (name) => ({ type: RECEIVED_SUBREDDIT, name });
 
 export const FAILED_SUBREDDIT = 'FAILED_SUBREDDIT';
 export const failedSubreddit = name => ({ type: FAILED_SUBREDDIT, name });

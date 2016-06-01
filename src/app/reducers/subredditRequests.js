@@ -16,7 +16,7 @@ export default (state=DEFAULT, action={}) => {
       });
     }
 
-    case subredditActions.RECEIEVED_SUBREDDIT: {
+    case subredditActions.RECEIVED_SUBREDDIT: {
       const { name } = action;
       const currentRequest = state[name];
       if (!(currentRequest && currentRequest.loading)) { return state; }
