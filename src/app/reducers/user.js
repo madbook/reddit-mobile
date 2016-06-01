@@ -14,7 +14,7 @@ export default function (state=DEFAULT, action={}) {
     case accountActions.FETCHING_ACCOUNT: {
       const { name, loggedOut } = action;
       if (name === 'me' && !state.loading) {
-        return newUserModel({ loggedOut });
+        return newUserModel({ name, loggedOut });
       }
 
       return state;
