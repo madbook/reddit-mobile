@@ -5,6 +5,11 @@ import constants from '../constants';
 
 // Static file needed to support deep links on iOS
 const appleAppSiteAssociation = JSON.stringify({
+  activitycontinuation: {
+    apps: [
+      '2TDUX39LX8.com.reddit.Reddit',
+    ],
+  },
   webcredentials: {
     apps: [
       '2TDUX39LX8.com.reddit.Reddit',
@@ -15,7 +20,7 @@ const appleAppSiteAssociation = JSON.stringify({
     details: [
       {
         appID: '2TDUX39LX8.com.reddit.Reddit',
-        paths: [ '/', '/r/*', '/u/*', '/user/*' ],
+        paths: [ '/r/*', '/u/*', '/user/*', '/' ],
       },
     ],
   },
