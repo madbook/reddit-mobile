@@ -31,6 +31,10 @@ const serverRoutes = function(app) {
       User-agent: 008
       Disallow: /
 
+      # 80legs' new crawler
+      User-agent: voltron
+      Disallow: /
+
       User-Agent: bender
       Disallow: /my_shiny_metal_ass
 
