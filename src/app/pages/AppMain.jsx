@@ -6,6 +6,8 @@ import { CommentsPage } from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
 import { SearchPage } from './SearchPage';
 import { SubredditAboutPage } from './SubredditAbout';
+import { UserActivityPage } from './UserActivity';
+import { UserProfilePage } from './UserProfile';
 
 import Login from 'app/components/Login';
 
@@ -38,6 +40,9 @@ export const AppMainPage = () => (
       url='/comments/:postId/:postTitle?'
       component={ CommentsPage }
     />
+    <Page url='/u/:userName/activity' component={ UserActivityPage } />
+    <Page url='/u/:userName/gild' component={ UserProfilePage } />
+    <Page url='/u/:userName/' component={ UserProfilePage } />
     <Page
       url='/login'
       component={ Login }

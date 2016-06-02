@@ -11,14 +11,17 @@ import { cleanObject } from 'lib/cleanObject';
 
 const T = React.PropTypes;
 
+const pageNumber = queryParams => parseInt(queryParams.page || 0);
+
 export const buildPrevUrl = (records, pagingPrefix='', currentQueryParams={}) => {
   const firstId = records[0].uuid;
-  const page = parseInt(currentQueryParams.page || 0);
+  const page = pageNumber(currentQueryParams);
 
   if (page > 0) {
     const query = {
       count: 25, // use the current params count if its defined
       ...currentQueryParams,
+      page: page - 1,
       before: firstId,
       after: undefined,
     };
@@ -29,7 +32,7 @@ export const buildPrevUrl = (records, pagingPrefix='', currentQueryParams={}) =>
 
 export const buildNextUrl = (records, pagingPrefix='', currentQueryParams={}) => {
   const lastId = records[records.length - 1].uuid;
-  const page = parseInt(currentQueryParams.page || 0);
+  const page = pageNumber(currentQueryParams);
 
   const query = {
     count: 25,

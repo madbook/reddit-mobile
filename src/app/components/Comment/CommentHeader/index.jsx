@@ -3,7 +3,7 @@ import './styles.less';
 import React from 'react';
 import fill from 'lodash/fill';
 
-import short from 'lib/formatDifference';
+import { short } from 'lib/formatDifference';
 
 const T = React.PropTypes;
 const separator = <div className='CommentHeader__separator'> • </div>;
@@ -79,7 +79,7 @@ function renderTimestamp(created, highlight) {
   let cls = 'CommentHeader__timestamp';
   if (highlight) { cls += ' m-highlight'; }
 
-  return <div className={ cls }>{ short(created * 1000) }</div>;
+  return <div className={ cls }>{ short(created) }</div>;
 }
 
 function renderGold(gildCount) {

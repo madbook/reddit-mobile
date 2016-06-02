@@ -1,0 +1,60 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.UserProfileHeader {
+  &__banner {
+    padding: 2 * @grid-size @grid-size;
+    text-align: center;
+  }
+
+  &__banner-user-name {
+    font-weight: lighter;
+    vertical-align: middle;
+    margin: 0; // have to override the text reset here. Those are everywhere by default, probably mostly for ugc, maybe we should just wrap those in class
+  }
+
+  &__tabs {
+    padding: @grid-size;
+  }
+
+  &__tab {
+    width: 33%;
+    margin: 0 auto;
+    display: inline-block;
+    text-align: center;
+
+    &, &:visited, &:hover {
+      text-decoration: none;
+    }
+
+    & ~ & {
+      .themeify({
+        border-left: @theme-border;
+      });
+    }
+  }
+
+  &__tab-icon {
+    // this is just a little bit smaller than icon-large
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: @half-grid-size;
+
+    &.selected {
+      color: @mint;
+    }
+  }
+
+  &__tab-text {
+    font-size: @font-size-small;
+    font-weight: bold;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+
+    &.selected {
+      color: @dark-teal;
+    }
+  }
+}

@@ -7,6 +7,8 @@ import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
 import SearchPageHandler from './handlers/SearchPage';
 import SubredditAboutPageHandler from './handlers/SubredditAboutPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
+import UserActivityHandler from './handlers/UserActivity';
+import UserProfilerHandler from './handlers/UserProfile';
 import Vote from './handlers/Vote';
 
 export default [
@@ -21,6 +23,9 @@ export default [
   ['/r/:subredditName/about', SubredditAboutPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments', CommentsPageHandler],
+  ['/u/:userName/activity', UserActivityHandler],
+  ['/u/:userName/gild', UserProfilerHandler],
+  ['/u/:userName', UserProfilerHandler],
   ['/login', Login],
 
   // actions

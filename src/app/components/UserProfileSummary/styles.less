@@ -1,0 +1,69 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.UserProfileSummary {
+  @row-height: 70px;
+
+  &__row {
+    margin: 0 2 * @grid-size;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
+  }
+
+  &__badge {
+    &.half {
+      display: inline-block;
+      width: 50%;
+
+      .UserProfileSummary__badge-subtext {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__badge,
+  &__text-werapper {
+    margin: @row-height / 4 0;
+  }
+
+  &__badgeIcon {
+    vertical-align: top;
+    line-height: @row-height / 2;
+    margin-right: 10px;
+
+    // the visual-sizing seems a little off, so we do
+    // the sizing here rather than using the icon-(size) classes
+    &.icon-karma {
+      font-size: 35px;
+      margin-left: -6px;
+    }
+
+    &.icon-cake {
+      font-size: 24px;
+    }
+  }
+
+  &__badge.half,
+  &__badgeIcon,
+  &__text-wrapper {
+    display: inline-block;
+  }
+
+  &__badge-text {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: lighter;
+    margin-bottom: @half-grid-size;
+  }
+
+  &__badge-subtext {
+    font-size: @font-size-small;
+    line-height: @font-size-small;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+}

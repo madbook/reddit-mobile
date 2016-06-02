@@ -1,0 +1,44 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.UserProfilePage {
+  .themeify({
+    background-color: @theme-line-color;
+  });
+
+  // set the height to override background color of the app
+  // offset by `@top-nav-height` if calc is availalbe to prevent
+  // the page from scolling unecessarily
+  height: 100%; // fallback
+  height: calc(100% ~'-' @top-nav-height);
+
+  &__section {
+    .themeify({
+      background-color: @theme-body-color;
+      border-bottom: @theme-alt-border;
+    });
+
+    margin-bottom: @grid-size;
+  }
+
+  &__userLink {
+    display: block;
+    padding: 2 * @grid-size;
+    font-size: @font-size-h4;
+    font-weight: lighter;
+
+    &, &:visited, &:hover {
+      text-decoration: none;
+      
+      .themeify({
+        color: @theme-body-text-color;
+      });
+    }
+  }
+
+  &__userLinkIcon {
+    margin-right: 2 * @grid-size;
+    position: relative;
+    top: -2px;
+  }
+}
