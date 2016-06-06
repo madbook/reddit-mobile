@@ -14,7 +14,8 @@
     "lint": "eslint src --ext .js,.jsx",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
     "fonts": "webfonts",
-    "test": "blueprints -t"
+    "test": "blueprints -t",
+    "test:watch": "npm run test -- -w"
   },
   "dependencies": {
     "@r/api-client": "~3.12.0",
