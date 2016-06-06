@@ -38,7 +38,7 @@ const checkDeviceType = (allowedAgents, userAgentString) => {
   return allowedAgents.some(a => userAgentString.indexOf(a) > -1);
 };
 
-export function shouldShowBanner({ actionName, loid, country, data, userAgent }={}) {
+export function shouldShowBanner({ actionName, loid, data, userAgent }={}) {
   // Lots of options we have to consider.
   // 1) Easiest. Make sure local storage exists
   if (!localStorageAvailable()) { return BASE_VAL; }

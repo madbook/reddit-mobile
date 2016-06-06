@@ -100,7 +100,6 @@ function initialize(bindLinks) {
     } = shouldShowBanner({
       actionName: data.actionName,
       loid: data.loid,
-      country: data.country,
       userAgent: data.ctx.userAgent || '',
       data: data.data,
     });
