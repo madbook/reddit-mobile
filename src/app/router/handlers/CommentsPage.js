@@ -48,6 +48,9 @@ export default class CommentsPage extends BaseHandler {
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));
     fetchUserBasedData(dispatch);
+
+    dispatch(commentsPageActions.fetchRelevantContent());
+    dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId));
   }
 
   async [METHODS.POST](dispatch, getState, { waitForState }) {

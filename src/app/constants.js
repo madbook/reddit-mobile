@@ -58,6 +58,8 @@ export const DEFAULT_KEY_COLOR = '#336699';
 
 export const SET_META_COLOR = 'setMetaColor';
 
+export const VISITED_POSTS_COUNT = 20;
+
 // Post content
 
 export const POST_COMPACT_THUMBNAIL_WIDTH = 70;
@@ -80,6 +82,7 @@ export const BANNER_URLS_DIRECT = {
 export const flags = {
   BETA: 'beta',
   SMARTBANNER: 'banner',
+  VARIANT_NEXTCONTENT_BOTTOM: 'experimentNextContentBottom',
 };
 
 export const themes = {

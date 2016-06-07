@@ -38,6 +38,10 @@ const client = Client({
       try {
         data.expandedPosts = JSON.parse(window.localStorage.expandedPosts);
       } catch (e) { console.warn(e); }
+
+      try {
+        data.visitedPosts = JSON.parse(window.localStorage.visitedPosts);
+      } catch (e) { console.warn(e); }
     }
 
     return data;

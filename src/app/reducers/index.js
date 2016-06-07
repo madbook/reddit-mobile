@@ -25,6 +25,7 @@ import subredditRequests from './subredditRequests';
 import theme from './theme';
 import unblurredPosts from './unblurredPosts';
 import user from './user';
+import visitedPosts from './visitedPosts';
 import wikis from './wikis';
 import wikiRequests from './wikiRequests';
 import mail from './mail';
@@ -58,6 +59,7 @@ export default {
   theme,
   unblurredPosts,
   user,
+  visitedPosts,
   widgets,
   wikis,
   wikiRequests,

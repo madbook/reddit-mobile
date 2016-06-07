@@ -7,11 +7,20 @@ import { flags as flagConstants } from './constants';
 const {
   BETA,
   SMARTBANNER,
+  VARIANT_NEXTCONTENT_BOTTOM,
 } = flagConstants;
 
 const config = {
   [BETA]: true,
   [SMARTBANNER]: true,
+  [VARIANT_NEXTCONTENT_BOTTOM]: {
+    url: 'experimentnextcontentbottom',
+    and: [{
+      variant: 'nextcontent_mweb:bottom',
+    }, {
+      loggedin: false,
+    }],
+  },
 };
 
 const flags = new Flags(config);

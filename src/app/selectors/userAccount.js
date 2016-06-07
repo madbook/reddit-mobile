@@ -11,3 +11,12 @@ export const userAccountSelector = createSelector(
   },
   (user) => (user),
 );
+
+export const loggedOutUserAccountSelector = createSelector(
+  state => {
+    const { user } = state;
+    if (!user.loggedOut) { return; }
+    return state.accounts.me;
+  },
+  user => (user),
+);
