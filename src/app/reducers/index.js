@@ -3,6 +3,7 @@ import widgets from '@r/widgets/reducer';
 import accounts from './accounts';
 import accountRequests from './accountRequests';
 import activitiesRequests from './activitiesRequests';
+import autocompleteSubreddits from './autocompleteSubreddits';
 import collapsedComments from './collapsedComments';
 import comments from './comments';
 import commentsPages from './commentsPages';
@@ -10,10 +11,12 @@ import compact from './compact';
 import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
-import preferences from './preferences';
-import preferencesRequest from './preferencesRequest';
+import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
+import preferences from './preferences';
+import preferencesRequest from './preferencesRequest';
+import recentSubreddits from './recentSubreddits';
 import replying from './replying';
 import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
@@ -35,6 +38,7 @@ export default {
   accounts,
   accountRequests,
   activitiesRequests,
+  autocompleteSubreddits,
   collapsedComments,
   comments,
   commentsPages,
@@ -44,11 +48,13 @@ export default {
   loid,
   mail,
   messages,
-  preferences,
-  preferencesRequest,
+  posting,
   posts,
   postsLists,
+  preferences,
+  preferencesRequest,
   replying,
+  recentSubreddits,
   savedRequests,
   searchRequests,
   session,

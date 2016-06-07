@@ -1,5 +1,4 @@
-import APIOptions from '@r/api-client';
-import { optionsWithAuth } from '@r/api-client';
+import APIOptions, { optionsWithAuth } from '@r/api-client';
 
 export const apiOptionsFromState = (state) => {
   if (!state) { return APIOptions; }

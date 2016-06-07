@@ -20,6 +20,7 @@ import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompa
 import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
+import { dispatchInitialRecentSubreddits } from 'server/initialState/dispatchInitialRecentSubreddits';
 import metaRoutes from 'server/meta';
 
 import dispatchInitialCollapsedComments from
@@ -57,6 +58,7 @@ export function startServer() {
       dispatchInitialCollapsedComments(ctx, dispatch);
       dispatchInitialCompact(ctx, dispatch);
       dispatchInitialOver18(ctx, dispatch);
+      dispatchInitialRecentSubreddits(ctx, dispatch);
     },
     preRouteServerMiddleware: [
       binFiles,

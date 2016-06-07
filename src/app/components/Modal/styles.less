@@ -1,0 +1,37 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.Modal {
+  &__menubar {
+    height: 6 * @grid-size;
+    line-height: 50px;
+    text-align: center;
+
+    .themeify({
+      background-color: @theme-nav-bar-color;
+      border-bottom: @theme-alt-border;
+    });
+  }
+
+  &__menubar-close {
+    position: absolute;
+    top: 15px;
+    left: 3 * @half-grid-size;
+  }
+
+  &__menubar-text {
+    font-size: 17px;
+    font-weight: 300;
+    .themeify({
+      color: @theme-nav-bar-text;
+    });
+  }
+
+  &__body {
+    .themeify({
+      background-color: @theme-modal-body-color;
+    });
+    overflow: auto;
+    height: 100%;
+  }
+}

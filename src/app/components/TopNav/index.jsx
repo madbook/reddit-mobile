@@ -4,29 +4,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Anchor, BackAnchor } from '@r/platform/components';
+import cx from 'lib/classNames';
 
 import {
   OVERLAY_MENU_PARAMETER,
+  urlWithPostSubmitMenuToggled,
   urlWithCommunityMenuToggled,
   urlWithSearchBarToggled,
   urlWithSettingsMenuToggled,
   COMMUNITY_MENU,
   SETTINGS_MENU,
+  POST_SUBMIT,
 } from 'app/actions/overlayMenu';
 
 import Logo from 'app/components/Logo';
 import SnooIcon from 'app/components/SnooIcon';
 
 export const TopNav = (props) => {
-  let { assetPath } = props;
-  assetPath = assetPath ? assetPath : '';
-  const { overlayMenu, subredditName, url, queryParams } = props;
+  const { assetPath, overlayMenu, url, queryParams, isLoggedIn } = props;
 
-  let currentSubredditPath = '';
-  if (subredditName) {
-    currentSubredditPath = `/r/${subredditName}`;
-  }
-
+  // NOTE: this isn't working (no user in props)
   let notificationsCount;
   if (props.user && props.user.inbox_count) {
     notificationsCount = (
@@ -38,16 +35,17 @@ export const TopNav = (props) => {
 
   const settingsOpen = overlayMenu === SETTINGS_MENU;
   const communityMenuOpen = overlayMenu === COMMUNITY_MENU;
+  const submitPostOpen = overlayMenu === POST_SUBMIT;
 
-  let sideNavIcon = 'icon icon-menu icon-large';
-  if (settingsOpen) {
-    sideNavIcon += ' blue';
-  }
+  const sideNavIcon = cx('icon icon-menu icon-large', { blue: settingsOpen });
+  const communityMenuIcon = cx('icon icon-nav-arrowdown', { blue: communityMenuOpen });
+  const postSubmitMenuIcon = cx('icon icon-large', {
+    'icon-post_edit': !submitPostOpen,
+    'icon-nav-close': submitPostOpen,
+  });
 
-  let communityMenuIcon = 'icon icon-nav-arrowdown';
-  if (communityMenuOpen) {
-    communityMenuIcon += 'icon icon-nav-arrowup blue';
-  }
+  const editIconUrl = isLoggedIn ?
+    urlWithPostSubmitMenuToggled(url, queryParams) : '/login';
 
   return (
     <nav className={ `TopNav${settingsOpen ? ' opened' : ''}` }>
@@ -65,7 +63,7 @@ export const TopNav = (props) => {
             href={ urlWithCommunityMenuToggled(url, queryParams) }
           >
             <div className='TopNav-text-vcentering'>
-              <Logo assetPath={ assetPath } />
+              <Logo assetPath={ assetPath ? assetPath : '' } />
             </div>
             <div className='MobileButton community-button'>
               <span className={ communityMenuIcon } />
@@ -74,12 +72,12 @@ export const TopNav = (props) => {
         </h1>
       </div>
       <div className='TopNav-padding TopNav-right' key='topnav-actions'>
-        <Anchor
+        <BackAnchor
           className='MobileButton TopNav-floaty'
-          href={ `${currentSubredditPath}/submit` }
+          href={ editIconUrl }
         >
-          <span className='icon icon-post_edit icon-large' />
-        </Anchor>
+          <span className={ postSubmitMenuIcon } />
+        </BackAnchor>
         <BackAnchor
           className='MobileButton TopNav-floaty'
           href={ urlWithSearchBarToggled(url, queryParams) }
@@ -98,21 +96,15 @@ export const TopNav = (props) => {
   );
 };
 
-const pageParamsSelector = (state) => state.platform.currentPage;
-const combineSelectors = (pageParams) => {
-  const { url, urlParams, queryParams } = pageParams;
-  const overlayMenu = queryParams[OVERLAY_MENU_PARAMETER];
-  const { subredditName } = urlParams;
-
-  return { overlayMenu, subredditName, url, queryParams };
-};
-
 const mapStateToProps = createSelector(
-  pageParamsSelector,
-  combineSelectors,
+  state => state.platform.currentPage,
+  state => state.session.isValid,
+  (pageParams, isLoggedIn) => {
+    const { url, queryParams } = pageParams;
+    const overlayMenu = queryParams[OVERLAY_MENU_PARAMETER];
+
+    return { overlayMenu, url, queryParams, isLoggedIn };
+  },
 );
 
-const mapDispatchToProps = (/*dispatch*/) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TopNav);
+export default connect(mapStateToProps)(TopNav);

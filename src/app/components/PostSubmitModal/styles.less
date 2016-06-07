@@ -1,0 +1,104 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.PostSubmitModal {
+  font-size: 14px;
+
+  &__submit {
+    position: absolute;
+    top: @grid-size;
+    right: @grid-size;
+  }
+
+  &__submit-button {
+    height: 4 * @grid-size;
+    width: 8 * @grid-size;
+    color: white;
+    border-radius: 2px;
+
+    .themeify({
+      background-color: @theme-disabled-color;
+    });
+
+    &.ready {
+      background-color: @blue;
+    }
+  }
+
+  &__community {
+    margin: @grid-size 3*@half-grid-size 0;
+    padding-bottom: 7px;
+    .themeify({
+      border-bottom: @theme-alt-border;
+    });
+  }
+
+  &__community-snoo-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+
+    border-radius: 50%;
+    background-color: @blue;
+    overflow: hidden;
+  }
+
+  &__community-snoo {
+    background: url('/img/snoo-64.png') no-repeat;
+    background-size: 100%;
+    width: 4 * @grid-size;
+    height: 4 * @grid-size;
+  }
+
+  &__community-text {
+    display: inline-block;
+    line-height: 4 * @grid-size;
+    vertical-align: middle;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+
+    &.greyed {
+      color: @grey-text;
+    }
+
+    .icon {
+      margin-left: 6px;
+      margin-top: -4px;
+      display: inline-block;
+    }
+  }
+  
+
+  &__title {
+    margin: 0 3*@half-grid-size
+  }
+
+  &__content {
+    margin: 0 3*@half-grid-size
+  }
+
+  input:focus {
+    border-bottom: 1px solid @mint;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  input, textarea {
+    padding: 14px;
+    width: 100%;
+    border-radius: 0;   // handle ios safari's native border rounding
+
+    .themeify({
+      color: @theme-body-text-color;
+      border-bottom: @theme-alt-border;
+    });
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

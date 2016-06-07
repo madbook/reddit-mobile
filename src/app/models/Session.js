@@ -27,8 +27,12 @@ export default class Session {
     return new Session(data.session);
   }
 
-  constructor(data) {
-    Object.assign(this, data);
+  constructor({ accessToken, tokenType, expires, refreshToken, scope }) {
+    this.refreshToken = refreshToken;
+    this.accessToken = accessToken;
+    this.tokenType = tokenType;
+    this.expires = expires;
+    this.scope = scope;
 
     if (Object.freeze) {
       Object.freeze(this);

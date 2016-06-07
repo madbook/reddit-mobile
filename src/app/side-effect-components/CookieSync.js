@@ -1,13 +1,14 @@
 import { makeCookieArchiver } from '@r/redux-state-archiver';
 
-const themeSelector = state => state.theme;
-const compactSelector = state => state.compact;
-const over18Selector = state => state.preferences.over18;
-const combiner = (theme, compact, over18) => ({ theme, compact, over18 });
-
 export const CookieSync = makeCookieArchiver(
-  themeSelector,
-  compactSelector,
-  over18Selector,
-  combiner,
+  state => state.theme,
+  state => state.compact,
+  state => state.preferences.over18,
+  state => state.recentSubreddits,
+  (theme, compact, over18, recentSubreddits) => ({
+    theme,
+    compact,
+    over18,
+    recentSubreddits,
+  })
 );

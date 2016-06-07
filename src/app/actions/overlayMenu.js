@@ -9,9 +9,14 @@ export const OVERLAY_MENU_PARAMETER = 'overlayMenu';
 export const COMMUNITY_MENU = 'community';
 export const SEARCH_BAR = 'search';
 export const SETTINGS_MENU = 'settings';
+export const POST_SUBMIT = 'submit';
 
 export const urlWithCommunityMenuToggled = (url, queryParams) => {
   return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, COMMUNITY_MENU);
+};
+
+export const urlWithPostSubmitMenuToggled = (url, queryParams) => {
+  return urlWithQueryParamToggled(url, queryParams, OVERLAY_MENU_PARAMETER, POST_SUBMIT);
 };
 
 export const urlWithSearchBarToggled = (url, queryParams) => {
