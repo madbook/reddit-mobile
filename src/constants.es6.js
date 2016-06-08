@@ -54,7 +54,6 @@ export default {
 
   // feature flags
   flags: {
-    BETA: 'beta',
     SMARTBANNER: 'banner',
     VARIANT_RELEVANCY_TOP: 'experimentRelevancyTop',
     VARIANT_RELEVANCY_ENGAGING: 'experimentRelevancyEngaging',

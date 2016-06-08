@@ -3,7 +3,6 @@ import Flags from '@r/flags';
 import constants from './constants';
 
 const {
-  BETA,
   SMARTBANNER,
   VARIANT_RELEVANCY_TOP,
   VARIANT_RELEVANCY_ENGAGING,
@@ -11,7 +10,6 @@ const {
 } = constants.flags;
 
 const config = {
-  [BETA]: true,
   [SMARTBANNER]: true,
   [VARIANT_RELEVANCY_TOP]: {
     and: {
@@ -68,10 +66,6 @@ flags.addRule('employee', function(val) {
 
 flags.addRule('admin', function(val) {
   return extractUser(this).is_admin === val;
-});
-
-flags.addRule('beta', function(val) {
-  return extractUser(this).is_beta === val;
 });
 
 flags.addRule('url', function(query) {

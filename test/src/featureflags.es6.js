@@ -7,7 +7,6 @@ const config = {
   usertest: { users: ['abc'] },
   employeetest: { employee: true },
   admintest: { admin: true },
-  betatest: { beta: true },
   querytest: { url: 'test' },
 };
 
@@ -90,26 +89,6 @@ describe('feature flags', () => {
     });
 
     expect(f.enabled('admintest')).to.be.false;
-  });
-
-  it('has a user rule that checks is_beta', () => {
-    let f = feet.withContext({
-      state: { data: { user: { is_beta: true } } },
-    });
-
-    expect(f.enabled('betatest')).to.be.true;
-
-    f = feet.withContext({
-      state: { data: { user: { is_beta: false } } },
-    });
-
-    expect(f.enabled('betatest')).to.be.false;
-
-    f = feet.withContext({
-      state: { data: { } },
-    });
-
-    expect(f.enabled('betatest')).to.be.false;
   });
 
   it('has a url rule that checks querystring', () => {
