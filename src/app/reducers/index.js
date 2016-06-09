@@ -6,9 +6,11 @@ import activitiesRequests from './activitiesRequests';
 import collapsedComments from './collapsedComments';
 import commentsPages from './commentsPages';
 import compact from './compact';
+import hiddenRequests from './hiddenRequests';
 import loid from './loid';
 import postsLists from './postsLists';
 import replying from './replying';
+import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
@@ -26,9 +28,11 @@ export default {
   collapsedComments,
   commentsPages,
   compact,
+  hiddenRequests,
   loid,
   postsLists,
   replying,
+  savedRequests,
   searchRequests,
   session,
   sessionRefresing,

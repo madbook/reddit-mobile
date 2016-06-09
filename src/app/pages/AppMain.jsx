@@ -4,6 +4,7 @@ import { UrlSwitch, Page } from '@r/platform/url';
 
 import { CommentsPage } from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
+import { SavedAndHiddenPage } from './SavedAndHidden';
 import { SearchPage } from './SearchPage';
 import { SubredditAboutPage } from './SubredditAbout';
 import { UserActivityPage } from './UserActivity';
@@ -42,6 +43,7 @@ export const AppMainPage = () => (
     />
     <Page url='/u/:userName/activity' component={ UserActivityPage } />
     <Page url='/u/:userName/gild' component={ UserProfilePage } />
+    <Page url='/u/:userName/:savedOrHidden(saved|hidden)' component={ SavedAndHiddenPage } />
     <Page url='/u/:userName/' component={ UserProfilePage } />
     <Page
       url='/login'

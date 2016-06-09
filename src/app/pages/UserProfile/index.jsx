@@ -25,8 +25,6 @@ export const UserProfilePage = connect(mapStateToProps)(props => {
   const { userName: queriedUserName } = urlParams;
   const isMyUser = !!myUser && myUser.name === queriedUserName;
 
-  debugger;
-
   return (
     <div className='UserProfilePage BelowTopNav'>
       <Section>

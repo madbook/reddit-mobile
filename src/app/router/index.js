@@ -4,6 +4,7 @@ import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
+import SavedAndHiddenHandler from './handlers/SavedAndHidden';
 import SearchPageHandler from './handlers/SearchPage';
 import SubredditAboutPageHandler from './handlers/SubredditAboutPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
@@ -25,6 +26,7 @@ export default [
   ['/comments', CommentsPageHandler],
   ['/u/:userName/activity', UserActivityHandler],
   ['/u/:userName/gild', UserProfilerHandler],
+  ['/u/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
   ['/u/:userName', UserProfilerHandler],
   ['/login', Login],
 
