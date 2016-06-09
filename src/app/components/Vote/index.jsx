@@ -3,6 +3,8 @@ import React from 'react';
 import { METHODS } from '@r/platform/router';
 import { Form } from '@r/platform/components';
 
+const T = React.PropTypes;
+
 export function scoreText(score, scoreHidden) {
   if (scoreHidden) {
     return '●';
@@ -78,7 +80,17 @@ export default function Vote(props) {
   return (
     <div className={ `Vote ${props.classPrefix}__Vote` }>
       { renderScoreAndUpvote(props) }
-      { renderDownvote(props) }
+      { !props.hideDownvote && renderDownvote(props) }
     </div>
   );
 }
+
+Vote.propTypes = {
+  thingId: T.string.isRequired,
+  classPrefix: T.string,
+  score: T.number.isRequired,
+  scoreHidden: T.bool,
+  voteDirection: T.number.isRequired,
+  onUpvote: T.func,
+  hideDownvote: T.bool,
+};

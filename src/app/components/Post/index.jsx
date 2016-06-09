@@ -37,6 +37,7 @@ Post.propTypes = {
   subredditIsNSFW: T.bool,
   showOver18Interstitial: T.bool,
   single: T.bool,
+  userActivityPage: T.bool,
   z: T.number,
 };
 
@@ -73,6 +74,7 @@ export function Post(props) {
     single,
     hideSubredditLabel,
     hideWhen,
+    userActivityPage,
   } = props;
 
   let thumbnailOrNil;
@@ -143,6 +145,7 @@ export function Post(props) {
         compact={ compact }
         post={ post }
         viewComments={ !single }
+        hideDownvote={ userActivityPage }
       />
     </article>
   );

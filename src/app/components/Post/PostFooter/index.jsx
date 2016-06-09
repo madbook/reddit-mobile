@@ -145,25 +145,14 @@ export default class PostFooter extends React.Component {
   //   );
   // }
 
-  renderUpvote(voteDirection) {
-    const upvoted = voteDirection === 1;
-    let wrapperClassName = `${VOTE_WRAPPER_CLS} ${upvoted ? 'upvoted' : ''}`;
-    if (this.mounted) { wrapperClassName += ' m-animated'; }
-
-    return (
-      <span className={ wrapperClassName }>
-        <span className='icon icon-upvote blue' />
-      </span>
-    );
-  }
-
   render() {
     const {
       post,
       compact,
+      hideDownvote,
     } = this.props;
 
-    const scoreHidden = post.hide_score || post.score_hidden;
+    const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
 
     return (
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
@@ -182,6 +171,7 @@ export default class PostFooter extends React.Component {
             scoreHidden={ scoreHidden }
             voteDirection={ post.likes }
             onUpvote={ this.onUpvote }
+            hideDownvote={ hideDownvote }
           />
         </div>
       </footer>

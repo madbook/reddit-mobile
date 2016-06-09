@@ -12,7 +12,7 @@ import Comment from 'app/components/Comment';
 import Loading from 'app/components/Loading';
 
 import map from 'lodash/map';
-import curryRight from 'lodash/curryRight';
+import curry from 'lodash/curry';
 
 const T = React.PropTypes;
 
@@ -51,7 +51,7 @@ export default connect(mapStateToProps)(PostAndCommentList);
 
 const PostsCommentsAndPagination = props => {
   const { records, thingProps } = props;
-  const renderRecord = curryRight(renderRecordWithProps)(thingProps);
+  const renderRecord = curry(renderRecordWithProps)(thingProps);
 
   return (
     <div>
@@ -61,7 +61,7 @@ const PostsCommentsAndPagination = props => {
   );
 };
 
-const renderRecordWithProps = (record, thingProps) => {
+const renderRecordWithProps = (thingProps, record) => {
   const { uuid, type } = record;
 
   switch (type) {

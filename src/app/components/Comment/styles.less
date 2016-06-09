@@ -11,6 +11,23 @@
     border-top: @theme-border;
   });
 
+  &.m-activity-page {
+    margin-top: 0;
+    padding-left: 2 * @grid-size;
+    padding-right: 2 * @grid-size;
+
+    border-top: none;
+
+    .themeify({
+      background-color: @theme-body-color;
+      border-bottom: @theme-border;
+    });
+  }
+
+  &__header-title {
+    margin-bottom: @half-grid-size;
+  }
+
   &__body,
   &__toolsContainer,
   &__replies {

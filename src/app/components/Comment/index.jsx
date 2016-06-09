@@ -23,24 +23,38 @@ const T = React.PropTypes;
 const { CommentModel } = models;
 
 export function Comment (props) {
-  const { comment, editing, commentDeleted, commentCollapsed, commentReplying } = props;
+  const { editing, userActivityPage } = props;
 
   return (
-    <div className='Comment'>
+    <div className={ `Comment ${userActivityPage ? 'm-activity-page' : ''}` }>
       { renderHeader(props) }
       { editing ? renderEditForm(props) : renderBody(props) }
-      { !commentDeleted ? renderTools(props) : null }
-      { commentReplying ? renderCommentReply(props) : null }
-      { !commentCollapsed && comment.replies.length ? renderReplies(props) : null }
+      { !userActivityPage ? renderFooter(props): null }
     </div>
   );
 }
 
+function renderFooter(props) {
+  const { commentDeleted, commentReplying, commentCollapsed, comment } = props;
+  return [
+    !commentDeleted ? renderTools(props) : null,
+    commentReplying ? renderCommentReply(props) : null,
+    !commentCollapsed && comment.replies.length ? renderReplies(props) : null,
+  ];
+}
+
 function renderHeader(props) {
-  const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType } = props;
+  const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType,
+     userActivityPage } = props;
+
+  // don't allow comment collapsing on user activity pages
+  const onToggleCollapse = userActivityPage ? () => {} : () => {
+    props.toggleCollapse(!commentCollapsed);
+  };
 
   return (
     <div className='Comment__header' id={ comment.id }>
+      { userActivityPage ? renderHeaderTitle(comment.linkTitle) : null }
       <CommentHeader
         id={ comment.id }
         author={ comment.author }
@@ -53,22 +67,29 @@ function renderHeader(props) {
         collapsed={ commentCollapsed }
         highlight={ comment.id === highlightedComment }
         stickied={ comment.stickied }
-        onToggleCollapse={ () => props.toggleCollapse(!commentCollapsed) }
+        onToggleCollapse={ onToggleCollapse }
       />
     </div>
   );
 }
+
+function renderHeaderTitle(title) {
+  return (
+    <div className='Comment__header-title'>{ title }</div>
+  );
+}
+
 
 function renderEditForm() {
   return;
 }
 
 function renderBody(props) {
-  const { comment, commentCollapsed } = props;
+  const { comment, commentCollapsed, userActivityPage } = props;
   const bodyText = mobilify(comment.bodyHTML);
 
   let cls = 'Comment__body';
-  if (commentCollapsed) { cls += ' m-hidden'; }
+  if (commentCollapsed && !userActivityPage) { cls += ' m-hidden'; }
 
   return (
     <div
