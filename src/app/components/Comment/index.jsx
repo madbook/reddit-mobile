@@ -23,48 +23,48 @@ const T = React.PropTypes;
 const { CommentModel } = models;
 
 export function Comment (props) {
-  const { editing, userActivityPage } = props;
+  const { editing, preview, userActivityPage } = props;
 
   return (
-    <div className={ `Comment ${userActivityPage ? 'm-activity-page' : ''}` }>
+    <div className={ `Comment ${!preview ? 'in-comment-tree' : ''}` }>
       { renderHeader(props) }
       { editing ? renderEditForm(props) : renderBody(props) }
-      { !userActivityPage ? renderFooter(props): null }
+      { !userActivityPage ? renderFooter(props) : null }
     </div>
   );
 }
 
 function renderFooter(props) {
-  const { commentDeleted, commentReplying, commentCollapsed, comment } = props;
+  const { commentDeleted, commentReplying, commentCollapsed, comment, preview } = props;
+
   return [
     !commentDeleted ? renderTools(props) : null,
-    commentReplying ? renderCommentReply(props) : null,
-    !commentCollapsed && comment.replies.length ? renderReplies(props) : null,
+    !preview && commentReplying ? renderCommentReply(props) : null,
+    !preview && !commentCollapsed && comment.replies.length ? renderReplies(props) : null,
   ];
 }
 
 function renderHeader(props) {
   const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType,
-     userActivityPage } = props;
+     preview } = props;
 
   // don't allow comment collapsing on user activity pages
-  const onToggleCollapse = userActivityPage ? () => {} : () => {
+  const onToggleCollapse = preview ? () => {} : () => {
     props.toggleCollapse(!commentCollapsed);
   };
 
   return (
     <div className='Comment__header' id={ comment.id }>
-      { userActivityPage ? renderHeaderTitle(comment.linkTitle) : null }
       <CommentHeader
         id={ comment.id }
         author={ comment.author }
         authorType={ authorType }
-        topLevel={ nestingLevel === 0 }
+        topLevel={ nestingLevel === 0 && !preview }
         dots={ Math.max(nestingLevel - 6, 0) }
         flair={ comment.author_flair_text }
         created={ comment.createdUTC }
         gildCount={ comment.gilded }
-        collapsed={ commentCollapsed }
+        collapsed={ commentCollapsed && !preview }
         highlight={ comment.id === highlightedComment }
         stickied={ comment.stickied }
         onToggleCollapse={ onToggleCollapse }

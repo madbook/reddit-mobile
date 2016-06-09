@@ -8,7 +8,7 @@ const { POST, COMMENT } = models.ModelTypes;
 
 import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
-import Comment from 'app/components/Comment';
+import CommentPreview from 'app/components/CommentPreview';
 import Loading from 'app/components/Loading';
 
 import map from 'lodash/map';
@@ -69,7 +69,7 @@ const renderRecordWithProps = (thingProps, record) => {
       return <Post postId={ uuid } key={ `post-id-${uuid}` } { ...thingProps } />;
 
     case COMMENT:
-      return <Comment commentId={ uuid } key={ `comment-id-${uuid}` } { ...thingProps } />;
+      return <CommentPreview commentId={ uuid } key={ `comment-id-${uuid}` } { ...thingProps } />;
 
     default: return null;
   }

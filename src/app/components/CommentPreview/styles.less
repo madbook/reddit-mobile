@@ -1,0 +1,41 @@
+@import (reference) '~art-gallery/assets/less/variables';
+@import (reference) '~art-gallery/assets/less/themes/themeify';
+
+.CommentPreview {
+  padding: 0 2 * @grid-size;
+
+  &__wrapper {
+    padding: @grid-size 0;
+  }
+
+  .themeify({
+    background-color: @theme-body-color;
+  });
+
+  & ~ & {
+    .CommentPreview__wrapper {
+      .themeify({
+        border-top: @theme-border;
+      });
+    }
+  }
+
+  &.separated {
+    margin-top: @grid-size;
+
+    .themeify({
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    })
+  }
+
+  &__permalink {
+    &, &:hover, &:visited {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-body-text-color;
+      })
+    }
+  }
+}
