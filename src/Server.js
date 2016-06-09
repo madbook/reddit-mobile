@@ -19,6 +19,7 @@ import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
 import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
+import metaRoutes from 'server/meta';
 
 import dispatchInitialCollapsedComments from
   'server/initialState/dispatchInitialCollapsedComments';
@@ -62,6 +63,7 @@ export function startServer() {
       logoutproxy(router, ConfigedAPIOptions);
       // registerproxy(router, ConfigedAPIOptions);
       refreshproxy(router, ConfigedAPIOptions);
+      metaRoutes(router, ConfigedAPIOptions);
     },
   })();
 }
