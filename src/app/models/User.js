@@ -1,3 +1,3 @@
-export const newUserModel = ({name, loggedOut=false, loading=true}) => {
-  return ({ name, loggedOut, loading });
+export const newUserModel = ({name, loggedOut=false, loading=true, features={}}) => {
+  return ({ name, loggedOut, loading, features });
 };
