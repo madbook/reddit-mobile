@@ -36,6 +36,9 @@ const ConfigedAPIOptions = {
   oauthAppOrigin: 'https://m.reddit.com',
   clientId: process.env.SECRET_OAUTH_CLIENT_ID,
   clientSecret: process.env.OAUTH_SECRET,
+  servedOrigin: process.env.ORIGIN || 'http://localhost:8888',
+  statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
+  actionNameSecret: process.env.ACTION_NAME_SECRET,
 };
 
 export function startServer() {
