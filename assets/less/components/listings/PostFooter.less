@@ -10,8 +10,13 @@
     padding-top: 0px;
   }
 
+  &__left-content {
+    display: inline-block;
+  }
+
   &__comments-link {
     margin-left: -2px;
+    margin-top: 1px;
 
     &, &:visited, &:hover {
       .themeify({
@@ -41,7 +46,7 @@
     }
   }
 
-  &__vote-and-tools-wrapper {
+  &__vote-wrapper {
     float: right;
     position: relative;
     top: 2px;
@@ -74,16 +79,7 @@
     text-align: center;
     position: relative;
     top: 3px;
-  }
-
-  &__vertical-divider {
-    height: 2em;
-    margin: 0 @grid-size;
-    vertical-align: middle;
-
-    .themeify({
-      border-right: @theme-alt-border;
-    });
+    margin-left: @grid-size;
   }
 
   &__vote-arrow-wrapper {

@@ -108,19 +108,9 @@ export default class PostFooter extends BaseComponent {
         href={ post.cleanPermalink }
       >
         <span className='PostFooter__comments-icon icon-comment' />
-        { this.numCommentsText(num_comments) }
+        { num_comments }
       </a>
     );
-  }
-
-  numCommentsText(numberOfComments) {
-    if (numberOfComments === 0) {
-      return 'No Comments';
-    } else if (numberOfComments === 1) {
-      return '1 Comment';
-    }
-
-    return `${numberOfComments} Comments`;
   }
 
   renderToolsDropdown(dropdownTarget) {
@@ -221,21 +211,21 @@ export default class PostFooter extends BaseComponent {
       isArchived,
     } = this.props;
 
-    const { dropdownTarget } = this.state;
+    const { dropdownTarget, score, voteDirection } = this.state;
     const scoreHidden = post.hide_score || post.score_hidden;
 
     return (
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
-        { this.renderCommentsLink(post) }
-        <div className='PostFooter__vote-and-tools-wrapper'>
+        <div className='PostFooter__left-content'>
+          { this.renderCommentsLink(post) }
           <div
             className='PostFooter__dropdown-button PostFooter__hit-area icon-seashells'
             onClick={ this.onOpenDropdown }
           />
           { dropdownTarget ? this.renderToolsDropdown(dropdownTarget) : null }
-          <span className='PostFooter__vertical-divider' />
-          { this.renderScoreAndVotes(scoreHidden, this.state.score,
-                                     this.state.voteDirection, isArchived) }
+        </div>
+        <div className='PostFooter__vote-wrapper'>
+          { this.renderScoreAndVotes(scoreHidden, score, voteDirection, isArchived) }
         </div>
       </footer>
     );
