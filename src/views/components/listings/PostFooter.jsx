@@ -3,6 +3,8 @@ import React from 'react';
 import propTypes from '../../../propTypes';
 import BaseComponent from '../BaseComponent';
 
+import scoreText from '../../../lib/scoreText';
+
 import PostDropdownController from './PostDropdownController';
 import VoteableBehaviorComponent from '../behaviorcomponents/VoteableBehaviorComponent';
 
@@ -183,7 +185,7 @@ export default class PostFooter extends BaseComponent {
   renderScoreIfNotHidden(scoreHidden, score, voteClass) {
     return (
       <span className={ `PostFooter__vote-text ${voteClass}` }>
-        { scoreHidden ? '●' : score }
+        { scoreText(score, scoreHidden) }
       </span>
     );
   }

@@ -2,20 +2,9 @@ import React from 'react';
 
 import CommentDropdownContent from './CommentDropdownContent';
 import DropdownController from '../dropdown/DropdownController';
+import scoreText from '../../lib/scoreText';
 
 const T = React.PropTypes;
-
-function scoreText(score, scoreHidden) {
-  if (scoreHidden) {
-    return '–';
-  } else if (score < 1000) {
-    return `${score}`;
-  } else if (score < 1100) {
-    return '1k';
-  }
-
-  return `${(score/1000).toFixed(1)}k`;
-}
 
 export default class CommentTools extends React.Component {
   static propTypes = {
@@ -119,12 +108,15 @@ export default class CommentTools extends React.Component {
 
     return (
       <div className='CommentTools'>
-        { !isArchived ? this.renderReply() : null }
-        { this.renderSeashells() }
-        { this.renderDivider() }
-        { this.renderScoreAndUpvote() }
-        { !isArchived ? this.renderDownvote() : null }
-        { dropdownTarget ? this.renderDropdown() : null }
+        <div className='CommentTools__left'>
+          { !isArchived ? this.renderReply() : null }
+          { this.renderSeashells() }
+          { dropdownTarget ? this.renderDropdown() : null }
+        </div>
+        <div className='CommentTools__right'>
+          { this.renderScoreAndUpvote() }
+          { this.renderDownvote() }
+        </div>
       </div>
     );
   }
@@ -154,7 +146,7 @@ export default class CommentTools extends React.Component {
   renderScoreAndUpvote() {
     const { isArchived, score, scoreHidden, voteDirection, onUpvote } = this.props;
 
-    let textColorCls;
+    let textColorCls = '';
     if (voteDirection === 1) {
       textColorCls = 'upvoted';
     } else if (voteDirection === -1) {

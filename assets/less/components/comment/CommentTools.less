@@ -14,6 +14,14 @@
     });
   }
 
+  &__left {
+    float: left;
+  }
+
+  &__right {
+    float: right;
+  }
+
   &__more,
   &__divider,
   &__score,
@@ -27,15 +35,25 @@
   &__downvote {
     text-align: center;
 
-    &[class*=" icon-"] {
-      font-size: 24px;
-      line-height: 24px;
+    &:before {
       width: 3 * @grid-size;
+    }
+  }
+
+  &__upvote,
+  &__downvote {
+    &:before {
+      font-size: 22px;
+      line-height: 24px;
     }
   }
 
   &__reply {
     margin-right: 2 * @grid-size;
+
+    &:before {
+      line-height: @min-hit-area;
+    }
   }
 
   &__hit-area {
@@ -45,8 +63,7 @@
   }
 
   &__score {
-    width: 32px;
-    font-size: 14px;
+    width: 4 * @grid-size;
     text-align: right;
 
     &.upvoted {

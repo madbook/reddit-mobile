@@ -12,18 +12,18 @@
   }
 
   &__body {
-    padding-top: @grid-size;
+    padding-top: @half-grid-size;
     overflow-x: hidden;
     .table();
+
+    // the .table() mixin adds margin-bottom, which seems intentional but we don't need it
+    margin-bottom: 0;
 
     a {
       color: @blue;
     }
   }
 
-  &__tools {
-    float: right;
-  }
 
   &__edit {
     margin: (2 * @grid-size) 0;
