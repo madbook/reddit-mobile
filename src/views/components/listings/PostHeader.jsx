@@ -64,26 +64,13 @@ function postTextColorClass(distinguished) {
   if (distinguished === 'admin') { return 'PostHeader__admin-text'; }
 }
 
-function isValidKeyColorForRendering(keyColor) {
-  // in the future do something fancier with hsl compared to background color... maybe...
-  return keyColor !== '#efefed' && keyColor !== '#222222';
-}
-
-function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDistinguishing) {
+function subredditLabelIfNeeded(subreddit, hideSubredditLabel) {
   if (hideSubredditLabel || !subreddit) { return; }
-
-  const keyColorStyle = {};
-  if (!hasDistinguishing && sr_detail && sr_detail.key_color) {
-    if (isValidKeyColorForRendering(sr_detail.key_color)) {
-      const { key_color } = sr_detail;
-      Object.assign(keyColorStyle, { color: key_color});
-    }
-  }
 
   const rSubreddit = `r/${subreddit}`;
 
   return (
-    <a className='PostHeader__subreddit-link' href={ `/${rSubreddit}` } style={ keyColorStyle }>
+    <a className='PostHeader__subreddit-link' href={ `/${rSubreddit}` } >
       { rSubreddit }
     </a>
   );
@@ -170,15 +157,12 @@ function renderPostFlair(post, single) {
 function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) {
   const {
     distinguished,
-    sr_detail,
     subreddit,
   } = post;
 
   const postFlairOrNil = renderPostFlair(post, single);
   const distinguishingCssClass = postTextColorClass(distinguished);
-  const hasDistinguishing = !!distinguishingCssClass;
-  const subredditLabelOrNil = subredditLabelIfNeeded(sr_detail, subreddit,
-    hideSubredditLabel, hasDistinguishing);
+  const subredditLabelOrNil = subredditLabelIfNeeded(subreddit, hideSubredditLabel);
 
   let authorOrNil;
   if (!single) {
