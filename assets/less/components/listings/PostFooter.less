@@ -1,6 +1,7 @@
 .PostFooter {
   .clearfix;
-  padding: @grid-size 2 * @grid-size;
+  padding: @grid-size @post-horizontal-spacing;
+
   .themeify({
     border-bottom: @theme-border;
   });
@@ -30,7 +31,7 @@
   }
 
   &__comments-icon.icon-comment {
-    margin: 0 @half-grid-size;
+    margin-right: @half-grid-size;
     position: relative;
     top: -3px;
 
@@ -91,7 +92,7 @@
     width: 24px;
     height: 24px;
     border-radius: 12px;
-    margin: 0 @half-grid-size;
+    margin-left: @half-grid-size;
     text-align: center;
 
     .themeify({

@@ -1,5 +1,4 @@
 .PostHeader {
-
   &.size-compact {
 
     .PostHeader {
@@ -26,7 +25,7 @@
   // representation of the preview state, then we can really
   // know whether or not to apply .m-thumbnail-margin.
   .PostContent.size-compact + &.m-thumbnail-margin {
-    @rendered-thumbnail-size: @compact-listing-thumbnail-size + 2 * @grid-size;
+    @rendered-thumbnail-size: @compact-listing-thumbnail-size + @post-horizontal-spacing + @grid-size;
     margin-left: @rendered-thumbnail-size;
     min-height: @rendered-thumbnail-size;
 
@@ -48,15 +47,15 @@
   }
 
   &__post-descriptor-line-overflow {
-    padding: @grid-size 2 * @grid-size;
+    padding: @grid-size @post-horizontal-spacing;
   }
 
   &__post-title-line {
-    padding: 0 2 * @grid-size @grid-size;
+    padding: 0 @post-horizontal-spacing @grid-size;
   }
 
   &__post-link {
-    margin-left: 2 * @grid-size;
+    margin-left: @post-horizontal-spacing;
   }
 
   &__post-descriptor-line-overflow {
@@ -71,7 +70,7 @@
     overflow: hidden;
     position: relative;
     vertical-align: middle;
-    padding-right: 3em;
+    padding-right: 2 * @grid-size;
 
     .themeify({
       color: @theme-meta-text-color;
@@ -102,13 +101,8 @@
       top: 0;
       right: 0;
       bottom: 0;
-      width: 3em;
+      width: 2 * @grid-size;
       z-index: 1;
-
-      .themeify({
-        #gradient > .horizontal(@start-color: fade(@theme-body-color, 0%);
-          @end-color:fade(@theme-body-color, 100%) ; @end-percent: 70%);
-      });
     }
   }
 
