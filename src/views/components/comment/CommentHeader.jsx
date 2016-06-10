@@ -9,7 +9,7 @@ const separator = <div className='CommentHeader__separator'> • </div>;
 function getAuthorIcon(authorType) {
   switch (authorType) {
     case 'self': return 'icon-user-account mint';
-    case 'moderator': return 'icon-mod lime';
+    case 'moderator': return 'icon-mod green';
     case 'admin': return 'icon-snoosilhouette orangered';
     case 'op': return 'icon-op blue';
     default: return '';
@@ -32,7 +32,7 @@ function renderCaron(collapsed, topLevel, dots, highlight) {
   } else if (topLevel) {
     headerCls += ' mint';
   }
-  
+
   return (
     <td className='CommentHeader__col1' style={ style }>
       { dots ? renderDots(dots) : null }
