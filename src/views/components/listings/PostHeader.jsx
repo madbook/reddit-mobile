@@ -248,16 +248,18 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
   );
 }
 
-function renderPostTitleLink(post, showLinksInNewTab) {
+function renderPostTitleLink(post, single, showLinksInNewTab) {
   const linkExternally = post.disable_comments;
   const url = cleanPostHREF(mobilify(linkExternally ? post.url : post.cleanPermalink));
   const { title } = post;
 
-  const titleLinkClass = `PostHeader__post-title-line ${post.visited ? 'm-visited' : ''}`;
+  const singleClass = single ? 'm-single': '';
+  const visitedClass = post.visited ? 'm-visited' : '';
+  const titleClass = `PostHeader__post-title-line ${visitedClass} ${singleClass}`;
   const target = linkExternally && showLinksInNewTab ? '_blank' : null;
 
   return (
-    <a className={ titleLinkClass } href={ url } target={ target }>
+    <a className={ titleClass } href={ url } target={ target }>
       { title }
     </a>
   );
@@ -283,7 +285,7 @@ export default function PostHeader(props) {
   return (
     <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
       { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
-      { renderPostTitleLink(post, showLinksInNewTab) }
+      { renderPostTitleLink(post, single, showLinksInNewTab) }
       { showSourceLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
       { single ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
