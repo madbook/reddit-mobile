@@ -10,7 +10,8 @@ const PropTypes = React.PropTypes;
 
 const EU_COOKIE_MESSAGE = (
   <p>Cookies help us deliver our Services.
-     By using our Services, you agree to our use of cookies. <a
+     By using our Services, you agree to our use of cookies.
+     <a
        target="_blank" href="https://www.reddit.com/help/privacypolicy"
      >
        Learn More
@@ -26,7 +27,7 @@ class InfoBar extends BaseComponent {
     app: PropTypes.object.isRequired,
     showEUCookieMessage: PropTypes.bool.isRequired,
   };
-  
+
   constructor(props) {
     super(props);
 
