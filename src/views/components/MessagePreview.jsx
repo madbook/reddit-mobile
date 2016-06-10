@@ -212,6 +212,7 @@ class MessagePreview extends BaseComponent {
             app={ this.props.app }
             isReply={ true }
             messages={ message.replies }
+            showReplies={ true }
             user={ this.props.user }
             token={ this.props.token }
             apiOptions={ this.props.apiOptions }

@@ -22,6 +22,10 @@ class Inbox extends BaseComponent {
   }
 
   onSubmit (message) {
+    if (!this.props.showReplies) {
+      return;
+    }
+
     const messages = this.state.messages || [];
 
     if (this.props.isReply) {

@@ -26,11 +26,13 @@ class MessagesPage extends BasePage {
     } else {
       const messages = this.state.data.messages;
       view = this.props.view.toLowerCase();
+      const showReplies = (view === 'messages');
 
       content = (
         <Inbox
           app={ this.props.app }
           messages={ messages }
+          showReplies={ showReplies }
           key={ `mesages-${view}` }
           user={ this.state.data.user }
           token={ this.props.token }
