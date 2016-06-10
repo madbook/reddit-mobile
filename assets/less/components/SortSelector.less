@@ -1,4 +1,11 @@
 .SortSelector {
+  &__dropdown {
+    position: absolute; // takes the dropdown wrapper out of the layout flow
+    // this prevents sibling sort selectors from coming out of vertical alignment
+    // when one of them has dropdown open. changing display and line-height /
+    // height / width did not fix this problem.
+  }
+
   &__currentSortContent {
     display: inline-block;
   }
@@ -10,17 +17,14 @@
     vertical-align: middle;
   }
 
-  &__currentIcon,
   &__dropdownIcon {
-    font-size: 24px;
-    .themeify({
-      color: @theme-meta-text-color;
-    });
-
     text-align: center;
-    margin-left: -@half-grid-size;
 
     // I wish the icons were actually normalized...
+    &.icon-hot {
+      font-size: 21px;
+    }
+
     &.icon-karma {
       font-size: 28px;
     }
@@ -52,7 +56,7 @@
   }
 
   &__currentIcon {
-    width: 4 * @grid-size;
+    width: 3 * @grid-size;
   }
 
   &__currentText {
