@@ -26,6 +26,7 @@ export default class CommentTools extends React.Component {
     scoreHidden: T.bool,
     voteDirection: T.number,
     saved: T.bool,
+    isArchived: T.bool,
     permalinkUrl: T.string,
     onToggleReplyForm: T.func.isRequired,
     onUpvote: T.func.isRequired,
@@ -43,6 +44,7 @@ export default class CommentTools extends React.Component {
     voteDirection: 0,
     scoreHidden: false,
     saved: false,
+    isArchived: false,
     permalinkUrl: '',
   };
 
@@ -112,15 +114,16 @@ export default class CommentTools extends React.Component {
   }
 
   render() {
+    const { isArchived } = this.props;
     const { dropdownTarget } = this.state;
 
     return (
       <div className='CommentTools'>
-        { this.renderReply() }
+        { !isArchived ? this.renderReply() : null }
         { this.renderSeashells() }
         { this.renderDivider() }
         { this.renderScoreAndUpvote() }
-        { this.renderDownvote() }
+        { !isArchived ? this.renderDownvote() : null }
         { dropdownTarget ? this.renderDropdown() : null }
       </div>
     );
@@ -149,7 +152,7 @@ export default class CommentTools extends React.Component {
   }
 
   renderScoreAndUpvote() {
-    const { score, scoreHidden, voteDirection, onUpvote } = this.props;
+    const { isArchived, score, scoreHidden, voteDirection, onUpvote } = this.props;
 
     let textColorCls;
     if (voteDirection === 1) {
@@ -163,13 +166,14 @@ export default class CommentTools extends React.Component {
         <div className={ `CommentTools__score ${textColorCls}` }>
           { scoreText(score, scoreHidden) }
         </div>
-        { this.renderUpvote() }
+        { !isArchived ? this.renderUpvote() : null }
       </div>
     );
   }
 
   renderUpvote() {
     const { voteDirection } = this.props;
+
     let cls = 'CommentTools__upvote icon-upvote';
     if (this.mounted && voteDirection === 1) { cls += ' m-animated'; }
 

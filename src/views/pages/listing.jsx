@@ -290,6 +290,7 @@ class ListingPage extends BasePage {
                 apiOptions={ apiOptions }
                 sort={ sort }
                 repliesLocked={ listing.locked }
+                isArchived={ listing.archived }
               />
             </div>
           );
@@ -397,6 +398,7 @@ class ListingPage extends BasePage {
             single={ true }
             winWidth={ constants.POST_DEFAULT_WIDTH }
             toggleEdit={ this.toggleEdit }
+            isArchived={ listing.archived }
           />
           <div className='container'>
             <div className="listing-content__tools">
@@ -407,6 +409,7 @@ class ListingPage extends BasePage {
                 apiOptions={ apiOptions }
                 token={ token }
                 linkId={ listing.name }
+                isArchived={ listing.archived }
                 isLocked={ listing.locked }
                 sort={ sort }
                 onNewComment={ this.onNewComment }

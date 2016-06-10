@@ -48,6 +48,7 @@ export default class Comment extends BaseComponent {
     nestingLevel: T.number,
     permalinkBase: T.string,
     repliesLocked: T.bool,
+    isArchived: T.bool,
     highlightedComment: T.string,
   };
 
@@ -55,6 +56,7 @@ export default class Comment extends BaseComponent {
     sort: SORTS.CONFIDENCE,
     nestingLevel: 0,
     repliesLocked: false,
+    isArchived: false,
     highlightedComment: '',
   };
 
@@ -190,6 +192,7 @@ export default class Comment extends BaseComponent {
   }
 
   async submitVote(delta) {
+    if (this.props.isArchived) { return; }
     if (this.props.app.needsToLogInUser()) { return; }
 
     // kill any toasts
@@ -499,7 +502,7 @@ export default class Comment extends BaseComponent {
   }
 
   renderTools() {
-    const { user, permalinkBase } = this.props;
+    const { user, permalinkBase, isArchived } = this.props;
     const { commentScore, voteDirection, collapsed, comment } = this.state;
 
     let cls = 'Comment__toolsContainer clearfix';
@@ -516,6 +519,7 @@ export default class Comment extends BaseComponent {
             commentAuthor={ comment.author }
             username={ user ? user.name : null }
             saved={ comment.saved }
+            isArchived={ isArchived }
             permalinkUrl={ `${permalinkBase}${comment.id}` }
             onToggleReplyForm={ this.toggleReplyForm }
             onEditComment={ this.toggleEditForm }
@@ -531,9 +535,15 @@ export default class Comment extends BaseComponent {
   }
 
   renderReplyArea() {
-    const { repliesLocked } = this.state;
+    const { isArchived, repliesLocked } = this.state;
 
-    return repliesLocked ? this.renderLockedReplyForm() : this.renderReplyForm();
+    if (isArchived) {
+      return this.renderArchivedReplyForm();
+    } else if (repliesLocked) {
+      return this.renderLockedReplyForm();
+    } else {
+      return this.renderReplyForm();
+    }
   }
 
   renderReplyForm() {
@@ -559,6 +569,16 @@ export default class Comment extends BaseComponent {
       <div className='Comment__replyForm'>
         <div className='Comment__replyFormLocked'>
           Comments are locked
+        </div>
+      </div>
+    );
+  }
+
+  renderArchivedReplyForm() {
+    return (
+      <div className='Comment__replyForm'>
+        <div className='Comment__replyFormLocked'>
+          Posting is archived
         </div>
       </div>
     );
@@ -604,6 +624,7 @@ export default class Comment extends BaseComponent {
             nestingLevel={ nestingLevel + 1 }
             permalinkBase={ this.props.permalinkBase }
             repliesLocked={ this.props.repliesLocked }
+            isArchived={ this.props.isArchived }
             highlightedComment={ highlightedComment }
           />
         </div>

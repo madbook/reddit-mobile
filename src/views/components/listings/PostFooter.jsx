@@ -15,6 +15,7 @@ export default class PostFooter extends BaseComponent {
     single: T.bool.isRequired,
     compact: T.bool.isRequired,
     post: propTypes.listing.isRequired,
+    isArchived: T.bool,
     app: T.object.isRequired,
     token: T.string,
     apiOptions: T.object.isRequired,
@@ -23,6 +24,10 @@ export default class PostFooter extends BaseComponent {
     onHide: T.func.isRequired,
     onEdit: T.func.isRequired,
     onDelete: T.func.isRequired,
+  };
+
+  static defaultProps = {
+    isArchived: false,
   };
 
   constructor(props) {
@@ -86,6 +91,7 @@ export default class PostFooter extends BaseComponent {
   }
 
   onVote(direction) {
+    if (this.props.isArchived) { return; }
     this.voteController.userCastVote(direction);
   }
 
@@ -123,6 +129,7 @@ export default class PostFooter extends BaseComponent {
       user,
       single,
       app,
+      isArchived,
       apiOptions,
       viewComments,
       onReport,
@@ -191,17 +198,17 @@ export default class PostFooter extends BaseComponent {
     );
   }
 
-  renderScoreAndVotes(scoreHidden, score, voteDirection) {
+  renderScoreAndVotes(scoreHidden, score, voteDirection, isArchived) {
     const voteClass = this.voteClass(voteDirection);
 
     return (
       <span>
         <div className='PostFooter__hit-area' onClick={ this.onUpVote }>
           { this.renderScoreIfNotHidden(scoreHidden, score, voteClass) }
-          { this.renderUpvote(voteDirection) }
+          { !isArchived ? this.renderUpvote(voteDirection) : null }
         </div>
         <div className='PostFooter__hit-area' onClick={ this.onDownVote }>
-          { this.renderDownVote(voteDirection) }
+          { !isArchived ? this.renderDownVote(voteDirection) : null }
         </div>
       </span>
     );
@@ -211,6 +218,7 @@ export default class PostFooter extends BaseComponent {
     const {
       post,
       compact,
+      isArchived,
     } = this.props;
 
     const { dropdownTarget } = this.state;
@@ -226,7 +234,8 @@ export default class PostFooter extends BaseComponent {
           />
           { dropdownTarget ? this.renderToolsDropdown(dropdownTarget) : null }
           <span className='PostFooter__vertical-divider' />
-          { this.renderScoreAndVotes(scoreHidden, this.state.score, this.state.voteDirection) }
+          { this.renderScoreAndVotes(scoreHidden, this.state.score,
+                                     this.state.voteDirection, isArchived) }
         </div>
       </footer>
     );

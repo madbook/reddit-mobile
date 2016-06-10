@@ -31,6 +31,7 @@ export default class Post extends BaseComponent {
     hideComments: T.bool,
     hideSubredditLabel: T.bool,
     hideWhen: T.bool,
+    isArchived: T.bool,
     subredditIsNSFW: T.bool,
     showOver18Interstitial: T.bool,
     single: T.bool,
@@ -47,6 +48,7 @@ export default class Post extends BaseComponent {
     z: 1,
     hideWhen: false,
     hideSubredditLabel: false,
+    isArchived: false,
     single: false,
     editing: false,
     onDelete: () => {},
@@ -178,6 +180,7 @@ export default class Post extends BaseComponent {
       single,
       hideSubredditLabel,
       hideWhen,
+      isArchived,
       onDelete,
       toggleEdit,
       saveUpdatedText,
@@ -268,6 +271,7 @@ export default class Post extends BaseComponent {
           single={ single }
           compact={ compact }
           post={ post }
+          isArchived={ isArchived }
           app={ app }
           token={ token }
           apiOptions={ apiOptions }

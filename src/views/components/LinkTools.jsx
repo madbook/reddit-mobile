@@ -17,6 +17,7 @@ export default class LinkTools extends React.Component {
     onNewComment: T.func,
     onSortChange: T.func,
     token: T.string,
+    isArchived: T.bool,
     isLocked: T.bool,
     sort: T.string,
   };
@@ -24,6 +25,7 @@ export default class LinkTools extends React.Component {
   static defaultProps = {
     onNewComment: () => {},
     onSortChange: () => {},
+    isArchived: false,
     isLocked: false,
     sort: SORTS.CONFIDENCE,
     user: {},
@@ -45,6 +47,7 @@ export default class LinkTools extends React.Component {
   }
 
   toggleForm() {
+    if (this.props.isArchived) { return; }
     if (this.props.isLocked) { return; }
     if (this.props.app.needsToLogInUser()) { return; }
 
@@ -124,7 +127,13 @@ export default class LinkTools extends React.Component {
   }
 
   renderTools() {
-    const { isLocked } = this.props;
+    const { isArchived, isLocked } = this.props;
+    let text = 'Write a comment';
+    if (isArchived) {
+      text = 'Post is archived';
+    } else if (isLocked) {
+      text = 'Comments are locked';
+    }
 
     return (
       <div className='LinkTools__tools'>
@@ -133,7 +142,7 @@ export default class LinkTools extends React.Component {
           className='LinkTools__comment'
           onClick={ this.toggleForm }
         >
-          { isLocked ? 'Comments are locked' : 'Write a comment' }
+          { text }
         </div>
       </div>
     );
