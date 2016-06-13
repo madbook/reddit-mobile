@@ -2,7 +2,7 @@ import React from 'react';
 
 import CommentDropdownContent from './CommentDropdownContent';
 import DropdownController from '../dropdown/DropdownController';
-import scoreText from '../../lib/scoreText';
+import scoreText from '../../../lib/scoreText';
 
 const T = React.PropTypes;
 
