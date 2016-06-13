@@ -34,6 +34,7 @@ class CommunityOverlayMenu extends BaseComponent {
     if (subscriptions) {
       followingRow = (
         <ExpandoRow
+          autoExapnded={ true }
           key='communities-row'
           icon='icon-settings'
           text='Subscribed'

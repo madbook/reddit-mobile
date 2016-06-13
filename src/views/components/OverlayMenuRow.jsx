@@ -106,12 +106,13 @@ class ExpandoRow extends BaseComponent {
   static propTypes = {
     ...BaseRowProps,
     subtext: T.string,
+    autoExapnded: T.bool,
   };
 
   constructor(props) {
     super(props);
 
-    this.state.expanded = false;
+    this.state.expanded = props.autoExapnded;
 
     this._onClick = this._onClick.bind(this);
   }
