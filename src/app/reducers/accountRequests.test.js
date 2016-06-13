@@ -42,7 +42,7 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
     });
 
     describe('RECEIVED_ACCOUNT', () => {
-      it('should update an account when request if finished', () => {
+      it('should update an account when request is finished', () => {
         const RESULT = { type: 'account', uuid: 'me' };
 
         const { store } = getStore();
