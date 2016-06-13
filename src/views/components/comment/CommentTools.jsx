@@ -115,7 +115,7 @@ export default class CommentTools extends React.Component {
         </div>
         <div className='CommentTools__right'>
           { this.renderScoreAndUpvote() }
-          { this.renderDownvote() }
+          { !isArchived ? this.renderDownvote() : null }
         </div>
       </div>
     );
