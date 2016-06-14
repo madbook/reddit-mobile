@@ -2,14 +2,18 @@
 @import (reference) '~art-gallery/assets/less/themes/themeify';
 
 .UserProfileSummary {
-  @row-height: 70px;
-
   &__row {
     margin: 0 2 * @grid-size;
 
     .themeify({
       border-bottom: @theme-border;
     });
+  }
+
+  &__badge.half,
+  &__badgeIcon,
+  &__text-wrapper {
+    display: inline-block;
   }
 
   &__badge {
@@ -25,30 +29,29 @@
 
   &__badge,
   &__text-werapper {
-    margin: @row-height / 4 0;
+    margin: 18px 0;
   }
 
   &__badgeIcon {
     vertical-align: top;
-    line-height: @row-height / 2;
     margin-right: 10px;
+    line-height: 28px;
 
-    // the visual-sizing seems a little off, so we do
-    // the sizing here rather than using the icon-(size) classes
+    // the visual centering and sizing of icons isn't perfectly nomralized,
+    // so there has to be some 'pixel-pushing' here
     &.icon-karma {
-      font-size: 35px;
+      font-size: 37px;
       margin-left: -6px;
+      margin-right: 5px;
     }
 
     &.icon-cake {
       font-size: 24px;
     }
-  }
 
-  &__badge.half,
-  &__badgeIcon,
-  &__text-wrapper {
-    display: inline-block;
+    &.icon-gold-snoo {
+      font-size: 25px;
+    }
   }
 
   &__badge-text {

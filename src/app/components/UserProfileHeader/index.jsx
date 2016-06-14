@@ -43,7 +43,7 @@ const UserProfileTabs = props => {
       />
       <UserProfileTab
         href={ UserActivityHandler.activityURL(userName, POSTS_ACTIVITY) }
-        icon='icon-post'
+        icon='icon-posts'
         text='POSTS'
         selected={ currentActivity === POSTS_ACTIVITY }
       />

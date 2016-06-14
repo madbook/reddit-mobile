@@ -52,7 +52,7 @@ const GoldInfo = props => {
         text={ long(user.goldExpiration) }
         subtext='of reddit gold remaining'
       >
-        <GoldIcon />
+        <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
       </UserProfileBadge>
     );
   }
@@ -61,14 +61,13 @@ const GoldInfo = props => {
     <Anchor href={ `/u/${user.name}/gild` }>
       <UserProfileBadge
         text={ `Give ${user.name} gold` }
-        subext='show your appreciation'
+        subtext='show your appreciation'
       >
-        <GoldIcon />
+        <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
       </UserProfileBadge>
     </Anchor>
   );
 };
-
 
 const UserProfileRow = props => (
   <div className='UserProfileSummary__row'>
@@ -79,18 +78,9 @@ const UserProfileRow = props => (
 // these need to be `function` instead of `const`, because of
 // hoisting and`babel-transform-react-constant-elements`
 function UserProfileBadgeIcon(props) {
-  const { iconName, color } = props;
+  const { iconName, color, shortLineheight } = props;
   return (
-    <span className={ `UserProfileSummary__badgeIcon icon icon-${iconName} ${color}` } />
-  );
-}
-
-// TODO: replace this with the real monocole'd snoo icon
-function GoldIcon() {
-  return (
-    <div className='UserProfileSummary__badgeIcon'>
-      <SnooIcon color='gold' />
-    </div>
+    <span className={ `UserProfileSummary__badgeIcon icon icon-${iconName} ${color} ` } />
   );
 }
 
