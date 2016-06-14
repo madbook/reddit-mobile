@@ -49,7 +49,8 @@ function renderHeader(props) {
      preview } = props;
 
   // don't allow comment collapsing on user activity pages
-  const onToggleCollapse = preview ? () => {} : () => {
+  const onToggleCollapse = () => {
+    if (preview) { return; }
     props.toggleCollapse(!commentCollapsed);
   };
 
@@ -72,13 +73,6 @@ function renderHeader(props) {
     </div>
   );
 }
-
-function renderHeaderTitle(title) {
-  return (
-    <div className='Comment__header-title'>{ title }</div>
-  );
-}
-
 
 function renderEditForm() {
   return;
