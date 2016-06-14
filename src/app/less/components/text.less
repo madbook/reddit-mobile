@@ -1,0 +1,538 @@
+@import (reference) '../themes/themeify';
+@import (reference) '../variables';
+@import (reference) '../mixins/textOverflow';
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  .themeify({
+    &, .icon-inline {
+      color: @theme-link-text-color;
+    }
+
+    &:active {
+      &, .icon-inline {
+        color: lighten(@theme-link-text-color, 10%);
+      }
+    }
+
+    &:visited {
+      &, .icon-inline {
+        color: lighten(@theme-link-text-color, 20%);
+      }
+    }
+
+  });
+}
+
+a.voted.text-upvote:hover,
+a.voted.text-upvote:focus,
+button.upvoted:hover .icon-upvote-circled,
+.text-upvote {
+  color: @orangered;
+}
+
+a.voted.text-downvote:hover,
+a.voted.text-downvote:focus,
+button.downvoted:hover .icon-downvote-circled,
+.text-downvote {
+  color: @periwinkle;
+}
+
+.label.label-large {
+  font-size: 100%;
+}
+
+.label a:hover {
+  text-decoration: none;
+}
+
+.text-admin {
+  color: @orangered;
+
+  &:after {
+    content: ' [A]';
+  }
+}
+
+.text-moderator {
+  color: @lime;
+
+  &:after {
+    content: ' [M]';
+  }
+}
+
+.linkbar {
+  display: inline-block;
+  margin: @half-grid-size 0 0 0;
+  padding: 0;
+
+  > li {
+    padding: 0;
+    display: inline-block;
+    margin-right: .5em;
+    vertical-align: bottom;
+
+    &:nth-child(n+2)::before {
+      content: '·';
+      padding-right: .5em;
+    }
+  }
+}
+
+.linkbar-single-line {
+  height: 1.5em;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+
+  &:after {
+   content: '';
+   position: absolute;
+   height: 2em;
+   z-index: 1;
+   bottom: 0;
+   right: 0;
+   width: 3em;
+
+   background: linear-gradient(to right,
+     rgba(255, 255, 255, 0),
+     rgba(255, 255, 255, 1));
+ }
+
+  > .linkbar {
+    width: 1000%;
+  }
+}
+
+.linkbar > li.linkbar-item-no-seperator::before {
+  content: '';
+  padding-right: 0;
+}
+
+.linkbar-compact {
+  vertical-align: middle;
+  margin: 0;
+
+  li:before {
+    display: none;
+  }
+
+  & > li:nth-child(n+2)::before {
+    content: '';
+    padding-right: 0;
+  }
+}
+
+.linkbar-spread {
+  width: 100%;
+  text-align: center;
+  padding: 0;
+
+  > li {
+    float: left;
+  }
+
+  &.linkbar-spread-5 {
+    > li {
+      width: 20%;
+    }
+    > .linkbar-spread-li-double {
+      width: 40%;
+    }
+  }
+
+}
+
+.text-inverted {
+  color: @white;
+}
+
+.text-muted a,
+.text-muted a:visited,
+.text-muted a:hover,
+{
+  &:extend(.text-muted);
+}
+
+.text-muted a:active {
+  color: @grey-text;
+}
+
+.text-link,
+.text-muted .text-link {
+  color: @alien-blue-text;
+}
+
+.logo-reddit {
+  background: url('/img/snoo-32.png') center right no-repeat;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+
+  &.logo-small {
+    width: 16px;
+    height: 16px;
+    background-size: 16px;
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (-moz-min-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2) {
+
+  .logo-reddit {
+    background: url('/img/snoo-64.png') center right no-repeat;
+    background-size: 32px;
+
+    &.logo-small {
+      background: url('/img/snoo-32.png') center right no-repeat;
+      background-size: 16px;
+    }
+  }
+}
+
+blockquote, table{
+  font-size: inherit;
+}
+
+blockquote {
+  margin: .5rem 0 1rem .5rem;
+  padding: .5rem 1rem;
+
+  .themeify({
+    border-left: 5px solid @theme-line-color;
+  });
+
+  ul,
+  ol {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Note: Deprecated small and .small as of v3.1.0
+  // Context: https://github.com/twbs/bootstrap/issues/11660
+  footer,
+  small,
+  .small {
+    display: block;
+    font-size: 80%; // back to default font-size
+    line-height: @line-height-base;
+
+    &:before {
+      content: '\2014 \00A0'; // em dash, nbsp
+    }
+  }
+}
+
+pre {
+  .themeify({
+    border: @theme-alt-border;
+    color: @theme-body-text-color;
+  });
+}
+
+
+code, pre, pre code {
+  .themeify({
+    background-color: darken(@theme-comment-body-color, 3%);
+  });
+}
+
+code {
+  .themeify(
+  @inDayMode: {
+    background-color: lighten(@red, 40%);
+    color: @red;
+  };
+  @inNightMode: {
+    color: lighten(@red, 5%);
+  });
+}
+
+p {
+  word-wrap: break-word;
+  word-break: keep-all;
+}
+
+.text-small {
+  font-size: 12px;
+
+  [class*=" icon-"] {
+    line-height: 13px;
+  }
+}
+
+.text-super-large {
+  font-size: 128px;
+}
+
+.text-mirror {
+  transform: scale(-1, 1);
+}
+
+.encircle-icon {
+  padding: 3px;
+  color: @white;
+}
+
+dd {
+  margin-bottom: 1em;
+}
+
+.title {
+  color: @alien-blue-text;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 0px) {
+  .jumbotron {
+    padding: 1em;
+    margin-bottom: 0;
+
+    h1 {
+      font-size: 18px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+}
+
+.sponsored-label {
+  color: lighten(@alien-blue-text, 20%);
+  text-transform: uppercase;
+}
+
+.blue {
+  color: @blue;
+}
+
+.red {
+  color: @red;
+}
+
+//
+// Typography
+// --------------------------------------------------
+
+
+// Headings
+// -------------------------
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: @headings-font-family;
+  font-weight: @headings-font-weight;
+  line-height: @headings-line-height;
+
+  small,
+  .small {
+    font-weight: normal;
+    line-height: 1;
+  }
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin-top: @line-height-computed;
+  margin-bottom: (@line-height-computed / 2);
+
+  small,
+  .small {
+    font-size: 65%;
+  }
+}
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top: (@line-height-computed / 2);
+  margin-bottom: (@line-height-computed / 2);
+
+  small,
+  .small {
+    font-size: 75%;
+  }
+}
+
+h1, .h1 { font-size: @font-size-h1; }
+h2, .h2 { font-size: @font-size-h2; }
+h3, .h3 { font-size: @font-size-h3; }
+h4, .h4 { font-size: @font-size-h4; }
+h5, .h5 { font-size: @font-size-h5; }
+h6, .h6 { font-size: @font-size-h6; }
+
+
+// Body text
+// -------------------------
+
+p {
+  margin: 0 0 (@line-height-computed / 2);
+}
+
+.lead {
+  margin-bottom: @line-height-computed;
+  font-size: floor((@font-size-base * 1.15));
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+
+// Emphasis & misc
+// -------------------------
+
+// Ex: (12px small font / 14px base font) * 100% = about 85%
+small,
+.small {
+  font-size: floor((100% * @font-size-small / @font-size-base));
+}
+
+
+// Alignment
+.text-left           { text-align: left; }
+.text-right          { text-align: right; }
+.text-center         { text-align: center; }
+.text-justify        { text-align: justify; }
+.text-nowrap         { white-space: nowrap; }
+
+// Transformation
+.text-lowercase      { text-transform: lowercase; }
+.text-uppercase      { text-transform: uppercase; }
+.text-capitalize     { text-transform: capitalize; }
+
+// Lists
+// -------------------------
+
+// Unordered and Ordered lists
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: (@line-height-computed / 2);
+  ul,
+  ol {
+    margin-bottom: 0;
+  }
+}
+
+// List options
+
+// Unstyled keeps list items block level, just removes default browser padding and list-style
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+// Inline turns list items into inline-block
+.list-inline {
+  .list-unstyled();
+  margin-left: -5px;
+
+  > li {
+    display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+// Description Lists
+dl {
+  margin-top: 0; // Remove browser default
+  margin-bottom: @line-height-computed;
+}
+dt,
+dd {
+  line-height: @line-height-base;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-left: 0; // Undo browser default
+}
+
+// Horizontal description lists
+//
+// Defaults to being stacked without any of the below styles applied, until the
+// grid breakpoint is reached (default of ~768px).
+
+.dl-horizontal {
+  dd {
+    &:extend(.clearfix all); // Clear the floated `dt` if an empty `dd` is present
+  }
+
+  @media (min-width: @screen-size-small) {
+    dt {
+      float: left;
+      width: (@component-offset-horizontal - 20);
+      clear: left;
+      text-align: right;
+      .textOverflow();
+    }
+    dd {
+      margin-left: @component-offset-horizontal;
+    }
+  }
+}
+
+// Misc
+// -------------------------
+
+// Abbreviations and acronyms
+abbr[title],
+// Add data-* attribute to help out our tooltip plugin, per https://github.com/twbs/bootstrap/issues/5257
+abbr[data-original-title] {
+  cursor: help;
+  .themeify({
+    border-bottom: @theme-alt-border;
+  });
+}
+.initialism {
+  font-size: 90%;
+  .text-uppercase();
+}
+
+
+// Opposite alignment of blockquote
+//
+// Heads up: `blockquote.pull-right` has been deprecated as of v3.1.0.
+.blockquote-reverse,
+blockquote.pull-right {
+  padding-right: 15px;
+  padding-left: 0;
+
+  .themeify({
+    border: 5px solid @theme-line-color;
+  });
+
+  border-left: 0;
+  text-align: right;
+
+  // Account for citation
+  footer,
+  small,
+  .small {
+    &:before { content: ''; }
+    &:after {
+      content: '\00A0 \2014'; // nbsp, em dash
+    }
+  }
+}
+
+// Addresses
+address {
+  margin-bottom: @line-height-computed;
+  font-style: normal;
+  line-height: @line-height-base;
+}

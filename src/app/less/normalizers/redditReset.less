@@ -1,0 +1,79 @@
+@import (reference) '../variables.less';
+
+// Reset the box-sizing
+//
+// Heads up! This reset may cause conflicts with some third-party widgets.
+// For recommendations on resolving such conflicts, see
+// http://getbootstrap.com/getting-started/#third-box-sizing
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-size: @font-size-base;
+  font-family: @font-family-sans-serif;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  color: @semi-black-text;
+  background-color: @off-white;
+}
+
+// Reset fonts for relevant elements
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+
+// Links
+
+a {
+  color: @alien-blue-text;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: darken(@alien-blue-text, 10%);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+}
+
+
+// Figures
+//
+// We reset this here because previously Normalize had no `figure` margins. This
+// ensures we don't break anyone's use of the element.
+
+figure {
+  margin: 0;
+}
+
+
+// Images
+
+img {
+  vertical-align: middle;
+}
+
+
+
+// iOS "clickable elements" fix for role="button"
+//
+// Fixes "clickability" issue (and more generally, the firing of events such as focus as well)
+// for traditionally non-focusable elements with role="button"
+// see https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
+
+[role="button"] {
+  cursor: pointer;
+}

@@ -1,0 +1,104 @@
+@font-family-sans-serif: helvetica, arial, sans-serif;
+@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-size-base: 13px;
+@font-size-small: 10px;
+@grid-size: 8px;
+@half-grid-size: floor(@grid-size / 2);
+@min-hit-area: 3 * @grid-size;
+@screen-size-small: 768px;
+@component-offset-horizontal: 180px;
+
+// Typeography variables from snoo boots ( removed all the calc's for simplicity)
+@font-size-h1: 36px;
+@font-size-h2: 30px;
+@font-size-h3: 24px;
+@font-size-h4: 18px;
+@font-size-h5: @font-size-base;
+@font-size-h6: 11px;
+
+//** By default, this inherits from the `<body>`.
+@headings-font-family:    inherit;
+@headings-font-weight:    500;
+@headings-line-height:    1.1;
+@headings-color:          inherit;
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:        1.428571429; // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+@line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
+
+@compact-listing-thumbnail-size: 70px;
+
+// Colors (from the internal brandbook)
+
+// Primary
+@orangered: #FF4500;
+@mint: #0DD3BB;
+@blue: #24A0ED;
+
+// override some bootstrap styles
+@brand-primary: @blue;
+
+// Primary white->greynew
+@white: #FFF;
+@off-white: #FCFCFB;
+@pale-grey: #EFEFED;
+@neutral: #CCCCCA;
+
+// Text Colors:
+@grey-text: #A5A4A4;
+@semi-black-text: #222;
+@alien-blue-text: #0079D3;
+
+// Secondary Colors
+@orange: #FF8717;
+@mango: #FFB000;
+@lime: #94E044;
+@green: #46D160;
+
+// Night Theme colors
+@dark-grey: #545452;
+@off-black: #353535;
+@black: #000;
+
+// Special use colors
+@periwinkle: #7193FF;
+@gold: #DDBD37;
+@warning-yellow: #FFD635;
+@nsfw-salmon: #FF585B;
+@ban-red: #EA0027;
+
+// Tertiary Colors
+@brown: #A06A42;
+@leather: #C18D42;
+@chartreuse: #D4E815;
+@dark-green: #45A508;
+@teal: #25B79F;
+@dark-teal: #008985;
+@navy: #4856A3;
+@purple: #7E53C1;
+@berry: #DB0064;
+@pink: #FF66AC;
+@highlight: #FFF03E;
+
+@red: #d84141;
+@dark-red: #BE1337;
+@pink-red: #FF575B;
+
+@admin-text: @red;
+@special-text: @dark-red;
+
+@max-width: 1000px;
+@banner-height: 94px;
+@top-nav-height: 48px;
+@icon-size: 16px;
+
+@state-danger-text: @dark-red;
+@state-danger-bg: lighten(@red, 20%);
+@state-danger-border: darken(spin(@state-danger-bg, -10), 5%);
+
+@alert-padding: .5em;
+@alert-danger-bg: @red;
+@alert-danger-text: @white;
+@alert-border-radius: 0;

@@ -1,0 +1,31 @@
+@import "dayMode.less";
+@import "nightMode.less";
+
+.themeify(@rules: {}, @inDayMode: {}, @inNightMode: {}) {
+  .dayMode & {
+    .dayMode();
+    @rules();
+    @inDayMode();
+  }
+
+  .nightMode & {
+    .nightMode();
+    @rules();
+    @inNightMode();
+  }
+}
+
+// For the root element where the theme class is set
+.themeifyRoot(@rules: {}, @inDayMode: {}, @inNightMode: {}) {
+  &.dayMode {
+    .dayMode();
+    @rules();
+    @inDayMode();
+  }
+
+  &.nightMode {
+    .nightMode();
+    @rules();
+    @inNightMode();
+  }
+}

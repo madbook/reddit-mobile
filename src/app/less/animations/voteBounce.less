@@ -1,0 +1,41 @@
+.upvoteBounceAnimation {
+  -webkit-animation: bounceUp @bounce-duration @bounce-count @bounce-easing;
+  animation: bounceUp @bounce-duration @bounce-count @bounce-easing;
+}
+
+.downvoteBounceAnimation {
+  -webkit-animation: bounceDown @bounce-duration @bounce-count @bounce-easing;
+  animation: bounceDown @bounce-duration @bounce-count @bounce-easing;
+}
+
+@bounce-count: 1;
+@bounce-duration: 0.4s;
+@bounce-easing: ease-out;
+
+@-webkit-keyframes bounceUp {
+  0% { -webkit-transform: translateY(0); }
+  15% { -webkit-transform: translateY(-6px); }
+  95% { -webkit-transform: translateY(0); }
+  100% { -webkit-transform: translateY(0); }
+}
+
+@keyframes bounceUp {
+  0% { -webkit-transform: translateY(0); }
+  15% { -webkit-transform: translateY(-6px); }
+  95% { -webkit-transform: translateY(0); }
+  100% { -webkit-transform: translateY(0); }
+}
+
+@-webkit-keyframes bounceDown {
+  0% { -webkit-transform: translateY(0); }
+  15% { -webkit-transform: translateY(3px); }
+  80% { -webkit-transform: translateY(0); }
+  100% { -webkit-transform: translateY(0); }
+}
+
+@keyframes bounceDown {
+  0% { -webkit-transform: translateY(0); }
+  15% { -webkit-transform: translateY(3px); }
+  80% { -webkit-transform: translateY(0); }
+  100% { -webkit-transform: translateY(0); }
+}
