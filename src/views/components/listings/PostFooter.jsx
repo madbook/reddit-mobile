@@ -121,7 +121,6 @@ export default class PostFooter extends BaseComponent {
       user,
       single,
       app,
-      isArchived,
       apiOptions,
       viewComments,
       onReport,

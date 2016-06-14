@@ -541,9 +541,9 @@ export default class Comment extends BaseComponent {
       return this.renderArchivedReplyForm();
     } else if (repliesLocked) {
       return this.renderLockedReplyForm();
-    } else {
-      return this.renderReplyForm();
     }
+
+    return this.renderReplyForm();
   }
 
   renderReplyForm() {
