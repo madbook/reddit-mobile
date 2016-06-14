@@ -47,7 +47,6 @@ const GoldInfo = props => {
   const { user, isMyUser } = props;
 
   if (isMyUser) {
-    // goldExpiration is already a unixtime delta...
     return (
       <UserProfileBadge
         text={ long(user.goldExpiration) }
