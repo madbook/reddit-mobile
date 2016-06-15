@@ -1,7 +1,7 @@
 import merge from '@r/platform/merge';
+
 import * as postsListActions from 'app/actions/postsList';
 import * as loginActions from 'app/actions/login';
-
 import { newPostsList } from 'app/models/PostsList';
 
 const DEFAULT = {};
@@ -24,52 +24,17 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case postsListActions.RECEIVED_POSTS_LIST: {
-      const { postsListId, postsListResults } = action;
+      const { postsListId, apiResponse } = action;
       const currentPostsList = state[postsListId];
       if (!currentPostsList) { return state; }
 
       return merge(state, {
         [postsListId]: {
           loading: false,
-          results: postsListResults,
+          results: apiResponse.results,
         },
       });
     }
-
-    case postsListActions.LOADING_MORE_POSTS: {
-      const { postsListId } = action;
-      const currentPostsList = state[postsListId];
-      if (!currentPostsList) { return state; }
-
-      return merge(state, {
-        [postsListId]: {
-          loadingMore: true,
-        },
-      });
-    }
-
-    case postsListActions.RECEIVED_MORE_POSTS: {
-      const { postsListId, postsListResults } = action;
-      const currentPostsList = state[postsListId];
-      if (!currentPostsList) { return state; }
-
-      const newPostResults = currentPostsList.results.slice();
-      const currentPosts = new Set(newPostResults.map(result => result.uuid));
-      postsListResults.forEach(result => {
-        if (!currentPosts.has(result.uuid)) {
-          currentPosts.add(result.uuid);
-          newPostResults.push(result);
-        }
-      });
-
-      return merge(state, {
-        [postsListId]: {
-          loadingMore: false,
-          results: newPostResults,
-        },
-      });
-    }
-
 
     default: return state;
   }

@@ -1,4 +1,5 @@
 import merge from '@r/platform/merge';
+
 import * as commentActions from 'app/actions/comment';
 import * as loginActions from 'app/actions/login';
 

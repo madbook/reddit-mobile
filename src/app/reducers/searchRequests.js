@@ -1,8 +1,18 @@
 import merge from '@r/platform/merge';
+import { models } from '@r/api-client';
+
 import * as searchActions from 'app/actions/search';
 import * as loginActions from 'app/actions/login';
-
 import { newSearchRequest } from 'app/models/SearchRequest';
+
+const { SUBREDDIT, POST } = models.ModelTypes;
+
+const filtered = (records, type) => {
+  return records.filter(r => r.type === type);
+};
+
+const subredditFilter = records => filtered(records, SUBREDDIT);
+const postFilter = records => filtered(records, POST);
 
 const DEFAULT = {};
 
@@ -24,9 +34,12 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case searchActions.RECEIVED_SEARCH_REQUEST: {
-      const { id, subreddits, posts } = action;
+      const { id, apiResponse } = action;
       const currentRequest = state[id];
       if (!currentRequest) { return state; }
+
+      const subreddits = subredditFilter(apiResponse.results);
+      const posts = postFilter(apiResponse.results);
 
       return merge(state, {
         [id]: {

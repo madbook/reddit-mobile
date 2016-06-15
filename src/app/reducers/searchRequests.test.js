@@ -90,8 +90,7 @@ createTest({ reducers: { searchRequests } }, ({ getStore, expect }) => {
         });
 
         store.dispatch(searchActions.received(SEARCH_REQUEST_ID, {
-          subreddits: SUBREDDITS,
-          posts: POSTS,
+          results: SUBREDDITS.concat(POSTS),
         }));
 
         const { searchRequests } = store.getState();

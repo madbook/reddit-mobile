@@ -24,12 +24,12 @@ export default function (state=DEFAULT, action={}) {
     }
 
     case savedActions.RECEIVED_SAVED: {
-      const { id, results } = action;
+      const { id, apiResponse } = action;
       const request = state[id];
       if (!request) { return state; }
 
       return merge(state, {
-        [id]: { results, loading: false },
+        [id]: { results: apiResponse.results, loading: false },
       });
     }
 

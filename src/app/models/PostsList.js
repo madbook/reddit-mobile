@@ -14,6 +14,5 @@ export const newPostsList = (id, params) => ({
   id,
   params,
   loading: true,
-  loadingMore: false,
   results: [],
 });

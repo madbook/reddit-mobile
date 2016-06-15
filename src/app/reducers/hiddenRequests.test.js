@@ -88,7 +88,7 @@ createTest({ reducers: { hiddenRequests }}, ({ getStore, expect}) => {
           },
         });
 
-        store.dispatch(hiddenActions.received(HIDDEN_ID, RESULTS));
+        store.dispatch(hiddenActions.received(HIDDEN_ID, { results: RESULTS }));
 
         const { hiddenRequests } = store.getState();
         expect(hiddenRequests).to.eql(merge(hiddenRequests, {

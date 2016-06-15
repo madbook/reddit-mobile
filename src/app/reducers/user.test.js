@@ -59,7 +59,9 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         store.dispatch(accountActions.received({
           name: 'foo',
           loggedOut: true,
-        }, { type: 'account', uuid: 'me', paginationId: 'me' }));
+        }, {
+          results: [ { type: 'account', uuid: 'me', paginationId: 'me' } ],
+        }));
 
         const { user } = store.getState();
         expect(user).to.eql({ loggedOut: true, loading: true });
@@ -73,7 +75,9 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         store.dispatch(accountActions.received({
           name: 'me',
           loggedOut: true,
-        }, { type: 'account', uuid: 'me', paginationId: 'me' }));
+        }, {
+          results: [ { type: 'account', uuid: 'me', paginationId: 'me' } ],
+        }));
 
         const { user } = store.getState();
         expect(user).to.eql({ name: 'me', loggedOut: true, loading: true });
@@ -87,8 +91,10 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         store.dispatch(accountActions.received({
           name: 'me',
           loggedOut: true,
-        }, { type: 'account', uuid: 'me', paginationId: 'me' }));
-
+        }, {
+          results: [ { type: 'account', uuid: 'me', paginationId: 'me' } ],
+        }));
+        
         const { user } = store.getState();
         expect(user).to.eql({ loading: false, name: 'me', loggedOut: true });
       });

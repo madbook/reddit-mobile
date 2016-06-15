@@ -103,9 +103,13 @@
     background: transparent;
     padding: 0;
 
+    // we use important to override default hover styles
+    // for button icons, using :hover doesn't fix the specificity problem
+    // so using important will keep this reliable
+
     .themeify({
       border: @theme-border;
-      color: @theme-link-text-color;
+      color: @theme-link-text-color !important;
     });
 
     // There's nesting because we're fighting against icon-fonts.less,
@@ -120,7 +124,7 @@
     &.upvoted {
       border-color: @orangered;
       background-color: @orangered;
-      color: @white;
+      color: @white !important;
 
       &.m-animated {
         .upvoteBounceAnimation;
@@ -130,7 +134,7 @@
     &.downvoted {
       border-color: @periwinkle;
       background-color: @periwinkle;
-      color: @white;
+      color: @white !important;
 
       &.m-animated {
         .downvoteBounceAnimation;

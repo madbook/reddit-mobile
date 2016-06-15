@@ -4,7 +4,7 @@ import accountRequests from './accountRequests';
 import * as accountActions from 'app/actions/accounts';
 import * as loginActions from 'app/actions/login';
 
-const REQUIRED_KEYS = ['id', 'loading', 'result'];
+const REQUIRED_KEYS = ['id', 'loading' ];
 
 createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
   describe('accountRequests', () => {
@@ -29,7 +29,7 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
 
     describe('FETCHING_ACCOUNT', () => {
       it('should add an account optimistically', () => {
-        const ACCOUNT = { id: 'foobar', loading: true, result: {} };
+        const ACCOUNT = { id: 'foobar', loading: true };
 
         const { store } = getStore();
         store.dispatch(accountActions.fetching({ name: 'foobar' }));
@@ -51,7 +51,6 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
         const { accountRequests } = store.getState();
         expect(accountRequests).to.have.keys('foobar');
         expect(accountRequests.foobar).to.have.all.keys(REQUIRED_KEYS);
-        expect(accountRequests.foobar.result).to.eql(RESULT);
       });
     });
   });

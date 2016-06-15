@@ -4,7 +4,7 @@ import { models } from '@r/api-client';
 
 import { cleanObject } from 'lib/cleanObject';
 import * as commentsPageActions from 'app/actions/commentsPage';
-import * as commentActions from 'app/actions/comment';
+import * as replyActions from 'app/actions/reply';
 import { fetchUserBasedData } from './handlerCommon';
 
 const { POST_TYPE } = models.ModelTypes;
@@ -61,7 +61,7 @@ export default class CommentsPage extends BaseHandler {
 
     await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {
       try {
-        dispatch(commentActions.reply(thingId, text));
+        dispatch(replyActions.reply(thingId, text));
 
         // Go back to the state before the comment form was opened, if we can go
         // back. Otherwise, redirect to the redirectUrl passed in.

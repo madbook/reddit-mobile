@@ -2,12 +2,9 @@ import merge from '@r/platform/merge';
 import { models } from '@r/api-client';
 
 import { newCommentsPage } from 'app/models/CommentsPage';
-
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as loginActions from 'app/actions/login';
-import * as apiResponseActions from 'app/actions//apiResponse';
-
-const { COMMENT } = models.ModelTypes;
+import * as replyActions from 'app/actions/reply';
 
 const DEFAULT = {};
 
@@ -30,7 +27,7 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case commentsPageActions.RECEIVED_COMMENTS_PAGE: {
-      const { commentsPageId, commentsPageResults } = action;
+      const { commentsPageId, apiResponse } = action;
       const currentCommentsPage = state[commentsPageId];
       if (!currentCommentsPage) { return state; }
 
@@ -38,30 +35,32 @@ export default (state=DEFAULT, action={}) => {
         [commentsPageId]: {
           loading: false,
           // TODO: what happens if a user adds a comment before results come back?
-          results: commentsPageResults,
+          results: apiResponse.results,
         },
         // TODO: this feels inherently race condition-ish
         current: commentsPageId,
       });
     }
 
-    case apiResponseActions.NEW_MODEL: {
-      const { kind, model } = action;
-      if (kind !== COMMENT) { return state; }
-
+    case replyActions.REPLIED: {
+      // If the comment is in reply to a post, we have to update its comment page.
+      // To simplify things we only look at the current comments page (which should be
+      // the only page you're able to reply to). This is simpler because comment pages
+      // use the hash of their params as their key in state. This is because there
+      // are lots of params like sort, time, postId, commentId (for permalinks), etc.
+      // To do this 'the right way' we'd have to look at either comment page in state
+      // OR keep a map of postId to a list of commentPages.
+      
+      const { model } = action;
       const currentPage = state[state.current];
-      if (!currentPage) { return state; }
+      if (!currentPage || currentPage.postId !== model.parentId) { return state; }
 
-      // We want to add the comment to position 0 in the comments page result
-      // list, _only_ if its parent is the link id for the comment page).
-      if (currentPage.postId !== model.parentId) { return state; }
-
-      const record = model.toRecord();
-      const pageRecords = [record, ...state[state.current].results];
+      const newCommentRecord = model.toRecord();
+      const topLevelComments = [newCommentRecord, ...currentPage.results];
 
       return merge(state, {
         [state.current]: {
-          results: pageRecords,
+          results: topLevelComments,
         },
       });
     }

@@ -1,13 +1,10 @@
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
-import each from 'lodash/each';
 
 import * as loginActions from 'app/actions/login';
+import * as searchActions from 'app/actions/search';
+import * as subredditActions from 'app/actions/subreddits';
 import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
-import * as apiResponseActions from 'app/actions/apiResponse';
 import { newSubscribedSubredditsModel } from 'app/models/SubscribedSubreddits';
-
-const { SUBREDDIT } = models.ModelTypes;
 
 const DEFAULT = newSubscribedSubredditsModel();
 
@@ -17,7 +14,7 @@ const updateStateFromSubreddits = (state, subreddits) => {
 
   const nextSubreddits = { ...state.subreddits };
   let changed = false;
-  each(keys, key => {
+  keys.forEach(key => {
     const subreddit = subreddits[key];
     if (!subreddit.userIsSubscriber && nextSubreddits[key]) {
       changed = true;
@@ -54,28 +51,28 @@ export default(state=DEFAULT, action={}) => {
     }
 
     case subscribedSubredditsActions.RECEIVED_SUBSCRIBED_SUBREDDITS: {
-      const { subscribedSubreddits } = action;
-      const subreddits = {};
+      const { apiResponse } = action;
 
-      each(subscribedSubreddits, subredditRecord => {
-        subreddits[subredditRecord.uuid] = subredditRecord;
-      });
+      const subreddits = apiResponse.results.reduce((dict, subredditRecord) => ({
+        ...dict,
+        [subredditRecord.uuid]: subredditRecord,
+      }), {});
 
       return merge(state, { subreddits, loaded: true });
     }
 
     // if theres any api response containing a subreddit and we've
     // already fetched all of the subscribed subreddits, update
-    case apiResponseActions.RECEIVED_API_RESPONSE: {
+    case searchActions.RECEIVED_SEARCH_REQUEST: {
       if (!state.loaded) { return state; }
       const { subreddits } = action.apiResponse;
       return updateStateFromSubreddits(state, subreddits);
     }
 
-    case apiResponseActions.UPDATED_MODEL: {
+    case subredditActions.RECEIVED_SUBREDDIT:
+    case subscribedSubredditsActions.TOGGLED_SUBSCRIPTION: {
       if (!state.loaded) { return state; }
-      const { kind, model } = action;
-      if (kind !== SUBREDDIT) { return state; }
+      const { model } = action;
       return updateStateFromSubreddits(state, { [model.uuid]: model });
 
     }

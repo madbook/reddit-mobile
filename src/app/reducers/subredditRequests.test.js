@@ -10,7 +10,7 @@ createTest({ reducers: { subredditRequests } }, ({ getStore, expect }) => {
     describe('FETCHING_SUBREDDIT', () => {
       it('should add a new subredditRequest to the store', () => {
         const { store } = getStore();
-        store.dispatch(subredditActions.fetchingSubreddit(NAME));
+        store.dispatch(subredditActions.fetching(NAME));
 
         const { subredditRequests } = store.getState();
         expect(subredditRequests).to.be.eql({
@@ -27,7 +27,7 @@ createTest({ reducers: { subredditRequests } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(subredditActions.receivedSubreddit(NAME));
+        store.dispatch(subredditActions.received(NAME));
 
         const { subredditRequests } = store.getState();
         expect(subredditRequests).to.be.eql({

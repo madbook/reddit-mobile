@@ -88,7 +88,7 @@ createTest({ reducers: { activitiesRequests }}, ({ getStore, expect}) => {
           },
         });
 
-        store.dispatch(activitiesActions.received(ACTIVITIES_ID, RESULTS));
+        store.dispatch(activitiesActions.received(ACTIVITIES_ID, { results: RESULTS }));
 
         const { activitiesRequests } = store.getState();
         expect(activitiesRequests).to.eql(merge(activitiesRequests, {

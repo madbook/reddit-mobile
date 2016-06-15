@@ -1,4 +1,5 @@
 import merge from '@r/platform/merge';
+
 import * as accountActions from 'app/actions/accounts';
 import { newAccountRequest } from 'app/models/AccountRequest';
 import * as loginActions from 'app/actions/login';
@@ -23,19 +24,19 @@ export default function (state=DEFAULT, action={}) {
     }
 
     case accountActions.RECEIVED_ACCOUNT: {
-      const { name, result } = action;
+      const { name } = action;
       const request = state[name];
       if (!request) {
         return merge(state, {
           [name]: {
             ...newAccountRequest(name),
-            result,
+            loading: false,
           },
         });
       }
 
       return merge(state, {
-        [name]: { result },
+        [name]: { loading: false },
       });
     }
 

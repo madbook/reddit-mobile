@@ -34,7 +34,6 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
           id: POSTS_LIST_ID,
           params: { sort: 'hot' },
           loading: false,
-          loadingMore: false,
           results: [],
         };
 
@@ -42,7 +41,7 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
           postsLists: { [POSTS_LIST_ID]: CACHED_POSTS_LIST },
         });
 
-        store.dispatch(postsListActions.fetchingSubredditPosts(
+        store.dispatch(postsListActions.fetching(
           POSTS_LIST_ID,
           { sort: 'hot' },
         ));
@@ -53,7 +52,7 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
 
       it('should add a new postsList to the store', () => {
         const { store } = getStore();
-        store.dispatch(postsListActions.fetchingSubredditPosts(
+        store.dispatch(postsListActions.fetching(
           POSTS_LIST_ID,
           { sort: 'hot' },
         ));
@@ -63,7 +62,6 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
           id: POSTS_LIST_ID,
           params: { sort: 'hot' },
           loading: true,
-          loadingMore: false,
           results: [],
         });
       });
@@ -83,15 +81,14 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
               id: POSTS_LIST_ID,
               params: { sort: 'hot' },
               loading: true,
-              loadingMore: false,
               results: [],
             },
           },
         });
 
-        store.dispatch(postsListActions.receivedPostList(
+        store.dispatch(postsListActions.received(
           POSTS_LIST_ID,
-          RESULTS,
+          { results: RESULTS }
         ));
 
         const { postsLists } = store.getState();
@@ -101,59 +98,6 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
             results: RESULTS,
           },
         }));
-      });
-    });
-
-    describe('LOADING_MORE_POSTS', () => {
-      it('should update a postsList\'s loadingMore state to true', () => {
-        const POSTS_LIST_ID = '1';
-        const { store } = getStore({
-          postsLists: {
-            [POSTS_LIST_ID]: {
-              id: POSTS_LIST_ID,
-              params: { sort: 'hot' },
-              loading: false,
-              loadingMore: false,
-              results: [],
-            },
-          },
-        });
-
-        store.dispatch(postsListActions.loadingMorePosts(POSTS_LIST_ID));
-
-        const { postsLists } = store.getState();
-        expect(postsLists[POSTS_LIST_ID].loadingMore).to.equal(true);
-      });
-    });
-
-    describe('RECEIVED_MORE_POSTS', () => {
-      it('should add new posts to results', () => {
-        const POSTS_LIST_ID = '1';
-        const NEW_RESULTS = [
-          new models.Record('post', 't3_123'),
-          new models.Record('post', 't3_xyx'),
-        ];
-
-        const { store } = getStore({
-          postsLists: {
-            [POSTS_LIST_ID]: {
-              id: POSTS_LIST_ID,
-              params: { sort: 'hot' },
-              loading: false,
-              loadingMore: true,
-              results: [],
-            },
-          },
-        });
-
-        store.dispatch(postsListActions.receivedMorePosts(
-          POSTS_LIST_ID,
-          NEW_RESULTS,
-        ));
-
-        const { postsLists } = store.getState();
-        expect(postsLists[POSTS_LIST_ID].loadingMore).to.equal(false);
-        expect(postsLists[POSTS_LIST_ID].results).to.eql(NEW_RESULTS);
       });
     });
   });

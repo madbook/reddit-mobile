@@ -1,18 +1,17 @@
-import { endpoints, models } from '@r/api-client';
+import { endpoints } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { receivedResponse, updatedModel } from './apiResponse';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { SubredditEndpoint } = endpoints;
 
 export const FETCHING_SUBREDDIT = 'FETCHING_SUBREDDIT';
-export const fetchingSubreddit = name => ({ type: FETCHING_SUBREDDIT, name });
+export const fetching = name => ({ type: FETCHING_SUBREDDIT, name });
 
 export const RECEIVED_SUBREDDIT = 'RECEIVED_SUBREDDIT';
-export const receivedSubreddit = name => ({ type: RECEIVED_SUBREDDIT, name });
+export const received = (name, model) => ({ type: RECEIVED_SUBREDDIT, name, model });
 
 export const FAILED_SUBREDDIT = 'FAILED_SUBREDDIT';
-export const failedSubreddit = name => ({ type: FAILED_SUBREDDIT, name });
+export const failed = name => ({ type: FAILED_SUBREDDIT, name });
 
 export const fetchSubreddit = (name) => async (dispatch, getState) => {
   if (isFakeSubreddit(name)) { return; }
@@ -23,42 +22,13 @@ export const fetchSubreddit = (name) => async (dispatch, getState) => {
     return;
   }
 
-  dispatch(fetchingSubreddit(name));
+  dispatch(fetching(name));
 
   try {
     const response = await SubredditEndpoint.get(apiOptionsFromState(state), { id: name });
-    dispatch(receivedResponse(response));
-    dispatch(receivedSubreddit(name));
+    const model = response.getModelFromRecord(response.results[0]);
+    dispatch(received(name, model));
   } catch (e) {
-    dispatch(failedSubreddit(name));
+    dispatch(failed(name));
   }
-};
-
-const { Subreddit, ModelTypes } = models;
-const { SUBREDDIT } = ModelTypes;
-
-export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) => {
-  // we take the fullName and isSubscriber so we don't have to make any api calls
-  // on the server to lookup the subreddit;
-  return async (dispatch, getState) => {
-    if (isFakeSubreddit(subredditName)) { return; }
-
-    const state = getState();
-    let subreddit = state.subreddits[subredditName];
-    if (!subreddit) {
-      subreddit = Subreddit.fromJSON({ name: fullName, user_is_subscriber: isSubscriber });
-    }
-
-    const stub = subreddit.toggleSubscribed(apiOptionsFromState(state));
-    dispatch(updatedModel(stub, SUBREDDIT));
-
-    try {
-      const resolved = await stub.promise();
-      dispatch(updatedModel(resolved, SUBREDDIT));
-    } catch (e) {
-      dispatch(updatedModel(subreddit, SUBREDDIT));
-    }
-
-    // todo redirect based on referrer;
-  };
 };

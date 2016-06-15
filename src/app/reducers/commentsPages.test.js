@@ -5,7 +5,8 @@ import { models } from '@r/api-client';
 import commentsPages from './commentsPages';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as loginActions from 'app/actions/login';
-import * as apiResponseActions from 'app/actions/apiResponse';
+import * as replyActions from 'app/actions/reply';
+
 
 createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
   describe('commentsPages', () => {
@@ -102,9 +103,9 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(commentsPageActions.receivedCommentsPage(
+        store.dispatch(commentsPageActions.received(
           COMMENTS_PAGE_ID,
-          RESULTS,
+          { results: RESULTS },
         ));
 
         const { commentsPages } = store.getState();
@@ -117,7 +118,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
       });
     });
 
-    describe('NEW_MODEL', () => {
+    describe('REPLIED', () => {
 
       let store;
       const COMMENTS_PAGE_ID = '1';
@@ -148,15 +149,8 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
         }).store;
       });
 
-      it('should do nothing if kind is not "comment"', () => {
-        store.dispatch(apiResponseActions.newModel({}, 'foobar'));
-
-        const { commentsPages } = store.getState();
-        expect(commentsPages[COMMENTS_PAGE_ID].results).to.eql([]);
-      });
-
       it('should add a new comment if its parent is the link_id', () => {
-        store.dispatch(apiResponseActions.newModel(COMMENT, 'comment'));
+        store.dispatch(replyActions.replied(COMMENT.parentId, COMMENT));
 
         const { commentsPages } = store.getState();
         expect(commentsPages[COMMENTS_PAGE_ID].results).to.eql([ COMMENT_RECORD ]);
@@ -164,7 +158,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
 
       it('should not add a new comment if its parent is not the link_id', () => {
         const comment = merge(COMMENT, { parentId: 't3_notTheMama!' });
-        store.dispatch(apiResponseActions.newModel(comment, 'comment'));
+        store.dispatch(replyActions.replied(comment.parentId, comment));
 
         const { commentsPages } = store.getState();
         expect(commentsPages[COMMENTS_PAGE_ID].results).to.eql([]);

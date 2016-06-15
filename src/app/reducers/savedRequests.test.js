@@ -6,7 +6,6 @@ import savedRequests from './savedRequests';
 import * as savedActions from 'app/actions/saved';
 import * as loginActions from 'app/actions/login';
 
-
 createTest({ reducers: { savedRequests }}, ({ getStore, expect}) => {
   describe('savedRequests', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
@@ -88,7 +87,7 @@ createTest({ reducers: { savedRequests }}, ({ getStore, expect}) => {
           },
         });
 
-        store.dispatch(savedActions.received(SAVED_ID, RESULTS));
+        store.dispatch(savedActions.received(SAVED_ID, { results: RESULTS }));
 
         const { savedRequests } = store.getState();
         expect(savedRequests).to.eql(merge(savedRequests, {

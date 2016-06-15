@@ -1,17 +1,17 @@
 import merge from '@r/platform/merge';
-import * as commentActions from 'app/actions/comment';
+import * as replyActions from 'app/actions/reply';
 
 const DEFAULT = {};
 
 export default function (state=DEFAULT, action={}) {
   switch (action.type) {
-    case commentActions.REPLYING: {
+    case replyActions.REPLYING: {
       return merge(state, {
         [action.id]: true,
       });
     }
 
-    case commentActions.REPLIED: {
+    case replyActions.REPLIED: {
       const newState = { ...state };
       delete newState[action.id];
       return newState;
