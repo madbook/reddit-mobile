@@ -11,9 +11,6 @@ import Post from 'app/components/Post';
 import CommentPreview from 'app/components/CommentPreview';
 import Loading from 'app/components/Loading';
 
-import map from 'lodash/map';
-import curry from 'lodash/curry';
-
 const T = React.PropTypes;
 
 const mapStateToProps = createSelector(
@@ -47,15 +44,19 @@ PostAndCommentList.propTypes = {
   thingProps: T.object,
 };
 
+PostAndCommentList.defaultProps = {
+  thingProps: {},
+};
+
 export default connect(mapStateToProps)(PostAndCommentList);
 
 const PostsCommentsAndPagination = props => {
   const { records, thingProps } = props;
-  const renderRecord = curry(renderRecordWithProps)(thingProps);
+  const renderRecord = record => renderRecordWithProps(thingProps, record);
 
   return (
     <div>
-      { map(records, renderRecord) }
+      { records.map(renderRecord) }
       { records.length && <PaginationButtons records={ records } /> }
     </div>
   );

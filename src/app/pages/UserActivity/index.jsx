@@ -18,12 +18,12 @@ const mapStateToProps = createSelector(
     const activitiesParams = UserActivityHandler.PageParamsToActivitiesParams(pageProps);
     const activitiesId = paramsToActiviesRequestId(activitiesParams);
 
-    return ({
+    return {
       myUser,
       queriedUserName: pageProps.urlParams.userName,
       activitiesId,
       currentActivity: pageProps.queryParams.activity,
-    });
+    };
   },
 );
 

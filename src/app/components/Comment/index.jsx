@@ -22,8 +22,8 @@ import CommentReplyForm from './CommentReplyForm';
 const T = React.PropTypes;
 const { CommentModel } = models;
 
-const collapseable = props => !(props.preview || props.userActivityPage);
-const collapsed = props => props.commentCollapsed && collapseable(props);
+const collapsible = props => !(props.preview || props.userActivityPage);
+const collapsed = props => props.commentCollapsed && collapsible(props);
 
 export function Comment (props) {
   const { editing, preview, userActivityPage } = props;
@@ -52,7 +52,7 @@ function renderHeader(props) {
 
   // don't allow comment collapsing on user activity and preview pages
   const onToggleCollapse = () => {
-    if (!collapseable(props)) { return; }
+    if (!collapsible(props)) { return; }
     props.toggleCollapse(!commentCollapsed);
   };
 
@@ -62,7 +62,7 @@ function renderHeader(props) {
         id={ comment.id }
         author={ comment.author }
         authorType={ authorType }
-        topLevel={ nestingLevel === 0 && collapseable(props) }
+        topLevel={ nestingLevel === 0 && collapsible(props) }
         dots={ Math.max(nestingLevel - 6, 0) }
         flair={ comment.author_flair_text }
         created={ comment.createdUTC }

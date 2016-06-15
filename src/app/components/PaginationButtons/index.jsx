@@ -11,7 +11,7 @@ import { cleanObject } from 'lib/cleanObject';
 
 const T = React.PropTypes;
 
-const pageNumber = queryParams => parseInt(queryParams.page || 0);
+const pageNumber = queryParams => parseInt(queryParams.page || 0, 10);
 
 export const buildPrevUrl = (records, pagingPrefix='', currentQueryParams={}) => {
   const firstId = records[0].uuid;

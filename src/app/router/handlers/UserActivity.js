@@ -15,11 +15,8 @@ export default class UserActivityHandler extends BaseHandler {
 
   static PageParamsToActivitiesParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
-    let { sort, activity } = queryParams;
-    const { before, after } = queryParams;
-    sort = sort || SORTS.CONFIDENCE;
-    activity = activity || POSTS_ACTIVITY;
-
+    const { sort=SORTS.CONFIDENCE, activity=POSTS_ACTIVITY, before, after } = queryParams;
+    
     return cleanObject({
       user: userName,
       sort,

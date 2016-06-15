@@ -78,7 +78,7 @@ const UserProfileRow = props => (
 // these need to be `function` instead of `const`, because of
 // hoisting and`babel-transform-react-constant-elements`
 function UserProfileBadgeIcon(props) {
-  const { iconName, color, shortLineheight } = props;
+  const { iconName, color } = props;
   return (
     <span className={ `UserProfileSummary__badgeIcon icon icon-${iconName} ${color} ` } />
   );

@@ -9,7 +9,6 @@ const { PostModel } = models;
 // import PostDropdownController from './PostDropdownController';
 
 const T = React.PropTypes;
-const VOTE_WRAPPER_CLS = 'PostFooter__vote-arrow-wrapper';
 
 export default class PostFooter extends React.Component {
   static propTypes = {

@@ -16,10 +16,8 @@ export default class SavedAndHiddenHandler extends BaseHandler {
 
   static PageParamsToSavedParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
-    let { sort } = queryParams;
-    const { before, after } = queryParams;
-    sort = sort || SORTS.CONFIDENCE;
-
+    const { sort=SORTS.CONFIDENCE, before, after } = queryParams;
+    
     return cleanObject({
       user: userName,
       sort,

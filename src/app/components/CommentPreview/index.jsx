@@ -21,12 +21,12 @@ export function CommentPreview(props) {
       <div className='CommentPreview__wrapper'>
         <Anchor className='CommentPreview__permalink' href={ comment.cleanPermalink }>
           { comment.linkTitle }
-          </Anchor>
-          <Comment
+        </Anchor>
+        <Comment
           commentId={ commentId }
           userActivityPage={ userActivityPage }
           preview={ true }
-          />
+        />
       </div>
     </div>
   );

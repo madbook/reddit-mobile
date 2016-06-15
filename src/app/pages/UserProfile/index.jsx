@@ -68,16 +68,8 @@ const OwnUserLinks = props => {
 
   return (
     <div className='UserProfilePage__ownUserLinks'>
-      {/*<UserLink iconName='history' text='History' href={ userLinkPath(userName, 'history') } />*/}
       <UserLink iconName='save' text='Saved' href={ userLinkPath(userName, 'saved') } />
-      <UserLink iconName='upvote' text='Upvoted' href={ userLinkPath(userName, 'upvoted') } />
-      <UserLink iconName='user-account' text='Friends' href={ userLinkPath(userName, 'friends') } />
       <UserLink iconName='hide' text='Hidden' href={ userLinkPath(userName, 'hidden') } />
-      {/*<UserLink
-        iconName='image-tree'
-        text='Image uploads'
-        href={ userLinkPath(userName, 'imageUploads') }
-      />*/}
     </div>
   );
 };
