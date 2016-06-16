@@ -20,6 +20,8 @@ import subscribedSubreddits from './subscribedSubreddits';
 import subredditRequests from './subredditRequests';
 import theme from './theme';
 import user from './user';
+import wikis from './wikis';
+import wikiRequests from './wikiRequests';
 
 export default {
   accounts,
@@ -44,4 +46,6 @@ export default {
   subredditRequests,
   theme,
   user,
+  wikis,
+  wikiRequests,
 };

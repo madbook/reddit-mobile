@@ -11,6 +11,7 @@ import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscr
 import UserActivityHandler from './handlers/UserActivity';
 import UserProfilerHandler from './handlers/UserProfile';
 import Vote from './handlers/Vote';
+import WikiPageHandler from './handlers/WikiPage';
 
 export default [
   ['/', PostsFromSubredditHandler],
@@ -22,6 +23,8 @@ export default [
   ['/search', SearchPageHandler],
   ['/r/:subredditName/search', SearchPageHandler],
   ['/r/:subredditName/about', SubredditAboutPageHandler],
+  ['/r/:subredditName/(w|wiki)/:path(.*)?', WikiPageHandler],
+  ['/(help|w|wiki)/:path(.*)?', WikiPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments', CommentsPageHandler],
   ['/u/:userName/activity', UserActivityHandler],

@@ -17,7 +17,7 @@ const subredditDescription = descriptionHTML => (
 
 const tryLoggingIn = () => (
   <div className='SubredditAbout__try-logging-in'>
-  You may need to try <Anchor href='/login'>logging in</Anchor> to view this community
+    You may need to try <Anchor href='/login'>logging in</Anchor> to view this community
   </div>
 );
 

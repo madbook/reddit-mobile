@@ -9,6 +9,7 @@ import { SearchPage } from './SearchPage';
 import { SubredditAboutPage } from './SubredditAbout';
 import { UserActivityPage } from './UserActivity';
 import { UserProfilePage } from './UserProfile';
+import { WikiPage } from './WikiPage';
 
 import Login from 'app/components/Login';
 
@@ -37,6 +38,8 @@ export const AppMainPage = () => (
     <Page url='/search' component={ SearchPage } />
     <Page url='/r/:subredditName/search' component={ SearchPage } />
     <Page url='/r/:subredditName/about' component={ SubredditAboutPage } />
+    <Page url='/r/:subredditName/(w|wiki)/:path(.*)?' component={ WikiPage } />
+    <Page url='/(help|w|wiki)/:path(.*)?' component={ WikiPage } />
     <Page
       url='/comments/:postId/:postTitle?'
       component={ CommentsPage }
