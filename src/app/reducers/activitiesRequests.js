@@ -1,4 +1,5 @@
 import merge from '@r/platform/merge';
+
 import * as activitiesActions from 'app/actions/activities';
 import { newActivitesRequest } from 'app/models/ActivitiesRequest';
 import * as loginActions from 'app/actions/login';

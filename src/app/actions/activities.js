@@ -1,9 +1,9 @@
+import { endpoints } from '@r/api-client';
+const { ActivitiesEndpoint } = endpoints;
+
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToActiviesRequestId } from 'app/models/ActivitiesRequest';
-import { endpoints } from '@r/api-client';
 import { receivedResponse } from './apiResponse';
-
-const { ActivitiesEndpoint } = endpoints;
 
 export const POSTS_ACTIVITY = 'submitted';
 export const COMMENTS_ACTIVITY = 'comments';

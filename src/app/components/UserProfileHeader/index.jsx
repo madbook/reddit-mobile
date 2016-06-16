@@ -1,7 +1,6 @@
 import './styles.less';
 
 import React from 'react';
-
 import { Anchor } from '@r/platform/components';
 
 import UserActivityHandler from 'app/router/handlers/UserActivity';

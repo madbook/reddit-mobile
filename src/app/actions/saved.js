@@ -1,8 +1,9 @@
+import { endpoints } from '@r/api-client';
+const { SavedEndpoint } = endpoints;
+
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { receivedResponse } from './apiResponse';
 import { paramsToSavedRequestId } from 'app/models/SavedRequest';
-import { endpoints } from '@r/api-client';
-const { SavedEndpoint } = endpoints;
 
 export const FETCHING_SAVED = 'FETCHING_SAVED';
 export const fetching = (id, params) => ({ type: FETCHING_SAVED, id, params });

@@ -3,7 +3,6 @@ import { BaseHandler, METHODS } from '@r/platform/router';
 import { cleanObject } from 'lib/cleanObject';
 import { SORTS } from 'app/sortValues';
 import { POSTS_ACTIVITY } from 'app/actions/activities';
-
 import * as activitiesActions from 'app/actions/activities';
 import { fetchUserBasedData } from './handlerCommon';
 import { urlWith } from 'lib/urlWith';
@@ -16,7 +15,7 @@ export default class UserActivityHandler extends BaseHandler {
   static PageParamsToActivitiesParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
     const { sort=SORTS.CONFIDENCE, activity=POSTS_ACTIVITY, before, after } = queryParams;
-    
+
     return cleanObject({
       user: userName,
       sort,

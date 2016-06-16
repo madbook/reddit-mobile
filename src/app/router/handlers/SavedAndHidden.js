@@ -2,7 +2,6 @@ import { BaseHandler, METHODS } from '@r/platform/router';
 
 import { cleanObject } from 'lib/cleanObject';
 import { SORTS } from 'app/sortValues';
-
 import * as hiddenActions from 'app/actions/hidden';
 import * as savedActions from 'app/actions/saved';
 import { fetchUserBasedData } from './handlerCommon';
@@ -17,7 +16,7 @@ export default class SavedAndHiddenHandler extends BaseHandler {
   static PageParamsToSavedParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
     const { sort=SORTS.CONFIDENCE, before, after } = queryParams;
-    
+
     return cleanObject({
       user: userName,
       sort,

@@ -1,4 +1,5 @@
 import merge from '@r/platform/merge';
+
 import * as hiddenActions from 'app/actions/hidden';
 import { newHiddenRequest } from 'app/models/HiddenRequest';
 import * as loginActions from 'app/actions/login';

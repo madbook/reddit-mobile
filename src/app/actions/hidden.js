@@ -1,8 +1,9 @@
+import { endpoints } from '@r/api-client';
+const { HiddenEndpoint } = endpoints;
+
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { receivedResponse } from './apiResponse';
 import { paramsToHiddenRequestid } from 'app/models/HiddenRequest';
-import { endpoints } from '@r/api-client';
-const { HiddenEndpoint } = endpoints;
 
 export const FETCHING_HIDDEN = 'FETCHING_HIDDEN';
 export const fetching = (id, params) => ({ type: FETCHING_HIDDEN, id, params });

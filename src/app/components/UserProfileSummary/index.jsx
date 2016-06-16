@@ -4,7 +4,6 @@ import React from 'react';
 import { models } from '@r/api-client';
 import { Anchor } from '@r/platform/components';
 
-import SnooIcon from 'app/components/SnooIcon';
 import { formatNumber } from 'lib/formatNumber';
 import { short, long } from 'lib/formatDifference';
 
