@@ -47,7 +47,7 @@ const removeDefaultables = (params) => {
 };
 
 export default class SearchPage extends BaseHandler {
-  static PageParamsToSearchRequestParams({ urlParams, queryParams }) {
+  static pageParamsToSearchRequestParams({ urlParams, queryParams }) {
     const { q, after, before } = queryParams;
     const sort = getDefaultable(SORT, queryParams);
     const time = getDefaultable(TIME, queryParams);
@@ -68,7 +68,7 @@ export default class SearchPage extends BaseHandler {
     const state = getState();
     if (state.platform.shell) { return; }
 
-    const searchParams = SearchPage.PageParamsToSearchRequestParams(this);
+    const searchParams = SearchPage.pageParamsToSearchRequestParams(this);
     const { q: query } = searchParams;
     if (query && query.length > SEARCH_MIN_LENGTH) {
       dispatch(searchActions.search(searchParams));

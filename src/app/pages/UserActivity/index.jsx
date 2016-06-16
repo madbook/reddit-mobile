@@ -15,7 +15,7 @@ const mapStateToProps = createSelector(
   state => state.activitiesRequests,
   (_, props) => props, // props is the page props splatted,
   (myUser, activities, pageProps) => {
-    const activitiesParams = UserActivityHandler.PageParamsToActivitiesParams(pageProps);
+    const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(pageProps);
     const activitiesId = paramsToActiviesRequestId(activitiesParams);
 
     return {

@@ -13,7 +13,7 @@ export default class SavedAndHiddenHandler extends BaseHandler {
   static isSavedPage({ urlParams }) { return urlParams.savedOrHidden === SAVED; }
   static isHiddenPage({ urlParams }) { return urlParams.savedOrHidden === HIDDEN; }
 
-  static PageParamsToSavedParams({ urlParams, queryParams }) {
+  static pageParamsToSavedParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
     const { sort=SORTS.CONFIDENCE, before, after } = queryParams;
 
@@ -29,7 +29,7 @@ export default class SavedAndHiddenHandler extends BaseHandler {
     const state = getState();
     if (state.platform.shell) { return; }
 
-    const params = SavedAndHiddenHandler.PageParamsToSavedParams(this);
+    const params = SavedAndHiddenHandler.pageParamsToSavedParams(this);
 
     if (SavedAndHiddenHandler.isHiddenPage(this)) {
       dispatch(hiddenActions.fetch(params));

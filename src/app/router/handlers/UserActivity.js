@@ -12,7 +12,7 @@ export default class UserActivityHandler extends BaseHandler {
     return urlWith(`/u/${userName}/activity`, { activity });
   }
 
-  static PageParamsToActivitiesParams({ urlParams, queryParams }) {
+  static pageParamsToActivitiesParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
     const { sort=SORTS.CONFIDENCE, activity=POSTS_ACTIVITY, before, after } = queryParams;
 
@@ -29,7 +29,7 @@ export default class UserActivityHandler extends BaseHandler {
     const state = getState();
     if (state.platform.shell) { return; }
 
-    const activitiesParams = UserActivityHandler.PageParamsToActivitiesParams(this);
+    const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(this);
     dispatch(activitiesActions.fetch(activitiesParams));
 
     fetchUserBasedData(dispatch);

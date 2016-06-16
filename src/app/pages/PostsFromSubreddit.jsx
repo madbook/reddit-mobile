@@ -15,7 +15,7 @@ const mapStateToProps = createSelector(
   (_, props) => props, // props is the page props splatted.
   state => state.postsLists,
   (pageProps, postsLists) => {
-    const postsListParams = PostsFromSubredditHandler.PageParamsToSubredditPostsParams(pageProps);
+    const postsListParams = PostsFromSubredditHandler.pageParamsToSubredditPostsParams(pageProps);
     const postsListId = paramsToPostsListsId(postsListParams);
     const { subredditName } = postsListParams;
     return { postsListId, postsList: postsLists[postsListId], subredditName };

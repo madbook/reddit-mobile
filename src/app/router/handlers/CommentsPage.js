@@ -17,7 +17,7 @@ const ensurePostTypePrefix = postId => {
 };
 
 export default class CommentsPage extends BaseHandler {
-  static PageParamsToCommentsPageParams({ urlParams, queryParams}) {
+  static pageParamsToCommentsPageParams({ urlParams, queryParams}) {
     let { postId } = urlParams;
     const { commentId } = urlParams;
     const { sort, context } = queryParams;
@@ -44,7 +44,7 @@ export default class CommentsPage extends BaseHandler {
     const state = getState();
     if (state.platform.shell) { return; }
 
-    const commentsPageParams = CommentsPage.PageParamsToCommentsPageParams(this);
+    const commentsPageParams = CommentsPage.pageParamsToCommentsPageParams(this);
 
     dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams));
     fetchUserBasedData(dispatch);

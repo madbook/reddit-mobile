@@ -7,7 +7,7 @@ import { paramsToHiddenRequestid } from 'app/models/HiddenRequest';
 import SavedAndHiddenHandler from 'app/router/handlers/SavedAndHidden';
 
 export const SavedAndHiddenPage = props => {
-  const requestProps = SavedAndHiddenHandler.PageParamsToSavedParams(props);
+  const requestProps = SavedAndHiddenHandler.pageParamsToSavedParams(props);
   const isSavedPage = SavedAndHiddenHandler.isSavedPage(props);
   const requestLocation = isSavedPage ? 'savedRequests' : 'hiddenRequests';
   const requestId = isSavedPage ?

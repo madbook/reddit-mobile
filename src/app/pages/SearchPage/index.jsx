@@ -249,7 +249,7 @@ const pageDataSelector = state => state.platform.currentPage;
 
 const searchRequestSelector = state => {
   const pageData = pageDataSelector(state);
-  const requestParams = SearchPageHandler.PageParamsToSearchRequestParams(pageData);
+  const requestParams = SearchPageHandler.pageParamsToSearchRequestParams(pageData);
   const requestId = paramsToSearchRequestId(requestParams);
   return state.searchRequests[requestId];
 };
