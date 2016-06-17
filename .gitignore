@@ -6,3 +6,5 @@ start.sh
 bin/*
 build/
 .test/
+.DS_Store
+
