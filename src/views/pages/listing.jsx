@@ -195,6 +195,42 @@ class ListingPage extends BasePage {
     this.setState({ expandComments: true });
   }
 
+  renderThreadNotice(subreddit, listing, commentId) {
+    let message;
+    if (commentId) {
+      message = (
+        <p>
+          <span>You are viewing a single comment's thread. </span>
+          <a href={ listing.permalink }>View the rest of the comments</a>
+        </p>
+      );
+    }
+
+    if (subreddit && subreddit.user_is_banned) {
+      message = <p>You are banned from commenting in this community for now</p>;
+    }
+
+    if (listing.locked) {
+      message = <p>Comments are locked</p>;
+    }
+
+    if (listing.archived) {
+      message = <p>Post is archived</p>;
+    }
+
+    if (message) {
+      return (
+        <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
+          <p>
+            { message }
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { data, editing, loadingMoreComments, linkEditError, expandComments } = this.state;
 
@@ -224,17 +260,11 @@ class ListingPage extends BasePage {
 
     app.emit('setTitle', { title: listing.title });
 
-    let singleComment;
-    if (commentId) {
-      singleComment = (
-        <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
-          <p>
-            <span>You are viewing a single comment's thread. </span>
-            <a href={ permalink }>View the rest of the comments</a>
-          </p>
-        </div>
-      );
-    }
+    const threadNotification =
+      this.renderThreadNotice(subreddit, listing, commentId);
+    const disableReply = listing.archived ||
+                         listing.locked ||
+                         subreddit.user_is_banned;
 
     let commentsList;
     let googleCarousel;
@@ -291,6 +321,7 @@ class ListingPage extends BasePage {
                 sort={ sort }
                 repliesLocked={ listing.locked }
                 isArchived={ listing.archived }
+                userIsBanned={ subreddit.user_is_banned }
               />
             </div>
           );
@@ -409,6 +440,7 @@ class ListingPage extends BasePage {
                 apiOptions={ apiOptions }
                 token={ token }
                 linkId={ listing.name }
+                disableReply={ disableReply }
                 isArchived={ listing.archived }
                 isLocked={ listing.locked }
                 sort={ sort }
@@ -416,7 +448,7 @@ class ListingPage extends BasePage {
                 onSortChange={ this.handleSortChange }
               />
             </div>
-            { singleComment }
+            { threadNotification }
             { commentsList }
           </div>
           { relevantContent }

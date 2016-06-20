@@ -535,12 +535,14 @@ export default class Comment extends BaseComponent {
   }
 
   renderReplyArea() {
-    const { isArchived, repliesLocked } = this.state;
+    const { isArchived, repliesLocked, userIsBanned } = this.props;
 
     if (isArchived) {
       return this.renderArchivedReplyForm();
     } else if (repliesLocked) {
       return this.renderLockedReplyForm();
+    } else if (userIsBanned) {
+      return this.renderBannedReplyForm();
     }
 
     return this.renderReplyForm();
@@ -579,6 +581,16 @@ export default class Comment extends BaseComponent {
       <div className='Comment__replyForm'>
         <div className='Comment__replyFormLocked'>
           Posting is archived
+        </div>
+      </div>
+    );
+  }
+
+  renderBannedReplyForm() {
+    return (
+      <div className='Comment__replyForm'>
+        <div className='Comment__replyFormLocked'>
+          You are banned from commenting in this community for now.
         </div>
       </div>
     );
