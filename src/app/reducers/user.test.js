@@ -50,7 +50,7 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         store.dispatch(accountActions.fetching({ name: 'me', loggedOut: true }));
 
         const { user } = store.getState();
-        expect(user).to.eql({ loading: true, name: 'me', loggedOut: true });
+        expect(user).to.eql({ loading: true, name: 'me', loggedOut: true, features: {} });
       });
     });
 
@@ -100,7 +100,7 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         }));
 
         const { user } = store.getState();
-        expect(user).to.eql({ loading: false, name: 'me', loggedOut: true });
+        expect(user).to.eql({ loading: false, name: 'me', loggedOut: true, features: {} });
       });
     });
   });
