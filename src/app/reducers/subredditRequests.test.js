@@ -1,11 +1,34 @@
 import createTest from '@r/platform/createTest';
 
+import * as loginActions from 'app/actions/login';
 import subredditRequests from './subredditRequests';
 import * as subredditActions from 'app/actions/subreddits';
 
 createTest({ reducers: { subredditRequests } }, ({ getStore, expect }) => {
   describe('subredditRequests', () => {
     const NAME = 'foo';
+
+    describe('LOGGED_IN and LOGGED_OUT', () => {
+      it('should return default on log in', () => {
+        const { store } = getStore({
+          subredditRequests: { request: {} },
+        });
+        store.dispatch(loginActions.loggedIn());
+
+        const { subredditRequests } = store.getState();
+        expect(subredditRequests).to.eql({});
+      });
+
+      it('should return default on log out', () => {
+        const { store } = getStore({
+          subredditRequests: { request: {} },
+        });
+        store.dispatch(loginActions.loggedOut());
+
+        const { subredditRequests } = store.getState();
+        expect(subredditRequests).to.eql({});
+      });
+    });
 
     describe('FETCHING_SUBREDDIT', () => {
       it('should add a new subredditRequest to the store', () => {

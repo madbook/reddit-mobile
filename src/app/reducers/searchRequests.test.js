@@ -10,7 +10,9 @@ createTest({ reducers: { searchRequests } }, ({ getStore, expect }) => {
   describe('searchRequests', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          searchRequests: { request: {} },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { searchRequests } = store.getState();
@@ -18,7 +20,9 @@ createTest({ reducers: { searchRequests } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          searchRequests: { request: {} },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { searchRequests } = store.getState();

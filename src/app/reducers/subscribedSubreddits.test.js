@@ -10,7 +10,9 @@ createTest({ reducers: { subscribedSubreddits } }, ({ getStore, expect }) => {
   describe('subscribedSubreddits', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          subscribedSubreddits: { 'foobar': 't5_12345' },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { subscribedSubreddits } = store.getState();
@@ -18,7 +20,9 @@ createTest({ reducers: { subscribedSubreddits } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          subscribedSubreddits: { 'foobar': 't5_12345' },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { subscribedSubreddits } = store.getState();

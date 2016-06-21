@@ -11,7 +11,9 @@ createTest({ reducers: { hiddenRequests }}, ({ getStore, expect}) => {
   describe('hiddenRequests', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          hidden: { 'request': {} },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { hiddenRequests } = store.getState();
@@ -19,7 +21,9 @@ createTest({ reducers: { hiddenRequests }}, ({ getStore, expect}) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          hidden: { 'request': {} },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { hiddenRequests } = store.getState();

@@ -11,7 +11,10 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
 
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          accountRequests: { 'me': {} },
+        });
+
         store.dispatch(loginActions.loggedIn());
 
         const { accountRequests } = store.getState();
@@ -19,7 +22,10 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          accountRequests: { 'me': {} },
+        });
+
         store.dispatch(loginActions.loggedOut());
 
         const { accountRequests } = store.getState();

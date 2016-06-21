@@ -8,7 +8,9 @@ createTest({ reducers: { collapsedComments } }, ({ getStore, expect }) => {
   describe('collapsedComments', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          collapsedComments: { t1_1: true },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { collapsedComments } = store.getState();
@@ -16,7 +18,9 @@ createTest({ reducers: { collapsedComments } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          collapsedComments: { t1_1: true },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { collapsedComments } = store.getState();

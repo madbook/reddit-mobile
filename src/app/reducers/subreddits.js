@@ -1,5 +1,3 @@
-import { models } from '@r/api-client';
-
 import mergeAPIModels from './helpers/mergeAPIModels';
 import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';

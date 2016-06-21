@@ -9,7 +9,7 @@ createTest({ reducers: { theme } }, ({ getStore, expect }) => {
   describe('theme', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({ theme: themes.NIGHTMODE });
         store.dispatch(loginActions.loggedIn());
 
         const { theme } = store.getState();
@@ -17,7 +17,7 @@ createTest({ reducers: { theme } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({ theme: themes.NIGHTMODE });
         store.dispatch(loginActions.loggedOut());
 
         const { theme } = store.getState();

@@ -46,7 +46,7 @@ export default function(state=DEFAULT, action={}) {
       // that comment to include the reply
 
       const updatedParent = parentComment.set({
-        replies: [ model.toRecord(), ...parentComment.replies]
+        replies: [ model.toRecord(), ...parentComment.replies],
       });
 
       return merge(state, {

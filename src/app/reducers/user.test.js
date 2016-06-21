@@ -8,7 +8,9 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
   describe('user', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          user: { name: 'tester', loggedOut: false },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { user } = store.getState();
@@ -16,7 +18,9 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          user: { name: 'tester', loggedOut: false },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { user } = store.getState();
@@ -94,7 +98,7 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
         }, {
           results: [ { type: 'account', uuid: 'me', paginationId: 'me' } ],
         }));
-        
+
         const { user } = store.getState();
         expect(user).to.eql({ loading: false, name: 'me', loggedOut: true });
       });

@@ -10,7 +10,9 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
   describe('postsLists', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          postsLists: { request: {} },
+        });
         store.dispatch({ type: loginActions.LOGGED_IN });
 
         const { postsLists } = store.getState();
@@ -18,7 +20,9 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          postsLists: { request: {} },
+        });
         store.dispatch({ type: loginActions.LOGGED_OUT });
 
         const { postsLists } = store.getState();

@@ -12,7 +12,9 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
   describe('commentsPages', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log in', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          commentsPages: { 'page': {} },
+        });
         store.dispatch(loginActions.loggedIn());
 
         const { commentsPages } = store.getState();
@@ -20,7 +22,9 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
       });
 
       it('should return default on log out', () => {
-        const { store } = getStore();
+        const { store } = getStore({
+          commentsPages: { 'page': {} },
+        });
         store.dispatch(loginActions.loggedOut());
 
         const { commentsPages } = store.getState();

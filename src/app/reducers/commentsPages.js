@@ -1,5 +1,4 @@
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
 
 import { newCommentsPage } from 'app/models/CommentsPage';
 import * as commentsPageActions from 'app/actions/commentsPage';
@@ -50,7 +49,7 @@ export default (state=DEFAULT, action={}) => {
       // are lots of params like sort, time, postId, commentId (for permalinks), etc.
       // To do this 'the right way' we'd have to look at either comment page in state
       // OR keep a map of postId to a list of commentPages.
-      
+
       const { model } = action;
       const currentPage = state[state.current];
       if (!currentPage || currentPage.postId !== model.parentId) { return state; }
