@@ -25,7 +25,11 @@ const client = Client({
     if (isLocalStorageAvailable()) {
       try {
         data.collapsedComments = JSON.parse(window.localStorage.collapsedComments);
-      } catch (e) { console.log(e); }
+      } catch (e) { console.warn(e); }
+
+      try {
+        data.expandedPosts = JSON.parse(window.localStorage.expandedPosts);
+      } catch (e) { console.warn(e); }
     }
 
     return data;

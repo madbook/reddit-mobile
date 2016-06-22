@@ -155,22 +155,6 @@ export default class PostContent extends React.Component {
     return DEFAULT_ASPECT_RATIO;
   }
 
-  heightStyle(aspectRatio) {
-    if (this.props.single && aspectRatio) {
-      return `${1 / aspectRatio * this.props.width}px`;
-    }
-  }
-
-  baseStyleFromAspectRatio(aspectRatio) {
-    const style = {};
-    const heightStyle = this.heightStyle(aspectRatio);
-    if (heightStyle) {
-      style.height = heightStyle;
-    }
-
-    return style;
-  }
-
   render() {
     const isCompact = this.isCompact();
     const { single, post, isDomainExternal } = this.props;
@@ -307,11 +291,16 @@ export default class PostContent extends React.Component {
     }
 
     const { onTapExpand } = this.props;
+    const callOnTapExpand = e => {
+      e.preventDefault();
+      onTapExpand();
+    };
+
     const sourceURL = post.cleanUrl;
 
     if (isCompact) {
       // the thumbnail
-      return this.renderImage(previewImage, sourceURL, linkDescriptor, onTapExpand,
+      return this.renderImage(previewImage, sourceURL, linkDescriptor, callOnTapExpand,
         needsNSFWBlur, true, playableType);
     }
 
@@ -369,7 +358,7 @@ export default class PostContent extends React.Component {
       case 'image':
         return this.renderIframe(sourceURL, aspectRatio);
       case 'video':
-        return this.renderRawHTML(post.expandContent, aspectRatio);
+        return this.renderRawHTML(post.expandedContent, aspectRatio);
       case 'rich':
         return this.renderRichOembed(oembed.html, aspectRatio);
     }
@@ -420,7 +409,6 @@ export default class PostContent extends React.Component {
         href={ linkDescriptor.url }
         target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
-        data-no-route={ !!onClick }
       >
         <img className='PostContent__image-img' src={ imageURL } />
         { playbackControlNode }
@@ -433,7 +421,7 @@ export default class PostContent extends React.Component {
       onClick, isCompact, playbackControlNode, nsfwNode) {
     const { forceHTTPS } = this.props;
 
-    const style = this.baseStyleFromAspectRatio(aspectRatio);
+    const style = {};
 
     if (previewImage.url) {
       const giphyPosterHref = posterForHrefIfGiphyCat(imageURL);
@@ -454,7 +442,6 @@ export default class PostContent extends React.Component {
         href={ linkDescriptor.url }
         target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
-        data-no-route={ !!onClick }
         style={ style }
       >
         { isPlaying
@@ -466,13 +453,8 @@ export default class PostContent extends React.Component {
   }
 
   renderIframe(src, aspectRatio) {
-    const style = this.baseStyleFromAspectRatio(aspectRatio);
-
     return (
-      <div
-        className={ `PostContent__iframe-wrapper ${aspectRatioClass(aspectRatio)}` }
-        style={ style }
-      >
+      <div className={ `PostContent__iframe-wrapper ${aspectRatioClass(aspectRatio)}` } >
         <iframe
           className='PostContent__iframe'
           src={ src }
@@ -485,13 +467,8 @@ export default class PostContent extends React.Component {
   }
 
   renderVideo(videoSpec, posterImage, aspectRatio) {
-    const style = this.baseStyleFromAspectRatio(aspectRatio);
-
     return (
-      <div
-        className={ `PostContent__video-wrapper ${aspectRatioClass(aspectRatio)}` }
-        style={ style }
-      >
+      <div className={ `PostContent__video-wrapper ${aspectRatioClass(aspectRatio)}` } >
         <video
           className='PostContent__video'
           poster={ posterImage }

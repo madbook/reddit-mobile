@@ -4,8 +4,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
-
 const { PostModel } = models;
+
+import * as postActions from 'app/actions/posts';
 
 import {
   isPostDomainExternal,
@@ -63,9 +64,8 @@ export function Post(props) {
   const isAndroid = userAgent && /android/i.test(userAgent);
   const showLinksInNewTab = externalDomain && isAndroid;
   const showNSFW = !props.showOver18Interstitial && props.subredditIsNSFW;
-  const { expanded, editing, winWidth, z } = props;
+  const { expanded, toggleExpanded, editing, winWidth, z } = props;
 
-  const toggleExpanded = () => {};
   const toggleShowNSFW = () => {};
 
   const {
@@ -152,15 +152,12 @@ export function Post(props) {
 }
 
 const postIdSelector = (_, props) => props.postId;
-
 const compactSeletor = (state, props) => props.forceCompact || state.compact;
-
 const singleSelector = (_, props) => props.single;
-
 const postModelSelector = (state, props) => state.posts[props.postId];
-
-const combineSelectors = (postId, compact, single, post) => ({
-  postId, compact, single, post,
+const expandedSelector = (state, props) => !!state.expandedPosts[props.postId];
+const combineSelectors = (postId, compact, expanded, single, post) => ({
+  postId, compact, expanded, single, post,
 });
 
 const makeConnectedPostSelector = () => {
@@ -168,10 +165,16 @@ const makeConnectedPostSelector = () => {
     [
       postIdSelector,
       compactSeletor,
+      expandedSelector,
       singleSelector,
       postModelSelector,
     ],
     combineSelectors);
 };
 
-export default connect(makeConnectedPostSelector)(Post);
+const mapDispatchToProps = (dispatch, { postId }) => ({
+  toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
+});
+
+
+export default connect(makeConnectedPostSelector, mapDispatchToProps)(Post);

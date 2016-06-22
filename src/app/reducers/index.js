@@ -5,6 +5,7 @@ import collapsedComments from './collapsedComments';
 import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
+import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
 import posts from './posts';
@@ -28,6 +29,7 @@ export default {
   comments,
   commentsPages,
   compact,
+  expandedPosts,
   hiddenRequests,
   loid,
   posts,
