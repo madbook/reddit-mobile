@@ -68,7 +68,7 @@ export default class Post extends BaseComponent {
 
     this.state = {
       compact,
-      showNSFW: !props.showOver18Interstitial && props.subredditIsNSFW,
+      showNSFW: !props.showOver18Interstitial && !!props.subredditIsNSFW,
       expanded: false,
       loaded: false,
       reported: props.post.reported,

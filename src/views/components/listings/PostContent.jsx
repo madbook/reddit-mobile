@@ -83,13 +83,12 @@ class LinkDescriptor {
 //  * Post Preview/Link Bar (includes playable gif / video / gallery etc)
 
 export default class PostContent extends BaseComponent {
-  static porpTypes = {
+  static propTypes = {
     post: propTypes.listing.isRequired,
     compact: T.bool.isRequired,
     single: T.bool.isRequired,
     onTapExpand: T.func.isRequired,
     expandedCompact: T.bool.isRequired,
-    loaded: T.bool.isRequired,
     width: T.number.isRequired,
     toggleShowNSFW: T.func.isRequired,
     showNSFW: T.bool.isRequired,
