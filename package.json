@@ -18,7 +18,7 @@
     "test:watch": "npm run test -- -w"
   },
   "dependencies": {
-    "@r/api-client": "~3.14.0",
+    "@r/api-client": "~3.14.2",
     "@r/build": "^0.6.0",
     "@r/flags": "^1.5.0",
     "@r/middleware": "~0.6.1",
