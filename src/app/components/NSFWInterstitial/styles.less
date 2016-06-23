@@ -1,0 +1,48 @@
+@import (reference) '~app/less/variables';
+
+.NSFWInterstitial {
+  padding: 3 * @grid-size;
+  max-width: 400px;
+  margin: 0 auto;
+
+  &__icon-wrapper {
+    margin: 0 auto;
+    height: 100px;
+    text-align: center;
+  }
+
+  &__icon {
+    font-size: 7em;
+    position: relative;
+    top: 45px;
+  }
+
+  &__header,
+  &__text,
+  &__buttons {
+    text-align: center;
+  }
+
+  &__button,
+  &__form {
+    display: inline-block;
+  }
+
+  &__button {
+    @button-padding: 5px;
+    background-color: @blue;
+    vertical-align: middle;
+    padding: @button-padding 2 * @button-padding;
+    line-height: 1.5em;
+    cursor: pointer;
+
+    &, &:visited, &:hover {
+      color: white !important;
+      text-decoration: none;
+    }
+  }
+
+  &__form {
+    margin-left: 2 * @grid-size;
+  }
+}

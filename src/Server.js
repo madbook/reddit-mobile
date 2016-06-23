@@ -18,6 +18,7 @@ import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
 import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
+import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 import metaRoutes from 'server/meta';
 
@@ -55,6 +56,7 @@ export function startServer() {
       dispatchInitialTheme(ctx, dispatch);
       dispatchInitialCollapsedComments(ctx, dispatch);
       dispatchInitialCompact(ctx, dispatch);
+      dispatchInitialOver18(ctx, dispatch);
     },
     preRouteServerMiddleware: [
       binFiles,

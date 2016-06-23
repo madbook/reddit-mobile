@@ -6,6 +6,7 @@ import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
 import SavedAndHiddenHandler from './handlers/SavedAndHidden';
 import SearchPageHandler from './handlers/SearchPage';
+import SetOver18Handler from './handlers/SetOver18';
 import SubredditAboutPageHandler from './handlers/SubredditAboutPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
 import UserActivityHandler from './handlers/UserActivity';
@@ -42,5 +43,6 @@ export default [
   ['/actions/community-goto', CommunityGotoActionHandler],
   ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
+  ['/actions/setOver18', SetOver18Handler],
   ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler],
 ];

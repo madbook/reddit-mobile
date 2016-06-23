@@ -8,6 +8,7 @@ import compact from './compact';
 import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
+import preferencesRequest from './preferencesRequest';
 import posts from './posts';
 import postsLists from './postsLists';
 import replying from './replying';
@@ -38,6 +39,7 @@ export default {
   loid,
   mail,
   messages,
+  preferencesRequest,
   posts,
   postsLists,
   replying,
