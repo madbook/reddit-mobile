@@ -5,7 +5,7 @@ export const toggleExpanded = postId => ({
 });
 
 export const TOGGLE_NSFW_BLUR = 'TOGGLE_NSFW_BLUR';
-export const unblurNSFW = postId => ({
+export const toggleNSFWBlur = postId => ({
   type: TOGGLE_NSFW_BLUR,
   postId,
 });

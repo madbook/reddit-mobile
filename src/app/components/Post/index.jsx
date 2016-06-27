@@ -175,7 +175,7 @@ const makeConnectedPostSelector = () => {
 
 const mapDispatchToProps = (dispatch, { postId }) => ({
   toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
-  toggleShowNSFW: () => dispatch(postActions.unblurNSFW(postId)),
+  toggleShowNSFW: () => dispatch(postActions.toggleNSFWBlur(postId)),
 });
 
 

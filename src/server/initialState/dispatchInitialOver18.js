@@ -5,4 +5,4 @@ export const dispatchInitialOver18 = (ctx, dispatch) => {
   if (over18FromCookie === 'true') {
     dispatch(preferenceActions.isOver18());
   }
-}
+};

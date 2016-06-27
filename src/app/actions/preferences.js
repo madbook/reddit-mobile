@@ -15,7 +15,7 @@ export const received = preferences => ({
 });
 
 export const FETCH_FAILED = 'FAILED_PREFERENCES_FETCH';
-export const fetchFailed = error => ({
+export const failed = error => ({
   type: FETCH_FAILED,
   error,
 });
@@ -31,7 +31,7 @@ export const fetch = () => async (dispatch, getState) => {
     const preferences = await PreferencesEndpoint.get(apiOptionsFromState(state));
     dispatch(received(preferences));
   } catch (e) {
-    dispatch(fetchFailed(e));
+    dispatch(failed(e));
   }
 };
 

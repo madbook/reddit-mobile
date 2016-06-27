@@ -57,7 +57,7 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
         <div className={ className }>
           <Loading />
         </div>
-      )
+      );
     }
 
     if (subreddit.over18) {
@@ -70,7 +70,7 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
   }
 
   return (
-    <div className='PostsFromSubredditPage BelowTopNav'>
+    <div className={ className }>
       { !forFakeSubreddit && <CommunityHeader subredditName={ subredditName } /> }
       { renderSubnav &&
         <SubNav

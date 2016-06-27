@@ -1,7 +1,7 @@
 import * as loginActions from 'app/actions/login';
 import * as postActions from 'app/actions/posts';
 
-const DEFAULT = {};
+export const DEFAULT = {};
 
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
