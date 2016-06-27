@@ -3,6 +3,7 @@ import Flags from '@r/flags';
 import constants from './constants';
 
 const {
+  NO_ADS,
   SMARTBANNER,
   VARIANT_RELEVANCY_TOP,
   VARIANT_RELEVANCY_ENGAGING,
@@ -10,6 +11,10 @@ const {
 } = constants.flags;
 
 const config = {
+  [NO_ADS]: {
+    url: 'experimentnoads',
+    variant: 'no_ads:treatment',
+  },
   [SMARTBANNER]: true,
   [VARIANT_RELEVANCY_TOP]: {
     and: {

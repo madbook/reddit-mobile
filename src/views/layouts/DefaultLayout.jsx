@@ -63,34 +63,6 @@ function DefaultLayout (props) {
     );
   }
 
-  let gtmTracking;
-  const subredditName = props.ctx.params.subreddit;
-
-  if (config.googleTagManagerId && config.mediaDomain) {
-    const gtmCode = `
-      <script nonce=${props.ctx.csrf}>
-        if (!window.DO_NOT_TRACK) {
-          var frame = document.createElement('iframe');
-
-          frame.style.display = 'none';
-          frame.referrer = 'no-referrer';
-          frame.id = 'gtm-jail';
-          frame.name = JSON.stringify({
-            subreddit: '${subredditName || ''}',
-            origin: location.origin,
-            pathname: location.pathname,
-          });
-          frame.src = '//${config.mediaDomain}/gtm/jail?id=${config.googleTagManagerId}';
-          document.body.appendChild(frame);
-        }
-      </script>
-    `;
-
-    gtmTracking = (
-      <div dangerouslySetInnerHTML={ { __html: gtmCode } } />
-    );
-  }
-
   let keyColor = constants.DEFAULT_KEY_COLOR;
 
   if (props.dataCache &&
@@ -129,7 +101,6 @@ function DefaultLayout (props) {
 
         <script src={ clientJS } async='true' nonce={ props.ctx.csrf }></script>
         { liveReload }
-        { gtmTracking }
         { gaTracking }
       </body>
     </html>

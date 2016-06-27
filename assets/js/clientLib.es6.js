@@ -149,12 +149,18 @@ export function refreshToken (app) {
     });
 }
 
-export function sendTimings(beginRender) {
+export function sendTimings(beginRender, adsEnabled) {
   // Send the timings during the next cycle.
   if (window.bootstrap.actionName) {
     if (Math.random() < 0.1) { // 10% of requests
+      let actionName = `m.server.${window.bootstrap.actionName}`;
+
+      if (adsEnabled === false) {
+        actionName = `${actionName}.no_ads`;
+      }
+
       const timings = Object.assign({
-        actionName: `m.server.${window.bootstrap.actionName}`,
+        actionName: actionName,
       }, getTimes());
 
       timings.mountTiming = (Date.now() - beginRender) / 1000;

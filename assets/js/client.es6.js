@@ -115,7 +115,7 @@ function initialize(bindLinks) {
   // config value after render.
   const beginRender = Date.now();
 
-  render(app, app.fullPathName(), true, app.modifyContext).then(function() {
+  render(app, app.fullPathName(), true, app.modifyContext).then(function(props) {
     // clear dataCache so we don't hydrate again.
     app.setState('dataCache');
 
@@ -127,7 +127,7 @@ function initialize(bindLinks) {
     const hasHistAndBindLinks = history && bindLinks;
     setEvents(app, hasHistAndBindLinks, render, $body);
 
-    sendTimings(beginRender);
+    sendTimings(beginRender, props.adsEnabled);
   });
 }
 

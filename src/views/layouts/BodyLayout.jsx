@@ -8,6 +8,7 @@ import BasePage from '../pages/BasePage';
 import InfoBar from '../components/InfoBar';
 import UserOverlayMenu from '../components/UserOverlayMenu';
 import CommunityOverlayMenu from '../components/CommunityOverlayMenu';
+import GoogleTagManager from '../components/GoogleTagManager';
 import Toaster from '../components/toasters/Toaster';
 import { userData } from '../../routes';
 
@@ -71,10 +72,21 @@ class BodyLayout extends BasePage {
   }
 
   render() {
-    const { hideTopNav } = this.props;
+    const { adsEnabled, app, ctx, hideTopNav, subredditName } = this.props;
+    const { mediaDomain, googleTagManagerId } = app.config;
 
     return (
       <div className='BodyLayout container-with-betabanner'>
+        {
+          adsEnabled ?
+            <GoogleTagManager
+              nonce={ ctx.csrf }
+              mediaDomain={ mediaDomain }
+              googleTagManagerId={ googleTagManagerId }
+              subredditName={ subredditName }
+            /> :
+            null
+        }
         { !hideTopNav ? this.renderTopNav() : null }
         <main>
           { this.props.children }

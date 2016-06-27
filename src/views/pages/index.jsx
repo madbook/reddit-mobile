@@ -95,7 +95,7 @@ class IndexPage extends BasePage {
     let loading;
 
     const props = this.props;
-    const { data, meta, compact } = this.state;
+    const { data, meta, compact, feature } = this.state;
     const { app } = props;
 
     const subredditName = props.subredditName;
@@ -161,7 +161,7 @@ class IndexPage extends BasePage {
       excludedSorts.push('gilded');
     }
 
-    let showAds = !!props.config.adsPath;
+    let showAds = props.adsEnabled && !!props.config.adsPath;
 
     if (props.prefs && props.prefs.hide_ads === true) {
       showAds = false;
@@ -194,7 +194,7 @@ class IndexPage extends BasePage {
 
         <Listing
           { ...props }
-          feature={ this.state.feature }
+          feature={ feature }
           user={ user }
           showAds={ showAds }
           listings={ listings || [] }

@@ -137,6 +137,25 @@ export function buildProps(ctx, app) {
   return ctx.props;
 }
 
+
+function featureWithUserContext(props) {
+  // Wait until we have the experiment variant data before fetching the
+  // experiment-specific requests.
+  const promise = props.data.get('user') || props.data.get('loggedOutUser');
+
+  return promise.then(data => {
+    return features.withContext({
+      props,
+      state: {
+        data: { user: data.body },
+        meta: {},
+        loaded: !!props.dataCache,
+        finished: false,
+      },
+    });
+  });
+}
+
 function getSubreddit(ctx) {
   const { subreddit } = ctx.params;
 
@@ -301,6 +320,11 @@ function routes(app) {
 
     getSubreddit(this, app);
     userData(this, app);
+
+    featureWithUserContext(this.props).then(feature => {
+      this.props.adsEnabled = !feature.enabled(constants.flags.NO_ADS);
+    });
+
     return yield next;
   }
 
@@ -447,19 +471,7 @@ function routes(app) {
 
     props.data.set('listing', app.api.links.get(listingOpts));
 
-    // Wait until we have the experiment variant data before fetching the
-    // experiment-specific requests.
-    const user = props.data.get('user') || props.data.get('loggedOutUser');
-    const relevantPromise = user.then(data => {
-      const feature = features.withContext({
-        props,
-        state: {
-          data: { user: data.body },
-          meta: {},
-          loaded: !!props.dataCache,
-          finished: false,
-        },
-      });
+    const relevantPromise = featureWithUserContext(props).then(feature => {
       if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP)) {
         const linkOpts = buildAPIOptions(ctx, {
           query: {

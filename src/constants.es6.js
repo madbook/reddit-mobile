@@ -58,6 +58,7 @@ export default {
     VARIANT_RELEVANCY_TOP: 'experimentRelevancyTop',
     VARIANT_RELEVANCY_ENGAGING: 'experimentRelevancyEngaging',
     VARIANT_RELEVANCY_RELATED: 'experimentRelevancyRelated',
+    NO_ADS: 'experimentNoAds',
   },
 
   themes: {
