@@ -10,6 +10,7 @@ import * as hiddenActions from 'app/actions/hidden';
 import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
+import * as mailActions from 'app/actions/mail';
 
 createTest({ reducers: { posts} }, ({ getStore, expect}) => {
   describe('posts', () => {
@@ -43,6 +44,7 @@ createTest({ reducers: { posts} }, ({ getStore, expect}) => {
         hiddenActions.received,
         savedActions.received,
         searchActions.received,
+        mailActions.setInboxSuccess,
       ];
 
       it('should pull posts from all expected soure actions', () => {

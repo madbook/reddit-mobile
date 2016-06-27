@@ -1,0 +1,35 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.DirectMessageHeader {
+  @height: 50px;
+  position: relative;
+  line-height: @height;
+
+  &__back {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 2 * @grid-size;
+    line-height: @height;
+    font-size: 18px;
+
+    &, &:visited, &:active {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-nav-icon-color;
+      });
+    }
+  }
+
+  &__title {
+    font-size: 16px;
+    text-align: center;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+}

@@ -13,6 +13,7 @@ import * as replyActions from 'app/actions/reply';
 import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
+import * as mailActions from 'app/actions/mail';
 
 const DEFAULT = {};
 
@@ -28,7 +29,8 @@ export default function(state=DEFAULT, action={}) {
     case postsListActions.RECEIVED_POSTS_LIST:
     case hiddenActions.RECEIVED_HIDDEN:
     case savedActions.RECEIVED_SAVED:
-    case searchActions.RECEIVED_SEARCH_REQUEST: {
+    case searchActions.RECEIVED_SEARCH_REQUEST:
+    case mailActions.RECEIVED: {
       const { comments } = action.apiResponse;
       return mergeAPIModels(state, comments);
     }

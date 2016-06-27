@@ -1,0 +1,23 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.DirectMessageComposition {
+  padding: 2 * @grid-size;
+
+  &__input {
+    width: 100%;
+    margin-bottom: @grid-size;
+    font-size: 16px;
+    line-height: 48px;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
+
+    &:focus {
+      .themeify({
+        border-bottom: @theme-alt-border;
+      });
+    }
+  }
+}

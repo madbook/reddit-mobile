@@ -67,7 +67,7 @@ export const renderLoggedInUserRows = (user) => {
     <LinkRow
       key='inbox'
       text={ ['Inbox', badge] }
-      href='/message/inbox'
+      href='/message/messages'
       icon={ `icon-message icon-large ${inboxCount ? 'orangered' : 'blue'}` }
     />,
 

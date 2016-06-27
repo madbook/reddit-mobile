@@ -1,0 +1,36 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.MessagesComment {
+  &__title {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+
+  &__metaData {
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: @grid-size;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+
+  &__body {
+    font-size: 11px;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+}

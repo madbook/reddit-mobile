@@ -22,6 +22,8 @@ import theme from './theme';
 import user from './user';
 import wikis from './wikis';
 import wikiRequests from './wikiRequests';
+import mail from './mail';
+import messages from './messages';
 
 export default {
   accounts,
@@ -34,6 +36,8 @@ export default {
   expandedPosts,
   hiddenRequests,
   loid,
+  mail,
+  messages,
   posts,
   postsLists,
   replying,

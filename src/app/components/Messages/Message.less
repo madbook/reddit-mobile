@@ -1,0 +1,59 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.MessagesMessage {
+  @caron-size: 40px;
+  position: relative;
+  width: 100%;
+
+  &__header {
+    padding-right: @caron-size;
+    margin-bottom: 2 * @grid-size;
+  }
+
+  &__title {
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+
+  &__subtitle {
+    font-size: 11px;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+
+  &__link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: @grid-size;
+    font-size: 22px;
+
+    &, &:visited, &:active {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-nav-icon-color;
+      });
+    }
+  }
+
+  &__body {
+    font-size: 11px;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+}

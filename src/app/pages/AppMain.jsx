@@ -11,6 +11,8 @@ import { UserActivityPage } from './UserActivity';
 import { UserProfilePage } from './UserProfile';
 import { WikiPage } from './WikiPage';
 
+import Messages from 'app/components/Messages';
+import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
 
 export const AppMainPage = () => (
@@ -48,9 +50,8 @@ export const AppMainPage = () => (
     <Page url='/u/:userName/gild' component={ UserProfilePage } />
     <Page url='/u/:userName/:savedOrHidden(saved|hidden)' component={ SavedAndHiddenPage } />
     <Page url='/u/:userName/' component={ UserProfilePage } />
-    <Page
-      url='/login'
-      component={ Login }
-    />
+    <Page url='/login' component={ Login } />
+    <Page url='/message/compose' component={ DirectMessage } />
+    <Page url='/message/:mailType' component={ Messages } />
   </UrlSwitch>
 );

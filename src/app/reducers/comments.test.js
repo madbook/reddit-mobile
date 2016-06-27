@@ -13,6 +13,7 @@ import * as replyActions from 'app/actions/reply';
 import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
+import * as mailActions from 'app/actions/mail';
 
 createTest({ reducers: { comments} }, ({ getStore, expect }) => {
   describe('comments', () => {
@@ -46,6 +47,7 @@ createTest({ reducers: { comments} }, ({ getStore, expect }) => {
         hiddenActions.received,
         savedActions.received,
         searchActions.received,
+        mailActions.setInboxSuccess,
       ];
 
       it('should pull comments from all expected source actions', () => {

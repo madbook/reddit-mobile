@@ -10,6 +10,8 @@ import SubredditAboutPageHandler from './handlers/SubredditAboutPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
 import UserActivityHandler from './handlers/UserActivity';
 import UserProfilerHandler from './handlers/UserProfile';
+import DirectMessage from './handlers/DirectMessage';
+import Messages from './handlers/Messages';
 import Vote from './handlers/Vote';
 import WikiPageHandler from './handlers/WikiPage';
 
@@ -32,6 +34,8 @@ export default [
   ['/u/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
   ['/u/:userName', UserProfilerHandler],
   ['/login', Login],
+  ['/message/compose', DirectMessage],
+  ['/message/:mailType', Messages],
 
   // actions
   ['/vote/:thingId', Vote],

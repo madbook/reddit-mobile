@@ -7,4 +7,4 @@ bin/*
 build/
 .test/
 .DS_Store
-
+reddit-mobile.log
