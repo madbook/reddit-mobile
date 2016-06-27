@@ -63,10 +63,8 @@ export function Post(props) {
   const forceHTTPS = shouldForceHTTPS({ https: true });
   const isAndroid = userAgent && /android/i.test(userAgent);
   const showLinksInNewTab = externalDomain && isAndroid;
-  const showNSFW = !props.showOver18Interstitial && props.subredditIsNSFW;
-  const { expanded, toggleExpanded, editing, winWidth, z } = props;
-
-  const toggleShowNSFW = () => {};
+  const showNSFW = props.subredditIsNSFW || props.unblurred;
+  const { expanded, toggleExpanded, toggleShowNSFW, editing, winWidth, z } = props;
 
   const {
     post,
@@ -156,8 +154,10 @@ const compactSeletor = (state, props) => props.forceCompact || state.compact;
 const singleSelector = (_, props) => props.single;
 const postModelSelector = (state, props) => state.posts[props.postId];
 const expandedSelector = (state, props) => !!state.expandedPosts[props.postId];
-const combineSelectors = (postId, compact, expanded, single, post) => ({
-  postId, compact, expanded, single, post,
+const unblurredSelector = (state, props) => !!state.unblurredPosts[props.postId];
+
+const combineSelectors = (postId, compact, expanded, unblurred, single, post) => ({
+  postId, compact, expanded, unblurred, single, post,
 });
 
 const makeConnectedPostSelector = () => {
@@ -166,6 +166,7 @@ const makeConnectedPostSelector = () => {
       postIdSelector,
       compactSeletor,
       expandedSelector,
+      unblurredSelector,
       singleSelector,
       postModelSelector,
     ],
@@ -174,6 +175,7 @@ const makeConnectedPostSelector = () => {
 
 const mapDispatchToProps = (dispatch, { postId }) => ({
   toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
+  toggleShowNSFW: () => dispatch(postActions.unblurNSFW(postId)),
 });
 
 

@@ -20,6 +20,7 @@ import subreddits from './subreddits';
 import subscribedSubreddits from './subscribedSubreddits';
 import subredditRequests from './subredditRequests';
 import theme from './theme';
+import unblurredPosts from './unblurredPosts';
 import user from './user';
 import wikis from './wikis';
 import wikiRequests from './wikiRequests';
@@ -51,6 +52,7 @@ export default {
   subscribedSubreddits,
   subredditRequests,
   theme,
+  unblurredPosts,
   user,
   wikis,
   wikiRequests,
