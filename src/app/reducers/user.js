@@ -2,17 +2,14 @@ import merge from '@r/platform/merge';
 
 import * as accountActions from 'app/actions/accounts';
 import * as loginActions from 'app/actions/login';
-import * as preferenceActions from 'app/actions/preferences';
 
 export const DEFAULT = {
   loggedOut: true,
   name: 'me',
   loading: false,
-  features: {},
-  preferences: {},
 };
 
-export default function (state=DEFAULT, action={}) {
+export default function(state=DEFAULT, action={}) {
   switch (action.type) {
     case loginActions.LOGGED_IN:
     case loginActions.LOGGED_OUT: {
@@ -46,20 +43,6 @@ export default function (state=DEFAULT, action={}) {
       return state;
     }
 
-    case preferenceActions.RECEIEVED: {
-      const { preferences } = action;
-      return merge(state, {
-        preferences,
-      });
-    }
-
-    case preferenceActions.IS_OVER_18: {
-      return merge(state, {
-        preferences: {
-          over18: true,
-        },
-      });
-    }
 
     default: return state;
   }

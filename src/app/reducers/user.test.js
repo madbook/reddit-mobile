@@ -3,7 +3,6 @@ import createTest from '@r/platform/createTest';
 import user, { DEFAULT } from './user';
 import * as accountActions from 'app/actions/accounts';
 import * as loginActions from 'app/actions/login';
-import * as preferenceActions from 'app/actions/preferences';
 
 createTest({ reducers: { user } }, ({ getStore, expect }) => {
   describe('user', () => {
@@ -128,36 +127,6 @@ createTest({ reducers: { user } }, ({ getStore, expect }) => {
           ...DEFAULT,
           name: 'test',
           loggedOut: true,
-        });
-      });
-    });
-
-    describe('RECEIEVED_PREFERENCES', () => {
-      it('should update with preferences from the action', () => {
-        const { store } = getStore();
-        const preferences = {
-          testPreference: true,
-        };
-
-        store.dispatch(preferenceActions.received(preferences));
-        const { user } = store.getState();
-        expect(user).to.eql({
-          ...DEFAULT,
-          preferences,
-        });
-      });
-    });
-
-    describe('IS_OVER_18', () => {
-      it('should manually set over18 to true', () => {
-        const { store } = getStore();
-        store.dispatch(preferenceActions.isOver18());
-        const { user } = store.getState();
-        expect(user).to.eql({
-          ...DEFAULT,
-          preferences: {
-            over18: true,
-          },
         });
       });
     });

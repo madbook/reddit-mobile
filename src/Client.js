@@ -2,6 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import Client from '@r/platform/Client';
 import * as actions from '@r/platform/actions';
+import { models } from '@r/api-client';
 import isEmpty from 'lodash/isEmpty';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
@@ -15,10 +16,17 @@ const client = Client({
   routes,
   reducers,
   modifyData: data => {
+    // TODO if we start not using shell rendering in a serious way,
+    // we'll need to unserialize all of the api models. This should
+    // be considered when we debate using JSON output from the models
+    // instead of the api model instances.
+
     if (!isEmpty(data.session)) {
       data.session = new Session(data.session);
       window.session = data.session;
     }
+
+    data.preferences = models.Preferences.fromJSON(data.preferences);
 
     data.collapsedComments = {};
 

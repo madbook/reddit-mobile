@@ -36,7 +36,7 @@ createTest({ reducers: { preferencesRequest }}, ({ getStore, expect }) => {
       });
     });
 
-    describe('FETCHING', () => {
+    describe('PENDING', () => {
       it('should set pending to true and clear error states', () => {
         const { store } = getStore({
           preferencesRequest: {
@@ -46,7 +46,7 @@ createTest({ reducers: { preferencesRequest }}, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(preferenceActions.fetching());
+        store.dispatch(preferenceActions.pending());
         const { preferencesRequest } = store.getState();
         expect(preferencesRequest).to.eql({
           succeeded: false,
@@ -56,13 +56,13 @@ createTest({ reducers: { preferencesRequest }}, ({ getStore, expect }) => {
       });
     });
 
-    describe('RECEIEVED', () => {
+    describe('RECEIVED', () => {
       it('should set pending and error to false and succeed to true', () => {
         const { store } = getStore({
           preferencesRequest: {
             succeeded: false,
-            pending: false,
-            failed: true,
+            pending: true,
+            failed: false,
           },
         });
 

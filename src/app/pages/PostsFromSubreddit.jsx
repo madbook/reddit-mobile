@@ -17,7 +17,7 @@ const mapStateToProps = createSelector(
   (_, props) => props, // props is the page props splatted.
   state => state.postsLists,
   state => state.subreddits,
-  state => state.user.preferences,
+  state => state.preferences,
   (pageProps, postsLists, subreddits, preferences) => {
     const postsListParams = PostsFromSubredditHandler.pageParamsToSubredditPostsParams(pageProps);
     const postsListId = paramsToPostsListsId(postsListParams);
@@ -74,10 +74,13 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
       { !forFakeSubreddit && <CommunityHeader subredditName={ subredditName } /> }
       { renderSubnav &&
         <SubNav
-          rightLink= { subnavLink }
+          rightLink={ subnavLink }
           showWithoutUser={ true }
         /> }
-      <PostsList postsListId={ postsListId } />
+      <PostsList
+        postsListId={ postsListId }
+        subredditIsNSFW={ !!subreddit && subreddit.over18 }
+      />
     </div>
   );
 });

@@ -3,20 +3,20 @@ import { endpoints } from '@r/api-client';
 
 const { PreferencesEndpoint } = endpoints;
 
-export const FETCHING = 'FETCHING_PREFERENCES';
-export const fetching = () => ({
-  type: FETCHING,
+export const PENDING = 'PENDING_PREFERENCES';
+export const pending = () => ({
+  type: PENDING,
 });
 
-export const RECEIEVED = 'RECEIEVED_PREFERENCES';
+export const RECEIVED = 'RECEIVED_PREFERENCES';
 export const received = preferences => ({
-  type: RECEIEVED,
+  type: RECEIVED,
   preferences,
 });
 
-export const FETCH_FAILED = 'FAILED_PREFERENCES_FETCH';
+export const FAILED = 'FAILED_PREFERENCES';
 export const failed = error => ({
-  type: FETCH_FAILED,
+  type: FAILED,
   error,
 });
 
@@ -26,6 +26,8 @@ export const fetch = () => async (dispatch, getState) => {
   const { preferencesRequest } = state;
   if (preferencesRequest.pending || preferencesRequest.succeeded) { return; }
   if (!state.session.accessToken) { return; }
+
+  dispatch(pending());
 
   try {
     const preferences = await PreferencesEndpoint.get(apiOptionsFromState(state));
@@ -37,8 +39,21 @@ export const fetch = () => async (dispatch, getState) => {
 
 export const patch = changes => async (dispatch, getState) => {
   const state = getState();
-  const updatedPreferences = await PreferencesEndpoint.patch(apiOptionsFromState(state), changes);
-  dispatch(received(updatedPreferences));
+
+  // In response to a `PATCH`, the PreferencesEndpoint returns the full
+  // preferences model back to us, so we should use it to update state.
+  // This means a `fetch` action doesn't have to fire because we're effectively
+  // fetching already. However we don't block or return early because patch
+  // writes, potentially new info, each time.
+  dispatch(pending());
+
+  try {
+    const updatedPreferences = await PreferencesEndpoint.patch(
+      apiOptionsFromState(state), changes);
+    dispatch(received(updatedPreferences));
+  } catch (e) {
+    dispatch(failed(e));
+  }
 };
 
 export const IS_OVER_18 = 'IS_OVER_18';
@@ -49,17 +64,14 @@ export const isOver18 = () => ({
 export const setOver18 = () => async (dispatch, getState) => {
   const state = getState();
 
-  // if the user isn't logged in, dispatch the IS_OVER_18 action and let reducers
-  // update the state appropriately
+  // optimistically update over18. If the user is not logged in
+  // we don't have to do anything else.
+  dispatch(isOver18());
+
   if (!state.session.accessToken) {
-    dispatch(isOver18());
     return;
   }
 
-  try {
-    await dispatch(patch({ over_18: true }));
-  } catch (e) {
-    // fallback to setting over 18 manually if the api call fails for somereason
-    dispatch(isOver18());
-  }
+  // Otherwise we'll call patch so the real preferences object is updated
+  dispatch(patch({ over_18: true }));
 };

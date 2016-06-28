@@ -17,7 +17,7 @@ export const PostsList = (props) => {
 
   return (
     <div className='PostsList PostAndCommentList'>
-      { loading ? renderLoading() : renderPostsList(postRecords) }
+      { loading ? renderLoading() : renderPostsList(postRecords, props) }
       { shouldRenderPagination ? renderPagination(postRecords, nextUrl, prevUrl) : null }
     </div>
   );
@@ -30,9 +30,14 @@ PostsList.propTypes = {
   prevUrl: T.string,
   shouldPage: T.bool,
   forceCompact: T.bool,
+  subredditIsNSFW: T.bool,
 };
 
 PostsList.defaultProps = {
+  nextUrl: '',
+  prevUrl: '',
+  forceCompact: false,
+  subredditIsNSFW: false,
   shouldPage: true,
 };
 
@@ -40,12 +45,18 @@ const renderLoading = () => {
   return <Loading />;
 };
 
-const renderPostsList = (records, forceCompact) => {
+const renderPostsList = (records, props) => {
+  const { forceCompact, subredditIsNSFW } = props;
   return map(records, postRecord => {
     const postId = postRecord.uuid;
 
     return (
-      <Post postId={ postId } forceCompact={ forceCompact } key={ `post-id-${postId}` } />
+      <Post
+        postId={ postId }
+        forceCompact={ forceCompact }
+        subredditIsNSFW={ subredditIsNSFW }
+        key={ `post-id-${postId}` }
+      />
     );
   });
 };

@@ -24,7 +24,7 @@ export default function NSFWInterstitial() {
           action='/actions/setOver18'
           className='NSFWInterstitial__form'
         >
-          <button typoe='submit' className='NSFWInterstitial__button'>
+          <button type='submit' className='NSFWInterstitial__button'>
             CONTINUE
           </button>
         </Form>

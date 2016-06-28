@@ -16,24 +16,23 @@ export default function(state=DEFAULT, action={}) {
       return DEFAULT;
     }
 
-    case preferenceActions.FETCHING: {
+    case preferenceActions.PENDING: {
       return merge(state, {
+        succeeded: false,
         pending: true,
         failed: false,
       });
     }
 
-    case preferenceActions.RECEIEVED: {
+    case preferenceActions.RECEIVED: {
       return merge(state, {
         pending: false,
-        failed: false,
         succeeded: true,
       });
     }
 
-    case preferenceActions.FETCH_FAILED: {
+    case preferenceActions.FAILED: {
       return merge(state, {
-        succeeded: false,
         pending: false,
         failed: true,
       });
