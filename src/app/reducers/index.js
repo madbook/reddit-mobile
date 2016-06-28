@@ -3,6 +3,7 @@ import widgets from '@r/widgets/reducer';
 import accounts from './accounts';
 import accountRequests from './accountRequests';
 import activitiesRequests from './activitiesRequests';
+import adRequests from './adRequests';
 import autocompleteSubreddits from './autocompleteSubreddits';
 import collapsedComments from './collapsedComments';
 import comments from './comments';
@@ -39,6 +40,7 @@ export default {
   accounts,
   accountRequests,
   activitiesRequests,
+  adRequests,
   autocompleteSubreddits,
   collapsedComments,
   comments,

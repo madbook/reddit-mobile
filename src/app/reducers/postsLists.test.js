@@ -64,6 +64,7 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
         const { postsLists } = store.getState();
         expect(postsLists[POSTS_LIST_ID]).to.eql({
           id: POSTS_LIST_ID,
+          adId: '',
           params: { sort: 'hot' },
           loading: true,
           results: [],

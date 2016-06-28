@@ -3,11 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import Ad from 'app/components/Ad';
 import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
 
 import map from 'lodash/map';
+
+const AD_LOCATION = 11;
 
 const T = React.PropTypes;
 
@@ -17,7 +20,7 @@ export const PostsList = (props) => {
 
   return (
     <div className='PostsList PostAndCommentList'>
-      { loading ? renderLoading() : renderPostsList(postRecords, props) }
+      { loading ? renderLoading() : renderPostsList(props) }
       { shouldRenderPagination ? renderPagination(postRecords, nextUrl, prevUrl) : null }
     </div>
   );
@@ -45,20 +48,34 @@ const renderLoading = () => {
   return <Loading />;
 };
 
-const renderPostsList = (records, props) => {
-  const { forceCompact, subredditIsNSFW } = props;
+const renderPostsList = (props) => {
+  const { postRecords, ad, adId, forceCompact, subredditIsNSFW } = props;
+  const records = ad ? recordsWithAd(postRecords, ad) : postRecords;
+
   return map(records, postRecord => {
     const postId = postRecord.uuid;
 
-    return (
-      <Post
-        postId={ postId }
-        forceCompact={ forceCompact }
-        subredditIsNSFW={ subredditIsNSFW }
-        key={ `post-id-${postId}` }
-      />
-    );
+    const postProps = {
+      postId,
+      forceCompact,
+      subredditIsNSFW,
+      key: `post-id-${postId}`,
+    };
+
+    if (ad && postId === ad.uuid) {
+      // Ad wants the adId for tracking the ad impression
+      return <Ad postProps={ postProps } adId={ adId } />;
+    }
+
+    return <Post { ...postProps } />;
   });
+};
+
+const recordsWithAd = (postRecords, ad) => {
+  const adLocation = Math.min(AD_LOCATION, postRecords.length);
+  const newRecords = postRecords.slice(0);
+  newRecords.splice(adLocation, 0, ad);
+  return newRecords;
 };
 
 const renderPagination = (postRecords, nextUrl, prevUrl) => (
@@ -70,14 +87,25 @@ const renderPagination = (postRecords, nextUrl, prevUrl) => (
   />
 );
 
+const isAdLoaded = adRequest => (
+  adRequest && !adRequest.pending && adRequest.ad
+);
+
 const listSelector = createSelector(
   (state, props) => state.postsLists[props.postsListId],
   state => state.posts,
+  (state, props) => {
+    const postsList = state.postsLists[props.postsListId];
+    if (!postsList) { return null; }
+    return state.adRequests[postsList.adId];
+  },
   (_, props) => props.nextUrl,
   (_, props) => props.prevUrl,
-  (postsList, posts, nextUrl, prevUrl) => ({
+  (postsList, posts, adRequest, nextUrl, prevUrl) => ({
     loading: postsList && postsList.loading,
     postRecords: postsList ? postsList.results.filter(p => !posts[p.uuid].hidden) : [],
+    ad: isAdLoaded(adRequest) ? adRequest.ad : '',
+    adId: isAdLoaded(adRequest) ? adRequest.adId : '',
     prevUrl,
     nextUrl,
   }),

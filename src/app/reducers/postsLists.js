@@ -1,8 +1,16 @@
 import merge from '@r/platform/merge';
 
-import * as postsListActions from 'app/actions/postsList';
+import * as adActions from 'app/actions/ads';
 import * as loginActions from 'app/actions/login';
-import { newPostsList } from 'app/models/PostsList';
+import * as postsListActions from 'app/actions/postsList';
+
+export const newPostsList = (id, params) => ({
+  id,
+  params,
+  loading: true,
+  adId: '',
+  results: [],
+});
 
 const DEFAULT = {};
 
@@ -32,6 +40,15 @@ export default (state=DEFAULT, action={}) => {
         [postsListId]: {
           loading: false,
           results: apiResponse.results,
+        },
+      });
+    }
+
+    case adActions.FETCHING: {
+      const { postsListId, adId } = action;
+      return merge(state, {
+        [postsListId]: {
+          adId,
         },
       });
     }

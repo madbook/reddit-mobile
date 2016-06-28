@@ -5,6 +5,7 @@ import mergeAPIModels from './helpers/mergeAPIModels';
 import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';
 import * as activitiesActions from 'app/actions/activities';
+import * as adActions from 'app/actions/ads';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as postActions from 'app/actions/posts';
 import * as postsListActions from 'app/actions/postsList';
@@ -40,6 +41,7 @@ export default function(state=DEFAULT, action={}) {
       return mergeAPIModels(state, { [post.uuid]: post });
     }
 
+    case adActions.RECEIVED:
     case voteActions.VOTED: {
       return mergeUpdatedModel(state, action, { restrictType: POST });
     }

@@ -1,0 +1,175 @@
+import { endpoints, models, requestUtils } from '@r/api-client';
+import uniqueId from 'lodash/uniqueId';
+
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import isFakeSubreddit from 'lib/isFakeSubreddit';
+
+const { PostsEndpoint } = endpoints;
+const { PostModel } = models;
+const { rawSend } = requestUtils;
+
+export const FETCHING = 'FETCHING_AD';
+export const fetching = (adId, postsListId) => ({
+  type: FETCHING,
+  adId,
+  postsListId,
+});
+
+export const RECEIVED = 'RECEIVED_AD';
+export const received = (adId, model) => ({
+  type: RECEIVED,
+  adId,
+  model,
+});
+
+export const FAILED = 'FAILED_AD_FETCH';
+export const failed = adId => ({
+  type: FAILED,
+  adId,
+});
+
+export const TRACKING_AD = 'TRACKING_AD';
+export const tracking = adId => ({
+  type: TRACKING_AD,
+  adId,
+});
+
+export const track = adId => async (dispatch, getState) => {
+  const state = getState();
+  const adRequest = state.adRequests[adId];
+
+  if (adRequest.impressionTracked) {
+    return;
+  }
+
+  dispatch(tracking(adId));
+
+  const post = state.posts[adRequest.ad.uuid];
+  trackAdPost(post);
+};
+
+const IMPRESSION_PROPS = ['impPixel', 'adserverImpPixel'];
+const trackAdPost = post => {
+  IMPRESSION_PROPS.forEach(prop => {
+    const pixel = new Image();
+    pixel.src = post[prop];
+  });
+};
+
+// For views that need to fetch ads, we need an id to track them.
+// We could use the id of the view (e.g. postsLists have a postsListId),
+// but maybe every view won't have an id like that or there might be collisions.
+// To get around that we'll keep our own ad ids via lodash/uniqueId.
+const nextAdId = () => (uniqueId('ad_'));
+
+// Fetches an ad to render for a list of posts.
+//
+// We could look up page params from state, but having them passed in
+// is more explicit and safer if the page were to change while we await.
+export const fetchNewAdForPostsList = (postsListId, pageParams) =>
+  async (dispatch, getState, { waitForState }) => {
+    const state = getState();
+    const adRequest = state.adRequests[postsListId];
+    if (adRequest && adRequest.loading) { return; }
+
+    const adId = nextAdId();
+
+    dispatch(fetching(adId, postsListId));
+
+    // We don't want to show ads if there are no posts to render, so we need
+    // to wait for the postsList to load.
+    await waitForState(state => {
+      const postList = state.postsLists[postsListId];
+      return postList && !postList.loading;
+    });
+
+    const loadedState = getState();
+    const postsList = loadedState.postsLists[postsListId];
+    if (!postsList.results.length) {
+      dispatch(failed(postsListId));
+      return;
+    }
+
+    const { ad: specificAd } = pageParams.queryParams;
+    if (specificAd) {
+      await fetchSpecificAd(dispatch, loadedState, adId, specificAd);
+      return;
+    }
+
+    await fetchAddBasedOnResults(dispatch, loadedState, adId, postsList, pageParams);
+  };
+
+export const fetchSpecificAd = async (dispatch, state, adId, specificAd) => {
+  try {
+    const byIdRequest = PostsEndpoint.get(apiOptionsFromState(state), { id: specificAd });
+    const ad = byIdRequest.getModelFromRecord(byIdRequest.results[0]);
+    dispatch(received(adId, ad));
+  } catch (e) {
+    dispatch(failed(adId));
+  }
+};
+
+export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, pageParams) => {
+  // I don't know what dt stands for but its the thingId's of all the posts
+  // on the page.
+  const dt = postsList.results.map(record => record.uuid);
+  const site = getSite(pageParams);
+
+  const data = {
+    dt,
+    site,
+    platform: 'mobile_web',
+    raw_json: '1',
+  };
+
+  if (!state.session.accessToken) {
+    // If the user is not logged in, send the loid in the promo request.
+    // In theory loid should be set in a header as well now, but the endpoint
+    // takes it as a parameter.
+    data.loid = state.loid;
+  }
+
+  try {
+    const ad = await getAd(apiOptionsFromState(state), data);
+    dispatch(received(adId, ad));
+  } catch (e) {
+    dispatch(failed(adId));
+  }
+};
+
+export const getAd = (apiOptions, data) => {
+  // This could also go in api-client, but that doesn't seem like the right place
+  // as its reddit-product specific.
+
+  // This is a little ugly right now because of wrapping things in a promise.
+  // that should be going away when TODO: we refactor rawSend, runForm, runQuery
+  // to all be async or promise based. We want to use rawSend so we
+  // get the app origin and headers handled correctly based on login status
+
+  return new Promise((resolve, reject) => {
+    // why is this a post??
+    rawSend(apiOptions, 'post', '/api/request_promo.json', data, 'form', (err, res) => {
+      if (!res || !res.body || res.status !== 200) {
+        reject(res);
+        return;
+      }
+
+      const postJSON = res.body.data;
+      postJSON.url = postJSON.href_url;
+      resolve(PostModel.fromJSON(postJSON));
+    });
+  });
+};
+
+export const _FRONTPAGE_NAME = ' reddit.com'; // the space is intentional
+
+export const getSite = pageParams => {
+  // TODO this will need to support multi-reddits once they're in 2X
+
+  const { subredditName } = pageParams.urlParams;
+  if (subredditName && !isFakeSubreddit(subredditName)) {
+    return subredditName;
+  }
+
+  return _FRONTPAGE_NAME;
+};
