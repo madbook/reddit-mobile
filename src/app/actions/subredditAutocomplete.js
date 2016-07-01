@@ -9,9 +9,9 @@ export const FETCHING = 'AUTOCOMPLETE__FETCHING';
 export const RECEIVED = 'AUTOCOMPLETE__RECEIVED';
 export const RESET = 'AUTOCOMPLETE__RESET';
 
-export const autocompleteFetch = query => ({ type: FETCHING, query });
-export const autocompleteReceived = names => ({ type: RECEIVED, results: names });
-export const resetAutocomplete = () => ({ type: RESET });
+export const fetching = query => ({ type: FETCHING, query });
+export const received = names => ({ type: RECEIVED, results: names });
+export const reset = () => ({ type: RESET });
 
 /**
  * Only resolve the latest promise in and "discard" any un-resolved promises.
@@ -47,7 +47,7 @@ export const fetch = searchTerm => async (dispatch, getState) => {
 
   clearTimeout(timeout);
   timeout = setTimeout(async () => {
-    dispatch(autocompleteFetch(searchTerm));
+    dispatch(fetching(searchTerm));
 
     const state = getState();
     const apiOptions = apiOptionsFromState(state);
@@ -57,6 +57,6 @@ export const fetch = searchTerm => async (dispatch, getState) => {
       SubredditAutocomplete.get(apiOptions, searchTerm, over18)
     );
 
-    dispatch(autocompleteReceived(names));
+    dispatch(received(names));
   }, FIRE_EVERY);
 };

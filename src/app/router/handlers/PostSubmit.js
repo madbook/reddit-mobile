@@ -13,10 +13,6 @@ export class PostSubmitHandler extends BaseHandler {
     }
     fetchUserBasedData(dispatch);
   }
-
-  async [METHODS.POST](dispatch) {
-    dispatch(platformActions.submitPost(this.bodyParams));
-  }
 }
 
 export class PostSubmitCommunityHandler extends BaseHandler {

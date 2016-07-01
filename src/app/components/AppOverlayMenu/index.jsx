@@ -9,7 +9,8 @@ import SearchBarOverlay from 'app/components/SearchBarOverlay';
 import SettingsOverlayMenu from 'app/components/SettingsOverlayMenu';
 import PostSubmitOverlay from 'app/components/PostSubmitOverlay';
 
-export const AppOverlayMenu = (props) => {
+export const AppOverlayMenu = props => {
+  const { subredditName } = props.pageData.urlParams;
   const overlayMenu = props.pageData.queryParams[overlayMenuUrlsAndActions.OVERLAY_MENU_PARAMETER];
 
   switch (overlayMenu) {
@@ -23,15 +24,15 @@ export const AppOverlayMenu = (props) => {
       return <SettingsOverlayMenu />;
 
     case overlayMenuUrlsAndActions.POST_SUBMIT:
-      return <PostSubmitOverlay />;
+      return <PostSubmitOverlay subredditName={ subredditName } />;
 
     default: return null;
   }
 };
 
 const selector = createSelector(
-  (state) => state.platform.currentPage,
-  (pageData) => ({ pageData }),
+  state => state.platform.currentPage,
+  pageData => ({ pageData }),
 );
 
 export default connect(selector)(AppOverlayMenu);

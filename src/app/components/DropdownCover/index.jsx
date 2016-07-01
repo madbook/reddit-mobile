@@ -14,8 +14,9 @@ DropdownCover.propTypes = {
 };
 
 const selector = createSelector(
-  state => state.widgets.tooltip.id,
-  tooltipId => ({ show: !!tooltipId }),
+  state => !!state.widgets.tooltip.id,
+  state => !!state.posting.captchaIden,
+  (showingTooltip, showingCaptcha) => ({ show: showingTooltip || showingCaptcha }),
 );
 
 export default connect(selector)(DropdownCover);

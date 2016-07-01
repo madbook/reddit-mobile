@@ -12,11 +12,12 @@ const T = React.PropTypes;
 const COMMUNITY_DEFAULT = 'Search for a community';
 const AUTOCOMPLETE_TITLE = 'Communities';
 const RECENT_COMMUNITY_TITLE = 'Recently visited';
-const SUBREDDIT_LIMIT = 7;
+const SUBREDDIT_LIMIT = 10;
 
 class PostSubmitCommunityModal extends React.Component {
   static propTypes = {
     title: T.string.isRequired,
+    submissionType: T.string.isRequired,
     subreddits: T.array.isRequired,
     onSubredditInput: T.func.isRequired,
     onExitModal: T.func.isRequired,
@@ -29,11 +30,11 @@ class PostSubmitCommunityModal extends React.Component {
   }
 
   render() {
-    const { onExitModal, title, subreddits } = this.props;
+    const { onExitModal, title, subreddits, submissionType } = this.props;
 
     return (
       <Modal
-        exitTo='/submit'
+        exitTo={ `/submit?type=${submissionType}` }
         onExit={ onExitModal }
         titleText='Post to a community'
       >
@@ -61,20 +62,21 @@ class PostSubmitCommunityModal extends React.Component {
     );
   }
 
-  renderSubredditRow({ subredditName, iconUrl }) {
+  renderSubredditRow({ name, iconUrl }) {
+    const { submissionType } = this.props;
     const style = iconUrl ? { backgroundImage: `url(${iconUrl})` } : null;
 
     return (
       <Anchor
         className='PostSubmitCommunity__subreddits-row'
-        key={ subredditName }
-        href={ `/r/${subredditName}/submit` }
+        key={ name }
+        href={ `/r/${name}/submit?type=${submissionType}` }
       >
         <div className='PostSubmitCommunity__subreddits-icon'>
           <div className='PostSubmitCommunity__subreddits-icon-snoo' style={ style }></div>
         </div>
         <div className='PostSubmitCommunity__subreddits-name'>
-          { `r/${subredditName}` }
+          { `r/${name}` }
         </div>
       </Anchor>
     );
@@ -86,25 +88,27 @@ const mapStateToProps = createSelector(
   state => state.autocompleteSubreddits,
   state => state.recentSubreddits,
   state => state.subreddits,
-  (autocompleteSubreddits, recentSubreddits, subreddits) => {
+  state => state.posting.currentType,
+  (autocompleteSubreddits, recentSubreddits, subreddits, submissionType) => {
     // normalize subreddit meta data
-
     if (autocompleteSubreddits.subredditNames.length) {
       const subreddits = autocompleteSubreddits.subredditNames.slice(0, SUBREDDIT_LIMIT);
       return {
+        submissionType,
         title: AUTOCOMPLETE_TITLE,
         subreddits: subreddits.map(subredditName => {
-          return { subredditName, iconUrl: null };
+          return { name: subredditName, iconUrl: null };
         }),
       };
     }
 
     return {
+      submissionType,
       title: RECENT_COMMUNITY_TITLE,
       subreddits: recentSubreddits.slice(0, SUBREDDIT_LIMIT).map(subredditName => {
         const subredditMetaData = subreddits[subredditName];
         const iconUrl = subredditMetaData ? subredditMetaData.iconImage : null;
-        return { subredditName, iconUrl };
+        return { name: subredditName, iconUrl };
       }),
     };
   }
@@ -112,7 +116,7 @@ const mapStateToProps = createSelector(
 
 const dispatcher = dispatch => ({
   onSubredditInput: val => dispatch(subredditAutocompleteActions.fetch(val)),
-  onExitModal: () => dispatch(subredditAutocompleteActions.resetAutocomplete()),
+  onExitModal: () => dispatch(subredditAutocompleteActions.reset()),
 });
 
 export default connect(mapStateToProps, dispatcher)(PostSubmitCommunityModal);

@@ -5,23 +5,23 @@ import OverlayMenu from 'app/components/OverlayMenu';
 
 import './styles.less';
 
-export default function PostSubmitOverlay() {
+export default function PostSubmitOverlay({ subredditName }) {
+  const basePath = subredditName ? `/r/${subredditName}/submit` : '/submit';
   return (
     <OverlayMenu>
       <div className='PostSubmitOverlay'>
         <div className='PostSubmitOverlay__icons'>
           <Anchor
             className='PostSubmitOverlay__icon'
-            href='/submit'
+            href={ `${basePath}?type=self` }
           >
             <div className='icon icon-post-text'></div>
             <div className='PostSubmitOverlay__icon-text'>TEXT</div>
           </Anchor>
-          <Anchor className='PostSubmitOverlay__icon'>
-            <div className='icon icon-post-image'></div>
-            <div className='PostSubmitOverlay__icon-text'>IMAGE</div>
-          </Anchor>
-          <Anchor className='PostSubmitOverlay__icon'>
+          <Anchor
+            className='PostSubmitOverlay__icon'
+            href={ `${basePath}?type=link` }
+          >
             <div className='icon icon-post-link'></div>
             <div className='PostSubmitOverlay__icon-text'>LINK</div>
           </Anchor>

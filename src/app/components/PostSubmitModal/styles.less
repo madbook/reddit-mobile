@@ -2,7 +2,7 @@
 @import (reference) '~app/less/themes/themeify';
 
 .PostSubmitModal {
-  font-size: 14px;
+  font-size: 16px;
 
   &__submit {
     position: absolute;
@@ -11,6 +11,7 @@
   }
 
   &__submit-button {
+    font-size: 14px;
     height: 4 * @grid-size;
     width: 8 * @grid-size;
     color: white;
@@ -21,7 +22,9 @@
     });
 
     &.ready {
-      background-color: @blue;
+      .themeify({
+        background-color: @theme-button-color;
+      });
     }
   }
 
