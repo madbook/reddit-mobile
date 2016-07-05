@@ -14,6 +14,7 @@ import { WikiPage } from './WikiPage';
 import Messages from 'app/components/Messages';
 import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
+import Report from 'app/components/Report';
 
 export const AppMainPage = () => (
   <UrlSwitch>
@@ -53,5 +54,6 @@ export const AppMainPage = () => (
     <Page url='/login' component={ Login } />
     <Page url='/message/compose' component={ DirectMessage } />
     <Page url='/message/:mailType' component={ Messages } />
+    <Page url='/report' component={ Report } />
   </UrlSwitch>
 );

@@ -40,6 +40,8 @@ Post.propTypes = {
   single: T.bool,
   userActivityPage: T.bool,
   z: T.number,
+  onToggleSavePost: T.func,
+  onToggleHidePost: T.func,
 };
 
 Post.defaultProps = {
@@ -50,6 +52,8 @@ Post.defaultProps = {
   subredditIsNSFW: false,
   showOver18Interstitial: false,
   winWidth: 360,
+  onToggleSavePost: () => {},
+  onToggleHidePost: () => {},
 };
 
 export function Post(props) {
@@ -73,6 +77,8 @@ export function Post(props) {
     hideSubredditLabel,
     hideWhen,
     userActivityPage,
+    onToggleSavePost,
+    onToggleHidePost,
   } = props;
 
   let thumbnailOrNil;
@@ -144,6 +150,8 @@ export function Post(props) {
         post={ post }
         viewComments={ !single }
         hideDownvote={ userActivityPage }
+        onToggleSave={ onToggleSavePost }
+        onToggleHide={ onToggleHidePost }
       />
     </article>
   );
@@ -155,9 +163,9 @@ const singleSelector = (_, props) => props.single;
 const postModelSelector = (state, props) => state.posts[props.postId];
 const expandedSelector = (state, props) => !!state.expandedPosts[props.postId];
 const unblurredSelector = (state, props) => !!state.unblurredPosts[props.postId];
-
-const combineSelectors = (postId, compact, expanded, unblurred, single, post) => ({
-  postId, compact, expanded, unblurred, single, post,
+const userSelector = state => state.user;
+const combineSelectors = (postId, compact, expanded, unblurred, single, post, user) => ({
+  postId, compact, expanded, unblurred, single, post, user,
 });
 
 const makeConnectedPostSelector = () => {
@@ -169,6 +177,7 @@ const makeConnectedPostSelector = () => {
       unblurredSelector,
       singleSelector,
       postModelSelector,
+      userSelector,
     ],
     combineSelectors);
 };
@@ -176,7 +185,8 @@ const makeConnectedPostSelector = () => {
 const mapDispatchToProps = (dispatch, { postId }) => ({
   toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
   toggleShowNSFW: () => dispatch(postActions.toggleNSFWBlur(postId)),
+  onToggleSavePost: () => dispatch(postActions.toggleSavePost(postId)),
+  onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
 });
-
 
 export default connect(makeConnectedPostSelector, mapDispatchToProps)(Post);

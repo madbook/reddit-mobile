@@ -1,0 +1,15 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.DropdownCover {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  .themeify({
+    background-color: @theme-overlay-color;
+  });
+}

@@ -2,11 +2,12 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
+import { Tooltip, TooltipTarget } from '@r/widgets/tooltip';
+
+import PostDropdown from '../PostDropdown';
 import Vote from 'app/components/Vote';
 
 const { PostModel } = models;
-
-// import PostDropdownController from './PostDropdownController';
 
 const T = React.PropTypes;
 
@@ -17,6 +18,8 @@ export default class PostFooter extends React.Component {
     compact: T.bool.isRequired,
     post: T.instanceOf(PostModel),
     viewComments: T.bool.isRequired,
+    onToggleSave: T.func.isRequired,
+    onToggleHide: T.func.isRequired,
     onReport: T.func.isRequired,
     onHide: T.func.isRequired,
     onEdit: T.func.isRequired,
@@ -32,21 +35,12 @@ export default class PostFooter extends React.Component {
     this.onScoreChanged = this.onScoreChanged.bind(this);
     this.onUpVote = this.onVote.bind(this, 1);
     this.onDownVote = this.onVote.bind(this, -1);
-    this.onSave = this.onSave.bind(this);
 
     this.mounted = false; // not state as setState calls for updating
     // would force a re-render. We want this to make sure animations
     // are only rendered on the client _after_ the first render
     // so there are no bounces when you go between pages
-
-    // state.saved is requried because the api doesn't always
-    // update the state of the post properly. This is because
-    // the post doesn't always get cached, and the model update/mergeProps
-    // rely on the object that's been updated being in cache.
-    // store the saved state ourselves so that saved renders
-    // as expected on search pages and other non-listing pages
     this.state = {
-      saved: props.post.saved,
       score: props.post.score,
       voteDirection: props.post.likes,
       dropdownTarget: false,
@@ -63,10 +57,6 @@ export default class PostFooter extends React.Component {
 
   onDropdownClosed() {
     this.setState({ dropdownTarget: null });
-  }
-
-  onSave(saved) {
-    this.setState({ saved });
   }
 
   onScoreChanged(/*voteController*/) {
@@ -108,47 +98,14 @@ export default class PostFooter extends React.Component {
     return `${numberOfComments} Comments`;
   }
 
-  // renderToolsDropdown(dropdownTarget) {
-  //   const {
-  //     post,
-  //     user,
-  //     single,
-  //     app,
-  //     apiOptions,
-  //     viewComments,
-  //     onReport,
-  //     onHide,
-  //     onEdit,
-  //     onDelete,
-  //   } = this.props;
-  //
-  //   const { saved } = this.state;
-  //
-  //   return (
-  //     <PostDropdownController
-  //       dropdownTarget={ dropdownTarget }
-  //       post={ post }
-  //       user={ user }
-  //       single={ single }
-  //       saved={ saved }
-  //       onCloseDropdown={ this.onDropdownClosed }
-  //       app={ app }
-  //       apiOptions={ apiOptions }
-  //       viewComments={ viewComments }
-  //       onReport={ onReport }
-  //       onHide={ onHide }
-  //       onEdit={ onEdit }
-  //       onDelete={ onDelete }
-  //       onSave={ this.onSave }
-  //     />
-  //   );
-  // }
-
   render() {
     const {
       post,
       compact,
       hideDownvote,
+      user,
+      onToggleSave,
+      onToggleHide,
     } = this.props;
 
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
@@ -157,11 +114,12 @@ export default class PostFooter extends React.Component {
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
         { this.renderCommentsLink(post) }
         <div className='PostFooter__vote-and-tools-wrapper'>
-          <div
-            className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'
-            onClick={ this.onOpenDropdown }
-          />
-
+          <TooltipTarget
+            id={ post.name }
+            type={ TooltipTarget.TYPE.CLICK }
+          >
+            <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'/>
+          </TooltipTarget>
           <span className='PostFooter__vertical-divider' />
           <Vote
             thingId = { post.name }
@@ -173,6 +131,22 @@ export default class PostFooter extends React.Component {
             hideDownvote={ hideDownvote }
           />
         </div>
+        <Tooltip
+          id={ post.name }
+          alignment={ Tooltip.ALIGN.BELOW }
+          offset={ 8 }
+          className='PostFooter__tooltip'
+        >
+          <PostDropdown
+            permalink={ post.cleanPermalink }
+            subreddit={ post.subreddit }
+            author={ post.author }
+            isSaved={ post.saved }
+            isLoggedIn={ user && !user.loggedOut }
+            onToggleSave={ onToggleSave }
+            onToggleHide={ onToggleHide }
+          />
+        </Tooltip>
       </footer>
     );
   }

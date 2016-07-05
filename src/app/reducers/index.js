@@ -1,3 +1,5 @@
+import widgets from '@r/widgets/reducer';
+
 import accounts from './accounts';
 import accountRequests from './accountRequests';
 import activitiesRequests from './activitiesRequests';
@@ -56,6 +58,7 @@ export default {
   theme,
   unblurredPosts,
   user,
+  widgets,
   wikis,
   wikiRequests,
 };

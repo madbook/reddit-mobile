@@ -4,6 +4,7 @@ import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
+import ReportHandler from './handlers/ReportHandler';
 import SavedAndHiddenHandler from './handlers/SavedAndHidden';
 import SearchPageHandler from './handlers/SearchPage';
 import SetOver18Handler from './handlers/SetOver18';
@@ -37,6 +38,7 @@ export default [
   ['/login', Login],
   ['/message/compose', DirectMessage],
   ['/message/:mailType', Messages],
+  ['/report', ReportHandler],
 
   // actions
   ['/vote/:thingId', Vote],

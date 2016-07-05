@@ -7,8 +7,10 @@ import { OVERLAY_MENU_PARAMETER } from 'app/actions/overlayMenu';
 const stopScrollForMenu = stopScroll(OVERLAY_MENU_VISIBLE_CSS_CLASS);
 
 const themeSelector = (state) => state.theme;
-const overlayOpenSelector = (state) => {
-  return !!state.platform.currentPage.queryParams[OVERLAY_MENU_PARAMETER];
+const overlayOpenSelector = state => {
+  const overlayOpen = !!state.platform.currentPage.queryParams[OVERLAY_MENU_PARAMETER];
+  const dropdownOpen = !!state.widgets.tooltip.id;
+  return overlayOpen || dropdownOpen;
 };
 
 const combiner = (theme, overlayOpen) => ({ theme, overlayOpen });

@@ -6,6 +6,7 @@ import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';
 import * as activitiesActions from 'app/actions/activities';
 import * as commentsPageActions from 'app/actions/commentsPage';
+import * as postActions from 'app/actions/posts';
 import * as postsListActions from 'app/actions/postsList';
 import * as hiddenActions from 'app/actions/hidden';
 import * as savedActions from 'app/actions/saved';
@@ -31,6 +32,12 @@ export default function(state=DEFAULT, action={}) {
     case mailActions.RECEIVED: {
       const { posts } = action.apiResponse;
       return mergeAPIModels(state, posts);
+    }
+
+    case postActions.TOGGLE_SAVE_RECEIVED:
+    case postActions.TOGGLE_HIDE_RECEIVED: {
+      const { post } = action;
+      return mergeAPIModels(state, { [post.uuid]: post });
     }
 
     case voteActions.VOTED: {

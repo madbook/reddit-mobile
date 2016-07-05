@@ -72,11 +72,12 @@ const renderPagination = (postRecords, nextUrl, prevUrl) => (
 
 const listSelector = createSelector(
   (state, props) => state.postsLists[props.postsListId],
+  state => state.posts,
   (_, props) => props.nextUrl,
   (_, props) => props.prevUrl,
-  (postsList, nextUrl, prevUrl) => ({
+  (postsList, posts, nextUrl, prevUrl) => ({
     loading: postsList && postsList.loading,
-    postRecords: postsList ? postsList.results : [],
+    postRecords: postsList ? postsList.results.filter(p => !posts[p.uuid].hidden) : [],
     prevUrl,
     nextUrl,
   }),

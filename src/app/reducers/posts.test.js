@@ -5,6 +5,7 @@ import posts from './posts';
 import * as loginActions from 'app/actions/login';
 import * as activitiesActions from 'app/actions/activities';
 import * as commentsPageActions from 'app/actions/commentsPage';
+import * as postActions from 'app/actions/posts';
 import * as postsListActions from 'app/actions/postsList';
 import * as hiddenActions from 'app/actions/hidden';
 import * as savedActions from 'app/actions/saved';
@@ -60,6 +61,110 @@ createTest({ reducers: { posts} }, ({ getStore, expect}) => {
               [POST.uuid]: POST,
             },
           }));
+        });
+      });
+    });
+
+    describe('SAVED', () => {
+      it('should mark a post as saved', () => {
+        const POST = {
+          type: 'post',
+          uuid: 't3_1',
+          saved: false,
+        };
+
+        const SAVED = {
+          ...POST,
+          saved: true,
+        };
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(postActions.toggleHideReceived(SAVED));
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [SAVED.uuid]: SAVED,
+        });
+      });
+
+      it('should mark a post as un-saved', () => {
+        const POST = {
+          type: 'post',
+          uuid: 't3_1',
+          saved: true,
+        };
+
+        const UNSAVED = {
+          ...POST,
+          saved: false,
+        };
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(postActions.toggleSavedReceived(UNSAVED));
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [UNSAVED.uuid]: UNSAVED,
+        });
+      });
+    });
+
+    describe('HIDDEN', () => {
+      it('should mark a post as hidden', () => {
+        const POST = {
+          type: 'post',
+          uuid: 't3_1',
+          hidden: false,
+        };
+
+        const HIDDEN = {
+          ...POST,
+          hidden: true,
+        };
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(postActions.toggleHideReceived(HIDDEN));
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [HIDDEN.uuid]: HIDDEN,
+        });
+      });
+
+      it('should un-hide a post', () => {
+        const POST = {
+          type: 'post',
+          uuid: 't3_1',
+          hidden: true,
+        };
+
+        const UNHIDDEN = {
+          ...POST,
+          hidden: false,
+        };
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(postActions.toggleHideReceived(UNHIDDEN));
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [UNHIDDEN.uuid]: UNHIDDEN,
         });
       });
     });
