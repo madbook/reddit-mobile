@@ -1,8 +1,8 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as subredditActions from 'app/actions/subreddits';
+import * as subscriptionActions from 'app/actions/subscribedSubreddits';
 
 export default class ToggleSubredditSubscription extends BaseHandler {
   async [METHODS.POST](dispatch) {
-    dispatch(subredditActions.toggleSubscription(this.bodyParams));
+    dispatch(subscriptionActions.toggleSubscription(this.bodyParams));
   }
 }
