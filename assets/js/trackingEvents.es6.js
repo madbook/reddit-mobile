@@ -5,6 +5,7 @@ import omit from 'lodash/object/omit';
 
 import constants from '../../src/constants';
 import addIfPresent from '../../src/lib/addIfPresent';
+import { isHidden } from '../../src/lib/dom';
 import makeRequest from '../../src/lib/makeRequest';
 import url from 'url';
 import gtm from './gtm';
@@ -87,11 +88,23 @@ function trackingEvents(app) {
       props.ctx.path === '/';
   }
 
+  function testAdblock() {
+    const el = document.getElementById('adblock-test');
+    const rect = el.getBoundingClientRect();
+
+    if (!rect.height || !rect.width) {
+      return true;
+    }
+
+    return isHidden(el);
+  }
+
   function buildPageviewData (props) {
     const LINK_LIMIT = 25;
 
 
     const data = {
+      ...getAdsBasePlayload(props),
       language: 'en', // NOTE: update when there are translations
     };
 
@@ -99,8 +112,6 @@ function trackingEvents(app) {
       data.referrer_url = props.ctx.referrer;
       data.referrer_domain = url.parse(props.ctx.referrer).host;
     }
-
-    data.dnt = !!window.DO_NOT_TRACK;
 
     // If there is a logged-in user, add the user's data to the payload
     if (props.data.user) {
@@ -161,8 +172,6 @@ function trackingEvents(app) {
       props.data.listing ||
       props.data.subreddit
     );
-
-    data.compact_view = props.compact;
 
     if (props.theme === NIGHTMODE) {
       data.nightmode = true;
@@ -230,6 +239,14 @@ function trackingEvents(app) {
       user_agent: ctx.userAgent || '',
       referrer_domain: url.parse(referrer).host || domain,
       referrer_url: referrer,
+    };
+  }
+
+  function getAdsBasePlayload(props) {
+    return {
+      dnt: !!window.DO_NOT_TRACK,
+      adblock: testAdblock(),
+      compact_view: props.compact,
     };
   }
 

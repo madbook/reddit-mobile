@@ -71,22 +71,44 @@ class BodyLayout extends BasePage {
     return { marginBottom: spring(-TOASTER_HEIGHT) };
   }
 
+  renderAdCode = () => {
+    const { adsEnabled, app, ctx, subredditName } = this.props;
+
+    if (!adsEnabled) {
+      return null;
+    }
+
+    const { mediaDomain, googleTagManagerId, adblockTestClassName } = app.config;
+    const adblockStyles = {
+      height: '1px',
+      width: '1px',
+      position: 'absolute',
+      left: '-1000%',
+    };
+
+    return (
+      <div>
+        <div
+          id="adblock-test"
+          className={ adblockTestClassName }
+          style={ adblockStyles }
+        />
+        <GoogleTagManager
+          nonce={ ctx.csrf }
+          mediaDomain={ mediaDomain }
+          googleTagManagerId={ googleTagManagerId }
+          subredditName={ subredditName }
+        />
+      </div>
+    );
+  }
+
   render() {
-    const { adsEnabled, app, ctx, hideTopNav, subredditName } = this.props;
-    const { mediaDomain, googleTagManagerId } = app.config;
+    const { hideTopNav } = this.props;
 
     return (
       <div className='BodyLayout container-with-betabanner'>
-        {
-          adsEnabled ?
-            <GoogleTagManager
-              nonce={ ctx.csrf }
-              mediaDomain={ mediaDomain }
-              googleTagManagerId={ googleTagManagerId }
-              subredditName={ subredditName }
-            /> :
-            null
-        }
+        { this.renderAdCode() }
         { !hideTopNav ? this.renderTopNav() : null }
         <main>
           { this.props.children }
