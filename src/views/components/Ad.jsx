@@ -20,7 +20,6 @@ class Ad extends BaseComponent {
     loid: T.string,
     compact: T.bool.isRequired,
     site: T.string.isRequired,
-    subredditTitle: T.string,
     afterLoad: T.func.isRequired,
     things: propTypes.postsAndComments.isRequired,
   };

@@ -31,7 +31,6 @@ export default class PostAndCommentList extends BaseComponent {
     showHidden: T.bool,
     hideSubredditLabel: T.bool,
     subredditName: T.string,
-    subredditTitle: T.string,
     subredditIsNSFW: T.bool,
     showOver18Interstitial: T.bool,
     className: T.string,
@@ -132,7 +131,6 @@ export default class PostAndCommentList extends BaseComponent {
       apiOptions,
       ctx,
       loid,
-      subredditTitle,
       winWidth,
     } = this.props;
 
@@ -149,7 +147,6 @@ export default class PostAndCommentList extends BaseComponent {
         loid={ loid }
         compact={ compact }
         site={ this.getSite() }
-        subredditTitle={ subredditTitle }
         afterLoad={ this.afterAdDidLoad }
         winWidth={ winWidth }
         things={ this.props.postsAndComments }
