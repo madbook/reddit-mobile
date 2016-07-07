@@ -14,6 +14,7 @@ import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
+import * as commentActions from 'app/actions/comment';
 
 const DEFAULT = {};
 
@@ -33,6 +34,12 @@ export default function(state=DEFAULT, action={}) {
     case mailActions.RECEIVED: {
       const { comments } = action.apiResponse;
       return mergeAPIModels(state, comments);
+    }
+
+    case commentActions.SAVED:
+    case commentActions.DELETED: {
+      const { comment } = action;
+      return mergeAPIModels(state, { [comment.uuid]: comment });
     }
 
     case replyActions.REPLIED: {

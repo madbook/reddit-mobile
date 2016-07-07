@@ -6,6 +6,7 @@ import comments from './comments';
 
 import * as loginActions from 'app/actions/login';
 import * as activitiesActions from 'app/actions/activities';
+import * as commentActions from 'app/actions/comment';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as postsListActions from 'app/actions/postsList';
 import * as hiddenActions from 'app/actions/hidden';
@@ -195,6 +196,84 @@ createTest({ reducers: { comments} }, ({ getStore, expect }) => {
 
         expect(comments).to.eql({
           [COMMENT.uuid]: COMMENT,
+        });
+      });
+    });
+
+    describe('SAVED', () => {
+      it('should mark a post as saved', () => {
+        const COMMENT = {
+          uuid: 't1_1',
+          saved: false,
+        };
+
+        const SAVED = {
+          ...COMMENT,
+          saved: true,
+        };
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(commentActions.saved(SAVED));
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [SAVED.uuid]: SAVED,
+        });
+      });
+
+      it('should mark a post as un-saved', () => {
+        const COMMENT = {
+          uuid: 't1_1',
+          saved: true,
+        };
+
+        const UNSAVED = {
+          ...COMMENT,
+          saved: false,
+        };
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(commentActions.saved(UNSAVED));
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [UNSAVED.uuid]: UNSAVED,
+        });
+      });
+    });
+
+    describe('DELETED', () => {
+      it('should mark a comment as deleted', () => {
+        const COMMENT = {
+          uuid: 't1_1',
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+        };
+
+        const DELETED = {
+          ...COMMENT,
+          author: '[deleted]',
+          bodyHTML: '[deleted]',
+        };
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(commentActions.deleted(DELETED));
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [DELETED.uuid]: DELETED,
         });
       });
     });

@@ -1,0 +1,82 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.Dropdown {
+  width: 600px;
+
+  .themeify({
+    border: @theme-border;
+  });
+}
+
+.DropdownRow,
+.DropdownLinkRow {
+  @row-height: 50px;
+  display: block;
+
+  .themeify({
+    background-color: @theme-body-color;
+  });
+
+  & ~ & {
+    .themeify({
+      border-top: @theme-border;
+    });
+  }
+
+  &__icon,
+  &__text {
+    display: inline-block;
+    vertical-align: middle;
+    height: @row-height;
+    line-height: @row-height;
+  }
+
+  &__icon {
+    width: 50px;
+    text-align: center;
+
+    &.icon-link {
+      font-size: 36px;
+    }
+
+    &.icon-snoosilhouette,
+    &.icon-user-account,
+    &.icon-save,
+    &.icon-hide,
+    &.icon-flag,
+    &.icon-delete_remove,
+    &.icon-posts {
+      font-size: 22px;
+    }
+
+    &.icon-save {
+      &.m-selected {
+        color: @green;
+      }
+    }
+  }
+
+  &__text {
+    font-size: 16px;
+  }
+}
+
+.DropdownLinkRow {
+  &, &:visited, &:active {
+    text-decoration: none;
+
+    .DropdownLinkRow__icon {
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+    }
+
+    .DropdownLinkRow__text {
+      .themeify({
+        color: @theme-body-text-color;
+      });
+    }
+  }
+
+}

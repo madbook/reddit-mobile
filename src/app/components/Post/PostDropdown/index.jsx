@@ -1,11 +1,12 @@
-import './styles.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
+
+import { Dropdown, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 
 const T = React.PropTypes;
 
 export default function PostDropdown(props) {
   const {
+    id,
     permalink,
     subreddit,
     author,
@@ -16,18 +17,19 @@ export default function PostDropdown(props) {
   } = props;
 
   return (
-    <div className='PostDropdown'>
-      { renderLinkRow('Permalink', 'link', permalink) }
-      { renderLinkRow(`More from r/${subreddit}`, 'snoosilhouette', `/r/${subreddit}`) }
-      { renderLinkRow(`${author}'s profile`, 'user-account', `/u/${author}`) }
-      { isLoggedIn ? renderCbRow(isSaved ? 'Saved' : 'Save', 'save', onToggleSave, isSaved) : null }
-      { isLoggedIn ? renderCbRow('Hide', 'hide', onToggleHide) : null }
-      { isLoggedIn ? renderLinkRow('Report', 'flag', '/report') : null }
-    </div>
+    <Dropdown id={ id }>
+      <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>
+      <DropdownLinkRow href={ `/r/${subreddit}` } icon='snoosilhouette' text={ `More from r/${subreddit}` }/>
+      <DropdownLinkRow href={ `/u/${author}` } icon='user-account' text={ `${author}'s profile` }/>
+      { isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null }
+      { isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null }
+      { isLoggedIn ? <DropdownLinkRow href='/report' icon='flag' text='Report'/> : null }
+    </Dropdown>
   );
 }
 
 PostDropdown.propTypes = {
+  id: T.string.isRequired,
   permalink: T.string.isRequired,
   subreddit: T.string.isRequired,
   author: T.string.isRequired,
@@ -43,17 +45,3 @@ PostDropdown.defaultProps = {
   onToggleSave: () => {},
   onToggleHide: () => {},
 };
-
-const renderLinkRow = (title, icon, url) => (
-  <Anchor href={ url } className='PostDropdown__row'>
-    <div className={ `PostDropdown__icon icon icon-${icon}` }/>
-    <div className='PostDropdown__iconText'>{ title }</div>
-  </Anchor>
-);
-
-const renderCbRow = (title, icon, cb, isSelected) => (
-  <div className='PostDropdown__row' onClick={ cb }>
-    <div className={ `PostDropdown__icon icon icon-${icon} ${isSelected ? 'm-selected' : ''}` }/>
-    <div className='PostDropdown__iconText'>{ title }</div>
-  </div>
-);

@@ -9,6 +9,7 @@ import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
 import expandedPosts from './expandedPosts';
+import editingComment from './editingComment';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
 import posting from './posting';
@@ -44,6 +45,7 @@ export default {
   commentsPages,
   compact,
   expandedPosts,
+  editingComment,
   hiddenRequests,
   loid,
   mail,

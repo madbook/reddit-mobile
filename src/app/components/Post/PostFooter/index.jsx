@@ -2,7 +2,7 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
-import { Tooltip, TooltipTarget } from '@r/widgets/tooltip';
+import { TooltipTarget } from '@r/widgets/tooltip';
 
 import PostDropdown from '../PostDropdown';
 import Vote from 'app/components/Vote';
@@ -131,22 +131,16 @@ export default class PostFooter extends React.Component {
             hideDownvote={ hideDownvote }
           />
         </div>
-        <Tooltip
+        <PostDropdown
           id={ post.name }
-          alignment={ Tooltip.ALIGN.BELOW }
-          offset={ 8 }
-          className='PostFooter__tooltip'
-        >
-          <PostDropdown
-            permalink={ post.cleanPermalink }
-            subreddit={ post.subreddit }
-            author={ post.author }
-            isSaved={ post.saved }
-            isLoggedIn={ user && !user.loggedOut }
-            onToggleSave={ onToggleSave }
-            onToggleHide={ onToggleHide }
-          />
-        </Tooltip>
+          permalink={ post.cleanPermalink }
+          subreddit={ post.subreddit }
+          author={ post.author }
+          isSaved={ post.saved }
+          isLoggedIn={ user && !user.loggedOut }
+          onToggleSave={ onToggleSave }
+          onToggleHide={ onToggleHide }
+        />
       </footer>
     );
   }

@@ -26,12 +26,12 @@ const collapsible = props => !(props.preview || props.userActivityPage);
 const collapsed = props => props.commentCollapsed && collapsible(props);
 
 export function Comment (props) {
-  const { editing, preview, userActivityPage } = props;
+  const { isEditing, preview, userActivityPage } = props;
 
   return (
     <div className={ `Comment ${!preview ? 'in-comment-tree' : ''}` }>
       { renderHeader(props) }
-      { editing ? renderEditForm(props) : renderBody(props) }
+      { isEditing ? renderEditForm(props) : renderBody(props) }
       { !userActivityPage ? renderFooter(props) : null }
     </div>
   );
@@ -96,7 +96,17 @@ function renderBody(props) {
 }
 
 function renderTools(props) {
-  const { user, permalinkBase, comment, commentCollapsed, currentPage, commentReplying } = props;
+  const {
+    user,
+    permalinkBase,
+    comment,
+    commentCollapsed,
+    currentPage,
+    commentReplying,
+    onToggleEditForm,
+    onDeleteComment,
+    onToggleSaveComment,
+  } = props;
 
   let cls = 'Comment__toolsContainer clearfix';
   if (commentCollapsed) { cls += ' m-hidden'; }
@@ -115,10 +125,9 @@ function renderTools(props) {
           currentPage = { currentPage }
           replying={ commentReplying }
           permalinkUrl={ `${permalinkBase}${comment.id}` }
-          onEditComment={ props.toggleEditForm }
-          onDeleteComment={ props.deleteComment }
-          onSaveComment={ props.saveComment }
-          onReportComment={ props.reportComment }
+          onEdit={ onToggleEditForm }
+          onDelete={ onDeleteComment }
+          onToggleSave={ onToggleSaveComment }
         />
       </div>
     </div>
@@ -189,25 +198,29 @@ Comment.propTypes = {
   permalinkBase: T.string,
   repliesLocked: T.bool,
   highlightedComment: T.string,
+  isEditing: T.bool,
+  onToggleSaveComment: T.func,
 };
 
 Comment.defaultProps = {
   nestingLevel: 0,
   repliesLocked: false,
   highlightedComment: '',
+  isEditing: false,
+  onToggleSaveComment: () => {},
 };
 
 const commentIdSelector = (state, props) => props.commentId;
 const commentModelSelector = (state, props) => state.comments[props.commentId];
 const parentCommentSelector = (state, props) => props.parentComment;
 const postCreatedSelector = (state, props) => props.postCreated;
-const userSelector = (state, props) => props.user;
+const userSelector = state => state.user;
 const nestingLevelSelector = (state, props) => props.nestingLevel;
 const commentCollapsedSelector = (state, props) => state.collapsedComments[props.commentId];
 const currentPageSelector = (state) => state.platform.currentPage;
-
 const commentReplyingSelector = (state, props) =>
   state.platform.currentPage.queryParams.commentReply === props.commentId;
+const commentEditingSelector = (state, props) => state.editingComment === props.commentId;
 
 const combineSelectors = (
   commentId,
@@ -218,7 +231,8 @@ const combineSelectors = (
   nestingLevel,
   commentCollapsed,
   currentPage,
-  commentReplying
+  commentReplying,
+  isEditing,
 ) => ({
   commentId,
   comment,
@@ -229,6 +243,7 @@ const combineSelectors = (
   commentCollapsed,
   currentPage,
   commentReplying,
+  isEditing,
 });
 
 const makeConnectedCommentSelector = () => {
@@ -243,6 +258,7 @@ const makeConnectedCommentSelector = () => {
       commentCollapsedSelector,
       currentPageSelector,
       commentReplyingSelector,
+      commentEditingSelector,
     ],
     combineSelectors,
   );
@@ -250,9 +266,9 @@ const makeConnectedCommentSelector = () => {
 
 const mapDispatchToProps = (dispatch, { commentId }) => ({
   toggleCollapse: (collapse) => dispatch(commentActions.toggleCollapse(commentId, collapse)),
-  toggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
-  deleteComment: () => dispatch(commentActions.del(commentId)),
-  saveComment: () => dispatch(commentActions.save(commentId)),
+  onToggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
+  onDeleteComment: () => dispatch(commentActions.del(commentId)),
+  onToggleSaveComment: () => dispatch(commentActions.toggleSave(commentId)),
   reportComment: (reason) => dispatch(commentActions.report(commentId, reason)),
   loadMore: (ids) => dispatch(commentActions.loadMore(ids)),
 });

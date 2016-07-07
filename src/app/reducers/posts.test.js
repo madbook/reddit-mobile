@@ -84,7 +84,7 @@ createTest({ reducers: { posts} }, ({ getStore, expect}) => {
           },
         });
 
-        store.dispatch(postActions.toggleHideReceived(SAVED));
+        store.dispatch(postActions.toggleSavedReceived(SAVED));
         const { posts } = store.getState();
         expect(posts).to.eql({
           [SAVED.uuid]: SAVED,
