@@ -406,6 +406,19 @@ function trackingEvents(app) {
     gaSend('send', 'event', 'vote', vote.get('direction'));
   });
 
+  app.on('adblock', function(method, props) {
+    const payload = {
+      method,
+      ...getBasePayload(props),
+      ...getAdsBasePlayload(props),
+      sr_name: props.subredditName,
+      placement_type: props.placementType,
+      placement_index:  props.index,
+      in_feed: props.index !== 0,
+    };
+
+    eventSend('ad_serving_events', 'cs.adblock', payload);
+  });
 
   app.on('comment:new', function (props) {
     const payload = buildCommentData(props);

@@ -131,6 +131,7 @@ export default class PostAndCommentList extends BaseComponent {
       apiOptions,
       ctx,
       loid,
+      subredditName,
       winWidth,
     } = this.props;
 
@@ -147,9 +148,11 @@ export default class PostAndCommentList extends BaseComponent {
         loid={ loid }
         compact={ compact }
         site={ this.getSite() }
+        subredditName={ subredditName }
         afterLoad={ this.afterAdDidLoad }
         winWidth={ winWidth }
         things={ this.props.postsAndComments }
+        index={ this.state.adLocation }
       />
     );
   }

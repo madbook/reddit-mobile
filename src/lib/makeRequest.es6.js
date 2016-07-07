@@ -25,6 +25,22 @@ class Request extends superagent.Request {
 
     return p;
   }
+
+  // anything with a status of 0 is classified as a cors error by superagent.
+  // issue: https://github.com/visionmedia/superagent/issues/484
+  crossDomainError() {
+    const err = new Error('Request has been terminated. Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
+
+    // set this for backwards compat.
+    err.crossDomain = true;
+
+    // copy additional data for further inspection.
+    err.xhr = this.xhr;
+    err.url = this.url;
+    err.method = this.method;
+
+    this.callback(err);
+  }
 }
 
 // Create a helper to keep actions code dry. This code is a near complete copy

@@ -6,6 +6,7 @@ import constants from '../../constants';
 import BaseComponent from './BaseComponent';
 import Post from './listings/Post';
 
+import { isHidden } from '../../lib/dom';
 import makeRequest from '../../lib/makeRequest';
 
 const T = React.PropTypes;
@@ -20,12 +21,14 @@ class Ad extends BaseComponent {
     loid: T.string,
     compact: T.bool.isRequired,
     site: T.string.isRequired,
+    subredditName: T.string,
     afterLoad: T.func.isRequired,
     things: propTypes.postsAndComments.isRequired,
+    index: T.number.isRequired,
   };
 
   static defaultProps = {
-    listingRedesign: false,
+    placementType: 'native',
   };
 
   constructor (props) {
@@ -113,10 +116,16 @@ class Ad extends BaseComponent {
         loaded: true,
         ad: new models.Link(ad).toJSON(),
       });
-    }, () => {
+    }, (err) => {
       this.setState({
         unavailable: true,
       });
+
+      // A `status` of `0` means the request wasn't actually
+      // finished (likely net::ERR_BLOCKED_BY_CLIENT)
+      if (err.xhr.status === 0) {
+        this.props.app.emit('adblock', 'endpoint-blocked', this.props);
+      }
     });
 
     this.props.app.on(constants.SCROLL, this._checkImpression);
@@ -130,6 +139,7 @@ class Ad extends BaseComponent {
     if (!prevState.loaded && this.state.loaded) {
       this.props.afterLoad();
       this._checkImpression();
+      this._checkAdblock();
     }
   }
 
@@ -142,6 +152,12 @@ class Ad extends BaseComponent {
       this.props.app.off(constants.SCROLL, this._checkImpression);
       this.props.app.off(constants.RESIZE, this._checkImpression);
       this._hasListeners = false;
+    }
+  }
+
+  _checkAdblock() {
+    if (isHidden(this.domNode)) {
+      this.props.app.emit('adblock', 'element-hidden', this.props);
     }
   }
 
