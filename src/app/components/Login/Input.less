@@ -1,0 +1,49 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.LoginInput {
+  padding-bottom: 1px;
+  // position relative for the optional nested button
+  // that is absolute positioned.
+  position: relative;
+
+  &__error-text {
+    color: @red;
+    padding: 3px 0  0 10px;
+  }
+
+  &__input {
+    border: none;
+    // for ios
+    -webkit-appearance: none;
+    border-radius: 0;
+
+    background-image: none;
+
+    .themeify({
+      border-bottom: @theme-border;
+    });
+
+    width: 100%;
+    background-color: transparent;
+    font-size: 1.2em;
+    padding: 10px;
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid @blue;
+    }
+
+    &.show-top {
+      .themeify({
+        border-top: @theme-border;
+      });
+
+      background-image: none;
+    }
+
+    &.error {
+      border-bottom: 1px solid @state-danger-bg;
+    }
+  }
+}

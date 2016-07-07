@@ -1,0 +1,30 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.SquareButton {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: @blue;
+
+  &.m-disabled {
+    .themeify({
+      background-color: @theme-line-color;
+    });
+  }
+
+  &.m-danger {
+    background-color: @ban-red;
+  }
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 1.5;
+    color: @off-white;
+    letter-spacing: 1.6;
+  }
+}

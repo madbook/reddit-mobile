@@ -1,0 +1,36 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+@size: @grid-size*6;
+
+.Login {
+  padding: @size;
+  text-align: center;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: @size;
+    height: @size;
+    background-color: @orangered;
+    opacity: .75;
+    border-radius: 100%;
+  }
+
+  .SnooIcon {
+    margin: auto;
+    height: @size;
+    width: @size;
+    position: relative;
+  }
+
+  &__form {
+    margin-top: 40px;
+  }
+
+  &__submit {
+    height: 45px;
+    margin-top: 40px;
+  }
+}
