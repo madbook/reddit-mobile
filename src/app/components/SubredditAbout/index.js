@@ -7,12 +7,15 @@ import { createSelector } from 'reselect';
 import { Anchor } from '@r/platform/components';
 
 import Loading from 'app/components/Loading';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const subredditDescription = descriptionHTML => (
-  <div
-    className='SubredditAbout__description'
-    dangerouslySetInnerHTML={ { __html: descriptionHTML } }
-  />
+  <RedditLinkHijacker>
+    <div
+      className='SubredditAbout__description'
+      dangerouslySetInnerHTML={ { __html: descriptionHTML } }
+    />
+  </RedditLinkHijacker>
 );
 
 const tryLoggingIn = () => (

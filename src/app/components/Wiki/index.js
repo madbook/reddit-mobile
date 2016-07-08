@@ -7,12 +7,15 @@ import { Anchor } from '@r/platform/components';
 
 import { makeWikiPath } from 'lib/makeWikiPath';
 import Loading from 'app/components/Loading';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const wikiContent = contentHTML => (
-  <div
-    className='Wiki__content'
-    dangerouslySetInnerHTML={ { __html: contentHTML } }
-  />
+  <RedditLinkHijacker>
+    <div
+      className='Wiki__content'
+      dangerouslySetInnerHTML={ { __html: contentHTML } }
+    />
+  </RedditLinkHijacker>
 );
 
 const tryLoggingIn = () => (

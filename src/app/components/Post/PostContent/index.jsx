@@ -10,7 +10,8 @@ import mobilify from 'lib/mobilify';
 import gifToHTML5Sources from 'lib/gifToHTML5Sources';
 import { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
 
-// import SquareButton from '../formElements/SquareButton';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
+
 
 import {
   isPostNSFW,
@@ -207,10 +208,12 @@ export default class PostContent extends React.Component {
 
     const mobileSelfText = mobilify(post.expandedContent);
     return (
-      <div
-        className='PostContent__selftext'
-        dangerouslySetInnerHTML={ { __html: mobileSelfText } }
-      />
+      <RedditLinkHijacker>
+        <div
+          className='PostContent__selftext'
+          dangerouslySetInnerHTML={ { __html: mobileSelfText } }
+        />
+      </RedditLinkHijacker>
     );
   }
 
@@ -504,10 +507,12 @@ export default class PostContent extends React.Component {
 
   renderRawHTML(htmlContent, aspectRatio) {
     return (
-      <div
-        className={ `PostContent__html ${aspectRatioClass(aspectRatio)}` }
-        dangerouslySetInnerHTML={ { __html: htmlContent } }
-      />
+      <RedditLinkHijacker>
+        <div
+          className={ `PostContent__html ${aspectRatioClass(aspectRatio)}` }
+          dangerouslySetInnerHTML={ { __html: htmlContent } }
+        />
+      </RedditLinkHijacker>
     );
   }
 

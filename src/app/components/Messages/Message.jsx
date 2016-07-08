@@ -3,6 +3,7 @@ import React from 'react';
 import { Anchor } from '@r/platform/components';
 
 import { short } from 'lib/formatDifference';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const T = React.PropTypes;
 
@@ -23,9 +24,12 @@ export default function MessagesMessage(props) {
           href={ `/messages/message/${ message.id }` }
         />
       </div>
-      <div className='MessagesMessage__body'
-        dangerouslySetInnerHTML={ { __html: message.bodyHTML } }
-      />
+      <RedditLinkHijacker>
+        <div
+          className='MessagesMessage__body'
+          dangerouslySetInnerHTML={ { __html: message.bodyHTML } }
+        />
+      </RedditLinkHijacker>
     </div>
   );
 }

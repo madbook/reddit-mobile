@@ -3,7 +3,6 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-
 import { models } from '@r/api-client';
 
 import mobilify from 'lib/mobilify';
@@ -15,6 +14,7 @@ import CommentsList from 'app/components/CommentsList';
 import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';
 import CommentReplyForm from './CommentReplyForm';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 // import CommentSeeMore from './CommentSeeMore';
 // import CommentEditForm from './CommentEditForm';
@@ -88,10 +88,12 @@ function renderBody(props) {
   if (commentCollapsed && !userActivityPage) { cls += ' m-hidden'; }
 
   return (
-    <div
-      className={ cls }
-      dangerouslySetInnerHTML={ { __html: bodyText } }
-    />
+    <RedditLinkHijacker>
+      <div
+        className={ cls }
+        dangerouslySetInnerHTML={ { __html: bodyText } }
+      />
+    </RedditLinkHijacker>
   );
 }
 
