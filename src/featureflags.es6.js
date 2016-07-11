@@ -49,31 +49,31 @@ const config = {
   },
   [VARIANT_NEXTCONTENT_BOTTOM]: {
     url: 'experimentnextcontentbottom',
-    and: [{
+    and: {
       variant: 'nextcontent_mweb:bottom',
       loggedin: false,
-    }],
+    },
   },
   [VARIANT_NEXTCONTENT_MIDDLE]: {
     url: 'experimentnextcontentmiddle',
-    and: [{
+    and: {
       variant: 'nextcontent_mweb:middle',
       loggedin: false,
-    }],
+    },
   },
   [VARIANT_NEXTCONTENT_BANNER]: {
     url: 'experimentnextcontentbanner',
-    and: [{
+    and: {
       variant: 'nextcontent_mweb:banner',
       loggedin: false,
-    }],
+    },
   },
   [VARIANT_NEXTCONTENT_TOP3]: {
     url: 'experimentnextcontenttop3',
-    and: [{
+    and: {
       variant: 'nextcontent_mweb:top3',
       loggedin: false,
-    }],
+    },
   },
 };
 
