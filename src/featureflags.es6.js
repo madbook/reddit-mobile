@@ -52,6 +52,7 @@ const config = {
     and: {
       variant: 'nextcontent_mweb:bottom',
       loggedin: false,
+      subreddit: 'pokemongo',
     },
   },
   [VARIANT_NEXTCONTENT_MIDDLE]: {
@@ -59,6 +60,7 @@ const config = {
     and: {
       variant: 'nextcontent_mweb:middle',
       loggedin: false,
+      subreddit: 'pokemongo',
     },
   },
   [VARIANT_NEXTCONTENT_BANNER]: {
@@ -66,6 +68,7 @@ const config = {
     and: {
       variant: 'nextcontent_mweb:banner',
       loggedin: false,
+      subreddit: 'pokemongo',
     },
   },
   [VARIANT_NEXTCONTENT_TOP3]: {
@@ -73,6 +76,7 @@ const config = {
     and: {
       variant: 'nextcontent_mweb:top3',
       loggedin: false,
+      subreddit: 'pokemongo',
     },
   },
 };
