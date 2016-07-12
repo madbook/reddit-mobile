@@ -7,14 +7,46 @@ import isEmpty from 'lodash/isEmpty';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 
-import routes from 'app/router';
 import App from 'app';
+import config from 'config';
+import errorLog from 'lib/errorLog';
+import routes from 'app/router';
 import reducers from 'app/reducers';
+import reduxMiddleware from 'app/reduxMiddleware';
 import Session from 'app/models/Session';
 
+// register window.onError asap so we can catch errors in the client's init
+window.onerror = (message, url, line, column) => {
+  errorLog({
+    message,
+    url,
+    line,
+    column,
+    userAgent: window.navigator.userAgent,
+    requestUrl: window.navigator.userAgent,
+  }, {
+    hivemind: config.statsURL,
+  });
+};
+
+// This isn't supported in mobile browsers right now but it is in chrome.
+// Having it will give us better logging in debug (for promises that don't have
+// a .catch handler). Maybe mobile browsers will support it soon as well.
+window.onunhandledrejection = rejection => {
+  errorLog({
+    rejection,
+    userAgent: window.navigator.userAgent,
+    requestUrl: window.navigator.userAgent,
+  }, {
+    hivemind: config.statsURL,
+  });
+};
+
+// start the app now
 const client = Client({
   routes,
   reducers,
+  reduxMiddleware,
   modifyData: data => {
     // TODO if we start not using shell rendering in a serious way,
     // we'll need to unserialize all of the api models. This should
@@ -29,6 +61,7 @@ const client = Client({
     data.preferences = models.Preferences.fromJSON(data.preferences);
 
     data.collapsedComments = {};
+    data.meta.env = 'CLIENT';
 
     if (isLocalStorageAvailable()) {
       try {

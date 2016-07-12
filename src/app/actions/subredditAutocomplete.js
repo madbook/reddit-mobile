@@ -1,17 +1,34 @@
-import { endpoints } from '@r/api-client';
+import { endpoints, errors } from '@r/api-client';
 
 import * as preferenceActions from 'app/actions/preferences';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 const { SubredditAutocomplete } = endpoints;
+const { ResponseError } = errors;
 
 export const FETCHING = 'AUTOCOMPLETE__FETCHING';
-export const RECEIVED = 'AUTOCOMPLETE__RECEIVED';
-export const RESET = 'AUTOCOMPLETE__RESET';
+export const fetching = query => ({
+  type: FETCHING,
+  query,
+});
 
-export const fetching = query => ({ type: FETCHING, query });
-export const received = names => ({ type: RECEIVED, results: names });
-export const reset = () => ({ type: RESET });
+export const RECEIVED = 'AUTOCOMPLETE__RECEIVED';
+export const received = names => ({
+  type: RECEIVED,
+  results: names,
+});
+
+export const RESET = 'AUTOCOMPLETE__RESET';
+export const reset = () => ({
+  type: RESET,
+});
+
+
+export const FAILED = 'AUTOCOMPLETE__FAILED';
+export const failedAutocomplete = error => ({
+  type: FAILED,
+  error,
+});
 
 /**
  * Only resolve the latest promise in and "discard" any un-resolved promises.
@@ -53,10 +70,18 @@ export const fetch = searchTerm => async (dispatch, getState) => {
     const apiOptions = apiOptionsFromState(state);
     const { over18 } = state.preferences;
 
-    const { names } = await takeLatest(
-      SubredditAutocomplete.get(apiOptions, searchTerm, over18)
-    );
+    try {
+      const { names } = await takeLatest(
+        SubredditAutocomplete.get(apiOptions, searchTerm, over18)
+      );
 
-    dispatch(received(names));
+      dispatch(received(names));
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        dispatch(failedAutocomplete(e));
+      } else {
+        throw e;
+      }
+    }
   }, FIRE_EVERY);
 };

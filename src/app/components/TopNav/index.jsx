@@ -53,7 +53,6 @@ export const TopNav = (props) => {
         <Anchor
           className='MobileButton TopNav-padding TopNav-snoo'
           href='/'
-          data-no-route={ true }
         >
           <SnooIcon />
         </Anchor>

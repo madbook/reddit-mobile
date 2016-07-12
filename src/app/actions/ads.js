@@ -1,12 +1,14 @@
-import { endpoints, models, requestUtils } from '@r/api-client';
+import { endpoints, models, requestUtils, errors } from '@r/api-client';
 import uniqueId from 'lodash/uniqueId';
 
+import config from 'config';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { PostsEndpoint } = endpoints;
 const { PostModel } = models;
 const { rawSend } = requestUtils;
+const { ResponseError } = errors;
 
 export const FETCHING = 'FETCHING_AD';
 export const fetching = (adId, postsListId) => ({
@@ -23,9 +25,10 @@ export const received = (adId, model) => ({
 });
 
 export const FAILED = 'FAILED_AD_FETCH';
-export const failed = adId => ({
+export const failed = (adId, error) => ({
   type: FAILED,
   adId,
+  error,
 });
 
 export const TRACKING_AD = 'TRACKING_AD';
@@ -105,7 +108,11 @@ export const fetchSpecificAd = async (dispatch, state, adId, specificAd) => {
     const ad = byIdRequest.getModelFromRecord(byIdRequest.results[0]);
     dispatch(received(adId, ad));
   } catch (e) {
-    dispatch(failed(adId));
+    if (e instanceof ResponseError) {
+      dispatch(failed(adId, e));
+    } else {
+      throw e;
+    }
   }
 };
 
@@ -133,7 +140,11 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     const ad = await getAd(apiOptionsFromState(state), data);
     dispatch(received(adId, ad));
   } catch (e) {
-    dispatch(failed(adId));
+    if (e instanceof ResponseError) {
+      dispatch(failed(adId, e));
+    } else {
+      throw e;
+    }
   }
 };
 
@@ -148,15 +159,22 @@ export const getAd = (apiOptions, data) => {
 
   return new Promise((resolve, reject) => {
     // why is this a post??
-    rawSend(apiOptions, 'post', '/api/request_promo.json', data, 'form', (err, res) => {
+    rawSend(apiOptions, 'post', config.adsPath, data, 'form', (err, res) => {
       if (!res || !res.body || res.status !== 200) {
-        reject(res);
-        return;
+        // throw ResponseErrors for consistency with api-client errors
+        return reject(new ResponseError(res, config.adsPath));
       }
 
-      const postJSON = res.body.data;
-      postJSON.url = postJSON.href_url;
-      resolve(PostModel.fromJSON(postJSON));
+      try {
+        const postJSON = res.body.data;
+        postJSON.url = postJSON.href_url;
+        resolve(PostModel.fromJSON(postJSON));
+      } catch (e) {
+        // assume that if there's an error in parsing the model, that's due
+        // to the api sending back a bad response. 1x and 3x both qualify
+        // this as a response error so we will too for consistency
+        reject(new ResponseError(e, config.adsPath));
+      }
     });
   });
 };

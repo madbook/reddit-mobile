@@ -8,16 +8,19 @@ import Server from '@r/platform/Server';
 import { dispatchInitialShell } from '@r/platform/plugins';
 import APIOptions from '@r/api-client';
 
-
+import config from 'config';
+import errorLog from 'lib/errorLog';
 import routes from 'app/router';
 import main from 'server/templates/main';
-import allReducers from 'app/reducers';
+import reducers from 'app/reducers';
+import reduxMiddleware from 'app/reduxMiddleware';
 import loginproxy from 'server/session/loginproxy';
 import logoutproxy from 'server/session/logoutproxy';
 import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
 import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
+import { dispatchInitialMeta } from 'server/initialState/dispatchInitialMeta';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 import { dispatchInitialRecentSubreddits } from 'server/initialState/dispatchInitialRecentSubreddits';
@@ -31,15 +34,43 @@ const assetFiles = KoaStatic('assets');
 
 const processes = process.env.PROCESSES || cpus().length;
 
-// set up the private API
+// If we miss catching an exception, format and log it before exiting the
+// process.
+process.on('uncaughtException', function (err) {
+  // errorLog will be console.logging the formatted output
+  errorLog({
+    error: err,
+    userAgent: 'SERVER',
+  }, {
+    hivemind: config.statsURL,
+  });
+
+  process.exit();
+});
+
+// Log promise rejection events as well, these are likely to be errors
+// in the api endpoints. Logging is better than 1x now that we're trying
+// harder to parse the error location and get the stack
+process.on('unhandledRejection', function(rejection) {
+  // errorLog will be console.logging the formatted output
+  errorLog({
+    rejection,
+    userAgent: 'SERVER',
+  }, {
+    hivemind: config.statsURL,
+  });
+});
+
+// Note: shhh, some of these things have to be here and never in
+// config.js because they're server only secrets.
 const ConfigedAPIOptions = {
   ...APIOptions,
   origin: 'https://www.reddit.com',
   oauthAppOrigin: 'https://m.reddit.com',
   clientId: process.env.SECRET_OAUTH_CLIENT_ID,
   clientSecret: process.env.OAUTH_SECRET,
-  servedOrigin: process.env.ORIGIN || 'http://localhost:8888',
-  statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
+  servedOrigin: process.env.ORIGIN || `http://localhost:${config.port}`,
+  statsURL: config.statsURL,
   actionNameSecret: process.env.ACTION_NAME_SECRET,
 };
 
@@ -47,9 +78,11 @@ export function startServer() {
   console.log(`Started server at PID ${process.pid}`);
   // Create and launch the server
   return Server({
+    port: config.port,
     routes,
     template: main,
-    reducers: allReducers,
+    reducers,
+    reduxMiddleware,
     dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
       dispatchInitialShell(ctx, dispatch);
       dispatchInitialLoid(ctx, dispatch);
@@ -57,6 +90,7 @@ export function startServer() {
       dispatchInitialTheme(ctx, dispatch);
       dispatchInitialCollapsedComments(ctx, dispatch);
       dispatchInitialCompact(ctx, dispatch);
+      dispatchInitialMeta(ctx, dispatch);
       dispatchInitialOver18(ctx, dispatch);
       dispatchInitialRecentSubreddits(ctx, dispatch);
     },

@@ -1,17 +1,29 @@
-import { endpoints } from '@r/api-client';
+import { endpoints, errors } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { SubredditEndpoint } = endpoints;
+const { ResponseError } = errors;
 
 export const FETCHING_SUBREDDIT = 'FETCHING_SUBREDDIT';
-export const fetching = name => ({ type: FETCHING_SUBREDDIT, name });
+export const fetching = name => ({
+  type: FETCHING_SUBREDDIT,
+  name,
+});
 
 export const RECEIVED_SUBREDDIT = 'RECEIVED_SUBREDDIT';
-export const received = (name, model) => ({ type: RECEIVED_SUBREDDIT, name, model });
+export const received = (name, model) => ({
+  type: RECEIVED_SUBREDDIT,
+  name,
+  model,
+});
 
-export const FAILED_SUBREDDIT = 'FAILED_SUBREDDIT';
-export const failed = name => ({ type: FAILED_SUBREDDIT, name });
+export const FAILED = 'FAILED_SUBREDDIT';
+export const failed = (name, error) => ({
+  type: FAILED,
+  name,
+  error,
+});
 
 export const fetchSubreddit = (name) => async (dispatch, getState) => {
   if (isFakeSubreddit(name)) { return; }
@@ -29,6 +41,10 @@ export const fetchSubreddit = (name) => async (dispatch, getState) => {
     const model = response.getModelFromRecord(response.results[0]);
     dispatch(received(name, model));
   } catch (e) {
-    dispatch(failed(name));
+    if (e instanceof ResponseError) {
+      dispatch(failed(name, e));
+    } else {
+      throw e;
+    }
   }
 };

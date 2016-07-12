@@ -32,7 +32,7 @@ createTest({ reducers: { preferences }}, ({ getStore, expect }) => {
       });
     });
 
-    describe('RECEIEVED', () => {
+    describe('RECEIVED', () => {
       it('should update the state with newest preferences object', () => {
         const { store } = getStore();
 

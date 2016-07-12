@@ -1,7 +1,7 @@
 import widgets from '@r/widgets/reducer';
 
-import accounts from './accounts';
 import accountRequests from './accountRequests';
+import accounts from './accounts';
 import activitiesRequests from './activitiesRequests';
 import adRequests from './adRequests';
 import autocompleteSubreddits from './autocompleteSubreddits';
@@ -9,10 +9,13 @@ import collapsedComments from './collapsedComments';
 import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
-import expandedPosts from './expandedPosts';
 import editingComment from './editingComment';
+import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
+import mail from './mail';
+import meta from './meta';
+import messages from './messages';
 import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
@@ -24,17 +27,15 @@ import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
+import subredditRequests from './subredditRequests';
 import subreddits from './subreddits';
 import subscribedSubreddits from './subscribedSubreddits';
-import subredditRequests from './subredditRequests';
 import theme from './theme';
 import unblurredPosts from './unblurredPosts';
 import user from './user';
 import visitedPosts from './visitedPosts';
-import wikis from './wikis';
 import wikiRequests from './wikiRequests';
-import mail from './mail';
-import messages from './messages';
+import wikis from './wikis';
 
 export default {
   accounts,
@@ -51,6 +52,7 @@ export default {
   hiddenRequests,
   loid,
   mail,
+  meta,
   messages,
   posting,
   posts,

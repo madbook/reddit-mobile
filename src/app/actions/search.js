@@ -1,8 +1,9 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints } from '@r/api-client';
+import { endpoints, errors } from '@r/api-client';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';
 
 const { SearchEndpoint } = endpoints;
+const { ResponseError } = errors;
 
 export const FETCHING_SEARCH_REQUEST = 'FETCHING_SEARCH_REQUEST';
 export const fetching = (id, params) => ({
@@ -12,7 +13,18 @@ export const fetching = (id, params) => ({
 });
 
 export const RECEIVED_SEARCH_REQUEST = 'RECEIVED_SEARCH_REQUEST';
-export const received = (id, apiResponse) => ({ type: RECEIVED_SEARCH_REQUEST, id, apiResponse });
+export const received = (id, apiResponse) => ({
+  type: RECEIVED_SEARCH_REQUEST,
+  id,
+  apiResponse,
+});
+
+export const FAILED = 'FAILED_SEARCH_REQUEST';
+export const failed = (id, error) => ({
+  type: FAILED,
+  id,
+  error,
+});
 
 export const search = searchParams => async (dispatch, getState) => {
   const state = getState();
@@ -23,6 +35,14 @@ export const search = searchParams => async (dispatch, getState) => {
 
   dispatch(fetching(id, searchParams));
 
-  const apiResponse = await SearchEndpoint.get(apiOptionsFromState(state), searchParams);
-  dispatch(received(id, apiResponse));
+  try {
+    const apiResponse = await SearchEndpoint.get(apiOptionsFromState(state), searchParams);
+    dispatch(received(id, apiResponse));
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(failed(id, e));
+    } else {
+      throw e;
+    }
+  }
 };

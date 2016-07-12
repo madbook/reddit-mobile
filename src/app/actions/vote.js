@@ -1,8 +1,21 @@
+import { models, errors } from '@r/api-client';
+const { ResponseError } = errors;
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { models } from '@r/api-client';
+
 
 export const VOTED = 'VOTED';
-export const voted = (id, model) => ({ type: VOTED, id, model });
+export const voted = (id, model) => ({
+  type: VOTED,
+  id,
+  model,
+});
+
+export const FAILED = 'VOTE_FAILED';
+export const voteFailed = (id, error) => ({
+  type: FAILED,
+  id,
+  error,
+});
 
 export const vote = (id, direction) => async (dispatch, getState) => {
   const state = getState();
@@ -17,5 +30,11 @@ export const vote = (id, direction) => async (dispatch, getState) => {
     dispatch(voted(id, resolved));
   } catch (e) {
     dispatch(voted(id, thing));
+
+    if (e instanceof ResponseError) {
+      dispatch(voteFailed(id, e));
+    } else {
+      throw e;
+    }
   }
 };

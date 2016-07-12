@@ -1,23 +1,24 @@
-import { endpoints } from '@r/api-client';
+import { endpoints, errors } from '@r/api-client';
+const { ResponseError } = errors;
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 export const FETCHING = 'MAIL__FETCHING';
-export const RECEIVED = 'MAIL__RECEIVED';
-export const FAILURE = 'MAIL__FAILURE';
-
 export const setInboxPending = mailType => ({
-  mailType,
   type: FETCHING,
+  mailType,
 });
 
+export const RECEIVED = 'MAIL__RECEIVED';
 export const setInboxSuccess = (mailType, apiResponse) => ({
+  type: RECEIVED,
   mailType,
   apiResponse,
-  type: RECEIVED,
 });
 
+export const FAILED = 'MAIL__FAILED';
 export const setInboxFailure = (mailType, error) => ({
+  type: FAILED,
   mailType,
   error,
 });
@@ -30,6 +31,10 @@ export const fetchInbox = mailType => async (dispatch, getState) => {
     const apiResponse = await endpoints.MessagesEndpoint.get(apiOptions, { type: mailType });
     dispatch(setInboxSuccess(mailType, apiResponse));
   } catch (e) {
-    dispatch(setInboxFailure(mailType, e));
+    if (e instanceof ResponseError) {
+      dispatch(setInboxFailure(mailType, e));
+    } else {
+      throw e;
+    }
   }
 };

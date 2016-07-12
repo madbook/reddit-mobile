@@ -37,7 +37,7 @@ export default function(state=DEFAULT, action={}) {
         },
       });
     }
-    case mailActions.FAILURE: {
+    case mailActions.FAILED: {
       const { mailType, error } = action;
       return merge(state, {
         [mailType]: {

@@ -1,20 +1,27 @@
-import { collections, models } from '@r/api-client';
+import { collections, models, errors } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { OVERLAY_MENU_PARAMETER, COMMUNITY_MENU } from './overlayMenu';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { SubscribedSubreddits } = collections;
 const { Subreddit } = models;
+const { ResponseError } = errors;
 
 export const FETCHING_SUBSCRIBED_SUBREDDITS = 'FETCHING_SUBSCRIBED_SUBREDDITS';
-
-export const fetching = () => ({ type: FETCHING_SUBSCRIBED_SUBREDDITS });
+export const fetching = () => ({
+  type: FETCHING_SUBSCRIBED_SUBREDDITS,
+});
 
 export const RECEIVED_SUBSCRIBED_SUBREDDITS = 'RECEIVED_SUBSCRIBED_SUBREDDITS';
-
 export const received = apiResponse => ({
   type: RECEIVED_SUBSCRIBED_SUBREDDITS,
   apiResponse,
+});
+
+export const FETCH_FAILED = 'FETCH_FAILED_SUBSCRIBED_SUBREDDITS';
+export const fetchFailed = error => ({
+  type: FETCH_FAILED,
+  error,
 });
 
 export const fetchSubscribedSubreddits = (onlyIfOverlay=false) => async (dispatch, getState) => {
@@ -31,12 +38,32 @@ export const fetchSubscribedSubreddits = (onlyIfOverlay=false) => async (dispatc
   if (subscribedSubreddits.fetching) { return; }
 
   dispatch(fetching());
-  const subscribedCollection = await SubscribedSubreddits.fetch(apiOptionsFromState(state));
-  dispatch(received(subscribedCollection.apiResponse));
+
+  try {
+    const subscribedCollection = await SubscribedSubreddits.fetch(apiOptionsFromState(state));
+    dispatch(received(subscribedCollection.apiResponse));
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(fetchFailed(e));
+    } else {
+      throw e;
+    }
+  }
 };
 
 export const TOGGLED_SUBSCRIPTION = 'TOGGLED_SUBSCRIPTION';
-export const toggled = (name, model) => ({ type: TOGGLED_SUBSCRIPTION, name, model });
+export const toggled = (name, model) => ({
+  type: TOGGLED_SUBSCRIPTION,
+  name,
+  model,
+});
+
+export const TOGGLE_FAILED = 'FAILED_TOGGLE_SUBSCRIPTION';
+export const failedToggle = (name, error) => ({
+  type: TOGGLE_FAILED,
+  name,
+  error,
+});
 
 export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) => {
   // we take the fullName and isSubscriber so we don't have to make any api calls
@@ -60,8 +87,12 @@ export const toggleSubscription = ({ subredditName, fullName, isSubscriber }) =>
     } catch (e) {
       // update back to the old state since the api call failed
       dispatch(toggled(subredditName, subreddit));
-    }
 
-    // todo redirect based on referrer;
+      if (e instanceof ResponseError) {
+        dispatch(failedToggle(subredditName, e));
+      } else {
+        throw e;
+      }
+    }
   };
 };

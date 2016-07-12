@@ -1,7 +1,7 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints } from '@r/api-client';
-
+import { endpoints, errors } from '@r/api-client';
 const { PreferencesEndpoint } = endpoints;
+const { ResponseError } = errors;
 
 export const PENDING = 'PENDING_PREFERENCES';
 export const pending = () => ({
@@ -33,7 +33,11 @@ export const fetch = () => async (dispatch, getState) => {
     const preferences = await PreferencesEndpoint.get(apiOptionsFromState(state));
     dispatch(received(preferences));
   } catch (e) {
-    dispatch(failed(e));
+    if (e instanceof ResponseError) {
+      dispatch(failed(e));
+    } else {
+      throw e;
+    }
   }
 };
 
@@ -52,7 +56,11 @@ export const patch = changes => async (dispatch, getState) => {
       apiOptionsFromState(state), changes);
     dispatch(received(updatedPreferences));
   } catch (e) {
-    dispatch(failed(e));
+    if (e instanceof ResponseError) {
+      dispatch(failed(e));
+    } else {
+      throw e;
+    }
   }
 };
 

@@ -33,7 +33,6 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
     });
 
     describe('FETCHING_COMMENTS_PAGE', () => {
-
       const COMMENTS_PAGE_ID = COMMENTS_PAGE_ID;
       const POST_ID = 't3_12345';
 
@@ -51,7 +50,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
           commentsPages: { [COMMENTS_PAGE_ID]: CACHED_COMMENTS_PAGE },
         });
 
-        store.dispatch(commentsPageActions.fetchingCommentsPage(
+        store.dispatch(commentsPageActions.fetching(
           COMMENTS_PAGE_ID,
           { id: POST_ID },
         ));
@@ -62,7 +61,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
 
       it('should add a new commentsPage to the store', () => {
         const { store } = getStore();
-        store.dispatch(commentsPageActions.fetchingCommentsPage(
+        store.dispatch(commentsPageActions.fetching(
           COMMENTS_PAGE_ID,
           { id: POST_ID },
         ));
@@ -81,7 +80,6 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
     });
 
     describe('RECEIVED_COMMENTS_PAGE', () => {
-
       const COMMENTS_PAGE_ID = '1';
       const POST_ID = 't3_12345';
 
