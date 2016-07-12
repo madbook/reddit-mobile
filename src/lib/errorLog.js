@@ -32,6 +32,8 @@ function simpleUA(agent) {
   return 'unknownClient';
 }
 
+const isAPIFailure = details => (details.error && details.error instanceof ResponseError);
+
 function formatLog(details) {
   if (!details) { return; }
 
@@ -42,12 +44,11 @@ function formatLog(details) {
     line,
     column,
     requestUrl,
-    error,
   } = details;
 
   const errorString = [userAgent || 'UNKNOWN'];
 
-  if (error instanceof ResponseError) {
+  if (isAPIFailure(details)) {
     errorString.push('API REQUEST FAILURE');
   }
 
@@ -80,12 +81,10 @@ function errorLog(details, errorEndpoints, config={}) {
     sendErrorLog(formattedLog, errorEndpoints.log);
   }
 
-  const isAPIFailure = details.error && details.error instanceof ResponseError;
-
   // send to statsd
   if (errorEndpoints.hivemind) {
     const ua = simpleUA(details.userAgent || '');
-    hivemind(ua, errorEndpoints.hivemind, isAPIFailure);
+    hivemind(ua, errorEndpoints.hivemind, isAPIFailure(details));
   }
 
   // log to winston, soon
