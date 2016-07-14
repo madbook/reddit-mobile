@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@r/api-client": "~3.16.0",
-    "@r/build": "^0.6.0",
+    "@r/build": "^0.7.1",
     "@r/flags": "^1.5.0",
     "@r/middleware": "~0.8.0",
     "@r/platform": "~0.9.0",
