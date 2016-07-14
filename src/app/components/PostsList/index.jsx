@@ -102,7 +102,7 @@ const listSelector = createSelector(
   (_, props) => props.nextUrl,
   (_, props) => props.prevUrl,
   (postsList, posts, adRequest, nextUrl, prevUrl) => ({
-    loading: postsList && postsList.loading,
+    loading: !!postsList && postsList.loading,
     postRecords: postsList ? postsList.results.filter(p => !posts[p.uuid].hidden) : [],
     ad: isAdLoaded(adRequest) ? adRequest.ad : '',
     adId: isAdLoaded(adRequest) ? adRequest.adId : '',
