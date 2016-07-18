@@ -26,6 +26,11 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
+      // NOTE: It's very important that this is the root domain and not any
+      // subdomain for the cookie being set below. If it's set on a subdomain,
+      // than desktop won't be able to read and respect the cookie. Since the
+      // default behavior on desktop is to redirect mobile users to mweb, this
+      // will result in a redirect loop.
       const domain = `.${window.bootstrap.config.reddit}`
         .match(/https?:\/\/(.+)/)[1]
         .split('.')

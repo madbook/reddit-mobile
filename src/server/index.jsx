@@ -9,6 +9,7 @@ import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 import csrf from 'koa-csrf';
 import compress from 'koa-compress';
+import urlParser from 'url';
 
 import koasession from 'koa-session';
 import StatsdClient from 'statsd-client';
@@ -216,6 +217,7 @@ class Server {
       server.use(koaStatic(`${__dirname}/../../build`));
     }
 
+    server.use(this.checkForDesktopRedirect(app));
     server.use(this.checkToken(app));
     server.use(this.convertSession(app));
     server.use(this.setLOID(app));
@@ -446,6 +448,24 @@ class Server {
         yield next;
       }
 
+      yield next;
+    };
+  }
+
+  checkForDesktopRedirect (app) {
+    return function * (next) {
+      // This cookie name is a little confusing since it's a vestige of a
+      // desktop experiment. This is saying, "don't redirect to mweb from
+      // desktop". From mweb's perspective, if this is true, we want to
+      // redirect to desktop.
+      const noMweb = this.cookies.get('mweb-no-redirect');
+      const url = urlParser.parse(this.request.href);
+      const subdomain = url.host.split('.')[0];
+      if (noMweb && subdomain === 'm') {
+        const desktopUrl = app.config.reddit + url.path;
+        this.redirect(desktopUrl);
+        return;
+      }
       yield next;
     };
   }
