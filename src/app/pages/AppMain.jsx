@@ -15,6 +15,7 @@ import Messages from 'app/components/Messages';
 import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
 import Report from 'app/components/Report';
+import Status404Page from 'app/components/Status404Page';
 
 export const AppMainPage = () => (
   <UrlSwitch>
@@ -55,5 +56,6 @@ export const AppMainPage = () => (
     <Page url='/message/compose' component={ DirectMessage } />
     <Page url='/message/:mailType' component={ Messages } />
     <Page url='/report' component={ Report } />
+    <Page url='*' component={ Status404Page } />
   </UrlSwitch>
 );

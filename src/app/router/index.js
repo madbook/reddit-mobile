@@ -17,6 +17,7 @@ import Messages from './handlers/Messages';
 import Vote from './handlers/Vote';
 import WikiPageHandler from './handlers/WikiPage';
 import { PostSubmitHandler, PostSubmitCommunityHandler } from './handlers/PostSubmit';
+import Status404PageHandler from './handlers/Status404Page';
 
 export default [
   ['/', PostsFromSubredditHandler],
@@ -51,4 +52,5 @@ export default [
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
   ['/actions/setOver18', SetOver18Handler],
   ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler],
+  ['*', Status404PageHandler],
 ];
