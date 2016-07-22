@@ -29,9 +29,7 @@ import metaRoutes from 'server/meta';
 import dispatchInitialCollapsedComments from
   'server/initialState/dispatchInitialCollapsedComments';
 
-const binFiles = KoaStatic('bin');
-const assetFiles = KoaStatic('assets');
-
+const buildFiles = KoaStatic('build');
 const processes = process.env.PROCESSES || cpus().length;
 
 // If we miss catching an exception, format and log it before exiting the
@@ -95,8 +93,7 @@ export function startServer() {
       dispatchInitialRecentSubreddits(ctx, dispatch);
     },
     preRouteServerMiddleware: [
-      binFiles,
-      assetFiles,
+      buildFiles,
     ],
     getServerRouter: router => {
       // private routes for login, logout, register, and token refresh

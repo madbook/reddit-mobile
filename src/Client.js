@@ -80,7 +80,7 @@ const client = Client({
     return data;
   },
   appComponent: <App/>,
-  debug: true,
+  debug: (process.env.NODE_ENV || 'production') !== 'production',
 })();
 
 client.dispatch(actions.activateClient());
