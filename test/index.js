@@ -35,6 +35,7 @@ require('./src/featureflags');
 global.document = {};
 
 // components
+require('./views/components/GoogleCarouselMetadata');
 require('./views/components/Modal');
 
 // components -> listings

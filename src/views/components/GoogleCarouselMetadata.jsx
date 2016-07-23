@@ -4,6 +4,31 @@ import has from 'lodash/object/has';
 
 import mobilify from '../../lib/mobilify';
 import propTypes from '../../propTypes';
+import url from 'url';
+
+export function isRedditDomain (hostname) {
+  return hostname.endsWith('reddit.com');
+}
+
+/*
+ * Adds UTM parameters to track inbound links from search engines.
+ */
+export function addUtmTracking (url_string) {
+  if (!url_string) {
+    return url_string;
+  }
+
+  const urlObject = url.parse(url_string, true);
+  if (!isRedditDomain(urlObject.hostname)) {
+    return url_string;
+  }
+
+  urlObject.query.utm_source = 'search';
+  urlObject.query.utm_medium = 'structured_data';
+  // node.url re-uses search string instead of query object if it exists
+  delete urlObject.search;
+  return url.format(urlObject);
+}
 
 function formatComments (comments, origin) {
   return comments.filter(c => c && c.author).map(function(c) {
@@ -47,7 +72,7 @@ function GoogleCarouselMetadata (props) {
   const baseObject = {
     '@context': 'http://schema.org',
     '@type': 'DiscussionForumPosting',
-    url: origin + props.url,
+    url: addUtmTracking(origin + props.url),
     headline: listing.title,
     datePublished: published.format(),
     author: {
@@ -81,7 +106,7 @@ function GoogleCarouselMetadata (props) {
     }
   } else {
     baseObject.sharedContent = {
-      url: mobilify(listing.url, origin),
+      url: addUtmTracking(mobilify(listing.url, origin)),
     };
 
     if (has(listing, 'preview.images.0.source.url')) {
