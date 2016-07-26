@@ -90,6 +90,8 @@ function trackingEvents(app) {
 
   function testAdblock() {
     const el = document.getElementById('adblock-test');
+    if (!el) { return true; }
+
     const rect = el.getBoundingClientRect();
 
     if (!rect.height || !rect.width) {
@@ -243,10 +245,15 @@ function trackingEvents(app) {
   }
 
   function getAdsBasePlayload(props) {
+    // Don't send the adblock parameter unless its a page we show ads on.
+    // Pages that don't have adsEnabled set to true won't have the adblock-test
+    // div anyway so the result of that test wouldn't be helpful.
+    const adBlock = props.adsEnabled ? { adBlock: testAdblock() } : {};
+
     return {
       dnt: !!window.DO_NOT_TRACK,
-      adblock: testAdblock(),
       compact_view: props.compact,
+      ...adBlock,
     };
   }
 
