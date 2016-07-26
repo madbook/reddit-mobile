@@ -73,11 +73,6 @@ class BodyLayout extends BasePage {
 
   renderAdCode = () => {
     const { adsEnabled, app, ctx, subredditName } = this.props;
-
-    if (!adsEnabled) {
-      return null;
-    }
-
     const { mediaDomain, googleTagManagerId, adblockTestClassName } = app.config;
     const adblockStyles = {
       height: '1px',
@@ -85,20 +80,30 @@ class BodyLayout extends BasePage {
       position: 'absolute',
       left: '-1000%',
     };
+    const adCode = [
+      <div
+        id="adblock-test"
+        key="adblock"
+        className={ adblockTestClassName }
+        style={ adblockStyles }
+      />,
+    ];
 
-    return (
-      <div>
-        <div
-          id="adblock-test"
-          className={ adblockTestClassName }
-          style={ adblockStyles }
-        />
+    if (adsEnabled && googleTagManagerId) {
+      adCode.push(
         <GoogleTagManager
+          key="gtm"
           nonce={ ctx.csrf }
           mediaDomain={ mediaDomain }
           googleTagManagerId={ googleTagManagerId }
           subredditName={ subredditName }
         />
+      );
+    }
+
+    return (
+      <div>
+        { adCode }
       </div>
     );
   }
