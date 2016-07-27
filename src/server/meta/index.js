@@ -54,6 +54,10 @@ export default (router, apiOptions) => {
     ctx.type = 'application/json';
   });
 
+  router.get('/health', (ctx) => {
+    ctx.body = 'OK';
+  });
+
   router.get('/robots.txt', (ctx) => {
     ctx.body = `
       # 80legs
