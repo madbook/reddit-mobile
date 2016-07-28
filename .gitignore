@@ -1,5 +1,6 @@
 *.swp
 ~*
+assets/fonts/
 node_modules/
 npm-debug.log
 start.sh
