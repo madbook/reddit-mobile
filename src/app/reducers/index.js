@@ -27,6 +27,7 @@ import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
+import scrollPositions from './scrollPositions';
 import subredditRequests from './subredditRequests';
 import subreddits from './subreddits';
 import subscribedSubreddits from './subscribedSubreddits';
@@ -65,6 +66,7 @@ export default {
   searchRequests,
   session,
   sessionRefresing,
+  scrollPositions,
   subreddits,
   subscribedSubreddits,
   subredditRequests,
