@@ -13,8 +13,14 @@ export default (router, apiOptions) => {
       writeSessionToResponse(ctx, data);
     } catch (e) {
       console.log(e);
-      console.log(e.stack);
-      ctx.throw(401, 'Incorrect username or password');
+      let errormsg = 'UNKNOWN_ERROR';
+
+      // A little unfortunate looking, but this is how the response looks
+      if (Array.isArray(e) && Array.isArray(e[0]) && !!e[0][0]) {
+        errormsg = e[0][0];
+      }
+      // TODO: figure out how to get this to return json content type
+      ctx.throw(401, JSON.stringify({error: errormsg}));
     }
   });
 };

@@ -19,6 +19,9 @@ export default class Login extends BaseHandler {
       dispatch(loginActions.loggedIn());
       dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
     } catch (e) {
+      const error = JSON.parse(e);
+      dispatch(sessionActions.sessionError(error.error));
+
       return; // do nothing until session is better
     }
   }

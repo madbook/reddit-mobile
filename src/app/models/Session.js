@@ -6,7 +6,7 @@ const fetchLogin = (username, password) => new Promise((resolve, reject) => {
     .post('/loginproxy')
     .send({ username, password })
     .end((err, res) => {
-      if (err || !res.body) { return reject(err); }
+      if (err || !res.body) { return reject(res.text); }
       resolve(res.body);
     });
 });

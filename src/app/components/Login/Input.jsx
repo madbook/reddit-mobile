@@ -6,7 +6,7 @@ import cx from 'lib/classNames';
 const T = React.PropTypes;
 
 function LoginInput(props) {
-  const { showTopBorder, name, type, placeholder, error, children } = props;
+  const { showTopBorder, name, type, placeholder, error, onChange, value, children } = props;
   const inputClasses = cx('LoginInput__input', {
     'error': !!error,
     'show-top': showTopBorder,
@@ -18,11 +18,13 @@ function LoginInput(props) {
       <div className='LoginInput'>
         <label htmlFor={ name } className='hidden'/>
         <input
-          id={ name }
-          name={ name }
-          type={ type }
           className={ inputClasses }
+          id={ name }
+          onChange={ onChange }
+          name={ name }
           placeholder={ placeholder }
+          type={ type }
+          value={ value }
         />
         { children }
       </div>
@@ -32,16 +34,18 @@ function LoginInput(props) {
 }
 
 LoginInput.propTypes = {
+  error: T.string,
   name: T.string.isRequired,
-  type: T.string,
+  onChange: T.func,
   placeholder: T.string.isRequired,
   showTopBorder: T.bool,
-  error: T.string,
+  type: T.string,
+  value: T.string.isRequired,
 };
 
 LoginInput.defaultProps = {
-  type: 'text',
   showTopBorder: false,
+  type: 'text',
 };
 
 export default LoginInput;

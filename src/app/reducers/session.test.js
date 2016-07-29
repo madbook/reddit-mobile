@@ -14,5 +14,15 @@ createTest({ reducers: { session } }, ({ getStore, expect }) => {
         expect(session).to.eql({ expires: null });
       });
     });
+
+    describe('SESSION_ERROR', () => {
+      it('should set the session error', () => {
+        const { store } = getStore();
+        store.dispatch(sessionActions.sessionError('SNOO_WAS_HERE'));
+
+        const { session } = store.getState();
+        expect(session).to.eql({ error: 'SNOO_WAS_HERE' });
+      });
+    });
   });
 });
