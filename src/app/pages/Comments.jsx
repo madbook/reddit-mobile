@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { some } from 'lodash/collection';
+import * as navigationActions from '@r/platform/actions';
+import { METHODS } from '@r/platform/router';
 
 import { flags } from 'app/constants';
 import { featuresSelector } from 'app/selectors/features';
@@ -20,11 +22,11 @@ const {
   VARIANT_NEXTCONTENT_BOTTOM,
 } = flags;
 
-const commentsPageSelector = createSelector(
+const stateProps = createSelector(
   (state, props) => props,
-  (state) => state.commentsPages,
-  (state) => state.posts,
-  (state) => state.platform.currentPage,
+  state => state.commentsPages,
+  state => state.posts,
+  state => state.platform.currentPage,
   featuresSelector,
   (pageProps, commentsPages, posts, currentPage, feature) => {
     const commentsPageParams = CommentsPageHandler.pageParamsToCommentsPageParams(pageProps);
@@ -53,7 +55,33 @@ const commentsPageSelector = createSelector(
   },
 );
 
-export const CommentsPage = connect(commentsPageSelector)((props) => {
+const dispatchProps = dispatch => ({
+  navigateToUrl(url, query) {
+    dispatch(navigationActions.navigateToUrl(METHODS.GET, url, query));
+  },
+});
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { currentPage, currentPage: { queryParams } } = stateProps;
+  const { navigateToUrl } = dispatchProps;
+
+  const onSortChange = sort => {
+    navigateToUrl(currentPage.url, {
+      queryParams: {
+        ...queryParams,
+        sort,
+      },
+    });
+  };
+
+  return {
+    ...stateProps,
+    ...ownProps,
+    onSortChange,
+  };
+};
+
+export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props => {
   const {
     commentsPage,
     commentsPageParams,
@@ -63,6 +91,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
     currentPage,
     replying,
     feature,
+    onSortChange,
   } = props;
 
   return (
@@ -76,6 +105,7 @@ export const CommentsPage = connect(commentsPageSelector)((props) => {
             replying={ replying }
             currentPage={ currentPage }
             id={ commentsPageParams.id }
+            onSortChange={ onSortChange }
           />,
         ]
       }

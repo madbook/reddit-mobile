@@ -21,20 +21,22 @@ const sidebarOrLoginLink = (rightLink, hasUser) => {
   }
 
   if (!hasUser) {
-    // TODO: need to get config set up in a reducer somewhere
     return subnavRightLink('/login', 'Log in / Register');
   }
 };
 
 export const SubNav = props => {
-  const { user, rightLink, showWithoutUser } = props;
+  const { user, rightLink, showWithoutUser, children } = props;
 
-  if (user && !(rightLink && showWithoutUser)) {
+  if (user && !(rightLink && showWithoutUser) && !children) {
     return null;
   }
 
   return (
     <nav className='SubNav'>
+      <div className='SubNav__leftContent'>
+        { children }
+      </div>
       <div className='SubNav__navLink'>
         { sidebarOrLoginLink(rightLink, !!user) }
       </div>

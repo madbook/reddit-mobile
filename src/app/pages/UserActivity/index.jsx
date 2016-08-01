@@ -4,6 +4,8 @@ import { createSelector } from 'reselect';
 
 import { UserProfileHeader } from 'app/components/UserProfileHeader';
 import PostAndCommentList from 'app/components/PostAndCommentList';
+import SortAndTimeSelector from 'app/components/SortAndTimeSelector';
+
 import { Section } from '../UserProfile';
 
 import { userAccountSelector } from 'app/selectors/userAccount';
@@ -40,6 +42,7 @@ export const UserActivityPage = connect(mapStateToProps)(props => {
           currentActivity={ currentActivity }
         />
       </Section>
+      <SortAndTimeSelector className='UserProfilePage__sorts' />
       <PostAndCommentList
         requestLocation='activitiesRequests'
         requestId={ activitiesId }

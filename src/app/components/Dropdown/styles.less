@@ -3,10 +3,16 @@
 
 .Dropdown {
   width: 600px;
-
+  
   .themeify({
     border: @theme-border;
   });
+
+  &__arrow {
+    .themeify({
+      border-bottom-color: @theme-body-color !important; // tool tip uses inline-styles
+    });
+  }
 }
 
 .DropdownRow,
@@ -36,18 +42,44 @@
     width: 50px;
     text-align: center;
 
+    &.m-selected {
+      color: @blue;
+    }
+
+    &.icon-check-circled.m-selected {
+      color: @lime;
+    }
+
     &.icon-link {
       font-size: 36px;
     }
 
-    &.icon-snoosilhouette,
-    &.icon-user-account,
-    &.icon-save,
-    &.icon-hide,
-    &.icon-flag,
+    &.icon-check-circled,
     &.icon-delete_remove,
-    &.icon-posts {
+    &.icon-flag,
+    &.icon-hide,
+    &.icon-history,
+    &.icon-new,
+    &.icon-posts,
+    &.icon-save,
+    &.icon-snoosilhouette,
+    &.icon-user-account {
       font-size: 22px;
+    }
+
+    &.icon-bar-chart,
+    &.icon-hot,
+    &.icon-op {
+      font-size: 21px;
+    }
+
+    &.icon-karma {
+      font-size: 28px;
+    }
+
+    &.icon-circle {
+      font-size: 20px;
+      color: @pale-grey;
     }
 
     &.icon-save {

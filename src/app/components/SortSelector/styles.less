@@ -1,0 +1,51 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.SortSelector {
+  display: inline-block;
+
+  & + & {
+    margin-left: 2 * @grid-size;
+  }
+
+  &__currentIcon,
+  &__currentText,
+  &__currentCaron {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  &__currentIcon {
+    width: 3 * @grid-size;
+  }
+
+  &__currentText {
+    color: @grey-text;
+    padding-right: @grid-size;
+  }
+
+  &__currentCaron {
+    color: @grey-text;
+  }
+
+  &__title {
+    padding: @grid-size @grid-size 0;
+    font-size: 10px;
+    line-height: 3 * @grid-size;
+    letter-spacing: 1.5;
+    font-weight: bold;
+
+    .themeify({
+      background-color: @theme-body-color;
+      color: @theme-meta-text-color;
+    });
+  }
+
+  &__title-separator {
+    margin-top: @grid-size;
+
+    .themeify({
+      border-top: @theme-alt-border;
+    });
+  }
+}

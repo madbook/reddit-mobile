@@ -21,86 +21,86 @@ export const SORTS = {
 export const SORT_VALUES_MAP = {
   [SORTS.CONFIDENCE]: {
     text: 'Best',
-    icon: 'icon-hot',
+    icon: 'hot',
   },
 
   [SORTS.HOT]: {
     text: 'Hot',
-    icon: 'icon-hot',
+    icon: 'hot',
   },
 
   [SORTS.NEW]: {
     text: 'New',
-    icon: 'icon-new',
+    icon: 'new',
   },
 
   [SORTS.RISING]: {
     text: 'Rising',
-    icon: 'icon-hot',
+    icon: 'hot',
   },
 
   [SORTS.TOP]: {
     text: 'Top',
-    icon: 'icon-bar-chart',
+    icon: 'bar-chart',
   },
 
   [SORTS.CONTROVERSIAL]: {
     text: 'Controversial',
-    icon: 'icon-controversial',
+    icon: 'controversial',
   },
 
   [SORTS.OLD]: {
     text: 'Old',
-    icon: 'icon-text',
+    icon: 'text',
   },
 
   [SORTS.QA]: {
     text: 'Q&A',
-    icon: 'icon-op',
+    icon: 'op',
   },
 
   [SORTS.GILDED]: {
     text: 'Gilded',
-    icon: 'icon-gold',
+    icon: 'gold',
   },
 
   [SORTS.RELEVANCE]: {
     text: 'Relevance',
-    icon: 'icon-bar-chart',
+    icon: 'bar-chart',
   },
 
   [SORTS.COMMENTS]: {
     text: 'Comments',
-    icon: 'icon-comments',
+    icon: 'comments',
   },
 
   [SORTS.ALL_TIME]: {
     text: 'All Time',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 
   [SORTS.PAST_YEAR]: {
     text: 'Past Year',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 
   [SORTS.PAST_MONTH]: {
     text: 'Past Month',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 
   [SORTS.PAST_WEEK]: {
     text: 'Past Week',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 
   [SORTS.PAST_DAY]: {
     text: 'Past Day',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 
   [SORTS.PAST_HOUR]: {
     text: 'Past Hour',
-    icon: 'icon-circle',
+    icon: 'circle',
   },
 };

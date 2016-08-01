@@ -39,7 +39,6 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
-
   async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (state.platform.shell) { return; }

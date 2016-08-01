@@ -18,7 +18,7 @@ const searchPath = (subredditOrNil) => {
 };
 
 const SORT = 'sort';
-const TIME = 'time';
+const TIME = 't';
 const TYPE = 'type';
 
 const DEFUALT_PARAMS = {
@@ -50,12 +50,12 @@ export default class SearchPage extends BaseHandler {
   static pageParamsToSearchRequestParams({ urlParams, queryParams }) {
     const { q, after, before } = queryParams;
     const sort = getDefaultable(SORT, queryParams);
-    const time = getDefaultable(TIME, queryParams);
+    const t = getDefaultable(TIME, queryParams);
     const type = getDefaultable(TYPE, queryParams);
     const { subredditName } = urlParams;
 
     return cleanObject({
-      q, after, before, sort, time, type, subreddit: subredditName,
+      q, after, before, sort, t, type, subreddit: subredditName,
     });
   }
 

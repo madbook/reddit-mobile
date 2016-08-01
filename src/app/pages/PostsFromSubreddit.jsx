@@ -6,6 +6,7 @@ import CommunityHeader from 'app/components/CommunityHeader';
 import Loading from 'app/components/Loading';
 import PostsList from 'app/components/PostsList';
 import NSFWInterstitial from 'app/components/NSFWInterstitial';
+import SortAndTimeSelector from 'app/components/SortAndTimeSelector';
 import SubNav from 'app/components/SubNav';
 
 import PostsFromSubredditHandler from 'app/router/handlers/PostsFromSubreddit';
@@ -22,6 +23,7 @@ const mapStateToProps = createSelector(
     const postsListParams = PostsFromSubredditHandler.pageParamsToSubredditPostsParams(pageProps);
     const postsListId = paramsToPostsListsId(postsListParams);
     const { subredditName } = postsListParams;
+
     return {
       postsListId,
       postsList: postsLists[postsListId],
@@ -34,7 +36,14 @@ const mapStateToProps = createSelector(
 
 // props is pageData
 export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
-  const { postsListId, postsList, subredditName, subreddit, preferences } = props;
+  const {
+    postsListId,
+    postsList,
+    subredditName,
+    subreddit,
+    preferences,
+  } = props;
+
   const renderSubnav = !!postsList && !postsList.loading;
   const forFakeSubreddit = isFakeSubreddit(subredditName);
   const subnavLink = forFakeSubreddit ? null : {
@@ -76,7 +85,9 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
         <SubNav
           rightLink={ subnavLink }
           showWithoutUser={ true }
-        /> }
+        >
+          <SortAndTimeSelector />
+        </SubNav> }
       <PostsList
         postsListId={ postsListId }
         subredditIsNSFW={ !!subreddit && subreddit.over18 }

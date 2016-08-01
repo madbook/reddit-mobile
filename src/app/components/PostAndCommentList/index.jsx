@@ -56,7 +56,7 @@ const PostsCommentsAndPagination = props => {
   return (
     <div>
       { records.map(renderRecord) }
-      { records.length && <PaginationButtons records={ records } /> }
+      { records.length > 0 && <PaginationButtons records={ records } /> }
     </div>
   );
 };

@@ -13,6 +13,8 @@ import CommunityRow from 'app/components/CommunityRow';
 import PaginationButtons from 'app/components/PaginationButtons';
 import Loading from 'app/components/Loading';
 import { PostsList } from 'app/components/PostsList';
+import SortAndTimeSelector from 'app/components/SortAndTimeSelector';
+
 // This is intentionally the non-connected version because search requests aren't loaded in the same
 // way as subreddit listings
 
@@ -134,35 +136,7 @@ const linksHeader = (/*sort, time*/) => (
   <div className='SearchPage__linksHeader clearfix'>
   <div className='SearchPage__linksHeaderTitle'>Posts</div>
   <div className='SearchPage__linksHeaderTools'>
-    <div className='SearchPage__linksHeaderSort'>
-      {/*<SortSelector
-        app={ app }
-        sortValue={ sort }
-        sortOptions={ [
-          SORTS.RELEVANCE,
-          SORTS.HOT,
-          SORTS.NEW,
-          SORTS.TOP,
-          SORTS.COMMENTS,
-        ] }
-        onSortChange={ this.handleSortChange }
-      />*/}
-    </div>
-    <div className='SearchPage__linksHeaderSort'>
-      {/*<SortSelector
-        app={ app }
-        sortValue={ time }
-        sortOptions={ [
-          SORTS.ALL_TIME,
-          SORTS.PAST_YEAR,
-          SORTS.PAST_MONTH,
-          SORTS.PAST_WEEK,
-          SORTS.PAST_DAY,
-          SORTS.PAST_HOUR,
-        ] }
-        onSortChange={ this.handleTimeChange }
-      />*/}
-    </div>
+    <SortAndTimeSelector />
   </div>
 </div>
 );

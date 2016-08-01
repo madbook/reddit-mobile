@@ -5,6 +5,7 @@ import { SORTS } from 'app/sortValues';
 import { POSTS_ACTIVITY } from 'app/actions/activities';
 import * as activitiesActions from 'app/actions/activities';
 import { fetchUserBasedData } from './handlerCommon';
+import { listingTime } from 'lib/listingTime';
 import { urlWith } from 'lib/urlWith';
 
 export default class UserActivityHandler extends BaseHandler {
@@ -15,10 +16,12 @@ export default class UserActivityHandler extends BaseHandler {
   static pageParamsToActivitiesParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
     const { sort=SORTS.CONFIDENCE, activity=POSTS_ACTIVITY, before, after } = queryParams;
+    const t = listingTime(queryParams, sort);
 
     return cleanObject({
       user: userName,
       sort,
+      t,
       activity,
       before,
       after,
