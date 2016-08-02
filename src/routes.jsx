@@ -131,6 +131,8 @@ export function buildProps(ctx, app) {
     showEUCookieMessage: ctx.showEUCookieMessage,
     showGlobalMessage: ctx.showGlobalMessage,
     country: ctx.country,
+    // Default canonical path is the same as the m.reddit.com path
+    canonicalPath: ctx.url,
   };
 
   ctx.props.apiOptions = buildAPIOptions(ctx);
@@ -354,6 +356,12 @@ function routes(app) {
     const sort = this.query.sort || SORTS.HOT;
     const time = listingTime(this.query, sort);
 
+    if (this.url.endsWith('/')) {
+      props.canonicalPath = this.url;
+    } else {
+      props.canonicalPath = `${this.url}/`;
+    }
+
     this.preServerRender = function indexPagePreRender() {
       // If we're on a next/prev for an invalid thing_id, so that no results are
       // sent back, we have a stale cache. Redirect back to the first page of
@@ -473,7 +481,22 @@ function routes(app) {
       id: `t3_${ctx.params.listingId}`,
     });
 
-    props.data.set('listing', app.api.links.get(listingOpts));
+    const listingPromise = app.api.links.get(listingOpts);
+    props.data.set('listing', listingPromise);
+
+    // For the canonical path, we need the subreddit, listing ID, and listing title.
+    if (ctx.params.subreddit && ctx.params.listingTitle && ctx.params.listingId) {
+      const { subreddit, listingTitle, listingId } = ctx.params;
+      props.canonicalPath = `/r/${subreddit}/comments/${listingId}/${listingTitle}/`;
+    } else {
+      const canonical = listingPromise.then(listing => {
+        const { permalink } = listing;
+        props.canonicalPath = permalink;
+      });
+      // Make sure this promise is part of the super-promise used by
+      // horse-react/server for rendering the page.
+      props.data.set('canonical', canonical);
+    }
 
     const relevantPromise = featureWithUserContext(props).then(feature => {
       if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP) ||
@@ -534,6 +557,7 @@ function routes(app) {
              '/r/:subreddit/comments/:listingId/:listingTitle?', commentsPage);
 
   router.get('subreddit.about', '/r/:subreddit/about', function *() {
+    this.props.canonicalPath = `/r/${this.params.subreddit}/`;
     this.body = makeBody(SubredditAboutPage);
   });
 
@@ -608,6 +632,8 @@ function routes(app) {
   router.get('user.profile', '/u/:user', function *() {
     const ctx = this;
 
+    this.props.canonicalPath = `/user/${ctx.params.user}/`;
+
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
     this.props.topNavLink = `/u/${ctx.params.user}`;
@@ -630,6 +656,8 @@ function routes(app) {
   router.get('user.gild', '/u/:user/gild', function *() {
     const ctx = this;
 
+    this.props.canonicalPath = `/user/${ctx.params.user}/`;
+
     this.props.userName = ctx.params.user;
     this.props.title = `about u/${ctx.params.user}`;
     this.props.metaDescription = `about u/${ctx.params.user} on reddit.com`;
@@ -647,6 +675,8 @@ function routes(app) {
     const sort = this.query.sort || SORTS.CONFIDENCE;
     const activity = this.query.activity || 'comments';
     const ctx = this;
+
+    this.props.canonicalPath = `/user/${ctx.params.user}/`;
 
     Object.assign(this.props, {
       activity,
@@ -752,10 +782,12 @@ function routes(app) {
   }
 
   router.get('saved', '/u/:user/saved', function * () {
+    this.props.canonicalPath = `/user/${this.params.user}/saved/`;
     yield saved.call(this, false);
   });
 
   router.get('hidden', '/u/:user/hidden', function * () {
+    this.props.canonicalPath = `/user/${this.params.user}/hidden/`;
     yield saved.call(this, true);
   });
 
