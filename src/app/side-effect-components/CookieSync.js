@@ -1,6 +1,6 @@
 import { makeCookieArchiver } from '@r/redux-state-archiver';
 
-export const CookieSync = makeCookieArchiver(
+export default makeCookieArchiver(
   state => state.theme,
   state => state.compact,
   state => state.preferences.over18,

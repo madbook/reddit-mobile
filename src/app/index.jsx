@@ -8,11 +8,11 @@ import { AppMainPage } from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';
 import { AppTopNav } from './components/AppTopNav';
 import DropdownCover from './components/DropdownCover';
-import { CookieSync } from './side-effect-components/CookieSync';
-import { DomModifier } from './side-effect-components/DomModifier';
-import { LocalStorageSync } from './side-effect-components/LocalStorageSync';
-import { SessionRefresher } from './side-effect-components/SessionRefresher';
-import { ScrollPositionSync } from './side-effect-components/ScrollPositionSync';
+import CookieSync from './side-effect-components/CookieSync';
+import DomModifier from './side-effect-components/DomModifier';
+import LocalStorageSync from './side-effect-components/LocalStorageSync';
+import SessionRefresher from './side-effect-components/SessionRefresher';
+import ScrollPositionSync from './side-effect-components/ScrollPositionSync';
 
 export default class App extends React.Component {
   render() {

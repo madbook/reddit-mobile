@@ -10,7 +10,7 @@ const combiner = (collapsedComments, expandedPosts, visitedPosts) => ({
   visitedPosts,
 });
 
-export const LocalStorageSync = makeLocalStorageArchiver(
+export default makeLocalStorageArchiver(
   collapsedSelector,
   expandedSelector,
   visitedPostsSelector,

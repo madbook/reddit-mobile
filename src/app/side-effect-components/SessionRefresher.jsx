@@ -47,4 +47,4 @@ const mapDispatchToProps = (dispatch) => ({
   refreshSession: () => dispatch(sessionRefreshingActions.refresh()),
 });
 
-export const SessionRefresher = connect(mapStateToProps, mapDispatchToProps)(_SessionRefresh);
+export default connect(mapStateToProps, mapDispatchToProps)(_SessionRefresh);

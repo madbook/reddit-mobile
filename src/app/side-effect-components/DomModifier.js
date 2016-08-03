@@ -64,7 +64,7 @@ const archiver = (data) => {
   }
 };
 
-export const DomModifier = makeStateArchiver(
+export default makeStateArchiver(
   [ themeSelector, overlayOpenSelector ],
   combiner,
   archiver,

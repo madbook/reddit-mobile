@@ -81,7 +81,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export const ScrollPositionSync = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(_ScrollPositionSync);
