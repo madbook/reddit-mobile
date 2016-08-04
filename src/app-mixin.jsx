@@ -56,10 +56,14 @@ function logError(err, ctx, config) {
   });
 }
 
-const errorMsgMap = {
+const TIMEOUT_MESSAGE = 'Sorry, we are having trouble communicating with Reddit\'s servers. ' +
+                        'Please check your internet connection, or try again.';
+
+const ERROR_MSG_MAP = {
   '404': 'Sorry, that page doesn\'t seem to exist.',
   '403': 'Sorry, you don\'t have access to this.',
-  '503': 'Sorry, we are having trouble communicating with reddit\'s servers.',
+  '503': TIMEOUT_MESSAGE,
+  '504': TIMEOUT_MESSAGE,
   'default': 'Oops, looks like something went wrong.',
 };
 
@@ -90,10 +94,6 @@ function mixin (App) {
     }
 
     error (e, ctx, app, options={}) {
-
-
-      const TIMEOUT_MESSAGE = 'We were unable to contact the server. ' +
-                              'Please check your internet connection, or try again.';
       // API error
       if (e.status) {
         // Don't redirect if abort === false
@@ -107,7 +107,12 @@ function mixin (App) {
         logError(e, ctx, app.config);
       }
 
-      if (e.status === 503 || e.status === 504) {
+      if (ctx.env === 'CLIENT' && (e.status === 503 || e.status === 504)) {
+        // We show the toaster only when a timeout occurs on the client.
+        // Nothing is listening for this event on the server anyway, plus
+        // we want to go through the errorPage flow which handles setting an
+        // an error status. We use that to prevent a flood of retries when
+        // requests start failing.
         return app.emit(constants.TOASTER, {
           type: constants.TOASTER_TYPES.ERROR,
           message: TIMEOUT_MESSAGE,
@@ -127,7 +132,7 @@ function mixin (App) {
     }
 
     errorPage(ctx, statusCode) {
-      const title = errorMsgMap[statusCode] || errorMsgMap.default;
+      const title = ERROR_MSG_MAP[statusCode] || ERROR_MSG_MAP.default;
 
       if (!isNaN(parseInt(statusCode))) {
         ctx.status = parseInt(statusCode);
@@ -135,7 +140,7 @@ function mixin (App) {
         ctx.status = 503;
       }
 
-      Object.assign({}, ctx.props || {}, {
+      Object.assign(ctx.props || {}, {
         title,
         status: ctx.status,
         originalUrl: ctx.originalUrl || '/',

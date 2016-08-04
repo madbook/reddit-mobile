@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import React from 'react-dom';
 
 import { sendTimings, onError, loadShimThenInitialize, onLoad, render } from './clientLib';
 
@@ -19,7 +20,7 @@ const App = mixin(ClientReactApp);
 import config from '../../src/config';
 import cookies from 'cookies-js';
 import setLoggedOutCookies from '../../src/lib/loid';
-import routes from '../../src/routes';
+import routes, { buildProps } from '../../src/routes';
 
 import trackingEvents from './trackingEvents';
 
@@ -115,7 +116,7 @@ function initialize(bindLinks) {
   // config value after render.
   const beginRender = Date.now();
 
-  render(app, app.fullPathName(), true, app.modifyContext).then(function(props) {
+  const postInitialRender = props => {
     // clear dataCache so we don't hydrate again.
     app.setState('dataCache');
 
@@ -128,7 +129,40 @@ function initialize(bindLinks) {
     setEvents(app, hasHistAndBindLinks, render, $body);
 
     sendTimings(beginRender, props.adsEnabled);
-  });
+  };
+
+  const serverStatus = bootstrap.ctx ? bootstrap.ctx.status : 500;
+  if (serverStatus >= 500 && serverStatus < 600) {
+    // If there was any errors on the server, we don't want to automatically
+    // retry requests on the client. This increases server load when we know
+    // something is probably wrong at the moment and is exacerbated by us
+    // hitting multiple endpoints. If we call render or app.render here, it will
+    // call koa-router which in turn will re-try data fetches.
+
+    // Instead we can manually re-render the error page.
+    // We have to re-render to bind click events. This lets
+    // the 'try again' button, top nav, user nav, and etc still work.
+    const ctx = {
+      ...app.modifyContext(app.buildContext(app.fullPathName())),
+      // We need to manually set ctx.route.name for buildProps
+      // to work properly
+      route: {
+        name: bootstrap.actionName,
+      },
+    };
+
+    const props = buildProps(ctx, app);
+
+    React.render(
+      app.errorPage(ctx, serverStatus)(props),
+      app.mountPoint
+    );
+
+    // But we still want to send timings, bind click events, and etc
+    postInitialRender(props);
+  } else {
+    render(app, app.fullPathName(), true, app.modifyContext).then(postInitialRender);
+  }
 }
 
 module.exports = initialize;
