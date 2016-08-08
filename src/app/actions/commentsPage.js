@@ -34,6 +34,7 @@ export const received = (commentsPageId, apiResponse) => ({
 export const FAILED = 'FAILED_COMMENTS_PAGE';
 export const failed = (commentsPageId, error) => ({
   type: FAILED,
+  commentsPageId,
   error,
 });
 

@@ -39,6 +39,7 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
           params: { sort: 'hot' },
           loading: false,
           results: [],
+          responseCode: null,
         };
 
         const { store } = getStore({
@@ -68,6 +69,7 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
           params: { sort: 'hot' },
           loading: true,
           results: [],
+          responseCode: null,
         });
       });
     });
@@ -87,13 +89,14 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
               params: { sort: 'hot' },
               loading: true,
               results: [],
+              responseCode: null,
             },
           },
         });
 
         store.dispatch(postsListActions.received(
           POSTS_LIST_ID,
-          { results: RESULTS }
+          { results: RESULTS, response: { status: 200 } }
         ));
 
         const { postsLists } = store.getState();
@@ -105,5 +108,35 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
         }));
       });
     });
+
+    describe('FAILED', () => {
+      it('should update the loading state and set responseCode', () => {
+        const POSTS_LIST_ID = '1';
+        const ERROR_STUB = { status: 404 };
+
+        const { store } = getStore({
+          postsLists: {
+            [POSTS_LIST_ID]: {
+              id: POSTS_LIST_ID,
+              params: { sort: 'hot' },
+              loading: true,
+              results: [],
+              responseCode: null,
+            },
+          },
+        });
+
+        store.dispatch(postsListActions.failed(POSTS_LIST_ID, ERROR_STUB));
+
+        const { postsLists } = store.getState();
+        expect(postsLists).to.eql(merge(postsLists, {
+          [POSTS_LIST_ID]: {
+            loading: false,
+            responseCode: 404,
+          },
+        }));
+      });
+    });
+
   });
 });

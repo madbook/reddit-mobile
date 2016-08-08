@@ -33,11 +33,23 @@ export default (state=DEFAULT, action={}) => {
       return merge(state, {
         [commentsPageId]: {
           loading: false,
-          // TODO: what happens if a user adds a comment before results come back?
           results: apiResponse.results,
+          responseCode: apiResponse.response.status,
         },
-        // TODO: this feels inherently race condition-ish
         current: commentsPageId,
+      });
+    }
+
+    case commentsPageActions.FAILED: {
+      const { commentsPageId, error } = action;
+      const currentCommentsPage = state[commentsPageId];
+      if (!currentCommentsPage) { return state; }
+
+      return merge(state, {
+        [commentsPageId]: {
+          loading: false,
+          responseCode: error.status,
+        },
       });
     }
 

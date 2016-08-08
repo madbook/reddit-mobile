@@ -119,7 +119,7 @@ function formatLog(details) {
     }
   }
 
-  return errorString.join('|');
+  return errorString.join(' | ');
 }
 
 function simpleUA(agent) {

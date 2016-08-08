@@ -75,6 +75,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
           loading: true,
           loadingMoreChildren: {},
           results: [],
+          responseCode: null,
         });
       });
     });
@@ -91,6 +92,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
           loading: true,
           loadingMoreChildren: {},
           results: [],
+          responseCode: null,
         };
 
         const RESULTS = [
@@ -107,7 +109,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
 
         store.dispatch(commentsPageActions.received(
           COMMENTS_PAGE_ID,
-          { results: RESULTS },
+          { results: RESULTS, response: { status: 200 } },
         ));
 
         const { commentsPages } = store.getState();
@@ -115,10 +117,44 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
           [COMMENTS_PAGE_ID]: {
             loading: false,
             results: RESULTS,
+            responseCode: 200,
           },
         }));
       });
     });
+
+    describe('FAILED', () => {
+      it('should update the loading state and set responseCode', () => {
+        const COMMENTS_PAGE_ID = '1';
+        const POST_ID = 't3_12345';
+        const ERROR_STUB = { status: 404 };
+
+        const { store } = getStore({
+          commentsPages: {
+            [COMMENTS_PAGE_ID]: {
+              id: COMMENTS_PAGE_ID,
+              params: { id: POST_ID },
+              postId: POST_ID,
+              loading: true,
+              loadingMoreChildren: {},
+              results: [],
+              responseCode: null,
+            },
+          },
+        });
+
+        store.dispatch(commentsPageActions.failed(COMMENTS_PAGE_ID, ERROR_STUB));
+
+        const { commentsPages } = store.getState();
+        expect(commentsPages).to.eql(merge(commentsPages, {
+          [COMMENTS_PAGE_ID]: {
+            loading: false,
+            responseCode: 404,
+          },
+        }));
+      });
+    });
+
 
     describe('REPLIED', () => {
 

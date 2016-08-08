@@ -18,11 +18,11 @@
     "test:watch": "npm run test -- -w"
   },
   "dependencies": {
-    "@r/api-client": "~3.19.2",
+    "@r/api-client": "~3.20.1",
     "@r/build": "~0.9.3",
     "@r/flags": "^1.5.0",
     "@r/middleware": "~0.8.0",
-    "@r/platform": "~0.11.0",
+    "@r/platform": "~0.12.0",
     "@r/private": "~0.2.2",
     "@r/redux-state-archiver": "~0.0.5",
     "@r/widgets": "~0.2.2",

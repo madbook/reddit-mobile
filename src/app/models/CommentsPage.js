@@ -13,7 +13,8 @@ export const newCommentsPage = (id, params) => ({
   id,
   params,
   postId: params.id,
-  loading: true,
   loadingMoreChildren: {},
   results: [],
+  loading: true,
+  responseCode: null,
 });

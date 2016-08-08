@@ -7,9 +7,10 @@ import * as postsListActions from 'app/actions/postsList';
 export const newPostsList = (id, params) => ({
   id,
   params,
-  loading: true,
   adId: '',
   results: [],
+  loading: true,
+  responseCode: null,
 });
 
 const DEFAULT = {};
@@ -40,6 +41,20 @@ export default (state=DEFAULT, action={}) => {
         [postsListId]: {
           loading: false,
           results: apiResponse.results,
+          responseCode: apiResponse.response.status,
+        },
+      });
+    }
+
+    case postsListActions.FAILED: {
+      const { postsListId, error } = action;
+      const currentPostsList = state[postsListId];
+      if (!currentPostsList) { return state; }
+
+      return merge(state, {
+        [postsListId]: {
+          loading: false,
+          responseCode: error.status,
         },
       });
     }

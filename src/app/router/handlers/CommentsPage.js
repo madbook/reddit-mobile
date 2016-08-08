@@ -1,3 +1,4 @@
+import { setStatus } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
@@ -6,6 +7,7 @@ import { cleanObject } from 'lib/cleanObject';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as replyActions from 'app/actions/reply';
 import { fetchUserBasedData } from './handlerCommon';
+import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 
 const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
@@ -39,7 +41,7 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch, getState) {
+  async [METHODS.GET](dispatch, getState, { waitForState }) {
     const state = getState();
     if (state.platform.shell) { return; }
 
@@ -50,6 +52,12 @@ export default class CommentsPage extends BaseHandler {
 
     dispatch(commentsPageActions.fetchRelevantContent());
     dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId));
+
+    const commentsPageId = paramsToCommentsPageId(commentsPageParams);
+    await waitForState(state => {
+      const commentsPage = state.commentsPages[commentsPageId];
+      return commentsPage && !!commentsPage.responseCode;
+    }, state => dispatch(setStatus(state.commentsPages[commentsPageId].responseCode)));
   }
 
   async [METHODS.POST](dispatch, getState, { waitForState }) {

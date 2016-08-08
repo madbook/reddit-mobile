@@ -4,7 +4,7 @@ import React from 'react';
 import { UrlSync } from '@r/platform/components';
 import { TooltipShutter } from '@r/widgets/tooltip';
 
-import { AppMainPage } from './pages/AppMain';
+import AppMainPage from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';
 import { AppTopNav } from './components/AppTopNav';
 import DropdownCover from './components/DropdownCover';

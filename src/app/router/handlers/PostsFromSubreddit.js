@@ -1,9 +1,10 @@
+import { setStatus } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
+
 import * as adActions from 'app/actions/ads';
 import * as postsListActions from 'app/actions/postsList';
 import * as subredditActions from 'app/actions/subreddits';
 import { paramsToPostsListsId } from 'app/models/PostsList';
-
 import { cleanObject } from 'lib/cleanObject';
 import { listingTime } from 'lib/listingTime';
 import { fetchUserBasedData } from './handlerCommon';
@@ -26,8 +27,9 @@ export default class PostsFromSubreddit extends BaseHandler {
     });
   }
 
-  async [METHODS.GET](dispatch, getState/*, utils*/) {
+  async [METHODS.GET](dispatch, getState, { waitForState }) {
     const state = getState();
+
     if (state.platform.shell) { return; }
 
     const subredditPostsParams = PostsFromSubreddit.pageParamsToSubredditPostsParams(this);
@@ -42,5 +44,10 @@ export default class PostsFromSubreddit extends BaseHandler {
     const { subredditName } = subredditPostsParams;
     dispatch(subredditActions.fetchSubreddit(subredditName));
     fetchUserBasedData(dispatch);
+
+    await waitForState(state => {
+      const postsList = state.postsLists[postsListId];
+      return postsList && !!postsList.responseCode;
+    }, state => dispatch(setStatus(state.postsLists[postsListId].responseCode)));
   }
 }
