@@ -132,7 +132,7 @@ function initialize(bindLinks) {
   };
 
   const serverStatus = bootstrap.ctx ? bootstrap.ctx.status : 500;
-  if (serverStatus >= 500 && serverStatus < 600) {
+  if (serverStatus >= 400 && serverStatus < 600) {
     // If there was any errors on the server, we don't want to automatically
     // retry requests on the client. This increases server load when we know
     // something is probably wrong at the moment and is exacerbated by us
