@@ -3,7 +3,7 @@
 
 @size: @grid-size*6;
 
-.Login {
+.Login, .Register {
   padding: @size;
   text-align: center;
   position: relative;
@@ -29,9 +29,19 @@
     margin-top: 40px;
   }
 
+  &__checkbox {
+    position: relative;
+    top: 5px;
+    vertical-align: top;
+  }
+
   &__submit {
     height: 45px;
     margin-top: 40px;
+  }
+
+  &__login-link, &__register-link {
+    margin-top: 15px;
   }
 
   &__input-action-btn {
@@ -48,5 +58,12 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &__terms {
+    color: @grey-text;
+    text-align: center;
+    margin: 10px auto 0;
+    max-width: 450px;
   }
 }

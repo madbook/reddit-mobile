@@ -14,6 +14,7 @@ import { WikiPage } from './WikiPage';
 import Messages from 'app/components/Messages';
 import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
+import Register from 'app/components/Register';
 import Report from 'app/components/Report';
 import Status404Page from 'app/components/Status404Page';
 
@@ -53,6 +54,7 @@ export const AppMainPage = () => (
     <Page url='/u/:userName/:savedOrHidden(saved|hidden)' component={ SavedAndHiddenPage } />
     <Page url='/u/:userName/' component={ UserProfilePage } />
     <Page url='/login' component={ Login } />
+    <Page url='/register' component={ Register } />
     <Page url='/message/compose' component={ DirectMessage } />
     <Page url='/message/:mailType' component={ Messages } />
     <Page url='/report' component={ Report } />

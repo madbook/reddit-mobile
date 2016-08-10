@@ -2,6 +2,7 @@ import CommentsPageHandler from './handlers/CommentsPage';
 import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
 import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import Login from './handlers/Login';
+import Register from './handlers/Register';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
 import ReportHandler from './handlers/ReportHandler';
@@ -38,6 +39,7 @@ export default [
   ['/u/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
   ['/u/:userName', UserProfilerHandler],
   ['/login', Login],
+  ['/register', Register],
   ['/message/compose', DirectMessage],
   ['/message/:mailType', Messages],
   ['/report', ReportHandler],

@@ -16,6 +16,7 @@ import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
 import loginproxy from 'server/session/loginproxy';
 import logoutproxy from 'server/session/logoutproxy';
+import registerproxy from 'server/session/registerproxy';
 import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
@@ -99,7 +100,7 @@ export function startServer() {
       // private routes for login, logout, register, and token refresh
       loginproxy(router, ConfigedAPIOptions);
       logoutproxy(router, ConfigedAPIOptions);
-      // registerproxy(router, ConfigedAPIOptions);
+      registerproxy(router, ConfigedAPIOptions);
       refreshproxy(router, ConfigedAPIOptions);
       metaRoutes(router, ConfigedAPIOptions);
     },

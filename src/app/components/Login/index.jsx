@@ -1,16 +1,17 @@
-import './styles.less';
+import 'app/components/LoginRegistrationForm/styles.less';
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { METHODS } from '@r/platform/router';
-import { Form } from '@r/platform/components';
+import { Form, Anchor } from '@r/platform/components';
 
 import * as sessionActions from 'app/actions/session';
 
 import SnooIcon from 'app/components/SnooIcon';
-import LoginInput from './Input';
-import SquareButton from './SquareButton';
+import LoginInput from 'app/components/LoginRegistrationForm/Input';
+import SquareButton from 'app/components/LoginRegistrationForm/SquareButton';
+
 
 class Login extends React.Component {
   constructor (props) {
@@ -86,6 +87,11 @@ class Login extends React.Component {
     return (
       <div className='Login'>
         <SnooIcon />
+        <div className='Login__register-link'>
+          <p>
+            <Anchor href='/register'> New user? Sign up! </Anchor>
+          </p>
+        </div>
         <Form
           className='Login__form'
           method={ METHODS.POST }
