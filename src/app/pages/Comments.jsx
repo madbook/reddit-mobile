@@ -7,9 +7,11 @@ import { METHODS } from '@r/platform/router';
 
 import { flags } from 'app/constants';
 import { featuresSelector } from 'app/selectors/features';
+import crawlerRequestSelector from 'app/selectors/crawlerRequestSelector';
 
 import CommentsList from 'app/components/CommentsList';
 import CommentsPageTools from 'app/components/CommentsPage/CommentsPageTools';
+import GoogleCarouselMetadata from 'app/components/GoogleCarouselMetadata';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
 import SubNav from 'app/components/SubNav';
@@ -28,7 +30,8 @@ const stateProps = createSelector(
   state => state.posts,
   state => state.platform.currentPage,
   featuresSelector,
-  (pageProps, commentsPages, posts, currentPage, feature) => {
+  crawlerRequestSelector,
+  (pageProps, commentsPages, posts, currentPage, feature, isCrawlerRequest) => {
     const commentsPageParams = CommentsPageHandler.pageParamsToCommentsPageParams(pageProps);
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
     const commentsPage = commentsPages[commentsPageId];
@@ -50,6 +53,7 @@ const stateProps = createSelector(
       currentPage,
       replying,
       feature,
+      isCrawlerRequest,
     };
   },
 );
@@ -91,7 +95,9 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
     replying,
     feature,
     onSortChange,
+    isCrawlerRequest,
   } = props;
+
 
   return (
     <div className='CommentsPage BelowTopNav'>
@@ -116,6 +122,15 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
           commentRecords={ topLevelComments }
           className={ 'CommentsList__topLevel' }
         /> }
+
+      { isCrawlerRequest && postLoaded && commentsPage && topLevelComments.length ?
+        <GoogleCarouselMetadata
+          postId={ commentsPageParams.id }
+          commentRecords={ topLevelComments }
+          pageUrl={ currentPage.url }
+        />
+        : null
+      }
 
       { some([
         VARIANT_NEXTCONTENT_BOTTOM,
