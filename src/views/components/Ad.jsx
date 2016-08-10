@@ -85,6 +85,7 @@ class Ad extends BaseComponent {
       dt: this.props.things.map((thing) => thing.name),
       platform: 'mobile_web',
       raw_json: '1',
+      placements: 'feed-' + this.props.index,
     };
 
     // If user is not logged in, send the loid in the promo request
