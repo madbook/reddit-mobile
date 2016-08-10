@@ -1,3 +1,4 @@
+import config from '../../src/config';
 import constants from '../../src/constants';
 import { setTitle } from './clientLib';
 
@@ -14,6 +15,7 @@ const { NIGHTMODE, DAYMODE } = constants.themes;
 
 const DISCONNECTED_MESSAGE = 'You have been disconnected from the internet.';
 const CONNECTED_MESSAGE = 'You have been reconnected to the internet.';
+const DESKTOP_REDIRECT_EXPIRY = 365;
 
 export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
   app.on('setTitle', setTitle);
@@ -22,7 +24,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
     const options = {};
 
     const date = new Date();
-    date.setDate(date.getDate() + 7);
+    date.setDate(date.getDate() + DESKTOP_REDIRECT_EXPIRY);
     options.expires = date;
 
     if (window.location.host.indexOf('localhost') === -1) {
@@ -31,7 +33,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       // than desktop won't be able to read and respect the cookie. Since the
       // default behavior on desktop is to redirect mobile users to mweb, this
       // will result in a redirect loop.
-      const domain = `.${window.bootstrap.config.reddit}`
+      const domain = `.${config.reddit}`
         .match(/https?:\/\/(.+)/)[1]
         .split('.')
         .splice(1,2)
@@ -48,7 +50,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       route += '&utm_source=mweb_navbar';
     }
 
-    window.location = `https://www.reddit.com${route}`;
+    window.location.href = `https://www.reddit.com${route}`;
   });
 
   app.on(constants.COMPACT_TOGGLE, function(compact) {
