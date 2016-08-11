@@ -28,9 +28,6 @@ class IndexPage extends BasePage {
     multi: React.PropTypes.string,
     multiUser: React.PropTypes.string,
     page: React.PropTypes.number,
-    prefs: React.PropTypes.shape({
-      hide_ads: React.PropTypes.bool.isRequired,
-    }),
     sort: React.PropTypes.string,
     subredditName: React.PropTypes.string,
   };
@@ -162,8 +159,7 @@ class IndexPage extends BasePage {
     }
 
     let showAds = props.adsEnabled && !!props.config.adsPath;
-
-    if (props.prefs && props.prefs.hide_ads === true) {
+    if (data.preferences && data.preferences.hide_ads) {
       showAds = false;
     }
 
