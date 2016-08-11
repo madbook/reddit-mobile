@@ -11,6 +11,7 @@ import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';
 import CommentReplyForm from './CommentReplyForm';
 import CommentSeeMore from './CommentSeeMore';
+import CommentContinueThisThread from './CommentContinueThisThread';
 import CommentEditForm from './CommentEditForm';
 
 const T = React.PropTypes;
@@ -643,13 +644,28 @@ export default class Comment extends BaseComponent {
       );
     }
 
+    const dots = Math.max(nestingLevel - 6, 0);
+
+    if (reply.count === 0) {
+      const { comment, permalinkBase } = this.props;
+      const dest = `${permalinkBase}${comment.id}`;
+      return (
+        <div className='Comment__continuethisthread' key={ reply.id } >
+          <CommentContinueThisThread
+            dest={ dest }
+            dots={ dots }
+          />
+        </div>
+      );
+    }
+
     return (
       <div className='Comment__seemore' key={ reply.id } >
         <CommentSeeMore
           count={ reply.count }
           isLoading={ loadingMoreComments }
           onLoadMore={ replyCallback }
-          dots={ Math.max(nestingLevel - 6, 0) }
+          dots={ dots }
         />
       </div>
     );
