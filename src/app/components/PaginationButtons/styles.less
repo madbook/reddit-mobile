@@ -5,7 +5,11 @@
 @button-padding: 5px;
 
 .PaginationButtons {
-  margin: 0 2 * @grid-size;
+  padding: 0 2 * @grid-size;
+
+  .themeify({
+    background-color: @theme-comment-body-color; // matches page background so overscroll is nice
+  });
 
   &__buttons {
     .clearfix;
