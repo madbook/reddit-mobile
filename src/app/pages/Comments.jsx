@@ -36,10 +36,8 @@ const stateProps = createSelector(
       ? []
       : commentsPage.results;
 
-    const permalinkBase = pageProps.url;
     const post = posts[commentsPageParams.id];
     const postLoaded = !!post;
-
     const replying = currentPage.queryParams.commentReply === commentsPageParams.id;
 
     return {
@@ -48,7 +46,6 @@ const stateProps = createSelector(
       commentsPageParams,
       commentsPage,
       commentsPageId,
-      permalinkBase,
       topLevelComments,
       currentPage,
       replying,
@@ -89,7 +86,6 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
     commentsPage,
     commentsPageParams,
     topLevelComments,
-    permalinkBase,
     postLoaded,
     currentPage,
     replying,
@@ -118,7 +114,6 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
         <CommentsList
           op={ op }
           commentRecords={ topLevelComments }
-          permalinkBase={ permalinkBase }
           className={ 'CommentsList__topLevel' }
         /> }
 

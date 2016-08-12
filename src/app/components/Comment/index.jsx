@@ -118,7 +118,6 @@ function renderBody(props) {
 function renderTools(props) {
   const {
     user,
-    permalinkBase,
     comment,
     commentCollapsed,
     currentPage,
@@ -144,7 +143,7 @@ function renderTools(props) {
           saved={ comment.saved }
           currentPage = { currentPage }
           replying={ commentReplying }
-          permalinkUrl={ `${permalinkBase}${comment.id}` }
+          permalinkUrl={ comment.cleanPermalink }
           onEdit={ onToggleEditForm }
           onDelete={ onDeleteComment }
           onToggleSave={ onToggleSaveComment }
@@ -183,7 +182,7 @@ function renderCommentReply(props) {
 }
 
 function renderReplies(props) {
-  const { op, nestingLevel, comment, permalinkBase, commentCollapsed } = props;
+  const { op, nestingLevel, comment, commentCollapsed } = props;
 
   let cls = 'Comment__replies';
   if (commentCollapsed) { cls += ' m-hidden'; }
@@ -201,7 +200,6 @@ function renderReplies(props) {
         op={ op }
         commentRecords={ comment.replies }
         parentComment={ comment }
-        permalinkBase={ permalinkBase }
         nestingLevel={ nestingLevel + 1 }
       />
       { renderLoadMore(comment, props.loadMore) }
@@ -216,7 +214,6 @@ Comment.propTypes = {
   user: T.object,
   op: T.string,
   nestingLevel: T.number,
-  permalinkBase: T.string,
   repliesLocked: T.bool,
   highlightedComment: T.string,
   isEditing: T.bool,
