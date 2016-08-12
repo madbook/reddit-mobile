@@ -498,6 +498,15 @@ function routes(app) {
       props.data.set('canonical', canonical);
     }
 
+    const ampURL = listingPromise.then(listing => {
+      // Check if this is a self post. If so, add the amphtml link element.
+      if (config.amp && listing.is_self) {
+        props.ampURL = `${config.amp}${listing.permalink}`;
+        return props.ampURL;
+      }
+    });
+    props.data.set('ampURL', ampURL);
+
     const relevantPromise = featureWithUserContext(props).then(feature => {
       if (feature.enabled(constants.flags.VARIANT_RELEVANCY_TOP) ||
           feature.enabled(constants.flags.VARIANT_NEXTCONTENT_BOTTOM) ||

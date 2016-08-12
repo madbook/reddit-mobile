@@ -60,6 +60,7 @@ function config() {
     statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
     mediaDomain: process.env.MEDIA_DOMAIN || 'www.redditmedia.com',
     adsPath: process.env.ADS_PATH || '/api/request_promo.json',
+    amp: process.env.AMP,
     manifest: {},
 
     trackerKey: process.env.TRACKER_KEY,

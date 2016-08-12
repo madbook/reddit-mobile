@@ -32,6 +32,11 @@ function DefaultLayout (props) {
     );
   }
 
+  const { ampURL } = props;
+  const ampLink = ampURL ? (
+    <link rel='amphtml' href={ ampURL } />
+  ) : null;
+
   let metaDescription;
 
   if (props.metaDescription) {
@@ -78,6 +83,7 @@ function DefaultLayout (props) {
         <title>{ props.title }</title>
         <link href={ baseCSS } rel='stylesheet' />
         { canonical }
+        { ampLink }
 
         <meta
           name='viewport'
