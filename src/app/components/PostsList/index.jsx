@@ -18,9 +18,13 @@ export const PostsList = (props) => {
   const { loading, postRecords, nextUrl, prevUrl, shouldPage } = props;
   const shouldRenderPagination = !loading && shouldPage && postRecords.length;
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className='PostsList PostAndCommentList'>
-      { loading ? renderLoading() : renderPostsList(props) }
+      { renderPostsList(props) }
       { shouldRenderPagination ? renderPagination(postRecords, nextUrl, prevUrl) : null }
     </div>
   );
@@ -42,10 +46,6 @@ PostsList.defaultProps = {
   forceCompact: false,
   subredditIsNSFW: false,
   shouldPage: true,
-};
-
-const renderLoading = () => {
-  return <Loading />;
 };
 
 const renderPostsList = (props) => {

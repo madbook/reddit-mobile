@@ -24,15 +24,17 @@ const mapStateToProps = createSelector(
 export const PostAndCommentList = props => {
   const { loading, records, shouldPage, thingProps } = props;
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className='PostAndCommentList'>
-      { loading ? <Loading /> :
-        <PostsCommentsAndPagination
-          records={ records }
-          thingProps={ thingProps }
-          shouldPage={ shouldPage }
-        />
-      }
+      <PostsCommentsAndPagination
+        records={ records }
+        thingProps={ thingProps }
+        shouldPage={ shouldPage }
+      />
     </div>
   );
 };
