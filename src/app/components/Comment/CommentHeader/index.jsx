@@ -11,7 +11,7 @@ const separator = <div className='CommentHeader__separator'> • </div>;
 function getAuthorIcon(authorType) {
   switch (authorType) {
     case 'self': return 'icon icon-user-account mint';
-    case 'moderator': return 'icon icon-mod lime';
+    case 'moderator': return 'icon icon-mod green';
     case 'admin': return 'icon icon-snoosilhouette orangered';
     case 'op': return 'icon icon-op blue';
     default: return '';
@@ -57,7 +57,7 @@ function renderInfo(author, flair, created, authorType, highlight, stickied) {
   return (
     <td className='CommentHeader__col2'>
       <div className={ usernameCls }>
-        { stickied ? <div className='CommentHeader__sticky icon icon-sticky' /> : null }
+        { stickied ? <div className='CommentHeader__sticky icon icon-sticky green' /> : null }
         { author }
         { authorIcon ? <div className={ authorIconCls }/> : null }
       </div>

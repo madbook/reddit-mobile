@@ -28,7 +28,7 @@ const NSFW_FLAIR = (
 );
 
 const STICKY_FLAIR = (
-  <span className='icon icon-sticky lime' />
+  <span className='icon icon-sticky green' />
 );
 
 const LOCKED_FLAIR = (
@@ -40,7 +40,7 @@ const ADMIN_FLAIR = (
 );
 
 const MOD_FLAIR = (
-  <span className='icon icon-mod lime' />
+  <span className='icon icon-mod green' />
 );
 
 const GILDED_FLAIR = (
