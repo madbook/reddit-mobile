@@ -256,7 +256,7 @@ function renderDetailViewSubline(post, hideWhen) {
 }
 
 function renderPostHeaderLink(post, showLinksInNewTab) {
-  const url = cleanPostHREF(mobilify(post.url));
+  const url = cleanPostHREF(mobilify(post.cleanUrl));
 
   if (!url) {
     return;
