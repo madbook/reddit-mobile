@@ -40,11 +40,6 @@ export default class PostFooter extends React.Component {
     // would force a re-render. We want this to make sure animations
     // are only rendered on the client _after_ the first render
     // so there are no bounces when you go between pages
-    this.state = {
-      score: props.post.score,
-      voteDirection: props.post.likes,
-      dropdownTarget: false,
-    };
   }
 
   componentDidMount() {
@@ -124,7 +119,7 @@ export default class PostFooter extends React.Component {
           <Vote
             thingId = { post.name }
             classPrefix='PostFooter'
-            score={ this.state.score }
+            score={ post.score }
             scoreHidden={ scoreHidden }
             voteDirection={ post.likes }
             onUpvote={ this.onUpvote }
