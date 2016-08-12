@@ -47,8 +47,26 @@ function renderFooter(props) {
   ];
 }
 
+function determineAuthorType(distinguished, author, op, user) {
+  if (distinguished) {
+    return distinguished;
+  } else if (user && user.name === author) {
+    return 'self';
+  } else if (author === op) {
+    return 'op';
+  }
+
+  return '';
+}
+
 function renderHeader(props) {
-  const { nestingLevel, highlightedComment, comment, commentCollapsed, authorType } = props;
+  const { nestingLevel, highlightedComment, comment, commentCollapsed, op, user } = props;
+  const authorType = determineAuthorType(
+    comment.distinguished,
+    comment.author,
+    op,
+    user ? user.name : '',
+  );
 
   // don't allow comment collapsing on user activity and preview pages
   const onToggleCollapse = () => {
@@ -165,7 +183,7 @@ function renderCommentReply(props) {
 }
 
 function renderReplies(props) {
-  const { nestingLevel, comment, permalinkBase, commentCollapsed } = props;
+  const { op, nestingLevel, comment, permalinkBase, commentCollapsed } = props;
 
   let cls = 'Comment__replies';
   if (commentCollapsed) { cls += ' m-hidden'; }
@@ -180,6 +198,7 @@ function renderReplies(props) {
   return (
     <div className={ cls }>
       <CommentsList
+        op={ op }
         commentRecords={ comment.replies }
         parentComment={ comment }
         permalinkBase={ permalinkBase }
