@@ -14,13 +14,7 @@ export default class Vote extends BaseHandler {
     }
 
     await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {
-      try {
-        dispatch(voteActions.vote(thingId, direction));
-        dispatch(platformActions.gotoPageIndex(state.platform.history.length - 1));
-      } catch (e) {
-        console.log('Error voting');
-        console.log(e);
-      }
+      dispatch(voteActions.vote(thingId, direction));
     });
   }
 }
