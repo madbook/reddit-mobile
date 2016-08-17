@@ -27,11 +27,15 @@ const USER_ERRORS = {
   USERNAME_TAKEN_DEL: 'Sorry the account associated with that username is deleted',
 };
 
+const DEFAULT_ERRORS = {
+  'UNKNOWN_ERROR': 'Sorry something went wrong. Please try again later',
+};
+
 const renderErrorMsg = (errorMsg) => {
   return (
-    <span>
+    <p className='Register__error-text'>
       { errorMsg }
-    </span>
+    </p>
   );
 };
 
@@ -152,7 +156,7 @@ export default class Register extends React.Component {
             name='password'
             type='password'
             placeholder='Choose a unique password'
-            showTopBorder={ true }
+            showTopBorder={ false }
             error={ error.password }
             onChange={ this.updatePassword }
             value={ password }
@@ -178,17 +182,19 @@ export default class Register extends React.Component {
                 : null
             }
           </LoginInput>
-          <label
-            htmlFor='newsletter'
-            className='Register__checkbox'
-          >
-            <input 
+          <div className='Register__checkbox'>
+            <input
               type='checkbox'
               name='newsletter'
               defaultChecked
             />
-            Subscribe to newsletter
-          </label>
+            <label
+              htmlFor='newsletter'
+              className='Register__checkbox-label'
+            >
+              Subscribe to newsletter
+            </label>
+          </div>
           {
             error.default
               ? renderErrorMsg(error.default)
@@ -216,6 +222,8 @@ const mapStateToProps = createSelector(
       error.password = PASS_ERRORS[errorType];
     } else if (errorType in USER_ERRORS) {
       error.username = USER_ERRORS[errorType];
+    } else if (errorType in DEFAULT_ERRORS) {
+      error.default = DEFAULT_ERRORS[errorType];
     } else if (errorType) {
       // Not a token type error message. Set it to the string instead
       error.default = errorType;
