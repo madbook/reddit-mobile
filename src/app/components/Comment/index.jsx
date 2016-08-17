@@ -6,36 +6,70 @@ import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 
 import mobilify from 'lib/mobilify';
-
 import * as commentActions from 'app/actions/comment';
-
+import { DEFAULT_COMMENT_REQUEST } from 'app/reducers/moreCommentsRequests';
+import cx from 'lib/classNames';
 import CommentsList from 'app/components/CommentsList';
-
 import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';
 import CommentReplyForm from './CommentReplyForm';
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
-// import CommentSeeMore from './CommentSeeMore';
-// import CommentEditForm from './CommentEditForm';
 
 const T = React.PropTypes;
-const { CommentModel } = models;
 
-const collapsible = props => !(props.preview || props.userActivityPage);
-const collapsed = props => props.commentCollapsed && collapsible(props);
+const LOAD_MORE_COMMENTS = 'More Comments';
+const LOADING_MORE_COMMENTS = 'Loading...';
+const NESTING_STOP_LEVEL = 6;
 
-export function Comment (props) {
-  const { isEditing, preview, userActivityPage } = props;
+export function Comment(props) {
+  const {
+    comment,
+    commentCollapsed,
+    authorType,
+    nestingLevel,
+    preview,
+    isTopLevel,
+    isUserActivityPage,
+    highlightedComment,
+    onToggleCollapse,
+  } = props;
+
+  const bodyClasses = cx('Comment__body', {
+    'm-hidden': commentCollapsed && !isUserActivityPage,
+  });
 
   return (
-    <div className={ `Comment ${!preview ? 'in-comment-tree' : ''}` }>
-      { renderHeader(props) }
-      { isEditing ? renderEditForm(props) : renderBody(props) }
-      { !userActivityPage ? renderFooter(props) : null }
+    <div className={ cx('Comment', { 'in-comment-tree': !preview }) }>
+      <div className='Comment__header' id={ comment.id }>
+        <CommentHeader
+          id={ comment.id }
+          author={ comment.author }
+          authorType={ authorType }
+          topLevel={ isTopLevel }
+          dots={ Math.max(nestingLevel - NESTING_STOP_LEVEL, 0) }
+          flair={ comment.authorFlairText }
+          created={ comment.createdUTC }
+          gildCount={ comment.gilded }
+          collapsed={ commentCollapsed }
+          highlight={ comment.id === highlightedComment }
+          stickied={ comment.stickied }
+          onToggleCollapse={ onToggleCollapse }
+        />
+      </div>
+
+      <RedditLinkHijacker>
+        <div
+          className={ bodyClasses }
+          dangerouslySetInnerHTML={ { __html: mobilify(props.comment.bodyHTML) } }
+        />
+      </RedditLinkHijacker>
+
+      { !isUserActivityPage ? renderFooter(props) : null }
     </div>
   );
 }
+
 
 function renderFooter(props) {
   const {
@@ -54,73 +88,6 @@ function renderFooter(props) {
   ];
 }
 
-function determineAuthorType(distinguished, author, op, user) {
-  if (distinguished) {
-    return distinguished;
-  } else if (user && user.name === author) {
-    return 'self';
-  } else if (author === op) {
-    return 'op';
-  }
-
-  return '';
-}
-
-function renderHeader(props) {
-  const { nestingLevel, highlightedComment, comment, commentCollapsed, op, user } = props;
-  const authorType = determineAuthorType(
-    comment.distinguished,
-    comment.author,
-    op,
-    user ? user.name : '',
-  );
-
-  // don't allow comment collapsing on user activity and preview pages
-  const onToggleCollapse = () => {
-    if (!collapsible(props)) { return; }
-    props.toggleCollapse(!commentCollapsed);
-  };
-
-  return (
-    <div className='Comment__header' id={ comment.id }>
-      <CommentHeader
-        id={ comment.id }
-        author={ comment.author }
-        authorType={ authorType }
-        topLevel={ nestingLevel === 0 && collapsible(props) }
-        dots={ Math.max(nestingLevel - 6, 0) }
-        flair={ comment.authorFlairText }
-        created={ comment.createdUTC }
-        gildCount={ comment.gilded }
-        collapsed={ collapsed(props) }
-        highlight={ comment.id === highlightedComment }
-        stickied={ comment.stickied }
-        onToggleCollapse={ onToggleCollapse }
-      />
-    </div>
-  );
-}
-
-function renderEditForm() {
-  return;
-}
-
-function renderBody(props) {
-  const { comment, commentCollapsed, userActivityPage } = props;
-  const bodyText = mobilify(comment.bodyHTML);
-
-  let cls = 'Comment__body';
-  if (commentCollapsed && !userActivityPage) { cls += ' m-hidden'; }
-
-  return (
-    <RedditLinkHijacker>
-      <div
-        className={ cls }
-        dangerouslySetInnerHTML={ { __html: bodyText } }
-      />
-    </RedditLinkHijacker>
-  );
-}
 
 function renderTools(props) {
   const {
@@ -136,11 +103,12 @@ function renderTools(props) {
     votingDisabled,
   } = props;
 
-  let cls = 'Comment__toolsContainer clearfix';
-  if (commentCollapsed) { cls += ' m-hidden'; }
+  const className = cx('Comment__toolsContainer', 'clearfix', {
+    'm-hidden': commentCollapsed,
+  });
 
   return (
-    <div className={ cls }>
+    <div className={ className }>
       <div className='Comment__tools'>
         <CommentTools
           id={ comment.name }
@@ -164,22 +132,6 @@ function renderTools(props) {
   );
 }
 
-function handleLoadMore(fn, id) {
-  return () => { fn(id); };
-}
-
-function renderLoadMore ({ numReplies, loadMore, permalink, id }, onLoadMore) {
-  if (!loadMore) { return; }
-
-  return (
-    <div className='Comment__loadMore'>
-      <a href={ permalink } onClick={ handleLoadMore(onLoadMore, id) }>
-        { 'More Comments ' }
-        { numReplies ? ` (${numReplies})` : '' }
-      </a>
-    </div>
-  );
-}
 
 function renderCommentReply(props) {
   const { savedReplyContent, comment, currentPage } = props;
@@ -192,135 +144,154 @@ function renderCommentReply(props) {
   );
 }
 
+
 function renderReplies(props) {
   const { op, nestingLevel, comment, commentCollapsed } = props;
 
-  let cls = 'Comment__replies';
-  if (commentCollapsed) { cls += ' m-hidden'; }
-  if (nestingLevel > 5) { cls += ' m-no-indent'; }
-
-  if (nestingLevel > 100) {
-    return (
-      <div className='see-more-comment'>See More Placeholder</div>
-    );
-  }
+  const className = cx('Comment__replies', {
+    'm-hidden': commentCollapsed,
+    'm-no-indent': nestingLevel >= NESTING_STOP_LEVEL,
+  });
 
   return (
-    <div className={ cls }>
+    <div className={ className }>
       <CommentsList
         op={ op }
         commentRecords={ comment.replies }
         parentComment={ comment }
         nestingLevel={ nestingLevel + 1 }
       />
-      { renderLoadMore(comment, props.loadMore) }
+
+      { comment.loadMoreIds.length ? renderMoreCommentsButton(props) : null }
+
     </div>
   );
 }
 
+function renderMoreCommentsButton(props) {
+  const { comment, moreCommentStatus, onLoadMore, nestingLevel } = props;
+
+  const loadingText = moreCommentStatus.loading
+    ? LOADING_MORE_COMMENTS
+    : `${LOAD_MORE_COMMENTS} (${comment.numReplies})`;
+
+  const className = cx('Comment__loadMore', {
+    'm-no-indent': nestingLevel >= NESTING_STOP_LEVEL,
+  });
+
+  return (
+    <div className={ className } onClick={ onLoadMore }>
+      <div className='icon icon-caron-circled' />
+      <span className='Comment__loadMore-text'>{ loadingText }</span>
+    </div>
+  );
+}
+
+
 Comment.propTypes = {
-  parentCreated: T.number,
-  postCreated: T.number,
-  comment: T.instanceOf(CommentModel),
-  user: T.object,
-  op: T.string,
-  nestingLevel: T.number,
-  repliesLocked: T.bool,
+  // start props passed in via state selector
+  comment: T.instanceOf(models.CommentModel).isRequired,
+  commentReplying: T.bool.isRequired,
+  currentPage: T.object.isRequired,
   highlightedComment: T.string,
-  isEditing: T.bool,
-  onToggleSaveComment: T.func,
+  isEditing: T.bool.isRequired,
+  moreCommentStatus: T.object.isRequired,
+  user: T.object.isRequired,
+  // start props passed in via dispatch selector
+  onDeleteComment: T.func.isRequired,
+  onToggleEditForm: T.func.isRequired,
+  onToggleSaveComment: T.func.isRequired,
+  reportComment: T.func.isRequired,
+  // start props passed in via merge selector
+  authorType: T.string.isRequired,
+  commentCollapsed: T.bool.isRequired,
+  isTopLevel: T.bool.isRequired,
+  onLoadMore: T.func.isRequired,
+  onToggleCollapse: T.func.isRequired,
+  // start props passed in via parent component
+  commentId: T.string.isRequired,
+  nestingLevel: T.number,
+  op: T.string,
+  preview: T.bool,
+  isUserActivityPage: T.bool,
 };
+
 
 Comment.defaultProps = {
-  nestingLevel: 0,
-  repliesLocked: false,
+  authorType: '',
   highlightedComment: '',
-  isEditing: false,
-  onToggleSaveComment: () => {},
+  nestingLevel: 0,
+  op: null,
+  preview: false,
 };
 
-const commentIdSelector = (state, props) => props.commentId;
-const commentModelSelector = (state, props) => state.comments[props.commentId];
-const parentCommentSelector = (state, props) => props.parentComment;
-const postCreatedSelector = (state, props) => props.postCreated;
-const userSelector = state => state.user;
-const nestingLevelSelector = (state, props) => props.nestingLevel;
-const commentCollapsedSelector = (state, props) => state.collapsedComments[props.commentId];
-const currentPageSelector = (state) => state.platform.currentPage;
-const commentingDisabledSelector = (state) => {
-  const postId = `t3_${state.platform.currentPage.urlParams.postId}`;
-  const post = state.posts[postId];
-  return post ? (post.archived || post.locked) : true;
-};
-const votingDisabledSelector = (state) => {
-  const postId = `t3_${state.platform.currentPage.urlParams.postId}`;
-  const post = state.posts[postId];
-  return post ? (post.archived) : true;
-};
-const commentReplyingSelector = (state, props) =>
-  state.platform.currentPage.queryParams.commentReply === props.commentId;
-const commentEditingSelector = (state, props) => state.editingComment === props.commentId;
-const highlightedCommentSelector = state =>
-  state.platform.currentPage.urlParams.commentId;
 
-const combineSelectors = (
-  commentId,
-  comment,
-  parentComment,
-  postCreated,
-  user,
-  nestingLevel,
-  commentCollapsed,
-  currentPage,
-  commentingDisabled,
-  votingDisabled,
-  commentReplying,
-  isEditing,
-  highlightedComment,
-) => ({
-  commentId,
-  comment,
-  parentComment,
-  postCreated,
-  user,
-  nestingLevel,
-  commentCollapsed,
-  currentPage,
-  commentingDisabled,
-  votingDisabled,
-  commentReplying,
-  isEditing,
-  highlightedComment,
-});
+const selector = createSelector(
+  state => state.user,
+  state => state.platform.currentPage,
+  (state, props) => state.comments[props.commentId],
+  (state, props) => state.moreCommentsRequests[props.commentId] || DEFAULT_COMMENT_REQUEST,
+  (state, props) => state.collapsedComments[props.commentId] || false,
+  (state, props) => state.platform.currentPage.queryParams.commentReply === props.commentId,
+  (state, props) => state.editingComment === props.commentId,
 
-const makeConnectedCommentSelector = () => {
-  return createSelector(
-    [
-      commentIdSelector,
-      commentModelSelector,
-      parentCommentSelector,
-      postCreatedSelector,
-      userSelector,
-      nestingLevelSelector,
-      commentCollapsedSelector,
-      currentPageSelector,
-      commentingDisabledSelector,
-      votingDisabledSelector,
-      commentReplyingSelector,
-      commentEditingSelector,
-      highlightedCommentSelector,
-    ],
-    combineSelectors,
-  );
-};
+  (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, isEditing) => {
+
+    return {
+      user,
+      currentPage,
+      comment,
+      commentCollapsed,
+      commentReplying,
+      isEditing,
+      moreCommentStatus,
+      highlightedComment: currentPage.urlParams.commentId,
+    };
+  },
+);
+
 
 const mapDispatchToProps = (dispatch, { commentId }) => ({
-  toggleCollapse: (collapse) => dispatch(commentActions.toggleCollapse(commentId, collapse)),
   onToggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
   onDeleteComment: () => dispatch(commentActions.del(commentId)),
   onToggleSaveComment: () => dispatch(commentActions.toggleSave(commentId)),
-  reportComment: (reason) => dispatch(commentActions.report(commentId, reason)),
-  loadMore: (ids) => dispatch(commentActions.loadMore(ids)),
+  reportComment: reason => dispatch(commentActions.report(commentId, reason)),
+  onLoadMore: comment => dispatch(commentActions.loadMore(comment)),
+  onToggleCollapse: commentCollapsed => dispatch(commentActions.toggleCollapse(commentId, !commentCollapsed)),
 });
 
-export default connect(makeConnectedCommentSelector, mapDispatchToProps)(Comment);
+
+function determineAuthorType(comment, user, op) {
+  if (comment.distinguished) {
+    return comment.distinguished;
+  } else if (user && user.name === comment.author) {
+    return 'self';
+  } else if (comment.author === op) {
+    return 'op';
+  }
+
+  return '';
+}
+
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { comment, user, commentCollapsed } = stateProps;
+  const isCollapsible = !ownProps.preview && !ownProps.isUserActivityPage;
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    commentCollapsed: isCollapsible && stateProps.commentCollapsed,
+    isTopLevel: isCollapsible && ownProps.nestingLevel === 0,
+    authorType: determineAuthorType(comment, user, ownProps.op),
+    onLoadMore: () => dispatchProps.onLoadMore(comment),
+    onToggleCollapse: () => {
+      if (isCollapsible) {
+        dispatchProps.onToggleCollapse(commentCollapsed);
+      }
+    },
+  };
+};
+
+export default connect(selector, mapDispatchToProps, mergeProps)(Comment);

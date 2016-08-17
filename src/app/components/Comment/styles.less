@@ -3,15 +3,15 @@
 @import (reference) '~app/less/themes/themeify';
 
 .Comment {
-  padding-top: @grid-size;
-
   &.in-comment-tree {
-    margin-top: @grid-size;
-
     .themeify({
       background-color: @theme-comment-body-color;
       border-top: @theme-border;
     });
+  }
+
+  &__header {
+    padding: 7px 0;
   }
 
   &__body,
@@ -31,12 +31,15 @@
 
   &__body {
     .table();
-    padding-top: @half-grid-size;
     overflow-x: hidden;
 
     a {
       color: @blue;
     }
+  }
+
+  &__toolsContainer {
+    margin-bottom: 5px;
   }
 
   &__tools {
@@ -56,6 +59,8 @@
   }
 
   &__replies {
+    margin-left: 8px;
+
     &.m-no-indent {
       margin-left: 0;
     }
@@ -77,5 +82,31 @@
   &__replyFormLocked {
     text-align: right;
     color: @neutral;
+  }
+
+  &__loadMore {
+    .themeify({
+      border-top: @theme-border;
+    });
+
+    &.m-no-indent {
+      margin-left: 0px;
+    }
+
+    margin-left: 6px;
+    padding: 7px 0;   // using padding here to ensure a large hitbox
+
+    .icon-caron-circled {
+      display: inline-block;
+      margin-right: 8px;
+      transform: rotate(-90deg);
+      margin-top: -4px;
+    }
+  }
+
+  &__loadMore-text {
+    .themeify({
+      color: @theme-button-color;
+    });
   }
 }

@@ -73,6 +73,20 @@ createTest({ reducers: { comments} }, ({ getStore, expect }) => {
       });
     });
 
+    describe('MORE_COMMENTS_RECEIVED', () => {
+      it('should add new comments', () => {
+        const PARENT_COMMENT_ID = '1';
+        const INITIAL_COMMENTS = { [PARENT_COMMENT_ID]: {} };
+        const COMMENTS = { '2': {}, '3': {} };
+
+        const { store } = getStore({ comments: INITIAL_COMMENTS });
+
+        store.dispatch(commentActions.received(PARENT_COMMENT_ID, COMMENTS));
+        const { comments } = store.getState();
+        expect(comments).to.eql({ ...INITIAL_COMMENTS, ...COMMENTS });
+      });
+    });
+
     describe('REPLIED', () => {
       // These tests use real comment models because we want to ensure
       // that replying adds to the replies field of other comments in the store.

@@ -16,6 +16,7 @@ import loid from './loid';
 import mail from './mail';
 import meta from './meta';
 import messages from './messages';
+import moreCommentsRequests from './moreCommentsRequests';
 import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
@@ -55,6 +56,7 @@ export default {
   mail,
   meta,
   messages,
+  moreCommentsRequests,
   posting,
   posts,
   postsLists,

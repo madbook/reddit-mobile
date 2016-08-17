@@ -126,6 +126,7 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
           op={ op }
           commentRecords={ topLevelComments }
           className={ 'CommentsList__topLevel' }
+          nestingLevel={ 0 }
         /> }
 
       { isCrawlerRequest && postLoaded && commentsPage && topLevelComments.length ?

@@ -7,7 +7,7 @@ import map from 'lodash/map';
 import Comment from 'app/components/Comment';
 
 export default (props) => {
-  const { commentRecords, parentComment, postCreated, user, op, nestingLevel } = props;
+  const { commentRecords, op, nestingLevel } = props;
 
   return (
     <div className={ `CommentsList ${props.className || ''}` }>
@@ -17,9 +17,6 @@ export default (props) => {
           <Comment
             key={ `comment-id-${record.uuid}` }
             commentId={ record.uuid }
-            parentComment= { parentComment }
-            postCreated={ postCreated }
-            user={ user }
             op={ op }
             nestingLevel={ nestingLevel }
           />

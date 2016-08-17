@@ -7,6 +7,7 @@ import RingStack from 'lib/RingStack';
 import * as accountActions from 'app/actions/accounts';
 import * as activityActions from 'app/actions/activities';
 import * as adActions from 'app/actions/ads';
+import * as commentActions from 'app/actions/comment';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as hiddenActions from 'app/actions/hidden';
 import * as mailActions from 'app/actions/mail';
@@ -24,6 +25,7 @@ export const errorLogger = () => {
     platformActions.SET_PAGE,
     accountActions.FETCHING_ACCOUNT,
     activityActions.FETCHING_ACTIVITIES,
+    commentActions.MORE_COMMENTS_FETCHING,
     commentsPageActions.FETCHING_COMMENTS_PAGE,
     hiddenActions.FETCHING_HIDDEN,
     mailActions.FETCHING,
@@ -72,6 +74,7 @@ const checkForSpecificErrors = action => {
     case accountActions.FAILED:
     case activityActions.FAILED:
     case adActions.FAILED:
+    case commentActions.MORE_COMMENTS_FAILURE:
     case commentsPageActions.FAILED:
     case hiddenActions.FAILED:
     case mailActions.FAILED:

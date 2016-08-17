@@ -77,8 +77,8 @@ export function relevantContentPostsParams({ subredditName }) {
   });
 }
 
-export const fetchRelevantContent =
-  () => async (dispatch, getState, { waitForState }) => {
+export const fetchRelevantContent = () => {
+  return async (dispatch, getState, { waitForState }) => {
     await waitForState(getSubreddit, async () => {
       const state = getState();
       const feature = features.withContext({ state });
@@ -105,3 +105,4 @@ export const fetchRelevantContent =
       }
     });
   };
+};

@@ -36,6 +36,10 @@ export default function(state=DEFAULT, action={}) {
       return mergeAPIModels(state, comments);
     }
 
+    case commentActions.MORE_COMMENTS_RECEIVED: {
+      return mergeAPIModels(state, action.comments);
+    }
+
     case commentActions.SAVED:
     case commentActions.DELETED: {
       const { comment } = action;
