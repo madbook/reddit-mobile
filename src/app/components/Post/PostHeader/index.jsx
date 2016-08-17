@@ -98,13 +98,13 @@ function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDis
 }
 
 function renderLinkFlairText(post) {
-  if (!post.link_flair_text) {
+  if (!post.linkFlairText) {
     return;
   }
 
   return (
     <span className='PostHeader__link-flair' >
-      { post.link_flair_text }
+      { post.linkFlairText }
     </span>
   );
 }

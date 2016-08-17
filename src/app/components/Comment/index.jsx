@@ -82,7 +82,7 @@ function renderHeader(props) {
         authorType={ authorType }
         topLevel={ nestingLevel === 0 && collapsible(props) }
         dots={ Math.max(nestingLevel - 6, 0) }
-        flair={ comment.author_flair_text }
+        flair={ comment.authorFlairText }
         created={ comment.createdUTC }
         gildCount={ comment.gilded }
         collapsed={ collapsed(props) }
