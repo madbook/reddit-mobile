@@ -264,7 +264,7 @@ class ListingPage extends BasePage {
       this.renderThreadNotice(subreddit, listing, commentId);
     const disableReply = listing.archived ||
                          listing.locked ||
-                         subreddit.user_is_banned;
+                         (subreddit && subreddit.user_is_banned);
 
     let commentsList;
     let googleCarousel;
@@ -340,7 +340,7 @@ class ListingPage extends BasePage {
                 sort={ sort }
                 repliesLocked={ listing.locked }
                 isArchived={ listing.archived }
-                userIsBanned={ subreddit.user_is_banned }
+                userIsBanned={ !!subreddit && subreddit.user_is_banned }
               />
             </div>
           );
