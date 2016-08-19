@@ -30,9 +30,7 @@ export const UserProfileSummary = props => {
           <UserProfileBadgeIcon iconName='cake' color='mint' />
         </UserProfileBadge>
       </UserProfileRow>
-      <UserProfileRow>
-        <GoldInfo { ...props } />
-      </UserProfileRow>
+      <GoldInfo { ...props } />
     </div>
   );
 };
@@ -46,13 +44,17 @@ const GoldInfo = props => {
   const { user, isMyUser } = props;
 
   if (isMyUser) {
+    if (!user.goldExpiration) { return null; }
+
     return (
-      <UserProfileBadge
-        text={ long(user.goldExpiration) }
-        subtext='of reddit gold remaining'
-      >
-        <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
-      </UserProfileBadge>
+      <UserProfileRow>
+        <UserProfileBadge
+          text={ long(user.goldExpiration) }
+          subtext='of reddit gold remaining'
+        >
+          <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
+        </UserProfileBadge>
+      </UserProfileRow>
     );
   }
 
