@@ -560,6 +560,8 @@ function routes(app) {
   router.get('comments.permalink',
              '/r/:subreddit/comments/:listingId/:listingTitle/:commentId',
              commentsPage);
+  router.get('comments.titlePermalink',
+             '/comments/:listingId/:listingTitle/:commentId', commentsPage);
 
   router.get('comments.title', '/comments/:listingId/:listingTitle?', commentsPage);
   router.get('comments.subreddit',
