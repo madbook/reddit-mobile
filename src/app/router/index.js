@@ -32,6 +32,7 @@ export default [
   ['/r/:subredditName/about', SubredditAboutPageHandler],
   ['/r/:subredditName/(w|wiki)/:path(.*)?', WikiPageHandler],
   ['/(help|w|wiki)/:path(.*)?', WikiPageHandler],
+  ['/comments/:postId/:postTitle/:commentId', CommentsPageHandler],
   ['/comments/:postId/:postTitle?', CommentsPageHandler],
   ['/comments', CommentsPageHandler],
   ['/u/:userName/activity', UserActivityHandler],

@@ -55,6 +55,10 @@ const AppMain = ({ statusCode, url, referrer }) => {
       <Page url='/r/:subredditName/(w|wiki)/:path(.*)?' component={ WikiPage } />
       <Page url='/(help|w|wiki)/:path(.*)?' component={ WikiPage } />
       <Page
+        url='/comments/:postId/:postTitle/:commentId'
+        component={ CommentsPage }
+      />
+      <Page
         url='/comments/:postId/:postTitle?'
         component={ CommentsPage }
       />
