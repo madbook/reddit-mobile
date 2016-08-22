@@ -1,0 +1,30 @@
+cache:
+  mount:
+    - node_modules
+
+build:
+  image: reddit/reddit-nodejs:latest
+  pull: true
+  commands:
+    - npm install
+    - npm run lint
+    - npm run test
+    - npm run build
+
+publish:
+  docker:
+    username: $$DOCKERHUB_USERNAME
+    password: $$DOCKERHUB_PASSWORD
+    email: sysops@reddit.com
+    repo: reddit/reddit-mobile
+    tag: $$BRANCH
+    file: Dockerfile.staging
+
+notify:
+  slack:
+    webhook_url: $$CI_SLACK_WEBHOOK_URL
+    channel: ci-notifications
+  slack:
+    webhook_url: $$CI_SLACK_WEBHOOK_URL
+    repo: reddit/reddit-mobile
+    channel: frontend-platform
