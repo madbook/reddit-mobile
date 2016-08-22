@@ -62,6 +62,8 @@ export const SET_META_COLOR = 'setMetaColor';
 
 export const VISITED_POSTS_COUNT = 20;
 
+export const RECENT_CLICKS_LENGTH = 5;
+
 // Post content
 
 export const POST_COMPACT_THUMBNAIL_WIDTH = 70;
