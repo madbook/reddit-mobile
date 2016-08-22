@@ -239,6 +239,8 @@ const currentPageSelector = (state) => state.platform.currentPage;
 const commentReplyingSelector = (state, props) =>
   state.platform.currentPage.queryParams.commentReply === props.commentId;
 const commentEditingSelector = (state, props) => state.editingComment === props.commentId;
+const highlightedCommentSelector = state =>
+  state.platform.currentPage.urlParams.commentId;
 
 const combineSelectors = (
   commentId,
@@ -251,6 +253,7 @@ const combineSelectors = (
   currentPage,
   commentReplying,
   isEditing,
+  highlightedComment,
 ) => ({
   commentId,
   comment,
@@ -262,6 +265,7 @@ const combineSelectors = (
   currentPage,
   commentReplying,
   isEditing,
+  highlightedComment,
 });
 
 const makeConnectedCommentSelector = () => {
@@ -277,6 +281,7 @@ const makeConnectedCommentSelector = () => {
       currentPageSelector,
       commentReplyingSelector,
       commentEditingSelector,
+      highlightedCommentSelector,
     ],
     combineSelectors,
   );
