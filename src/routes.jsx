@@ -504,6 +504,7 @@ function routes(app) {
         props.ampURL = `${config.amp}${listing.permalink}`;
         return props.ampURL;
       }
+      return '';
     });
     props.data.set('ampURL', ampURL);
 
