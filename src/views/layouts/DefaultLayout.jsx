@@ -69,6 +69,10 @@ function DefaultLayout (props) {
     );
   }
 
+  const recaptchaCode = (
+    <script nonce={ props.ctx.csrf } src='https://www.google.com/recaptcha/api.js'></script>
+  );
+
   let keyColor = constants.DEFAULT_KEY_COLOR;
 
   if (props.dataCache &&
@@ -109,6 +113,7 @@ function DefaultLayout (props) {
         <script src={ clientJS } async='true' nonce={ props.ctx.csrf }></script>
         { liveReload }
         { gaTracking }
+        { recaptchaCode }
       </body>
     </html>
   );

@@ -72,6 +72,9 @@ function config() {
 
     defaultCountry: process.env.DEFAULT_COUNTRY || 'US',
 
+    // Note that this is a public key, so this can be shared.
+    recaptchaSitekey: process.env.RECAPTCHA_SITEKEY || '6LeTnxkTAAAAAN9QEuDZRpn90WwKk_R1TRW_g-JC',
+
     // hack for now for global messages displayed with the infobar component.
     globalMessage,
   };

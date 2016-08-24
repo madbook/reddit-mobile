@@ -541,7 +541,7 @@ const oauthRoutes = function(app) {
   router.post('/register', function * () {
     const origin = app.getConfig('nonAuthAPIOrigin');
     const endpoint = `${origin}/api/register`;
-    const { password, username, email, newsletter } = this.body;
+    const { password, username, email, newsletter, gRecaptchaResponse } = this.body;
 
     this.isAjax = this.req.headers['content-type'].includes('application/json');
 
@@ -552,6 +552,7 @@ const oauthRoutes = function(app) {
       passwd: password,
       passwd2: password,
       api_type: 'json',
+      'g-recaptcha-response': gRecaptchaResponse,
     };
 
     if (email) {

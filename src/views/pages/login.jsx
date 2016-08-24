@@ -13,6 +13,7 @@ import BasePage from './BasePage';
 import SnooIconHeader from '../components/snooiconheader';
 import Modal from '../components/Modal';
 import ForgotPassword from '../components/forgotpassword';
+import ReCaptcha from '../components/ReCaptcha';
 
 import MinimalInput from '../components/formElements/minimalinput';
 import SquareButton from '../components/formElements/SquareButton';
@@ -24,6 +25,10 @@ const ERROR_MESSAGES = {
   DEFAULT: 'Sorry, Something has gone wrong and we\'re not sure what',
   NEWSLETTER_NO_EMAIL: 'Sorry, we need an email to send you the newsletter',
 };
+
+const CAPTCHA_ERRORS = [
+  'BAD_CAPTCHA',
+];
 
 const EMAIL_ERRORS = [
   'BAD_EMAIL',
@@ -50,6 +55,7 @@ const ERROR_TYPES = [
   ...EMAIL_ERRORS,
   ...USER_ERRORS,
   ...PASS_ERRORS,
+  ...CAPTCHA_ERRORS,
 ];
 
 const PASS_FIELD_TYPES = {
@@ -139,6 +145,7 @@ class LoginPage extends BasePage {
       username: username || '',
       password: password || '',
       newsletter: false,
+      gRecaptchaResponse: '',
       email: email || '',
       error: error ? this.parseError(error) : {},
     };
@@ -156,6 +163,7 @@ class LoginPage extends BasePage {
     this.doAction = this.doAction.bind(this);
     this.renderClear = this.renderClear.bind(this);
     this.handleErrors = this.handleErrors.bind(this);
+    this.ReCaptchaCallback = this.ReCaptchaCallback.bind(this);
   }
 
   parseError(error) {
@@ -163,10 +171,11 @@ class LoginPage extends BasePage {
       username: USER_ERRORS.includes(error),
       password: PASS_ERRORS.includes(error),
       email: EMAIL_ERRORS.includes(error),
+      captcha: CAPTCHA_ERRORS.includes(error),
       global: false,
     };
 
-    if (!err.username && !err.password && !err.email) {
+    if (!err.username && !err.password && !err.email && !err.captcha) {
       err.global = true;
     }
 
@@ -193,6 +202,10 @@ class LoginPage extends BasePage {
     }
 
     this.setState(newState);
+  }
+
+  ReCaptchaCallback(value) {
+    this.setState({ gRecaptchaResponse: value });
   }
 
   clearField(name, e) {
@@ -231,12 +244,13 @@ class LoginPage extends BasePage {
     const action = mode.toLowerCase();
     const uri = `/${action}`;
 
-    const { username, password, email, newsletter } = this.state;
+    const { username, password, email, newsletter, gRecaptchaResponse } = this.state;
 
     const data = {
       username,
       password,
       newsletter,
+      gRecaptchaResponse,
       _csrf: ctx.csrf,
     };
 
@@ -409,7 +423,7 @@ class LoginPage extends BasePage {
   }
 
   render () {
-    const { originalUrl, ctx, app, mode } = this.props;
+    const { originalUrl, ctx, app, mode, theme } = this.props;
     const { passwordFieldType, showForgot, errorMessage,
             password, username, email, error, newsletter } = this.state;
     const registerMode = (mode === LoginPage.modes.register);
@@ -417,6 +431,7 @@ class LoginPage extends BasePage {
     const action = registerMode ? 'Sign Up' : 'Log in';
     const formUri = registerMode ? '/register' : '/login' ;
     const blue = passwordFieldType === 'text' ? 'blue' : '';
+    const captchaTheme = (theme === constants.themes.DAYMODE) ? 'light' : 'dark';
 
     let forgotPassword;
     if (showForgot) {
@@ -427,8 +442,13 @@ class LoginPage extends BasePage {
       );
     }
 
-    const globalError = error.global ?
-      (<p className='minimalInput__error-text'>{ errorMessage }</p>) : null;
+    const globalError = error.global
+      ? (<p className='minimalInput__error-text'>{ errorMessage }</p>)
+      : null;
+
+    const captchaError = error.captcha
+      ? (<p className='minimalInput__error-text'>Please provide a valid captcha</p>)
+      : null;
 
     return (
       <div className='login'>
@@ -475,6 +495,14 @@ class LoginPage extends BasePage {
                                                     error,
                                                     errorMessage,
                                                     newsletter) : null }
+          { registerMode
+            ? <ReCaptcha
+                sitekey={ app.config.recaptchaSitekey }
+                callback={ this.ReCaptchaCallback }
+                theme={ captchaTheme }
+              />
+            : null }
+          { registerMode ? captchaError : null }
           <input
             name='_csrf'
             type='hidden'
