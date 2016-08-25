@@ -12,9 +12,10 @@ export default class Register extends BaseHandler {
   }
 
   async [METHODS.POST](dispatch/*, getState, utils*/) {
-    const { username, password, email, newsletter } = this.bodyParams;
+    const { username, password, email, newsletter, gRecaptchaResponse } = this.bodyParams;
     try {
-      const newSession = await registerUser(username, password, email, newsletter);
+      const newSession = await registerUser(username, password, email,
+                                            newsletter, gRecaptchaResponse);
       dispatch(sessionActions.setSession(newSession));
       dispatch(loginActions.loggedIn());
       dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));

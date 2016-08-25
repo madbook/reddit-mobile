@@ -4,12 +4,19 @@ import { createSelector } from 'reselect';
 import { METHODS } from '@r/platform/router';
 import { Anchor, Form } from '@r/platform/components';
 
+import config from 'config';
 import * as sessionActions from 'app/actions/session';
 
+import { themes } from 'app/constants';
+import LoginInput from 'app/components/LoginRegistrationForm/Input';
+import ReCaptcha from 'app/components/ReCaptcha';
 import SnooIcon from 'app/components/SnooIcon';
 import SquareButton from 'app/components/LoginRegistrationForm/SquareButton';
-import LoginInput from 'app/components/LoginRegistrationForm/Input';
 import 'app/components/LoginRegistrationForm/styles.less';
+
+const CAPTCHA_ERRORS = {
+  BAD_CAPTCHA: 'Please provide a valid captcha',
+};
 
 const EMAIL_ERRORS = {
   BAD_EMAIL: 'Sorry, the email you entered is invalid',
@@ -85,6 +92,7 @@ export default class Register extends React.Component {
       username: '',
       password: '',
       email: '',
+      gRecaptchaResponse: '',
     };
 
     this.clearUsername = this.clearField.bind(this, 'username');
@@ -93,6 +101,7 @@ export default class Register extends React.Component {
     this.updateUsername = this.updateField.bind(this, 'username');
     this.updatePassword = this.updateField.bind(this, 'password');
     this.updateEmail = this.updateField.bind(this, 'email');
+    this.setRecaptchaResponse = this.setRecaptchaResponse.bind(this);
   }
 
   clearField(fieldName, e) {
@@ -104,6 +113,10 @@ export default class Register extends React.Component {
   updateField(fieldName, e) {
     e.preventDefault();
     this.setState({ [fieldName]: e.target.value });
+  }
+
+  setRecaptchaResponse(value) {
+    this.setState({ gRecaptchaResponse: value });
   }
 
   renderClear(methodName) {
@@ -119,8 +132,11 @@ export default class Register extends React.Component {
   }
 
   render() {
-    const { error } = this.props;
-    const { username, password, email} = this.state;
+    const { error, theme } = this.props;
+    const { username, password, email, gRecaptchaResponse } = this.state;
+    const { recaptchaSitekey } = config;
+
+    const captchaTheme = (theme === themes.DAYMODE) ? 'light' : 'dark';
 
     return (
       <div className='Register'>
@@ -169,7 +185,7 @@ export default class Register extends React.Component {
           </LoginInput>
           <LoginInput
             name='email'
-            type='Your email'
+            type='email'
             placeholder='Your email'
             showTopBorder={ false }
             error={ error.email }
@@ -182,24 +198,27 @@ export default class Register extends React.Component {
                 : null
             }
           </LoginInput>
-          <div className='Register__checkbox'>
+          <label className='Register__checkbox-label'>
             <input
+              className='Register__checkbox'
               type='checkbox'
               name='newsletter'
               defaultChecked
             />
-            <label
-              htmlFor='newsletter'
-              className='Register__checkbox-label'
-            >
-              Subscribe to newsletter
-            </label>
-          </div>
-          {
-            error.default
-              ? renderErrorMsg(error.default)
-              : null
-          }
+            Subscribe to newsletter
+          </label>
+          <ReCaptcha
+            sitekey={ recaptchaSitekey }
+            onSuccess={ this.setRecaptchaResponse }
+            theme={ captchaTheme }
+          />
+          <input
+            name='gRecaptchaResponse'
+            type='hidden'
+            value={ gRecaptchaResponse }
+          />
+          { error.captcha ? renderErrorMsg(error.captcha) : null }
+          { error.default ? renderErrorMsg(error.default) : null }
           <div className='Register__submit'>
             <SquareButton text='REGISTER' type='submit'/>
           </div>
@@ -210,27 +229,41 @@ export default class Register extends React.Component {
   }
 }
 
-const mapStateToProps = createSelector(
-  state => state.session,
-  session => {
-    const error = { username: '', password: '', email: '', default: ''};
-    const errorType = session ? session.error : null;
+const checkErrors = session => {
+  const error = {
+    username: '',
+    password: '',
+    email: '',
+    captcha: '',
+    default: '',
+  };
+  const errorType = session ? session.error : null;
 
-    if (errorType in EMAIL_ERRORS) {
-      error.email = EMAIL_ERRORS[errorType];
-    } else if (errorType in PASS_ERRORS) {
-      error.password = PASS_ERRORS[errorType];
-    } else if (errorType in USER_ERRORS) {
-      error.username = USER_ERRORS[errorType];
-    } else if (errorType in DEFAULT_ERRORS) {
-      error.default = DEFAULT_ERRORS[errorType];
-    } else if (errorType) {
-      // Not a token type error message. Set it to the string instead
-      error.default = errorType;
-    }
-
-    return { error };
+  if (errorType in EMAIL_ERRORS) {
+    error.email = EMAIL_ERRORS[errorType];
+  } else if (errorType in PASS_ERRORS) {
+    error.password = PASS_ERRORS[errorType];
+  } else if (errorType in USER_ERRORS) {
+    error.username = USER_ERRORS[errorType];
+  } else if (errorType in CAPTCHA_ERRORS) {
+    error.captcha = CAPTCHA_ERRORS[errorType];
+  } else if (errorType in DEFAULT_ERRORS) {
+    error.default = DEFAULT_ERRORS[errorType];
+  } else if (errorType) {
+    // Not a token type error message. Set it to the string instead
+    error.default = errorType;
   }
+
+  return error;
+};
+
+const mapStateToProps = createSelector(
+  state => state.theme,
+  state => state.session,
+  (theme, session) => ({
+    theme,
+    error: checkErrors(session),
+  })
 );
 
 const mapDispatchToProps = (dispatch) => ({
