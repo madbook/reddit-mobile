@@ -1,3 +1,5 @@
+import url from 'url';
+
 import Flags from '@r/flags';
 
 import constants from './constants';
@@ -21,13 +23,22 @@ const config = {
   },
   [SMARTBANNER]: true,
   [VARIANT_RELEVANCY_TOP]: {
-    and: {
-      subreddit: 'gaming',
-      or: [{
-        url: 'experimentrelevancytop',
-        variant: 'relevancy_mweb:top',
-      }],
-    },
+    or: [
+      {
+        and: {
+          seoReferrer: true,
+          loggedin: false,
+        },
+      }, {
+        and: {
+          subreddit: 'gaming',
+          or: [{
+            url: 'experimentrelevancytop',
+            variant: 'relevancy_mweb:top',
+          }],
+        },
+      },
+    ],
   },
   [VARIANT_RELEVANCY_ENGAGING]: {
     and: {
@@ -90,6 +101,28 @@ function extractUser(ctx) {
 
 flags.addRule('loggedin', function(val) {
   return !!this.props.ctx.token === val;
+});
+
+const SEO_REFERRERS = [
+  'google.com',
+  'bing.com',
+];
+
+flags.addRule('seoReferrer', function(wantSEO) {
+  // Make sure we have a referrer and from the outside
+  const referrer = this.props.ctx.referrer;
+  if (!referrer || !referrer.startsWith('http')) {
+    return !wantSEO;
+  }
+
+  // Check if the referrer matches the list of hostnames
+  const referrerHostname = url.parse(referrer).hostname;
+  const isSEO = SEO_REFERRERS.some(seo => {
+    return referrerHostname.indexOf(seo) !== -1;
+  });
+
+  // Compare if we want the user to be from SEO or not
+  return (isSEO === wantSEO);
 });
 
 flags.addRule('users', function(users) {

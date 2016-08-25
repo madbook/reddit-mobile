@@ -15,6 +15,21 @@ import RelevantContent from '../components/listings/RelevantContent';
 
 const T = React.PropTypes;
 
+function getTreeItemsCount(tree) {
+  // Get the total comment count in a comment tree
+  if (tree.replies.length === 0) {
+    // Count each node with no children
+    return 1;
+  }
+
+  // Walk the tree and sum up the total items down each child
+  const count = tree.replies.map(r => getTreeItemsCount(r))
+                            .reduce((a, b) => a + b, 0);
+
+  // Ultimately we count ourselves and all out children
+  return count + 1;
+}
+
 function limitTrees(limit, trees) {
   if (limit === 0 || !trees || trees.length === 0) {
     return [0, []];
@@ -72,6 +87,7 @@ class ListingPage extends BasePage {
     this.loadMore = this.loadMore.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.expandComments = this.expandComments.bind(this);
+    this.buildCommentsList = this.buildCommentsList.bind(this);
   }
 
   get track () {
@@ -231,8 +247,76 @@ class ListingPage extends BasePage {
     return null;
   }
 
+  buildCommentsList(commentsTrees, abbreviateComments, keyExtra) {
+    const { data, loadingMoreComments } = this.state;
+
+    const {
+      app,
+      apiOptions,
+      commentId,
+      ctx,
+      token,
+      subredditName,
+    } = this.props;
+
+    const sort = this.props.sort || SORTS.CONFIDENCE;
+
+    const { user, listing, subreddit } = data;
+    const { author, permalink } = listing;
+
+    keyExtra = keyExtra ? `-${keyExtra}` : '';
+
+    return commentsTrees.map((comment, i) => {
+      const key = `comment-${i}-${abbreviateComments}${keyExtra}`;
+      const collapseLevelOne = abbreviateComments && (i < 3);
+
+      if (comment && comment.body_html !== undefined) {
+        return (
+          <div className='listing-comment' key={ comment.id } >
+            <Comment
+              postCreated={ listing.created }
+              ctx={ ctx }
+              app={ app }
+              subredditName={ subredditName }
+              permalinkBase={ permalink }
+              highlightedComment={ commentId }
+              comment={ comment }
+              index={ i }
+              nestingLevel={ 0 }
+              op={ author }
+              user={ user }
+              token={ token }
+              apiOptions={ apiOptions }
+              sort={ sort }
+              repliesLocked={ listing.locked }
+              isArchived={ listing.archived }
+              userIsBanned={ !!subreddit && subreddit.user_is_banned }
+              collapseLevelOne={ collapseLevelOne }
+            />
+          </div>
+        );
+      }
+
+      const numChildren = comment.children.length;
+      const word = numChildren > 1 ? 'replies' : 'reply';
+      const contextPermalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
+      const text = loadingMoreComments ? 'Loading...' :
+                                       `load more comments (${numChildren} ${word})`;
+
+      return (
+        <a
+          key={ key }
+          href={ contextPermalink }
+          data-no-route='true'
+          data-index={ i }
+          onClick={ this.loadMore }
+        >{ text }</a>
+      );
+    });
+  }
+
   render() {
-    const { data, editing, loadingMoreComments, linkEditError, expandComments } = this.state;
+    const { data, editing, linkEditError, expandComments } = this.state;
 
     const {
       app,
@@ -256,7 +340,7 @@ class ListingPage extends BasePage {
     }
 
     const { user, listing, comments, relevant, subreddit } = data;
-    const { author, permalink, is_self: isSelfText } = listing;
+    const { is_self: isSelfText } = listing;
 
     app.emit('setTitle', { title: listing.title });
 
@@ -266,7 +350,18 @@ class ListingPage extends BasePage {
                          listing.locked ||
                          (subreddit && subreddit.user_is_banned);
 
+    // This merits a little explanation:
+    // commentsList is the normal list of comments, but we have a special
+    // case where it takes on special behavior and needs friends: SEO.
+    //
+    // In the SEO case, commentsList is just the first three comments,
+    // commentsListHidden is the same top level comment trees fully rendered
+    // but "hidden" from the user, and commentsListAfter is the rest of the
+    // DOM tree after the relevance information. Got all that?
     let commentsList;
+    let commentsListHidden;
+    let commentsListAfter;
+
     let googleCarousel;
 
     const abbreviateComments =
@@ -311,59 +406,36 @@ class ListingPage extends BasePage {
       draw a loading state.
     */
     if (Array.isArray(comments)) {
-      let commentsTrees = comments;
+      let showReadMore = false;
+      commentsList = this.buildCommentsList(comments, abbreviateComments);
 
       if (abbreviateComments) {
-        [, commentsTrees] = limitTrees(3, comments);
+        // Get the first three tree elements
+        let commentsRelevance;
+        [, commentsRelevance] = limitTrees(3, comments);
+
+        // Given the number of top level comments, we divvy the main tree
+        // into what is hidden (because it's a duplicate) and what's shown
+        // after the relevance info.
+        const slicePoint = commentsRelevance.length;
+        commentsListHidden = commentsList.slice(0, slicePoint);
+        commentsListAfter = commentsList.slice(slicePoint);
+
+        // Build the first three comments
+        commentsList = this.buildCommentsList(commentsRelevance, abbreviateComments, 'rel');
+
+        // Figure out if the last shown comment tree had more comments
+        // that got cut off
+        const lastHiddenCount = (slicePoint > 0)
+          ? getTreeItemsCount(comments[slicePoint-1])
+          : 0;
+        const extraHidden = (slicePoint + lastHiddenCount) > 3;
+
+        // Use all that to figure out if we want to give the "Read More" option
+        showReadMore = abbreviateComments && (!!commentsListAfter || extraHidden);
       }
 
-      commentsList = commentsTrees.map((comment, i) => {
-        const key = `comment-${i}-${abbreviateComments}`;
-
-        if (comment && comment.body_html !== undefined) {
-          return (
-            <div className='listing-comment' key={ comment.id } >
-              <Comment
-                postCreated={ listing.created }
-                ctx={ ctx }
-                app={ app }
-                subredditName={ subredditName }
-                permalinkBase={ permalink }
-                highlightedComment={ commentId }
-                comment={ comment }
-                index={ i }
-                nestingLevel={ 0 }
-                op={ author }
-                user={ user }
-                token={ token }
-                apiOptions={ apiOptions }
-                sort={ sort }
-                repliesLocked={ listing.locked }
-                isArchived={ listing.archived }
-                userIsBanned={ !!subreddit && subreddit.user_is_banned }
-              />
-            </div>
-          );
-        }
-
-        const numChildren = comment.children.length;
-        const word = numChildren > 1 ? 'replies' : 'reply';
-        const contextPermalink = `${permalink}${comment.parent_id.substring(3)}?context=0`;
-        const text = loadingMoreComments ? 'Loading...' :
-                                         `load more comments (${numChildren} ${word})`;
-
-        return (
-          <a
-            key={ key }
-            href={ contextPermalink }
-            data-no-route='true'
-            data-index={ i }
-            onClick={ this.loadMore }
-          >{ text }</a>
-        );
-      });
-
-      if (abbreviateComments) {
+      if (showReadMore) {
         commentsList = [commentsList,
           <a
             className='listing-comment-collapsed-more'
@@ -389,7 +461,7 @@ class ListingPage extends BasePage {
           />
         );
       }
-    } else if (!comments) {
+    } else if (!comments && !relevant) {
       commentsList = (
         <div className='Loading-Container'>
           <Loading />
@@ -412,12 +484,6 @@ class ListingPage extends BasePage {
           loid={ loid }
           loidcreated={ loidcreated }
         />
-      );
-    } else {
-      relevantContent = (
-        <div className='Loading-Container'>
-          <Loading />
-        </div>
       );
     }
 
@@ -472,6 +538,12 @@ class ListingPage extends BasePage {
             { commentsList }
           </div>
           { relevantBottom ? relevantContent : null }
+          <div className={ `container hidden ${footerClass}` }>
+            { commentsListHidden ? commentsListHidden : null }
+          </div>
+          <div className={ `container ${footerClass}` }>
+            { commentsListAfter ? commentsListAfter : null }
+          </div>
         </div>
       </div>
     );

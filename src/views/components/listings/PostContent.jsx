@@ -90,15 +90,21 @@ export default class PostContent extends BaseComponent {
     onTapExpand: T.func.isRequired,
     expandedCompact: T.bool.isRequired,
     width: T.number.isRequired,
-    toggleShowNSFW: T.func.isRequired,
+    toggleShowNSFW: T.func,
     showNSFW: T.bool.isRequired,
     editing: T.bool.isRequired,
     editError: T.oneOf([T.arrayOf(T.string), T.object]),
-    saveUpdatedText: T.func.isRequired,
-    toggleEditing: T.func.isRequired,
+    saveUpdatedText: T.func,
+    toggleEditing: T.func,
     forceHTTPS: T.bool.isRequired,
     isDomainExternal: T.bool.isRequired,
     renderMediaFullbleed: T.bool.isRequired,
+  };
+
+  static defaultProps = {
+    toggleShowNSFW: () => {},
+    saveUpdatedText: () => {},
+    toggleEditing: () => {},
   };
 
   constructor(props) {

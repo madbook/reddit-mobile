@@ -18,7 +18,7 @@ import { getVisitedPosts } from '../../../lib/visitedPosts';
 
 import BaseComponent from '../BaseComponent';
 import PostContent from './PostContent';
-import { cleanPostHREF } from './postUtils';
+import { cleanPostHREF, isPostDomainExternal } from './postUtils';
 
 const T = React.PropTypes;
 
@@ -67,6 +67,9 @@ export default class RelevantContent extends BaseComponent {
         ...this.state,
       };
     }
+
+    const appConfig = props.app.config;
+    this.forceHTTPS = appConfig.https || appConfig.httpsProxy;
 
     this.renderPostList = this.renderPostList.bind(this);
     this.renderCarouselPost = this.renderCarouselPost.bind(this);
@@ -211,6 +214,7 @@ export default class RelevantContent extends BaseComponent {
       };
       const onClick = makeOnClick(url, name, i);
       const noop = (e => e.preventDefault());
+      const externalDomain = isPostDomainExternal(postWithFallback);
       return (
         <article ref='rootNode' className={ `Post ${hasThumbs ? '' : 'no-thumbs'}` } key={ id }>
           <div className='Post__header-wrapper' onClick={ onClick }>
@@ -221,13 +225,10 @@ export default class RelevantContent extends BaseComponent {
               expandedCompact={ false }
               onTapExpand={ function () {} }
               width={ width }
-              toggleShowNSFW={ false }
               showNSFW={ false }
               editing={ false }
-              toggleEditing={ false }
-              saveUpdatedText={ false }
               forceHTTPS={ this.forceHTTPS }
-              isDomainExternal={ this.externalDomain }
+              isDomainExternal={ externalDomain }
               renderMediaFullbleed={ true }
               showLinksInNewTab={ false }
             />
@@ -272,6 +273,7 @@ export default class RelevantContent extends BaseComponent {
       cleanUrl: '#',
     };
     const onClick = (e => this.goToNextContentPost(e, { url, id: name, linkIndex: i + 1 }));
+    const externalDomain = isPostDomainExternal(postWithFallback);
 
     const content = (
       <div className='NextContent__post-wrapper' onClick={ onClick }>
@@ -282,13 +284,11 @@ export default class RelevantContent extends BaseComponent {
           expandedCompact={ false }
           onTapExpand={ function () {} }
           width={ width }
-          toggleShowNSFW={ false }
           showNSFW={ false }
           editing={ false }
-          toggleEditing={ false }
           saveUpdatedText={ false }
           forceHTTPS={ this.forceHTTPS }
-          isDomainExternal={ this.externalDomain }
+          isDomainExternal={ externalDomain }
           renderMediaFullbleed={ true }
           showLinksInNewTab={ false }
         />
@@ -460,6 +460,7 @@ export default class RelevantContent extends BaseComponent {
       };
       const onClick = (e => this.goToNextContentPost(e, { url, id: name, linkIndex: 0 }));
       const noop = (e => e.preventDefault());
+      const externalDomain = isPostDomainExternal(postWithFallback);
 
       let variant = 'banner';
       let descriptor = null;
@@ -498,13 +499,10 @@ export default class RelevantContent extends BaseComponent {
                 expandedCompact={ false }
                 onTapExpand={ function () {} }
                 width={ width }
-                toggleShowNSFW={ false }
                 showNSFW={ false }
                 editing={ false }
-                toggleEditing={ false }
-                saveUpdatedText={ false }
                 forceHTTPS={ this.forceHTTPS }
-                isDomainExternal={ this.externalDomain }
+                isDomainExternal={ externalDomain }
                 renderMediaFullbleed={ true }
                 showLinksInNewTab={ false }
               />
