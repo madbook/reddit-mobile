@@ -498,7 +498,7 @@ class LoginPage extends BasePage {
           { registerMode
             ? <ReCaptcha
                 sitekey={ app.config.recaptchaSitekey }
-                callback={ this.ReCaptchaCallback }
+                onSuccess={ this.ReCaptchaCallback }
                 theme={ captchaTheme }
               />
             : null }
