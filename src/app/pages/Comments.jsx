@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { some } from 'lodash/collection';
+import { has } from 'lodash/object';
 import * as navigationActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
@@ -54,6 +55,7 @@ const stateProps = createSelector(
       replying,
       feature,
       isCrawlerRequest,
+      post,
     };
   },
 );
@@ -96,6 +98,7 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
     feature,
     onSortChange,
     isCrawlerRequest,
+    post,
   } = props;
 
 
@@ -108,6 +111,8 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
           <CommentsPageTools
             key='tools'
             replying={ replying }
+            post={ post }
+            hasSingleComment={ has(commentsPageParams, 'query.comment') }
             currentPage={ currentPage }
             id={ commentsPageParams.id }
             onSortChange={ onSortChange }

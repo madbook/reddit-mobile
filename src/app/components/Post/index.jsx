@@ -149,7 +149,7 @@ export function Post(props) {
         compact={ compact }
         post={ post }
         viewComments={ !single }
-        hideDownvote={ userActivityPage }
+        hideDownvote={ userActivityPage || post.archived }
         onToggleSave={ onToggleSavePost }
         onToggleHide={ onToggleHidePost }
       />

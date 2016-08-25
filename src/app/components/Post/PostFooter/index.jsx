@@ -104,7 +104,6 @@ export default class PostFooter extends React.Component {
     } = this.props;
 
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
-
     return (
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
         { this.renderCommentsLink(post) }

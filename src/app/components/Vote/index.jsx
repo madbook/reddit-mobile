@@ -18,7 +18,7 @@ export function scoreText(score, scoreHidden) {
 }
 
 export function renderUpvote (props) {
-  const { voteDirection, classPrefix } = props;
+  const { voteDirection, classPrefix, hideDownvote } = props;
   let cls = `${classPrefix}__upvote icon icon-upvote`;
   const voteCls = voteDirection === -1 ? 'downvoted' : '';
   if (voteDirection === 1) { cls += ' m-animated upvoted'; }
@@ -31,7 +31,7 @@ export function renderUpvote (props) {
       className={ `Vote__form ${classPrefix}__Vote__form ${voteCls}` }
     >
       <input type='hidden' value={ formDirection } name='direction' />
-      <button className={ cls } type='submit' />
+      <button className={ cls } type='submit' disabled={ hideDownvote } />
     </Form>
   );
 }

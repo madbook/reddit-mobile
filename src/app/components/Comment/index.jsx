@@ -38,11 +38,18 @@ export function Comment (props) {
 }
 
 function renderFooter(props) {
-  const { commentDeleted, commentReplying, commentCollapsed, comment, preview } = props;
+  const {
+    commentDeleted,
+    commentReplying,
+    commentingDisabled,
+    commentCollapsed,
+    comment,
+    preview,
+  } = props;
 
   return [
     !commentDeleted ? renderTools(props) : null,
-    !preview && commentReplying ? renderCommentReply(props) : null,
+    !preview && commentReplying && !commentingDisabled ? renderCommentReply(props) : null,
     !preview && !commentCollapsed && comment.replies.length ? renderReplies(props) : null,
   ];
 }
@@ -125,6 +132,8 @@ function renderTools(props) {
     onToggleEditForm,
     onDeleteComment,
     onToggleSaveComment,
+    commentingDisabled,
+    votingDisabled,
   } = props;
 
   let cls = 'Comment__toolsContainer clearfix';
@@ -147,6 +156,8 @@ function renderTools(props) {
           onEdit={ onToggleEditForm }
           onDelete={ onDeleteComment }
           onToggleSave={ onToggleSaveComment }
+          commentingDisabled={ commentingDisabled }
+          votingDisabled={ votingDisabled }
         />
       </div>
     </div>
@@ -236,6 +247,16 @@ const userSelector = state => state.user;
 const nestingLevelSelector = (state, props) => props.nestingLevel;
 const commentCollapsedSelector = (state, props) => state.collapsedComments[props.commentId];
 const currentPageSelector = (state) => state.platform.currentPage;
+const commentingDisabledSelector = (state) => {
+  const postId = `t3_${state.platform.currentPage.urlParams.postId}`;
+  const post = state.posts[postId];
+  return post ? (post.archived || post.locked) : true;
+};
+const votingDisabledSelector = (state) => {
+  const postId = `t3_${state.platform.currentPage.urlParams.postId}`;
+  const post = state.posts[postId];
+  return post ? (post.archived) : true;
+};
 const commentReplyingSelector = (state, props) =>
   state.platform.currentPage.queryParams.commentReply === props.commentId;
 const commentEditingSelector = (state, props) => state.editingComment === props.commentId;
@@ -251,6 +272,8 @@ const combineSelectors = (
   nestingLevel,
   commentCollapsed,
   currentPage,
+  commentingDisabled,
+  votingDisabled,
   commentReplying,
   isEditing,
   highlightedComment,
@@ -263,6 +286,8 @@ const combineSelectors = (
   nestingLevel,
   commentCollapsed,
   currentPage,
+  commentingDisabled,
+  votingDisabled,
   commentReplying,
   isEditing,
   highlightedComment,
@@ -279,6 +304,8 @@ const makeConnectedCommentSelector = () => {
       nestingLevelSelector,
       commentCollapsedSelector,
       currentPageSelector,
+      commentingDisabledSelector,
+      votingDisabledSelector,
       commentReplyingSelector,
       commentEditingSelector,
       highlightedCommentSelector,
