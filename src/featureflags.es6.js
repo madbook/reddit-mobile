@@ -100,7 +100,7 @@ function extractUser(ctx) {
 }
 
 flags.addRule('loggedin', function(val) {
-  return !!this.props.ctx.token === val;
+  return !!this.props.ctx.redditSession === val;
 });
 
 const SEO_REFERRERS = [

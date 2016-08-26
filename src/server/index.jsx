@@ -24,6 +24,11 @@ import constants from '../constants';
 import oauthRoutes from './oauth';
 import serverRoutes from './routes';
 import routes from '../routes';
+import {
+  clearSessionCookies,
+  getSession,
+  setSessionCookies,
+} from './session';
 
 import setLoggedOutCookies from '../lib/loid';
 
@@ -403,11 +408,6 @@ class Server {
       // reset notifications after read
       this.cookies.set('notifications');
 
-      if (!this.token) {
-        this.token = this.cookies.get('token');
-        this.tokenExpires = this.cookies.get('tokenExpires');
-      }
-
       // default to false so we only render this on the client.
       this.showGlobalMessage = false;
       this.showEUCookieMessage = false;
@@ -430,17 +430,14 @@ class Server {
 
       const session = this.cookies.get('reddit_session');
 
-      if (!this.token &&
+      if (!this.redditSession &&
           !this.cookies.get('token') &&
           session) {
 
         try {
-          const token = yield app.convertSession(this, session);
-
-          this.token = token.token.access_token;
-          this.tokenExpires = token.token.expires_at.toString();
-
-          app.setTokenCookie(this, token);
+          const session = yield app.convertSession(this, session);
+          this.redditSession = session;
+          setSessionCookies(this, session);
         } catch (e) {
           app.error(e, this, app, { redirect: false, replaceBody: false });
         }
@@ -477,42 +474,37 @@ class Server {
         return;
       }
 
-      const now = new Date();
-
-      const cookieToken = this.cookies.get('token');
-      const cookieExpires = this.cookies.get('tokenExpires');
-      const rToken = this.cookies.get('refreshToken');
-
-      const expires = new Date(cookieExpires);
-
-      if (cookieToken && rToken && now > expires) {
-        try {
-          const token = yield app.refreshToken(this, rToken);
-
-          this.token = token.token.access_token;
-          this.tokenExpires = token.token.expires_at.toString();
-
-          app.setTokenCookie(this, token);
-        } catch (e) {
-          app.error(e, this, app, { redirect: false, replaceBody: false });
-
-          app.nukeTokens(this);
-          this.redirect('/');
-
-          return;
-        }
-        // Sometimes, there's an empty token cookie. This is unexpected- a user
-        // should never have an expires but not a token or a refresh token - but
-        // in case their cookies get mangled somehow, we should nuke the invalid
-        // ones.
-      } else if (expires && (!cookieToken || !rToken)) {
-        this.cookies.set('token');
-        this.cookies.set('tokenExpires');
-        this.cookies.set('refreshToken');
+      const session = getSession(this);
+      if (!session) {
+        yield next;
+        return;
       }
 
-      yield next;
-      return;
+      // We need to make sure this token is fresh enough to fetch data.
+      // This token _might_ just about be up for expiration and/or the
+      // api could be under load. To compensate we should refresh
+      // our token if we're within some padding of the expiration.
+      const expires = new Date(session.expires);
+      expires.setMinutes(expires.getMinutes() - 2);
+      if (new Date() < expires) {
+        this.redditSession = session;
+        yield next;
+        return;
+      }
+
+      // Our cookie is stale, let's bake a new one
+      try {
+        const freshSession = yield app.refreshSession(this, session.refreshToken);
+        this.redditSession = freshSession;
+        setSessionCookies(this, freshSession);
+        yield next;
+      } catch (e) {
+        // if the refresh endpoint fails, there's not much we can do
+        // womp womp
+        clearSessionCookies(this);
+        app.error(e, this, app, { redirect: false, replaceBody: false });
+        this.redirect('/');
+      }
     };
   }
 

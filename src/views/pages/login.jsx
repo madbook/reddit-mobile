@@ -263,15 +263,19 @@ class LoginPage extends BasePage {
 
       // do some redirection here.
       if (res && res.body) {
-        const { token } = res.body.token;
+        const { redditSession } = res.body;
+
+        const ctx = app.getState('ctx');
 
         app.setState('ctx', {
-          ...app.getState('ctx'),
-          token: token.access_token,
-          tokenExpires: token.expires_at,
+          ...ctx,
+          redditSession: {
+            ...ctx.redditSession,
+            ...redditSession,
+          },
         });
 
-        app.setTokenRefresh(app, token.expires_at);
+        app.setTokenRefresh(app, app.getState('ctx').redditSession.expires);
         app.setNotification(cookies, action);
         app.redirect(originalUrl || '/');
       }

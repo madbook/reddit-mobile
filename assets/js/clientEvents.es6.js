@@ -33,13 +33,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
       // than desktop won't be able to read and respect the cookie. Since the
       // default behavior on desktop is to redirect mobile users to mweb, this
       // will result in a redirect loop.
-      const domain = `.${config.reddit}`
-        .match(/https?:\/\/(.+)/)[1]
-        .split('.')
-        .splice(1,2)
-        .join('.');
-
-      options.domain = domain;
+      options.domain = config.rootReddit;
     }
 
     cookies.set('mweb-no-redirect', '1', options);

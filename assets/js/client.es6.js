@@ -78,8 +78,8 @@ function initialize(bindLinks) {
   const $body = document.body || document.getElementsByTagName('body')[0];
   setAppMethods(app, $body, render, history);
 
-  if (app.getState('token')) {
-    app.setTokenRefresh(app, app.getState('tokenExpires'));
+  if (app.getState('redditSession')) {
+    app.setTokenRefresh(app, app.getState('redditSession').expires);
   } else if (!cookies.get('loid')) {
     setLoggedOutCookies(cookies, app);
   }

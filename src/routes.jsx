@@ -49,7 +49,7 @@ function setData(ctx, key, endpoint, options) {
 }
 
 function buildAPIOptions(ctx, options={}) {
-  const apiOrigin = ctx.token ? 'authAPIOrigin' : 'nonAuthAPIOrigin';
+  const apiOrigin = ctx.redditSession ? 'authAPIOrigin' : 'nonAuthAPIOrigin';
   const app = ctx.props.app;
 
   const apiOptions = merge({
@@ -62,8 +62,8 @@ function buildAPIOptions(ctx, options={}) {
     apiOptions.headers['user-agent'] = ctx.headers['user-agent'];
   }
 
-  if (ctx.token) {
-    apiOptions.headers.Authorization = `bearer ${ctx.token}`;
+  if (ctx.redditSession) {
+    apiOptions.headers.Authorization = `bearer ${ctx.redditSession.accessToken}`;
   }
 
   if ((ctx.env === 'SERVER') && ctx.loid) {
@@ -92,8 +92,7 @@ function filterContextProps(ctx) {
     userAgent: ctx.userAgent,
     csrf: ctx.csrf,
     referrer: ctx.headers.referer,
-    token: ctx.token,
-    tokenExpires: ctx.tokenExpires,
+    redditSession: ctx.redditSession,
     redirect: ctx.redirect,
     env: ctx.env,
     notifications: ctx.notifications,
@@ -118,10 +117,9 @@ export function buildProps(ctx, app) {
     compact: ctx.compact,
     theme: ctx.theme,
     experiments: ctx.experiments,
-    token: ctx.token,
+    redditSession: ctx.redditSession,
     loid: ctx.loid,
     loidcreated: ctx.loidcreated,
-    tokenExpires: ctx.tokenExpires,
     config: clientConfig,
     render: Date.now(),
     actionName: ctx.route.name,
@@ -183,7 +181,7 @@ function getSubreddit(ctx) {
 export function userData(ctx, app) {
   const { apiOptions } = ctx.props;
 
-  if (ctx.props.token) {
+  if (ctx.props.redditSession) {
     const userOptions = Object.assign({}, apiOptions, {
       user: 'me',
     });
@@ -744,7 +742,7 @@ function routes(app) {
       }
     }
 
-    if (!this.token) {
+    if (!this.redditSession) {
       let submitUrl = this.path;
       const submitQuery = querystring.stringify(query);
       submitUrl += submitQuery ? `?${submitQuery}` : '';
@@ -853,13 +851,13 @@ function routes(app) {
       });
   }
 
-  function makeOptions(token, app) {
+  function makeOptions(session, app) {
     let apiOptions;
-    if (token) {
+    if (session) {
       apiOptions = {
         origin: app.getConfig('authAPIOrigin'),
         headers: {
-          'Authorization': `bearer ${token}`,
+          'Authorization': `bearer ${session.accessToken}`,
         },
       };
     } else {
@@ -872,13 +870,13 @@ function routes(app) {
   }
 
   router.get('/goto', function * () {
-    const token = this.token;
+    const session = this.redditSession;
     let location = this.query.location.toLowerCase();
     let result;
 
     app.emit('goto', location);
 
-    const options = makeOptions(token, app);
+    const options = makeOptions(session, app);
 
     if (this.headers['user-agent']) {
       options.headers['user-agent'] = this.headers['user-agent'];
@@ -920,7 +918,7 @@ function routes(app) {
   });
 
   router.get('messages.compose', '/message/compose', function *() {
-    if (!this.token) {
+    if (!this.redditSession) {
       const query = {
         originalUrl: this.url,
       };
@@ -939,7 +937,7 @@ function routes(app) {
   });
 
   router.get('messages', '/message/:view', function *() {
-    if (!this.token) {
+    if (!this.redditSession) {
       const query = {
         originalUrl: this.url,
       };

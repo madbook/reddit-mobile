@@ -54,7 +54,7 @@ class Ad extends BaseComponent {
     if (!listing) {
       return true;
     }
-    
+
     return listing.loadContentIfNeeded(...arguments);
   }
 
@@ -76,8 +76,8 @@ class Ad extends BaseComponent {
     }
 
     const app = this.props.app;
-    const token = this.props.ctx.token;
-    const loggedIn = !!token;
+    const session = this.props.ctx.redditSession;
+    const loggedIn = !!session;
     const origin = (loggedIn ? app.config.authAPIOrigin : app.config.nonAuthAPIOrigin);
     const headers = {};
     const postData = {
@@ -90,7 +90,7 @@ class Ad extends BaseComponent {
 
     // If user is not logged in, send the loid in the promo request
     if (loggedIn) {
-      headers.authorization = `Bearer ${token}`;
+      headers.authorization = `Bearer ${session.accessToken}`;
     } else {
       postData.loid = this.props.loid;
     }

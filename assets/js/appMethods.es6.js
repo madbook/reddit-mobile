@@ -51,7 +51,7 @@ export default function(app, $body, render, history) {
   // This would make the consuming code a oneliner but it's not really
   // an error. Plus it will simplfy things for the client-side errors.
   app.needsToLogInUser = function() {
-    if (!app.getState('ctx').token) {
+    if (!app.getState('ctx').redditSession) {
       app.redirect(app.config.registerPath);
       return true;
     }

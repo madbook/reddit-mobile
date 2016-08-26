@@ -33,6 +33,7 @@
     "babel-preset-es2015": "6.5.0",
     "babel-preset-react": "6.5.0",
     "babel-register": "6.5.1",
+    "Base64": "1.0.0",
     "co": "4.6.0",
     "cookies-js": "1.2.1",
     "dom-serializer": "git://github.com/ajacksified/dom-serializer.git#c999b029caa6d4a9f1fbeb512b48ec7c75c1dddb",

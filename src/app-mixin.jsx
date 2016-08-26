@@ -97,7 +97,7 @@ function mixin (App) {
       // API error
       if (e.status) {
         // Don't redirect if abort === false
-        if (!ctx.token && e.status === 403 && options.redirect !== false) {
+        if (!ctx.redditSession && e.status === 403 && options.redirect !== false) {
           // Missing authorization
           return ctx.redirect(app.config.loginPath);
         }

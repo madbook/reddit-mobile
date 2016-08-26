@@ -19,7 +19,7 @@ chai.use(sinonChai);
 describe('feature flags', () => {
   it('has a loggedin rule that checks token', () => {
     let f = feet.withContext({
-      props: { ctx: { token: 'abc' } },
+      props: { ctx: { redditSession: { accessToken: 'abc' } } },
     });
 
     expect(f.enabled('loggedintest')).to.be.true;

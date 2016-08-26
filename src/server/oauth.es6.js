@@ -6,30 +6,21 @@ import url from 'url';
 import has from 'lodash/object/has';
 
 import constants from '../constants';
+import {
+  getSession,
+  clearSessionCookies,
+  oauthTokenToSession,
+  setSessionCookies,
+} from './session';
 
 const SCOPES = 'history,identity,mysubreddits,read,subscribe,vote,submit,' +
                'save,edit,account,creddits,flair,livemanage,modconfig,' +
                'modcontributors,modflair,modlog,modothers,modposts,modself,' +
                'modwiki,privatemessages,report,wikiedit,wikiread';
 
-function nukeTokens(ctx) {
-  ctx.cookies.set('token');
-  ctx.cookies.set('tokenExpires');
-  ctx.cookies.set('refreshToken');
-}
-
 // set up oauth routes
 const oauthRoutes = function(app) {
-  app.nukeTokens = nukeTokens;
-
   const router = app.router;
-
-  const cookieOptions = {
-    secure: app.getConfig('https'),
-    secureProxy: app.getConfig('httpsProxy'),
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60,
-  };
 
   function getPassthroughHeaders(ctx, app) {
     if (app.getConfig('apiPassThroughHeaders')) {
@@ -47,25 +38,6 @@ const oauthRoutes = function(app) {
   function assignPassThroughHeaders(obj, ctx, app) {
     return Object.assign(obj, getPassthroughHeaders(ctx, app));
   }
-
-  if (app.getConfig('cookieDomain')) {
-    cookieOptions.domain = app.getConfig('cookieDomain');
-  }
-
-  const longCookieOptions = Object.assign({}, cookieOptions, {
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-  });
-
-  function setTokenCookie(ctx, token) {
-    ctx.cookies.set('token', token.token.access_token, longCookieOptions);
-    ctx.cookies.set('tokenExpires', token.token.expires_at.toString(), longCookieOptions);
-
-    if (token.token.refresh_token) {
-      ctx.cookies.set('refreshToken', token.token.refresh_token, longCookieOptions);
-    }
-  }
-
-  app.setTokenCookie = setTokenCookie;
 
   function hmac (key, data) {
     const secret = new Buffer(key, 'base64').toString();
@@ -94,7 +66,7 @@ const oauthRoutes = function(app) {
     });
   }
 
-  function refreshToken (ctx, rToken) {
+  function refreshSession (ctx, rToken) {
     return new Promise(function(resolve, reject) {
       const endpoint = `${app.config.nonAuthAPIOrigin}/api/v1/access_token`;
       let b;
@@ -145,12 +117,19 @@ const oauthRoutes = function(app) {
           }
 
           const token = OAuth2.accessToken.create(res.body);
-          return resolve(token);
+          const session = oauthTokenToSession(token);
+          // We don't always get a new refresh token back,
+          // so we have to make sure to pass it back
+          if (!session.refreshToken) {
+            session.refreshToken = rToken;
+          }
+
+          return resolve(session);
         });
     });
   }
 
-  app.refreshToken = refreshToken;
+  app.refreshSession = refreshSession;
 
   function convertSession(ctx) {
     return new Promise(function(resolve, reject) {
@@ -267,7 +246,7 @@ const oauthRoutes = function(app) {
                   }
 
                   const token = OAuth2.accessToken.create(res.body);
-                  return resolve(token);
+                  return resolve(oauthTokenToSession(token));
                 });
             });
         });
@@ -312,7 +291,7 @@ const oauthRoutes = function(app) {
   });
 
   router.get('/logout', function * () {
-    nukeTokens(this);
+    clearSessionCookies(this);
     this.cookies.set('over18', false);
     this.cookies.set('reddit_session', undefined, {
       domain: '.reddit.com',
@@ -325,23 +304,19 @@ const oauthRoutes = function(app) {
   });
 
   router.get('/oauth2/refresh', function * () {
-    const rToken = this.cookies.get('refreshToken');
-
-    if (!this.cookies.get('token')) {
+    const session = getSession(this);
+    if (!session) {
       this.body = undefined;
       return;
     }
 
     try {
-      const result = yield refreshToken(this, rToken);
-      setTokenCookie(this, result);
+      const freshSession = yield refreshSession(this, session.refreshToken);
+      setSessionCookies(this, freshSession);
 
-      this.body = {
-        token: result.token.access_token,
-        tokenExpires: result.token.expires_at.toString(),
-      };
+      this.body = freshSession;
     } catch (e) {
-      nukeTokens(this);
+      clearSessionCookies(this);
     }
   });
 
@@ -362,8 +337,7 @@ const oauthRoutes = function(app) {
     const result = yield getToken(this, code, redirect);
 
     const token = OAuth2.accessToken.create(result);
-
-    setTokenCookie(this, token);
+    setSessionCookies(this, oauthTokenToSession(token));
 
     this.redirect(referer || '/');
   });
@@ -422,8 +396,8 @@ const oauthRoutes = function(app) {
 
           if (!obj.status) {
             obj.status = 200;
-            obj.token = OAuth2.accessToken.create(res.body);
-            setTokenCookie(ctx, obj.token);
+            obj.redditSession = oauthTokenToSession(OAuth2.accessToken.create(res.body));
+            setSessionCookies(ctx, obj.redditSession);
           }
 
           if (obj.status !== 200) {
@@ -442,7 +416,7 @@ const oauthRoutes = function(app) {
 
       if (result.status === 200) {
         if (ctx.isAjax) {
-          ctx.body = { token: result.token };
+          ctx.body = { redditSession: result.redditSession };
           return;
         }
 

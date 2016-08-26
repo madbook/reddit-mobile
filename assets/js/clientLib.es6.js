@@ -118,31 +118,26 @@ export function refreshToken (app) {
   return makeRequest
     .get('/oauth2/refresh')
     .then(res => {
-      const token = res.body;
+      const session = res.body;
 
-      if (token && token.token) {
+      if (session && session.accessToken) {
         const now = new Date();
-        const expires = new Date(token.tokenExpires);
+        const expires = new Date(session.expires);
 
-        Object.assign(app.getState('ctx'), {
-          token: token.token,
-          tokenExpires: token.tokenExpires,
+        Object.assign(app.getState('ctx').redditSession, {
+          accessToken: session.accessToken,
+          expires: session.expires,
         });
 
-        app.setState('refreshingToken', false);
-        app.emit('token:refresh', token);
-
-        window.setTimeout(function() {
-          refreshToken(app).then(function() {
-            Object.assign(app.getState('ctx'), {
-              token: token.token,
-              tokenExpires: token.tokenExpires,
-            });
-
-            app.setState('refreshingToken', false);
-            app.emit('token:refresh', token);
+        if (session.refreshToken) {
+          Object.assign(app.getState('ctx').redditSession, {
+            refreshToken: session.refreshToken,
           });
-        }, (expires - now) * 0.9);
+        }
+        app.setState('refreshingToken', false);
+        app.emit('token:refresh', session);
+
+        window.setTimeout(refreshToken, (expires - now) * 0.9);
       } else {
         app.setState('refreshingToken', false);
       }
