@@ -4,6 +4,14 @@ import BaseComponent from './BaseComponent';
 
 const T = React.PropTypes;
 
+// A promise to serve as a barrier to ensure that we've loaded google's bits
+const grecaptchaLoaded = new Promise(resolve => {
+  // Safeguard against server rendering
+  if (typeof window !== 'undefined') {
+    window.grecaptchaOnLoad = resolve;
+  }
+});
+
 class ReCaptcha extends BaseComponent {
   static propTypes = {
     elementId: T.string,
@@ -24,7 +32,7 @@ class ReCaptcha extends BaseComponent {
     tabindex: 0,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       elementId,
       sitekey,
@@ -35,6 +43,17 @@ class ReCaptcha extends BaseComponent {
       onSuccess,
       onExpiration,
     } = this.props;
+
+    if (!window.grecaptcha) {
+      // If it's not loaded yet, let's do that...
+      // Add the script to the DOM, causing it to load...
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?onload=grecaptchaOnLoad&render=explicit';
+      document.body.appendChild(script);
+
+      // ... wait for the promise to get resolved
+      await grecaptchaLoaded;
+    }
 
     window.grecaptcha.render(elementId, {
       sitekey,
