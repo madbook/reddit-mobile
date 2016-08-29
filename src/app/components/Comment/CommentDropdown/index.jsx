@@ -11,7 +11,7 @@ export default function CommentDropdown(props) {
     commentAuthor,
     username,
     isSaved,
-    onEdit,
+    // onEdit,
     onDelete,
     onToggleSave,
   } = props;
@@ -20,9 +20,10 @@ export default function CommentDropdown(props) {
 
   return (
     <Dropdown id={ id }>
-      { userIsAuthor
+      { /* comment out the edit option until the feature is build */ }
+      {/*{ userIsAuthor
         ? <DropdownRow icon='posts' text='Edit Comment' onClick={ onEdit }/>
-        : null }
+        : null }*/}
       { userIsAuthor
         ? <DropdownRow icon='delete_remove' text='Delete Comment' onClick={ onDelete }/>
         : null }
