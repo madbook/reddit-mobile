@@ -44,12 +44,6 @@ export default {
   VISITED_POST_COUNT: 20,
   VISITED_POSTS_KEY: 'visitedPosts',
 
-  RECENT_SUBREDDIT_COUNT: 10,
-  RECENT_SUBREDDITS_KEY: 'recent_srs',
-
-  RECENT_CLICKS_COOKIE: 'recentclicks2',
-  RECENT_CLICKS_LENGTH: 5,
-
   /* eslint-disable max-len */
   BANNER_URLS_TUNE: {
     IMPRESSION: 'https://249639.measurementapi.com/serve?action=impression&publisher_id=249639&site_id=122129&site_id_ios=121809',
