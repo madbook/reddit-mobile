@@ -98,6 +98,7 @@
     "curly": 2,
     "dot-location": [2, 'property'],
     "dot-notation": 2,
+    "eol-last": 2,
     "eqeqeq": 2,
     "no-alert": 2,
     "no-else-return": 2,
@@ -137,7 +138,7 @@
     "no-undef-init": 2,
     "no-undef": 2,
     "no-unused-vars": 2,
-    "callback-return": 2,
+    "callback-return": [2, ["callback", "cb"]],
 
     // es6-specific
     "prefer-template": 1,

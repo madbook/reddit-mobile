@@ -26,6 +26,7 @@ import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 import { dispatchInitialRecentSubreddits } from 'server/initialState/dispatchInitialRecentSubreddits';
 import metaRoutes from 'server/meta';
+import statsRouterMiddleware from 'server/meta/stats';
 
 import dispatchInitialCollapsedComments from
   'server/initialState/dispatchInitialCollapsedComments';
@@ -97,6 +98,9 @@ export function startServer() {
       buildFiles,
     ],
     getServerRouter: router => {
+      // middleware
+      statsRouterMiddleware(router, ConfigedAPIOptions);
+
       // private routes for login, logout, register, and token refresh
       loginproxy(router, ConfigedAPIOptions);
       logoutproxy(router, ConfigedAPIOptions);

@@ -43,6 +43,13 @@ const config = () => ({
   trackerClientSecret: process.env.TRACKER_SECRET,
   trackerClientAppName: process.env.TRACKER_CLIENT_NAME,
 
+  // If statsdHost isn't set, then statsd is skipped
+  statsdHost: process.env.STATSD_HOST,
+  statsdPort: process.env.STATSD_PORT,
+  statsdDebug: process.env.STATSD_DEBUG,
+  statsdPrefix: process.env.STATSD_PREFIX || 'mweb2x.staging.server',
+  statsdSocketTimeout: process.env.STATSD_TIMEOUT || 100,
+
   appName: process.env.APP_NAME || 'mweb',
 
   defaultCountry: process.env.DEFAULT_COUNTRY || 'US',
