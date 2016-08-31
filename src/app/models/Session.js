@@ -56,7 +56,7 @@ export default class Session {
     return {
       accessToken: this.accessToken,
       tokenType: this.tokenType,
-      expires: this.expires,
+      expires: (new Date(this.expires)).getTime(),
       refreshToken: this.refreshToken,
       scope: this.scope,
     };

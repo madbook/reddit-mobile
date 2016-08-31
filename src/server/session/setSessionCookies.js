@@ -1,14 +1,19 @@
-const COOKIE_OPTIONS = {
-  // signed: true,
-  httpOnly: false,
-  overwrite: true,
-  maxAge: 1000 * 60 * 60,
-};
+import config from 'config';
+import { permanentCookieOptions } from 'server/initialState/permanentCookieOptions';
+import { SEPERATOR, VERSION } from './constants';
 
 export default (ctx, session) => {
-  ctx.cookies.set('token', session.tokenString, {
-    ...COOKIE_OPTIONS,
-    expires: session.expires,
-    maxAge: session.expires * 1000,
-  });
+  // Set the token cookie to be on the root reddit domain if we're not
+  // running on localhost
+  const { host } = ctx.header || {};
+  const options = permanentCookieOptions();
+  if (host && host.indexOf('localhost') === -1) {
+    options.domain = config.rootReddit;
+  }
+
+  ctx.cookies.set(
+    'token',
+    `${session.tokenString}${SEPERATOR}${VERSION}`,
+    options
+  );
 };

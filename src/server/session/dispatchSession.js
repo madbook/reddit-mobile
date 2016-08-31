@@ -1,25 +1,51 @@
-import { atob } from 'Base64';
 import { PrivateAPI } from '@r/private';
 
-import Session from '../../app/models/Session';
+import config from 'config';
+import errorLog from 'lib/errorLog';
+import Session from 'app/models/Session';
 import makeSessionFromData from './makeSessionFromData';
+import sessionDataFromCookies from './sessionDataFromCookies';
 import setSessionCookies from './setSessionCookies';
-import * as sessionActions from '../../app/actions/session';
+import clearSessionCookies from './clearSessionCookies';
+import * as sessionActions from 'app/actions/session';
+
+export const logError = (ctx, error) => {
+  // manually call errorLog so we don't have to re-throw any errors
+  errorLog({
+    error,
+    userAgent: 'SERVER',
+    requestUrl: ctx.url,
+  }, {
+    hivemind: config.statsURL,
+  });
+};
+
 
 export default async (ctx, dispatch, apiOptions) => {
   // try to create a session from the existing cookie
   // if the session is malformed somehow, the catch will trigger when trying
   // to access it
-  const token = ctx.cookies.get('token');
   const redditSession = ctx.cookies.get('reddit_session');
 
   let session;
   let sessionData;
 
-  if (token) { // if we're working with the new session type
-    sessionData = JSON.parse(atob(token));
-    session = new Session(sessionData);
-  } else if (redditSession) { // we detect a legacy reddit.com session
+  try {
+    sessionData = sessionDataFromCookies(ctx);
+    if (sessionData) {
+      session = new Session(sessionData);
+    }
+  } catch (e) {
+    // Most likely an error in parsing the encoded json,
+    // log the error, clear the bad cookies, and continue to
+    // see if the session conversion works.
+    session = undefined;
+    sessionData = undefined;
+    clearSessionCookies(ctx);
+    logError(e);
+  }
+
+  if (!session && redditSession) {
     const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
     sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(apiOptions, cookies));
     session = new Session(sessionData);
@@ -33,7 +59,11 @@ export default async (ctx, dispatch, apiOptions) => {
   // session.
   if (session && sessionData && !session.isValid) {
     const data = await PrivateAPI.refreshToken(apiOptions, sessionData.refreshToken);
-    session = makeSessionFromData({ refresh_token: sessionData.refreshToken, ...data });
+    session = makeSessionFromData({
+      ...data,
+      // use the newest refresh token we have available,
+      refresh_token: data.refresh_token || sessionData.refreshToken,
+    });
 
     // don't forget to set the cookies with the new session, or the session
     // will remain invalid the next time the page is fetched

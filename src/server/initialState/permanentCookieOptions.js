@@ -1,15 +1,14 @@
-const COOKIE_OPTIONS = {
-  httpOnly: false,
-  overwrite: true,
-  maxAge: 1000 * 60 * 60,
-};
+import config from 'config';
 
-export const permanentCookieOptions =() => {
-  const date = new Date();
-  date.setFullYear(date.getFullYear() + 2);
+export const permanentCookieOptions = () => {
+  const secure = config.https || config.httpsProxy;
+
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 2);
 
   return {
-    ...COOKIE_OPTIONS,
-    expires: date,
+    secure,
+    httpOnly: !secure,
+    expires,
   };
 };

@@ -1,8 +1,8 @@
+import clearSessionCookies from './clearSessionCookies';
+
 export default (router) => {
   router.post('/logout', async (ctx/*, next*/) => {
-    ctx.cookies.set('token');
-    ctx.cookies.set('tokenExpires');
-    ctx.cookies.set('refreshToken');
+    clearSessionCookies(ctx);
     ctx.cookies.set('over18');
     ctx.cookies.set('reddit_session');
     ctx.cookies.set('compact');

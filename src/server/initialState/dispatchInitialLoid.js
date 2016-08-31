@@ -7,7 +7,7 @@ export const dispatchInitialLoid = async (ctx, dispatch) => {
 
   if (!loid) {
     // TODO: get a real config object onto state and pass it here
-    const cookies = setLoggedOutCookies(ctx.cookies, {});
+    const cookies = setLoggedOutCookies(ctx.cookies);
     loid = cookies.loid;
     loidcreated = cookies.loidcreated;
   }

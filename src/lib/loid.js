@@ -1,15 +1,11 @@
 import randomString from './randomString';
+import { permanentCookieOptions } from 'server/initialState/permanentCookieOptions';
 
-export function setLoggedOutCookies(cookies, config) {
+export function setLoggedOutCookies(cookies) {
   const loid = randomString(18);
   const loidcreated = (new Date()).toISOString();
 
-  const options = {
-    secure: config.https,
-    secureProxy: config.httpsProxy,
-    httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 2,
-  };
+  const options = permanentCookieOptions();
 
   cookies.set('loid', loid, options);
   cookies.set('loidcreated', loidcreated, options);
