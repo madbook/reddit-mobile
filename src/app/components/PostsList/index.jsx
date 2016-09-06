@@ -7,10 +7,9 @@ import Ad from 'app/components/Ad';
 import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
+import { AD_LOCATION } from 'app/constants';
 
 import map from 'lodash/map';
-
-const AD_LOCATION = 11;
 
 const T = React.PropTypes;
 

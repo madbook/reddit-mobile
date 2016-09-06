@@ -4,6 +4,8 @@ import uniqueId from 'lodash/uniqueId';
 import config from 'config';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
+import { AD_LOCATION } from 'app/constants';
+
 
 const { PostsEndpoint } = endpoints;
 const { PostModel } = models;
@@ -119,6 +121,7 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     dt,
     site,
     platform: 'mobile_web',
+    placement: `feed-${AD_LOCATION}`,
     raw_json: '1',
   };
 
