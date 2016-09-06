@@ -118,8 +118,8 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
   const site = getSite(pageParams);
 
   const data = {
-    dt,
     site,
+    dt: dt.join(','),
     platform: 'mobile_web',
     placement: `feed-${AD_LOCATION}`,
     raw_json: '1',
