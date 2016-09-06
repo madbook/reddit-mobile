@@ -136,6 +136,7 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     const ad = await getAd(apiOptionsFromState(state), data);
     dispatch(received(adId, ad));
   } catch (e) {
+    console.log('add error', e);
     if (e instanceof ResponseError) {
       dispatch(failed(adId, e));
     } else {
@@ -156,9 +157,15 @@ export const getAd = (apiOptions, data) => {
   return new Promise((resolve, reject) => {
     // why is this a post??
     rawSend(apiOptions, 'post', config.adsPath, data, 'form', (err, res) => {
-      if (!res || !res.body || res.status !== 200) {
+      if (err) {
+        // A `status` of `undefined` or `0` means the request wasn't actually
+        // finished (likely net::ERR_BLOCKED_BY_CLIENT). Normalize as `0`.
+        // This is most likely caused by ad block.
+        if (err.status === undefined) {
+          err.status = 0;
+        }
         // throw ResponseErrors for consistency with api-client errors
-        return reject(new ResponseError(res, config.adsPath));
+        return reject(new ResponseError(err, err.url));
       }
 
       try {
