@@ -96,7 +96,7 @@ const checkForSpecificErrors = action => {
 };
 
 const logErrorWithConfig = (error, state, actionStack) => {
-  const { env, userAgent, platform: { currentPage } } = state;
+  const { meta: { env, userAgent }, platform: { currentPage } } = state;
 
   errorLog({
     error,
