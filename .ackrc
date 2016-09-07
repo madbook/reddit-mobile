@@ -1,0 +1,4 @@
+--ignore-dir=bin
+--ignore-dir=build
+--ignore-dir=node_modules
+--ignore-dir=.test
