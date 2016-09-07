@@ -159,7 +159,7 @@ function sendErrorLog(error, endpoint) {
 }
 
 function hivemind(ua, endpoint, isAPIFailure) {
-  const segment = isAPIFailure ? 'mwebAPIError' : 'mwebError';
+  const segment = isAPIFailure ? 'mweb2XAPIError' : 'mweb2XError';
   const data = {
     [segment]: {},
   };
