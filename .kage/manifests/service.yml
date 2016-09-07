@@ -1,0 +1,26 @@
+---
+# This Service sits immediately behind the front-facing Ingress Controller
+# proxy. A port on each node in the cluster is exposed (NodePort), and this
+# service routes and balances traffic between nodes.
+apiVersion: v1
+kind: Service
+metadata:
+  # This ends up being a 24 char long hash instead of the branch name due to
+  # length limits.
+  name: SERVICE_NAME
+  namespace: NAMESPACE_NAME
+  labels:
+    kage.repo.branch.name: BRANCH_NAME
+  annotations:
+    # Services can have multiple ports. This should be the upstream for ingress.
+    kage.ingress.port: '4444'
+spec:
+  type: NodePort
+  ports:
+    # The port that we present on the side of the service facing the Ingress.
+    - port: 4444
+      # The port on the Pods that we're directing traffic at.
+      targetPort: 4444
+  selector:
+    # This determines which Pods get this service's traffic.
+    kage.repo.branch.name: BRANCH_NAME

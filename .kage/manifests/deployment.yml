@@ -1,0 +1,64 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: DEPLOYMENT_NAME
+  namespace: NAMESPACE_NAME
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        # The branch's Service uses these labels to find the pods to route
+        # traffic to.
+        kage.repo.branch.name: BRANCH_NAME
+      annotations:
+        # These will be populated as the pod starts.
+        kage.deploy.commit.hash: unknown
+        kage.deploy.deployer.name: unknown
+    spec:
+      containers:
+        - name: DEPLOYMENT_NAME
+          image: reddit/REPO_NAME:BRANCH_NAME
+          # We re-use the same image tag names (they're always the branch
+          # name) instead of incrementing versions/hashes. This forces k8s
+          # to attempt to re-pull the image even though the node may already
+          # have an image with that tag name pulled.
+          imagePullPolicy: Always
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+
+            - name: ORIGIN
+              value: http://0.0.0.0:4444
+            - name: PORT
+              value: '4444'
+            - name: HTTPS
+              value: 'false'
+
+            - name: API_HEADERS
+              value: 'false'
+            - name: API_USER_AGENT
+              value: switcharoo-reddit
+          ports:
+            - containerPort: 4444
+          readinessProbe:
+            # The pod is marked as ready to accept traffic once this call
+            # is returning 2xx.
+            httpGet:
+              path: /health
+              port: 4444
+            initialDelaySeconds: 3
+          volumeMounts:
+            - name: podinfo
+              mountPath: /etc/kage/podinfo
+              readOnly: false
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
