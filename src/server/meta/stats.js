@@ -23,13 +23,9 @@ const statsd = new StatsdClient(statsdConfig || {
 // Check in with the statsd server every 10 seconds with how many
 // active requests this instance is handling. If all instances do
 // the same in the same time windows, then we'll have the right info.
-const logStats = () => {
-  setTimeout(() => {
-    statsd.increment('activeRequests', activeRequests);
-    logStats();
-  }, 10000);
-}
-logStats();
+setInterval(() => {
+  statsd.increment('activeRequests', activeRequests);
+}, 10000);
 
 export default router => {
   router.use(async (ctx, next) => {
