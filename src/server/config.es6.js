@@ -3,7 +3,7 @@ function parseObject (list) {
   const obj = {};
 
   list.split(';').forEach(function (l) {
-    if (l && l.indexOf('=')) {
+    if (l && l.indexOf('=') > 0) {
       const split = l.split('=');
       obj[split[0].trim()] = split[1].trim();
     }
