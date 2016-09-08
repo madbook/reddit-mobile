@@ -215,31 +215,29 @@ class ListingPage extends BasePage {
     let message;
     if (commentId) {
       message = (
-        <p>
+        <div>
           <span>You are viewing a single comment's thread. </span>
           <a href={ listing.permalink }>View the rest of the comments</a>
-        </p>
+        </div>
       );
     }
 
     if (subreddit && subreddit.user_is_banned) {
-      message = <p>You are banned from commenting in this community for now</p>;
+      message = 'You are banned from commenting in this community for now';
     }
 
     if (listing.locked) {
-      message = <p>Comments are locked</p>;
+      message = 'Comments are locked';
     }
 
     if (listing.archived) {
-      message = <p>Post is archived</p>;
+      message = 'Post is archived';
     }
 
     if (message) {
       return (
         <div className='alert alert-warning vertical-spacing vertical-spacing-top'>
-          <p>
-            { message }
-          </p>
+          { message }
         </div>
       );
     }
