@@ -27,8 +27,9 @@ class BasePage extends BaseComponent {
       data: {},
       meta: {},
       loaded: !!props.dataCache,
-      finished: false,
     };
+
+    this.finished = false;
 
     const state = this.state;
 
@@ -145,9 +146,22 @@ class BasePage extends BaseComponent {
       this.props.app.emit('pageload', data);
 
       // pageview fires when we should track a pageview
-      if (this.state.finished === false && this.track) {
+      // Note: We originally tracked page completion using this.state.finished
+      // instead of this.finished. We would sometimes emit pageview twice,
+      // though. It looks like some of the "secondary" data promises were
+      // causing us to hit this codepath twice, and the new state had not been
+      // merged in before we checked this.state.finished again. We also were
+      // unable to pass a function to this.setState and emit the pageview
+      // inside of that, because on many pages that was never being called.
+      // It's possible that those were not mounted for initial pageloads by
+      // time we got to this code, in which case setState would be a noop, and
+      // potentially it was being skipped. Since we don't use the finished
+      // value to render the page, it should be safe to track it outside of the
+      // state. This lets us guarantee that we are changing it, and it becomes
+      // easy to check and set it atomically.
+      if (this.finished === false && this.track) {
+        this.finished = true;
         this.props.app.emit('pageview', data);
-        this.setState({ finished: true });
       }
     }
   }

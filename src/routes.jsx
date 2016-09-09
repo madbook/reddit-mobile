@@ -492,6 +492,7 @@ function routes(app) {
       const canonical = listingPromise.then(listing => {
         const { permalink } = listing;
         props.canonicalPath = permalink;
+        return permalink;
       });
       // Make sure this promise is part of the super-promise used by
       // horse-react/server for rendering the page.
