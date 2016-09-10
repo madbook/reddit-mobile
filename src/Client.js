@@ -13,6 +13,7 @@ import errorLog from 'lib/errorLog';
 import routes from 'app/router';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
+import { sendTimings } from 'lib/timing';
 import Session from 'app/models/Session';
 
 // register window.onError asap so we can catch errors in the client's init
@@ -43,6 +44,7 @@ window.onunhandledrejection = rejection => {
 };
 
 // start the app now
+const beginRender = Date.now();
 const client = Client({
   routes,
   reducers,
@@ -84,3 +86,4 @@ const client = Client({
 })();
 
 client.dispatch(actions.activateClient());
+sendTimings(beginRender);

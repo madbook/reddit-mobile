@@ -151,6 +151,9 @@ export default (router, apiOptions) => {
         .send({ rum: timings })
         .timeout(DEFAULT_API_TIMEOUT)
         .end(err => err ? reject(err) : resolve());
+
+    ctx.body = null;
+    return;
   }));
 
 };

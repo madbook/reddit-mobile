@@ -1,4 +1,8 @@
-function getTimes() {
+import { DEFAULT_API_TIMEOUT } from 'app/constants';
+
+import makeRequest from './makeRequest';
+
+export function getTimes() {
   const performance = global.performance ||
                     global.webkitPerformance ||
                     global.msPerformance ||
@@ -42,4 +46,24 @@ function getTimes() {
   return timings;
 }
 
-export default getTimes;
+export function sendTimings(beginRender) {
+    if (Math.random() > 0.1) { // 10% of requests
+      return;
+    }
+
+    let actionName = `m2.server.shell`;
+
+    const timings = Object.assign({
+      actionName: actionName,
+    }, getTimes());
+
+    timings.mountTiming = (Date.now() - beginRender) / 1000;
+
+    makeRequest
+      .post('/timings')
+      .timeout(DEFAULT_API_TIMEOUT)
+      .send({
+        rum: timings,
+      })
+      .then();
+}
