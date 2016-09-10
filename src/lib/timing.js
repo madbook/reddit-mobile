@@ -47,23 +47,23 @@ export function getTimes() {
 }
 
 export function sendTimings(beginRender) {
-    if (Math.random() > 0.1) { // 10% of requests
-      return;
-    }
+  if (Math.random() > 0.1) { // 10% of requests
+    return;
+  }
 
-    let actionName = `m2.server.shell`;
+  const actionName = 'm2.server.shell';
 
-    const timings = Object.assign({
-      actionName: actionName,
-    }, getTimes());
+  const timings = Object.assign({
+    actionName,
+  }, getTimes());
 
-    timings.mountTiming = (Date.now() - beginRender) / 1000;
+  timings.mountTiming = (Date.now() - beginRender) / 1000;
 
-    makeRequest
-      .post('/timings')
-      .timeout(DEFAULT_API_TIMEOUT)
-      .send({
-        rum: timings,
-      })
-      .then();
+  makeRequest
+    .post('/timings')
+    .timeout(DEFAULT_API_TIMEOUT)
+    .send({
+      rum: timings,
+    })
+    .then();
 }
