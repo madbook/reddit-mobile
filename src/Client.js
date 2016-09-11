@@ -64,20 +64,34 @@ const client = Client({
 
     data.preferences = models.Preferences.fromJSON(data.preferences);
 
-    data.collapsedComments = {};
     data.meta.env = 'CLIENT';
 
+    // Pull some defaults from localStorage (if available)
     if (isLocalStorageAvailable()) {
       try {
-        data.collapsedComments = JSON.parse(window.localStorage.collapsedComments);
+        const collapsedComments = window.localStorage.collapsedComments;
+        if (collapsedComments !== undefined) {
+          data.collapsedComments = JSON.parse(collapsedComments);
+        }
       } catch (e) { console.warn(e); }
 
       try {
-        data.expandedPosts = JSON.parse(window.localStorage.expandedPosts);
+        const expandedPosts = window.localStorage.expandedPosts;
+        if (expandedPosts !== undefined) {
+          data.expandedPosts = JSON.parse(expandedPosts);
+        }
       } catch (e) { console.warn(e); }
 
       try {
-        data.visitedPosts = JSON.parse(window.localStorage.visitedPosts);
+        const visitedPosts = window.localStorage.visitedPosts;
+        if (visitedPosts !== undefined) {
+          if (!visitedPosts.startsWith('[')) {
+            // Old format -- comma separated string
+            data.visitedPosts = visitedPosts.split(',');
+          } else {
+            data.visitedPosts = JSON.parse(visitedPosts);
+          }
+        }
       } catch (e) { console.warn(e); }
     }
 
