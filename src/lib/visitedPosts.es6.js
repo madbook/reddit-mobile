@@ -1,4 +1,4 @@
-import uniq from 'lodash/array/uniq';
+import { take, uniq } from 'lodash/array';
 
 import constants from '../constants';
 import localStorageAvailable from './localStorageAvailable';
@@ -11,12 +11,16 @@ export function getVisitedPosts() {
   }
 
   const visitedString = global.localStorage.getItem(constants.VISITED_POSTS_KEY);
+  if (!visitedString) {
+    return [];
+  }
 
-  if (visitedString) {
+  if (!visitedString.startsWith('[')) {
+    // Old format -- comma separated string
     return visitedString.split(',');
   }
 
-  return [];
+  return JSON.parse(visitedString);
 }
 
 // Stores the array of recently-visited post IDs.
@@ -27,9 +31,7 @@ export function getVisitedPosts() {
 // If we cannot store the list (no localStorage), then this is a silent no-op.
 export function setVisitedPosts(posts) {
   if (localStorageAvailable()) {
-    const visited = uniq(posts)
-      .slice(0,constants.VISITED_POST_COUNT)
-      .join(',');
+    const visited = JSON.stringify(take(uniq(posts), constants.VISITED_POST_COUNT));
     global.localStorage.setItem(constants.VISITED_POSTS_KEY, visited);
   }
 }
