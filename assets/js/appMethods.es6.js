@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import cookies from 'cookies-js';
+import querystring from 'querystring';
 
 import { setMetaColor, setTitle, refreshToken } from './clientLib';
 import constants from '../../src/constants';
@@ -51,8 +52,18 @@ export default function(app, $body, render, history) {
   // This would make the consuming code a oneliner but it's not really
   // an error. Plus it will simplfy things for the client-side errors.
   app.needsToLogInUser = function() {
-    if (!app.getState('ctx').redditSession) {
-      app.redirect(app.config.registerPath);
+    const ctx = app.getState('ctx');
+    if (!ctx.redditSession) {
+      const originalUrl = ctx.path;
+      const qs = querystring.stringify({originalUrl});
+      // Only append originalUrl query string if it is not the frontpage.
+      // Otherwise the app query parsing would override the originalUrl
+      // property of ctx and redirect to frontpage
+      if (originalUrl !== '/') {
+        app.redirect(`${app.config.registerPath}/?${qs}`);
+      } else {
+        app.redirect(app.config.registerPath);
+      }
       return true;
     }
   };
