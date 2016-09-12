@@ -13,9 +13,10 @@ build:
 
 publish:
   docker:
-    username: $$DOCKERHUB_USERNAME
-    password: $$DOCKERHUB_PASSWORD
+    username: $$QUAY_USERNAME
+    password: $$QUAY_PASSWORD
     email: sysops@reddit.com
+    registry: quay.io
     repo: reddit/reddit-mobile
     tag: $$BRANCH
     file: Dockerfile.staging
