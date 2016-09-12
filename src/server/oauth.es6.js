@@ -210,11 +210,11 @@ const oauthRoutes = function(app) {
             authorize: 'yes',
           };
 
-          headers['x-modhash'] = modhash;
+          const modhashedHeaders = { ...headers, 'x-modhash': modhash };
 
           superagent
             .post(endpoint)
-            .set(headers)
+            .set(modhashedHeaders)
             .type('form')
             .send(postParams)
             .redirects(0)
