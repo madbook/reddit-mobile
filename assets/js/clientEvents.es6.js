@@ -228,7 +228,7 @@ export default function setAppEvents(app, hasHistAndBindLinks, render, $body) {
   }, 100));
 
   window.addEventListener('unhandledrejection', event => {
-    app.error(event, app.state.ctx, app, {
+    app.error(event, this, app, {
       replaceBody: false,
       redirect: false,
     });
