@@ -180,7 +180,7 @@ const oauthRoutes = function(app) {
           }
 
           if (res.body.error || !res.body.data || !res.body.data.modhash) {
-            app.error('Invalid modhash', this, app, { redirect: false, replaceBody: false });
+            app.error('Invalid modhash', ctx, app, { redirect: false, replaceBody: false });
             return reject(401);
           }
 
