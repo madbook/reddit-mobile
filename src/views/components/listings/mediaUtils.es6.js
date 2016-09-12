@@ -53,14 +53,12 @@ export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, n
     };
   }
 
-  if (preview) {
-    if (preview.images.length) {
-      const bestFitPreviewImage = findBestFitPreviewImage(
-        isCompact, preview.images[0], imageWidth, needsNSFWBlur);
+  if (preview && preview.images && preview.images.length) {
+    const bestFitPreviewImage = findBestFitPreviewImage(
+      isCompact, preview.images[0], imageWidth, needsNSFWBlur);
 
-      if (bestFitPreviewImage) {
-        return bestFitPreviewImage;
-      }
+    if (bestFitPreviewImage) {
+      return bestFitPreviewImage;
     }
   }
 
