@@ -1,0 +1,7 @@
+FROM reddit/reddit-nodejs:latest
+
+VOLUME ["/src"]
+WORKDIR /src
+
+EXPOSE 4444
+ENTRYPOINT ["npm", "start"]
