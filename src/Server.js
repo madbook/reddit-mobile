@@ -20,11 +20,11 @@ import registerproxy from 'server/session/registerproxy';
 import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
-import { dispatchInitialLoid } from 'server/initialState/dispatchInitialLoid';
 import { dispatchInitialMeta } from 'server/initialState/dispatchInitialMeta';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
 import { dispatchInitialRecentSubreddits } from 'server/initialState/dispatchInitialRecentSubreddits';
+import { dispatchInitialUser } from 'server/initialState/dispatchInitialUser';
 import metaRoutes from 'server/meta';
 import statsRouterMiddleware from 'server/meta/stats';
 
@@ -83,9 +83,8 @@ export function startServer() {
     template: main,
     reducers,
     reduxMiddleware,
-    dispatchBeforeNavigation: async (ctx, dispatch/*, getState, utils*/) => {
+    dispatchBeforeNavigation: async (ctx, dispatch, getState) => {
       dispatchInitialShell(ctx, dispatch);
-      dispatchInitialLoid(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
       dispatchInitialTheme(ctx, dispatch);
       dispatchInitialCollapsedComments(ctx, dispatch);
@@ -93,6 +92,7 @@ export function startServer() {
       dispatchInitialMeta(ctx, dispatch);
       dispatchInitialOver18(ctx, dispatch);
       dispatchInitialRecentSubreddits(ctx, dispatch);
+      await dispatchInitialUser(ctx, dispatch, getState);
     },
     preRouteServerMiddleware: [
       buildFiles,

@@ -22,7 +22,7 @@ class TrackingPixel {
 
       if (!props.user && props.loid) {
         trackingUrl += `&loid=${props.loid}`;
-        trackingUrl += `&loidcreated=${props.loidcreated}`;
+        trackingUrl += `&loidcreated=${props.loidCreated}`;
       }
 
       if (props.compact) {
