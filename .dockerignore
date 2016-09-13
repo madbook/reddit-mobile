@@ -1,0 +1,5 @@
+.git
+.grunt
+build
+logs
+node_modules

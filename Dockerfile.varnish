@@ -1,0 +1,6 @@
+FROM quay.io/reddit/varnish-fastly
+
+# FIXME(wting|2016-09-13): Port overrides aren't working, Varnish is still
+# running on port 80 instead.
+ENV VARNISH_PORTS 8080
+EXPOSE 8080

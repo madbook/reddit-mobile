@@ -1,0 +1,18 @@
+version: '2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+    - "4444:4444"
+    volumes:
+    - .:/src
+  varnish:
+    build:
+      context: .
+      dockerfile: Dockerfile.varnish
+    ports:
+    - "4301:80"
+    depends_on:
+    - web
