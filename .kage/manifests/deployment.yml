@@ -26,22 +26,141 @@ spec:
           # have an image with that tag name pulled.
           imagePullPolicy: Always
           env:
-            - name: NAMESPACE
+            # The values for these configMap keys can be found at:
+            # https://github.com/reddit/reddit-kage-manifests/blob/master/kage-namespaces/staging-reddit-mobile/deployment-config.yml
+            # You can also replace valueFrom the lines following it with
+            # 'value: some-val' if you'd like to test (and not commit) local
+            # changes to configuration. See the ORIGIN env var below for
+            # an example of what this looks like.
+            - name: ACTION_NAME_SECRET
               valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-
-            - name: ORIGIN
-              value: http://0.0.0.0:4444
-            - name: PORT
-              value: '4444'
-            - name: HTTPS
-              value: 'false'
-
+                configMapKeyRef:
+                  name: deployment-config
+                  key: action.name.secret
             - name: API_HEADERS
-              value: 'false'
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: api.headers
+            - name: API_PASS_THROUGH_HEADERS
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: api.pass.through.headers
             - name: API_USER_AGENT
-              value: switcharoo-reddit
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: api.user.agent
+            - name: BABEL_CACHE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: babel.cache.path
+            - name: EXPERIMENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: experiments
+            - name: GOOGLE_ANALYTICS_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: google.analytics.domain
+            - name: GOOGLE_ANALYTICS_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: google.analytics.id
+            - name: GOOGLE_TAG_MANAGER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: google.tagmanager.id
+            - name: HTTPS_PROXY
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: https.proxy
+            - name: LIVERELOAD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: live.reload
+            - name: LOGIN_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: login.path
+            - name: MINIFY_ASSETS
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: minify.assets
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: node.env
+            - name: OAUTH_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: oauth.client.id
+            - name: OAUTH_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: oauth.secret
+            - name: OAUTH_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: oauth.secret
+            # This isn't pulled from the ConfigMap since we need to replace
+            # the variable name.
+            - name: ORIGIN
+              value: https://BRANCH_NAME.mobile.staging.snooguts.net
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: port
+            - name: SECRET_OAUTH_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: secret.oauth.client.id
+            - name: SERVER_SIGNED_COOKIE_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: server.signed.cookie.key
+            - name: SWITCHAROO_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: switcharoo.debug
+            - name: TRACKER_CLIENT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: tracker.client.name
+            - name: TRACKER_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: tracker.endpoint
+            - name: TRACKER_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: tracker.key
+            - name: TRACKER_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: tracker.secret
           ports:
             - containerPort: 4444
           readinessProbe:
