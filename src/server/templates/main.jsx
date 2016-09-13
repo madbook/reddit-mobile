@@ -5,6 +5,7 @@ import App from '../../app';
 import manifest from '../../../build/manifest';
 import config from 'config';
 import { themeClass } from './themeClass';
+import createCanonicalLinkFromState from 'lib/createCanonicalLinkFromState';
 
 const env = process.env.NODE_ENV || 'production';
 const CLIENT_NAME = env === 'production' ? 'ProductionClient' : 'Client';
@@ -13,6 +14,12 @@ const JS_FILE = manifest[`${CLIENT_NAME}.js`];
 const { assetPath } = config;
 
 export default function(data, store) {
+  const state = store.getState();
+
+  const canonicalLink = !state.platform.shell
+    ? createCanonicalLinkFromState(state)
+    : '';
+
   return ReactServerDom.renderToStaticMarkup(
     <html lang='en'>
       <head>
@@ -27,6 +34,7 @@ export default function(data, store) {
         <link href={ `${assetPath}/favicon/120x120.png` } rel="apple-touch-icon" sizes="120x120" />
         <link href={ `${assetPath}/favicon/152x152.png` } rel="apple-touch-icon" sizes="152x152" />
         <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
+        { canonicalLink ? <link rel='canonical' href={ canonicalLink }/> : null }
       </head>
       <body className={ themeClass(data.theme) }>
         <div
