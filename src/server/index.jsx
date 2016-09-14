@@ -222,15 +222,11 @@ class Server {
       server.use(koaStatic(`${__dirname}/../../build`));
     }
 
-    // these first two yield first _before_ taking action, so they are ordered
-    // in "reverse" and at the top;
-    server.use(this.setExperiments(app));
-    server.use(this.setLOID(app));
-
-    // these do work first before yielding.
     server.use(this.checkForDesktopRedirect(app));
     server.use(this.checkToken(app));
     server.use(this.convertSession(app));
+    server.use(this.setLOID(app));
+    server.use(this.setExperiments(app));
     server.use(this.modifyRequest(app));
     server.use(this.setHeaders(app));
 
@@ -287,33 +283,22 @@ class Server {
 
   setLOID (app) {
     return function * (next) {
-      // default the loids. these may remain as defaults if the user curls our
-      // health check endpoint, or if they crawl as a bot
-      this.loid = '';
-      this.loidcreated = (new Date()).toISOString();
-
-      // if we have loid cookies, set them on the context. certain actions will
-      // depend on these preliminary loids. if they are wrong, they will get
-      // get corrected by the api
       const loid = this.cookies.get('loid');
 
       if (loid) {
         this.loid = loid;
         this.loidcreated = this.cookies.get('loidcreated');
+      } else {
+        const cookies = setLoggedOutCookies(this.cookies, app);
+
+        // koa doesn't return cookies set within the
+        // same request, cache it for later
+        this._loid = cookies.loid;
+        this.loid = cookies.loid;
+        this.loidcreated = cookies.loidcreated;
       }
 
-      // yield first, allowing the route to get handled. Then, pull data out
-      // and use it to set the loid cookie
       yield next;
-
-      // we might have gotten a new loid from the api after the route got
-      // handled. if so, we want to use that here.
-      if (this.props.loid) {
-        this.loid = this.props.loid;
-        this.loidcreated = this.props.loidcreated;
-        setLoggedOutCookies(this.cookies, app, this.props.loid, this.props.loidcreated);
-      }
-
       return;
     };
   }
@@ -325,10 +310,7 @@ class Server {
         return;
       }
 
-      // yield first since the route handling might set loids
-      yield next;
-
-      let loid = this.loid;
+      let loid = this.cookies.get('loid');
 
       if (loid) {
         // If user came from desktop, and is a new user, treat them as new for
@@ -341,6 +323,8 @@ class Server {
           }
         }
       } else {
+        loid = this._loid;
+
         this.newUser = true;
       }
 
@@ -367,6 +351,7 @@ class Server {
         });
       }
 
+      yield next;
       return;
     };
   }

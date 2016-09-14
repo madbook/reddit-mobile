@@ -326,20 +326,6 @@ function routes(app) {
       this.props.adsEnabled = !feature.enabled(constants.flags.NO_ADS);
     });
 
-    const loggedOutUserPromise = this.props.data.get('loggedOutUser');
-
-    if (loggedOutUserPromise) {
-      // we need to yield here to ensure that the logged out user data gets
-      // loaded in.
-      yield loggedOutUserPromise.then(user => {
-        this.props.loid = user.body.loid;
-        this.props.loidcreated = String(user.body.loid_created);
-      });
-    } else {
-      this.props.loid = '';
-      this.props.loidcreated = '';
-    }
-
     return yield next;
   }
 
