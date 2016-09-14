@@ -7,10 +7,10 @@ kind: Service
 metadata:
   # This ends up being a 24 char long hash instead of the branch name due to
   # length limits.
-  name: SERVICE_NAME
-  namespace: NAMESPACE_NAME
+  name: {{ service_name }}
+  namespace: {{ namespace_name }}
   labels:
-    kage.repo.branch.name: BRANCH_NAME
+    kage.repo.branch.name: {{ branch_name }}
   annotations:
     # Services can have multiple ports. This should be the upstream for ingress.
     kage.ingress.port: '4444'
@@ -23,4 +23,4 @@ spec:
       targetPort: 4444
   selector:
     # This determines which Pods get this service's traffic.
-    kage.repo.branch.name: BRANCH_NAME
+    kage.repo.branch.name: {{ branch_name }}
