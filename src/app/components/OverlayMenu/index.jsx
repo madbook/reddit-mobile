@@ -4,11 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import * as overlayMenuActions from 'app/actions/overlayMenu';
-
-import {
-  OVERLAY_MENU_CSS_CLASS,
-  OVERLAY_MENU_CSS_TOP_NAV_MODIFIER,
-} from 'app/constants';
+import cx from 'lib/classNames';
 
 const T = React.PropTypes;
 
@@ -16,18 +12,9 @@ const stopClickPropagation = (e) => {
   e.stopPropagation();
 };
 
-const overlayClassName = (props) => {
-  let className = OVERLAY_MENU_CSS_CLASS;
-  if (!props.fullscreen) {
-    className += ` ${OVERLAY_MENU_CSS_TOP_NAV_MODIFIER}`;
-  }
-
-  return className;
-};
-
-export const OverlayMenu = (props) => (
+export const OverlayMenu = props => (
   <nav
-    className={ overlayClassName(props) }
+    className={ cx('OverlayMenu', { 'm-with-top-nav': !props.fullscreen }) }
     onClick={ props.closeOverlayMenu }
   >
     <ul className='OverlayMenu-ul list-unstyled' onClick={ stopClickPropagation }>
@@ -44,4 +31,4 @@ const mapDispatchProps = (dispatch) => ({
   closeOverlayMenu: () => dispatch(overlayMenuActions.closeOverlayMenu()),
 });
 
-export default connect(() => ({}), mapDispatchProps)(OverlayMenu);
+export default connect(null, mapDispatchProps)(OverlayMenu);

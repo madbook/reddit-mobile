@@ -95,6 +95,7 @@ LinkRow.propTypes = {
   href: T.string.isRequired,
   noRoute: T.bool,
   clickHandler: T.func,
+  onClick: T.func,
 };
 
 function LinkRow(props) {
@@ -108,7 +109,7 @@ function LinkRow(props) {
   };
 
   return (
-    <li className='OverlayMenu-row'>
+    <li className='OverlayMenu-row' onClick={ props.onClick }>
       { props.noRoute
         ? <a { ...linkElementProps } />
         : <Anchor { ...linkElementProps } />

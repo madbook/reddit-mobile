@@ -1,24 +1,22 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import cookies from 'js-cookie';
 
 import titleCase from 'lib/titleCase';
 import { urlWith } from 'lib/urlWith';
-
 import OverlayMenu from 'app/components/OverlayMenu';
 import { LinkRow, ButtonRow, ExpandoRow } from 'app/components/OverlayMenu/OverlayMenuRow';
-
 import menuItems from './SettingsOverlayMenuItems';
-
 import { themes } from 'app/constants';
+import { userAccountSelector } from 'app/selectors/userAccount';
+import config from 'config';
 
 const { NIGHTMODE } = themes;
 const userIconClassName = 'icon-user-account icon-large blue';
 
-import { userAccountSelector } from 'app/selectors/userAccount';
 
-export const menuItemUrl = (item, config={ reddit: 'https://www.reddit.com' }) => {
+export const menuItemUrl = item => {
   const url = item.url;
   if (url.indexOf('/help') !== -1 || url.indexOf('/wiki') !== -1) {
     return { href: item.url };
@@ -114,7 +112,8 @@ export const SettingsOverlayMenu = (props) => {
         text='Desktop Site'
         icon='icon-desktop icon-large blue'
         noRoute={ true }
-        href={ `https://www.reddit.com${urlWith(url, queryParams)}` }
+        href={ config.reddit + urlWith(url, queryParams) }
+        onClick={ props.onGoToDesktop }
       />
       <ExpandoRow
         key='about-reddit'
@@ -148,20 +147,22 @@ export const SettingsOverlayMenu = (props) => {
   );
 };
 
-const compactSelector = (state) => state.compact;
-const themeSelector = (state) => state.theme;
-const pageDataSelector = (state) => state.platform.currentPage;
-
-const combineSelectors = (compact, theme, pageData, user) => ({
-  compact, theme, pageData, user,
-});
 
 const mapStateToProps = createSelector(
-  compactSelector,
-  themeSelector,
-  pageDataSelector,
+  state => state.compact,
+  state => state.theme,
+  state => state.platform.currentPage,
   userAccountSelector,
-  combineSelectors,
+  (compact, theme, pageData, user) => ({ compact, theme, pageData, user }),
 );
 
-export default connect(mapStateToProps)(SettingsOverlayMenu);
+const mergeProps = stateProps => ({
+  ...stateProps,
+  onGoToDesktop: () => {
+    // this cookie is telling our CDN, "when you see the www url, do NOT
+    // direct user to the mweb experience"
+    cookies.set('mweb-no-redirect', '1', { domain: config.rootReddit });
+  },
+});
+
+export default connect(mapStateToProps, null, mergeProps)(SettingsOverlayMenu);

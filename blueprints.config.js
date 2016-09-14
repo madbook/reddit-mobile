@@ -25,6 +25,7 @@ module.exports = function(isProduction) {
         TRACKER_ENDPOINT: JSON.stringify(process.env.TRACKER_ENDPOINT || 'XXX'),
         TRACKER_SECRET: JSON.stringify(process.env.TRACKER_SECRET || 'XXX'),
         TRACKER_CLIENT_NAME: JSON.stringify(process.env.TRACKER_CLIENT_NAME || 'XXX'),
+        REDDIT: JSON.stringify(process.env.REDDIT),
       },
     },
   ]);

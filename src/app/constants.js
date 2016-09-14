@@ -16,10 +16,6 @@ export const OVERLAY_MENU_OPEN = 'overlayMenuOpen';
 
 export const OVERLAY_MENU_OFFSET = -10; // from cs;
 
-export const OVERLAY_MENU_CSS_CLASS = 'OverlayMenu';
-
-export const OVERLAY_MENU_CSS_TOP_NAV_MODIFIER = 'm-with-top-nav';
-
 export const OVERLAY_MENU_VISIBLE_CSS_CLASS = 'OverlayMenu-visible';
 
 export const DROPDOWN_CSS_CLASS = 'Dropdown';
