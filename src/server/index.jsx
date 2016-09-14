@@ -308,7 +308,7 @@ class Server {
 
       // we might have gotten a new loid from the api after the route got
       // handled. if so, we want to use that here.
-      if (this.props && this.props.loid) {
+      if (this.props.loid) {
         this.loid = this.props.loid;
         this.loidcreated = this.props.loidcreated;
         setLoggedOutCookies(this.cookies, app, this.props.loid, this.props.loidcreated);
