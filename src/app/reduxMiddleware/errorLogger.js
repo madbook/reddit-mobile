@@ -45,24 +45,34 @@ export default function errorLogger() {
     const error = checkForSpecificErrors(action);
     if (error) {
       logErrorWithConfig(error, store.getState(), actionStack);
-    } else if (action instanceof Promise) {
-      // async actions all have an associated Promises. To catch errors in these
-      // Promises we need to attach a .catch handler, otherwise they'll get
-      // turned into PromiseRejectionEvents which are pretty different than Errors
-      // (they don't even show up in window.onerror). This way we can catch
-      // any unhandled exceptions in async actions here.
-      // e.g. if we fetch some data and it parsed correctly, it could still
-      // cause an error in reducers or React's rendering. both of those would
-      // be caught here.
-
-      action.catch(error => {
-        logErrorWithConfig(error, store.getState(), actionStack);
-      });
     }
 
     // wrap the call of next(action) to catch any errors in reducers or middleware
     try {
-      return next(action);
+      const result = next(action);
+
+      if (result instanceof Promise) {
+        // async actions all have an associated Promises. To catch errors in these
+        // Promises we need to attach a .catch handler, otherwise they'll get
+        // turned into PromiseRejectionEvents which are pretty different than Errors
+        // (they don't even show up in window.onerror). This way we can catch
+        // any unhandled exceptions in async actions here.
+        // e.g. if we fetch some data and it parsed correctly, it could still
+        // cause an error in reducers or React's rendering. both of those would
+        // be caught here.
+        result.catch(error => {
+          // sometimes our catch handler is called twice with the same error object.
+          // this isn't really understood but the hypothesis is it has something to do
+          // with other .then handlers in the promise chain.
+          // regardless, we set a `.caught` property to true to prevent duplicate logging
+          if (!error.caught) {
+            error.caught = true;
+            logErrorWithConfig(error, store.getState(), actionStack);
+          }
+        });
+      }
+
+      return result;
     } catch (error) {
       logErrorWithConfig(error, store.getState(), actionStack);
     }
@@ -96,18 +106,16 @@ const checkForSpecificErrors = action => {
 };
 
 const logErrorWithConfig = (error, state, actionStack) => {
-  const { meta: { env, userAgent }, platform: { currentPage } } = state;
+  const { meta: { userAgent }, platform: { currentPage } } = state;
 
   errorLog({
     error,
-    userAgent: `${env}${userAgent ? `-${userAgent}` : ''}`,
+    userAgent,
     reduxInfo: actionStack.toString(),
     requestUrl: urlFromPage(currentPage),
   }, {
     hivemind: config.statsURL,
     log: config.postErrorURL,
-  }, {
-    level: config.debugLevel || 'error',
   });
 };
 

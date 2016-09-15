@@ -36,10 +36,10 @@ const processes = process.env.PROCESSES || cpus().length;
 
 // If we miss catching an exception, format and log it before exiting the
 // process.
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', function (error) {
   // errorLog will be console.logging the formatted output
   errorLog({
-    error: err,
+    error,
     userAgent: 'SERVER',
   }, {
     hivemind: config.statsURL,

@@ -28,31 +28,54 @@ window.onload = () => {
   sendTimings(beginMount, endMount, isShell);
 };
 
-// register window.onError asap so we can catch errors in the client's init
-window.onerror = (message, url, line, column) => {
+const ERROR_ENDPOINTS = {
+  log: config.postErrorURL,
+  hivemind: config.statsURL,
+};
+
+const ERROR_LOG_OPTIONS = {
+  SHOULD_RETHROW: false, // prevent error-log from re-throwing errors that were uncaught
+};
+
+const fullPathName = () => {
+  // window.location.pathname doesn't include query params, hash, etc
+  const { pathname, search, hash } = window.location;
+  return `${pathname}${search}${hash}`;
+};
+
+const getUserAgentAndURL = () => ({
+  userAgent: window.navigator.userAgent,
+  requestUrl: fullPathName(),
+});
+
+// register `window.onerror` and `window.onunhandledrejection` handlers
+// asap to start logging any errors that come through.
+// We pass ERROR_ENDPOINTS to configure the endpoints we log to,
+// and ERROR_LOG_OPTIONS to prevent double logging errors.
+// RE the latter, `errorLog` rethrows errors and rejection events
+// in a new callstack so chrome's default error-logging will
+// do its default error formatting and stack traces. We don't want to re-throw
+// these top-level errors and rejections, because they'd show up in the console
+// twice.
+window.onerror = (message, url, line, column, error) => {
   errorLog({
+    ...getUserAgentAndURL(),
+    error,
     message,
     url,
     line,
     column,
-    userAgent: window.navigator.userAgent,
-    requestUrl: window.navigator.userAgent,
-  }, {
-    hivemind: config.statsURL,
-  });
+  }, ERROR_ENDPOINTS, ERROR_LOG_OPTIONS);
 };
 
-// This isn't supported in mobile browsers right now but it is in chrome.
+// This isn't supported in most mobile browsers right now but it is in chrome.
 // Having it will give us better logging in debug (for promises that don't have
 // a .catch handler). Maybe mobile browsers will support it soon as well.
 window.onunhandledrejection = rejection => {
   errorLog({
+    ...getUserAgentAndURL(),
     rejection,
-    userAgent: window.navigator.userAgent,
-    requestUrl: window.navigator.userAgent,
-  }, {
-    hivemind: config.statsURL,
-  });
+  }, ERROR_ENDPOINTS, ERROR_LOG_OPTIONS);
 };
 
 // start the app now

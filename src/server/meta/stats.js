@@ -33,16 +33,19 @@ export default router => {
     activeRequests += 1;
 
     const start = Date.now();
+
     try {
       await next();
-    } catch (e) {
+    } catch (error) {
       errorLog({
-        error: `${e.name}: ${e.message}`,
+        error,
+        requestUrl: ctx.request.url,
         userAgent: 'SERVER',
       }, {
         hivemind: config.statsURL,
       });
     }
+
     const delta = Math.ceil(Date.now() - start);
     statsd.timing('response_time', delta);
 

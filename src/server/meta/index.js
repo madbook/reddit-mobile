@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 
-import { isString } from 'lodash/lang';
 import superagent from 'superagent';
 
+import { formatLogJSON } from 'lib/errorLog';
 import { DEFAULT_API_TIMEOUT } from 'app/constants';
 
 const mServerName = name => `m2.server.${name}`;
@@ -117,8 +117,8 @@ export default (router, apiOptions) => {
     // log it out if it's a legit origin
     if (ctx.headers.origin &&
         apiOptions.servedOrigin.indexOf(ctx.headers.origin) === 0 &&
-        isString(error)) {
-      console.log(error.substring(0,1000));
+        typeof error === 'object') {
+      console.log(formatLogJSON(error));
     }
 
     ctx.body = null;
