@@ -1,7 +1,6 @@
-import config from 'config';
 import * as userActions from 'app/actions/user';
 import * as loidActions from 'app/actions/loid';
-import { permanentCookieOptions } from './permanentCookieOptions';
+import { permanentRootCookieOptions } from './permanentRootCookieOptions';
 
 export const dispatchInitialUser = async (ctx, dispatch, getState) => {
   // the lack of camel casing on the 'loidcreated' cookie name is intentional.
@@ -20,11 +19,7 @@ export const dispatchInitialUser = async (ctx, dispatch, getState) => {
   // there is a future in which the two of these are combined into one field,
   // just called loid. so, we should check for the existence of loid and
   // loidCreated independently, and set each cookie on its own.
-  const { host } = ctx.header || {};
-  const options = permanentCookieOptions();
-  if (host && host.indexOf('localhost') === -1) {
-    options.domain = config.rootReddit;
-  }
+  const options = permanentRootCookieOptions(ctx);
 
   if (loid && (loid !== oldLoid)) {
     ctx.cookies.set('loid', loid, options);
