@@ -1,4 +1,3 @@
-import config from 'config';
 import { permanentRootCookieOptions } from 'server/initialState/permanentRootCookieOptions';
 import { SEPERATOR, VERSION } from './constants';
 
