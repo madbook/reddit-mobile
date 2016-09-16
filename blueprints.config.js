@@ -21,10 +21,10 @@ module.exports = function(isProduction) {
     {
       generator: 'set-node-env',
       'process.env': {
-        TRACKER_KEY: JSON.stringify(process.env.TRACKER_KEY || 'XXX'),
-        TRACKER_ENDPOINT: JSON.stringify(process.env.TRACKER_ENDPOINT || 'XXX'),
-        TRACKER_SECRET: JSON.stringify(process.env.TRACKER_SECRET || 'XXX'),
-        TRACKER_CLIENT_NAME: JSON.stringify(process.env.TRACKER_CLIENT_NAME || 'XXX'),
+        TRACKER_KEY: JSON.stringify(process.env.TRACKER_KEY),
+        TRACKER_ENDPOINT: JSON.stringify(process.env.TRACKER_ENDPOINT),
+        TRACKER_SECRET: JSON.stringify(process.env.TRACKER_SECRET),
+        TRACKER_CLIENT_NAME: JSON.stringify(process.env.TRACKER_CLIENT_NAME),
         REDDIT: JSON.stringify(process.env.REDDIT),
       },
     },

@@ -53,10 +53,10 @@ const config = () => ({
   adsPath: process.env.ADS_PATH || '/api/request_promo.json',
   manifest: {},
 
-  trackerKey: process.env.TRACKER_KEY,
-  trackerEndpoint: process.env.TRACKER_ENDPOINT,
-  trackerClientSecret: process.env.TRACKER_SECRET,
-  trackerClientAppName: process.env.TRACKER_CLIENT_NAME,
+  trackerKey: process.env.TRACKER_KEY || 'XXX',
+  trackerEndpoint: process.env.TRACKER_ENDPOINT || 'XXX',
+  trackerClientSecret: process.env.TRACKER_SECRET || 'XXX',
+  trackerClientAppName: process.env.TRACKER_CLIENT_NAME || 'XXX',
 
   // If statsdHost isn't set, then statsd is skipped
   statsdHost: process.env.STATSD_HOST,
