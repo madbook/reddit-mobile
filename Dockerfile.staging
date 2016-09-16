@@ -1,6 +1,6 @@
 # reddit-mobile Dockerfile for deploying on staging
 
-FROM reddit/reddit-nodejs:latest
+FROM quay.io/reddit/reddit-nodejs:latest
 
 ADD . /src/
 WORKDIR /src

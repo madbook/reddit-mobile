@@ -3,7 +3,7 @@ cache:
     - node_modules
 
 build:
-  image: reddit/reddit-nodejs:latest
+  image: quay.io/reddit/reddit-nodejs:latest
   pull: true
   commands:
     - npm install
