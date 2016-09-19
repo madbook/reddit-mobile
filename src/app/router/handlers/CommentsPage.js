@@ -66,8 +66,7 @@ export default class CommentsPage extends BaseHandler {
 
     dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
 
-    const _tempState = getState();
-    logClientScreenView(buildScreenViewData(getState()), _tempState);
+    logClientScreenView(buildScreenViewData, getState());
   }
 
   async [METHODS.POST](dispatch, getState, { waitForState }) {

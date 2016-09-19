@@ -9,8 +9,7 @@ import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
 
 export default class Register extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
-    const _tempState = getState();
-    logClientScreenView(getBasePayload(getState()), _tempState);
+    logClientScreenView(getBasePayload, getState());
   }
 
   async [METHODS.POST](dispatch) {

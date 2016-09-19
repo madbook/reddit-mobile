@@ -53,8 +53,7 @@ export default class PostsFromSubreddit extends BaseHandler {
 
     dispatch(setStatus(getState().postsLists[postsListId].responseCode));
 
-    const _tempState = getState();
-    logClientScreenView(buildScreenViewData(getState()), _tempState);
+    logClientScreenView(buildScreenViewData, getState());
   }
 }
 

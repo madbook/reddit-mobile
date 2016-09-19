@@ -18,8 +18,7 @@ export default class UserProfilerHandler extends BaseHandler {
       fetchUserBasedData(dispatch),
     ]);
 
-    const _tempState = getState();
-    logClientScreenView(buildScreenViewData(getState()), _tempState);
+    logClientScreenView(buildScreenViewData, getState());
   }
 }
 

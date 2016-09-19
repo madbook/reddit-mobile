@@ -15,8 +15,7 @@ export class PostSubmitHandler extends BaseHandler {
 
     await fetchUserBasedData(dispatch);
 
-    const _tempState = getState();
-    logClientScreenView(getBasePayload(getState()), _tempState);
+    logClientScreenView(getBasePayload, getState());
   }
 }
 
@@ -34,7 +33,6 @@ export class PostSubmitCommunityHandler extends BaseHandler {
 
     await fetchUserBasedData(dispatch);
 
-    const _tempState = getState();
-    logClientScreenView(getBasePayload(getState()), _tempState);
+    logClientScreenView(getBasePayload, getState());
   }
 }

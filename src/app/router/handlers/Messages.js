@@ -9,7 +9,6 @@ export default class Messages extends BaseHandler {
     dispatch(mailActions.fetchInbox(this.urlParams.mailType));
     await fetchUserBasedData(dispatch);
 
-    const _tempState = getState();
-    logClientScreenView(getBasePayload(getState()), _tempState);
+    logClientScreenView(getBasePayload, getState());
   }
 }

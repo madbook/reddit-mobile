@@ -9,8 +9,7 @@ export default class DirectMessage extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
     await fetchUserBasedData(dispatch);
 
-    const _tempState = getState();
-    logClientScreenView(getBasePayload(getState()), _tempState);
+    logClientScreenView(getBasePayload, getState());
   }
 
   async [METHODS.POST](dispatch, getState/*, utils*/) {

@@ -62,17 +62,17 @@ export function getBasePayload(state) {
 const IGNORE_PARAMS = ['overlayMenu', 'commentReply'];
 let lastUrlToken = null;
 
-export function logClientScreenView(data, _state) {
+export function logClientScreenView(buildScreenViewData, state) {
   // NOTE: This block is a total hack to fix multiple pageviews. The way it
   // works is by normalizing urls and their parameters. If a query parameter
   // is in the ignore list, then it doesn't dirty the url and doesn't
   // contribute to a page view.
   // DELETE after ephemeral views having urls is fixed.
-  const paramToken = values(omit(_state.platform.currentPage.queryParams, IGNORE_PARAMS))
+  const paramToken = values(omit(state.platform.currentPage.queryParams, IGNORE_PARAMS))
     .sort()
     .join('-');
 
-  const urlToken = _state.platform.currentPage.url + paramToken;
+  const urlToken = state.platform.currentPage.url + paramToken;
   if (urlToken !== lastUrlToken) {
     lastUrlToken = urlToken;
   } else {
@@ -81,6 +81,10 @@ export function logClientScreenView(data, _state) {
   // end hack
 
   if (process.env.ENV === 'client') {
-    getEventTracker().track('screenview_events', 'cs.screenview_mweb', data);
+    getEventTracker().track(
+      'screenview_events',
+      'cs.screenview_mweb',
+      buildScreenViewData(state),
+    );
   }
 }
