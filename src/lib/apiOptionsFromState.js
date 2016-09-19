@@ -15,7 +15,7 @@ export const apiOptionsFromState = state => {
     return merge(options, {
       appName: '2x-server',
       headers: {
-        'Cookie': `loid=${loid}; loidcreated=${loidCreated}`,
+        'Cookie': `loid=${loid}; loidcreated=${(new Date(loidCreated)).toISOString()}`,
       },
     });
   }
