@@ -46,11 +46,11 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
       });
     });
 
-    describe('SUBMIT_CAPTCHA_NEEDED', () => {
+    describe('CAPTCHA_NEEDED', () => {
       it('should update the captchaIden', () => {
         const { store } = getStore();
         store.dispatch({
-          type: postingActions.SUBMIT_CAPTCHA_NEEDED,
+          type: postingActions.CAPTCHA_NEEDED,
           captchaIden: 'foobar',
         });
 

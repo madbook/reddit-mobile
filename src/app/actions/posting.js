@@ -7,19 +7,31 @@ import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 
 const { PostsEndpoint } = endpoints;
-const { ValidationError, BadCaptchaError} = errors;
+const { ValidationError, BadCaptchaError } = errors;
 
 export const FIELD_UPDATE = 'POSTING__FIELD_UPDATE';
 export const CLOSE_CAPTCHA = 'POSTING__CLOSE_CAPTCHA';
-export const SUBMIT_PENDING = 'POSTING__SUBMIT_PENDING';
-export const SUBMIT_SUCCESS = 'POSTING__SUBMIT_SUCCESS';
-export const SUBMIT_FAILURE = 'POSTING__SUBMIT_FAILURE';
-export const SUBMIT_CAPTCHA_NEEDED = 'POSTING__SUBMIT_CAPTCHA_NEEDED';
+
+export const PENDING = 'POSTING__PENDING';
+export const SUCCESS = 'POSTING__SUCCESS';
+export const FAILURE = 'POSTING__FAILURE';
+export const VALIDATION_FAILURE = 'POSTING__VALIDATION_FAILURE';
+export const CAPTCHA_NEEDED = 'POSTING__CAPTCHA_NEEDED';
 
 export const updateField = (field, value) => ({ type: FIELD_UPDATE, field, value });
 export const closeCaptcha = () => ({ type: CLOSE_CAPTCHA });
 
 const META_KINDS = { self: 'text', link: 'url' };
+
+// normalize error messages when possible
+const ERROR_MESSAGES = {
+  BAD_URL: 'Please enter a valid link.',
+  NO_TEXT: 'You\'re missing text content.',
+  SUBREDDIT_NOTALLOWED: 'You aren\'t allowed to post there.',
+  NO_SELFS: 'This subreddit doesn\'t allow text posts.',
+  NO_LINKS: 'This subreddit only allows text posts.',
+};
+
 export const submitPost = data => async (dispatch, getState) => {
 
   const meta_param = META_KINDS[data.kind];
@@ -34,22 +46,35 @@ export const submitPost = data => async (dispatch, getState) => {
     resubmit: false,
   };
 
-  dispatch({ type: SUBMIT_PENDING });
+  dispatch({ type: PENDING });
   const apiOptions = apiOptionsFromState(getState());
   try {
     const { json } = await PostsEndpoint.post(apiOptions, body);
-    dispatch({ type: SUBMIT_SUCCESS });
+    dispatch({ type: SUCCESS });
     dispatch(platformActions.navigateToUrl('get', url.parse(json.data.url).path));
+
   } catch (e) {
     // This is a bit hacky. Sometimes users can bypass the captcha. What we do
     // is allow a submission attempt and if we fail with a bad captcha error, we
     // simply show the captcha box. This also has the nice side effect of making
     // any mistyped captcha "refresh" when the submission fails.
     if (e instanceof BadCaptchaError) {
-      dispatch({ type: SUBMIT_CAPTCHA_NEEDED, captchaIden: e.newCaptcha });
+      dispatch({ type: CAPTCHA_NEEDED, captchaIden: e.newCaptcha });
+
     } else if (e instanceof ValidationError) {
-      dispatch({ type: SUBMIT_FAILURE, errors: e.errors });
+      // The toaster can only fit one error comfortably and there's not much
+      // room for making validation mistakes anyway so just grab the first one
+      const error = e.errors[0];
+      const message = ERROR_MESSAGES[error[0]];
+
+      dispatch({
+        message: message ? message : error[1],
+        errors: e.errors,
+        type: VALIDATION_FAILURE,
+      });
+
     } else {
+      dispatch({ type: FAILURE, errors: e.errors });
       throw e;
     }
   }

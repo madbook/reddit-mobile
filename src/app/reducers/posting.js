@@ -21,7 +21,7 @@ export default (state=DEFAULT, action={}) => {
       return DEFAULT;
     }
 
-    case postingActions.SUBMIT_CAPTCHA_NEEDED: {
+    case postingActions.CAPTCHA_NEEDED: {
       return merge(state, { captchaIden: action.captchaIden });
     }
 
@@ -34,7 +34,7 @@ export default (state=DEFAULT, action={}) => {
       return merge(state, { captchaIden: '' });
     }
 
-    case postingActions.SUBMIT_SUCCESS: {
+    case postingActions.SUCCESS: {
       return DEFAULT;
     }
 

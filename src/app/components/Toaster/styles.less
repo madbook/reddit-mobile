@@ -1,0 +1,51 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.Toaster {
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    .themeify({
+      background-color: @theme-toast-color;
+    });
+  }
+
+  &__icon-box {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    text-align: center;
+
+    &.error {
+      background-color: @ban-red;
+    }
+
+    .icon-moose {
+      font-size: 80px;
+      line-height: 80px;
+      color: white;
+    }
+  }
+
+  &__message {
+    display: inline-block;
+    padding: 15px;
+    .themeify({
+      color: @theme-body-color;
+    });
+  }
+
+  &__close {
+    margin-left: auto;
+    margin-right: 5px;
+    padding: 10px;      // give it a large hitbox
+  }
+}
