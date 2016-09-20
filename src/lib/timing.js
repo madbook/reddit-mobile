@@ -46,18 +46,23 @@ export function getTimes() {
   return timings;
 }
 
-export function sendTimings(beginRender) {
+export function sendTimings(beginMount, endMount, isShell) {
   if (Math.random() > 0.1) { // 10% of requests
     return;
   }
 
-  const actionName = 'm2.server.shell';
+  if (isShell === undefined) {
+    console.warn('Could not detect if session is shell rendered.');
+    return;
+  }
+
+  const actionName = isShell ? 'm2.server.shell' : 'm2.server.seo';
 
   const timings = Object.assign({
     actionName,
   }, getTimes());
 
-  timings.mountTiming = (Date.now() - beginRender) / 1000;
+  timings.mountTiming = (endMount - beginMount) / 1000;
 
   makeRequest
     .post('/timings')

@@ -18,6 +18,16 @@ import reduxMiddleware from 'app/reduxMiddleware';
 import { sendTimings } from 'lib/timing';
 import Session from 'app/models/Session';
 
+// Bits to help in the gathering of client side timings to relay back
+// to the server
+const beginMount = Date.now();
+let isShell;
+
+window.onload = () => {
+  const endMount = Date.now();
+  sendTimings(beginMount, endMount, isShell);
+}
+
 // register window.onError asap so we can catch errors in the client's init
 window.onerror = (message, url, line, column) => {
   errorLog({
@@ -46,7 +56,6 @@ window.onunhandledrejection = rejection => {
 };
 
 // start the app now
-const beginRender = Date.now();
 const client = Client({
   routes,
   reducers,
@@ -101,5 +110,5 @@ const client = Client({
   debug: (process.env.NODE_ENV || 'production') !== 'production',
 })();
 
+isShell = client.getState().platform.shell;
 client.dispatch(actions.activateClient());
-sendTimings(beginRender);
