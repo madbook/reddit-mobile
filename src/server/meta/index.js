@@ -5,6 +5,27 @@ import superagent from 'superagent';
 
 import { DEFAULT_API_TIMEOUT } from 'app/constants';
 
+const mServerName = name => `m2.server.${name}`;
+const ALLOWED_ACTION_NAMES = new Set([
+  'shell',
+  'seo',
+].map(mServerName));
+
+const ALLOWED_TIMINGS_KEYS = new Set([
+  'actionName',
+  'mountTiming',
+  'redirectTiming',
+  'startTiming',
+  'dnsTiming',
+  'tcpTiming',
+  'httpsTiming',
+  'requestTiming',
+  'responseTiming',
+  'domLoadingTiming',
+  'domInteractiveTiming',
+  'domContentLoadedTiming',
+]);
+
 const appleAppSiteAssociation = JSON.stringify({
   activitycontinuation: {
     apps: [
@@ -128,8 +149,22 @@ export default (router, apiOptions) => {
     const statsURL = apiOptions.statsURL;
     const { rum: timings } = ctx.request.body;
 
+    let msg = null;
     if (!apiOptions.actionNameSecret) {
-      console.log('returning early, no secret');
+      // Verify we have the secret to send to the server
+      msg = 'Set ACTION_NAME_SECRET to enable.';
+    } else if (!ALLOWED_ACTION_NAMES.has(timings.actionName)) {
+      // Verify the "actionName" is in the allowable namespace
+      msg = 'Invalid actionName detected.';
+    } else if (Object.keys(timings).some(k => !ALLOWED_TIMINGS_KEYS.has(k))) {
+      // Verify that all object keys are expected.
+      msg = 'Invalid timings key detected.';
+    }
+
+    if (msg !== null) {
+      console.warn(`Timings not sent -- ${msg} Would have sent:\n`, timings);
+      ctx.body = msg;
+      resolve();
       return;
     }
 
@@ -153,7 +188,5 @@ export default (router, apiOptions) => {
         .end(err => err ? reject(err) : resolve());
 
     ctx.body = null;
-    return;
   }));
-
 };
