@@ -26,6 +26,58 @@ const appleAppSiteAssociation = JSON.stringify({
   },
 });
 
+// prefix in the same way clientLib sendTimings does
+const mServerName = name => `m.server.${name}`;
+
+const ALLOWED_ACTION_NAMES = new Set([
+  'health',
+  'index',
+  'index.subreddit',
+  'index.multi',
+  'random',
+  'comments.permalinkActivity',
+  'comments.permalink',
+  'comments.titlePermalink',
+  'comments.title',
+  'comments.subreddit',
+  'subreddit.about',
+  'search.index',
+  'search.subreddit',
+  'user.profile',
+  'user.gild',
+  'user.activity',
+  'submit',
+  'saved',
+  'hidden',
+  'static.faq',
+  'user.login',
+  'user.register',
+  'messages.compose',
+  'messages',
+  'wiki',
+  'wiki.subreddit',
+  '404',
+].reduce((names, name) => {
+  return names.concat([name, `${name}.no_ads`]);
+}, [])
+.map(mServerName));
+
+const ALLOWED_TIMINGS_KEYS = new Set([
+  'actionName',
+  'mountTiming',
+  'redirectTiming',
+  'startTiming',
+  'dnsTiming',
+  'tcpTiming',
+  'httpsTiming',
+  'requestTiming',
+  'responseTiming',
+  'domLoadingTiming',
+  'domInteractiveTiming',
+  'domContentLoadedTiming',
+]);
+
+
 // set up server-only routes
 const serverRoutes = function(app) {
   const router = app.router;
@@ -72,8 +124,19 @@ const serverRoutes = function(app) {
     const statsURL = app.config.statsURL;
     const timings = this.request.body.rum;
 
+    let msg = null;
     if (!app.config.actionNameSecret) {
-      console.log('returning early, no secret');
+      // Verify we have the secret to send to the server
+      msg = 'Set ACTION_NAME_SECRET to enable timings';
+    } else if (!ALLOWED_ACTION_NAMES.has(timings.actionName)) {
+      // Verify the "actionName" is in the alloweable namespace
+      msg = 'Invalid actionName detected';
+    } else if (Object.keys(timings).some(key => !ALLOWED_TIMINGS_KEYS.has(key))) {
+      msg = 'Invalid timings key detected';
+    }
+
+    if (msg !== null) {
+      console.warn(`Timings not sent -- ${msg} Would have sent: ${JSON.stringify(timings)}`);
       return;
     }
 
