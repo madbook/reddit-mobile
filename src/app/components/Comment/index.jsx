@@ -35,12 +35,13 @@ export function Comment(props) {
     onToggleCollapse,
   } = props;
 
+  const commentClasses = cx('Comment', { 'in-comment-tree': !preview });
   const bodyClasses = cx('Comment__body', {
     'm-hidden': commentCollapsed && !isUserActivityPage,
   });
 
   return (
-    <div className={ cx('Comment', { 'in-comment-tree': !preview }) }>
+    <div className={ commentClasses }>
       <div className='Comment__header' id={ comment.id }>
         <CommentHeader
           id={ comment.id }
@@ -169,18 +170,14 @@ function renderReplies(props) {
 }
 
 function renderMoreCommentsButton(props) {
-  const { comment, moreCommentStatus, onLoadMore, nestingLevel } = props;
+  const { comment, moreCommentStatus, onLoadMore } = props;
 
   const loadingText = moreCommentStatus.loading
     ? LOADING_MORE_COMMENTS
     : `${LOAD_MORE_COMMENTS} (${comment.numReplies})`;
 
-  const className = cx('Comment__loadMore', {
-    'm-no-indent': nestingLevel >= NESTING_STOP_LEVEL,
-  });
-
   return (
-    <div className={ className } onClick={ onLoadMore }>
+    <div className='Comment__loadMore' onClick={ onLoadMore }>
       <div className='icon icon-caron-circled' />
       <span className='Comment__loadMore-text'>{ loadingText }</span>
     </div>
