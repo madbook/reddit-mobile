@@ -84,7 +84,7 @@ const AGREEMENT = (
   </div>
 );
 
-export default class Register extends React.Component {
+class Register extends React.Component {
   constructor (props) {
     super(props);
 
