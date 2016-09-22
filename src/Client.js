@@ -26,7 +26,7 @@ let isShell;
 window.onload = () => {
   const endMount = Date.now();
   sendTimings(beginMount, endMount, isShell);
-}
+};
 
 // register window.onError asap so we can catch errors in the client's init
 window.onerror = (message, url, line, column) => {
