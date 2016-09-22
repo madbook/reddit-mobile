@@ -76,10 +76,10 @@ const CANONICAL_ROUTES = [
   ['/comments/:postId/:postTitle/:commentId', commentsCanonical],
   ['/comments/:postId/:postTitle?', commentsCanonical],
   // user pages
-  ['/u/:userName/activity', userCanonical],
-  ['/u/:userName/gild', userCanonical],
-  ['/u/:userName/:savedOrHidden(saved|hidden)', userCanonical],
-  ['/u/:userName', userCanonical],
+  ['/user/:userName/activity', userCanonical],
+  ['/user/:userName/gild', userCanonical],
+  ['/user/:userName/:savedOrHidden(saved|hidden)', userCanonical],
+  ['/user/:userName', userCanonical],
   // catch-all
   ['*', baseCanonical],
 ];

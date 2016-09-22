@@ -18,13 +18,14 @@ import Messages from './handlers/Messages';
 import Vote from './handlers/Vote';
 import WikiPageHandler from './handlers/WikiPage';
 import { PostSubmitHandler, PostSubmitCommunityHandler } from './handlers/PostSubmit';
+import UserRerouteHandler from './handlers/UserReroute';
 import Status404PageHandler from './handlers/Status404Page';
 
 /* eslint-disable max-len */
 export default [
   ['/', PostsFromSubredditHandler, { name: 'index' }],
   ['/r/:subredditName', PostsFromSubredditHandler, { name: 'listing' }],
-  ['/u/:user/m/:multi', PostsFromSubredditHandler, { name: 'listing' }],
+  ['/user/:user/m/:multi', PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName/comments/:postId/comment/:commentId', CommentsPageHandler, { name: 'comments' }],
   ['/r/:subredditName/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],
   ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler, { name: 'comments' }],
@@ -36,10 +37,10 @@ export default [
   ['/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],
   ['/comments/:postId/:postTitle?', CommentsPageHandler, { name: 'comments' }],
   ['/comments', CommentsPageHandler],
-  ['/u/:userName/activity', UserActivityHandler],
-  ['/u/:userName/gild', UserProfilerHandler],
-  ['/u/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
-  ['/u/:userName', UserProfilerHandler, { name: 'user' }],
+  ['/user/:userName/activity', UserActivityHandler],
+  ['/user/:userName/gild', UserProfilerHandler],
+  ['/user/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
+  ['/user/:userName', UserProfilerHandler, { name: 'user' }],
   ['/login', Login],
   ['/register', Register],
   ['/message/compose', DirectMessage],
@@ -56,6 +57,9 @@ export default [
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
   ['/actions/setOver18', SetOver18Handler],
   ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler],
+
+  // reroutes
+  ['/u/*', UserRerouteHandler],
   ['*', Status404PageHandler],
 ];
 /* eslint-enable */

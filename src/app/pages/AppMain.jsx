@@ -64,10 +64,10 @@ const AppMain = ({ statusCode, url, referrer, isToasterOpen }) => {
           url='/comments/:postId/:postTitle?'
           component={ CommentsPage }
         />
-        <Page url='/u/:userName/activity' component={ UserActivityPage } />
-        <Page url='/u/:userName/gild' component={ UserProfilePage } />
-        <Page url='/u/:userName/:savedOrHidden(saved|hidden)' component={ SavedAndHiddenPage } />
-        <Page url='/u/:userName/' component={ UserProfilePage } />
+        <Page url='/user/:userName/activity' component={ UserActivityPage } />
+        <Page url='/user/:userName/gild' component={ UserProfilePage } />
+        <Page url='/user/:userName/:savedOrHidden(saved|hidden)' component={ SavedAndHiddenPage } />
+        <Page url='/user/:userName/' component={ UserProfilePage } />
         <Page url='/login' component={ Login } />
         <Page url='/register' component={ Register } />
         <Page url='/message/compose' component={ DirectMessage } />
