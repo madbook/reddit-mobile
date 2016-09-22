@@ -20,25 +20,26 @@ import WikiPageHandler from './handlers/WikiPage';
 import { PostSubmitHandler, PostSubmitCommunityHandler } from './handlers/PostSubmit';
 import Status404PageHandler from './handlers/Status404Page';
 
+/* eslint-disable max-len */
 export default [
-  ['/', PostsFromSubredditHandler],
-  ['/r/:subredditName', PostsFromSubredditHandler],
-  ['/u/:user/m/:multi', PostsFromSubredditHandler],
-  ['/r/:subredditName/comments/:postId/comment/:commentId', CommentsPageHandler],
-  ['/r/:subredditName/comments/:postId/:postTitle/:commentId', CommentsPageHandler],
-  ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler],
+  ['/', PostsFromSubredditHandler, { name: 'index' }],
+  ['/r/:subredditName', PostsFromSubredditHandler, { name: 'listing' }],
+  ['/u/:user/m/:multi', PostsFromSubredditHandler, { name: 'listing' }],
+  ['/r/:subredditName/comments/:postId/comment/:commentId', CommentsPageHandler, { name: 'comments' }],
+  ['/r/:subredditName/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],
+  ['/r/:subredditName/comments/:postId/:postTitle?', CommentsPageHandler, { name: 'comments' }],
   ['/search', SearchPageHandler],
   ['/r/:subredditName/search', SearchPageHandler],
   ['/r/:subredditName/about', SubredditAboutPageHandler],
   ['/r/:subredditName/(w|wiki)/:path(.*)?', WikiPageHandler],
   ['/(help|w|wiki)/:path(.*)?', WikiPageHandler],
-  ['/comments/:postId/:postTitle/:commentId', CommentsPageHandler],
-  ['/comments/:postId/:postTitle?', CommentsPageHandler],
+  ['/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],
+  ['/comments/:postId/:postTitle?', CommentsPageHandler, { name: 'comments' }],
   ['/comments', CommentsPageHandler],
   ['/u/:userName/activity', UserActivityHandler],
   ['/u/:userName/gild', UserProfilerHandler],
   ['/u/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
-  ['/u/:userName', UserProfilerHandler],
+  ['/u/:userName', UserProfilerHandler, { name: 'user' }],
   ['/login', Login],
   ['/register', Register],
   ['/message/compose', DirectMessage],
@@ -57,3 +58,4 @@ export default [
   ['/actions/toggle-subreddit-subscription', ToggleSubredditSubscriptionHandler],
   ['*', Status404PageHandler],
 ];
+/* eslint-enable */

@@ -2,6 +2,8 @@ import { DEFAULT_API_TIMEOUT } from 'app/constants';
 
 import makeRequest from './makeRequest';
 
+const CLIENT_PERCENTAGE = 0.1;    // 10% of requests
+
 export function getTimes() {
   const performance = global.performance ||
                     global.webkitPerformance ||
@@ -46,8 +48,20 @@ export function getTimes() {
   return timings;
 }
 
+export function makeTimingsRequest(timings) {
+  // Send data to the timings endpoint and squelch any errors
+  makeRequest
+    .post('/timings')
+    .timeout(DEFAULT_API_TIMEOUT)
+    .send({
+      rum: timings,
+    })
+    .then()
+    .catch(() => {});
+}
+
 export function sendTimings(beginMount, endMount, isShell) {
-  if (Math.random() > 0.1) { // 10% of requests
+  if (Math.random() > CLIENT_PERCENTAGE) {
     return;
   }
 
@@ -57,18 +71,32 @@ export function sendTimings(beginMount, endMount, isShell) {
   }
 
   const actionName = isShell ? 'm2.server.shell' : 'm2.server.seo';
-
   const timings = Object.assign({
     actionName,
+    mountTiming: (endMount - beginMount) / 1000,
   }, getTimes());
 
-  timings.mountTiming = (endMount - beginMount) / 1000;
+  makeTimingsRequest(timings);
+}
 
-  makeRequest
-    .post('/timings')
-    .timeout(DEFAULT_API_TIMEOUT)
-    .send({
-      rum: timings,
-    })
-    .then();
+let initialLoad = true;
+export function onHandlerCompleteTimings(data) {
+  // Only do this on the initalPage load for now as subsequent ones may be cached
+  if (!initialLoad) { return; }
+  initialLoad = false;
+
+  if (Math.random() > CLIENT_PERCENTAGE) { return; }
+
+  if (!data) { return; }
+  const { meta, duration } = data;
+
+  if (!meta || !meta.name) { return; }
+  const { name } = meta;
+
+  const actionName = `m2.client.${name}`;
+  const timings = {
+    actionName,
+    routeTiming: duration / 1000,
+  };
+  makeTimingsRequest(timings);
 }

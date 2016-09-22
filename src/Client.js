@@ -15,7 +15,7 @@ import errorLog from 'lib/errorLog';
 import routes from 'app/router';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
-import { sendTimings } from 'lib/timing';
+import { sendTimings, onHandlerCompleteTimings } from 'lib/timing';
 import Session from 'app/models/Session';
 
 // Bits to help in the gathering of client side timings to relay back
@@ -131,6 +131,7 @@ const client = Client({
   },
   appComponent: <App/>,
   debug: (process.env.NODE_ENV || 'production') !== 'production',
+  onHandlerComplete: onHandlerCompleteTimings,
 })();
 
 isShell = client.getState().platform.shell;

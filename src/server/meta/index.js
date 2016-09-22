@@ -4,16 +4,24 @@ import superagent from 'superagent';
 
 import { formatLogJSON } from 'lib/errorLog';
 import { DEFAULT_API_TIMEOUT } from 'app/constants';
+import routes from 'app/router';
 
+// Generate the client actionNames from the routes
+const mClientName = name => `m2.client.${name}`;
+const routeNames = routes.filter(r => r[2] && r[2].name).map(r => r[2].name);
+const CLIENT_NAMES = new Set(routeNames.map(mClientName));
+
+// Generate the server actionNames
 const mServerName = name => `m2.server.${name}`;
-const ALLOWED_ACTION_NAMES = new Set([
-  'shell',
-  'seo',
-].map(mServerName));
+const SERVER_NAMES = new Set(['shell', 'seo'].map(mServerName));
 
+const ALLOWED_ACTION_NAMES = new Set([...CLIENT_NAMES, ...SERVER_NAMES]);
+
+// These are the keys we allow passing over to hivemind
 const ALLOWED_TIMINGS_KEYS = new Set([
   'actionName',
   'mountTiming',
+  'routeTiming',
   'redirectTiming',
   'startTiming',
   'dnsTiming',
