@@ -13,6 +13,13 @@ import { userAccountSelector } from 'app/selectors/userAccount';
 import config from 'config';
 
 const { NIGHTMODE } = themes;
+
+const DESKTOP_TRACKING_PARAMS = {
+  utm_source: 'mweb_navbar',
+  utm_medium: '2X',
+  utm_name: 'desktop_link',
+};
+
 const userIconClassName = 'icon-user-account icon-large blue';
 
 
@@ -89,6 +96,7 @@ export const renderLoggedInUserRows = (user) => {
 export const SettingsOverlayMenu = (props) => {
   const { compact, theme, pageData, user } = props;
   const { url, queryParams } = pageData;
+  const desktopRedirectParams = { ...queryParams, ...DESKTOP_TRACKING_PARAMS };
 
   return (
     <OverlayMenu>
@@ -112,7 +120,7 @@ export const SettingsOverlayMenu = (props) => {
         text='Desktop Site'
         icon='icon-desktop icon-large blue'
         noRoute={ true }
-        href={ config.reddit + urlWith(url, queryParams) }
+        href={ config.reddit + urlWith(url, desktopRedirectParams) }
         onClick={ props.onGoToDesktop }
       />
       <ExpandoRow
