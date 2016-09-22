@@ -60,12 +60,14 @@ const GoldInfo = props => {
 
   return (
     <Anchor href={ `/u/${user.name}/gild` }>
-      <UserProfileBadge
-        text={ `Give ${user.name} gold` }
-        subtext='show your appreciation'
-      >
-        <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
-      </UserProfileBadge>
+      <UserProfileRow>
+        <UserProfileBadge
+          text={ `Give ${user.name} gold` }
+          subtext='show your appreciation'
+        >
+          <UserProfileBadgeIcon iconName='gold-snoo' color='gold' />
+        </UserProfileBadge>
+      </UserProfileRow>
     </Anchor>
   );
 };
