@@ -63,7 +63,7 @@ const commentsPageMetaData = (pageUrl, post, comments) => ({
   author: {
     '@type': 'Person',
     name: post.author,
-    url: `${reddit}/u/${post.author}/`,
+    url: `${reddit}/user/${post.author}/`,
   },
 
   // Post content info
@@ -111,7 +111,7 @@ const formatComments = comments => (
     author: {
       '@type': 'Person',
       name: c.author,
-      url: `${reddit}/u/${c.author}/`,
+      url: `${reddit}/user/${c.author}/`,
     },
     commentCount: c.replies.length,
     aggregateRating: c.score,

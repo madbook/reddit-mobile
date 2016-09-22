@@ -35,7 +35,7 @@ const UserProfileTabs = props => {
   return (
     <nav className='UserProfileHeader__tabs'>
       <UserProfileTab
-        href={ `/u/${userName}` }
+        href={ `/user/${userName}` }
         icon='icon-user-account'
         text='ABOUT'
         selected={ currentActivity === undefined }

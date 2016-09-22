@@ -20,7 +20,7 @@ export default function PostDropdown(props) {
     <Dropdown id={ id }>
       <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>
       <DropdownLinkRow href={ `/r/${subreddit}` } icon='snoosilhouette' text={ `More from r/${subreddit}` }/>
-      <DropdownLinkRow href={ `/u/${author}` } icon='user-account' text={ `${author}'s profile` }/>
+      <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>
       { isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null }
       { isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null }
       { isLoggedIn ? <DropdownLinkRow href='/report' icon='flag' text='Report'/> : null }

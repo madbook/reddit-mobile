@@ -59,7 +59,7 @@ export const renderLoggedInUserRows = (user) => {
     <LinkRow
       key='account'
       text={ user.name }
-      href={ `/u/${user.name}` }
+      href={ `/user/${user.name}` }
       icon={ userIconClassName }
     >
       <form className='OverlayMenu-row-right-item' action='/logout' method='POST'>
@@ -79,7 +79,7 @@ export const renderLoggedInUserRows = (user) => {
     <LinkRow
       key='saved'
       text='Saved'
-      href={ `/u/${user.name}/saved` }
+      href={ `/user/${user.name}/saved` }
       icon='icon-save icon-large lime'
     />,
 

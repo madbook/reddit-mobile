@@ -74,7 +74,7 @@ const OwnUserLinks = props => {
   );
 };
 
-const userLinkPath = (userName, subpath) => `/u/${userName}/${subpath}`;
+const userLinkPath = (userName, subpath) => `/user/${userName}/${subpath}`;
 
 const UserLink = props => {
   const { text, iconName, href } = props;

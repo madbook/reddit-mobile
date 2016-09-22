@@ -59,7 +59,7 @@ const GoldInfo = props => {
   }
 
   return (
-    <Anchor href={ `/u/${user.name}/gild` }>
+    <Anchor href={ `/user/${user.name}/gild` }>
       <UserProfileRow>
         <UserProfileBadge
           text={ `Give ${user.name} gold` }

@@ -10,7 +10,7 @@ import { urlWith } from 'lib/urlWith';
 
 export default class UserActivityHandler extends BaseHandler {
   static activityURL(userName, activity) {
-    return urlWith(`/u/${userName}/activity`, { activity });
+    return urlWith(`/user/${userName}/activity`, { activity });
   }
 
   static pageParamsToActivitiesParams({ urlParams, queryParams }) {

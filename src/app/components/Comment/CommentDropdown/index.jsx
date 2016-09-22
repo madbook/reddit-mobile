@@ -32,7 +32,7 @@ export default function CommentDropdown(props) {
         ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } isSelected={ isSaved } onClick={ onToggleSave }/>
         : null }
       { !userIsAuthor
-        ? <DropdownLinkRow href={ `/u/${commentAuthor}` } icon='user-account' text={ `${commentAuthor}'s profile` }/>
+        ? <DropdownLinkRow href={ `/user/${commentAuthor}` } icon='user-account' text={ `${commentAuthor}'s profile` }/>
         : null }
       { username
         ? <DropdownLinkRow href='/report' icon='flag' text='Report'/>
