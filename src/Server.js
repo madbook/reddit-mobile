@@ -19,6 +19,7 @@ import logoutproxy from 'server/session/logoutproxy';
 import registerproxy from 'server/session/registerproxy';
 import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
+import dispatchAPIPassThroughHeaders from 'server/initialState/dispatchAPIPassThroughHeaders';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
 import { dispatchInitialMeta } from 'server/initialState/dispatchInitialMeta';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
@@ -85,6 +86,7 @@ export function startServer() {
     reduxMiddleware,
     dispatchBeforeNavigation: async (ctx, dispatch, getState) => {
       dispatchInitialShell(ctx, dispatch);
+      dispatchAPIPassThroughHeaders(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
       dispatchInitialTheme(ctx, dispatch);
       dispatchInitialCollapsedComments(ctx, dispatch);

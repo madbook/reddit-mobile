@@ -4,6 +4,7 @@ import accountRequests from './accountRequests';
 import accounts from './accounts';
 import activitiesRequests from './activitiesRequests';
 import adRequests from './adRequests';
+import apiRequestHeaders from './apiRequestHeaders';
 import autocompleteSubreddits from './autocompleteSubreddits';
 import collapsedComments from './collapsedComments';
 import comments from './comments';
@@ -45,6 +46,7 @@ export default {
   accountRequests,
   activitiesRequests,
   adRequests,
+  apiRequestHeaders,
   autocompleteSubreddits,
   collapsedComments,
   comments,

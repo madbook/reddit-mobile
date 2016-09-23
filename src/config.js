@@ -1,9 +1,29 @@
 /*eslint max-len: 0*/
 
-// This configuration is shared with the client. Any hidden, server-only config
-// belongs in ./server instead.
+// This config is shared with the client -- but the client will only see ENV
+// variables that are defined in `blueprints.config.js` -- so be sure to have
+// sane defaults
 
 import localStorageAvailable from 'lib/localStorageAvailable';
+
+
+// takes a ';' separated string of key value pairs and turns them into an
+// object of { key -> value}
+const parseSemiColonKeyValues = (list='') => {
+  return list.split(';').reduce((obj, pair) => {
+    // check that we have a key value pair with an '=' in the middle.
+    // the '=' can't be the first character because there'd be no key
+    if (pair && pair.indexOf('=') > 0) {
+      const [key, value] = pair.split('=');
+      obj[key.trim()] = value.trim();
+    }
+
+    return obj;
+  }, {});
+};
+
+// takes a ';' separated string and returns a list
+const parseSemiColonList = (list='') => list.split(';');
 
 const reddit = process.env.REDDIT || 'https://www.reddit.com';
 
@@ -27,6 +47,9 @@ const config = () => ({
   postErrorURL: '/error',
 
   minifyAssets: process.env.MINIFY_ASSETS === 'true',
+
+  apiHeaders: parseSemiColonKeyValues(process.env.API_HEADERS),
+  apiPassThroughHeaders: parseSemiColonList(process.env.API_PASS_THROUGH_HEADERS),
 
   assetPath: process.env.STATIC_BASE || '',
 
