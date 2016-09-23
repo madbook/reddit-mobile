@@ -16,14 +16,16 @@ export const apiOptionsFromState = state => {
     loid: { loid, loidCreated },
     meta,
   } = state;
+
   if (meta.env !== 'CLIENT') {
     // We fake cookie headers to pass loid and loidCreated to the server
     const cookieHeaders = [];
     if (loid) {
       cookieHeaders.push(`loid=${loid}`);
     }
+
     if (loidCreated) {
-      cookieHeaders.push(`loidcreated=${(new Date(loidCreated)).toISOString()}`);
+      cookieHeaders.push(`loidcreated=${loidCreated}}`);
     }
 
     return merge(options, {
