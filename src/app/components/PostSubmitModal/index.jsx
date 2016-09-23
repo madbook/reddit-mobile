@@ -164,8 +164,13 @@ const mapStateToProps = createSelector(
 
     const subredditMetaData = subreddits[subredditName];
     const iconUrl = subredditMetaData ? subredditMetaData.iconImage : null;
-    const readyToPost = every([title, meta, subredditName], v => !isEmpty(v));
     const captchaImgUrl = CAPTCHA_URL_BASE + captchaIden;
+
+    const readyFields = submissionType === 'self'
+      ? [title, subredditName]
+      : [title, meta, subredditName];
+
+    const readyToPost = every(readyFields, v => !isEmpty(v));
 
     return {
       title,
