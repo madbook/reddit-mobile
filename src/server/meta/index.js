@@ -161,6 +161,12 @@ export default (router, apiOptions) => {
     if (!apiOptions.actionNameSecret) {
       // Verify we have the secret to send to the server
       msg = 'Set ACTION_NAME_SECRET to enable.';
+    } else if (!timings) {
+      // Verify we actually have timings sent...
+      msg = 'Timings undefined';
+    } else if (!timings.actionName) {
+      // ... and that we've been given an actionName
+      msg = 'No actionName specified';
     } else if (!ALLOWED_ACTION_NAMES.has(timings.actionName)) {
       // Verify the "actionName" is in the allowable namespace
       msg = 'Invalid actionName detected.';
