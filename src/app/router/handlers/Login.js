@@ -1,5 +1,6 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
+import { errors } from '@r/api-client';
 
 import Session from 'app/models/Session';
 import * as sessionActions from 'app/actions/session';
@@ -22,10 +23,11 @@ export default class Login extends BaseHandler {
       dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
 
     } catch (e) {
-      const error = JSON.parse(e);
-      dispatch(sessionActions.sessionError(error.error));
-
-      return; // do nothing until session is better
+      if (e instanceof errors.ValidationError) {
+        dispatch(sessionActions.sessionError('ERROR NOT USED'));
+      } else {
+        throw e;
+      }
     }
   }
 }

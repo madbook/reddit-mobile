@@ -1,13 +1,23 @@
 import superagent from 'superagent';
 import { btoa } from 'Base64';
+import { errors } from '@r/api-client';
+
+const { ValidationError, ResponseError } = errors;
 
 const fetchLogin = (username, password) => new Promise((resolve, reject) => {
   superagent
     .post('/loginproxy')
     .send({ username, password })
     .end((err, res) => {
-      if (err || !res.body) { return reject(res.text); }
-      resolve(res.body);
+      // NOTE: this isn't the best way to handle this but validation errors
+      // seem to fail with a response key whereas api failures don't
+      if (err && err.response) {
+        reject(new ValidationError('/loginproxy', [err.response.text], err.status));
+      } else if (err || !res.body) {
+        reject(new ResponseError(err, '/loginproxy'));
+      } else {
+        resolve(res.body);
+      }
     });
 });
 
