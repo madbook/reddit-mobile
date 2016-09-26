@@ -35,6 +35,15 @@ export default function(state=DEFAULT, action={}) {
       });
     }
 
+    case adActions.NO_AD: {
+      const { adId } = action;
+      return merge(state, {
+        [adId]: {
+          pending: false,
+        },
+      });
+    }
+
     case adActions.FAILED: {
       const { adId } = action;
       return merge(state, {

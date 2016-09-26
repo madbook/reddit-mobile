@@ -26,6 +26,12 @@ export const received = (adId, model) => ({
   model,
 });
 
+export const NO_AD = 'NO_AD';
+export const noAd = adId => ({
+  type: NO_AD,
+  adId,
+});
+
 export const FAILED = 'FAILED_AD_FETCH';
 export const failed = (adId, error) => ({
   type: FAILED,
@@ -134,6 +140,10 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
 
   try {
     const ad = await getAd(apiOptionsFromState(state), data);
+    if (ad === null) {
+      return dispatch(noAd(adId));
+    }
+    
     dispatch(received(adId, ad));
   } catch (e) {
     if (e instanceof ResponseError) {
@@ -165,6 +175,10 @@ export const getAd = (apiOptions, data) => {
         }
         // throw ResponseErrors for consistency with api-client errors
         return reject(new ResponseError(err, err.url));
+      }
+
+      if (!res.body || !res.body.data) {
+        return resolve(null); // no-ad isn't an error so resolve null.
       }
 
       try {
