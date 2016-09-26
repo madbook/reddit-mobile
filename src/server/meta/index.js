@@ -170,8 +170,15 @@ export default (router, apiOptions) => {
     }
 
     if (msg !== null) {
-      console.warn(`Timings not sent -- ${msg} Would have sent:\n`, timings);
-      ctx.body = msg;
+      // Put a message in the server log
+      const output = {
+        error: `Timings not sent -- ${msg}`,
+        timings,
+      }
+      console.warn(JSON.stringify(output));
+
+      // Don't tell the client anything went wrong
+      ctx.body = null;
       resolve();
       return;
     }
