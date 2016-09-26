@@ -81,10 +81,9 @@ export function logClientScreenView(buildScreenViewData, state) {
   // end hack
 
   if (process.env.ENV === 'client') {
-    getEventTracker().track(
-      'screenview_events',
-      'cs.screenview_mweb',
-      buildScreenViewData(state),
-    );
+    const data = buildScreenViewData(state);
+    if (data) {
+      getEventTracker().track('screenview_events', 'cs.screenview_mweb', data);
+    }
   }
 }

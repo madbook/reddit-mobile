@@ -104,6 +104,10 @@ function buildScreenViewData(state) {
   const fullName =`t3_${urlParams.postId}`;
   const post = state.posts[fullName];
 
+  if (!post) {
+    return null;
+  }
+
   return cleanObject({
     target_fullname: fullName,
     target_id: convertId(post.id),

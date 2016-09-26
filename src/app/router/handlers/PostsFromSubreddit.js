@@ -93,6 +93,13 @@ function buildScreenViewData(state) {
     listing_name = subredditName;
   } else {
     const subreddit = state.subreddits[subredditName.toLowerCase()];
+
+    // for the time being, if the api fetch fails (such as a user not having
+    // access to this subreddit), then we don't want to track
+    if (!subreddit) {
+      return null;
+    }
+
     target_id = convertId(subreddit.id);
     target_fullname = subreddit.name;
     listing_name = subreddit.uuid;

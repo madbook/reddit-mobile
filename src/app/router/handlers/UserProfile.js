@@ -24,6 +24,13 @@ export default class UserProfilerHandler extends BaseHandler {
 
 function buildScreenViewData(state) {
   const { userName: name } = state.platform.currentPage.urlParams;
+
+  // if a user doesn't exist, this check will catch it. We may want to track
+  // this in the future.
+  if (!name) {
+    return null;
+  }
+
   const user = find(state.accounts, (_, k) => k.toLowerCase() === name.toLowerCase());
 
   return {
