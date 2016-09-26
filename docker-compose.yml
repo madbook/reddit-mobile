@@ -1,6 +1,6 @@
 version: '2'
 services:
-  web:
+  mweb:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -15,4 +15,4 @@ services:
     ports:
     - "4301:80"
     depends_on:
-    - web
+    - mweb
