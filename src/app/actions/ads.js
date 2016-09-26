@@ -4,7 +4,7 @@ import uniqueId from 'lodash/uniqueId';
 import config from 'config';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
-import { AD_LOCATION } from 'app/constants';
+import adLocationForPostRecords from 'lib/adLocationForPostRecords';
 
 
 const { PostsEndpoint } = endpoints;
@@ -121,7 +121,7 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     site,
     dt: dt.join(','),
     platform: 'mobile_web',
-    placement: `feed-${AD_LOCATION}`,
+    placement: `feed-${adLocationForPostRecords(postsList.results)}`,
     raw_json: '1',
   };
 
@@ -136,7 +136,6 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     const ad = await getAd(apiOptionsFromState(state), data);
     dispatch(received(adId, ad));
   } catch (e) {
-    console.log('add error', e);
     if (e instanceof ResponseError) {
       dispatch(failed(adId, e));
     } else {

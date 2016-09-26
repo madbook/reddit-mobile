@@ -7,7 +7,7 @@ import Ad from 'app/components/Ad';
 import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
-import { AD_LOCATION } from 'app/constants';
+import adLocationForPostRecords from 'lib/adLocationForPostRecords';
 
 import map from 'lodash/map';
 
@@ -71,7 +71,7 @@ const renderPostsList = (props) => {
 };
 
 const recordsWithAd = (postRecords, ad) => {
-  const adLocation = Math.min(AD_LOCATION, postRecords.length);
+  const adLocation = adLocationForPostRecords(postRecords);
   const newRecords = postRecords.slice(0);
   newRecords.splice(adLocation, 0, ad);
   return newRecords;
