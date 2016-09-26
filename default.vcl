@@ -2,19 +2,24 @@ backend mweb {
     .host = "mweb";
     .port = "4444";
 }
-backend www {
+/* backend www {
     .host = "www.reddit.com";
     .port = "80";
-}
+} */
 
 sub vcl_recv {
   call device_detect;
 
+  # NOTE(wting|2016-09-26): Normally we would redirect the user to different
+  # backends, but instead we're just returning rarely used status codes for
+  # easy programmatic testing.
   if (req.http.Cookie !~ "(^|;\s*)(mweb-no-redirect=1)(;|$)"
       && (req.http.X-UA-Device ~ "^mobile-" || req.http.X-UA-Device ~ "^tablet-")) {
-    set req.backend = mweb;
+    # set req.backend = mweb;
+    error 444;
   } else {
-    set req.backend = www;
+    # set req.backend = www;
+    error 451;
   }
 }
 

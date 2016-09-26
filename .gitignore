@@ -7,5 +7,6 @@ start.sh
 bin/*
 build/
 .test/
+.tox/
 .DS_Store
 reddit-mobile.log
