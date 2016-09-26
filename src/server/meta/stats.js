@@ -40,7 +40,7 @@ export default router => {
       errorLog({
         error,
         requestUrl: ctx.request.url,
-        userAgent: 'SERVER',
+        userAgent: ctx.headers['user-agent'],
       }, {
         hivemind: config.statsURL,
       });
