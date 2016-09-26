@@ -174,7 +174,7 @@ export default (router, apiOptions) => {
       const output = {
         error: `Timings not sent -- ${msg}`,
         timings,
-      }
+      };
       console.warn(JSON.stringify(output));
 
       // Don't tell the client anything went wrong
