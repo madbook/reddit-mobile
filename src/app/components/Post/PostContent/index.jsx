@@ -300,7 +300,7 @@ export default class PostContent extends React.Component {
 
     const sourceURL = post.cleanUrl;
 
-    if (isCompact) {
+    if (isCompact && previewImage && previewImage.url) {
       // the thumbnail
       return this.renderImage(previewImage, sourceURL, linkDescriptor, callOnTapExpand,
         needsNSFWBlur, true, playableType);
