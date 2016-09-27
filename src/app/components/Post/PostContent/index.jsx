@@ -391,7 +391,7 @@ export default class PostContent extends React.Component {
     const aspectRatio = this.getAspectRatio(single, previewImage.width, previewImage.height);
 
     if (previewImage && previewImage.url && !aspectRatio) {
-      return this.renderImageOfUknownSize(
+      return this.renderImageOfUnknownSize(
         previewImage.url, linkDescriptor, onClick, playbackControlNode, nsfwNode);
     }
 
@@ -403,7 +403,7 @@ export default class PostContent extends React.Component {
     return `PostContent__image-link ${hasNSFWBlur && !imageUrl ? 'placeholder' :''}`;
   }
 
-  renderImageOfUknownSize(imageURL, linkDescriptor, onClick, playbackControlNode, nsfwNode) {
+  renderImageOfUnknownSize(imageURL, linkDescriptor, onClick, playbackControlNode, nsfwNode) {
     const linkClass = this.baseImageLinkClass(imageURL, !!nsfwNode);
     return (
       <a
