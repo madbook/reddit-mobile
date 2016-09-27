@@ -16,14 +16,15 @@ export function convertId(id) {
 export function buildSubredditData(state) {
   const { subredditName } = state.platform.currentPage.urlParams;
 
-  if (!isFakeSubreddit(subredditName)) {
-    const subreddit = state.subreddits[subredditName.toLowerCase()];
-    return {
-      sr_id: convertId(subreddit.name),
-      sr_name: subreddit.uuid,
-    };
-  }
-  return {};
+  if (isFakeSubreddit(subredditName)) { return {}; }
+
+  const subreddit = state.subreddits[subredditName.toLowerCase()];
+  if (!subreddit) { return {}; }
+
+  return {
+    sr_id: convertId(subreddit.name),
+    sr_name: subreddit.uuid,
+  };
 }
 
 
