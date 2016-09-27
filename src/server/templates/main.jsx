@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactServerDom from 'react-dom/server';
 import { Provider } from 'react-redux';
+
 import App from '../../app';
 import manifest from '../../../build/manifest';
 import config from 'config';
 import { themeClass } from './themeClass';
 import createCanonicalLinkFromState from 'lib/createCanonicalLinkFromState';
+import safeStringify from 'lib/safeStringify';
 
 const env = process.env.NODE_ENV || 'production';
 const CLIENT_NAME = env === 'production' ? 'ProductionClient' : 'Client';
@@ -50,7 +52,7 @@ export default function(data, store) {
         <script
           id='data'
           dangerouslySetInnerHTML={ {
-            __html: `window.___r = ${JSON.stringify(data)}`,
+            __html: `window.___r = ${safeStringify(data)}`,
           } }
         ></script>
         <script async type='text/javascript' src={ `${assetPath}/${JS_FILE}` } />
