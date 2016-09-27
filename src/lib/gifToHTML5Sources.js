@@ -10,22 +10,26 @@ const _IMGUR_GALLERY_PATH = /\/gallery\//;
 
 const _IMGUR_GIFV_QUERY_PARAMS = /\.gif\?.*$/;
 
-function gfycatMP4Url(gfyCatUrl) {
+function gfycatUrlHelper(gfyCatUrl, baseUrl, extension) {
+  // Preserve arguments sent after the hash mark
+  const [url, afterHash] = gfyCatUrl.split('#');
+  const hashArgs = (afterHash !== undefined) ? `#${afterHash}` : '';
+
   // gif doesn't seem to be there, so the .gif replace is a safety check
-  return `${gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase)
-                     .replace(_GIF_EXTENSION, '')}-mobile.mp4`;
+  return `${url.replace(_gfyCatRegex, baseUrl)
+               .replace(_GIF_EXTENSION, '')}${extension}${hashArgs}`;
 }
 
-function gfyCatWebmURL(gfyCatUrl) {
-  // gif doesn't seem to be there, so the .gif replace is a safety check
-  return `${gfyCatUrl.replace(_gfyCatRegex, _gfycatWebmBase)
-                     .replace(_GIF_EXTENSION, '')}.webm`;
+function gfycatMP4Url(gfyCatUrl) {
+  return gfycatUrlHelper(gfyCatUrl, _gfycatMobileBase, '-mobile.mp4');
+}
+
+function gfyCatWebMUrl(gfyCatUrl) {
+  return gfycatUrlHelper(gfyCatUrl, _gfycatWebmBase, '.webm');
 }
 
 function gfycatPosterUrl(gfyCatUrl) {
-  // gif doesn't seem to be there, so the .gif replace is a safety check
-  return `${gfyCatUrl.replace(_gfyCatRegex, _gfycatMobileBase)
-                     .replace(_GIF_EXTENSION, '')}-mobile.jpg`;
+  return gfycatUrlHelper(gfyCatUrl, _gfycatMobileBase, '-mobile.jpg');
 }
 
 function posterForHrefIfGiphyCat(url) {
@@ -46,7 +50,7 @@ export default function gifToHTML5Sources(url) {
   if (urlRoot === 'gfycat.com') {
     return {
       mp4: gfycatMP4Url(url),
-      webm: gfyCatWebmURL(url),
+      webm: gfyCatWebMUrl(url),
       poster: gfycatPosterUrl(url),
     };
   }

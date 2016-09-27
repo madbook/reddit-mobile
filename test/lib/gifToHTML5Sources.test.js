@@ -32,6 +32,15 @@ describe('lib: gifToHTML5Sources', () => {
     expect(gfyCatSources.poster).to.match(/mobile\.jpg$/);
   });
 
+  it('turns gfycat links with hashes into mp4, wemb, and poster links', () => {
+    const gfyCatGif = 'http://gfycat.com/WhiskeyTangoFoxtrot#?foo=bar';
+    const gfyCatSources = gifToHTML5Sources(gfyCatGif);
+    expect(gfyCatSources).to.exist.and.include.keys(['webm', 'mp4', 'poster']);
+    expect(gfyCatSources.mp4).to.match(/mobile\.mp4#\?foo=bar$/);
+    expect(gfyCatSources.webm).to.match(/\.webm#\?foo=bar$/);
+    expect(gfyCatSources.poster).to.match(/mobile\.jpg#\?foo=bar$/);
+  });
+
   it('turns imgur gifv links into mp4, webm, and poster links', () => {
     const imgurGif = 'http://i.imgur.com/ZohCJH8.gifv';
     const imgurSources = gifToHTML5Sources(imgurGif);
