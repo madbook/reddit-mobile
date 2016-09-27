@@ -1,8 +1,7 @@
 import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
-import config from 'config';
-import errorLog from 'lib/errorLog';
+import { logServerError } from 'lib/errorLog';
 
 
 export default (router, apiOptions) => {
@@ -22,13 +21,7 @@ export default (router, apiOptions) => {
       if (error === 'WRONG_PASSWORD') {
         ctx.body = { error };
       } else { // we're not sure what this error is, log it for now
-        errorLog({
-          error,
-          requestUrl: ctx.request.url,
-          userAgent: ctx.headers['user-agent'],
-        }, {
-          hivemind: config.statsURL,
-        });
+        logServerError(error, ctx);
       }
     }
   });

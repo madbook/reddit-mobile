@@ -1,5 +1,6 @@
 import { errors } from '@r/api-client';
 import makeRequest from './makeRequest';
+import config from 'config';
 
 const { ResponseError } = errors;
 
@@ -10,7 +11,7 @@ const ENV = (process.env.ENV || 'server').toUpperCase();
 const isAPIFailure = details => details.error instanceof ResponseError;
 
 
-export default function (details={}, errorEndpoints={}, options={ SHOULD_RETHROW: true}) {
+export default function errorLog(details={}, errorEndpoints={}, options={ SHOULD_RETHROW: true}) {
   // parse the stack for location details if we're passed
   // an Error or PromiseRejectionEvent
   const { error, rejection } = details;
@@ -171,6 +172,16 @@ export const formatLogJSON = logJSON => {
 
   // Otherwise, JSON.stringify with indentation so its easy to grok logs in dev
   return JSON.stringify(logJSON, null, 2).replace(/\\n/g, '\n');
+};
+
+export const logServerError = (error, ctx) => {
+  errorLog({
+    error,
+    requestUrl: ctx.request.url,
+    userAgent: ctx.headers['user-agent'],
+  }, {
+    hivemind: config.statsURL,
+  });
 };
 
 if (typeof window !== 'undefined') {

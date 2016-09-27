@@ -23,8 +23,8 @@ export default class Login extends BaseHandler {
       dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
 
     } catch (e) {
-      if (e instanceof errors.ValidationError) {
-        dispatch(sessionActions.sessionError('ERROR NOT USED'));
+      if (e instanceof errors.ValidationError && e.errors && e.errors[0]) {
+        dispatch(sessionActions.sessionError(e.errors[0].error));
       } else {
         throw e;
       }

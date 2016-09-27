@@ -1,7 +1,7 @@
 import StatsdClient from 'statsd-client';
 
 import config from 'config';
-import errorLog from 'lib/errorLog';
+import { logServerError } from 'lib/errorLog';
 
 let activeRequests = 0;
 
@@ -37,13 +37,7 @@ export default router => {
     try {
       await next();
     } catch (error) {
-      errorLog({
-        error,
-        requestUrl: ctx.request.url,
-        userAgent: ctx.headers['user-agent'],
-      }, {
-        hivemind: config.statsURL,
-      });
+      logServerError(error, ctx);
     }
 
     const delta = Math.ceil(Date.now() - start);
