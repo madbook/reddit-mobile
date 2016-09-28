@@ -33,6 +33,11 @@ function buildScreenViewData(state) {
 
   const user = find(state.accounts, (_, k) => k.toLowerCase() === name.toLowerCase());
 
+  // another thing to track in the future -- if the user somehow isn't in our state
+  if (!user) {
+    return null;
+  }
+
   return {
     target_name: user.name,
     target_fullname: user.id,
