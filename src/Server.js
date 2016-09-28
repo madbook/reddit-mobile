@@ -98,6 +98,10 @@ export function startServer() {
     },
     preRouteServerMiddleware: [
       buildFiles,
+      async (ctx, next) => {
+        await next();
+        ctx.set('X-Frame-Options', 'SAMEORIGIN');
+      },
     ],
     getServerRouter: router => {
       // middleware
