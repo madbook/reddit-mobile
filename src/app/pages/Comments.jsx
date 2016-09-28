@@ -101,35 +101,39 @@ export const CommentsPage = connect(stateProps, dispatchProps, mergeProps)(props
     post,
   } = props;
 
+  if (!postLoaded) {
+    return (
+      <div className='CommentsPage BelowTopNav'>
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className='CommentsPage BelowTopNav'>
-      { postLoaded && <SubNav /> }
-      { !postLoaded ?
-        <Loading /> : [
-          <Post postId={ commentsPageParams.id } single={ true } key='post' />,
-          <CommentsPageTools
-            key='tools'
-            replying={ replying }
-            post={ post }
-            hasSingleComment={ has(commentsPageParams, 'query.comment') }
-            currentPage={ currentPage }
-            id={ commentsPageParams.id }
-            onSortChange={ onSortChange }
-          />,
-        ]
+      <SubNav />
+      <Post postId={ commentsPageParams.id } single={ true } key='post' />
+      <CommentsPageTools
+        key='tools'
+        replying={ replying }
+        post={ post }
+        hasSingleComment={ has(commentsPageParams, 'query.comment') }
+        currentPage={ currentPage }
+        id={ commentsPageParams.id }
+        onSortChange={ onSortChange }
+      />
+
+      { !commentsPage || commentsPage.loading
+          ? <Loading />
+          : <CommentsList
+              op={ op }
+              commentRecords={ topLevelComments }
+              className='CommentsList__topLevel'
+              nestingLevel={ 0 }
+            />
       }
 
-      { !commentsPage || commentsPage.loading ?
-        <Loading /> :
-        <CommentsList
-          op={ op }
-          commentRecords={ topLevelComments }
-          className={ 'CommentsList__topLevel' }
-          nestingLevel={ 0 }
-        /> }
-
-      { isCrawlerRequest && postLoaded && commentsPage && topLevelComments.length ?
+      { isCrawlerRequest && commentsPage && topLevelComments.length ?
         <GoogleCarouselMetadata
           postId={ commentsPageParams.id }
           commentRecords={ topLevelComments }
