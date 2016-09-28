@@ -16,9 +16,10 @@ export const permanentCookieOptions = () => {
     // In theory, now that it's deprecated, we should be passing `secure: true`
     // to the `new Cookies({})` constructor, but that's called by `Koa`
     // so we'll have to fork/pull-request that in the future.
-    httpOnly: true, // This flag isn't what you think it means. It tells
-    // browsers to not expose these headers to XMLHTTPRequestss, but still
-    // set the cookies
+    httpOnly: false, // This flag isn't what you think it means. Passing true
+    // would prevent cookies from being accessible from javascript. This sounds
+    // good at first but if you ever need to update cookies on the client,
+    // this needs to be set to false.
     expires,
   };
 };

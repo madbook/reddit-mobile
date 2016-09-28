@@ -12,9 +12,10 @@ export const dispatchInitialTheme = async (ctx, dispatch) => {
     theme = DEFAULT;
   }
 
-  if (theme !== themeCookie) {
-    ctx.cookies.set('theme', theme, permanentCookieOptions());
-  }
+  // NOTE: there was a bug were we set HTTP_ONLY cookies so the client' couldn't
+  // override them. Set this cookie no matter what so httpOnly flag is removed
+  // for those users affected
+  ctx.cookies.set('theme', theme, permanentCookieOptions());
 
   dispatch(themeActions.setTheme(theme));
 };

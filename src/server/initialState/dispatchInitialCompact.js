@@ -18,9 +18,10 @@ export const dispatchInitialCompact = async (ctx, dispatch) => {
     compact = `${DEFAULT}`;
   }
 
-  if (compact !== compactFromCookie) {
-    ctx.cookies.set('compact', compact, permanentCookieOptions());
-  }
+  // NOTE: there was a bug were we set HTTP_ONLY cookies so the client' couldn't
+  // override them. Set this cookie no matter what so httpOnly flag is removed
+  // for those users affected
+  ctx.cookies.set('compact', compact, permanentCookieOptions());
 
   const compactBool = compact === 'true';
   dispatch(compactActions.setCompact(compactBool));
