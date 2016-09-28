@@ -20,7 +20,7 @@ export default function(data, store) {
 
   const canonicalLink = !state.platform.shell
     ? createCanonicalLinkFromState(state)
-    : '';
+    : null;
 
   return ReactServerDom.renderToStaticMarkup(
     <html lang='en'>

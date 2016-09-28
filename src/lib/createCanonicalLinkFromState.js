@@ -46,14 +46,20 @@ export const listingCanonical = (currentPage, state) => {
     return `/r/${newName}/`;
   }
 
-  // desperation case. we don't know how to handle this url, so just
-  // canonicalize to the frontpage.
-  return '/';
+  // we don't know how to handle this url, probably because of an issue
+  // getting data from the server (like a banned subbreddit), so give up.
+  return null;
 };
 
 export const commentsCanonical = (currentPage, state) => {
   const { postId } = currentPage.urlParams;
-  return state.posts[`t3_${postId}`].cleanPermalink;
+  const post = state.posts[`t3_${postId}`];
+  if (!post || !post.cleanPermalink) {
+    // We were unable to get the info from the server, which probably means
+    // the subreddit was banned or the like.
+    return null;
+  }
+  return post.cleanPermalink;
 };
 
 export const userCanonical = currentPage => {
@@ -87,5 +93,6 @@ const CANONICAL_ROUTES = [
 export default state => {
   const currentPage = state.platform.currentPage;
   const { handler } = matchRoute(currentPage.url, CANONICAL_ROUTES);
-  return `${config.reddit}${handler(currentPage, state)}`;
+  const route = handler(currentPage, state);
+  return route ? `${config.reddit}${route}` : null;
 };
