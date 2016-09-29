@@ -17,7 +17,8 @@ export default function errorLog(details={}, errorEndpoints={}, options={ SHOULD
   // parse the stack for location details if we're passed
   // an Error or PromiseRejectionEvent
   const { error, rejection } = details;
-  if ((error || rejection)._SEEN_BY_ERROR_LOG) {
+  const failure = error || rejection;
+  if (!failure || failure._SEEN_BY_ERROR_LOG) {
     // we've already seen this error and rethrew it so chrome will do it's default logging
     return;
   }
@@ -146,6 +147,10 @@ const buildLogJSON = details => {
     column,
     requestUrl='NO REQUEST URL',
     stack,
+    possibleDuplicate, // This is for cases when an error might have
+    // already been logged. e.g. a promise chains can lead to the same
+    // error getting passed to multiple .catch handlers or the
+    // same error reaching the .catch handler twice.
   } = details;
 
   return {
@@ -159,6 +164,7 @@ const buildLogJSON = details => {
     line,
     column,
     stack,
+    possibleDuplicate,
   };
 };
 

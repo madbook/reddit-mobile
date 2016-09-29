@@ -69,9 +69,19 @@ export default function errorLogger() {
           // with other .then handlers in the promise chain.
           // regardless, we set a `._SEEN_BY_REDUX_ERROR_LOGGER` property to
           // true to prevent duplicate logging
+          let possibleDuplicate = undefined;
           if (!error._SEEN_BY_REDUX_ERROR_LOGGER) {
-            error._SEEN_BY_REDUX_ERROR_LOGGER = true;
-            logErrorWithConfig(error, store.getState(), actionStack);
+            try {
+              error._SEEN_BY_REDUX_ERROR_LOGGER = true;
+            } catch (e) {
+              // this object is probably frozen and can't have properties set.
+              // it could very well be a model from node-api-client.
+              // or there's the extremely unlikely case that it already has
+              // a readonly prop called `_SEEN_BY_REDUX_ERROR_LOGGER`....
+              possibleDuplicate = true; // if we can't set this property
+              // we can't de-dupe, so there's a chance it's a duplicate
+            }
+            logErrorWithConfig(error, store.getState(), actionStack, possibleDuplicate);
           }
         });
       }
@@ -109,7 +119,7 @@ const checkForSpecificErrors = action => {
   }
 };
 
-const logErrorWithConfig = (error, state, actionStack) => {
+const logErrorWithConfig = (error, state, actionStack, possibleDuplicate) => {
   const { meta: { userAgent }, platform: { currentPage } } = state;
 
   errorLog({
@@ -117,6 +127,7 @@ const logErrorWithConfig = (error, state, actionStack) => {
     userAgent,
     reduxInfo: actionStack.toString(),
     requestUrl: urlFromPage(currentPage),
+    possibleDuplicate,
   }, {
     hivemind: config.statsURL,
     log: config.postErrorURL,
