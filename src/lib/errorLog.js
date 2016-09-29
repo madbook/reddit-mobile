@@ -81,7 +81,7 @@ const parseRejection = rejection => {
   // whole object. It will be really verbose in some cases, but much more helpful
   let rejectionReason = `${rejection.reason}`; // convert to string, but linter friendly
   if (rejectionReason === ({}).toString()) {
-    rejectionReason = logSafeJSONStringify(rejectionReason);
+    rejectionReason = logSafeJSONStringify(rejection.reason);
   }
 
   const message = `Rejection: ${rejectionReason}`;
