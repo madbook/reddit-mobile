@@ -30,7 +30,7 @@ export const submit = (thingId, reason) => async (dispatch, getState) => {
       body: { reason, thing_id: thingId, api_type: 'json' },
     });
 
-    dispatch({ type: SUCCESS, message: 'Thanks for reporting!' });
+    dispatch({ type: SUCCESS, message: 'Thanks for letting us know!' });
 
   } catch (e) {
     dispatch({ type: FAILURE });

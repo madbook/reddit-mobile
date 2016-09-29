@@ -34,7 +34,7 @@ export default function(state=DEFAULT, action={}) {
     case reportingActions.SUCCESS: {
       return merge(state, {
         isOpen: true,
-        type: toasterActions.TYPES.SUCCESS,
+        type: toasterActions.TYPES.REPORT_SUCCESS,
         message: action.message,
       });
     }

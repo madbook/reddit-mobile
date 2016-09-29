@@ -1,6 +1,6 @@
 export const TYPES = {
-  SUCCESS: 'SUCCESS',
   ERROR: 'ERROR',
+  REPORT_SUCCESS: 'REPORT_SUCCESS',
 };
 
 export const CLOSE = 'TOASTER__CLOSE';

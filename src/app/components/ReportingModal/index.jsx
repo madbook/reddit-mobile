@@ -40,6 +40,10 @@ class ReportingModal extends React.Component {
     reason: REASONS_ORDER[0],
   }
 
+  static propTypes = {
+    onSubmit: T.func.isRequired,
+  };
+
   render() {
     return (
       <div className='ReportingModalWrapper' onClick={ this.props.onClickOutside }>
@@ -90,10 +94,6 @@ class ReportingModal extends React.Component {
     );
   }
 }
-
-ReportingModal.propTypes = {
-  onSubmit: T.func.isRequired,
-};
 
 const selector = createSelector(
   state => state.modal.props,

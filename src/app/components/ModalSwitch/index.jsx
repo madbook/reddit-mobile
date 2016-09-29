@@ -5,14 +5,14 @@ import { createSelector } from 'reselect';
 import ReportingModal from '../ReportingModal';
 import * as reportingActions from 'app/actions/reporting';
 
-function ModalSwitch(props) {
+const ModalSwitch = props => {
   switch (props.modal.type) {
     case reportingActions.MODAL_TYPE:
       return <ReportingModal { ...props.modal } />;
     default:
       return null;
   }
-}
+};
 
 const mapStateToProps = createSelector(
   state => state.modal,
