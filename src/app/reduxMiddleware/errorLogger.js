@@ -2,6 +2,7 @@ import * as platformActions from '@r/platform/actions';
 import { urlFromPage } from '@r/platform/pageUtils';
 import config from 'config';
 import errorLog from 'lib/errorLog';
+import logSafeJSONStringify from 'lib/logSafeJSONStringify';
 import RingStack from 'lib/RingStack';
 
 import * as accountActions from 'app/actions/accounts';
@@ -145,6 +146,6 @@ class ActionStack {
 
   // string representation of the action stack with most recent actions first.
   toString() {
-    return `Redux Action Stack: ${this.stack.values().map(JSON.stringify).join(', ')}`;
+    return `Redux Action Stack: ${this.stack.values().map(logSafeJSONStringify).join(', ')}`;
   }
 }

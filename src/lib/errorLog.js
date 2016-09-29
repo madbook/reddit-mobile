@@ -2,6 +2,8 @@ import { errors } from '@r/api-client';
 import makeRequest from './makeRequest';
 import config from 'config';
 
+import logSafeJSONStringify from 'lib/logSafeJSONStringify';
+
 const { ResponseError } = errors;
 
 // TODO fix configs so 'server' comes through on the server. process.env.ENV will
@@ -79,7 +81,7 @@ const parseRejection = rejection => {
   // whole object. It will be really verbose in some cases, but much more helpful
   let rejectionReason = `${rejection.reason}`; // convert to string, but linter friendly
   if (rejectionReason === ({}).toString()) {
-    rejectionReason = JSON.stringify(rejection.reason);
+    rejectionReason = logSafeJSONStringify(rejectionReason);
   }
 
   const message = `Rejection: ${rejectionReason}`;
