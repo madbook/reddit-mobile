@@ -64,9 +64,10 @@ export default function errorLogger() {
           // sometimes our catch handler is called twice with the same error object.
           // this isn't really understood but the hypothesis is it has something to do
           // with other .then handlers in the promise chain.
-          // regardless, we set a `.caught` property to true to prevent duplicate logging
-          if (!error.caught) {
-            error.caught = true;
+          // regardless, we set a `._SEEN_BY_REDUX_ERROR_LOGGER` property to
+          // true to prevent duplicate logging
+          if (!error._SEEN_BY_REDUX_ERROR_LOGGER) {
+            error._SEEN_BY_REDUX_ERROR_LOGGER = true;
             logErrorWithConfig(error, store.getState(), actionStack);
           }
         });
