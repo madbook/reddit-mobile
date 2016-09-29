@@ -23,6 +23,8 @@ import * as wikiActions from 'app/actions/wiki';
 export default function errorLogger() {
   const actionStack = new ActionStack(config.reduxActionLogSize, [
     platformActions.SET_PAGE,
+    platformActions.NAVIGATE_TO_URL,
+    platformActions.GOTO_PAGE_INDEX,
     accountActions.FETCHING_ACCOUNT,
     activityActions.FETCHING_ACTIVITIES,
     commentActions.MORE_COMMENTS_FETCHING,
