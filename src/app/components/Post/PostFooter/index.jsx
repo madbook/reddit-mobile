@@ -20,7 +20,7 @@ export default class PostFooter extends React.Component {
     viewComments: T.bool.isRequired,
     onToggleSave: T.func.isRequired,
     onToggleHide: T.func.isRequired,
-    onReport: T.func.isRequired,
+    onReportPost: T.func.isRequired,
     onHide: T.func.isRequired,
     onEdit: T.func.isRequired,
     onDelete: T.func.isRequired,
@@ -101,6 +101,7 @@ export default class PostFooter extends React.Component {
       user,
       onToggleSave,
       onToggleHide,
+      onReportPost,
     } = this.props;
 
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
@@ -134,6 +135,7 @@ export default class PostFooter extends React.Component {
           isLoggedIn={ user && !user.loggedOut }
           onToggleSave={ onToggleSave }
           onToggleHide={ onToggleHide }
+          onReportPost={ onReportPost }
         />
       </footer>
     );

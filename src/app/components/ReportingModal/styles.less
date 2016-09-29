@@ -1,0 +1,88 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.ReportingModalWrapper {
+  z-index: @z-index-modal;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@modalHeight: 360px;
+@titleHeight: 35px;
+@submitHeight: 50px;
+
+.ReportingModal {
+  height: @modalHeight;
+
+  flex-grow: 1;
+  margin: auto 20px;
+  
+  .themeify({
+    background-color: @theme-modal-body-color;
+    border: @theme-border;
+  }, {
+    border: none;   // in day mode, the overlay makes the border unnecessary
+  });
+
+  &__title-bar {
+    text-align: center;
+    height: @titleHeight;
+    line-height: @titleHeight;
+    font-size: 16px;
+
+    .themeify({
+      border-bottom: @theme-alt-border;
+      background-color: @theme-nav-bar-color;
+    });
+  }
+
+  &__options {
+    overflow: auto;
+    height: @modalHeight - @titleHeight - @submitHeight;
+  }
+
+  &__option {
+    padding: 0 18px;
+    height: 35px;
+    line-height: 35px;
+    vertical-align: middle;
+    font-size: 15px;
+
+    .icon {
+      margin-right: 6px;
+      vertical-align: middle;
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+    }
+
+    .icon-check-circled {
+      color: @lime;
+    }
+  }
+
+  &__submit {
+    height: @submitHeight;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__submit-button {
+    height: 30px;
+    margin: auto 15px;
+    line-height: 30px;
+    text-align: center;
+
+    .themeify({
+      color: @theme-button-text-color;
+      background-color: @blue;
+    });
+  }
+
+}

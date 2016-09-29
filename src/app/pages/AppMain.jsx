@@ -18,11 +18,22 @@ import MessageThread from 'app/components/MessageThread';
 import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
 import Register from 'app/components/Register';
-import Report from 'app/components/Report';
 import ErrorPage from 'app/components/ErrorPage';
 import Toaster from 'app/components/Toaster';
+import ModalSwitch from 'app/components/ModalSwitch';
+import DropdownCover from 'app/components/DropdownCover';
 
-const AppMain = ({ statusCode, url, referrer, isToasterOpen }) => {
+const AppMain = props => {
+
+  const {
+    statusCode,
+    url,
+    referrer,
+    isToasterOpen,
+    isModalOpen,
+    showDropdownCover,
+  } = props;
+
   if (statusCode !== 200) {
     return (
       <ErrorPage status={ statusCode } url={ url } referrer={ referrer } />
@@ -74,10 +85,11 @@ const AppMain = ({ statusCode, url, referrer, isToasterOpen }) => {
         <Page url='/message/compose' component={ DirectMessage } />
         <Page url='/message/:mailType' component={ Messages } />
         <Page url='/message/messages/:threadId' component={ MessageThread } />
-        <Page url='/report' component={ Report } />
       </UrlSwitch>
 
+      { showDropdownCover ? <DropdownCover /> : null }
       { isToasterOpen ? <Toaster /> : null }
+      { isModalOpen ? <ModalSwitch /> : null }
   </div>
   );
 };
@@ -85,11 +97,16 @@ const AppMain = ({ statusCode, url, referrer, isToasterOpen }) => {
 const selector = createSelector(
   state => state.platform.currentPage,
   state => state.toaster.isOpen,
-  ({ status, url, referrer }, isToasterOpen) => ({
-    url,
-    referrer,
-    statusCode: status,
+  state => !!state.widgets.tooltip.id,
+  state => !!state.posting.captchaIden,
+  state => !!state.modal.type,
+  (currentPage, isToasterOpen, isTooltipOpen, isCaptchaOpen, isModalOpen) => ({
+    isModalOpen,
     isToasterOpen,
+    showDropdownCover: isTooltipOpen || isCaptchaOpen || isModalOpen,
+    url: currentPage.url,
+    referrer: currentPage.referrer,
+    statusCode: currentPage.status,
   })
 );
 

@@ -14,6 +14,7 @@ export default function CommentDropdown(props) {
     // onEdit,
     onDelete,
     onToggleSave,
+    onReportComment,
   } = props;
 
   const userIsAuthor = commentAuthor === username;
@@ -35,7 +36,7 @@ export default function CommentDropdown(props) {
         ? <DropdownLinkRow href={ `/user/${commentAuthor}` } icon='user-account' text={ `${commentAuthor}'s profile` }/>
         : null }
       { username
-        ? <DropdownLinkRow href='/report' icon='flag' text='Report'/>
+        ? <DropdownRow onClick={ onReportComment } icon='flag' text='Report'/>
         : null }
     </Dropdown>
   );
@@ -50,6 +51,7 @@ CommentDropdown.propTypes = {
   onEdit: T.func,
   onDelete: T.func,
   onToggleSave: T.func,
+  onReportComment: T.func.isRequired,
 };
 
 CommentDropdown.defaultProps = {

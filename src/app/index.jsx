@@ -7,7 +7,6 @@ import { TooltipShutter } from '@r/widgets/tooltip';
 import AppMainPage from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';
 import { AppTopNav } from './components/AppTopNav';
-import DropdownCover from './components/DropdownCover';
 import CookieSync from './side-effect-components/CookieSync';
 import DomModifier from './side-effect-components/DomModifier';
 import LocalStorageSync from './side-effect-components/LocalStorageSync';
@@ -28,7 +27,6 @@ export default class App extends React.Component {
         <DomModifier />
         <SessionRefresher />
         <TooltipShutter />
-        <DropdownCover />
       </div>
     );
   }

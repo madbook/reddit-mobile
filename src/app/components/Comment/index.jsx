@@ -7,6 +7,7 @@ import { models } from '@r/api-client';
 
 import mobilify from 'lib/mobilify';
 import * as commentActions from 'app/actions/comment';
+import * as reportingActions from 'app/actions/reporting';
 import { DEFAULT_COMMENT_REQUEST } from 'app/reducers/moreCommentsRequests';
 import cx from 'lib/classNames';
 import CommentsList from 'app/components/CommentsList';
@@ -100,6 +101,7 @@ function renderTools(props) {
     onToggleEditForm,
     onDeleteComment,
     onToggleSaveComment,
+    onReportComment,
     commentingDisabled,
     votingDisabled,
   } = props;
@@ -125,6 +127,7 @@ function renderTools(props) {
           onEdit={ onToggleEditForm }
           onDelete={ onDeleteComment }
           onToggleSave={ onToggleSaveComment }
+          onReportComment={ onReportComment }
           commentingDisabled={ commentingDisabled }
           votingDisabled={ votingDisabled }
         />
@@ -198,6 +201,7 @@ Comment.propTypes = {
   onDeleteComment: T.func.isRequired,
   onToggleEditForm: T.func.isRequired,
   onToggleSaveComment: T.func.isRequired,
+  onReportComment: T.func.isRequired,
   reportComment: T.func.isRequired,
   // start props passed in via merge selector
   authorType: T.string.isRequired,
@@ -252,9 +256,10 @@ const mapDispatchToProps = (dispatch, { commentId }) => ({
   onToggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
   onDeleteComment: () => dispatch(commentActions.del(commentId)),
   onToggleSaveComment: () => dispatch(commentActions.toggleSave(commentId)),
-  reportComment: reason => dispatch(commentActions.report(commentId, reason)),
+  reportComment: reason => dispatch(reportingActions.report(commentId, reason)),
   onLoadMore: comment => dispatch(commentActions.loadMore(comment)),
   onToggleCollapse: commentCollapsed => dispatch(commentActions.toggleCollapse(commentId, !commentCollapsed)),
+  onReportComment: () => dispatch(reportingActions.report(commentId)),
 });
 
 

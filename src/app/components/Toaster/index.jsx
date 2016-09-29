@@ -11,35 +11,62 @@ import { TYPES } from 'app/actions/toaster';
 import * as toasterActions from 'app/actions/toaster';
 
 const T = React.PropTypes;
+
+const NOOP = () => {};
 const HEIGHT = 80;
+const CLOSE_TIMER = 3000;
+const STIFFNESS = { stiffness: 400 };
 
-function Toaster(props) {
-  const interpolateTo = { bottom: spring(0, { stiffness: 400 }), opacity: spring(1) };
+class Toaster extends React.Component {
+  state = { isShowing: true };
 
-  return (
-    <Motion defaultStyle={{ bottom: -HEIGHT, opacity: 0 }} style={ interpolateTo }>
-      { style =>
-        <div className='Toaster' style={{ height: HEIGHT, ...style }}>
-          { chooseBody(props) }
-        </div>
-      }
-    </Motion>
-  );
+  componentDidMount() {
+    setTimeout(() => this.setState({ isShowing: false }), CLOSE_TIMER);
+  }
+
+  render() {
+    const { isShowing } = this.state;
+
+    const startStyles = isShowing
+      ? { bottom: -HEIGHT, opacity: 0 }
+      : { bottom: 0, opacity: 1 };
+
+    const finishStyles = isShowing
+      ? { bottom: spring(0, STIFFNESS), opacity: spring(1) }
+      : { bottom: spring(-HEIGHT, STIFFNESS), opacity: spring(0) };
+
+    // If not showing, trigger an unmount as the final step of the animation
+    const onRest = isShowing ? NOOP : this.props.onClose;
+
+    return (
+      <Motion defaultStyle={ startStyles } style={ finishStyles } onRest={ onRest }>
+        { style =>
+          <div className='Toaster' style={{ height: HEIGHT, ...style }}>
+            { chooseBody(this.props) }
+          </div>
+        }
+      </Motion>
+    );
+  }
 }
 
 function chooseBody(props) {
   switch (props.type) {
     case TYPES.ERROR:
-      return renderError(props);
+      return renderDefaultBody(props, 'error', 'moose');
+    case TYPES.SUCCESS:
+      return renderDefaultBody(props, 'success', 'snoo');
     default:
       return null;
   }
 }
 
-function renderError(props) {
+function renderDefaultBody(props, modifier, icon) {
   return (
     <div className='Toaster__content'>
-      <div className='Toaster__icon-box error'><div className='icon icon-moose' /></div>
+      <div className={ `Toaster__icon-box ${modifier}` }>
+        <div className={ `icon icon-${icon}` } />
+      </div>
       <div className='Toaster__message'>{ props.message }</div>
       <div className='Toaster__close icon icon-nav-close' onClick={ props.onClose } />
     </div>

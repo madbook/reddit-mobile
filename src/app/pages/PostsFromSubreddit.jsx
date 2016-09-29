@@ -19,17 +19,19 @@ const mapStateToProps = createSelector(
   state => state.postsLists,
   state => state.subreddits,
   state => state.preferences,
-  (pageProps, postsLists, subreddits, preferences) => {
+  state => state.modal.id,
+  (pageProps, postsLists, subreddits, preferences, modalId) => {
     const postsListParams = PostsFromSubredditHandler.pageParamsToSubredditPostsParams(pageProps);
     const postsListId = paramsToPostsListsId(postsListParams);
     const { subredditName } = postsListParams;
 
     return {
       postsListId,
-      postsList: postsLists[postsListId],
-      subredditName,
-      subreddit: subreddits[subredditName],
       preferences,
+      subredditName,
+      modalId,
+      postsList: postsLists[postsListId],
+      subreddit: subreddits[subredditName],
     };
   },
 );
@@ -44,7 +46,7 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
     preferences,
   } = props;
 
-  const renderSubnav = !!postsList && !postsList.loading;
+  const showSubnav = !!postsList && !postsList.loading;
   const forFakeSubreddit = isFakeSubreddit(subredditName);
   const subnavLink = forFakeSubreddit ? null : {
     href: `/r/${subredditName}/about`,
@@ -80,14 +82,9 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
 
   return (
     <div className={ className }>
-      { !forFakeSubreddit && <CommunityHeader subredditName={ subredditName } /> }
-      { renderSubnav &&
-        <SubNav
-          rightLink={ subnavLink }
-          showWithoutUser={ true }
-        >
-          <SortAndTimeSelector />
-        </SubNav> }
+      { !forFakeSubreddit ? <CommunityHeader subredditName={ subredditName } /> : null }
+      { showSubnav ? renderSubNav(subnavLink) : null }
+
       <PostsList
         postsListId={ postsListId }
         subredditIsNSFW={ !!subreddit && subreddit.over18 }
@@ -95,3 +92,11 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
     </div>
   );
 });
+
+function renderSubNav(subnavLink) {
+  return (
+    <SubNav rightLink={ subnavLink } showWithoutUser={ true }>
+      <SortAndTimeSelector />
+    </SubNav>
+  );
+}

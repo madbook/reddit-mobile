@@ -56,12 +56,6 @@ export const del = id => async (dispatch, getState) => {
   dispatch(deleted(newComment));
 };
 
-export const REPORTING = 'REPORTING';
-export const REPORTED = 'REPORTED';
-export const report = (id, reason) => async (dispatch, getState) => {
-  console.log(id, reason, getState());
-};
-
 export const MORE_COMMENTS_FETCHING = 'COMMENTS__MORE_FETCHING';
 export const MORE_COMMENTS_RECEIVED = 'COMMENTS__MORE_RECEIVED';
 export const MORE_COMMENTS_FAILURE = 'COMMENTS__MORE_FAILURE';

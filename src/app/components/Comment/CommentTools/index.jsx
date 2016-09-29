@@ -25,6 +25,7 @@ export default function CommentTools(props) {
     onEdit,
     onDelete,
     onToggleSave,
+    onReportComment,
   } = props;
 
   const tooltipId = `comment-tooltip-${id}`;
@@ -36,7 +37,7 @@ export default function CommentTools(props) {
       { renderDivider(props) }
       { renderVote(id, score, scoreHidden, votingDisabled, voteDirection) }
       { renderDropdown(tooltipId, permalinkUrl, commentAuthor, username, saved,
-                       onEdit, onDelete, onToggleSave) }
+                       onEdit, onDelete, onToggleSave, onReportComment) }
     </div>
   );
 }
@@ -53,6 +54,7 @@ CommentTools.propTypes = {
   onEdit: T.func,
   onDelete: T.func,
   onToggleSave: T.func,
+  onReportComment: T.func.isRequired,
 };
 
 CommentTools.defaultProps = {
@@ -111,6 +113,7 @@ const renderDropdown = (
   onEdit,
   onDelete,
   onToggleSave,
+  onReportComment,
 ) => (
   <CommentDropdown
     id={ tooltipId }
@@ -121,5 +124,6 @@ const renderDropdown = (
     onEdit={ onEdit }
     onDelete={ onDelete }
     onToggleSave={ onToggleSave }
+    onReportComment={ onReportComment }
   />
 );

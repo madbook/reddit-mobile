@@ -7,6 +7,7 @@ import { models } from '@r/api-client';
 const { PostModel } = models;
 
 import * as postActions from 'app/actions/posts';
+import * as reportingActions from 'app/actions/reporting';
 
 import {
   isPostDomainExternal,
@@ -42,6 +43,7 @@ Post.propTypes = {
   z: T.number,
   onToggleSavePost: T.func,
   onToggleHidePost: T.func,
+  onReportPost: T.func.isRequired,
 };
 
 Post.defaultProps = {
@@ -79,6 +81,7 @@ export function Post(props) {
     userActivityPage,
     onToggleSavePost,
     onToggleHidePost,
+    onReportPost,
   } = props;
 
   let thumbnailOrNil;
@@ -152,41 +155,37 @@ export function Post(props) {
         hideDownvote={ userActivityPage || post.archived }
         onToggleSave={ onToggleSavePost }
         onToggleHide={ onToggleHidePost }
+        onReportPost={ onReportPost }
       />
     </article>
   );
 }
 
-const postIdSelector = (_, props) => props.postId;
-const compactSeletor = (state, props) => props.forceCompact || state.compact;
-const singleSelector = (_, props) => props.single;
-const postModelSelector = (state, props) => state.posts[props.postId];
-const expandedSelector = (state, props) => !!state.expandedPosts[props.postId];
-const unblurredSelector = (state, props) => !!state.unblurredPosts[props.postId];
-const userSelector = state => state.user;
-const combineSelectors = (postId, compact, expanded, unblurred, single, post, user) => ({
-  postId, compact, expanded, unblurred, single, post, user,
-});
-
-const makeConnectedPostSelector = () => {
-  return createSelector(
-    [
-      postIdSelector,
-      compactSeletor,
-      expandedSelector,
-      unblurredSelector,
-      singleSelector,
-      postModelSelector,
-      userSelector,
-    ],
-    combineSelectors);
-};
+const selector = createSelector(
+  state => state.user,
+  (_, props) => props.postId,
+  (_, props) => props.single,
+  (state, props) => props.forceCompact || state.compact,
+  (state, props) => state.posts[props.postId],
+  (state, props) => !!state.expandedPosts[props.postId],
+  (state, props) => !!state.unblurredPosts[props.postId],
+  (user, postId, single, compact, post, expanded, unblurred) => ({
+    user,
+    postId,
+    single,
+    compact,
+    post,
+    expanded,
+    unblurred,
+  }),
+);
 
 const mapDispatchToProps = (dispatch, { postId }) => ({
   toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
   toggleShowNSFW: () => dispatch(postActions.toggleNSFWBlur(postId)),
   onToggleSavePost: () => dispatch(postActions.toggleSavePost(postId)),
   onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
+  onReportPost: () => dispatch(reportingActions.report(postId)),
 });
 
-export default connect(makeConnectedPostSelector, mapDispatchToProps)(Post);
+export default connect(selector, mapDispatchToProps)(Post);

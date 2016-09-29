@@ -27,11 +27,13 @@ Dropdown.propTypes = {
 };
 
 export function DropdownRow(props) {
+  const className = cx(`DropdownRow__icon icon icon-${props.icon}`, {
+    'm-selected': props.isSelected,
+  });
+
   return (
     <div className='DropdownRow' onClick={ props.onClick }>
-      <div className={ cx(`DropdownRow__icon icon icon-${props.icon}`, {
-        'm-selected': props.isSelected,
-      }) }/>
+      <div className={ className } />
       <div className='DropdownRow__text'>{ props.text }</div>
     </div>
   );

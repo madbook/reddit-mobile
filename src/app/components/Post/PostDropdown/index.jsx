@@ -14,6 +14,7 @@ export default function PostDropdown(props) {
     isSaved,
     onToggleSave,
     onToggleHide,
+    onReportPost,
   } = props;
 
   return (
@@ -23,7 +24,7 @@ export default function PostDropdown(props) {
       <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>
       { isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null }
       { isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null }
-      { isLoggedIn ? <DropdownLinkRow href='/report' icon='flag' text='Report'/> : null }
+      { isLoggedIn ? <DropdownRow onClick={ onReportPost } icon='flag' text='Report'/> : null }
     </Dropdown>
   );
 }
@@ -37,6 +38,7 @@ PostDropdown.propTypes = {
   isLoggedIn: T.bool,
   onToggleSave: T.func,
   onToggleHide: T.func,
+  onReportPost: T.func.isRequired,
 };
 
 PostDropdown.defaultProps = {

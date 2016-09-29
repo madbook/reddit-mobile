@@ -5,6 +5,10 @@ import './styles.less';
 
 const T = React.PropTypes;
 
+// TODO: this was incorrectly named, and should be renamed to reflect the fact
+// that is is a full page and has a url associated with it. Modals are
+// components designed not to interrupt the main workflow, but this IS the
+// main workflow so it's not a modal.
 const Modal = props => (
   <div className='Modal'>
     <div className='Modal__menubar'>

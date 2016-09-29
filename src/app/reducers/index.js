@@ -17,6 +17,7 @@ import loid from './loid';
 import mail from './mail';
 import meta from './meta';
 import messages from './messages';
+import modal from './modal';
 import moreCommentsRequests from './moreCommentsRequests';
 import overlay from './overlay';
 import posting from './posting';
@@ -60,6 +61,7 @@ export default {
   mail,
   meta,
   messages,
+  modal,
   moreCommentsRequests,
   overlay,
   posting,

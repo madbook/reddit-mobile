@@ -13,7 +13,7 @@ import map from 'lodash/map';
 
 const T = React.PropTypes;
 
-export const PostsList = (props) => {
+export const PostsList = props => {
   const { loading, postRecords, nextUrl, prevUrl, shouldPage } = props;
   const shouldRenderPagination = !loading && shouldPage && postRecords.length;
 
@@ -47,7 +47,7 @@ PostsList.defaultProps = {
   shouldPage: true,
 };
 
-const renderPostsList = (props) => {
+const renderPostsList = props => {
   const { postRecords, ad, adId, forceCompact, subredditIsNSFW } = props;
   const records = ad ? recordsWithAd(postRecords, ad) : postRecords;
 

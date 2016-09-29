@@ -4,6 +4,7 @@ import * as platformActions from '@r/platform/actions';
 import toaster, { GENERIC_ERROR } from './toaster';
 import * as postingActions from 'app/actions/posting';
 import * as toasterActions from 'app/actions/toaster';
+import * as reportingActions from 'app/actions/reporting';
 
 createTest({ reducers: { toaster } }, ({ getStore, expect }) => {
   describe('toaster: ', () => {
@@ -30,6 +31,19 @@ createTest({ reducers: { toaster } }, ({ getStore, expect }) => {
         message: 'foo',
       });
     });
+
+    it('should show a reporting api failure', () => {
+      const { store } = getStore();
+      store.dispatch({ type: reportingActions.FAILURE });
+
+      const { toaster } = store.getState();
+      expect(toaster).to.eql({
+        isOpen: true,
+        type: toasterActions.TYPES.ERROR,
+        message: GENERIC_ERROR,
+      });
+    });
+
 
     it('should show a generic exception', () => {
       const { store } = getStore();
