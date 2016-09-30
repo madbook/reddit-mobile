@@ -1,21 +1,41 @@
 import './Comment.less';
 import React from 'react';
+import { Anchor } from '@r/platform/components';
 
 import { short } from 'lib/formatDifference';
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const T = React.PropTypes;
 
+const SEPARATOR = '\u2022';
+
 export default function MessagesComment(props) {
   const { comment } = props;
 
   return (
     <div className='MessagesComment'>
-      <div className='MessagesComment__title'>
+      <Anchor
+        className='MessagesComment__title'
+        href={ comment.cleanPermalink }
+      >
         { comment.linkTitle }
-      </div>
+      </Anchor>
       <div className='MessagesComment__metaData'>
-        { `${ comment.author } \u2022 r/${ comment.subreddit } \u2022 ${ short(comment.createdUTC) }` }
+        <Anchor
+          className='MessagesComment__metaDataLink'
+          href={ `/user/${comment.author}` }
+        >
+          { comment.author }
+        </Anchor>
+        { SEPARATOR }
+        <Anchor
+          className='MessagesComment__metaDataLink'
+          href={ `/r/${comment.subreddit}` }
+        >
+          { comment.subreddit }
+        </Anchor>
+        { SEPARATOR }
+        { short(comment.createdUTC) }
       </div>
       <RedditLinkHijacker>
         <div

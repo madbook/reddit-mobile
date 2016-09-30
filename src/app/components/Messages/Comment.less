@@ -10,9 +10,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    .themeify({
-      color: @theme-body-text-color;
-    });
+    &, &:hover, &:visited {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-body-text-color;
+      });
+    }
   }
 
   &__metaData {
@@ -23,6 +27,16 @@
     .themeify({
       color: @theme-meta-text-color;
     });
+  }
+
+  &__metaDataLink {
+    &, &:hover, &:visited {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+    }
   }
 
   &__body {

@@ -17,10 +17,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
 
-    .themeify({
-      color: @theme-body-text-color;
-    });
+  &__titleLink {
+    &, &:visited, &:active {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-body-text-color;
+      });
+    }
   }
 
   &__subtitle {
@@ -30,6 +36,16 @@
     .themeify({
       color: @theme-meta-text-color;
     });
+  }
+
+  &__authorLink {
+    &, &:visited, &:active {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+    }
   }
 
   &__link {
