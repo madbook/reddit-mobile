@@ -2,13 +2,12 @@ import { makeStateArchiver } from '@r/redux-state-archiver';
 import { themeClass } from 'server/templates/themeClass';
 import { themes, OVERLAY_MENU_VISIBLE_CSS_CLASS } from 'app/constants';
 import { stopScroll } from 'lib/stopScroll';
-import { OVERLAY_MENU_PARAMETER } from 'app/actions/overlayMenu';
 
 const stopScrollForMenu = stopScroll(OVERLAY_MENU_VISIBLE_CSS_CLASS);
 
 const themeSelector = (state) => state.theme;
 const overlayOpenSelector = state => {
-  const overlayOpen = !!state.platform.currentPage.queryParams[OVERLAY_MENU_PARAMETER];
+  const overlayOpen = !!state.overlay;
   const dropdownOpen = !!state.widgets.tooltip.id;
   return overlayOpen || dropdownOpen;
 };

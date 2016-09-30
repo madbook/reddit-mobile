@@ -9,7 +9,7 @@ export class PostSubmitHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (!state.session.isValid) {
-      dispatch(platformActions.setPage('/login'));
+      dispatch(platformActions.setPage('/register'));
       return;
     }
 
@@ -23,7 +23,7 @@ export class PostSubmitCommunityHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (!state.session.isValid) {
-      dispatch(platformActions.setPage('/login'));
+      dispatch(platformActions.setPage('/register'));
       return;
     }
 

@@ -4,30 +4,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { BackAnchor } from '@r/platform/components';
+import * as overlayActions from 'app/actions/overlay';
 
 import OverlayMenu from 'app/components/OverlayMenu';
 import SearchBar from './SearchBar';
 
-import {
-  urlWithSearchBarToggled,
-} from 'app/actions/overlayMenu';
 
 export const SearchBarOverlay = (props) => {
-  const { pageData } = props;
-  const { url, queryParams, urlParams } = pageData;
+  const { pageData, closeOverlay } = props;
+  const { queryParams, urlParams } = pageData;
   const { subredditName } = urlParams;
   const { q: initialQuery } = queryParams;
 
   return (
     <OverlayMenu fullscreen={ true }>
       <div className='SearchBarOverlay__searchArea'>
-        <BackAnchor
+        <div
           className='SearchBarOverlay__close'
-          href={ urlWithSearchBarToggled(url, queryParams) }
+          onClick={ closeOverlay }
         >
           <span className='icon icon-nav-arrowback' />
-        </BackAnchor>
+        </div>
         <div className='SearchBarOverlay__barContainer'>
           <SearchBar
             subreddit={ subredditName }
@@ -44,4 +41,7 @@ export default connect(
     state => state.platform.currentPage,
     (pageData) => ({ pageData }),
   ),
+  dispatch => ({
+    closeOverlay() { dispatch(overlayActions.closeOverlay()); },
+  }),
 )(SearchBarOverlay);

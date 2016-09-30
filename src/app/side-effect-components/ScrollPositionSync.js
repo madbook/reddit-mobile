@@ -2,10 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import raf from 'raf';
-import omit from 'lodash/omit';
 import { urlFromPage } from '@r/platform/pageUtils';
 
-import { OVERLAY_MENU_PARAMETER } from 'app/actions/overlayMenu';
 import * as scrollPositionActions from 'app/actions/scrollPosition';
 
 class _ScrollPositionSync extends React.Component {
@@ -55,16 +53,9 @@ class _ScrollPositionSync extends React.Component {
   render() { return null; } // we don't render anything;
 }
 
-// We want to ignore urls that are for overlay menus, those render above content
-// so they shouldn't have their own scroll position state.
-const scrollUrl = page => {
-  const { url, hashParams, queryParams } = page;
-  return urlFromPage({
-    url,
-    hashParams,
-    queryParams: omit(queryParams, [OVERLAY_MENU_PARAMETER]),
-  });
-};
+// We need to generate a hash key for the scoll cache,
+// use the pages full url with queryparams, hashpaams, etc
+const scrollUrl = page => urlFromPage(page);
 
 const mapStateToProps = createSelector(
   state => scrollUrl(state.platform.currentPage),

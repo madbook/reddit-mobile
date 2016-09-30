@@ -1,6 +1,5 @@
 import { collections, models, errors } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { OVERLAY_MENU_PARAMETER, COMMUNITY_MENU } from './overlayMenu';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const { SubscribedSubreddits } = collections;
@@ -24,15 +23,8 @@ export const fetchFailed = error => ({
   error,
 });
 
-export const fetchSubscribedSubreddits = (onlyIfOverlay=false) => async (dispatch, getState) => {
+export const fetchSubscribedSubreddits = () => async (dispatch, getState) => {
   const state = getState();
-
-  if (onlyIfOverlay) { // only fetch if we're rendering the overlay
-    const { queryParams } = state.platform.currentPage;
-    if (queryParams[OVERLAY_MENU_PARAMETER] !== COMMUNITY_MENU) {
-      return;
-    }
-  }
 
   const { subscribedSubreddits } = state;
   if (subscribedSubreddits.fetching) { return; }

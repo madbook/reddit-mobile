@@ -18,6 +18,7 @@ import mail from './mail';
 import meta from './meta';
 import messages from './messages';
 import moreCommentsRequests from './moreCommentsRequests';
+import overlay from './overlay';
 import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
@@ -60,6 +61,7 @@ export default {
   meta,
   messages,
   moreCommentsRequests,
+  overlay,
   posting,
   posts,
   postsLists,

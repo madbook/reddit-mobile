@@ -3,7 +3,7 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as overlayMenuActions from 'app/actions/overlayMenu';
+import * as overlayActions from 'app/actions/overlay';
 import cx from 'lib/classNames';
 
 const T = React.PropTypes;
@@ -28,7 +28,7 @@ OverlayMenu.propTypes = {
 };
 
 const mapDispatchProps = (dispatch) => ({
-  closeOverlayMenu: () => dispatch(overlayMenuActions.closeOverlayMenu()),
+  closeOverlayMenu: () => dispatch(overlayActions.closeOverlay()),
 });
 
 export default connect(null, mapDispatchProps)(OverlayMenu);

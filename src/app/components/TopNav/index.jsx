@@ -3,25 +3,20 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor, BackAnchor } from '@r/platform/components';
+import { Anchor } from '@r/platform/components';
+import { METHODS } from '@r/platform/router';
+import * as platformActions from '@r/platform/actions';
+
 import cx from 'lib/classNames';
 
-import {
-  OVERLAY_MENU_PARAMETER,
-  urlWithPostSubmitMenuToggled,
-  urlWithCommunityMenuToggled,
-  urlWithSearchBarToggled,
-  urlWithSettingsMenuToggled,
-  COMMUNITY_MENU,
-  SETTINGS_MENU,
-  POST_SUBMIT,
-} from 'app/actions/overlayMenu';
+import * as overlayActions from 'app/actions/overlay';
+import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
 
 import Logo from 'app/components/Logo';
 import SnooIcon from 'app/components/SnooIcon';
 
-export const TopNav = (props) => {
-  const { assetPath, overlayMenu, url, queryParams, isLoggedIn } = props;
+export const TopNav = props => {
+  const { assetPath, overlay } = props;
 
   // NOTE: this isn't working (no user in props)
   let notificationsCount;
@@ -33,9 +28,9 @@ export const TopNav = (props) => {
     );
   }
 
-  const settingsOpen = overlayMenu === SETTINGS_MENU;
-  const communityMenuOpen = overlayMenu === COMMUNITY_MENU;
-  const submitPostOpen = overlayMenu === POST_SUBMIT;
+  const settingsOpen = overlay === overlayActions.SETTINGS_MENU;
+  const communityMenuOpen = overlay === overlayActions.COMMUNITY_MENU;
+  const submitPostOpen = overlay === overlayActions.POST_SUBMIT;
 
   const sideNavIcon = cx('icon icon-menu icon-large', { blue: settingsOpen });
   const communityMenuIcon = cx('icon icon-nav-arrowdown', { blue: communityMenuOpen });
@@ -44,8 +39,12 @@ export const TopNav = (props) => {
     'icon-nav-close': submitPostOpen,
   });
 
-  const editIconUrl = isLoggedIn ?
-    urlWithPostSubmitMenuToggled(url, queryParams) : '/login';
+  const {
+    toggleCommunityMenu,
+    togglePostSubmit,
+    toggleSearchBar,
+    toggleSettingsMenu,
+  } = props;
 
   return (
     <nav className={ `TopNav${settingsOpen ? ' opened' : ''}` }>
@@ -57,9 +56,9 @@ export const TopNav = (props) => {
           <SnooIcon />
         </Anchor>
         <h1 className='TopNav-text TopNav-padding'>
-          <BackAnchor
+          <div
             className='TopNav-text-community-menu-button TopNav-text-vcentering'
-            href={ urlWithCommunityMenuToggled(url, queryParams) }
+            onClick={ toggleCommunityMenu }
           >
             <div className='TopNav-text-vcentering'>
               <Logo assetPath={ assetPath ? assetPath : '' } />
@@ -67,43 +66,70 @@ export const TopNav = (props) => {
             <div className='MobileButton community-button'>
               <span className={ communityMenuIcon } />
             </div>
-          </BackAnchor>
+          </div>
         </h1>
       </div>
       <div className='TopNav-padding TopNav-right' key='topnav-actions'>
-        <BackAnchor
+        <div
           className='MobileButton TopNav-floaty'
-          href={ editIconUrl }
+          onClick={ togglePostSubmit }
         >
           <span className={ postSubmitMenuIcon } />
-        </BackAnchor>
-        <BackAnchor
+        </div>
+        <div
           className='MobileButton TopNav-floaty'
-          href={ urlWithSearchBarToggled(url, queryParams) }
+          onClick={ toggleSearchBar }
         >
           <span className='icon icon-search icon-large' />
-        </BackAnchor>
-        <BackAnchor
+        </div>
+        <div
           className='MobileButton TopNav-floaty'
-          href={ urlWithSettingsMenuToggled(url, queryParams) }
+          onClick={ toggleSettingsMenu }
         >
           <span className={ sideNavIcon }></span>
           { notificationsCount }
-        </BackAnchor>
+        </div>
       </div>
     </nav>
   );
 };
 
 const mapStateToProps = createSelector(
-  state => state.platform.currentPage,
+  state => state.overlay,
   state => state.session.isValid,
-  (pageParams, isLoggedIn) => {
-    const { url, queryParams } = pageParams;
-    const overlayMenu = queryParams[OVERLAY_MENU_PARAMETER];
-
-    return { overlayMenu, url, queryParams, isLoggedIn };
+  (overlay, isLoggedIn) => {
+    return { overlay, isLoggedIn };
   },
 );
 
-export default connect(mapStateToProps)(TopNav);
+const mapDispatchProps = dispatch => ({
+  toggleCommunityMenu: () => {
+    // start fetching subscription list if we haven't already
+    // it's safe to do this all the time because it's cached
+    dispatch(subscribedSubredditsActions.fetchSubscribedSubreddits());
+    dispatch(overlayActions.toggleCommunityMenu());
+  },
+
+  togglePostSubmit: isLoggedIn => {
+    if (isLoggedIn) {
+      dispatch(overlayActions.togglePostSubmit());
+    } else {
+      dispatch(platformActions.navigateToUrl(METHODS.GET, '/register'));
+    }
+  },
+  toggleSearchBar: () => { dispatch(overlayActions.toggleSearchBar()); },
+  toggleSettingsMenu: () => { dispatch(overlayActions.toggleSettingsMenu()); },
+});
+
+const mergeProps = (stateProps, dispatchProps) => {
+  const { isLoggedIn } = stateProps;
+  const { togglePostSubmit } = dispatchProps;
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    togglePostSubmit: () => { togglePostSubmit(isLoggedIn); },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchProps, mergeProps)(TopNav);
