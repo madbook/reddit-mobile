@@ -56,15 +56,18 @@ export default function gifToHTML5Sources(url) {
   }
 
   if (urlRoot === 'giphy.com' && _GIF_EXTENSION.test(url)) {
+    // convert to https (if using http)
+    const giphyURL = url.replace(/^http:\/\//, 'https://');
     return {
-      mp4: url.replace(_GIF_EXTENSION, '.mp4'),
-      poster: url.replace(_GIF_EXTENSION, '_s.gif'),
+      mp4: giphyURL.replace(_GIF_EXTENSION, '.mp4'),
+      poster: giphyURL.replace(_GIF_EXTENSION, '_s.gif'),
     };
   }
 
   // If it's imgur, make a gifv link
   if (urlRoot === 'imgur.com') {
-    let imgurURL = url;
+    // convert to https (if using http)
+    let imgurURL = url.replace(/^http:\/\//, 'https://');
 
     // strip query params
     imgurURL = imgurURL.replace(_IMGUR_GIFV_QUERY_PARAMS, '.gifv');
