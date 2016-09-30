@@ -117,6 +117,7 @@ class Login extends React.Component {
             type={ passwordFieldType }
             placeholder='Password'
             showTopBorder={ false }
+            shouldAutocomplete={ false }
             error={ error.password }
             onChange={ this.updatePassword }
             value={ password }

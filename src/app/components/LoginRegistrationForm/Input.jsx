@@ -6,7 +6,18 @@ import cx from 'lib/classNames';
 const T = React.PropTypes;
 
 function LoginInput(props) {
-  const { showTopBorder, name, type, placeholder, error, onChange, value, children } = props;
+  const {
+    showTopBorder,
+    name,
+    type,
+    placeholder,
+    error,
+    onChange,
+    value,
+    children,
+    shouldAutocomplete,
+  } = props;
+
   const inputClasses = cx('LoginInput__input', {
     'error': !!error,
     'show-top': showTopBorder,
@@ -25,6 +36,7 @@ function LoginInput(props) {
           placeholder={ placeholder }
           type={ type }
           value={ value }
+          autoComplete={ shouldAutocomplete ? null : 'off' }
         />
         { children }
       </div>
@@ -41,9 +53,11 @@ LoginInput.propTypes = {
   showTopBorder: T.bool,
   type: T.string,
   value: T.string.isRequired,
+  shouldAutocomplete: T.bool,
 };
 
 LoginInput.defaultProps = {
+  shouldAutocomplete: true,
   showTopBorder: false,
   type: 'text',
 };

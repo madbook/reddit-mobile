@@ -173,6 +173,7 @@ class Register extends React.Component {
             type='password'
             placeholder='Choose a unique password'
             showTopBorder={ false }
+            shouldAutocomplete={ false }
             error={ error.password }
             onChange={ this.updatePassword }
             value={ password }
