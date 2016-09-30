@@ -25,6 +25,7 @@ const numCommunitiesText = (subscriptions, loading) => {
 
 const renderSubscriptions = (subscriptions, loading, theme) => (
   <ExpandoRow
+    autoExpanded={ true }
     key='communities-row'
     icon='icon-settings'
     text='Subscribed'

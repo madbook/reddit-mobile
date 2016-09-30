@@ -123,13 +123,18 @@ class ExpandoRow extends React.Component {
   static propTypes = {
     ...BaseRowProps,
     subtext: T.string,
+    autoExpanded: T.bool,
+  };
+
+  static defaultProps = {
+    autoExpanded: false,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      expanded: false,
+      expanded: props.autoExpanded,
     };
 
     this._onClick = this._onClick.bind(this);
