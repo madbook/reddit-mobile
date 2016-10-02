@@ -9,14 +9,16 @@ const T = React.PropTypes;
 
 export function Dropdown(props) {
   return (
-    <Tooltip
-      id={ props.id }
-      alignment={ Tooltip.ALIGN.BELOW }
-      offset={ 8 }
-      className='Dropdown'
-    >
-      { props.children }
-    </Tooltip>
+    <div className='DropdownWrapper'>
+      <Tooltip
+        id={ props.id }
+        alignment={ Tooltip.ALIGN.BELOW }
+        offset={ 8 }
+        className='Dropdown'
+      >
+        { props.children }
+      </Tooltip>
+    </div>
   );
 }
 
