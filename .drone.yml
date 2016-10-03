@@ -28,4 +28,4 @@ notify:
   slack:
     webhook_url: $$CI_SLACK_WEBHOOK_URL
     repo: reddit/reddit-mobile
-    channel: frontend-platform
+    channel: mobile-web
