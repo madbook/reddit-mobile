@@ -39,10 +39,23 @@ export default function errorLog(details={}, errorEndpoints={}, options={ SHOULD
       // event listeners in `src/Client` can prevent errors from being
       // logged in the chrome console twice.
       const rethrownThing = error || rejection;
-      rethrownThing._SEEN_BY_ERROR_LOG = true;
-      setTimeout(() => {
-        throw rethrownThing;
-      });
+      try {
+        rethrownThing._SEEN_BY_ERROR_LOG = true;
+        setTimeout(() => {
+          throw rethrownThing;
+        });
+      } catch (e) {
+        // We probably weren't able to assign `_SEEN_BY_ERROR_LOG`, which
+        // we rely on to prevent logging errors forever in a loop.
+        // Fallback to console.error (which has an expandable stack trace, but
+        // it's not as good as the default ones)
+        if (console.error) {
+          console.error(parsedDetails.message);
+        } else {
+          // ultra-fallback
+          console.log(parsedDetails.message, parsedDetails.stack);
+        }
+      }
     }
   } else {
     console.log(formatLogJSON(logJSON));
