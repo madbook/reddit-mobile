@@ -69,7 +69,7 @@ export default function errorLogger() {
           // with other .then handlers in the promise chain.
           // regardless, we set a `._SEEN_BY_REDUX_ERROR_LOGGER` property to
           // true to prevent duplicate logging
-          let possibleDuplicate = undefined;
+          let possibleDuplicate;
           if (!error._SEEN_BY_REDUX_ERROR_LOGGER) {
             try {
               error._SEEN_BY_REDUX_ERROR_LOGGER = true;
