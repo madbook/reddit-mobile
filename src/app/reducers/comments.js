@@ -72,6 +72,26 @@ export default function(state=DEFAULT, action={}) {
       return mergeUpdatedModel(state, action, { restrictType: COMMENT });
     }
 
+    case commentActions.UPDATED_BODY: {
+      let { model } = action;
+      const currentComment = state[model.uuid];
+
+      // When we update the body text of a comment, we don't get the replies
+      // back. This means we have to manually copy our current copy's replies
+      // field, otherwise the comment tree below the updated comment will vanish.
+      if (currentComment && currentComment.replies.length && !model.replies.length) {
+        model = model.set({
+          replies: currentComment.replies,
+          loadMoreIds: currentComment.loadMoreIds,
+          loadMore: currentComment.loadMore,
+        });
+      }
+
+      return merge(state, {
+        [model.uuid]: model,
+      });
+    }
+
     default: return state;
   }
 }

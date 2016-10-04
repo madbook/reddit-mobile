@@ -1,9 +1,12 @@
 import merge from '@r/platform/merge';
 import * as platformActions from '@r/platform/actions';
 
+import * as commentActions from 'app/actions/comment';
 import * as toasterActions from 'app/actions/toaster';
+import * as postActions from 'app/actions/posts';
 import * as postingActions from 'app/actions/posting';
 import * as reportingActions from 'app/actions/reporting';
+
 
 const DEFAULT = {
   isOpen: false,
@@ -15,6 +18,8 @@ export const GENERIC_ERROR = 'Something went wrong.';
 
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
+    case commentActions.FAILED_UPDATE_BODY:
+    case postActions.FAILED_UPDATE_SELF_TEXT:
     case postingActions.VALIDATION_FAILURE:
     case reportingActions.FAILURE:
     case postingActions.FAILURE: {

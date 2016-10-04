@@ -2,11 +2,56 @@ import { endpoints, models, errors } from '@r/api-client';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
-const { SavedEndpoint, CommentsEndpoint } = endpoints;
+const { SavedEndpoint, CommentsEndpoint, EditUserTextEndpoint } = endpoints;
+const { ResponseError, ValidationError } = errors;
 
 
-export const TOGGLE_EDIT_FORM = 'COMMENT__TOGGLE_EDIT_FORM';
-export const toggleEditForm = id => ({ type: TOGGLE_EDIT_FORM, id });
+export const TOGGLE_EDIT = 'COMMENT__TOGGLE_EDIT_FORM';
+export const toggleEdit = commentId => ({
+  type: TOGGLE_EDIT,
+  thingId: commentId,
+});
+
+export const UPDATING_BODY = 'COMMENT__UPDATING_BODY';
+export const updatingBody = commentId => ({
+  type: UPDATING_BODY,
+  thingId: commentId,
+});
+
+export const UPDATED_BODY = 'COMMENT__UPDATED_BODY';
+export const updatedBody = comment => ({
+  type: UPDATED_BODY,
+  model: comment,
+});
+
+export const FAILED_UPDATE_BODY = 'COMMENT__FAILED_UPDATE_BODY';
+export const failedUpdateBody = (commentId, error) => ({
+  type: FAILED_UPDATE_BODY,
+  thingId: commentId,
+  error,
+  message: 'Sorry, something went wrong with updating your comment',
+});
+
+export const updateBody = (commentId, newBodyText) => async (dispatch, getState) => {
+  dispatch(updatingBody(commentId));
+
+  const apiOptions = apiOptionsFromState(getState());
+
+  try {
+    const comment = await EditUserTextEndpoint.post(apiOptions, {
+      thingId: commentId,
+      text: newBodyText,
+    });
+
+    dispatch(updatedBody(comment));
+  } catch (e) {
+    if (e instanceof ValidationError || e instanceof ResponseError) {
+      dispatch(failedUpdateBody(commentId, e));
+    } else {
+      throw e;
+    }
+  }
+};
 
 export const TOGGLE_COLLAPSE = 'COMMENT__TOGGLE_COLLAPSE';
 
@@ -105,7 +150,7 @@ export const loadMore = comment => {
       ));
 
     } catch (e) {
-      if (e instanceof errors.ResponseError) {
+      if (e instanceof ResponseError) {
         dispatch(failure(e));
       } else {
         throw e;

@@ -18,12 +18,13 @@ export default class PostFooter extends React.Component {
     compact: T.bool.isRequired,
     post: T.instanceOf(PostModel),
     viewComments: T.bool.isRequired,
-    onToggleSave: T.func.isRequired,
+    onToggleEdit: T.func.isRequired,
     onToggleHide: T.func.isRequired,
     onReportPost: T.func.isRequired,
     onHide: T.func.isRequired,
     onEdit: T.func.isRequired,
     onDelete: T.func.isRequired,
+    onToggleSave: T.func.isRequired,
   };
 
   constructor(props) {
@@ -99,10 +100,15 @@ export default class PostFooter extends React.Component {
       compact,
       hideDownvote,
       user,
+      onToggleEdit,
       onToggleSave,
       onToggleHide,
       onReportPost,
+      single,
     } = this.props;
+
+    const isLoggedIn = user && !user.loggedOut;
+    const canModify = single && isLoggedIn && user.name === post.author;
 
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
     return (
@@ -128,11 +134,13 @@ export default class PostFooter extends React.Component {
         </div>
         <PostDropdown
           id={ post.name }
+          canModify={ canModify }
           permalink={ post.cleanPermalink }
           subreddit={ post.subreddit }
           author={ post.author }
           isSaved={ post.saved }
-          isLoggedIn={ user && !user.loggedOut }
+          isLoggedIn={ isLoggedIn }
+          onToggleEdit={ onToggleEdit }
           onToggleSave={ onToggleSave }
           onToggleHide={ onToggleHide }
           onReportPost={ onReportPost }

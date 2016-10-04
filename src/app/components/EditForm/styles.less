@@ -1,0 +1,56 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+.EditForm {
+  &__textarea-holder {
+    height: 300px;
+    padding: @grid-size;
+  }
+
+  &__textarea {
+    // note: text-area holder controls sizing and padding,
+    // so we just fill the given space
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-size: 16px; // prevent iOS zooming
+
+    .themeify({
+      background-color: @theme-modal-body-color;
+      border: @theme-alt-border;
+      border-radius: 3px;
+    });
+  }
+
+  &__edit-controls {
+    text-align: right;
+  }
+
+  @button-size: 32px;
+
+  &__edit-cancel {
+    line-height: @button-size;
+    color: @alien-blue-text;
+    display: inline-block;;
+    vertical-align: middle;
+    margin: 0 @grid-size;
+  }
+
+  &__edit-button {
+    background-color: @blue;
+    color: white;
+
+    &.disabled {
+      background-color: @grey-text;
+    }
+
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    height: @button-size;
+    line-height: @button-size;
+    width: 88px;
+    margin: 0 @grid-size;
+  }
+}

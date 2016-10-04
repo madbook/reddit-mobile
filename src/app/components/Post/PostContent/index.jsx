@@ -2,8 +2,7 @@ import './styles.less';
 import React from 'react';
 import URL from 'url';
 
-import { errors, models } from '@r/api-client';
-const { ResponseError } = errors;
+import { models } from '@r/api-client';
 const { PostModel } = models;
 
 import mobilify from 'lib/mobilify';
@@ -11,7 +10,7 @@ import gifToHTML5Sources from 'lib/gifToHTML5Sources';
 import { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
 
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
-
+import EditForm from 'app/components/EditForm';
 
 import {
   isPostNSFW,
@@ -93,35 +92,34 @@ export default class PostContent extends React.Component {
     width: T.number.isRequired,
     toggleShowNSFW: T.func.isRequired,
     showNSFW: T.bool.isRequired,
-    editing: T.bool.isRequired,
-    editError: T.oneOf([T.arrayOf(T.string), T.object]),
-    saveUpdatedText: T.func.isRequired,
-    toggleEditing: T.func.isRequired,
+    editing: T.bool,
+    editPending: T.bool,
+    onToggleEdit: T.func.isRequired,
+    onUpdateSelftext: T.func.isRequired,
     forceHTTPS: T.bool.isRequired,
     isDomainExternal: T.bool.isRequired,
     renderMediaFullbleed: T.bool.isRequired,
   };
 
+  static defaultProps = {
+    editing: false,
+    editPending: false,
+  };
+
   constructor(props) {
     super(props);
 
+
     this.state = {
-      playing: props.expandedCompact, // autoplay if you tapped the play icon to expand
+      playing: props.expandedCompact, // we want things to autoplay in expanded compact mode
     };
 
-    // we want things to autoplay in expanded compact mode
     this.togglePlaying = this.togglePlaying.bind(this);
-    this.saveText = this.saveText.bind(this);
   }
 
-  togglePlaying(e) {
+  togglePlaying = e => {
     e.preventDefault();
     this.setState({ playing: !this.state.playing });
-  }
-
-  saveText() {
-    const updatedText = this.refs.selfTextEditor.value.trim();
-    this.props.saveUpdatedText(updatedText);
   }
 
   useOurOwnPlayingOrPreviewing(oembed, url) {
@@ -200,7 +198,7 @@ export default class PostContent extends React.Component {
     if (isCompact || !single) { return; }
 
     if (this.props.editing) {
-      return this.renderTextEditor(post.selfTextHTML);
+      return this.renderTextEditor(post.selfTextMD);
     }
 
     if (!post.selfTextHTML) { return; }
@@ -216,53 +214,16 @@ export default class PostContent extends React.Component {
     );
   }
 
-  renderTextEditor(/*selfText*/) {
-    // const {
-    //   editError,
-    //   toggleEditing,
-    // } = this.props;
-    //
-    // return (
-    //   <div className='PostContent__edit-wrapper'>
-    //     <div className='PostContent__textarea-holder'>
-    //       <textarea
-    //         className='PostContent__textarea form-control'
-    //         defaultValue={ selfText }
-    //         ref='selfTextEditor'
-    //       />
-    //     </div>
-    //     { editError ? this.renderEditingError(editError) : null }
-    //     <div className='PostContent__edit-controls'>
-    //       <div className='PostContent__edit-button'>
-    //         <SquareButton
-    //           text='Cancel'
-    //           onClick={ toggleEditing }
-    //         />
-    //       </div>
-    //       <div className='PostContent__edit-button'>
-    //         <SquareButton
-    //           text='Save'
-    //           onClick={ this.saveText }
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
-  }
+  renderTextEditor(rawMarkdown) {
+    const { editPending, onToggleEdit, onUpdateSelftext } = this.props;
 
-  renderEditingError(editError) {
-    let errorText;
-    if (Array.isArray(editError)) {
-      errorText = `${err[0]}: ${err[1]}`;
-    } else if (editError instanceof ResponseError) {
-      errorText = `Sorry, something went wrong with the server, status code: ${editError.status}`;
-    }
-
-    const err = editError[0];
     return (
-      <div className='alert alert-danger alert-bar'>
-        { errorText }
-      </div>
+      <EditForm
+        startingText={ rawMarkdown }
+        editPending={ editPending }
+        onCancelEdit={ onToggleEdit }
+        onSaveEdit={ onUpdateSelftext }
+      />
     );
   }
 

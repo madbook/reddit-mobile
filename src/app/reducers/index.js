@@ -10,7 +10,7 @@ import collapsedComments from './collapsedComments';
 import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
-import editingComment from './editingComment';
+import editingText from './editingText';
 import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
@@ -55,7 +55,7 @@ export default {
   commentsPages,
   compact,
   expandedPosts,
-  editingComment,
+  editingText,
   hiddenRequests,
   loid,
   mail,

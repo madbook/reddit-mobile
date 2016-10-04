@@ -12,6 +12,7 @@ import * as commentActions from 'app/actions/comment';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as hiddenActions from 'app/actions/hidden';
 import * as mailActions from 'app/actions/mail';
+import * as postActions from 'app/actions/posts';
 import * as postsListActions from 'app/actions/postsList';
 import * as preferenceActions from 'app/actions/preferences';
 import * as savedActions from 'app/actions/saved';
@@ -99,9 +100,11 @@ const checkForSpecificErrors = action => {
     case activityActions.FAILED:
     case adActions.FAILED:
     case commentActions.MORE_COMMENTS_FAILURE:
+    case commentActions.FAILED_UPDATE_BODY:
     case commentsPageActions.FAILED:
     case hiddenActions.FAILED:
     case mailActions.FAILED:
+    case postActions.FAILED_UPDATE_SELF_TEXT:
     case postsListActions.FAILED:
     case preferenceActions.FAILED:
     case savedActions.FAILED:

@@ -15,6 +15,7 @@ import CommentHeader from './CommentHeader';
 import CommentTools from './CommentTools';
 import CommentReplyForm from './CommentReplyForm';
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
+import EditForm from 'app/components/EditForm';
 
 
 const T = React.PropTypes;
@@ -34,6 +35,7 @@ export function Comment(props) {
     isUserActivityPage,
     highlightedComment,
     onToggleCollapse,
+    editing,
   } = props;
 
   const commentClasses = cx('Comment', { 'in-comment-tree': !preview });
@@ -60,18 +62,41 @@ export function Comment(props) {
         />
       </div>
 
-      <RedditLinkHijacker>
-        <div
-          className={ bodyClasses }
-          dangerouslySetInnerHTML={ { __html: mobilify(props.comment.bodyHTML) } }
-        />
-      </RedditLinkHijacker>
+      {
+        editing
+        ? renderEditForm(props)
+        : (
+          <RedditLinkHijacker>
+            <div
+              className={ bodyClasses }
+              dangerouslySetInnerHTML={ { __html: mobilify(props.comment.bodyHTML) } }
+            />
+          </RedditLinkHijacker>
+        )
+      }
 
       { !isUserActivityPage ? renderFooter(props) : null }
     </div>
   );
 }
 
+function renderEditForm(props) {
+  const {
+    editPending,
+    comment,
+    onToggleEditForm,
+    onUpdateBody,
+  } = props;
+
+  return (
+    <EditForm
+      startingText={ comment.bodyMD }
+      editPending={ editPending }
+      onCancelEdit={ onToggleEditForm }
+      onSaveEdit={ onUpdateBody }
+    />
+  );
+}
 
 function renderFooter(props) {
   const {
@@ -194,12 +219,14 @@ Comment.propTypes = {
   commentReplying: T.bool.isRequired,
   currentPage: T.object.isRequired,
   highlightedComment: T.string,
-  isEditing: T.bool.isRequired,
   moreCommentStatus: T.object.isRequired,
   user: T.object.isRequired,
+  editing: T.bool.isRequired,
+  editPending: T.bool.isRequired,
   // start props passed in via dispatch selector
   onDeleteComment: T.func.isRequired,
   onToggleEditForm: T.func.isRequired,
+  onUpdateBody: T.func.isRequired,
   onToggleSaveComment: T.func.isRequired,
   onReportComment: T.func.isRequired,
   reportComment: T.func.isRequired,
@@ -234,9 +261,12 @@ const selector = createSelector(
   (state, props) => state.moreCommentsRequests[props.commentId] || DEFAULT_COMMENT_REQUEST,
   (state, props) => state.collapsedComments[props.commentId] || false,
   (state, props) => state.platform.currentPage.queryParams.commentReply === props.commentId,
-  (state, props) => state.editingComment === props.commentId,
+  (state, props) => state.editingText[props.commentId],
 
-  (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, isEditing) => {
+  (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, editingState) => {
+    const editing = !!editingState;
+    const editPending = editing && editingState.pending;
+    const editError = editing ? editingState.error : null;
 
     return {
       user,
@@ -244,7 +274,9 @@ const selector = createSelector(
       comment,
       commentCollapsed,
       commentReplying,
-      isEditing,
+      editing,
+      editPending,
+      editError,
       moreCommentStatus,
       highlightedComment: currentPage.urlParams.commentId,
     };
@@ -253,7 +285,8 @@ const selector = createSelector(
 
 
 const mapDispatchToProps = (dispatch, { commentId }) => ({
-  onToggleEditForm: () => dispatch(commentActions.toggleEditForm(commentId)),
+  onToggleEditForm: () => dispatch(commentActions.toggleEdit(commentId)),
+  onUpdateBody: (newBodyText) => dispatch(commentActions.updateBody(commentId, newBodyText)),
   onDeleteComment: () => dispatch(commentActions.del(commentId)),
   onToggleSaveComment: () => dispatch(commentActions.toggleSave(commentId)),
   reportComment: reason => dispatch(reportingActions.report(commentId, reason)),

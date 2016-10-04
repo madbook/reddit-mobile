@@ -70,19 +70,28 @@ export function Post(props) {
   const isAndroid = userAgent && /android/i.test(userAgent);
   const showLinksInNewTab = externalDomain && isAndroid;
   const showNSFW = props.subredditIsNSFW || props.unblurred;
-  const { expanded, toggleExpanded, toggleShowNSFW, editing, winWidth, z } = props;
 
   const {
     post,
+    editing,
+    editPending,
+    expanded,
     user,
     single,
     hideSubredditLabel,
     hideWhen,
     userActivityPage,
+    onToggleEdit,
     onToggleSavePost,
     onToggleHidePost,
     onReportPost,
+    onUpdateSelftext,
+    toggleExpanded,
+    toggleShowNSFW,
+    winWidth,
+    z,
   } = props;
+
 
   let thumbnailOrNil;
   if (compact) {
@@ -111,14 +120,17 @@ export function Post(props) {
     contentOrNil = (
       <PostContent
         post={ post }
+        editing={ editing }
+        editPending={ editPending }
         single={ single }
         compact={ compact }
         expandedCompact={ hasExpandedCompact }
         onTapExpand={ toggleExpanded }
+        onToggleEdit={ onToggleEdit }
+        onUpdateSelftext={ onUpdateSelftext }
         width={ winWidth }
         showNSFW={ showNSFW }
         toggleShowNSFW={ toggleShowNSFW }
-        editing={ editing }
         forceHTTPS={ forceHTTPS }
         isDomainExternal={ externalDomain }
         renderMediaFullbleed={ renderMediaFullbleed }
@@ -153,6 +165,7 @@ export function Post(props) {
         post={ post }
         viewComments={ !single }
         hideDownvote={ userActivityPage || post.archived }
+        onToggleEdit={ onToggleEdit }
         onToggleSave={ onToggleSavePost }
         onToggleHide={ onToggleHidePost }
         onReportPost={ onReportPost }
@@ -169,20 +182,30 @@ const selector = createSelector(
   (state, props) => state.posts[props.postId],
   (state, props) => !!state.expandedPosts[props.postId],
   (state, props) => !!state.unblurredPosts[props.postId],
-  (user, postId, single, compact, post, expanded, unblurred) => ({
-    user,
-    postId,
-    single,
-    compact,
-    post,
-    expanded,
-    unblurred,
-  }),
+  (state, props) => state.editingText[props.postId],
+  (user, postId, single, compact, post, expanded, unblurred, editingState) => {
+    const editing = !!editingState;
+    const editPending = editing && editingState.pending;
+
+    return {
+      user,
+      postId,
+      single,
+      compact,
+      post,
+      expanded,
+      unblurred,
+      editing,
+      editPending,
+    };
+  }
 );
 
 const mapDispatchToProps = (dispatch, { postId }) => ({
   toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
   toggleShowNSFW: () => dispatch(postActions.toggleNSFWBlur(postId)),
+  onToggleEdit: () => dispatch(postActions.toggleEdit(postId)),
+  onUpdateSelftext: (newSelfText) => dispatch(postActions.updateSelfText(postId, newSelfText)),
   onToggleSavePost: () => dispatch(postActions.toggleSavePost(postId)),
   onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),

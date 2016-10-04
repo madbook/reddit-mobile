@@ -7,18 +7,21 @@ const T = React.PropTypes;
 export default function PostDropdown(props) {
   const {
     id,
+    canModify,
     permalink,
     subreddit,
     author,
     isLoggedIn,
     isSaved,
-    onToggleSave,
+    onToggleEdit,
     onToggleHide,
     onReportPost,
+    onToggleSave,
   } = props;
 
   return (
     <Dropdown id={ id }>
+      { canModify && <DropdownRow icon='post_edit' text='Edit Post' onClick={ onToggleEdit } /> }
       <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>
       <DropdownLinkRow href={ `/r/${subreddit}` } icon='snoosilhouette' text={ `More from r/${subreddit}` }/>
       <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>
@@ -31,6 +34,7 @@ export default function PostDropdown(props) {
 
 PostDropdown.propTypes = {
   id: T.string.isRequired,
+  canModify: T.bool, // can edit / can delete
   permalink: T.string.isRequired,
   subreddit: T.string.isRequired,
   author: T.string.isRequired,
@@ -39,11 +43,14 @@ PostDropdown.propTypes = {
   onToggleSave: T.func,
   onToggleHide: T.func,
   onReportPost: T.func.isRequired,
+  onToggleEdit: T.func,
 };
 
 PostDropdown.defaultProps = {
+  canModify: false,
   isSaved: false,
   isLoggedIn: false,
   onToggleSave: () => {},
   onToggleHide: () => {},
+  onToggleEdit: () => {},
 };
