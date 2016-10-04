@@ -1,7 +1,5 @@
 import './styles.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
-import { urlFromPage } from '@r/platform/pageUtils';
 import { TooltipTarget } from '@r/widgets/tooltip';
 
 import Vote from 'app/components/Vote';
@@ -56,6 +54,7 @@ CommentTools.propTypes = {
   onDelete: T.func,
   onToggleSave: T.func,
   onReportComment: T.func.isRequired,
+  onReplyOpen: T.func,
 };
 
 CommentTools.defaultProps = {
@@ -67,17 +66,16 @@ CommentTools.defaultProps = {
   onEdit: () => {},
   onDelete: () => {},
   onToggleSave: () => {},
+  onToggleReply: () => {},
 };
 
-const renderReply = ({ currentPage, id, commentReplying }) => {
-  const href = urlFromPage(currentPage, { queryParams: { commentReply: id } });
-
+const renderReply = ({ commentReplying, onToggleReply }) => {
   return (
-    <Anchor
-      href= { href }
+    <span
       className={ cx('CommentTools__reply icon icon-reply2', {
         'CommentTools__reply__replying': commentReplying,
       }) }
+      onClick={ onToggleReply }
     />
   );
 };

@@ -4,22 +4,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { urlFromPage } from '@r/platform/pageUtils';
 import { METHODS } from '@r/platform/router';
-import { BackAnchor, Form } from '@r/platform/components';
+import { Form } from '@r/platform/components';
 
-export const closeButton = (currentPage) => {
-  const href = urlFromPage(currentPage, { queryParams: { commentReply: undefined } });
+const T = React.PropTypes;
 
+export const closeButton = onToggleReply => {
   return (
-    <BackAnchor
-      href= { href }
-      className='CommentReplyForm__close icon icon-x'
+    <span
+      className='CommentReplyForm__close icon icon-x Button m-linkbutton'
+      onClick={ onToggleReply }
     />
   );
 };
 
 export class CommentReplyForm extends React.Component {
+  static propTypes = {
+    text: T.string,
+    onToggleReply: T.func,
+  };
+
+  static defaultProps = {
+    onToggleReply: () => {},
+  };
+
   constructor (props) {
     super(props);
 
@@ -37,7 +45,7 @@ export class CommentReplyForm extends React.Component {
   }
 
   render () {
-    const { parentId, currentPage } = this.props;
+    const { parentId, onToggleReply } = this.props;
     const { disableButton, text } = this.state;
 
     let buttonClass = 'Button';
@@ -61,7 +69,7 @@ export class CommentReplyForm extends React.Component {
         </div>
 
         <div className='CommentReplyForm__footer'>
-          { closeButton(currentPage) }
+          { closeButton(onToggleReply) }
 
           <div className='CommentReplyForm__button'>
             <button type='submit' className={ buttonClass } disabled={ disableButton }>

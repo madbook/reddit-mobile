@@ -1,8 +1,10 @@
-.Button, .Button:active, .Button:visited, .Button:hover, .Button:focus {
+.Button {
   padding: .5em 1em;
   letter-spacing: 1.6;
   line-height: 1.5;
+}
 
+.Button, .Button:active, .Button:visited, .Button:hover, .Button:focus {
   .themeify ({
     background: @theme-button-color;
     color: @theme-button-text-color;
@@ -25,6 +27,7 @@
 
   &.m-linkbutton {
     background: transparent;
+    cursor: pointer;
 
     .themeify ({
       color: @theme-meta-text-color;

@@ -25,7 +25,11 @@ import dispatchInitialEUCookieNotice from 'server/initialState/dispatchInitialEU
 import { dispatchInitialMeta } from 'server/initialState/dispatchInitialMeta';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
-import { dispatchInitialRecentSubreddits } from 'server/initialState/dispatchInitialRecentSubreddits';
+
+import {
+  dispatchInitialRecentSubreddits,
+} from 'server/initialState/dispatchInitialRecentSubreddits';
+
 import { dispatchInitialUser } from 'server/initialState/dispatchInitialUser';
 import metaRoutes from 'server/meta';
 import statsRouterMiddleware from 'server/meta/stats';

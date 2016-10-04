@@ -6,6 +6,7 @@ import { has } from 'lodash/object';
 import * as navigationActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
+import * as commentActions from 'app/actions/comment';
 import { flags } from 'app/constants';
 import { featuresSelector } from 'app/selectors/features';
 import crawlerRequestSelector from 'app/selectors/crawlerRequestSelector';
@@ -41,6 +42,7 @@ const stateProps = createSelector(
   state => state.recommendedSubreddits,
   state => state.subreddits,
   state => state.comments,
+  state => state.replyingComments,
   featuresSelector,
   crawlerRequestSelector,
   (
@@ -52,6 +54,7 @@ const stateProps = createSelector(
     recommendedSrs,
     subreddits,
     comments,
+    replyingComments,
     feature,
     isCrawlerRequest
   ) => {
@@ -63,7 +66,7 @@ const stateProps = createSelector(
       : commentsPage.results;
     const post = posts[commentsPageParams.id];
     const postLoaded = !!post;
-    const replying = currentPage.queryParams.commentReply === commentsPageParams.id;
+    const replying = replyingComments[commentsPageParams.id];
 
     let recommendedSubredditNames = [];
     if (post && post.subreddit in recommendedSrs) {
@@ -91,6 +94,7 @@ const stateProps = createSelector(
       recommendedSubreddits,
       currentSubreddit,
       comments,
+      replyingComments,
     };
   },
 );
@@ -99,11 +103,14 @@ const dispatchProps = dispatch => ({
   navigateToUrl(url, query) {
     dispatch(navigationActions.navigateToUrl(METHODS.GET, url, query));
   },
+  onToggleReply (id) {
+    dispatch(commentActions.toggledReply(id));
+  },
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { currentPage, currentPage: { queryParams } } = stateProps;
-  const { navigateToUrl } = dispatchProps;
+  const { navigateToUrl, onToggleReply } = dispatchProps;
 
   const onSortChange = sort => {
     navigateToUrl(currentPage.url, {
@@ -114,10 +121,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     });
   };
 
+  const toggledReply = () => onToggleReply(stateProps.post.name);
+
   return {
     ...stateProps,
     ...ownProps,
     onSortChange,
+    onToggleReply: toggledReply,
   };
 };
 
@@ -224,6 +234,7 @@ class _CommentsPage extends React.Component {
       recommendedSubreddits,
       currentSubreddit,
       comments,
+      onToggleReply,
     } = this.props;
 
     if (!postLoaded) {
@@ -270,6 +281,7 @@ class _CommentsPage extends React.Component {
           preferences={ preferences }
           id={ commentsPageParams.id }
           onSortChange={ onSortChange }
+          onToggleReply={ onToggleReply }
         />
         {
           feature.enabled(VARIANT_RECOMMENDED_TOP) && hasRecommendations &&

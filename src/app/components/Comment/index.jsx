@@ -127,12 +127,12 @@ function renderTools(props) {
     user,
     comment,
     commentCollapsed,
-    currentPage,
     commentReplying,
     onToggleEditForm,
     onDeleteComment,
     onToggleSaveComment,
     onReportComment,
+    onToggleReply,
     commentingDisabled,
     votingDisabled,
   } = props;
@@ -152,13 +152,13 @@ function renderTools(props) {
           commentAuthor={ comment.author }
           username={ user ? user.name : null }
           saved={ comment.saved }
-          currentPage = { currentPage }
           replying={ commentReplying }
           permalinkUrl={ comment.cleanPermalink }
           onEdit={ onToggleEditForm }
           onDelete={ onDeleteComment }
           onToggleSave={ onToggleSaveComment }
           onReportComment={ onReportComment }
+          onToggleReply={ onToggleReply }
           commentingDisabled={ commentingDisabled }
           votingDisabled={ votingDisabled }
         />
@@ -169,10 +169,10 @@ function renderTools(props) {
 
 
 function renderCommentReply(props) {
-  const { savedReplyContent, comment, currentPage } = props;
+  const { savedReplyContent, comment, onToggleReply } = props;
   return (
     <CommentReplyForm
-      currentPage={ currentPage }
+      onToggleReply= { onToggleReply }
       parentId={ comment.name }
       savedReply={ savedReplyContent }
     />
@@ -241,6 +241,7 @@ Comment.propTypes = {
   onUpdateBody: T.func.isRequired,
   onToggleSaveComment: T.func.isRequired,
   onReportComment: T.func.isRequired,
+  onToggleReply: T.func.isRequired,
   reportComment: T.func.isRequired,
   // start props passed in via merge selector
   authorType: T.string.isRequired,
@@ -272,8 +273,8 @@ const selector = createSelector(
   state => state.platform.currentPage,
   (state, props) => state.comments[props.commentId],
   (state, props) => state.moreCommentsRequests[props.commentId] || DEFAULT_COMMENT_REQUEST,
-  (state, props) => state.collapsedComments[props.commentId] || false,
-  (state, props) => state.platform.currentPage.queryParams.commentReply === props.commentId,
+  (state, props) => !!state.collapsedComments[props.commentId],
+  (state, props) => !!state.replyingComments[props.commentId],
   (state, props) => state.editingText[props.commentId],
 
   (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, editingState) => {
@@ -306,6 +307,10 @@ const mapDispatchToProps = (dispatch, { commentId }) => ({
   onLoadMore: comment => dispatch(commentActions.loadMore(comment)),
   onToggleCollapse: commentCollapsed => dispatch(commentActions.toggleCollapse(commentId, !commentCollapsed)),
   onReportComment: () => dispatch(reportingActions.report(commentId)),
+  onToggleReply: (e) => {
+    e.preventDefault();
+    dispatch(commentActions.toggledReply(commentId));
+  },
 });
 
 

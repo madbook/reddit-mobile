@@ -1,7 +1,7 @@
 import merge from '@r/platform/merge';
 import * as replyActions from 'app/actions/reply';
 
-const DEFAULT = {};
+export const DEFAULT = {};
 
 export default function (state=DEFAULT, action={}) {
   switch (action.type) {
