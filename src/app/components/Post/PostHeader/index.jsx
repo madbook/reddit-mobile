@@ -47,8 +47,8 @@ const GILDED_FLAIR = (
   <span className='icon icon-circled-gold gold' />
 );
 
-const SPONSORED_FLAIR = (
-  <span className='PostHeader__sponsored-flair'>SPONSORED</span>
+const PROMOTED_FLAIR = (
+  <span className='PostHeader__promoted-flair'>PROMOTED</span>
 );
 
 PostHeader.propTypes = {
@@ -58,6 +58,7 @@ PostHeader.propTypes = {
   hideSubredditLabel: T.bool.isRequired,
   hideWhen: T.bool.isRequired,
   nextToThumbnail: T.bool.isRequired,
+  isPromotedUserPost: T.bool.isRequired,
   showingLink: T.bool.isRequired,
   renderMediaFullbleed: T.bool.isRequired,
   showLinksInNewTab: T.bool.isRequired,
@@ -170,12 +171,43 @@ function renderPostFlair(post, single) {
       { distinguished === 'moderator' ? MOD_FLAIR : null }
       { distinguished === 'admin' ? ADMIN_FLAIR : null }
       { isNSFW ? NSFW_FLAIR : null }
-      { promoted ? SPONSORED_FLAIR : null }
+      { promoted ? PROMOTED_FLAIR : null }
     </span>
   );
 }
 
-function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) {
+function renderPromotedUserPostDescriptor({ author, promotedUrl, promotedDisplayName }) {
+  const displayAuthor = promotedDisplayName || author;
+  const urlProps = {
+    className: 'PostHeader__promoted-user-post-line',
+    href: promotedUrl,
+    children: [
+      <span className='PostHeader__megaphone blue icon icon-megaphone'/>,
+      PROMOTED_FLAIR,
+      <span className='blue'>{ ` by ${displayAuthor}` }</span>,
+    ],
+  };
+
+  // no promoted url
+  if (!promotedUrl) {
+    return <span { ...urlProps } />;
+  }
+  // relative url
+  if (promotedUrl[0] === '/') {
+    return <Anchor { ...urlProps } />;
+  }
+  // absolute url or no url
+  return <a { ...urlProps } />;
+}
+
+function renderPostDescriptor(
+  post,
+  single,
+  renderMediaFullbleed,
+  hideSubredditLabel,
+  hideWhen,
+  isPromotedUserPost,
+) {
   const {
     distinguished,
     sr_detail,
@@ -194,20 +226,24 @@ function renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditL
   }
 
   const flairOrNil = renderLinkFlairText(post);
+  const promotedUserPostDescriptor = isPromotedUserPost && renderPromotedUserPostDescriptor(post);
+  const normalPostDescriptor = renderWithSeparators([
+    hideSubredditLabel && flairOrNil,
+    postFlairOrNil,
+    subredditLabelOrNil,
+    renderMediaFullbleed && renderPostDomain(post),
+    authorOrNil,
+    !hideSubredditLabel && flairOrNil,
+  ]);
 
   return (
     <div className='PostHeader__post-descriptor-line'>
       <div className='PostHeader__post-descriptor-line-overflow'>
         <span
           className={ distinguishingCssClass }
-          children={ renderWithSeparators([
-            hideSubredditLabel ? flairOrNil : null,
-            postFlairOrNil,
-            subredditLabelOrNil,
-            renderMediaFullbleed ? renderPostDomain(post) : null,
-            authorOrNil,
-            !hideSubredditLabel ? flairOrNil : null,
-          ]) }
+          children={
+            isPromotedUserPost ? promotedUserPostDescriptor : normalPostDescriptor
+          }
         />
       </div>
     </div>
@@ -290,6 +326,7 @@ function renderPostTitleLink(post, showLinksInNewTab) {
 export default function PostHeader(props) {
   const {
     post,
+    isPromotedUserPost,
     single,
     compact,
     hideSubredditLabel,
@@ -303,13 +340,21 @@ export default function PostHeader(props) {
   const showSourceLink = showingLink && !renderMediaFullbleed;
   const sizeClass = `${compact ? 'size-compact' : ''}`;
   const thumbnailClass = `${nextToThumbnail ? 'm-thumbnail-margin' : ''}`;
-
   return (
     <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
-      { renderPostDescriptor(post, single, renderMediaFullbleed, hideSubredditLabel, hideWhen) }
+      {
+        renderPostDescriptor(
+          post,
+          single,
+          renderMediaFullbleed,
+          hideSubredditLabel,
+          hideWhen,
+          isPromotedUserPost,
+        )
+      }
       { renderPostTitleLink(post, showLinksInNewTab) }
       { showSourceLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
-      { single ? renderDetailViewSubline(post, hideWhen) : null }
+      { single && !isPromotedUserPost ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
   );
 }

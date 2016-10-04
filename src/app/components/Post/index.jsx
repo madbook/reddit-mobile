@@ -115,6 +115,7 @@ export function Post(props) {
   }
 
   const hasExpandedCompact = compact && expanded;
+  const isPromotedUserPost = post.promoted && post.originalLink;
   let contentOrNil;
   if (!compact || hasExpandedCompact) {
     contentOrNil = (
@@ -147,6 +148,7 @@ export function Post(props) {
         { thumbnailOrNil }
         <PostHeader
           post={ post }
+          isPromotedUserPost={ isPromotedUserPost }
           single={ single }
           compact={ compact }
           hideSubredditLabel={ hideSubredditLabel }

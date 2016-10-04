@@ -146,8 +146,12 @@
     color: @mint;
   }
 
-  &__sponsored-flair {
+  &__promoted-flair {
     color: @blue;
+  }
+
+  &__megaphone.icon {
+    vertical-align: top;
   }
 
   &__mod-text {
@@ -193,6 +197,11 @@
     &:hover {
       text-decoration: none;
     }
+  }
+
+  // TODO: Reinvestigate the usage of !important with respect to themeify
+  &__promoted-user-post-line {
+    color: @blue !important;
   }
 
   &__seperator:after {
