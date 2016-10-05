@@ -135,7 +135,7 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     // If the user is not logged in, send the loid in the promo request.
     // In theory loid should be set in a header as well now, but the endpoint
     // takes it as a parameter.
-    data.loid = state.loid;
+    data.loid = state.loid.loid;
   }
 
   try {
