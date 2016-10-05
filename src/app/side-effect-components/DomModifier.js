@@ -14,7 +14,7 @@ const overlayOpenSelector = state => {
 
 const titleSelector = state => {
   return state.pageMetadata.title;
-}
+};
 
 const combiner = (theme, overlayOpen, title) => ({ theme, overlayOpen, title });
 

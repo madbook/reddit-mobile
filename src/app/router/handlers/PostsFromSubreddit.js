@@ -11,6 +11,7 @@ import { listingTime } from 'lib/listingTime';
 import { fetchUserBasedData } from './handlerCommon';
 import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
 
+import { setTitle } from 'app/actions/pageMetadata';
 
 export default class PostsFromSubreddit extends BaseHandler {
 
@@ -29,6 +30,15 @@ export default class PostsFromSubreddit extends BaseHandler {
       after,
       before,
     });
+  }
+
+  buildTitle (state, subredditName) {
+    if (!subredditName) { return; }
+    const subreddit = state.subreddits[subredditName];
+
+    if (subreddit && subreddit.title) {
+      return subreddit.title;
+    }
   }
 
   async [METHODS.GET](dispatch, getState) {
@@ -52,6 +62,7 @@ export default class PostsFromSubreddit extends BaseHandler {
     }));
 
     dispatch(setStatus(getState().postsLists[postsListId].responseCode));
+    dispatch(setTitle(this.buildTitle(getState(), subredditName)));
 
     logClientScreenView(buildScreenViewData, getState());
   }
