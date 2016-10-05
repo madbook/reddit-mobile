@@ -9,6 +9,7 @@ export const AppTopNav = () => (
   <UrlSwitch>
     <Case url='/login' exec={ () => null } />
     <Case url='/register' exec={ () => null } />
+    <Case url='/message/messages/:threadId' exec={ () => null } />
     <Case url='/r/:subredditName/submit' exec={ () => <PostSubmitModal /> } />
     <Case url='/submit' exec={ () => <PostSubmitModal /> } />
     <Case url='/submit/to_community' exec={ () => <PostSubmitCommunityModal /> } />

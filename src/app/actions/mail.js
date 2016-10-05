@@ -23,12 +23,17 @@ export const setInboxFailure = (mailType, error) => ({
   error,
 });
 
-export const fetchInbox = mailType => async (dispatch, getState) => {
+export const fetchInbox = (mailType, threadId) => async (dispatch, getState) => {
   const apiOptions = apiOptionsFromState(getState());
   dispatch(setInboxPending(mailType));
 
+  const data = { type: mailType };
+  if (threadId) {
+    data.thread = threadId;
+  }
+
   try {
-    const apiResponse = await endpoints.MessagesEndpoint.get(apiOptions, { type: mailType });
+    const apiResponse = await endpoints.MessagesEndpoint.get(apiOptions, data);
     dispatch(setInboxSuccess(mailType, apiResponse));
   } catch (e) {
     if (e instanceof ResponseError) {

@@ -7,7 +7,7 @@ import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const T = React.PropTypes;
 
-const SEPARATOR = '\u2022';
+const SEPARATOR = ' \u2022 ';
 
 export default function MessagesComment(props) {
   const { comment } = props;

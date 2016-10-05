@@ -14,6 +14,7 @@ import { UserProfilePage } from './UserProfile';
 import { WikiPage } from './WikiPage';
 
 import Messages from 'app/components/Messages';
+import MessageThread from 'app/components/MessageThread';
 import DirectMessage from 'app/components/DirectMessage';
 import Login from 'app/components/Login';
 import Register from 'app/components/Register';
@@ -72,6 +73,7 @@ const AppMain = ({ statusCode, url, referrer, isToasterOpen }) => {
         <Page url='/register' component={ Register } />
         <Page url='/message/compose' component={ DirectMessage } />
         <Page url='/message/:mailType' component={ Messages } />
+        <Page url='/message/messages/:threadId' component={ MessageThread } />
         <Page url='/report' component={ Report } />
       </UrlSwitch>
 

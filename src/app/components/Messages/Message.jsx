@@ -7,7 +7,7 @@ import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 
 const T = React.PropTypes;
 
-const SEPARATOR = '\u2022';
+const SEPARATOR = ' \u2022 ';
 
 export default function MessagesMessage(props) {
   const { message } = props;
@@ -18,7 +18,7 @@ export default function MessagesMessage(props) {
         <div className='MessagesMessage__title'>
           <Anchor
             className='MessagesMessage__titleLink'
-            href={ `/message/messages/${ message.id }` }
+            href={ message.cleanPermalink }
           >
             { message.subject }
           </Anchor>
@@ -35,7 +35,7 @@ export default function MessagesMessage(props) {
         </div>
         <Anchor
           className='MessagesMessage__link icon icon-nav-arrowforward'
-          href={ `/message/messages/${ message.id }` }
+          href={ message.cleanPermalink }
         />
       </div>
       <RedditLinkHijacker>

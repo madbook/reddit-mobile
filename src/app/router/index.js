@@ -45,6 +45,7 @@ export default [
   ['/register', Register],
   ['/message/compose', DirectMessage],
   ['/message/:mailType', Messages],
+  ['/message/messages/:threadId', Messages],
   ['/report', ReportHandler],
   ['/r/:subredditName/submit', PostSubmitHandler],
   ['/submit', PostSubmitHandler],

@@ -1,0 +1,36 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.MessageThreadMessage {
+  @caron-size: 40px;
+  position: relative;
+  width: 100%;
+
+  &__title {
+    font-size: 11px;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-meta-text-color;
+    });
+  }
+
+  &__authorLink {
+    &, &:visited, &:active {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-meta-text-color;
+      });
+    }
+  }
+
+  &__body {
+    font-size: 11px;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+}
