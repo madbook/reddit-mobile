@@ -1,0 +1,44 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.ReCaptchaBox {
+  z-index: @z-index-modal;
+  position: fixed;
+  top: 50px;
+  left: 20px;
+  right: 20px;
+  border: 1px solid black;
+
+  .themeify({
+    background-color: @theme-body-color;
+  });
+
+  .icon {
+    display: inline-block;
+    margin-left: 7px;
+    margin-top: 7px;
+  }
+
+  &__question {
+    font-size: 16px;
+    margin: 10px;
+  }
+
+  &__captcha {
+    padding: 20px 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  &__submit {
+    margin: 20px auto;
+    display: block;
+    height: 4 * @grid-size;
+    width: 200px;
+    color: white;
+    border-radius: 2px;
+    .themeify({
+      background-color: @theme-button-color;
+    });
+  }
+}

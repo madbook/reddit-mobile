@@ -12,7 +12,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
       const INITIAL = {
         title: 'a',
         meta: 'b',
-        captchaText: 'c',
+        gRecaptchaResponse: 'c',
         captchaIden: 'd',
         currentType: 'e',
       };
@@ -25,7 +25,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         expect(posting).to.eql({
           title: '',
           meta: '',
-          captchaText: '',
+          gRecaptchaResponse: '',
           captchaIden: '',
           currentType: '',
         });
@@ -39,7 +39,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         expect(posting).to.eql({
           title: '',
           meta: '',
-          captchaText: '',
+          gRecaptchaResponse: '',
           captchaIden: '',
           currentType: '',
         });
@@ -110,7 +110,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         expect(posting).to.eql({
           title: '',
           meta: '',
-          captchaText: '',
+          gRecaptchaResponse: '',
           captchaIden: '',
           currentType: 'link',
         });
@@ -120,7 +120,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         const { store } = getStore({ posting: {
           title: 'a',
           meta: 'b',
-          captchaText: 'c',
+          gRecaptchaResponse: 'c',
           captchaIden: '',
           currentType: 'self',
         }});
@@ -133,7 +133,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         expect(posting).to.eql({
           title: 'a',
           meta: 'b',
-          captchaText: 'c',
+          gRecaptchaResponse: 'c',
           captchaIden: '',
           currentType: 'self',
         });

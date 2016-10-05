@@ -42,7 +42,7 @@ export const submitPost = data => async (dispatch, getState) => {
     kind: data.kind,
     [meta_param]: data.meta,
     title: data.title,
-    captcha: data.captchaText,
+    'g-recaptcha-response': data.gRecaptchaResponse,
     iden: data.captchaIden,
     sendreplies: true,
     resubmit: false,

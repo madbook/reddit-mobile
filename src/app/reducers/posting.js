@@ -7,7 +7,7 @@ import * as postingActions from 'app/actions/posting';
 const DEFAULT = {
   title: '',
   meta: '',
-  captchaText: '',
+  gRecaptchaResponse: '',
   captchaIden: '',
   currentType: '',
 };

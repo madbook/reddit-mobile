@@ -7,7 +7,7 @@ import { Anchor, JSForm } from '@r/platform/components';
 
 import cx from 'lib/classNames';
 import Modal from '../Modal';
-import CaptchaBox from '../CaptchaBox';
+import ReCaptchaBox from '../ReCaptchaBox';
 import * as postingActions from 'app/actions/posting';
 import './styles.less';
 
@@ -16,7 +16,6 @@ const T = React.PropTypes;
 const MODAL_TITLE_TEXT = { self: 'Text', link: 'Link' };
 const SELECT_COMMUNITY = 'Select a community';
 const TITLE_PLACEHOLDER = 'Add an interesting title';
-const CAPTCHA_URL_BASE = 'https://www.reddit.com/captcha/';
 
 class PostSubmitModal extends React.Component {
   static propTypes = {
@@ -27,9 +26,9 @@ class PostSubmitModal extends React.Component {
     showCaptcha: T.bool.isRequired,
     submissionType: T.string.isRequired,
     onFieldUpdate: T.func.isRequired,
+    onRecaptchaLoaded: T.func.isRequired,
     onSubmit: T.func.isRequired,
     onCloseCaptcha: T.func.isRequired,
-    onGetNewCaptcha: T.func.isRequired,
   };
 
   render() {
@@ -38,11 +37,9 @@ class PostSubmitModal extends React.Component {
       readyToPost,
       onSubmit,
       onFieldUpdate,
-      captchaText,
-      captchaImgUrl,
+      onRecaptchaLoaded,
       showCaptcha,
       onCloseCaptcha,
-      onGetNewCaptcha,
       title: postTitle,
     } = this.props;
 
@@ -73,12 +70,9 @@ class PostSubmitModal extends React.Component {
         </JSForm>
 
         { showCaptcha ?
-          <CaptchaBox
-            captchaText={ captchaText }
-            captchaImgUrl={ captchaImgUrl }
+          <ReCaptchaBox
             onCloseCaptcha={ onCloseCaptcha }
-            onFieldUpdate={ onFieldUpdate }
-            onGetNewCaptcha={ onGetNewCaptcha }
+            onRecaptchaLoaded={ onRecaptchaLoaded }
             onSubmit={ onSubmit }
           /> :
           null }
@@ -151,11 +145,10 @@ const mapStateToProps = createSelector(
   state => state.subreddits,
   state => state.platform.currentPage.urlParams.subredditName,
   (posting, subreddits, subredditName) => {
-    const { title, meta, captchaText, captchaIden, currentType: submissionType } = posting;
+    const { title, meta, gRecaptchaResponse, captchaIden, currentType: submissionType } = posting;
 
     const subredditMetaData = subreddits[subredditName];
     const iconUrl = subredditMetaData ? subredditMetaData.iconImage : null;
-    const captchaImgUrl = CAPTCHA_URL_BASE + captchaIden;
 
     const readyFields = submissionType === 'self'
       ? [title, subredditName]
@@ -166,11 +159,10 @@ const mapStateToProps = createSelector(
     return {
       title,
       meta,
-      captchaText,
+      gRecaptchaResponse,
       captchaIden,
       submissionType,
       readyToPost,
-      captchaImgUrl,
       showCaptcha: !!captchaIden,
       subreddit: { name: subredditName, iconUrl },
     };
@@ -180,20 +172,19 @@ const mapStateToProps = createSelector(
 const dispatcher = dispatch => {
   return {
     onFieldUpdate: (name, e) => dispatch(postingActions.updateField(name, e.target.value)),
+    onRecaptchaLoaded: (name, value) => dispatch(postingActions.updateField(name, value)),
     onCloseCaptcha: () => dispatch(postingActions.closeCaptcha()),
-    onGetNewCaptcha: () => {},    // TODO
     _onSubmit: data => dispatch(postingActions.submitPost(data)),
   };
 };
 
 const mergeProps = (stateProps, dispatchProps) => {
-  const { onFieldUpdate, onCloseCaptcha, onGetNewCaptcha, _onSubmit } = dispatchProps;
+  const { onFieldUpdate, onRecaptchaLoaded, onCloseCaptcha, _onSubmit } = dispatchProps;
   const {
     title,
     meta,
-    captchaText,
+    gRecaptchaResponse,
     captchaIden,
-    captchaImgUrl,
     showCaptcha,
     submissionType,
     readyToPost,
@@ -203,19 +194,18 @@ const mergeProps = (stateProps, dispatchProps) => {
   return {
     meta,
     title,
-    captchaText,
+    gRecaptchaResponse,
     submissionType,
     readyToPost,
     subreddit,
-    captchaImgUrl,
     showCaptcha,
     onFieldUpdate,
+    onRecaptchaLoaded,
     onCloseCaptcha,
-    onGetNewCaptcha,
     onSubmit: () => {
       if (!readyToPost) { return; }
       _onSubmit(
-        { title, meta, captchaText, captchaIden, sr: subreddit.name, kind: submissionType }
+        { title, meta, gRecaptchaResponse, captchaIden, sr: subreddit.name, kind: submissionType }
       );
     },
   };
