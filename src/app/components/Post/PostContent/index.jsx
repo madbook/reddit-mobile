@@ -320,7 +320,7 @@ export default class PostContent extends React.Component {
     }
 
     if (previewImage) {
-      const callback = isNSFW ? this.props.toggleShowNSFW : null;
+      const callback = isNSFW ? e => { e.preventDefault(); this.props.toggleShowNSFW(); } : null;
       return this.buildImagePreview(
         previewImage, sourceURL, linkDescriptor, callback, needsNSFWBlur, isCompact, playableType);
     }
