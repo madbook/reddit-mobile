@@ -25,7 +25,7 @@ export default function(data, store) {
   return ReactServerDom.renderToStaticMarkup(
     <html lang='en'>
       <head>
-        <title>Reddit</title>
+        <title>{ state.pageMetadata.title }</title>
         <meta charSet='utf8'/>
         <meta name='viewport' content='width=device-width, initial-scale=1'/>
         <link rel='stylesheet' href={ `${assetPath}/${CSS_FILE}` } />

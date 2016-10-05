@@ -12,7 +12,11 @@ const overlayOpenSelector = state => {
   return overlayOpen || dropdownOpen;
 };
 
-const combiner = (theme, overlayOpen) => ({ theme, overlayOpen });
+const titleSelector = state => {
+  return state.pageMetadata.title;
+}
+
+const combiner = (theme, overlayOpen, title) => ({ theme, overlayOpen, title });
 
 const updateTheme = ($body, newTheme) => {
   const nextThemeClass = themeClass(newTheme);
@@ -46,14 +50,22 @@ const updateOverlayScrollStopper = ($body, open) => {
   }
 };
 
+const updateTitle = ($title, title) => {
+  // text AND HTML. yay browser differences
+  $title.innerText = title;
+  $title.innerHTML = title;
+};
+
 let $body;
+let $title;
 const archiver = (data) => {
   if (!$body) { $body = document.body; }
+  if (!$title) { $title = document.head.getElementsByTagName('title')[0]; }
 
   // everthing from here down depends on the classList api
   if (!$body.classList) { return; }
 
-  const { theme, overlayOpen } = data;
+  const { theme, overlayOpen, title } = data;
   if (theme) {
     updateTheme($body, data.theme);
   }
@@ -61,10 +73,14 @@ const archiver = (data) => {
   if (typeof overlayOpen !== 'undefined') {
     updateOverlayScrollStopper($body, overlayOpen);
   }
+
+  if (title) {
+    updateTitle($title, title);
+  }
 };
 
 export default makeStateArchiver(
-  [ themeSelector, overlayOpenSelector ],
+  [ themeSelector, overlayOpenSelector, titleSelector ],
   combiner,
   archiver,
 );

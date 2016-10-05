@@ -21,6 +21,7 @@ import messages from './messages';
 import modal from './modal';
 import moreCommentsRequests from './moreCommentsRequests';
 import overlay from './overlay';
+import pageMetadata from './pageMetadata';
 import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
@@ -69,6 +70,7 @@ export default {
   modal,
   moreCommentsRequests,
   overlay,
+  pageMetadata,
   posting,
   posts,
   postsLists,
