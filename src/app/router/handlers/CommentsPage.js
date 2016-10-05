@@ -13,11 +13,13 @@ import { flags } from 'app/constants';
 import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
 import features from 'app/featureFlags';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
+import { setTitle } from 'app/actions/pageMetadata';
 
 const {
   VARIANT_RECOMMENDED_TOP_PLAIN,
   VARIANT_SUBREDDIT_HEADER,
 } = flags;
+
 
 const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
@@ -53,6 +55,15 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
+  buildTitle (state, pageId) {
+    const page = state.commentsPages[pageId];
+    const post = state.posts[page.postId];
+
+    if (post) {
+      return `Reddit - ${post.subreddit} - ${post.title}`;
+    }
+  }
+
   async [METHODS.GET](dispatch, getState) {
     const state = getState();
     if (state.platform.shell) { return; }
@@ -84,6 +95,8 @@ export default class CommentsPage extends BaseHandler {
     }
 
     dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
+
+    dispatch(setTitle(this.buildTitle(getState(), commentsPageId)));
 
     logClientScreenView(buildScreenViewData, getState());
   }
