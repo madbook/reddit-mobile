@@ -1,6 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
 
+import { LOGGEDOUT_REDIRECT } from 'app/constants';
 import * as voteActions from 'app/actions/vote';
 
 export default class Vote extends BaseHandler {
@@ -10,7 +11,7 @@ export default class Vote extends BaseHandler {
     const state = getState();
 
     if (!state.session.isValid) {
-      return dispatch(platformActions.setPage('/login'));
+      return dispatch(platformActions.setPage(LOGGEDOUT_REDIRECT));
     }
 
     await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {

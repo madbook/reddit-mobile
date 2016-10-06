@@ -87,3 +87,5 @@ export const themes = {
   NIGHTMODE: 'nightmode',
   DAYMODE: 'daymode',
 };
+
+export const LOGGEDOUT_REDIRECT = '/register';
