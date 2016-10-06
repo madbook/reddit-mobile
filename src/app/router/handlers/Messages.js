@@ -13,7 +13,7 @@ export default class Messages extends BaseHandler {
     }
 
     const mailType = this.urlParams.mailType ? this.urlParams.mailType : 'messages';
-    dispatch(mailActions.fetchInbox(mailType, this.urlParams.threadId));
+    dispatch(mailActions.fetchInbox(mailType, this.queryParams, this.urlParams.threadId));
 
     await fetchUserBasedData(dispatch);
 

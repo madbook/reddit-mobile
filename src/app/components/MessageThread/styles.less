@@ -56,4 +56,46 @@
       });
     }
   }
+
+  &__reply {
+    color: @blue;
+    width: 100%;
+    text-align: right;
+    padding-right: 2 * @grid-size;
+  }
+
+  &__replyIcon {
+    vertical-align: text-bottom;
+
+    .themeify({
+      color: @blue;
+    });
+  }
+
+  &__cancelReplyIcon {
+    font-size: 22px;
+  }
+
+  &__form,
+  &__formBody,
+  &__formSubmit {
+    padding: 2 * @grid-size;
+    width: 100%;
+  }
+
+  &__formBody {
+    .themeify({
+      border-top: @theme-border;
+      border-bottom: @theme-border;
+    });
+  }
+
+  &__formSubmit {
+    color: @off-white;
+    background-color: @blue;
+    margin-top: 2 * @grid-size;
+    text-align: center;
+    letter-spacing: 1.6;
+    font-size: 16px;
+  }
 }

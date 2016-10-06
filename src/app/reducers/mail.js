@@ -1,8 +1,9 @@
 import merge from '@r/platform/merge';
 
+import * as loginActions from 'app/actions/login';
 import * as mailActions from 'app/actions/mail';
 
-const DEFAULT = [
+export const DEFAULT = [
   'messages',
   'comments',
   'selfreply',
@@ -12,12 +13,18 @@ const DEFAULT = [
   [mailType]: {
     pending: false,
     order: [],
+    meta: {},
     error: null,
   },
 }), {});
 
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
+    case loginActions.LOGGED_IN:
+    case loginActions.LOGGED_OUT: {
+      return DEFAULT;
+    }
+
     case mailActions.FETCHING: {
       const { mailType } = action;
       return merge(state, {
@@ -34,6 +41,7 @@ export default function(state=DEFAULT, action={}) {
           pending: false,
           error: null,
           order: apiResponse.results,
+          meta: apiResponse.meta,
         },
       });
     }

@@ -6,7 +6,7 @@ import * as toasterActions from 'app/actions/toaster';
 import * as postActions from 'app/actions/posts';
 import * as postingActions from 'app/actions/posting';
 import * as reportingActions from 'app/actions/reporting';
-
+import * as mailActions from 'app/actions/mail';
 
 const DEFAULT = {
   isOpen: false,
@@ -19,10 +19,11 @@ export const GENERIC_ERROR = 'Something went wrong.';
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
     case commentActions.FAILED_UPDATE_BODY:
+    case mailActions.FAILED_MESSAGE:
     case postActions.FAILED_UPDATE_SELF_TEXT:
+    case postingActions.FAILURE:
     case postingActions.VALIDATION_FAILURE:
-    case reportingActions.FAILURE:
-    case postingActions.FAILURE: {
+    case reportingActions.FAILURE: {
       return merge(state, {
         isOpen: true,
         type: toasterActions.TYPES.ERROR,

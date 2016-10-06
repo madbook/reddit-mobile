@@ -48,5 +48,25 @@ createTest({ reducers: { messages } }, ({ getStore, expect }) => {
         });
       });
     });
+
+    describe('ADDING REPLY', () => {
+      it('should add a message', () => {
+        const { store } = getStore();
+        const message = {
+          uuid: 't4_1',
+          subreddit: 'mwebisboss',
+        };
+
+        store.dispatch(mailActions.addReply({
+          messages: {
+            [message.uuid]: message,
+          },
+        }));
+
+        expect(store.getState().messages).to.eql({
+          [message.uuid]: message,
+        });
+      });
+    });
   });
 });

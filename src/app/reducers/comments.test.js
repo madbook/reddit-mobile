@@ -16,7 +16,7 @@ import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
 
-createTest({ reducers: { comments} }, ({ getStore, expect }) => {
+createTest({ reducers: { comments } }, ({ getStore, expect }) => {
   describe('comments', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on log out', () => {

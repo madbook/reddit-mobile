@@ -8,7 +8,7 @@ export default function DirectMessageHeader() {
       <BackAnchor
         className='DirectMessageHeader__back icon icon-nav-close'
         href={ BackAnchor.AUTO_ROUTE }
-        fallbackHref='/message/messages'
+        backupHref='/message/messages'
       />
       <div className='DirectMessageHeader__title'>Direct Message</div>
     </div>

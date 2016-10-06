@@ -13,7 +13,7 @@ import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
 
-createTest({ reducers: { posts} }, ({ getStore, expect}) => {
+createTest({ reducers: { posts } }, ({ getStore, expect }) => {
   describe('posts', () => {
     describe('LOGGED_IN and LOGGED_OUT', () => {
       it('should return default on on log out', () => {

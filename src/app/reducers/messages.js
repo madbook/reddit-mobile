@@ -15,6 +15,12 @@ export default function messages(state=DEFAULT, action={}) {
       const { messages } = action.apiResponse;
       return mergeAPIModels(state, messages);
     }
+
+    case mailActions.ADD_REPLY: {
+      const { messages } = action.data;
+      return mergeAPIModels(state, messages);
+    }
+
     default: return state;
   }
 }

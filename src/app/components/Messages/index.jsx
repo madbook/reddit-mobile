@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import PaginationButtons from 'app/components/PaginationButtons';
+
 import MessagesHeader from './Header';
 import MessagesNav from './Nav';
 import MessagesComment from './Comment';
@@ -16,9 +18,12 @@ export function Messages(props) {
     messages,
     comments,
     posts,
+    currentPage,
     mailData,
     mailType,
   } = props;
+  const { meta } = mailData;
+  const { prevUrl, nextUrl } = getPaginationUrls(currentPage, meta);
 
   return (
     <div className='Messages'>
@@ -36,6 +41,12 @@ export function Messages(props) {
           </div>
         )) }
       </div>
+      <PaginationButtons
+        compact={ true }
+        preventUrlCreation={ true }
+        prevUrl={ prevUrl }
+        nextUrl={ nextUrl }
+      />
     </div>
   );
 }
@@ -46,6 +57,19 @@ Messages.propTypes = {
   posts: T.object.isRequired,
   mailData: T.object.isRequired,
   mailType: T.string.isRequired,
+};
+
+const getPaginationUrls = (currentPage, meta) => {
+  const { url } = currentPage;
+  const { before, after } = meta;
+  const ret = {};
+  if (before) {
+    ret.prevUrl = `${url}?count=25&before=${before}`;
+  }
+  if (after) {
+    ret.nextUrl = `${url}?count=25&after=${after}`;
+  }
+  return ret;
 };
 
 const renderItem = (type, id, messages, comments, posts) => {
@@ -65,11 +89,13 @@ const selector = createSelector(
   state => state.messages,
   state => state.comments,
   state => state.posts,
+  state => state.platform.currentPage,
   (state, ownProps) => state.mail[ownProps.urlParams.mailType],
-  (messages, comments, posts, mailData) => ({
+  (messages, comments, posts, currentPage, mailData) => ({
     messages,
     comments,
     posts,
+    currentPage,
     mailData,
   })
 );

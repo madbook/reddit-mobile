@@ -1,16 +1,14 @@
 import './Composition.less';
 import React from 'react';
-import { METHODS } from '@r/platform/router';
-import { Form } from '@r/platform/components';
+import { JSForm } from '@r/platform/components';
 
 const T = React.PropTypes;
 
 export default function DirectMessageComposition(props) {
   return (
-    <Form
-      method={ METHODS.POST }
-      action='/message/compose'
+    <JSForm
       className='DirectMessageComposition'
+      onSubmit={ props.onSubmit }
     >
       <input
         className='DirectMessageComposition__input'
@@ -21,6 +19,7 @@ export default function DirectMessageComposition(props) {
       <input
         className='DirectMessageComposition__input'
         type='disabled'
+        readOnly
         value={ `From: ${ props.username }` }
       />
       <input
@@ -28,18 +27,19 @@ export default function DirectMessageComposition(props) {
         name='subject'
         placeholder='Add an interesting title'
       />
-      <input
-        className='DirectMessageComposition__input'
+      <textarea
+        className='DirectMessageComposition__textarea'
         name='body'
+        rows='5'
         placeholder='Add a dank meme reference'
       />
       <button
         className='DirectMessageComposition__submit'
         type='submit'
       >
-        Send Message
+        SEND MESSAGE
       </button>
-    </Form>
+    </JSForm>
   );
 }
 

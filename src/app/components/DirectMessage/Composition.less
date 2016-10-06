@@ -5,10 +5,15 @@
   padding: 2 * @grid-size;
 
   &__input {
+    line-height: 48px;
+  }
+
+  &__input,
+  &__textarea {
     width: 100%;
     margin-bottom: @grid-size;
     font-size: 16px;
-    line-height: 48px;
+    padding: @grid-size;
 
     .themeify({
       border-bottom: @theme-border;
@@ -19,5 +24,15 @@
         border-bottom: @theme-alt-border;
       });
     }
+  }
+
+  &__submit {
+    width: 100%;
+    color: @off-white;
+    background-color: @blue;
+    padding: 2 * @grid-size;
+    text-align: center;
+    letter-spacing: 1.6;
+    font-size: 16px;
   }
 }
