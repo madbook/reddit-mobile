@@ -6,10 +6,15 @@ import './styles.less';
 const T = React.PropTypes;
 
 const GO_BACK = 'Go Back!';
-const GO_TO_FRONTPAGE = 'To the front page!';
+const GO_TO_FRONTPAGE = 'Go to the front page!';
 const ERROR_404 = 'Page Not Found';
 const ERROR_403 = 'Sorry, you don\'t have access to this.';
-const ERROR_GENERIC = 'Something went wrong.';
+const ERROR_GENERIC = (
+  <div>
+    <div>Something went wrong.</div>
+    <div>Please refresh this page or</div>
+  </div>
+);
 
 const ERROR_MAP = {
   '403': ERROR_403,
