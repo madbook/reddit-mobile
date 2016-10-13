@@ -109,7 +109,10 @@ function renderFooter(props) {
   } = props;
 
   // it's possible to have a comment with no visible replies but a load more button
-  const showReplies = comment.replies.length || comment.loadMoreIds.length;
+  // NOTE: this comment should have loadMoreIds field and doesn't so this is a
+  // hack for the time being. I'm going to address this in a follow up patch.
+  const { replies, loadMoreIds } = comment;
+  const showReplies = replies.length || (loadMoreIds && loadMoreIds.length);
 
   return [
     !commentDeleted ? renderTools(props) : null,
