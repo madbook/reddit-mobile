@@ -37,12 +37,24 @@ const stateProps = createSelector(
   state => state.commentsPages,
   state => state.posts,
   state => state.platform.currentPage,
+  state => state.preferences,
   state => state.recommendedSubreddits,
   state => state.subreddits,
   state => state.comments,
   featuresSelector,
   crawlerRequestSelector,
-  (pageProps, commentsPages, posts, currentPage, recommendedSrs, subreddits, comments, feature, isCrawlerRequest) => {
+  (
+    pageProps,
+    commentsPages,
+    posts,
+    currentPage,
+    preferences,
+    recommendedSrs,
+    subreddits,
+    comments,
+    feature,
+    isCrawlerRequest
+  ) => {
     const commentsPageParams = CommentsPageHandler.pageParamsToCommentsPageParams(pageProps);
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
     const commentsPage = commentsPages[commentsPageId];
@@ -66,6 +78,7 @@ const stateProps = createSelector(
       commentsPageId,
       topLevelComments,
       currentPage,
+      preferences,
       replying,
       feature,
       isCrawlerRequest,
@@ -197,6 +210,7 @@ class _CommentsPage extends React.Component {
       topLevelComments,
       postLoaded,
       currentPage,
+      preferences,
       replying,
       feature,
       onSortChange,
@@ -248,6 +262,7 @@ class _CommentsPage extends React.Component {
           post={ post }
           hasSingleComment={ has(commentsPageParams, 'query.comment') }
           currentPage={ currentPage }
+          preferences={ preferences }
           id={ commentsPageParams.id }
           onSortChange={ onSortChange }
         />

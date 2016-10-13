@@ -37,7 +37,15 @@ const renderThreadNotice = (post, hasSingleComment) => {
 };
 
 
-export default ({ replying, post, hasSingleComment, currentPage, id, onSortChange }) => {
+export default ({
+  replying,
+  post,
+  hasSingleComment,
+  currentPage,
+  preferences,
+  id,
+  onSortChange,
+}) => {
   const { queryParams: { sort } } = currentPage;
 
   const replyHref = urlFromPage(currentPage, {
@@ -50,6 +58,7 @@ export default ({ replying, post, hasSingleComment, currentPage, id, onSortChang
   const archived = post ? post.archived : false;
   const locked = post ? post.locked : false;
   const commentingDisabled = archived || locked;
+  const suggestedSort = !preferences.ignoreSuggestedSort && post.suggestedSort;
 
   return (
     <div className='CommentsPage__tools'>
@@ -58,7 +67,7 @@ export default ({ replying, post, hasSingleComment, currentPage, id, onSortChang
           className='CommentsPage__tools_sortSelector'
           id='comment-sort-selector'
           title='Sort comments by:'
-          sortValue={ sort || SORTS.CONFIDENCE }
+          sortValue={ sort || suggestedSort || preferences.defaultCommentSort }
           sortOptions={ [
             SORTS.CONFIDENCE,
             SORTS.TOP,
