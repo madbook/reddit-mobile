@@ -81,10 +81,6 @@ export const flags = {
   BETA: 'beta',
   SMARTBANNER: 'banner',
   VARIANT_NEXTCONTENT_BOTTOM: 'experimentNextContentBottom',
-  VARIANT_RECOMMENDED_BOTTOM: 'experimentRecommendedBottom',
-  VARIANT_RECOMMENDED_TOP: 'experimentRecommendedTop',
-  VARIANT_RECOMMENDED_TOP_PLAIN: 'experimentRecommendedTopPlain',
-  VARIANT_SUBREDDIT_HEADER: 'experimentSubredditHeader',
 };
 
 export const themes = {

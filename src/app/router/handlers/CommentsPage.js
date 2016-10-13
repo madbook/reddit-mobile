@@ -7,17 +7,10 @@ import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as subredditActions from 'app/actions/subreddits';
-import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
 import * as replyActions from 'app/actions/reply';
-import { flags } from 'app/constants';
 import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
-import features from 'app/featureFlags';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 
-const {
-  VARIANT_RECOMMENDED_TOP_PLAIN,
-  VARIANT_SUBREDDIT_HEADER,
-} = flags;
 
 const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
@@ -67,7 +60,6 @@ export default class CommentsPage extends BaseHandler {
 
       dispatch(commentsPageActions.fetchRelevantContent()),
       dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId)),
-      fetchRecommendedSubreddits(state, dispatch, subredditName),
 
       dispatch(subredditActions.fetchSubreddit(subredditName)),
     ]);
@@ -106,20 +98,6 @@ export default class CommentsPage extends BaseHandler {
   }
 }
 
-const fetchRecommendedSubreddits = (state, dispatch, subredditName) => {
-  const feature = features.withContext({ state });
-
-  if (feature.enabled(VARIANT_SUBREDDIT_HEADER)) {
-    return;
-  }
-
-  let max_recs = 3;
-  if (feature.enabled(VARIANT_RECOMMENDED_TOP_PLAIN)) {
-    max_recs = 7;
-  }
-
-  dispatch(recommendedSubredditsActions.fetchRecommendedSubreddits(subredditName, max_recs));
-};
 
 function buildScreenViewData(state) {
   const { currentPage: { queryParams, urlParams } } = state.platform;

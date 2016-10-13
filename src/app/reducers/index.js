@@ -26,7 +26,6 @@ import postsLists from './postsLists';
 import preferences from './preferences';
 import preferencesRequest from './preferencesRequest';
 import recentSubreddits from './recentSubreddits';
-import recommendedSubreddits from './recommendedSubreddits';
 import replying from './replying';
 import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
@@ -72,7 +71,6 @@ export default {
   preferencesRequest,
   replying,
   recentSubreddits,
-  recommendedSubreddits,
   savedRequests,
   searchRequests,
   session,
