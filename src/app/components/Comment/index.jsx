@@ -108,10 +108,13 @@ function renderFooter(props) {
     preview,
   } = props;
 
+  // it's possible to have a comment with no visible replies but a load more button
+  const showReplies = comment.replies.length || comment.loadMoreIds.length;
+
   return [
     !commentDeleted ? renderTools(props) : null,
     !preview && commentReplying && !commentingDisabled ? renderCommentReply(props) : null,
-    !preview && !commentCollapsed && comment.replies.length ? renderReplies(props) : null,
+    !preview && !commentCollapsed && showReplies ? renderReplies(props) : null,
   ];
 }
 
@@ -175,7 +178,7 @@ function renderCommentReply(props) {
 
 
 function renderReplies(props) {
-  const { op, nestingLevel, comment, commentCollapsed } = props;
+  const { comment, nestingLevel, commentCollapsed } = props;
 
   const className = cx('Comment__replies', {
     'm-hidden': commentCollapsed,
@@ -184,16 +187,20 @@ function renderReplies(props) {
 
   return (
     <div className={ className }>
-      <CommentsList
-        op={ op }
-        commentRecords={ comment.replies }
-        parentComment={ comment }
-        nestingLevel={ nestingLevel + 1 }
-      />
-
+      { comment.replies.length ? renderCommentsList(props) : null }
       { comment.loadMoreIds.length ? renderMoreCommentsButton(props) : null }
-
     </div>
+  );
+}
+
+function renderCommentsList(props) {
+  return (
+    <CommentsList
+      op={ props.op }
+      commentRecords={ props.comment.replies }
+      parentComment={ props.comment }
+      nestingLevel={ props.nestingLevel + 1 }
+    />
   );
 }
 
