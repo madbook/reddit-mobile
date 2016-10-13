@@ -1,4 +1,4 @@
-import { setPage } from '@r/platform/actions';
+import { setPage, navigateToUrl } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
 
 export default class UserReroute extends BaseHandler {
@@ -8,6 +8,12 @@ export default class UserReroute extends BaseHandler {
     let { url } = currentPage;
 
     url = url.replace('/u/', '/user/');
-    dispatch(setPage(url, { urlParams, queryParams, hashParams, referrer }));
+    if (process.env.ENV === 'client') {
+      // redirect the url and make sure platform runs the handler
+      dispatch(navigateToUrl(METHODS.GET, url, { urlParams, queryParams, hashParams }));
+    } else {
+      // redirect but don't run the handler
+      dispatch(setPage(url, { urlParams, queryParams, hashParams, referrer }));
+    }
   }
 }

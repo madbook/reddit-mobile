@@ -117,7 +117,7 @@ function renderAuthorAndTimeStamp(post, single, hideWhen) {
   } = post;
 
   const authorLink = (
-    <Anchor className='PostHeader__author-link' href={ `/u/${author}` }>
+    <Anchor className='PostHeader__author-link' href={ `/user/${author}` }>
       { `u/${author}` }
     </Anchor>
   );
