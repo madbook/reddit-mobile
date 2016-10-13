@@ -9,22 +9,24 @@ import SortSelector from 'app/components/SortSelector';
 import { SORTS } from 'app/sortValues';
 
 const renderThreadNotice = (post, hasSingleComment) => {
-  const { locked, subredditDetail } = post;
+  const { archived, locked, subredditDetail } = post;
 
   let message;
   if (hasSingleComment) {
     message = (
-      <p>
+      <div>
         <span>You are viewing a single comment's thread. </span>
         <Anchor href={ post.cleanPermalink }>
           View the rest of the comments
         </Anchor>
-      </p>
+      </div>
     );
+  } else if (archived) {
+    message = <div>Post is archived</div>;
   } else if (locked) {
-    message = <p> Comments are locked </p>;
+    message = <div>Comments are locked</div>;
   } else if (subredditDetail && subredditDetail.user_is_banned) {
-    message = <p> You are banned from commenting in this community for now </p>;
+    message = <div>You are banned from commenting in this community for now</div>;
   }
 
   if (message) {

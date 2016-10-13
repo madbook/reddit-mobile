@@ -199,10 +199,11 @@ function renderReplies(props) {
 function renderCommentsList(props) {
   return (
     <CommentsList
-      op={ props.op }
       commentRecords={ props.comment.replies }
       parentComment={ props.comment }
       nestingLevel={ props.nestingLevel + 1 }
+      op={ props.op }
+      votingDisabled={ props.votingDisabled }
     />
   );
 }
@@ -233,6 +234,7 @@ Comment.propTypes = {
   user: T.object.isRequired,
   editing: T.bool.isRequired,
   editPending: T.bool.isRequired,
+  votingDisabled: T.bool,
   // start props passed in via dispatch selector
   onDeleteComment: T.func.isRequired,
   onToggleEditForm: T.func.isRequired,
@@ -261,6 +263,7 @@ Comment.defaultProps = {
   nestingLevel: 0,
   op: null,
   preview: false,
+  votingDisabled: false,
 };
 
 

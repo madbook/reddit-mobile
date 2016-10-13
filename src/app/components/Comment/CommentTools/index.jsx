@@ -35,7 +35,7 @@ export default function CommentTools(props) {
       { commentingDisabled ? null : renderReply(props) }
       { renderSeashells(tooltipId) }
       { renderDivider(props) }
-      { renderVote(id, score, scoreHidden, votingDisabled, voteDirection) }
+      { renderVote(id, score, scoreHidden, voteDirection, votingDisabled) }
       { renderDropdown(tooltipId, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment) }
     </div>
@@ -49,6 +49,7 @@ CommentTools.propTypes = {
   username: T.string, // The user's name
   scoreHidden: T.bool,
   voteDirection: T.number,
+  votingDisabled: T.bool,
   saved: T.bool,
   permalinkUrl: T.string,
   onEdit: T.func,
@@ -59,6 +60,7 @@ CommentTools.propTypes = {
 
 CommentTools.defaultProps = {
   voteDirection: 0,
+  votingDisabled: false,
   scoreHidden: false,
   saved: false,
   permalinkUrl: '',
@@ -89,14 +91,14 @@ const renderSeashells = tooltipId => (
   </TooltipTarget>
 );
 
-const renderVote = (id, score, scoreHidden, hideDownvote, voteDirection) => (
+const renderVote = (id, score, scoreHidden, voteDirection, votingDisabled) => (
   <Vote
     thingId={ id }
     classPrefix='CommentTools'
     score={ score }
     scoreHidden={ scoreHidden }
-    hideDownvote={ hideDownvote }
     voteDirection={ voteDirection }
+    hideDownvote={ votingDisabled }
   />
 );
 
