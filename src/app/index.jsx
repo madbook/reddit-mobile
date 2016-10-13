@@ -4,6 +4,7 @@ import React from 'react';
 import { UrlSync } from '@r/platform/components';
 import { TooltipShutter } from '@r/widgets/tooltip';
 
+import AdsTracking from './components/AdsTracking';
 import AppMainPage from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';
 import CookieSync from './side-effect-components/CookieSync';
@@ -25,6 +26,7 @@ export default class App extends React.Component {
         <DomModifier />
         <SessionRefresher />
         <TooltipShutter />
+        <AdsTracking />
       </div>
     );
   }

@@ -4,6 +4,7 @@ import url from 'url';
 
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { getEventTracker } from 'lib/eventTracker';
+import * as gtm from 'lib/gtm';
 
 const ID_REGEX = /(?:t\d+_)?(.*)/;
 
@@ -87,5 +88,16 @@ export function logClientScreenView(buildScreenViewData, state) {
     if (data) {
       getEventTracker().track('screenview_events', 'cs.screenview_mweb', data);
     }
+
+    gtmPageView(state);
   }
 }
+
+const gtmPageView = state => {
+  const { platform: { currentPage }} = state;
+
+  gtm.trigger('pageview', {
+    subreddit: currentPage.urlParams.subredditName || '',
+    pathname: currentPage.url || '/',
+  });
+};

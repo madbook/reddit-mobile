@@ -21,6 +21,8 @@ module.exports = function(isProduction) {
     {
       generator: 'set-node-env',
       'process.env': {
+        GOOGLE_TAG_MANAGER_ID: JSON.stringify(process.env.GOOGLE_TAG_MANAGER_ID),
+        MEDIA_DOMAIN: JSON.stringify(process.env.MEDIA_DOMAIN),
         REDDIT: JSON.stringify(process.env.REDDIT),
         STATS_URL: JSON.stringify(process.env.STATS_URL),
         TRACKER_CLIENT_NAME: JSON.stringify(process.env.TRACKER_CLIENT_NAME),
