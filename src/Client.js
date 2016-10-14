@@ -3,7 +3,7 @@ import './lib/dnt';
 
 import React from 'react';
 import Client from '@r/platform/Client';
-import * as actions from '@r/platform/actions';
+import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
 import isEmpty from 'lodash/isEmpty';
 
@@ -17,6 +17,7 @@ import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
 import { sendTimings, onHandlerCompleteTimings } from 'lib/timing';
 import Session from 'app/models/Session';
+import * as smartBannerActions from 'app/actions/smartBanner';
 
 // Bits to help in the gathering of client side timings to relay back
 // to the server
@@ -135,4 +136,8 @@ const client = Client({
 })();
 
 isShell = client.getState().platform.shell;
-client.dispatch(actions.activateClient());
+client.dispatch(platformActions.activateClient());
+
+if (isShell) {
+  client.dispatch(smartBannerActions.checkAndSet());
+}

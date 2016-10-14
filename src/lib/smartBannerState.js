@@ -1,18 +1,18 @@
 import localStorageAvailable from './localStorageAvailable';
-import constants from '../constants';
+import * as constants from 'app/constants';
 
 const BASE_VAL = {
-  show: false,
+  showBanner: false,
   impressionUrl: '',
   clickUrl: '',
 };
 
-const TIME_LIMIT = 2 * 7 * 24 * 60 * 60;
+const TWO_WEEKS = 2 * 7 * 24 * 60 * 60;
 
 const ALLOWED_PAGES = new Set([
   'index',
-  'index.subreddit',
-  'comments.subreddit',
+  'listing',
+  'comments',
 ]);
 
 const IOS_USER_AGENTS = [
@@ -26,10 +26,8 @@ const ANDROID_USER_AGENTS = [
 
 const ALLOWED_DEVICES = IOS_USER_AGENTS.concat(ANDROID_USER_AGENTS);
 
-const ALLOWED_COUNTRIES = new Set(['US', 'GB', 'AU', 'CA']);
-
 const PAGE_PERCENTAGES = {
-  'comments.subreddit': 5,
+  'comments': 5,
 };
 
 const USE_TUNE = 100;
@@ -38,16 +36,16 @@ const checkDeviceType = (allowedAgents, userAgentString) => {
   return allowedAgents.some(a => userAgentString.indexOf(a) > -1);
 };
 
-export function shouldShowBanner({ actionName, loid, country, data, userAgent }={}) {
+export function shouldShowBanner({ actionName, user, userAgent }={}) {
   // Lots of options we have to consider.
   // 1) Easiest. Make sure local storage exists
   if (!localStorageAvailable()) { return BASE_VAL; }
 
   // 2) Check if it's been dismissed recently
   const lastClosedStr = localStorage.getItem('bannerLastClosed');
-  const lastClosed = lastClosedStr ? new Date(lastClosedStr) : null;
-  const lastClosedLimit = lastClosed.addSeconds(lastClosed.getSeconds(), TIME_LIMIT);
-  if (lastClosed && new Date() < lastClosedLimit) {
+  const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : null;
+  const lastClosedLimit = Date.now() + TWO_WEEKS;
+  if (lastClosed && lastClosed < lastClosedLimit) {
     return BASE_VAL;
   }
 
@@ -57,16 +55,13 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
   // 4) Check the user agent
   if (!checkDeviceType(ALLOWED_DEVICES, userAgent)) { return BASE_VAL; }
 
-  // 5) only show the banner to people from certain countries
-  if (!ALLOWED_COUNTRIES.has(country)) { return BASE_VAL; }
-
   // Create a bucket; a few rules are going to depend on that
   let userId = '';
-  if (loid || data.user) { userId = loid || data.user.id; }
+  if (user) { userId = user.loid || user.id; }
   const userIdSum = userId.split('').reduce((sum, chr) => sum + chr.charCodeAt(0), 0);
   const bucket = userIdSum % 100;
 
-  // 6) only show to a certain % of users that land on a given page
+  // 5) only show to a certain % of users that land on a given page
   for (const pageName in PAGE_PERCENTAGES) {
     if ((actionName === pageName) && (bucket > PAGE_PERCENTAGES[pageName])) {
       return BASE_VAL;
@@ -80,7 +75,7 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
     // just use the universal Tune links
     return {
       ...BASE_VAL,
-      show: true,
+      showBanner: true,
       clickUrl: constants.BANNER_URLS_TUNE.CLICK,
       impressionUrl: constants.BANNER_URLS_TUNE.IMPRESSION,
     };
@@ -90,7 +85,7 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
   if (checkDeviceType(IOS_USER_AGENTS, userAgent)) {
     return {
       ...BASE_VAL,
-      show: true,
+      showBanner: true,
       clickUrl: constants.BANNER_URLS_DIRECT.IOS,
     };
   }
@@ -98,7 +93,7 @@ export function shouldShowBanner({ actionName, loid, country, data, userAgent }=
   if (checkDeviceType(ANDROID_USER_AGENTS, userAgent)) {
     return {
       ...BASE_VAL,
-      show: true,
+      showBanner: true,
       clickUrl: constants.BANNER_URLS_DIRECT.ANDROID,
     };
   }

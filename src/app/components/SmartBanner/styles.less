@@ -1,0 +1,108 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+.SmartBanner {
+  @icon-size: 58px;
+  @button-container-size: 116px;
+  .shadow;
+  width: 100%;
+  position: fixed;
+  z-index: @z-index-smartbanner;
+
+  .themeify({
+    background-color: @theme-nav-bar-color;
+  });
+
+  &__left,
+  &__right {
+    position: absolute;
+    top: 50%;
+    height: @icon-size;
+    margin-top: -(@icon-size / 2);
+  }
+
+  &__left {
+    left: 0;
+    right: @button-container-size;
+  }
+
+  &__right {
+    right: 0;
+    width: @button-container-size;
+    padding: 6px @grid-size 6px 0;
+  }
+
+  &__close {
+    display: inline-block;
+    vertical-align: middle;
+    padding: @grid-size @half-grid-size;
+    color: @grey-text;
+  }
+
+  &__icon {
+    display: inline-block;
+    vertical-align: middle;
+
+    .SnooIcon {
+      height: @icon-size;
+      width: @icon-size;
+      float: left;
+      border-radius: 5px;
+      background-color: @orangered;
+      line-height: @icon-size;
+      text-align: center;
+      font-size: 48px;
+      color: @white;
+    }
+  }
+
+  &__header {
+    display: inline-block;
+    vertical-align: middle;
+    height: @icon-size;
+    padding-left: @grid-size;
+    box-sizing: border-box;
+    width: 60%;
+    width: calc(~'100% - 90px');
+  }
+
+  &__title {
+    margin-bottom: 2px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.2;
+
+    .themeify({
+      color: @theme-body-text-color;
+    });
+  }
+
+  &__subtitle {
+    color: @grey-text;
+    font-size: @font-size-base;
+    line-height: 1.2;
+  }
+
+  &__button {
+    display: block;
+    float: right;
+    padding: 12px 20px;
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
+    width: 108px;
+
+    .themeify({
+      background-color: @theme-button-color;
+    });
+
+    &, &:visited, &:hover {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-button-text-color;
+      });
+    }
+  }
+}

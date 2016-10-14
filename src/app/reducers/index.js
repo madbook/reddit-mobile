@@ -35,6 +35,7 @@ import searchRequests from './searchRequests';
 import session from './session';
 import sessionRefresing from './sessionRefreshing';
 import scrollPositions from './scrollPositions';
+import smartBanner from './smartBanner';
 import subredditRequests from './subredditRequests';
 import subreddits from './subreddits';
 import subscribedSubreddits from './subscribedSubreddits';
@@ -82,6 +83,7 @@ export default {
   session,
   sessionRefresing,
   scrollPositions,
+  smartBanner,
   subreddits,
   subscribedSubreddits,
   subredditRequests,

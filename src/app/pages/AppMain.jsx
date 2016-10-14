@@ -25,6 +25,7 @@ import ModalSwitch from 'app/components/ModalSwitch';
 import PostSubmitCommunityModal from 'app/components/PostSubmitCommunityModal';
 import PostSubmitModal from 'app/components/PostSubmitModal';
 import Register from 'app/components/Register';
+import SmartBanner from 'app/components/SmartBanner';
 import Toaster from 'app/components/Toaster';
 import TopNav from 'app/components/TopNav';
 
@@ -37,6 +38,7 @@ const AppMain = props => {
     isToasterOpen,
     isModalOpen,
     showDropdownCover,
+    showSmartBanner,
   } = props;
 
   if (statusCode !== 200) {
@@ -120,6 +122,7 @@ const AppMain = props => {
       { showDropdownCover ? <DropdownCover /> : null }
       { isToasterOpen ? <Toaster /> : null }
       { isModalOpen ? <ModalSwitch /> : null }
+      { showSmartBanner ? <SmartBanner /> : null }
     </div>
   );
 };
@@ -130,9 +133,18 @@ const selector = createSelector(
   state => !!state.widgets.tooltip.id,
   state => !!state.posting.captchaIden,
   state => !!state.modal.type,
-  (currentPage, isToasterOpen, isTooltipOpen, isCaptchaOpen, isModalOpen) => ({
+  state => state.smartBanner.showBanner,
+  (
+    currentPage,
+    isToasterOpen,
+    isTooltipOpen,
+    isCaptchaOpen,
+    isModalOpen,
+    showSmartBanner
+  ) => ({
     isModalOpen,
     isToasterOpen,
+    showSmartBanner,
     showDropdownCover: isTooltipOpen || isCaptchaOpen || isModalOpen,
     url: currentPage.url,
     referrer: currentPage.referrer,
