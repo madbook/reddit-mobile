@@ -92,6 +92,10 @@ export function Post(props) {
     z,
   } = props;
 
+  if (post.isBlankAd) {
+    // Return an empty div if it's a blank ad
+    return <div class='blankAd'/>;
+  }
 
   let thumbnailOrNil;
   if (compact) {
