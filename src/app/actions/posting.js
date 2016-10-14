@@ -3,6 +3,8 @@ import url from 'url';
 import { endpoints, errors } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
 
+import { getEventTracker } from 'lib/eventTracker';
+import { getBasePayload, buildSubredditData, convertId } from 'lib/eventUtils';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 
@@ -53,6 +55,8 @@ export const submitPost = data => async (dispatch, getState) => {
     dispatch({ type: SUCCESS });
     dispatch(platformActions.navigateToUrl('get', url.parse(json.data.url).path));
 
+    logPost(data, json, getState());
+
   } catch (e) {
     // This is a bit hacky. Sometimes users can bypass the captcha. What we do
     // is allow a submission attempt and if we fail with a bad captcha error, we
@@ -79,3 +83,19 @@ export const submitPost = data => async (dispatch, getState) => {
     }
   }
 };
+
+function logPost(data, resp, state) {
+  const isLinkPost = data.kind === 'link';
+  const metaKey = isLinkPost ? 'post_target_url' : 'post_body';
+
+  getEventTracker().track('submit_events', 'cs.submit', {
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
+    [metaKey]: data.meta,
+    post_target_domain: isLinkPost ? url.parse(data.meta).host : null,
+    post_title: data.title,
+    post_type: data.kind,
+    post_id: convertId(resp.name),
+    post_fullname: resp.name,
+  });
+}

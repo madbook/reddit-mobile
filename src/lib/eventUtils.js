@@ -40,6 +40,7 @@ export function getBasePayload(state) {
     domain,
     geoip_country: state.meta.country,
     user_agent: state.meta.userAgent,
+    base_url: state.platform.currentPage.url,
     referrer_domain: url.parse(referrer).host || domain,
     referrer_url: referrer,
     language: state.preferences.lang,
