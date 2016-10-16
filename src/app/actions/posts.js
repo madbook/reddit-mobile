@@ -87,7 +87,7 @@ export const failedUpdateSelfText = (postId, error) => ({
   type: FAILED_UPDATE_SELF_TEXT,
   thingId: postId,
   error,
-  message: 'Sorry, something went wrong with updating your post',
+  message: 'Sorry, something went wrong with updating your post.',
 });
 
 export const updateSelfText = (postId, newSelfText) => async (dispatch, getState) => {
