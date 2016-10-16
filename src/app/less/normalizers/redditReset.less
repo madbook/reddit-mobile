@@ -76,3 +76,13 @@ img {
 [role="button"] {
   cursor: pointer;
 }
+
+// iOS will automatically zoom in when an input is selected but not reset the
+// zoom level when the user is done. This allows for horizontal panning which
+// is not expected behavior from a UX perspective.
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea {
+  font-size: 16px;
+}
