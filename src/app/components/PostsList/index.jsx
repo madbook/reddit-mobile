@@ -9,8 +9,6 @@ import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
 import adLocationForPostRecords from 'lib/adLocationForPostRecords';
 
-import map from 'lodash/map';
-
 const T = React.PropTypes;
 
 export const PostsList = props => {
@@ -51,7 +49,7 @@ const renderPostsList = props => {
   const { postRecords, ad, adId, forceCompact, subredditIsNSFW } = props;
   const records = ad ? recordsWithAd(postRecords, ad) : postRecords;
 
-  return map(records, postRecord => {
+  return records.map((postRecord, index) => {
     const postId = postRecord.uuid;
 
     const postProps = {
@@ -63,7 +61,7 @@ const renderPostsList = props => {
 
     if (ad && postId === ad.uuid) {
       // Ad wants the adId for tracking the ad impression
-      return <Ad postProps={ postProps } adId={ adId } />;
+      return <Ad postProps={ postProps } adId={ adId } placementIndex={ index }/>;
     }
 
     return <Post { ...postProps } />;

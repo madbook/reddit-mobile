@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import config from 'config';
+
+import AdblockTester from 'app/components/AdblockTester';
 import GoogleTagManager from 'app/components/GoogleTagManager';
 
 // This component renders things that are needed for ads tracking.
@@ -24,6 +26,7 @@ export const AdsTracking = props => {
             subredditName={ subredditName }
           />
       }
+      <AdblockTester />
     </div>
   );
 };

@@ -2,6 +2,9 @@ import omit from 'lodash/omit';
 import values from 'lodash/values';
 import url from 'url';
 
+import { ADBLOCK_TEST_ID } from 'app/constants';
+
+import { isHidden } from 'lib/dom';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { getEventTracker } from 'lib/eventTracker';
 import * as gtm from 'lib/gtm';
@@ -47,6 +50,7 @@ export function getBasePayload(state) {
     language: state.preferences.lang,
     dnt: !!window.DO_NOT_TRACK,
     compact_view: state.compact,
+    adblock: hasAdblock(),
   };
 
   if (userAccount) {
@@ -100,4 +104,37 @@ const gtmPageView = state => {
     subreddit: currentPage.urlParams.subredditName || '',
     pathname: currentPage.url || '/',
   });
+};
+
+
+const hasAdblock = () => {
+  const adblockTester = document.getElementById(ADBLOCK_TEST_ID);
+  // If the div has been removed, they have adblock
+  if (!adblockTester) { return true; }
+
+  const rect = adblockTester.getBoundingClientRect();
+  if (!rect || !rect.height || !rect.width) {
+    return true;
+  }
+
+  return isHidden(adblockTester);
+};
+
+// Tracks the active blocking of an ad
+// method is how the ad was blocked
+// placementIndex is the position in the listview
+// state is the entire redux state
+export const logClientAdblock = (method, placementIndex, state) => {
+  if (process.env.ENV !== 'client') { return; }
+
+  const payload = {
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
+    method,
+    placement_type: 'native',
+    placement_index: placementIndex,
+    in_feed: placementIndex !== 0,
+  };
+
+  getEventTracker().track('ad_serving_events', 'cs.adblock', payload);
 };

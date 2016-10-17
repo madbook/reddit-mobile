@@ -4,11 +4,27 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import throttle from 'lodash/throttle';
 
+import { isHidden } from 'lib/dom';
+
 import * as adActions from 'app/actions/ads';
 import { TOP_NAV_HEIGHT } from 'app/constants';
 import Post from 'app/components/Post';
 
+const T = React.PropTypes;
+
 class Ad extends React.Component {
+  static propTypes = {
+    // ownProps
+    adId: T.string.isRequired,
+    placementIndex: T.number.isRequired,
+    postProps: T.object.isRequired,
+
+    // props from connect
+    adTracked: T.bool.isRequired,
+    onAdMadeImpression: T.func.isRequired,
+    onAdblockDetected: T.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -19,6 +35,7 @@ class Ad extends React.Component {
     if (!this.props.adTracked) {
       window.addEventListener('scroll', this.scrollListener);
       this.checkImpression(); // check manually in case the ad is visible on the first render
+      this.checkAdblock();
     }
   }
 
@@ -43,6 +60,12 @@ class Ad extends React.Component {
     }
   }
 
+  checkAdblock() {
+    if (isHidden(findDOMNode(this))) {
+      this.props.onAdblockDetected();
+    }
+  }
+
   render() {
     return <Post { ...this.props.postProps } />;
   }
@@ -53,8 +76,9 @@ const selector = createSelector(
   adRequest => ({ adTracked: adRequest.impressionTracked }),
 );
 
-const mapDispatchToProps = (dispatch, { adId }) => ({
+const mapDispatchToProps = (dispatch, { adId, placementIndex }) => ({
   onAdMadeImpression() { dispatch(adActions.track(adId)); },
+  onAdblockDetected() { dispatch(adActions.trackAdHidden(placementIndex)); },
 });
 
 export default connect(selector, mapDispatchToProps)(Ad);

@@ -2,6 +2,8 @@ export const AD_LOCATION = 11;
 
 export const GTM_JAIL_ID = 'gtm-jail';
 
+export const ADBLOCK_TEST_ID = 'adblock-test';
+
 export const TOGGLE_OVER_18 = 'toggleOver18';
 
 export const USER_MENU_TOGGLE = 'sideNavToggle';

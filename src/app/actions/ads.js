@@ -5,6 +5,7 @@ import config from 'config';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import adLocationForPostRecords from 'lib/adLocationForPostRecords';
+import { logClientAdblock } from 'lib/eventUtils';
 
 
 const { PostsEndpoint } = endpoints;
@@ -67,6 +68,14 @@ const trackAdPost = post => {
   });
 };
 
+// Used by Rendered Ads if they detect that adblock has hidden
+// they're content node. This only a thunk'd action because
+// `logClientAdblock` needs access to state
+// placementIndex -- the index in the post list
+export const trackAdHidden = placementIndex => async (dispatch, getState) => {
+  logClientAdblock('element-hidden', placementIndex, getState());
+};
+
 // For views that need to fetch ads, we need an id to track them.
 // We could use the id of the view (e.g. postsLists have a postsListId),
 // but maybe every view won't have an id like that or there might be collisions.
@@ -122,13 +131,14 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
   // on the page.
   const dt = postsList.results.map(record => record.uuid);
   const site = getSite(pageParams);
+  const placementIndex = adLocationForPostRecords(postsList.results);
 
   const data = {
     site,
     dt: dt.join(','),
     platform: 'mobile_web',
-    placement: `feed-${adLocationForPostRecords(postsList.results)}`,
-    raw_json: '1',
+    placement: `feed-${placementIndex}`,
+    raw_json: 1,
   };
 
   if (!state.session.accessToken) {
@@ -143,9 +153,15 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
     if (ad === null) {
       return dispatch(noAd(adId));
     }
-    
+
     dispatch(received(adId, ad));
   } catch (e) {
+    // A `status` of `0` means the request wasn't actually finished, likely
+    // due to adblock.
+    if (e.status === 0) {
+      logClientAdblock('endpoint-blocked', placementIndex, state);
+    }
+
     if (e instanceof ResponseError) {
       dispatch(failed(adId, e));
     } else {
