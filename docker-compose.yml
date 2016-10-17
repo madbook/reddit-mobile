@@ -14,5 +14,7 @@ services:
       dockerfile: Dockerfile.varnish
     ports:
     - "4301:80"
+    volumes:
+    - .:/etc/varnish
     depends_on:
     - mweb
