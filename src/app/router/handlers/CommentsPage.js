@@ -59,7 +59,7 @@ export default class CommentsPage extends BaseHandler {
 
     const commentsPageParams = CommentsPage.pageParamsToCommentsPageParams(this);
     const commentsPageId = paramsToCommentsPageId(commentsPageParams);
-    const { subredditName } = state.platform.currentPage.urlParams;
+    let { subredditName } = state.platform.currentPage.urlParams;
 
     await Promise.all([
       dispatch(commentsPageActions.fetchCommentsPage(commentsPageParams)),
@@ -67,11 +67,18 @@ export default class CommentsPage extends BaseHandler {
 
       dispatch(commentsPageActions.fetchRelevantContent()),
       dispatch(commentsPageActions.visitedCommentsPage(this.urlParams.postId)),
-      fetchRecommendedSubreddits(state, dispatch, subredditName),
-
       dispatch(subredditActions.fetchSubreddit(subredditName)),
+
     ]);
 
+    // if url does not include r/subredditName, then subredditName will be
+    // undefined, even if we are on a comments page. We can ascertain the
+    // subredditName by looking it up via postId
+    if (!subredditName) {
+      subredditName = getState().posts[`t3_${state.platform.currentPage.urlParams.postId}`].subreddit;
+    }
+
+    fetchRecommendedSubreddits(state, dispatch, subredditName);
     dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
 
     logClientScreenView(buildScreenViewData, getState());

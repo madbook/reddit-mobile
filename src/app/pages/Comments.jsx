@@ -65,10 +65,15 @@ const stateProps = createSelector(
     const postLoaded = !!post;
     const replying = currentPage.queryParams.commentReply === commentsPageParams.id;
 
-    const recommendedSubredditNames = recommendedSrs[currentPage.urlParams.subredditName] || [];
-    const recommendedSubreddits = recommendedSubredditNames.map(name => subreddits[name]);
+    let recommendedSubredditNames = [];
+    if (post && post.subreddit in recommendedSrs) {
+      recommendedSubredditNames = recommendedSrs[post.subreddit];
+    }
 
-    const currentSubreddit = subreddits[currentPage.urlParams.subredditName];
+    const recommendedSubreddits = recommendedSubredditNames.map(name => subreddits[name]);
+    // since we return early in the render function if !postLoaded, it's OK
+    // for currentSubreddit to be null here
+    const currentSubreddit = post ? post.subredditDetail : null;
 
     return {
       op: postLoaded ? post.author : '',
