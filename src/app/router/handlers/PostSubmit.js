@@ -4,7 +4,7 @@ import * as platformActions from '@r/platform/actions';
 import * as subredditActions from 'app/actions/subreddits';
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 import { fetchUserBasedData } from 'app/router/handlers/handlerCommon';
-import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
+import { trackPageEvents } from 'lib/eventUtils';
 
 export class PostSubmitHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -16,7 +16,7 @@ export class PostSubmitHandler extends BaseHandler {
 
     await fetchUserBasedData(dispatch);
 
-    logClientScreenView(getBasePayload, getState());
+    trackPageEvents(getState());
   }
 }
 
@@ -34,6 +34,6 @@ export class PostSubmitCommunityHandler extends BaseHandler {
 
     await fetchUserBasedData(dispatch);
 
-    logClientScreenView(getBasePayload, getState());
+    trackPageEvents(getState());
   }
 }

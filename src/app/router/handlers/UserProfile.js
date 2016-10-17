@@ -4,7 +4,7 @@ import { BaseHandler, METHODS } from '@r/platform/router';
 
 import * as accountActions from 'app/actions/accounts';
 import { fetchUserBasedData } from './handlerCommon';
-import { getBasePayload, convertId, logClientScreenView } from 'lib/eventUtils';
+import { convertId, trackPageEvents } from 'lib/eventUtils';
 
 export default class UserProfilerHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -18,11 +18,12 @@ export default class UserProfilerHandler extends BaseHandler {
       fetchUserBasedData(dispatch),
     ]);
 
-    logClientScreenView(buildScreenViewData, getState());
+    const latestState = getState();
+    trackPageEvents(latestState, buildAdditionalEventData(latestState));
   }
 }
 
-function buildScreenViewData(state) {
+function buildAdditionalEventData(state) {
   const { userName: name } = state.platform.currentPage.urlParams;
 
   // if a user doesn't exist, this check will catch it. We may want to track
@@ -43,6 +44,5 @@ function buildScreenViewData(state) {
     target_fullname: user.id,
     target_type: 'account',
     target_id: convertId(user.id),
-    ...getBasePayload(state),
   };
 }

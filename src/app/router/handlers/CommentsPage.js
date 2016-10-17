@@ -8,10 +8,10 @@ import * as commentsPageActions from 'app/actions/commentsPage';
 import * as subredditActions from 'app/actions/subreddits';
 import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
 import { flags } from 'app/constants';
-import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
 import features from 'app/featureFlags';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
 import { setTitle } from 'app/actions/pageMetadata';
+import { convertId, trackPageEvents } from 'lib/eventUtils';
 
 const {
   VARIANT_RECOMMENDED_TOP_PLAIN,
@@ -96,7 +96,8 @@ export default class CommentsPage extends BaseHandler {
 
     dispatch(setTitle(this.buildTitle(getState(), commentsPageId)));
 
-    logClientScreenView(buildScreenViewData, getState());
+    const latestState = getState();
+    trackPageEvents(latestState, buildAdditionalEventData(latestState));
   }
 }
 
@@ -115,7 +116,7 @@ const fetchRecommendedSubreddits = (state, dispatch, subredditName) => {
   dispatch(recommendedSubredditsActions.fetchRecommendedSubreddits(subredditName, max_recs));
 };
 
-function buildScreenViewData(state) {
+function buildAdditionalEventData(state) {
   const { currentPage: { queryParams, urlParams } } = state.platform;
   const fullName =`t3_${urlParams.postId}`;
   const post = state.posts[fullName];
@@ -126,12 +127,12 @@ function buildScreenViewData(state) {
 
   return cleanObject({
     target_fullname: fullName,
+    post_fullname: fullName,
     target_id: convertId(post.id),
     target_type: post.isSelf ? 'self' : 'link',
     target_sort: queryParams.sort || 'confidence',
     target_url: post.cleanUrl,
     target_filter_time: queryParams.sort === 'top' ? (queryParams.time || 'all') : null,
-    ...buildSubredditData(state),
-    ...getBasePayload(state),
+    target_created_ts: post.createdUTC * 1000,
   });
 }

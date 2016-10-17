@@ -9,7 +9,7 @@ import { FAKE_SUBS } from 'lib/isFakeSubreddit';
 import { cleanObject } from 'lib/cleanObject';
 import { listingTime } from 'lib/listingTime';
 import { fetchUserBasedData } from './handlerCommon';
-import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
+import { convertId, trackPageEvents } from 'lib/eventUtils';
 
 import { setTitle } from 'app/actions/pageMetadata';
 
@@ -64,7 +64,8 @@ export default class PostsFromSubreddit extends BaseHandler {
     dispatch(setStatus(getState().postsLists[postsListId].responseCode));
     dispatch(setTitle(this.buildTitle(getState(), subredditName)));
 
-    logClientScreenView(buildScreenViewData, getState());
+    const latestState = getState();
+    trackPageEvents(latestState, buildAdditionalEventData(latestState));
   }
 }
 
@@ -84,7 +85,7 @@ function buildSortOrderData(state) {
 }
 
 
-function buildScreenViewData(state) {
+function buildAdditionalEventData(state) {
   const { subredditName } = state.platform.currentPage.urlParams;
 
   let target_id = null;
@@ -121,8 +122,6 @@ function buildScreenViewData(state) {
     target_id,
     target_fullname,
     target_type: 'listing',
-    ...getBasePayload(state),
     ...buildSortOrderData(state),
-    ...buildSubredditData(state),
   });
 }

@@ -5,13 +5,13 @@ import { errors } from '@r/api-client';
 import { registerUser } from 'app/models/Register';
 import * as sessionActions from 'app/actions/session';
 import * as loginActions from 'app/actions/login';
-import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
 import { getEventTracker } from 'lib/eventTracker';
+import { getBasePayload, trackPageEvents } from 'lib/eventUtils';
 
 
 export default class Register extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
-    logClientScreenView(getBasePayload, getState());
+    trackPageEvents(getState());
   }
 
   async [METHODS.POST](dispatch, getState) {

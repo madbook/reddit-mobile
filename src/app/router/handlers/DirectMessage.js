@@ -3,7 +3,7 @@ import * as platformActions from '@r/platform/actions';
 
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 import { fetchUserBasedData } from './handlerCommon';
-import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
+import { trackPageEvents } from 'lib/eventUtils';
 
 export default class DirectMessage extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -12,6 +12,6 @@ export default class DirectMessage extends BaseHandler {
     }
     await fetchUserBasedData(dispatch);
 
-    logClientScreenView(getBasePayload, getState());
+    trackPageEvents(getState());
   }
 }

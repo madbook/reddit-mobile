@@ -4,7 +4,7 @@ import * as platformActions from '@r/platform/actions';
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 import * as mailActions from 'app/actions/mail';
 import { fetchUserBasedData } from './handlerCommon';
-import { getBasePayload, logClientScreenView } from 'lib/eventUtils';
+import { trackPageEvents } from 'lib/eventUtils';
 
 export default class Messages extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -17,6 +17,6 @@ export default class Messages extends BaseHandler {
 
     await fetchUserBasedData(dispatch);
 
-    logClientScreenView(getBasePayload, getState());
+    trackPageEvents(getState());
   }
 }
