@@ -1,5 +1,8 @@
-import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { endpoints, errors } from '@r/api-client';
+
+import { getEventTracker } from 'lib/eventTracker';
+import { getBasePayload, buildSubredditData } from 'lib/eventUtils';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';
 
 const { SearchEndpoint } = endpoints;
@@ -38,6 +41,19 @@ export const search = searchParams => async (dispatch, getState) => {
   try {
     const apiResponse = await SearchEndpoint.get(apiOptionsFromState(state), searchParams);
     dispatch(received(id, apiResponse));
+
+    const latestState = getState();
+    if (latestState.meta.env === 'CLIENT') {
+      getEventTracker().track('search_events', 'cs.search_executed', {
+        ...getBasePayload(latestState),
+        ...buildSubredditData(latestState),
+        query_string_length: searchParams.q.length,
+        interana_excluded: {
+          query_string: searchParams.q,
+        },
+      });
+    }
+
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(failed(id, e));

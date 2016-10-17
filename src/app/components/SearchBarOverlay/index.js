@@ -11,17 +11,17 @@ import SearchBar from './SearchBar';
 
 
 export const SearchBarOverlay = (props) => {
-  const { pageData, closeOverlay } = props;
+  const { pageData, closeSearchBar } = props;
   const { queryParams, urlParams } = pageData;
   const { subredditName } = urlParams;
   const { q: initialQuery } = queryParams;
 
   return (
-    <OverlayMenu fullscreen={ true }>
+    <OverlayMenu fullscreen={ true } onCloseOverlay={ closeSearchBar }>
       <div className='SearchBarOverlay__searchArea'>
         <div
           className='SearchBarOverlay__close'
-          onClick={ closeOverlay }
+          onClick={ closeSearchBar }
         >
           <span className='icon icon-nav-arrowback' />
         </div>
@@ -42,6 +42,6 @@ export default connect(
     (pageData) => ({ pageData }),
   ),
   dispatch => ({
-    closeOverlay() { dispatch(overlayActions.closeOverlay()); },
+    closeSearchBar: () => dispatch(overlayActions.closeSearchBar()),
   }),
 )(SearchBarOverlay);

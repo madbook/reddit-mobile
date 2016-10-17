@@ -47,8 +47,9 @@ export default class SearchBar extends React.Component {
         className='SearchBar'
         action={ '/search' }
       >
-        <input type='hidden' name='subreddit' value={ subreddit } />
+        <input key='search-hidden' type='hidden' name='subreddit' value={ subreddit } />
         <input
+          key='search'
           className='SearchBar__input'
           defaultValue={ initialValue }
           name='q'

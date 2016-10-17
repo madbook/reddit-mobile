@@ -42,7 +42,7 @@ export const TopNav = props => {
   const {
     toggleCommunityMenu,
     togglePostSubmit,
-    toggleSearchBar,
+    openSearchBar,
     toggleSettingsMenu,
   } = props;
 
@@ -78,7 +78,7 @@ export const TopNav = props => {
         </div>
         <div
           className='MobileButton TopNav-floaty'
-          onClick={ toggleSearchBar }
+          onClick={ openSearchBar }
         >
           <span className='icon icon-search icon-large' />
         </div>
@@ -117,7 +117,7 @@ const mapDispatchProps = dispatch => ({
       dispatch(platformActions.navigateToUrl(METHODS.GET, '/register'));
     }
   },
-  toggleSearchBar: () => { dispatch(overlayActions.toggleSearchBar()); },
+  openSearchBar: () => { dispatch(overlayActions.openSearchBar()); },
   toggleSettingsMenu: () => { dispatch(overlayActions.toggleSettingsMenu()); },
 });
 
@@ -128,7 +128,7 @@ const mergeProps = (stateProps, dispatchProps) => {
   return {
     ...stateProps,
     ...dispatchProps,
-    togglePostSubmit: () => { togglePostSubmit(isLoggedIn); },
+    togglePostSubmit: () => togglePostSubmit(isLoggedIn),
   };
 };
 
