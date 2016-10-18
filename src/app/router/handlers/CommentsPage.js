@@ -74,11 +74,15 @@ export default class CommentsPage extends BaseHandler {
     // if url does not include r/subredditName, then subredditName will be
     // undefined, even if we are on a comments page. We can ascertain the
     // subredditName by looking it up via postId
-    if (!subredditName) {
-      subredditName = getState().posts[`t3_${state.platform.currentPage.urlParams.postId}`].subreddit;
+    const post = getState().posts[`t3_${this.urlParams.postId}`];
+    if (!subredditName && post) {
+      subredditName = post.subreddit;
     }
 
-    fetchRecommendedSubreddits(state, dispatch, subredditName);
+    if (subredditName) {
+      fetchRecommendedSubreddits(state, dispatch, subredditName);
+    }
+
     dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
 
     logClientScreenView(buildScreenViewData, getState());
