@@ -20,7 +20,6 @@ const YEARS = 365 * DAYS; // ignoring leap years ...
 
 export const differenceFromNow = unixTime => {
   const now = new Date();
-  now.setMinutes(now.getMinutes(), -1 * now.getTimezoneOffset());
   // Get a diff of now versus the given time, but we assume negatives / in the future
   // shouldn't display with `-` signs everywhere. This should be safe because
   // in the context of most ui's this is probably what you want anyway.
