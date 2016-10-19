@@ -42,8 +42,8 @@ export const search = searchParams => async (dispatch, getState) => {
     const apiResponse = await SearchEndpoint.get(apiOptionsFromState(state), searchParams);
     dispatch(received(id, apiResponse));
 
-    const latestState = getState();
-    if (latestState.meta.env === 'CLIENT') {
+    if (process.env.ENV === 'client') {
+      const latestState = getState();
       getEventTracker().track('search_events', 'cs.search_executed', {
         ...getBasePayload(latestState),
         ...buildSubredditData(latestState),
