@@ -11,6 +11,7 @@ import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
 import editingText from './editingText';
+import euCookieNotice from './euCookieNotice';
 import expandedPosts from './expandedPosts';
 import hiddenRequests from './hiddenRequests';
 import loid from './loid';
@@ -55,8 +56,9 @@ export default {
   comments,
   commentsPages,
   compact,
-  expandedPosts,
   editingText,
+  euCookieNotice,
+  expandedPosts,
   hiddenRequests,
   loid,
   mail,

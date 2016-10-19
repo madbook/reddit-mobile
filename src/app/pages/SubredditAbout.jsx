@@ -27,7 +27,7 @@ export const SubredditAboutPage = props => {
   }
 
   return (
-    <div className='SubredditAboutPage BelowTopNav'>
+    <div className='SubredditAboutPage'>
       <CommunityHeader subredditName={ subredditName } />
       <SubredditAbout subredditName={ subredditName } />
     </div>

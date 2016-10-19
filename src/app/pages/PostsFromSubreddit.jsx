@@ -53,7 +53,7 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
     text: 'About this community',
   };
 
-  const className = 'PostsFromSubredditPage BelowTopNav';
+  const className = 'PostsFromSubredditPage';
 
   // If this subreddit is over18, then we need to show the NSFWInterstitial
   // before the user sees the actual content.

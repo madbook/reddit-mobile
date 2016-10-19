@@ -209,7 +209,7 @@ const _SearchPage = (props) => {
   const { pageData, searchRequest } = props;
 
   return (
-    <div className='SearchPage BelowTopNav'>
+    <div className='SearchPage'>
       { !searchRequest
         ? helpfulMsg()
         : searchRequest.loading

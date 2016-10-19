@@ -228,7 +228,7 @@ class _CommentsPage extends React.Component {
 
     if (!postLoaded) {
       return (
-        <div className='CommentsPage BelowTopNav'>
+        <div className='CommentsPage'>
           <Loading />
         </div>
       );
@@ -247,7 +247,7 @@ class _CommentsPage extends React.Component {
 
     return (
 
-      <div className='CommentsPage BelowTopNav'>
+      <div className='CommentsPage'>
         <SubNav />
         {
           feature.enabled(VARIANT_SUBREDDIT_HEADER) &&

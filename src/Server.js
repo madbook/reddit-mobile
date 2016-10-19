@@ -21,6 +21,7 @@ import refreshproxy from 'server/session/refreshproxy';
 import dispatchSession from 'server/session/dispatchSession';
 import dispatchAPIPassThroughHeaders from 'server/initialState/dispatchAPIPassThroughHeaders';
 import { dispatchInitialCompact } from 'server/initialState/dispatchInitialCompact';
+import dispatchInitialEUCookieNotice from 'server/initialState/dispatchInitialEUCookieNotice';
 import { dispatchInitialMeta } from 'server/initialState/dispatchInitialMeta';
 import { dispatchInitialOver18 } from 'server/initialState/dispatchInitialOver18';
 import { dispatchInitialTheme } from 'server/initialState/dispatchInitialTheme';
@@ -92,6 +93,7 @@ export function startServer() {
       dispatchInitialCollapsedComments(ctx, dispatch);
       dispatchInitialCompact(ctx, dispatch);
       dispatchInitialMeta(ctx, dispatch);
+      dispatchInitialEUCookieNotice(ctx, dispatch, getState);
       dispatchInitialOver18(ctx, dispatch);
       dispatchInitialRecentSubreddits(ctx, dispatch);
       await dispatchInitialUser(ctx, dispatch, getState);

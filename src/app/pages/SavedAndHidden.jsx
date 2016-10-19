@@ -14,11 +14,9 @@ export const SavedAndHiddenPage = props => {
     paramsToSavedRequestId(requestProps) : paramsToHiddenRequestid(requestProps);
 
   return (
-    <div className='BelowTopNav'>
-      <PostAndCommentList
-        requestLocation={ requestLocation }
-        requestId={ requestId }
-      />
-    </div>
+    <PostAndCommentList
+      requestLocation={ requestLocation }
+      requestId={ requestId }
+    />
   );
 };

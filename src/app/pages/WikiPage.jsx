@@ -26,7 +26,7 @@ export const WikiPage = props => {
   }
 
   return (
-    <div className='WikiPage BelowTopNav'>
+    <div className='WikiPage '>
       { subredditName ? <CommunityHeader subredditName={ subredditName } /> : null }
       <Wiki subredditName={ subredditName } path={ path } />
     </div>

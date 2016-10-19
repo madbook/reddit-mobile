@@ -32,7 +32,7 @@ const ErrorPage = props => {
   const errorContent = ERROR_MAP[String(props.status)] || ERROR_GENERIC;
 
   return (
-    <div className='ErrorPage BelowTopNav'>
+    <div className='ErrorPage'>
       <div className='ErrorPage__image' />
       <div className='ErrorPage__error'>{ errorContent } </div>
       <Anchor href={ href } className='ErrorPage__redirect-anchor'>

@@ -1,0 +1,31 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+.EUCookieNotice {
+  padding: @grid-size;
+
+  &__content {
+    .shadow;
+    padding-top: @half-grid-size;
+    padding-bottom: @half-grid-size;
+    padding-left: @grid-size;
+    padding-right: 2 * @grid-size;
+    position: relative;
+    border-radius: 3px;
+
+    .themeify({
+      border: @theme-border;
+    });
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &__link {
+    margin-left: 2px;
+  }
+}

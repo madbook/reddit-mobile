@@ -6,7 +6,6 @@ import { TooltipShutter } from '@r/widgets/tooltip';
 
 import AppMainPage from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';
-import { AppTopNav } from './components/AppTopNav';
 import CookieSync from './side-effect-components/CookieSync';
 import DomModifier from './side-effect-components/DomModifier';
 import LocalStorageSync from './side-effect-components/LocalStorageSync';
@@ -17,9 +16,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <AppTopNav />
-        <AppOverlayMenu />
         <AppMainPage />
+        <AppOverlayMenu />
         <UrlSync />
         <ScrollPositionSync />
         <CookieSync />
