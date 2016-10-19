@@ -95,11 +95,57 @@ MOBILE_BROWSER_UA = [
     # Firefox OS phone
     'Mozilla/5.0 (Mobile; rv:26.0) Gecko/26.0 Firefox/26.0',
 ]
+WHITELISTED_ROUTES = [
+    '/',
+    '/comments/',
+    '/login',
+    '/message/',
+    '/r/nba',
+    '/register/',
+    '/report',
+    '/search',
+    '/submit',
+    '/submit_to_community',
+    '/u/wting',
+    '/vote/',
+    '/help',
+    '/w',
+    '/wiki',
+    '/apple-app-site-association',
+    '/csp-report',
+    '/error',
+    '/favicon/64x64.png',
+    '/favicon.ico',
+    '/fonts/',
+    '/health',
+    '/img/',
+    '/loginproxy',
+    '/refreshproxy',
+    '/registerproxy',
+    '/logout',
+    '/ProductionClient.feijofejoiefjio12343.css',
+    '/ProductionClient.feijofejoiefjio12343.js',
+    '/robots.txt',
+    '/routes',
+    '/timings',
+    '/XXX?key=1239034&jijio132jio23',
+    '/u/XXX?key=1239034&jijio132jio23',
+]
+BLACKLISTED_ROUTES = [
+    '/gilded',
+    '/thebutton',
+]
 
 
 def is_mweb(resp):
     # We force www site to its own status code.
     return resp.status_code == 200
+
+
+def is_soft_mweb(resp):
+    # We're testing endpoints that may or may not exist, but really we just
+    # care if we're routing to the www backend instead of actually 200'ing.
+    return resp.status_code != 400
 
 
 def is_www(resp):
@@ -161,6 +207,22 @@ def test_cookie_override(user_agent_string, cookies, validation_fn):
     assert validation_fn(resp) is True
 
 
+@pytest.mark.parametrize(
+    'path, validation_fn',
+    chain(
+        zip(WHITELISTED_ROUTES, cycle([is_soft_mweb])),
+        zip(BLACKLISTED_ROUTES, cycle([is_www])),
+    )
+)
+def test_whitelisted_routes(path, validation_fn):
+    resp = requests.get(
+        'http://%s:%s%s' % (TEST_HOSTNAME, TEST_PORT, path),
+        headers={'User-Agent': MOBILE_BROWSER_UA[0]},
+        cookies=None,
+    )
+    assert validation_fn(resp) is True
+
+
 if __name__ == '__main__':
-    print('Run Python tests via tox.')
+    print('Make sure the docker-compose is up and run Python tests via tox.')
     sys.exit(1)

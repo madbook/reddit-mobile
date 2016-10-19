@@ -7,20 +7,69 @@ backend mweb {
     .port = "80";
 } */
 
+
 sub vcl_recv {
   call device_detect;
 
-  # NOTE(wting|2016-09-26): Normally we would redirect the user to different
-  # backends, but instead we're just returning rarely used status codes for
-  # easy programmatic testing.
-  if (req.http.Cookie !~ "(^|;\s*)(mweb-no-redirect=1)(;|$)"
-      && (req.http.X-UA-Device ~ "^mobile-" || req.http.X-UA-Device ~ "^tablet-")) {
+  # Check mweb override cookie.
+  if (req.http.Cookie ~ "(^|;\s*)(mweb-no-redirect=1)(;|$)") {
+    call set_www_backend;
+  } elsif (
+    (req.http.X-UA-Device ~ "^mobile-" || req.http.X-UA-Device ~ "^tablet-")
+    && (
+      # Blacklisted endpoints
+      # This endpoint 200's for mweb, but the current implementation has issues
+      req.url !~ "^/message/compose/?$"
+    )
+    && (
+      # Whitelisted 2X endpoints from router/index.js
+      req.url == "/"
+      || req.url ~ "^/actions/"
+      || req.url ~ "^/comments/?"
+      || req.url ~ "^/login/?$"
+      || req.url ~ "^/message/"
+      || req.url ~ "^/r/"
+      || req.url ~ "^/register/?$"
+      || req.url ~ "^/report/?$"
+      || req.url ~ "^/search/?$"
+      || req.url ~ "^/submit/?$"
+      || req.url ~ "^/submit_to_community/?$"
+      || req.url ~ "^/u/"
+      || req.url ~ "^/vote/"
+      || req.url ~ "^/(help|w|wiki)/?"
+      # Whitelisted 2X Ajax endpoints
+      || req.url ~ "^/csp-report$"
+      || req.url == "/error"
+      || req.url ~ "^/(login|refresh|register)proxy$"
+      || req.url ~ "^/logout"
+      || req.url == "/routes"
+      || req.url ~ "^/timings$"
+      || req.url ~ "^/(u/)?XXX\?.*"
+      # Whitelisted dev endpoints (these will be hosted on www in production)
+      || req.url == "/apple-app-site-association"
+      || req.url ~ "^/favicon/"
+      || req.url ~ "^/favicon\.ico"
+      || req.url ~ "^/fonts/"
+      || req.url == "/health"
+      || req.url ~ "^/img/"
+      || req.url ~ "^/ProductionClient\..*\.(css|js)$"
+      || req.url == "/robots.txt"
+  )) {
+    # If it's a mobile device and a whitelisted endpoint, use mweb.
     set req.backend = mweb;
   } else {
-    # set req.backend = www;
-    error 400;
+    call set_www_backend;
   }
 }
+
+
+sub set_www_backend {
+  # NOTE(wting|2016-09-26): Normally we would redirect the user to a different
+  # backend, but instead we're using a 400 status code for easy programmatic testing.
+  error 400;
+  # set req.backend = www;
+}
+
 
 # Vendorized from https://github.com/varnish/varnish-devicedetect/blob/master/devicedetect.vcl
 # BSD-2 License
