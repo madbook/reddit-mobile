@@ -1,7 +1,10 @@
 import frames from './frames';
 import { GTM_JAIL_ID } from 'app/constants';
 
-export const getGTMJail = () => document.getElementById(GTM_JAIL_ID);
+export const getGTMJail = () => {
+  const jailEL = document.getElementById(GTM_JAIL_ID);
+  return jailEL && jailEL.contentWindow ? jailEL : null;
+};
 
 export const trigger = (eventName, payload) => {
   const jailEl = getGTMJail();
