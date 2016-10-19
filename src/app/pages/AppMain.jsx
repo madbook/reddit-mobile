@@ -42,8 +42,16 @@ const AppMain = props => {
   } = props;
 
   if (statusCode !== 200) {
+    // NOTE: this manually renders TopNav, see below for an explanation
+    // of how TopNav rendering is working in general. It's manually rendered here
+    // instead of in `<ErrorPage />` as it seems easier to refactor out later
     return (
-      <ErrorPage status={ statusCode } url={ url } referrer={ referrer } />
+      <div className='AppMainPage'>
+        <TopNav />
+        <div className='BelowTopNav'>
+          <ErrorPage status={ statusCode } url={ url } referrer={ referrer } />
+        </div>
+      </div>
     );
   }
 
