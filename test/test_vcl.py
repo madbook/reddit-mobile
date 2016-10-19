@@ -98,13 +98,12 @@ MOBILE_BROWSER_UA = [
 
 
 def is_mweb(resp):
-    # We don't have a second backend to use, so instead we set a status code
-    # that means mobile UA detected.
-    return resp.status_code == 444
+    # We force www site to its own status code.
+    return resp.status_code == 200
 
 
 def is_www(resp):
-    return resp.status_code == 451
+    return resp.status_code == 400
 
 
 @pytest.mark.parametrize(

@@ -15,11 +15,10 @@ sub vcl_recv {
   # easy programmatic testing.
   if (req.http.Cookie !~ "(^|;\s*)(mweb-no-redirect=1)(;|$)"
       && (req.http.X-UA-Device ~ "^mobile-" || req.http.X-UA-Device ~ "^tablet-")) {
-    # set req.backend = mweb;
-    error 444;
+    set req.backend = mweb;
   } else {
     # set req.backend = www;
-    error 451;
+    error 400;
   }
 }
 
