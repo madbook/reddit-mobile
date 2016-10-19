@@ -4,9 +4,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { METHODS } from '@r/platform/router';
-import { Form, Anchor } from '@r/platform/components';
+import { Form, Anchor, BackAnchor } from '@r/platform/components';
 
 import * as sessionActions from 'app/actions/session';
+
+import goBackDest from 'lib/goBackDest';
 
 import SnooIcon from 'app/components/SnooIcon';
 import LoginInput from 'app/components/LoginRegistrationForm/Input';
@@ -74,9 +76,10 @@ class Login extends React.Component {
   }
 
   render() {
-    const { session } = this.props;
+    const { session, platform } = this.props;
     const { isPasswordField, password, username } = this.state;
     const passwordFieldType = isPasswordField ? 'password' : 'text';
+    const backDest = goBackDest(platform, ['/login', '/register']);
     const errorType = session ? session.error : null;
 
     const error = { username: '', password: '' };
@@ -86,6 +89,12 @@ class Login extends React.Component {
 
     return (
       <div className='Login'>
+        <div className='Register__header'>
+          <BackAnchor
+            className='Register__close icon icon-x'
+            href={ backDest }
+          />
+        </div>
         <SnooIcon />
         <div className='Login__register-link'>
           <p>
@@ -127,7 +136,7 @@ class Login extends React.Component {
               ? this.renderClear('clearPassword')
               : this.renderEye()
             }
-          </LoginInput >
+          </LoginInput>
           <div className='Login__submit'>
             <SquareButton text='LOG IN' type='submit'/>
           </div>
@@ -139,7 +148,8 @@ class Login extends React.Component {
 
 const mapStateToProps = createSelector(
   state => state.session,
-  session => ({ session }),
+  state => state.platform,
+  (session, platform) => ({ session, platform }),
 );
 
 const mapDispatchToProps = (dispatch) => ({

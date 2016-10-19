@@ -8,7 +8,17 @@
   text-align: center;
   position: relative;
 
-  &:before {
+  &__close {
+    float: left;
+    font-size: 32px;
+    font-weight: 800;
+  }
+
+  &__header {
+    height: 30px;
+  }
+
+  .SnooIcon:before {
     content: '';
     position: absolute;
     width: @size;

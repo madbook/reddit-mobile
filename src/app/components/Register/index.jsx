@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { METHODS } from '@r/platform/router';
-import { Anchor, Form } from '@r/platform/components';
+import { BackAnchor, Anchor, Form } from '@r/platform/components';
 
 import config from 'config';
 import * as sessionActions from 'app/actions/session';
+
+import goBackDest from 'lib/goBackDest';
 
 import { themes } from 'app/constants';
 import LoginInput from 'app/components/LoginRegistrationForm/Input';
@@ -91,6 +93,7 @@ class Register extends React.Component {
     this.state = {
       username: '',
       password: '',
+      isPasswordField: true,
       email: '',
       gRecaptchaResponse: '',
     };
@@ -102,6 +105,12 @@ class Register extends React.Component {
     this.updatePassword = this.updateField.bind(this, 'password');
     this.updateEmail = this.updateField.bind(this, 'email');
     this.setRecaptchaResponse = this.setRecaptchaResponse.bind(this);
+    this.toggleEye = this.toggleEye.bind(this);
+  }
+
+  toggleEye() {
+    const { isPasswordField } = this.state;
+    this.setState({ isPasswordField: !isPasswordField });
   }
 
   clearField(fieldName, e) {
@@ -119,6 +128,21 @@ class Register extends React.Component {
     this.setState({ gRecaptchaResponse: value });
   }
 
+  renderEye() {
+    const { isPasswordField } = this.state;
+    const blue = isPasswordField ? '' : 'blue';
+
+    return (
+      <button
+        type='button'
+        className='Register__input-action-btn'
+        onClick={ this.toggleEye }
+      >
+        <span className={ `icon icon-eye ${blue}` } />
+      </button>
+    );
+  }
+
   renderClear(methodName) {
     return (
       <button
@@ -132,14 +156,21 @@ class Register extends React.Component {
   }
 
   render() {
-    const { error, theme } = this.props;
-    const { username, password, email, gRecaptchaResponse } = this.state;
+    const { error, theme, platform } = this.props;
+    const { username, password, isPasswordField, email, gRecaptchaResponse } = this.state;
+    const passwordFieldType = isPasswordField ? 'password' : 'text';
+    const backDest = goBackDest(platform, ['/login', '/register']);
     const { recaptchaSitekey } = config;
-
     const captchaTheme = (theme === themes.DAYMODE) ? 'light' : 'dark';
 
     return (
       <div className='Register'>
+        <div className='Register__header'>
+          <BackAnchor
+            className='Register__close icon icon-x'
+            href={ backDest }
+          />
+        </div>
         <SnooIcon />
         <div className='Register__login-link'>
           <p>
@@ -162,15 +193,11 @@ class Register extends React.Component {
             onChange={ this.updateUsername }
             value={ username }
           >
-            {
-              error.username
-                ? this.renderClear('clearUsername')
-                : null
-            }
+            { error.username ? this.renderClear('clearUsername') : null }
           </LoginInput>
           <LoginInput
             name='password'
-            type='password'
+            type={ passwordFieldType }
             placeholder='Choose a unique password'
             showTopBorder={ false }
             shouldAutocomplete={ false }
@@ -181,7 +208,7 @@ class Register extends React.Component {
             {
               error.password
                 ? this.renderClear('clearPassword')
-                : null
+                : this.renderEye()
             }
           </LoginInput>
           <LoginInput
@@ -193,11 +220,7 @@ class Register extends React.Component {
             onChange={ this.updateEmail }
             value={ email }
           >
-            {
-              error.email
-                ? this.renderClear('clearEmail')
-                : null
-            }
+            { error.email ? this.renderClear('clearEmail') : null }
           </LoginInput>
           <label className='Register__checkbox-label'>
             <input
@@ -260,9 +283,11 @@ const checkErrors = session => {
 
 const mapStateToProps = createSelector(
   state => state.theme,
+  state => state.platform,
   state => state.session,
-  (theme, session) => ({
+  (theme, platform, session) => ({
     theme,
+    platform,
     error: checkErrors(session),
   })
 );
