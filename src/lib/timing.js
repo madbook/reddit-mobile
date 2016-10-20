@@ -2,9 +2,8 @@ import { DEFAULT_API_TIMEOUT } from 'app/constants';
 
 import makeRequest from './makeRequest';
 
-// We're getting all timings for now, but this is here for if/when
-// we decide to scale back (like '0.1' for 10% of users).
-const CLIENT_PERCENTAGE = 1.0;
+// Sample 10% of users
+const CLIENT_PERCENTAGE = 0.1;
 
 export function getTimes() {
   const performance = global.performance ||
