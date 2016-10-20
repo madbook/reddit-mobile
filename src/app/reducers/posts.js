@@ -17,6 +17,22 @@ import * as mailActions from 'app/actions/mail';
 
 const DEFAULT = {};
 
+// Helper function to maintain preview information, because it's inconsistent
+// depending on which api the post was received from initially
+const preservePostContentPreviews = (state, post) => {
+  const currentPost = state[post.uuid];
+  if (!currentPost) { return post; }
+
+  return post.set({
+    expandedContent: currentPost.expandedContent,
+    media: currentPost.media,
+    mediaOembed: currentPost.mediaOembed,
+    preview: currentPost.preview,
+    selfTextMD: currentPost.selfTextMD,
+    selfTextHTML: currentPost.selfTextHTML,
+  });
+};
+
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
     case loginActions.LOGGED_IN:
@@ -25,7 +41,6 @@ export default function(state=DEFAULT, action={}) {
     }
 
     case activitiesActions.RECEIVED_ACTIVITIES:
-    case commentsPageActions.RECEIVED_COMMENTS_PAGE:
     case postsListActions.RECEIVED_POSTS_LIST:
     case hiddenActions.RECEIVED_HIDDEN:
     case savedActions.RECEIVED_SAVED:
@@ -34,6 +49,7 @@ export default function(state=DEFAULT, action={}) {
       const { posts } = action.apiResponse;
       return mergeAPIModels(state, posts);
     }
+
 
     case postActions.TOGGLE_SAVE_RECEIVED:
     case postActions.TOGGLE_HIDE_RECEIVED: {
@@ -45,6 +61,21 @@ export default function(state=DEFAULT, action={}) {
     case voteActions.VOTED:
     case postActions.UPDATED_SELF_TEXT: {
       return mergeUpdatedModel(state, action, { restrictType: POST });
+    }
+
+    // Posts from the comments page api don't always have the same previews
+    // as that same post from the listings api. Preserve the previews so things
+    // don't disappear unexpectedly
+    case commentsPageActions.RECEIVED_COMMENTS_PAGE: {
+      const { posts } = action.apiResponse;
+      const newPosts = Object.keys(posts).reduce((newPosts, uuid) => {
+        return {
+          ...newPosts,
+          [uuid]: preservePostContentPreviews(state, posts[uuid]),
+        };
+      });
+
+      return mergeAPIModels(state, newPosts);
     }
 
     default: return state;
