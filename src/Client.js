@@ -12,6 +12,7 @@ import { isLocalStorageAvailable } from '@r/redux-state-archiver';
 import App from 'app';
 import config from 'config';
 import errorLog from 'lib/errorLog';
+import { initGoogleTagManager } from 'lib/gtm';
 import routes from 'app/router';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
@@ -27,6 +28,7 @@ let isShell;
 window.onload = () => {
   const endMount = Date.now();
   sendTimings(beginMount, endMount, isShell);
+  initGoogleTagManager(client.getState().platform.currentPage.urlParams.subredditName);
 };
 
 const ERROR_ENDPOINTS = {
