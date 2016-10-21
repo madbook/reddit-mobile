@@ -7,7 +7,7 @@ const BASE_VAL = {
   clickUrl: '',
 };
 
-const TWO_WEEKS = 2 * 7 * 24 * 60 * 60;
+const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
 
 const ALLOWED_PAGES = new Set([
   'index',
@@ -43,9 +43,9 @@ export function shouldShowBanner({ actionName, user, userAgent }={}) {
 
   // 2) Check if it's been dismissed recently
   const lastClosedStr = localStorage.getItem('bannerLastClosed');
-  const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : null;
-  const lastClosedLimit = Date.now() + TWO_WEEKS;
-  if (lastClosed && lastClosed < lastClosedLimit) {
+  const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : 0;
+  const lastClosedLimit = lastClosed + TWO_WEEKS;
+  if (lastClosedLimit > Date.now()) {
     return BASE_VAL;
   }
 
