@@ -1,6 +1,7 @@
 import merge from '@r/platform/merge';
 import * as platformActions from '@r/platform/actions';
 
+import * as replyActions from 'app/actions/reply';
 import * as commentActions from 'app/actions/comment';
 import * as toasterActions from 'app/actions/toaster';
 import * as postActions from 'app/actions/posts';
@@ -18,6 +19,7 @@ export const GENERIC_ERROR = 'Something went wrong.';
 
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
+    case replyActions.FAILURE:
     case commentActions.FAILED_UPDATE_BODY:
     case mailActions.FAILED_MESSAGE:
     case postActions.FAILED_UPDATE_SELF_TEXT:
@@ -35,6 +37,14 @@ export default function(state=DEFAULT, action={}) {
       return merge(state, {
         isOpen: true,
         type: toasterActions.TYPES.REPORT_SUCCESS,
+        message: action.message,
+      });
+    }
+
+    case replyActions.SUCCESS: {
+      return merge(state, {
+        isOpen: true,
+        type: toasterActions.TYPES.SUCCESS,
         message: action.message,
       });
     }

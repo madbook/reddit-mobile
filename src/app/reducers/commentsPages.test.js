@@ -188,7 +188,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
       });
 
       it('should add a new comment if its parent is the link_id', () => {
-        store.dispatch(replyActions.replied(COMMENT.parentId, COMMENT));
+        store.dispatch(replyActions.success(COMMENT.parentId, COMMENT));
 
         const { commentsPages } = store.getState();
         expect(commentsPages[COMMENTS_PAGE_ID].results).to.eql([ COMMENT_RECORD ]);
@@ -196,7 +196,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
 
       it('should not add a new comment if its parent is not the link_id', () => {
         const comment = merge(COMMENT, { parentId: 't3_notTheMama!' });
-        store.dispatch(replyActions.replied(comment.parentId, comment));
+        store.dispatch(replyActions.success(comment.parentId, comment));
 
         const { commentsPages } = store.getState();
         expect(commentsPages[COMMENTS_PAGE_ID].results).to.eql([]);

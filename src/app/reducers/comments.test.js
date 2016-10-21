@@ -118,7 +118,7 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(replyActions.replied(REPLY.parentId, REPLY));
+        store.dispatch(replyActions.success(REPLY.parentId, REPLY));
 
         const { comments } = store.getState();
         expect(comments).to.eql({
@@ -151,7 +151,7 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(replyActions.replied(POST_REPLY.parentId, POST_REPLY));
+        store.dispatch(replyActions.success(POST_REPLY.parentId, POST_REPLY));
         const { comments } = store.getState();
 
         expect(comments).to.eql({

@@ -1,6 +1,5 @@
 import { setStatus } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
 
 import { cleanObject } from 'lib/cleanObject';
@@ -8,7 +7,6 @@ import { fetchUserBasedData } from './handlerCommon';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as subredditActions from 'app/actions/subreddits';
 import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
-import * as replyActions from 'app/actions/reply';
 import { flags } from 'app/constants';
 import { getBasePayload, buildSubredditData, convertId, logClientScreenView } from 'lib/eventUtils';
 import features from 'app/featureFlags';
@@ -99,25 +97,6 @@ export default class CommentsPage extends BaseHandler {
     dispatch(setTitle(this.buildTitle(getState(), commentsPageId)));
 
     logClientScreenView(buildScreenViewData, getState());
-  }
-
-  async [METHODS.POST](dispatch, getState, { waitForState }) {
-    const { thingId, text } = this.bodyParams;
-
-    const state = getState();
-
-    if (!state.session.isValid) {
-      return dispatch(platformActions.setPage('/login'));
-    }
-
-    await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {
-      try {
-        dispatch(replyActions.reply(thingId, text));
-      } catch (e) {
-        console.log('Error commenting');
-        console.log(e);
-      }
-    });
   }
 }
 

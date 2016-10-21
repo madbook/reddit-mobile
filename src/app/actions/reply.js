@@ -8,32 +8,37 @@ import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 
 
-export const TOGGLE_REPLY_FORM = 'TOGGLE_REPLY_FORM';
-export const toggleReplyForm = id => ({ type: TOGGLE_REPLY_FORM, id });
+export const TOGGLE = 'REPLY__TOGGLE';
+export const SUCCESS = 'REPLY__SUCCESS';
+export const FAILURE = 'REPLY__FAILURE';
 
-export const REPLYING = 'REPLYING';
-export const replying = (id, text) => ({ type: REPLYING, id, text });
+export const toggle = parentId => ({ type: TOGGLE, parentId });
+export const success = (parentId, reply) => ({
+  parentId,
+  type: SUCCESS,
+  model: reply,
+  message: 'Comment added!',
+});
 
-export const REPLIED = 'REPLIED';
-export const replied = (id, model) => ({ type: REPLIED, id, model });
-
-export const reply = (id, text) => async (dispatch, getState) => {
+export const submit = (parentId, { text }) => async (dispatch, getState) => {
   const state = getState();
-  const replyText = text.trim();
+  const model = modelFromThingId(parentId, state);
 
-  if (!id || !replyText || state.replying[id]) { return; }
+  if (!model) {
+    dispatch({ type: FAILURE });
+    return;
+  }
 
-  const model = modelFromThingId(id, state);
-  if (!model) { return; }
+  try {
+    const apiResponse = await model.reply(apiOptionsFromState(state), text);
+    const reply = apiResponse.getModelFromRecord(apiResponse.results[0]);
 
-  dispatch(replying(id, text));
+    dispatch(success(parentId, reply));
 
-  const apiResponse = await model.reply(apiOptionsFromState(state), text);
-  // TODO the replyable mixin should just be returning a CommentModel from this...
-  const reply = apiResponse.getModelFromRecord(apiResponse.results[0]);
-  dispatch(replied(id, reply));
-
-  logReply(reply, getState());
+    logReply(reply, getState());
+  } catch (e) {
+    dispatch({ type: FAILURE });
+  }
 };
 
 

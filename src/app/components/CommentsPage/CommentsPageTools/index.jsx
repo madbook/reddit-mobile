@@ -14,7 +14,7 @@ const renderThreadNotice = (post, hasSingleComment) => {
   if (hasSingleComment) {
     message = (
       <div>
-        <span>You are viewing a single comment's thread. </span>
+        <span>You are viewing a single comment's thread.</span>
         <Anchor href={ post.cleanPermalink }>
           View the rest of the comments
         </Anchor>
@@ -38,17 +38,18 @@ const renderThreadNotice = (post, hasSingleComment) => {
 };
 
 
-export default ({
-  replying,
-  post,
-  hasSingleComment,
-  currentPage,
-  preferences,
-  id,
-  onSortChange,
-  onToggleReply,
-}) => {
-  const { queryParams: { sort } } = currentPage;
+export default props => {
+  const {
+    isReplying,
+    post,
+    hasSingleComment,
+    preferences,
+    id,
+    onSortChange,
+    onToggleReply,
+    currentPage: { queryParams: { sort } },
+  } = props;
+
   const archived = post ? post.archived : false;
   const locked = post ? post.locked : false;
   const commentingDisabled = archived || locked;
@@ -78,10 +79,9 @@ export default ({
         }
       </div>
       { post ? renderThreadNotice(post, hasSingleComment) : null }
-      { !replying ? null :
+      { !isReplying ? null :
         <div className='CommentsPage__replyForm'>
           <CommentReplyForm
-            currentPage={ currentPage }
             parentId={ id }
             onToggleReply={ onToggleReply }
           />

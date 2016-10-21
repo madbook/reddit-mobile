@@ -6,7 +6,7 @@ import { has } from 'lodash/object';
 import * as navigationActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
-import * as commentActions from 'app/actions/comment';
+import * as replyActions from 'app/actions/reply';
 import { flags } from 'app/constants';
 import { featuresSelector } from 'app/selectors/features';
 import crawlerRequestSelector from 'app/selectors/crawlerRequestSelector';
@@ -42,7 +42,7 @@ const stateProps = createSelector(
   state => state.recommendedSubreddits,
   state => state.subreddits,
   state => state.comments,
-  state => state.replyingComments,
+  state => state.replying,
   featuresSelector,
   crawlerRequestSelector,
   (
@@ -54,7 +54,7 @@ const stateProps = createSelector(
     recommendedSrs,
     subreddits,
     comments,
-    replyingComments,
+    replying,
     feature,
     isCrawlerRequest
   ) => {
@@ -66,7 +66,7 @@ const stateProps = createSelector(
       : commentsPage.results;
     const post = posts[commentsPageParams.id];
     const postLoaded = !!post;
-    const replying = replyingComments[commentsPageParams.id];
+    const isReplying = !!replying[commentsPageParams.id];
 
     let recommendedSubredditNames = [];
     if (post && post.subreddit in recommendedSrs) {
@@ -87,25 +87,22 @@ const stateProps = createSelector(
       topLevelComments,
       currentPage,
       preferences,
-      replying,
+      isReplying,
       feature,
       isCrawlerRequest,
       post,
       recommendedSubreddits,
       currentSubreddit,
       comments,
-      replyingComments,
     };
   },
 );
 
 const dispatchProps = dispatch => ({
-  navigateToUrl(url, query) {
-    dispatch(navigationActions.navigateToUrl(METHODS.GET, url, query));
-  },
-  onToggleReply (id) {
-    dispatch(commentActions.toggledReply(id));
-  },
+  navigateToUrl: (url, query) => dispatch(
+    navigationActions.navigateToUrl(METHODS.GET, url, query)
+  ),
+  onToggleReply: id => dispatch(replyActions.toggle(id)),
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
@@ -121,13 +118,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     });
   };
 
-  const toggledReply = () => onToggleReply(stateProps.post.name);
-
   return {
     ...stateProps,
     ...ownProps,
     onSortChange,
-    onToggleReply: toggledReply,
+    onToggleReply: () => onToggleReply(stateProps.post.name),
   };
 };
 
@@ -140,7 +135,7 @@ class _CommentsPage extends React.Component {
     commentsPageId: T.string,
     topLevelComments: T.arrayOf(T.object),
     currentPage: T.object,
-    replying: T.bool,
+    isReplying: T.bool,
     feature: T.object,
     isCrawlerRequest: T.bool,
     post: T.object,
@@ -226,7 +221,7 @@ class _CommentsPage extends React.Component {
       postLoaded,
       currentPage,
       preferences,
-      replying,
+      isReplying,
       feature,
       onSortChange,
       isCrawlerRequest,
@@ -274,7 +269,7 @@ class _CommentsPage extends React.Component {
         <Post postId={ commentsPageParams.id } single={ true } key='post' />
         <CommentsPageTools
           key='tools'
-          replying={ replying }
+          isReplying={ isReplying }
           post={ post }
           hasSingleComment={ has(commentsPageParams, 'query.comment') }
           currentPage={ currentPage }

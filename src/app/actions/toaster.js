@@ -1,5 +1,6 @@
 export const TYPES = {
   ERROR: 'ERROR',
+  SUCCESS: 'SUCCESS',
   REPORT_SUCCESS: 'REPORT_SUCCESS',
 };
 

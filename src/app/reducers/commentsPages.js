@@ -53,7 +53,7 @@ export default (state=DEFAULT, action={}) => {
       });
     }
 
-    case replyActions.REPLIED: {
+    case replyActions.SUCCESS: {
       // If the comment is in reply to a post, we have to update its comment page.
       // To simplify things we only look at the current comments page (which should be
       // the only page you're able to reply to). This is simpler because comment pages
@@ -64,7 +64,9 @@ export default (state=DEFAULT, action={}) => {
 
       const { model } = action;
       const currentPage = state[state.current];
-      if (!currentPage || currentPage.postId !== model.parentId) { return state; }
+      if (!currentPage || currentPage.postId !== model.parentId) {
+        return state;
+      }
 
       const newCommentRecord = model.toRecord();
       const topLevelComments = [newCommentRecord, ...currentPage.results];

@@ -59,6 +59,8 @@ function chooseBody(props) {
   switch (props.type) {
     case TYPES.ERROR:
       return renderDefaultBody(props, 'error', 'moose');
+    case TYPES.SUCCESS:
+      return renderDefaultBody(props, 'success', 'snoo');
     case TYPES.REPORT_SUCCESS:
       return renderDefaultBody(props, 'report-success', 'flag');
     default:

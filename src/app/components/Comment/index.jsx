@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 
 import mobilify from 'lib/mobilify';
+import * as replyActions from 'app/actions/reply';
 import * as commentActions from 'app/actions/comment';
 import * as reportingActions from 'app/actions/reporting';
 import { DEFAULT_COMMENT_REQUEST } from 'app/reducers/moreCommentsRequests';
@@ -169,12 +170,11 @@ function renderTools(props) {
 
 
 function renderCommentReply(props) {
-  const { savedReplyContent, comment, onToggleReply } = props;
+  const { comment, onToggleReply } = props;
   return (
     <CommentReplyForm
       onToggleReply= { onToggleReply }
       parentId={ comment.name }
-      savedReply={ savedReplyContent }
     />
   );
 }
@@ -274,7 +274,7 @@ const selector = createSelector(
   (state, props) => state.comments[props.commentId],
   (state, props) => state.moreCommentsRequests[props.commentId] || DEFAULT_COMMENT_REQUEST,
   (state, props) => !!state.collapsedComments[props.commentId],
-  (state, props) => !!state.replyingComments[props.commentId],
+  (state, props) => !!state.replying[props.commentId],
   (state, props) => state.editingText[props.commentId],
 
   (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, editingState) => {
@@ -309,7 +309,7 @@ const mapDispatchToProps = (dispatch, { commentId }) => ({
   onReportComment: () => dispatch(reportingActions.report(commentId)),
   onToggleReply: (e) => {
     e.preventDefault();
-    dispatch(commentActions.toggledReply(commentId));
+    dispatch(replyActions.toggle(commentId));
   },
 });
 

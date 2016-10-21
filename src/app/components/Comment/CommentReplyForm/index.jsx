@@ -1,75 +1,48 @@
 import './styles.less';
+
 import React from 'react';
-
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
-import { METHODS } from '@r/platform/router';
-import { Form } from '@r/platform/components';
+import { JSForm } from '@r/platform/components';
+
+import cx from 'lib/classNames';
+import * as replyActions from 'app/actions/reply';
 
 const T = React.PropTypes;
 
-export const closeButton = onToggleReply => {
-  return (
-    <span
-      className='CommentReplyForm__close icon icon-x Button m-linkbutton'
-      onClick={ onToggleReply }
-    />
-  );
-};
-
 export class CommentReplyForm extends React.Component {
   static propTypes = {
-    text: T.string,
-    onToggleReply: T.func,
-  };
-
-  static defaultProps = {
-    onToggleReply: () => {},
+    onToggleReply: T.func.isRequired,
   };
 
   constructor (props) {
     super(props);
 
     this.state = {
-      disableButton: !props.text,
-      text: props.text,
+      disableButton: true,
     };
   }
 
   onTextChange = (e) => {
-    this.setState({
-      text: e.target.value,
-      disableButton: !e.target.value,
-    });
+    this.setState({ disableButton: !e.target.value.trim() });
   }
 
   render () {
-    const { parentId, onToggleReply } = this.props;
-    const { disableButton, text } = this.state;
-
-    let buttonClass = 'Button';
-
-    if (disableButton) {
-      buttonClass += ' m-disabled';
-    }
+    const { onToggleReply, onSubmitReply } = this.props;
+    const { disableButton } = this.state;
+    const buttonClass = cx('Button', { 'm-disabled': disableButton });
 
     return (
-      <Form
-        action={ '/comments' }
-        method={ METHODS.POST }
-        className='CommentReplyForm'
-      >
-        <input type='hidden' name='thingId' value={ parentId } />
-
+      <JSForm onSubmit={ onSubmitReply } className='CommentReplyForm'>
         <div className='CommentReplyForm__textarea'>
-          <textarea className='TextField' name='text' onChange={ this.onTextChange }>
-            { text }
-          </textarea>
+          <textarea className='TextField' name='text' onChange={ this.onTextChange } />
         </div>
 
         <div className='CommentReplyForm__footer'>
-          { closeButton(onToggleReply) }
+          <span
+            className='CommentReplyForm__close icon icon-x Button m-linkbutton'
+            onClick={ onToggleReply }
+          />
 
           <div className='CommentReplyForm__button'>
             <button type='submit' className={ buttonClass } disabled={ disableButton }>
@@ -77,16 +50,13 @@ export class CommentReplyForm extends React.Component {
             </button>
           </div>
         </div>
-      </Form>
+      </JSForm>
     );
   }
 }
 
-const commentReplyFormSelector = createSelector(
-  [
-    (state, props) => props,
-    (state, props) => ({ replying: state.replying[props.parentId] }),
-  ], (props, replying) => ({ ... props, replying })
-);
+const mapDispatchToProps = (dispatch, { parentId }) => ({
+  onSubmitReply: text => dispatch(replyActions.submit(parentId, text)),
+});
 
-export default connect(commentReplyFormSelector)(CommentReplyForm);
+export default connect(null, mapDispatchToProps)(CommentReplyForm);

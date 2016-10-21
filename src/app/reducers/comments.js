@@ -46,7 +46,7 @@ export default function(state=DEFAULT, action={}) {
       return mergeAPIModels(state, { [comment.uuid]: comment });
     }
 
-    case replyActions.REPLIED: {
+    case replyActions.SUCCESS: {
       const { model } = action;
       const parentComment = state[model.parentId];
       if (!parentComment) {

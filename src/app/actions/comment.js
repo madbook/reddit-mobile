@@ -60,12 +60,6 @@ export const toggleCollapse = (id, collapse) => async (dispatch) => {
   dispatch(toggledCollapse(id, collapse));
 };
 
-export const TOGGLED_REPLY = 'COMMENT__TOGGLED_REPLY';
-export const toggledReply = (id, reply) => ({ type: TOGGLED_REPLY, id, reply });
-
-export const RESET_REPLY = 'COMMENT__RESET_REPLY';
-export const resetReply = reply => ({ type: RESET_REPLY, reply });
-
 export const RESET_COLLAPSE = 'COMMENT__RESET_COLLAPSE';
 export const resetCollapse = collapse => ({ type: RESET_COLLAPSE, collapse });
 
