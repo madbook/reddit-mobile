@@ -113,15 +113,6 @@ export default class CommentsPage extends BaseHandler {
     await waitForState(state => state.session.isValid && !state.sessionRefreshing, () => {
       try {
         dispatch(replyActions.reply(thingId, text));
-
-        // Go back to the state before the comment form was opened, if we can go
-        // back. Otherwise, redirect to the redirectUrl passed in.
-        if (history && state.platform.history.length) {
-          return history.go(-1);
-        }/* else {
-          // todo fix after implementing referrer
-          // dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
-        }*/
       } catch (e) {
         console.log('Error commenting');
         console.log(e);
