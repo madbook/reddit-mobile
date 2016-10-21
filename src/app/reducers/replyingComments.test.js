@@ -3,6 +3,7 @@ import createTest from '@r/platform/createTest';
 import replyingComments from './replyingComments';
 import * as commentActions from 'app/actions/comment';
 import * as loginActions from 'app/actions/login';
+import * as replyActions from 'app/actions/reply';
 
 createTest({ reducers: { replyingComments } }, ({ getStore, expect }) => {
   describe('replyingComments', () => {
@@ -57,6 +58,23 @@ createTest({ reducers: { replyingComments } }, ({ getStore, expect }) => {
 
         const { replyingComments } = store.getState();
         expect(replyingComments).to.eql({});
+      });
+    });
+
+    describe('REPLIED', () => {
+      it('should close the reply form when a reply response was received', () => {
+        const id = 1;
+        const text = '';
+
+        const { store } = getStore();
+        store.dispatch(commentActions.toggledReply(id, true));
+
+        let { replyingComments } = store.getState();
+        expect(replyingComments[id]).to.equal(true);
+
+        store.dispatch(replyActions.replied(id, text));
+        replyingComments = store.getState().replyingComments;
+        expect(replyingComments[id]).to.be.undefined;
       });
     });
   });
