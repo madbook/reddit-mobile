@@ -73,7 +73,7 @@ export default function(state=DEFAULT, action={}) {
           ...newPosts,
           [uuid]: preservePostContentPreviews(state, posts[uuid]),
         };
-      });
+      }, {});
 
       return mergeAPIModels(state, newPosts);
     }
