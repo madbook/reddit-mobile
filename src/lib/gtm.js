@@ -21,7 +21,7 @@ export const initGoogleTagManager = initialSubredditName => {
   const gtmJail = document.createElement('iframe');
   gtmJail.style.display = 'none';
   gtmJail.id = GTM_JAIL_ID;
-  gtmJail.frame = JSON.stringify({
+  gtmJail.name = JSON.stringify({
     subreddit: initialSubredditName || '',
     origin: location.origin,
     pathname: location.pathname,
