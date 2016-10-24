@@ -108,6 +108,13 @@ export function startServer() {
         await next();
         ctx.set('X-Frame-Options', 'SAMEORIGIN');
       },
+      async (ctx, next) => {
+        await next();
+        const redirectToDesktop = !!ctx.cookies.get('mweb-no-redirect');
+        if (redirectToDesktop) {
+          ctx.redirect(config.reddit);
+        }
+      },
     ],
     getServerRouter: router => {
       // middleware
