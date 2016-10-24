@@ -20,6 +20,8 @@ const DESKTOP_TRACKING_PARAMS = {
   utm_name: 'desktop_link',
 };
 
+const DESKTOP_REDIRECT_EXPIRY = 365;
+
 const userIconClassName = 'icon-user-account icon-large blue';
 
 
@@ -169,7 +171,10 @@ const mergeProps = stateProps => ({
   onGoToDesktop: () => {
     // this cookie is telling our CDN, "when you see the www url, do NOT
     // direct user to the mweb experience"
-    cookies.set('mweb-no-redirect', '1', { domain: config.rootReddit });
+    cookies.set('mweb-no-redirect', '1', {
+      domain: config.rootReddit,
+      expires: DESKTOP_REDIRECT_EXPIRY,
+    });
   },
 });
 

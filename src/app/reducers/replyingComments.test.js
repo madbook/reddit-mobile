@@ -74,7 +74,7 @@ createTest({ reducers: { replyingComments } }, ({ getStore, expect }) => {
 
         store.dispatch(replyActions.replied(id, text));
         replyingComments = store.getState().replyingComments;
-        expect(replyingComments[id]).to.be.undefined;
+        expect(replyingComments[id]).to.equal(undefined);
       });
     });
   });
