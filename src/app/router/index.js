@@ -5,7 +5,6 @@ import Login from './handlers/Login';
 import Register from './handlers/Register';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
 import OverlayMenuThemeToggleHandler from './handlers/OverlayMenuThemeToggle';
-import ReportHandler from './handlers/ReportHandler';
 import SavedAndHiddenHandler from './handlers/SavedAndHidden';
 import SearchPageHandler from './handlers/SearchPage';
 import SetOver18Handler from './handlers/SetOver18';
@@ -46,7 +45,6 @@ export default [
   ['/message/compose', DirectMessage],
   ['/message/:mailType', Messages],
   ['/message/messages/:threadId', Messages],
-  ['/report', ReportHandler],
   ['/r/:subredditName/submit', PostSubmitHandler],
   ['/submit', PostSubmitHandler],
   ['/submit/to_community', PostSubmitCommunityHandler],
