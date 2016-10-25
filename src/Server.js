@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import KoaStatic from 'koa-static';
 import cluster from 'cluster';
 import { cpus } from 'os';
+import urlParser from 'url';
 
 import Server from '@r/platform/Server';
 import { dispatchInitialShell } from '@r/platform/plugins';
@@ -112,7 +113,8 @@ export function startServer() {
         await next();
         const redirectToDesktop = !!ctx.cookies.get('mweb-no-redirect');
         if (redirectToDesktop) {
-          ctx.redirect(config.reddit);
+          const path = urlParser.parse(ctx.url).path;
+          ctx.redirect(config.reddit + path);
         }
       },
     ],
