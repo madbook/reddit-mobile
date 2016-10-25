@@ -104,7 +104,7 @@ class PostSubmitModal extends React.Component {
           rows='5'
           value={ this.props.meta }
           placeholder='Add your text...'
-          onChange={ this.onTextareaUpdate.bind(this) }
+          onChange={ this.props.onFieldUpdate.bind(this, 'meta') }
         />
       </div>
     );
@@ -142,15 +142,6 @@ class PostSubmitModal extends React.Component {
         </Anchor>
       </div>
     );
-  }
-
-  onTextareaUpdate(e) {
-    const { target } = e;
-    const { scrollHeight } = target;
-    const { height } = target.getBoundingClientRect();
-    target.style.height = scrollHeight > height ? scrollHeight : height;
-
-    this.props.onFieldUpdate('meta', e);
   }
 }
 
