@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { UrlSwitch, Page, Case } from '@r/platform/url';
 
-import { CommentsPage } from './Comments';
+import CommentsPage from './Comments';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';
 import { SavedAndHiddenPage } from './SavedAndHidden';
 import { SearchPage } from './SearchPage';

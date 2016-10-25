@@ -1,39 +1,46 @@
 import { models, errors } from '@r/api-client';
-const { ResponseError } = errors;
+import * as platformActions from '@r/platform/actions';
+
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import { LOGGEDOUT_REDIRECT } from 'app/constants';
 
 
-export const VOTED = 'VOTED';
-export const voted = (id, model) => ({
-  type: VOTED,
-  id,
-  model,
-});
+const { ResponseError } = errors;
 
-export const FAILED = 'VOTE_FAILED';
-export const voteFailed = (id, error) => ({
-  type: FAILED,
-  id,
-  error,
-});
+export const PENDING = 'VOTE__PENDING';
+export const SUCCESS = 'VOTE__SUCCESS';
+export const FAILURE = 'VOTE__FAILURE';
+
+export const pending = (id, model) => ({ type: PENDING, id, model });
+export const success = (id, model) => ({ type: SUCCESS, id, model });
+export const failure = direction => {
+  const voteWord = direction === 1 ? 'upvote' : 'downvote';
+  return {
+    type: FAILURE,
+    message: `Failed to ${voteWord} the comment.`,
+  };
+};
 
 export const vote = (id, direction) => async (dispatch, getState) => {
   const state = getState();
+  if (!state.session.isValid) {
+    dispatch(platformActions.setPage(LOGGEDOUT_REDIRECT));
+    return;
+  }
+
   const type = models.ModelTypes.thingType(id);
   const thing = state[`${type}s`][id];
 
   const stub = thing._vote(apiOptionsFromState(state), direction);
-  dispatch(voted(id, stub));
+  dispatch(pending(id, stub));
 
   try {
-    const resolved = await stub.promise();
-    dispatch(voted(id, resolved));
-  } catch (e) {
-    dispatch(voted(id, thing));
+    const model = await stub.promise();
+    dispatch(success(id, model));
 
-    if (e instanceof ResponseError) {
-      dispatch(voteFailed(id, e));
-    } else {
+  } catch (e) {
+    dispatch(failure(direction));
+    if (!(e instanceof ResponseError)) {
       throw e;
     }
   }

@@ -8,6 +8,7 @@ import * as postActions from 'app/actions/posts';
 import * as postingActions from 'app/actions/posting';
 import * as reportingActions from 'app/actions/reporting';
 import * as mailActions from 'app/actions/mail';
+import * as votingActions from 'app/actions/vote';
 
 const DEFAULT = {
   isOpen: false,
@@ -25,7 +26,8 @@ export default function(state=DEFAULT, action={}) {
     case postActions.FAILED_UPDATE_SELF_TEXT:
     case postingActions.FAILURE:
     case postingActions.VALIDATION_FAILURE:
-    case reportingActions.FAILURE: {
+    case reportingActions.FAILURE:
+    case votingActions.FAILURE: {
       return merge(state, {
         isOpen: true,
         type: toasterActions.TYPES.ERROR,

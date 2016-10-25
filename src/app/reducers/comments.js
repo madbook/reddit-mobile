@@ -68,7 +68,8 @@ export default function(state=DEFAULT, action={}) {
       });
     }
 
-    case voteActions.VOTED: {
+    case voteActions.PENDING:
+    case voteActions.SUCCESS: {
       return mergeUpdatedModel(state, action, { restrictType: COMMENT });
     }
 

@@ -5,7 +5,7 @@ import { models } from '@r/api-client';
 import { TooltipTarget } from '@r/widgets/tooltip';
 
 import PostDropdown from '../PostDropdown';
-import Vote from 'app/components/Vote';
+import VotingBox from 'app/components/VotingBox';
 
 const { PostModel } = models;
 
@@ -30,21 +30,8 @@ export default class PostFooter extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onScoreChanged = this.onScoreChanged.bind(this);
     this.onOpenDropdown = this.onOpenDropdown.bind(this);
     this.onDropdownClosed = this.onDropdownClosed.bind(this);
-    this.onScoreChanged = this.onScoreChanged.bind(this);
-    this.onUpVote = this.onVote.bind(this, 1);
-    this.onDownVote = this.onVote.bind(this, -1);
-
-    this.mounted = false; // not state as setState calls for updating
-    // would force a re-render. We want this to make sure animations
-    // are only rendered on the client _after_ the first render
-    // so there are no bounces when you go between pages
-  }
-
-  componentDidMount() {
-    this.mounted = true;
   }
 
   onOpenDropdown(e) {
@@ -53,17 +40,6 @@ export default class PostFooter extends React.Component {
 
   onDropdownClosed() {
     this.setState({ dropdownTarget: null });
-  }
-
-  onScoreChanged(/*voteController*/) {
-    // this.setState({
-    //   score: voteController.score,
-    //   voteDirection: voteController.voteDirection,
-    // });
-  }
-
-  onVote(/*direction*/) {
-    // this.voteController.userCastVote(direction);
   }
 
   renderCommentsLink(post) {
@@ -122,13 +98,11 @@ export default class PostFooter extends React.Component {
             <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'/>
           </TooltipTarget>
           <span className='PostFooter__vertical-divider' />
-          <Vote
+          <VotingBox
             thingId = { post.name }
-            classPrefix='PostFooter'
             score={ post.score }
             scoreHidden={ scoreHidden }
             voteDirection={ post.likes }
-            onUpvote={ this.onUpvote }
             hideDownvote={ hideDownvote }
           />
         </div>

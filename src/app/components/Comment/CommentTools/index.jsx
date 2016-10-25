@@ -2,7 +2,7 @@ import './styles.less';
 import React from 'react';
 import { TooltipTarget } from '@r/widgets/tooltip';
 
-import Vote from 'app/components/Vote';
+import VotingBox from 'app/components/VotingBox';
 import CommentDropdown from '../CommentDropdown';
 import cx from 'lib/classNames';
 
@@ -90,9 +90,8 @@ const renderSeashells = tooltipId => (
 );
 
 const renderVote = (id, score, scoreHidden, voteDirection, votingDisabled) => (
-  <Vote
+  <VotingBox
     thingId={ id }
-    classPrefix='CommentTools'
     score={ score }
     scoreHidden={ scoreHidden }
     voteDirection={ voteDirection }

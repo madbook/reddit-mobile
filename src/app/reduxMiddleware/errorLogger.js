@@ -112,7 +112,7 @@ const checkForSpecificErrors = action => {
     case subredditActions.FAILED:
     case subscribedSubredditActions.FETCH_FAILED:
     case subscribedSubredditActions.TOGGLE_FAILED:
-    case voteActions.FAILED:
+    case voteActions.FAILURE:
     case wikiActions.FAILED: {
       const { error } = action;
       if (error) {

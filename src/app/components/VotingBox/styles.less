@@ -1,0 +1,61 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+@import '~app/less/animations/voteBounce';
+
+.VotingBox {
+  display: inline-block;
+
+  &__upvote,
+  &__score,
+  &__downvote {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+
+    .themeify({
+      color: @theme-nav-icon-color;
+    });
+  }
+
+  &__upvote,
+  &__downvote {
+    &.icon {
+      font-size: 24px;
+      line-height: @min-hit-area;
+      width: @min-hit-area;
+    }
+  }
+
+  &__upvote {
+    &.m-animated {
+      .upvoteBounceAnimation;
+    }
+
+    &.upvoted {
+      color: @orangered;
+    }
+  }
+
+  &__downvote {
+    &.m-animated {
+      .downvoteBounceAnimation;
+    }
+
+    &.downvoted {
+      color: @periwinkle;
+    }
+  }
+
+  &__score {
+    min-width: 4 * @grid-size;
+    font-size: 14px;
+
+    &.upvoted {
+      color: @orangered;
+    }
+
+    &.downvoted {
+      color: @periwinkle;
+    }
+  }
+}

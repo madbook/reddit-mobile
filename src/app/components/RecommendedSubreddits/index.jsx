@@ -1,12 +1,12 @@
 import './styles.less';
 
+import url from 'url';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 
 import cx from 'lib/classNames';
-import url from 'url';
 
-export const RecommendedSubreddits = (props) => {
+export default function RecommendedSubreddits(props) {
   const { recommendedSubreddits, cssClass, variant, currentSubreddit } = props;
 
   let subredditListing, subredditHeader;
@@ -48,7 +48,7 @@ export const RecommendedSubreddits = (props) => {
     subredditListing = recommendedSubreddits.map((sr, index) => {
       return (
         <div className={ cssClass }>
-          <div 
+          <div
             className='subreddit-icon-image'
             style={ sr.iconImage
                     ? { 'backgroundImage': `url(${sr.iconImage})`,
@@ -78,7 +78,7 @@ export const RecommendedSubreddits = (props) => {
       { subredditListing }
     </div>
   );
-};
+}
 
 
 const addUtmTracking = (urlString, position, variant) => {

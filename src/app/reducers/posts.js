@@ -58,7 +58,8 @@ export default function(state=DEFAULT, action={}) {
     }
 
     case adActions.RECEIVED:
-    case voteActions.VOTED:
+    case voteActions.PENDING:
+    case voteActions.SUCCESS:
     case postActions.UPDATED_SELF_TEXT: {
       return mergeUpdatedModel(state, action, { restrictType: POST });
     }

@@ -14,7 +14,6 @@ import UserActivityHandler from './handlers/UserActivity';
 import UserProfilerHandler from './handlers/UserProfile';
 import DirectMessage from './handlers/DirectMessage';
 import Messages from './handlers/Messages';
-import Vote from './handlers/Vote';
 import WikiPageHandler from './handlers/WikiPage';
 import { PostSubmitHandler, PostSubmitCommunityHandler } from './handlers/PostSubmit';
 import UserRerouteHandler from './handlers/UserReroute';
@@ -50,7 +49,6 @@ export default [
   ['/submit/to_community', PostSubmitCommunityHandler],
 
   // actions
-  ['/vote/:thingId', Vote],
   ['/actions/community-goto', CommunityGotoActionHandler],
   ['/actions/overlay-compact-toggle', OverlayMenuCompactToggleHandler],
   ['/actions/overlay-theme-toggle', OverlayMenuThemeToggleHandler],
