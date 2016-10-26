@@ -19,9 +19,14 @@ const STIFFNESS = { stiffness: 400 };
 
 class Toaster extends React.Component {
   state = { isShowing: true };
+  closeTimeout = null;
 
   componentDidMount() {
-    setTimeout(() => this.setState({ isShowing: false }), CLOSE_TIMER);
+    this.closeTimeout = setTimeout(() => this.setState({ isShowing: false }), CLOSE_TIMER);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.closeTimeout);
   }
 
   render() {
