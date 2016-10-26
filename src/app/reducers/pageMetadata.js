@@ -2,7 +2,7 @@ import { SET_TITLE } from 'app/actions/pageMetadata';
 import * as platformActions from '@r/platform/actions';
 
 export const DEFAULT = {
-  title: 'Reddit: the Front Page of the Internet',
+  title: 'reddit: the front page of the internet',
 };
 
 export default (state=DEFAULT, action={}) => {

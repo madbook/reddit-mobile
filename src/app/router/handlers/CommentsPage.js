@@ -60,7 +60,7 @@ export default class CommentsPage extends BaseHandler {
     const post = state.posts[page.postId];
 
     if (post) {
-      return `Reddit - ${post.subreddit} - ${post.title}`;
+      return `${post.title} - ${post.subreddit}`;
     }
   }
 
