@@ -24,7 +24,7 @@ createTest({ reducers: { replying } }, ({ getStore, expect }) => {
 
     it('should set the reply state to false when submitted successfully', () => {
       const { store } = getStore({ replying: { [ID]: true } });
-      store.dispatch({ id: '1', type: replyActions.SUCCESS });
+      store.dispatch(replyActions.success(ID, {}));
 
       const { replying } = store.getState();
       expect(replying[ID]).to.be.equal(false);
