@@ -35,6 +35,7 @@ sub vcl_recv {
       || req.url ~ "^/submit/?$"
       || req.url ~ "^/submit_to_community/?$"
       || req.url ~ "^/u/"
+      || req.url ~ "^/user/"
       || req.url ~ "^/vote/"
       || req.url ~ "^/(help|w|wiki)/?"
       # Whitelisted 2X Ajax endpoints
