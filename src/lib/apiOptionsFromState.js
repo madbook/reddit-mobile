@@ -25,7 +25,7 @@ export const apiOptionsFromState = state => {
     }
 
     if (loidCreated) {
-      cookieHeaders.push(`loidcreated=${loidCreated}}`);
+      cookieHeaders.push(`loidcreated=${loidCreated}`);
     }
 
     return merge(options, {

@@ -25,7 +25,11 @@ export const dispatchInitialUser = async (ctx, dispatch, getState) => {
     ctx.cookies.set('loid', loid, options);
   }
 
-  if (loidCreated && (loidCreated !== oldLoidCreated)) {
+  // oldLoidCreated is always an ISO string, since that's how it's stored in the
+  // cookie. loidCreated, however, is in ms since that's how we get it back from
+  // the api. so, to compare the two, we need to convert loidCreated to an
+  // ISO string.
+  if (loidCreated && ((new Date(loidCreated)).toISOString() !== oldLoidCreated)) {
     ctx.cookies.set('loidcreated', new Date(loidCreated).toISOString(), options);
   }
 };
