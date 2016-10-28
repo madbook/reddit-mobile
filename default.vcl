@@ -16,6 +16,9 @@ sub vcl_recv {
     call set_www_backend;
   } elsif (
     (req.http.X-UA-Device ~ "^mobile-" || req.http.X-UA-Device ~ "^tablet-")
+    # We don't host endpoints with extensions in mweb.
+    # The Fastly equivalent is: && !req.url.ext
+    && !reg.url ~ "\/.+\.[a-z]{3,4}(\?.*|$)"
     && (
       # Blacklisted endpoints
       # This endpoint 200's for mweb, but the current implementation has issues
