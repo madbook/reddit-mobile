@@ -4,6 +4,7 @@ import KoaStatic from 'koa-static';
 import cluster from 'cluster';
 import { cpus } from 'os';
 import urlParser from 'url';
+import Raven from 'raven';
 
 import Server from '@r/platform/Server';
 import { dispatchInitialShell } from '@r/platform/plugins';
@@ -15,6 +16,7 @@ import routes from 'app/router';
 import main from 'server/templates/main';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
+import ravenMiddleware from 'app/reduxMiddleware/raven';
 import loginproxy from 'server/session/loginproxy';
 import logoutproxy from 'server/session/logoutproxy';
 import registerproxy from 'server/session/registerproxy';
@@ -37,6 +39,14 @@ import statsRouterMiddleware from 'server/meta/stats';
 
 import dispatchInitialCollapsedComments from
   'server/initialState/dispatchInitialCollapsedComments';
+
+Raven
+  .config(process.env.SENTRY_SERVER_PRIVATE_URL, {
+    release: __GLOBALS__.SENTRY_RELEASE_VERSION,
+    captureUnhandledRejections: true,
+    environment: process.env.NODE_ENV,
+  })
+  .install();
 
 const buildFiles = KoaStatic('build');
 const processes = process.env.PROCESSES || cpus().length;
@@ -89,7 +99,7 @@ export function startServer() {
     routes,
     template: main,
     reducers,
-    reduxMiddleware,
+    reduxMiddleware: [ravenMiddleware(Raven)].concat(reduxMiddleware),
     dispatchBeforeNavigation: async (ctx, dispatch, getState) => {
       dispatchInitialShell(ctx, dispatch);
       dispatchAPIPassThroughHeaders(ctx, dispatch);
