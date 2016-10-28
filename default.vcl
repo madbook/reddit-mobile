@@ -33,13 +33,11 @@ sub vcl_recv {
       || req.url ~ "^/message/"
       || req.url ~ "^/r/"
       || req.url ~ "^/register/?$"
-      || req.url ~ "^/report/?$"
       || req.url ~ "^/search/?$"
       || req.url ~ "^/submit/?$"
       || req.url ~ "^/submit_to_community/?$"
       || req.url ~ "^/u/"
       || req.url ~ "^/user/"
-      || req.url ~ "^/vote/"
       || req.url ~ "^/(help|w|wiki)/?"
       # Whitelisted 2X Ajax endpoints
       || req.url ~ "^/csp-report$"
