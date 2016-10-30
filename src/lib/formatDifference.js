@@ -15,7 +15,6 @@ const SECONDS = 1000;
 const MINUTES = 60 * SECONDS;
 const HOURS = 60 * MINUTES;
 const DAYS = 24 * HOURS;
-const MONTHS = 30 * DAYS; // ignoring odd 31 / 28 day months
 const YEARS = 365 * DAYS; // ignoring leap years ...
 
 export const differenceFromNow = unixTime => {
@@ -27,8 +26,7 @@ export const differenceFromNow = unixTime => {
 
   return {
     years: Math.floor(diff / YEARS),
-    months: Math.floor(diff % YEARS / MONTHS),
-    days: Math.floor(diff % MONTHS / DAYS),
+    days: Math.floor(diff % YEARS / DAYS),
     hours: Math.floor((diff % DAYS) / HOURS),
     minutes: Math.floor((diff % HOURS) / MINUTES),
   };
@@ -38,14 +36,10 @@ export const differenceFromNow = unixTime => {
 // that are returned from `differenceFromNow`
 export const formatPartsFromNow = (unixTime, format) => {
   const parts = [];
-  const { years, months, days, hours, minutes } = differenceFromNow(unixTime);
+  const { years, days, hours, minutes } = differenceFromNow(unixTime);
 
   if (years !== 0 && format.years) {
     parts.push(`${years}${format.years}`);
-  }
-
-  if (months !== 0 && format.months) {
-    parts.push(`${months}${format.months}`);
   }
 
   if (days !== 0 && format.days) {
@@ -71,7 +65,6 @@ export const short = unixTime => {
   // use short names for the parts, and only use the first part
   return formatPartsFromNow(unixTime, {
     years: 'y',
-    months: 'm',
     days: 'd',
     hours: 'h',
     minutes: 'm',
@@ -85,7 +78,6 @@ export const short = unixTime => {
 export const long = unixTime => {
   return formatPartsFromNow(unixTime, {
     years: ' years',
-    months: ' months',
     days: ' days',
   }).join(', ');
 };
