@@ -70,7 +70,7 @@ const config = () => ({
   localStorageAvailable: localStorageAvailable(),
 
   statsURL: process.env.STATS_URL || 'https://stats.redditmedia.com/',
-  reduxActionLogSize: process.env.REDUX_ACTION_LOG_SIZE || 50,
+  reduxActionLogSize: process.env.REDUX_ACTION_LOG_SIZE || 10,
   mediaDomain: process.env.MEDIA_DOMAIN || 'www.redditmedia.com',
   adsPath: process.env.ADS_PATH || '/api/request_promo.json',
   manifest: {},
