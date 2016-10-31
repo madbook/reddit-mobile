@@ -13,11 +13,11 @@ export const FAILURE = 'VOTE__FAILURE';
 
 export const pending = (id, model) => ({ type: PENDING, id, model });
 export const success = (id, model) => ({ type: SUCCESS, id, model });
-export const failure = direction => {
+export const failure = (direction, type) => {
   const voteWord = direction === 1 ? 'upvote' : 'downvote';
   return {
     type: FAILURE,
-    message: `Failed to ${voteWord} the comment.`,
+    message: `Failed to ${voteWord} the ${type}.`,
   };
 };
 
@@ -39,7 +39,7 @@ export const vote = (id, direction) => async (dispatch, getState) => {
     dispatch(success(id, model));
 
   } catch (e) {
-    dispatch(failure(direction));
+    dispatch(failure(direction, type));
     if (!(e instanceof ResponseError)) {
       throw e;
     }
