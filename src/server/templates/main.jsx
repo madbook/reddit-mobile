@@ -7,6 +7,7 @@ import manifest from '../../../build/manifest';
 import config from 'config';
 import { themeClass } from './themeClass';
 import createCanonicalLinkFromState from 'lib/createCanonicalLinkFromState';
+import createAmpHtmlLinkFromState from 'lib/createAmpHtmlLinkFromState';
 import safeStringify from 'lib/safeStringify';
 
 const env = process.env.NODE_ENV || 'production';
@@ -20,6 +21,10 @@ export default function(data, store) {
 
   const canonicalLink = !state.platform.shell
     ? createCanonicalLinkFromState(state)
+    : null;
+
+  const ampLink = !state.platform.shell
+    ? createAmpHtmlLinkFromState(state)
     : null;
 
   return ReactServerDom.renderToStaticMarkup(
@@ -37,6 +42,7 @@ export default function(data, store) {
         <link href={ `${assetPath}/favicon/152x152.png` } rel="apple-touch-icon" sizes="152x152" />
         <link href={ `${assetPath}/favicon/180x180.png` } rel="apple-touch-icon" sizes="180x180" />
         { canonicalLink ? <link rel='canonical' href={ canonicalLink }/> : null }
+        { ampLink ? <link rel='amphtml' href={ ampLink }/> : null }
       </head>
       <body className={ themeClass(data.theme) }>
         <div
