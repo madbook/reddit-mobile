@@ -1,6 +1,7 @@
 import CommentsPageHandler from './handlers/CommentsPage';
 import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
 import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
+import LiveRedirectHandler from './handlers/LiveRedirect';
 import Login from './handlers/Login';
 import Register from './handlers/Register';
 import OverlayMenuCompactToggleHandler from './handlers/OverlayMenuCompactToggle';
@@ -39,6 +40,7 @@ export default [
   ['/user/:userName/gild', UserProfilerHandler],
   ['/user/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
   ['/user/:userName', UserProfilerHandler, { name: 'user' }],
+  ['/live/*', LiveRedirectHandler ],
   ['/login', Login],
   ['/register', Register],
   ['/message/compose', DirectMessage],
