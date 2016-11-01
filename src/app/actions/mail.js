@@ -53,17 +53,17 @@ export const postMessage = data => async (dispatch, getState) => {
     return;
   }
 
-  if (message && message.parentId) {
-    // This is the case of replying to a message thread -- we get the
-    // model back from the new message.
+  if (message && message.firstMessageName) {
+    // This is the case of replying to a message thread -- we get the model
+    // back from the new message, and we add it to the head (firstMessageName).
     // Note: if it's null, then it was a new message thread
     const { messages } = getState();
-    const parent = messages[message.parentId];
+    const parent = messages[message.firstMessageName];
     const newParent = parent.set('replies', [...parent.replies, message.name]);
     const data = {
       messages: {
         [message.name]: message,
-        [message.parentId]: newParent,
+        [message.firstMessageName]: newParent,
       },
     };
     dispatch(addReply(data));

@@ -12,8 +12,9 @@ const T = React.PropTypes;
 
 export class MessageThread extends React.Component {
   static propTypes = {
+    headMessage: T.object.isRequired,
     messages: T.object.isRequired,
-    threadId: T.string.isRequired,
+    replyMessageId: T.string.isRequired,
   };
 
   constructor(props) {
@@ -41,13 +42,11 @@ export class MessageThread extends React.Component {
 
   render() {
     const {
+      headMessage,
       messages,
-      threadId,
+      replyMessageId,
     } = this.props;
     const { showForm } = this.state;
-
-    const headMessageId = `t4_${threadId}`;
-    const headMessage = messages[headMessageId];
 
     return (
       <div className='MessageThread'>
@@ -65,8 +64,8 @@ export class MessageThread extends React.Component {
           { this.renderMessage(headMessage) }
           { headMessage.replies.map(reply => this.renderMessage(messages[reply])) }
         </div>
-        { this.renderReplyToggle() }
-        { showForm ? this.renderForm(headMessageId) : null }
+        { replyMessageId ? this.renderReplyToggle() : null }
+        { (showForm && replyMessageId) ? this.renderForm(replyMessageId) : null }
       </div>
     );
   }
@@ -98,7 +97,7 @@ export class MessageThread extends React.Component {
     );
   }
 
-  renderForm(headMessageId) {
+  renderForm(messageId) {
     const { formBody } = this.state;
 
     return (
@@ -118,7 +117,7 @@ export class MessageThread extends React.Component {
           name='thingId'
           type='hidden'
           readOnly
-          value={ headMessageId }
+          value={ messageId }
         />
         <button
           className='MessageThread__formSubmit'
@@ -133,8 +132,10 @@ export class MessageThread extends React.Component {
 
 const selector = createSelector(
   state => state.messages,
-  messages => ({
+  state => state.user,
+  (messages, user) => ({
     messages,
+    user,
   })
 );
 
@@ -142,10 +143,32 @@ const mapDispatchToProps = dispatch => ({
   onFormSubmit: data => dispatch(mailActions.postMessage(data)),
 });
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  threadId: ownProps.urlParams.threadId,
-});
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const threadId = ownProps.urlParams.threadId;
+  const { messages, user } = stateProps;
+
+  const headMessageId = `t4_${threadId}`;
+  const headMessage = messages[headMessageId];
+
+  // We can only reply to a message thread if the other side has sent
+  // us a message. For example, if there's one message in the thread and
+  // the current user sent it, they can't send further messages until the
+  // other side sends a reply.
+
+  // Get the latest reply from the other side and we reply to that...
+  // First, copy and reverse all replies and add the head message id as well.
+  const recentMessageIds = [ ...headMessage.replies.slice().reverse(), headMessageId ];
+
+  // Find the most recent reply that's not from the user.
+  // If one isn't found, they can't reply, plain and simple.
+  const replyMessageId = recentMessageIds.find(id => messages[id].author !== user.name);
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    headMessage,
+    replyMessageId,
+  };
+};
 
 export default connect(selector, mapDispatchToProps, mergeProps)(MessageThread);
