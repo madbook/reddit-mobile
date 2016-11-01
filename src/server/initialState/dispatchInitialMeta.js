@@ -1,9 +1,11 @@
+import includes from 'lodash/includes';
+
 import config from 'config';
 import * as metaActions from 'app/actions/meta';
 
 function getCrawler(ctx) {
-  if (config.crawlerHeader) {
-    return ctx.headers[config.crawlerHeader];
+  if (includes(['google', 'bing'], ctx.headers['x-ua-device'])) {
+    return ctx.headers['x-ua-device'];
   }
   return null;
 }
