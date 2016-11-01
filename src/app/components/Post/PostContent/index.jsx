@@ -9,8 +9,10 @@ import mobilify from 'lib/mobilify';
 import gifToHTML5Sources from 'lib/gifToHTML5Sources';
 import { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
 
-import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 import EditForm from 'app/components/EditForm';
+import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
+import OutboundLink from 'app/components/OutboundLink';
+
 
 import {
   isPostNSFW,
@@ -157,8 +159,8 @@ export default class PostContent extends React.Component {
     const isCompact = this.isCompact();
     const { single, post, isDomainExternal } = this.props;
 
-    const outboundLink = cleanPostHREF(mobilify(post.cleanUrl));
-    const linkDescriptor = new LinkDescriptor(outboundLink, true);
+    const linkUrl = cleanPostHREF(mobilify(post.cleanUrl));
+    const linkDescriptor = new LinkDescriptor(linkUrl, true);
     const mediaContentNode = this.buildMediaContent(post, isCompact, linkDescriptor);
     const selftextNode = this.buildSelfTextContent(post, isCompact, single);
 
@@ -175,7 +177,7 @@ export default class PostContent extends React.Component {
       <div className={ `PostContent ${isCompact ? 'size-compact' : 'size-default'}` }>
         { this.renderMediaContent(
           mediaContentNode, isCompact, isDomainExternal, cleanPostDomain(post.domain),
-          outboundLink) }
+          linkUrl) }
         { selftextNode }
       </div>
     );
@@ -367,16 +369,17 @@ export default class PostContent extends React.Component {
   renderImageOfUnknownSize(imageURL, linkDescriptor, onClick, playbackControlNode, nsfwNode) {
     const linkClass = this.baseImageLinkClass(imageURL, !!nsfwNode);
     return (
-      <a
+      <OutboundLink
         className={ linkClass }
         href={ linkDescriptor.url }
         target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
+        outboundLink={ this.props.post.outboundLink }
       >
         <img className='PostContent__image-img' src={ imageURL } />
         { playbackControlNode }
         { nsfwNode }
-      </a>
+      </OutboundLink>
     );
   }
 
@@ -400,18 +403,19 @@ export default class PostContent extends React.Component {
     const isPlaying = this.state.playing && playbackControlNode; // make sure we're
     // really playing as opposed to showing the expanded compact version of the image
     return (
-      <a
+      <OutboundLink
         className={ linkClass }
         href={ linkDescriptor.url }
         target={ this.props.showLinksInNewTab ? '_blank' : null }
         onClick={ onClick }
         style={ style }
+        outboundLink={ this.props.post.outboundLink }
       >
         { isPlaying
           ? <img className='PostContent__inline-gif' src={ imageURL } />
           : playbackControlNode }
         { nsfwNode }
-      </a>
+      </OutboundLink>
     );
   }
 
@@ -502,10 +506,15 @@ export default class PostContent extends React.Component {
     const target = this.props.showLinksInNewTab ? '_blank' : null;
 
     return (
-      <a className='PostContent__link-bar' href={ href } target={ target }>
+      <OutboundLink
+        className='PostContent__link-bar'
+        href={ href }
+        target={ target }
+        outboundLink={ this.props.post.outboundLink }
+      >
         <span className='PostContent__link-bar-text'>{ displayText }</span>
         <span className='PostContent__link-bar-icon icon icon-linkout blue' />
-      </a>
+      </OutboundLink>
     );
   }
 

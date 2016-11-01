@@ -14,6 +14,8 @@ import {
   cleanPostHREF,
 } from '../postUtils';
 
+import OutboundLink from 'app/components/OutboundLink';
+
 const T = React.PropTypes;
 
 const SEPERATOR = (
@@ -268,9 +270,13 @@ function renderWithSeparators(nullableThings) {
 
 function renderPostDomain(post) {
   return (
-    <a className='PostHeader__author-link' href={ mobilify(post.cleanUrl) }>
+    <OutboundLink
+      className='PostHeader__author-link'
+      href={ mobilify(post.cleanUrl) }
+      outboundLink={ post.outboundLink }
+    >
       { cleanPostDomain(post.domain) }
-    </a>
+    </OutboundLink>
   );
 }
 
@@ -292,19 +298,24 @@ function renderDetailViewSubline(post, hideWhen) {
 }
 
 function renderPostHeaderLink(post, showLinksInNewTab) {
-  const url = cleanPostHREF(mobilify(post.cleanUrl));
+  const href = cleanPostHREF(mobilify(post.cleanUrl));
 
-  if (!url) {
+  if (!href) {
     return;
   }
 
   const target = showLinksInNewTab ? '_blank' : null;
 
   return (
-    <a className='PostHeader__post-link' href={ url } target={ target }>
+    <OutboundLink
+      className='PostHeader__post-link'
+      href={ href }
+      target={ target }
+      outboundLink={ post.outboundLink }
+    >
       { cleanPostDomain(post.domain) }
       <span className='PostHeader__post-link-icon icon icon-linkout blue' />
-    </a>
+    </OutboundLink>
   );
 }
 

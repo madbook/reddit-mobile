@@ -10,6 +10,11 @@ export default (ctx, dispatch) => {
     }
   });
 
+  // Manually add user-agent header so we forward it on the server-side
+  if (ctx.headers['user-agent']) {
+    headers['user-agent'] = ctx.headers['user-agent'];
+  }
+
   if (Object.keys(headers).length) {
     dispatch(apiRequestHeadersActions.set(headers));
   }
