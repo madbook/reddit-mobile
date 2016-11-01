@@ -176,7 +176,10 @@ const buildLogJSON = details => {
     url,
     line,
     column,
-    stack,
+    // We have a max limit of 4096 bytes per log line. To prevent log lines
+    // from overflowing and becoming invalid JSON, we're truncating the error
+    // stack or rejection response to the most relevant parts.
+    stack: stack.substring(0, 2048),
     possibleDuplicate,
   };
 };
