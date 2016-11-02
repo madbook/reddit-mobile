@@ -20,6 +20,9 @@ sub vcl_recv {
     # The Fastly equivalent is: && !req.url.ext
     && !reg.url ~ "\/.+\.[a-z]{3,4}(\?.*|$)"
     && (
+      # Blacklisted endpoints
+      req.url !~ "\.json$"
+    && (
       # Whitelisted 2X endpoints from router/index.js
       req.url == "/"
       || req.url ~ "^/actions/"
