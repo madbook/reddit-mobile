@@ -13,11 +13,15 @@ import { convertId, trackPageEvents } from 'lib/eventUtils';
 
 import { setTitle } from 'app/actions/pageMetadata';
 
+// NOTE: we're deprecating the query param `sort` in favor of its url param.
+// You'll find a couple places in this file that fallback to the query param
+// since those are still in the wild.
+
 export default class PostsFromSubreddit extends BaseHandler {
 
   static pageParamsToSubredditPostsParams({ urlParams, queryParams}) {
-    const { multi, multiUser } = urlParams;
-    const { sort, after, before } = queryParams;
+    const { multi, multiUser, sort } = urlParams;
+    const { after, before, sort: queryParamSort } = queryParams;
     let { subredditName } = urlParams;
     subredditName = subredditName ? subredditName.toLowerCase() : null;
 
@@ -25,7 +29,7 @@ export default class PostsFromSubreddit extends BaseHandler {
       subredditName,
       multi,
       multiUser,
-      sort,
+      sort: sort || queryParamSort,
       t: listingTime(queryParams, sort),
       after,
       before,
@@ -73,10 +77,12 @@ export default class PostsFromSubreddit extends BaseHandler {
 const LINK_LIMIT = 25;
 
 function buildSortOrderData(state) {
-  const { currentPage: { queryParams: { sort, time, before, after } } } = state.platform;
+  const { currentPage: { queryParams, urlParams } } = state.platform;
+  const { time, before, after } = queryParams;
+  const sort = urlParams.sort || queryParams.sort || 'hot';
 
   return {
-    target_sort: sort || 'hot',
+    target_sort: sort,
     target_count: LINK_LIMIT,
     target_filter_time: sort === 'top' ? (time || 'all') : null,
     target_before: before ? before : null,

@@ -87,37 +87,23 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { currentPage } = stateProps;
-  const { queryParams } = currentPage;
-  const { sort = SORTS.HOT } = queryParams;
+  const { currentPage: { url, urlParams, queryParams } } = stateProps;
+
+  const sort = urlParams.sort || queryParams.sort || SORTS.HOT;
   const time = ownProps.time || listingTime(queryParams, sort);
   const { navigateToUrl } = dispatchProps;
 
-  const onSortChange = sort => {
-    navigateToUrl(currentPage.url, {
-      queryParams: {
-        ...queryParams,
-        sort,
-      },
-    });
-  };
-
-  const onTimeChange = time => {
-    navigateToUrl(currentPage.url, {
-      queryParams: {
-        ...queryParams,
-        t: time,
-      },
-    });
-  };
-
   return {
-    ...stateProps,
-    ...ownProps,
-    onSortChange,
-    onTimeChange,
-    sort,
     time,
+    sort,
+    ...ownProps,
+    ...stateProps,
+    onTimeChange: time => navigateToUrl(url, { queryParams: { ...queryParams, t: time } }),
+    onSortChange: sort => {
+      // add the sort to the url by taking just the '/r/:subredditName' part
+      const newUrl = [ ...url.split('/').slice(0, 3), sort ].join('/');
+      navigateToUrl(newUrl);
+    },
   };
 };
 

@@ -1,3 +1,4 @@
+import { SUPPORTED_SORTS } from 'app/sortValues';
 import CommentsPageHandler from './handlers/CommentsPage';
 import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
 import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
@@ -20,6 +21,8 @@ import { PostSubmitHandler, PostSubmitCommunityHandler } from './handlers/PostSu
 import UserRerouteHandler from './handlers/UserReroute';
 import Status404PageHandler from './handlers/Status404Page';
 
+const SORTS = SUPPORTED_SORTS.join('|');
+
 /* eslint-disable max-len */
 export default [
   ['/', PostsFromSubredditHandler, { name: 'index' }],
@@ -31,6 +34,7 @@ export default [
   ['/search', SearchPageHandler],
   ['/r/:subredditName/search', SearchPageHandler],
   ['/r/:subredditName/about', SubredditAboutPageHandler],
+  [`/r/:subredditName/:sort(${SORTS})`, PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName/(w|wiki)/:path(.*)?', WikiPageHandler],
   ['/(help|w|wiki)/:path(.*)?', WikiPageHandler],
   ['/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],

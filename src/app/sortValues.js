@@ -18,6 +18,13 @@ export const SORTS = {
   PAST_HOUR: 'hour',
 };
 
+export const SUPPORTED_SORTS = [
+  SORTS.HOT,
+  SORTS.TOP,
+  SORTS.NEW,
+  SORTS.CONTROVERSIAL,
+];
+
 export const SORT_VALUES_MAP = {
   [SORTS.CONFIDENCE]: {
     text: 'Best',
