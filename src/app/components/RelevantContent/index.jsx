@@ -177,6 +177,8 @@ function RelevantContent(props) {
       />
     );
   }
+
+  return null;
 }
 
 const makeSelector = createSelector(

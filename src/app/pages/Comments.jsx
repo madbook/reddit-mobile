@@ -9,6 +9,7 @@ import { METHODS } from '@r/platform/router';
 import * as replyActions from 'app/actions/reply';
 import crawlerRequestSelector from 'app/selectors/crawlerRequestSelector';
 
+import RelevantContent from 'app/components/RelevantContent';
 import CommentsList from 'app/components/CommentsList';
 import CommentsPageTools from 'app/components/CommentsPage/CommentsPageTools';
 import GoogleCarouselMetadata from 'app/components/GoogleCarouselMetadata';
@@ -61,6 +62,8 @@ function CommentsPage(props) {
         onSortChange={ onSortChange }
         onToggleReply={ onToggleReply }
       />
+
+      <RelevantContent postId={ pageParams.id } />
 
       { !commentsPage || commentsPage.loading
         ? <Loading />
