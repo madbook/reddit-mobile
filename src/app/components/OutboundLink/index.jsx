@@ -67,7 +67,7 @@ function OutboundLink(props) {
         setOutboundURL(e.target, outboundLink, userId);
       } }
       onMouseLeave={ e => resetOriginalURL(e.target, href) }
-      onTouchStart={ e => setOutboundURL(e.target, href) }
+      onTouchStart={ e => setOutboundURL(e.target, outboundLink) }
     />
   );
 }
