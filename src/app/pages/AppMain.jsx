@@ -30,6 +30,8 @@ import SmartBanner from 'app/components/SmartBanner';
 import Toaster from 'app/components/Toaster';
 import TopNav from 'app/components/TopNav';
 
+const SORTS = SUPPORTED_SORTS.join('|');
+
 const AppMain = props => {
 
   const {
@@ -85,11 +87,15 @@ const AppMain = props => {
                     component={ PostsFromSubredditPage }
                   />
                   <Page
+                    url={ `/:sort(${SORTS})` }
+                    component={ PostsFromSubredditPage }
+                  />
+                  <Page
                     url='/r/:subredditName'
                     component={ PostsFromSubredditPage }
                   />
                   <Page
-                    url={ `/r/:subredditName/:sort(${SUPPORTED_SORTS.join('|')})` }
+                    url={ `/r/:subredditName/:sort(${SORTS})` }
                     component={ PostsFromSubredditPage }
                   />
                   <Page

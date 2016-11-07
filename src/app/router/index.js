@@ -26,6 +26,7 @@ const SORTS = SUPPORTED_SORTS.join('|');
 /* eslint-disable max-len */
 export default [
   ['/', PostsFromSubredditHandler, { name: 'index' }],
+  [`/:sort(${SORTS})`, PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName', PostsFromSubredditHandler, { name: 'listing' }],
   ['/user/:user/m/:multi', PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName/comments/:postId/comment/:commentId', CommentsPageHandler, { name: 'comments' }],

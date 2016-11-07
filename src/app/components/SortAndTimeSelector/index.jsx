@@ -100,9 +100,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     onTimeChange: time => navigateToUrl(url, { queryParams: { ...queryParams, t: time } }),
     onSortChange: sort => {
-      // add the sort to the url by taking just the '/r/:subredditName' part
-      const newUrl = [ ...url.split('/').slice(0, 3), sort ].join('/');
-      navigateToUrl(newUrl);
+      const { subredditName } = urlParams;
+      const baseUrl = subredditName ? `/r/${subredditName}` : '';
+      navigateToUrl(`${baseUrl}/${sort}`);
     },
   };
 };
