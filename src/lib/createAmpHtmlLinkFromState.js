@@ -2,7 +2,19 @@ import { matchRoute } from '@r/platform/navigationMiddleware';
 
 import config from 'config';
 
+import { flags } from 'app/constants';
+import features from 'app/featureFlags';
+
+const {
+  SHOW_AMP_LINK,
+} = flags;
+
 export const ampLink = (currentPage, state) => {
+  const feature = features.withContext({ state });
+  if (!feature.enabled(SHOW_AMP_LINK)) {
+    return null;
+  }
+
   const { postId } = currentPage.urlParams;
   const post = state.posts[`t3_${postId}`];
   if (!post || !post.cleanPermalink) {

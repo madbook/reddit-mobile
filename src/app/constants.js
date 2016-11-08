@@ -96,6 +96,7 @@ export const flags = {
   VARIANT_XPROMO_CLICK: 'experimentXPromoClick',
   VARIANT_TITLE_EXPANDO: 'experimentTitleExpando',
   VARIANT_MIXED_VIEW: 'experimentMixedView',
+  SHOW_AMP_LINK: 'showAmpLink',
 };
 
 export const themes = {

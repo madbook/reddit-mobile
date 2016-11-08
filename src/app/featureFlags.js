@@ -1,9 +1,11 @@
 import Flags from '@r/flags';
 import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
+import sha1 from 'sha1';
 
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
+import getContentId from 'lib/getContentIdFromState';
 import url from 'url';
 import { getEventTracker } from 'lib/eventTracker';
 import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
@@ -27,6 +29,7 @@ const {
   VARIANT_XPROMO_CLICK,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
+  SHOW_AMP_LINK,
 } = flagConstants;
 
 const config = {
@@ -170,6 +173,13 @@ const config = {
         { url: 'mixedview'},
       ] },
     ],
+  },
+  [SHOW_AMP_LINK]: {
+    url: 'showamplink',
+    pageBucketPercent: {
+      seed: 'showamplink',
+      percentage: 2,
+    },
   },
 };
 
@@ -323,6 +333,47 @@ flags.addRule('allowedDevices', function (allowed) {
 flags.addRule('notOptedOut', function (flag) {
   const optedOut = this.state.optOuts[flag];
   return !optedOut;
+});
+
+// NOTE (prashant.singh - 07 November 2016): This is interim functionality to
+// allow simple feature flagging for a percentage of pages. It should not be
+// used for true page or user experiments.
+// Bucket pages based on content ID, using granularity of 1/10th of a percent.
+flags.addRule('pageBucketPercent', function(config) {
+  const { seed, percentage } = config;
+  const contentId = getContentId(this.state);
+  const hashed = sha1(`${seed}${contentId}`);
+
+  // hashed is a 160-bit number expressed as a hex string.
+  // We want to find (hashed % 1000), so we can map the hash to bucket sizes
+  // with 0.1% granularity. We can't work directly with 160-bit values as
+  // JavaScript Numbers, so we compute the modulo in pieces.
+  // piece3 is the most significant 10 hex digits (40 bits) of the 160-bit
+  // value `hashed` (left shift of 120 bits).
+  // piece2 is the 10 next most significant hex digits of hashed (left shift of
+  // 80 bits).
+  // and so on for piece1 and piece0.
+  const piece3 = parseInt(hashed.slice(0,10), 16);
+  const piece2 = parseInt(hashed.slice(10,20), 16);
+  const piece1 = parseInt(hashed.slice(20,30), 16);
+  const piece0 = parseInt(hashed.slice(30,40), 16);
+  // So hashed = piece3 * 2^120 + piece2 * 2^80 + piece1 * 2^40 + piece1 * 2^0.
+  // And hashed mod 1000 =
+  // (((piece3 mod 1000) * (2^120 mod 1000) mod 1000) +
+  //  ((piece2 mod 1000) * (2^80 mod 1000) mod 1000) +
+  //  ((piece1 mod 1000) * (2^40 mod 1000) mod 1000) +
+  //  (piece0 mod 1000)) mod 1000
+  // 2^120 mod 1000 = 576
+  // 2^80 mod 1000 = 176
+  // 2^40 mod 1000 = 776
+  const val =
+    (((piece3 % 1000)*576 % 1000) +
+      ((piece2 % 1000)*176 % 1000) +
+      ((piece1 % 1000)*776 % 1000) +
+      (piece0 % 1000)
+    ) % 1000;
+
+  return val <= 10 * percentage;
 });
 
 export default flags;
