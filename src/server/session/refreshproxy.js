@@ -2,14 +2,12 @@ import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
 export default (router, apiOptions) => {
-  router.post('/refreshproxy', async (ctx) => {
+  router.post('/refreshproxy', async (ctx/*, next*/) => {
     const { refreshToken } = ctx.request.body;
 
     try {
       // refresh the token
-      const data = await PrivateAPI.refreshToken(
-        apiOptions, refreshToken, ctx.orderedHeaders, ctx.headers['user-agent']
-      );
+      const data = await PrivateAPI.refreshToken(apiOptions, refreshToken);
 
       // writeSessionToResponse will also set the cookies
       writeSessionToResponse(ctx, { ...data, refresh_token: refreshToken });
