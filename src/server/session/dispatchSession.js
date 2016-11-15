@@ -47,7 +47,9 @@ export default async (ctx, dispatch, apiOptions) => {
 
   if (!session && redditSession) {
     const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
-    sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(apiOptions, cookies));
+    sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(
+      apiOptions, cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
+    ));
     session = new Session(sessionData);
 
     // since we converted a legacy session into a 2X token, we want to make sure
@@ -58,7 +60,10 @@ export default async (ctx, dispatch, apiOptions) => {
   // if the session is invalid, try to use the refresh token to grab a new
   // session.
   if (session && sessionData && !session.isValid) {
-    const data = await PrivateAPI.refreshToken(apiOptions, sessionData.refreshToken);
+    const data = await PrivateAPI.refreshToken(
+      apiOptions, sessionData.refreshToken, ctx.orderedHeaders, ctx.headers['user-agent']
+    );
+
     session = makeSessionFromData({
       ...data,
       // use the newest refresh token we have available,

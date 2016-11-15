@@ -106,6 +106,12 @@ export function startServer() {
     preRouteServerMiddleware: [
       buildFiles,
       async (ctx, next) => {
+        // This strategy recommended by node docs
+        // https://nodejs.org/api/http.html#http_message_rawheaders
+        ctx.orderedHeaders = ctx.req.rawHeaders.filter((_, i) => i % 2 === 0);
+        await next();
+      },
+      async (ctx, next) => {
         await next();
         ctx.set('X-Frame-Options', 'SAMEORIGIN');
       },
