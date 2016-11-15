@@ -5,12 +5,14 @@ import { logServerError } from 'lib/errorLog';
 
 
 export default (router, apiOptions) => {
-  router.post('/loginproxy', async (ctx/*, next*/) => {
+  router.post('/loginproxy', async (ctx) => {
     const { username, password } = ctx.request.body;
 
     try {
       // try to grab a session from the api
-      const data = await PrivateAPI.login(apiOptions, username, password);
+      const data = await PrivateAPI.login(
+        apiOptions, username, password, ctx.orderedHeaders, ctx.headers['user-agent'],
+      );
 
       // writeSessionToResponse will set the cookies
       writeSessionToResponse(ctx, data);

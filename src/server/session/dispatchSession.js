@@ -47,7 +47,9 @@ export default async (ctx, dispatch, apiOptions) => {
 
   if (!session && redditSession) {
     const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
-    sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(apiOptions, cookies));
+    sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(
+      apiOptions, cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
+    ));
     session = new Session(sessionData);
 
     // since we converted a legacy session into a 2X token, we want to make sure
