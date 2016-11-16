@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
+import { Anchor } from '@r/platform/components';
 
 import mobilify from 'lib/mobilify';
 import * as replyActions from 'app/actions/reply';
@@ -109,11 +110,8 @@ function renderFooter(props) {
     preview,
   } = props;
 
-  // it's possible to have a comment with no visible replies but a load more button
-  // NOTE: this comment should have loadMoreIds field and doesn't so this is a
-  // hack for the time being. I'm going to address this in a follow up patch.
-  const { replies, loadMoreIds } = comment;
-  const showReplies = replies.length || (loadMoreIds && loadMoreIds.length);
+  const { replies, loadMoreIds, canContinueThread } = comment;
+  const showReplies = replies.length || loadMoreIds || canContinueThread;
 
   return [
     !commentDeleted ? renderTools(props) : null,
@@ -182,6 +180,7 @@ function renderCommentReply(props) {
 
 function renderReplies(props) {
   const { comment, nestingLevel, commentCollapsed } = props;
+  const { replies, loadMore, canContinueThread } = comment;
 
   const className = cx('Comment__replies', {
     'm-hidden': commentCollapsed,
@@ -190,8 +189,9 @@ function renderReplies(props) {
 
   return (
     <div className={ className }>
-      { comment.replies.length ? renderCommentsList(props) : null }
-      { comment.loadMoreIds.length ? renderMoreCommentsButton(props) : null }
+      { replies.length ? renderCommentsList(props) : null }
+      { loadMore && !canContinueThread ? renderMoreCommentsButton(props) : null }
+      { canContinueThread ? renderContinueThread(props) : null }
     </div>
   );
 }
@@ -219,6 +219,21 @@ function renderMoreCommentsButton(props) {
     <div className='Comment__loadMore' onClick={ onLoadMore }>
       <div className='icon icon-caron-circled' />
       <span className='Comment__loadMore-text'>{ loadingText }</span>
+    </div>
+  );
+}
+
+function renderContinueThread(props) {
+  const { comment, nestingLevel } = props;
+
+  const className = cx('Comment__continueThread', {
+    'm-no-indent': nestingLevel >= NESTING_STOP_LEVEL,
+  });
+
+  return (
+    <div className={ className }>
+      <div className='icon icon-caron-circled' />
+      <Anchor href={ comment.cleanPermalink }>Continue this thread</Anchor>
     </div>
   );
 }
