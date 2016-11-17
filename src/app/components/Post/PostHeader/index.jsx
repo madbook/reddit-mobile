@@ -320,15 +320,30 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
 }
 
 function renderPostTitleLink(post, showLinksInNewTab) {
-  const linkExternally = post.disable_comments;
-  const url = cleanPostHREF(mobilify(linkExternally ? post.url : post.cleanPermalink));
+  const linkExternally = post.promoted && !post.isSelf;
+  const url = linkExternally ? post.cleanUrl : cleanPostHREF(mobilify(post.cleanPermalink));
   const { title } = post;
 
   const titleLinkClass = `PostHeader__post-title-line ${post.visited ? 'm-visited' : ''}`;
   const target = linkExternally && showLinksInNewTab ? '_blank' : null;
 
+  const props = { 
+    className: titleLinkClass,
+    href: url,
+    target, 
+  };
+
+  if (linkExternally) {
+    //promoted posts have their own tracking
+    return (
+      <a { ...props }>
+        { title }
+      </a>
+    );
+  }
+
   return (
-    <Anchor className={ titleLinkClass } href={ url } target={ target }>
+    <Anchor { ...props }>
       { title }
     </Anchor>
   );

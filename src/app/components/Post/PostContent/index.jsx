@@ -256,11 +256,17 @@ export default class PostContent extends React.Component {
     }
 
     const { onTapExpand } = this.props;
-    const callOnTapExpand = e => {
-      e.preventDefault();
-      onTapExpand();
-    };
-
+    let callOnTapExpand;
+    if (post.promoted && !post.isSelf) {
+      // ads without self text should go to the url instead of expando
+      callOnTapExpand = null;
+    } else {
+      callOnTapExpand = e => {
+        e.preventDefault();
+        onTapExpand();
+      };
+    }
+ 
     const sourceURL = post.cleanUrl;
 
     if (isCompact && previewImage && previewImage.url) {
