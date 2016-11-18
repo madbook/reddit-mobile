@@ -183,7 +183,7 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(voteActions.voted(UPVOTED.uuid, UPVOTED));
+        store.dispatch(voteActions.success(UPVOTED.uuid, UPVOTED));
         const { comments } = store.getState();
 
         expect(comments).to.eql({
@@ -205,7 +205,7 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
           },
         });
 
-        store.dispatch(voteActions.voted('2', { type: 'post' }));
+        store.dispatch(voteActions.success('2', { type: 'post' }));
         const { comments } = store.getState();
 
         expect(comments).to.eql({
