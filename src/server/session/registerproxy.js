@@ -2,6 +2,7 @@ import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
 import { logServerError } from 'lib/errorLog';
+import proxiedApiOptions from 'lib/proxiedApiOptions';
 
 export default (router, apiOptions) => {
   router.post('/registerproxy', async (ctx) => {
@@ -10,7 +11,7 @@ export default (router, apiOptions) => {
     try {
       const newsletterSubscribe = !!newsletter.length;
       const data = await PrivateAPI.register(
-        apiOptions, username, password, email, newsletterSubscribe,
+        proxiedApiOptions(ctx, apiOptions), username, password, email, newsletterSubscribe,
         gRecaptchaResponse, ctx.orderedHeaders, ctx.headers['user-agent'],
       );
       // writeSessionToResponse will set the cookies

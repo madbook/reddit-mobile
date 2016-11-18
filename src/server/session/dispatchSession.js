@@ -2,6 +2,7 @@ import { PrivateAPI } from '@r/private';
 
 import config from 'config';
 import errorLog from 'lib/errorLog';
+import proxiedApiOptions from 'lib/proxiedApiOptions';
 import Session from 'app/models/Session';
 import makeSessionFromData from './makeSessionFromData';
 import sessionDataFromCookies from './sessionDataFromCookies';
@@ -48,7 +49,7 @@ export default async (ctx, dispatch, apiOptions) => {
   if (!session && redditSession) {
     const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
     sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(
-      apiOptions, cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
+      proxiedApiOptions(ctx, apiOptions), cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
     ));
     session = new Session(sessionData);
 
@@ -61,7 +62,8 @@ export default async (ctx, dispatch, apiOptions) => {
   // session.
   if (session && sessionData && !session.isValid) {
     const data = await PrivateAPI.refreshToken(
-      apiOptions, sessionData.refreshToken, ctx.orderedHeaders, ctx.headers['user-agent']
+      proxiedApiOptions(ctx, apiOptions), sessionData.refreshToken,
+      ctx.orderedHeaders, ctx.headers['user-agent']
     );
 
     session = makeSessionFromData({

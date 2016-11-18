@@ -2,6 +2,7 @@ import writeSessionToResponse from './writeSessionToResponse';
 import { PrivateAPI } from '@r/private';
 
 import { logServerError } from 'lib/errorLog';
+import proxiedApiOptions from 'lib/proxiedApiOptions';
 
 
 export default (router, apiOptions) => {
@@ -11,7 +12,8 @@ export default (router, apiOptions) => {
     try {
       // try to grab a session from the api
       const data = await PrivateAPI.login(
-        apiOptions, username, password, ctx.orderedHeaders, ctx.headers['user-agent'],
+        proxiedApiOptions(ctx, apiOptions), username, password,
+        ctx.orderedHeaders, ctx.headers['user-agent'],
       );
 
       // writeSessionToResponse will set the cookies
