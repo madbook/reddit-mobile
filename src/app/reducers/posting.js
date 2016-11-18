@@ -8,7 +8,7 @@ const DEFAULT = {
   title: '',
   meta: '',
   gRecaptchaResponse: '',
-  captchaIden: '',
+  showCaptcha: false,
   currentType: '',
 };
 
@@ -22,7 +22,7 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case postingActions.CAPTCHA_NEEDED: {
-      return merge(state, { captchaIden: action.captchaIden });
+      return merge(state, { showCaptcha: true });
     }
 
     case postingActions.FIELD_UPDATE: {
@@ -31,7 +31,7 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case postingActions.CLOSE_CAPTCHA: {
-      return merge(state, { captchaIden: '' });
+      return merge(state, { showCaptcha: false });
     }
 
     case postingActions.SUCCESS: {

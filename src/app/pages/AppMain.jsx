@@ -181,7 +181,7 @@ const selector = createSelector(
   state => state.platform.currentPage,
   state => state.toaster.isOpen,
   state => !!state.widgets.tooltip.id,
-  state => !!state.posting.captchaIden,
+  state => state.posting.showCaptcha,
   state => !!state.modal.type,
   crossPromoSelector,
   (

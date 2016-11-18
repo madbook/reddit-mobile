@@ -13,7 +13,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
         title: 'a',
         meta: 'b',
         gRecaptchaResponse: 'c',
-        captchaIden: 'd',
+        showCaptcha: false,
         currentType: 'e',
       };
 
@@ -26,7 +26,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
           title: '',
           meta: '',
           gRecaptchaResponse: '',
-          captchaIden: '',
+          showCaptcha: false,
           currentType: '',
         });
       });
@@ -40,32 +40,32 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
           title: '',
           meta: '',
           gRecaptchaResponse: '',
-          captchaIden: '',
+          showCaptcha: false,
           currentType: '',
         });
       });
     });
 
     describe('CAPTCHA_NEEDED', () => {
-      it('should update the captchaIden', () => {
+      it('should update the showCaptcha', () => {
         const { store } = getStore();
         store.dispatch({
           type: postingActions.CAPTCHA_NEEDED,
-          captchaIden: 'foobar',
+          showCaptcha: true,
         });
 
         const { posting } = store.getState();
-        expect(posting.captchaIden).to.equal('foobar');
+        expect(posting.showCaptcha).to.equal(true);
       });
     });
 
     describe('CLOSE_CAPTCHA', () => {
-      it('should set captchaIden to its default', () => {
+      it('should set showCaptcha to its default', () => {
         const { store } = getStore();
         store.dispatch({ type: postingActions.CLOSE_CAPTCHA });
 
         const { posting } = store.getState();
-        expect(posting.captchaIden).to.equal('');
+        expect(posting.showCaptcha).to.equal(false);
       });
     });
 
@@ -111,7 +111,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
           title: '',
           meta: '',
           gRecaptchaResponse: '',
-          captchaIden: '',
+          showCaptcha: false,
           currentType: 'link',
         });
       });
@@ -121,7 +121,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
           title: 'a',
           meta: 'b',
           gRecaptchaResponse: 'c',
-          captchaIden: '',
+          showCaptcha: false,
           currentType: 'self',
         }});
 
@@ -134,7 +134,7 @@ createTest({ reducers: { posting }, routes }, ({ getStore, expect }) => {
           title: 'a',
           meta: 'b',
           gRecaptchaResponse: 'c',
-          captchaIden: '',
+          showCaptcha: false,
           currentType: 'self',
         });
       });

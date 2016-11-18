@@ -145,7 +145,7 @@ const mapStateToProps = createSelector(
   state => state.subreddits,
   state => state.platform.currentPage.urlParams.subredditName,
   (posting, subreddits, subredditName) => {
-    const { title, meta, gRecaptchaResponse, captchaIden, currentType: submissionType } = posting;
+    const { title, meta, gRecaptchaResponse, showCaptcha, currentType: submissionType } = posting;
 
     const subredditMetaData = subreddits[subredditName];
     const iconUrl = subredditMetaData ? subredditMetaData.iconImage : null;
@@ -160,10 +160,9 @@ const mapStateToProps = createSelector(
       title,
       meta,
       gRecaptchaResponse,
-      captchaIden,
       submissionType,
       readyToPost,
-      showCaptcha: !!captchaIden,
+      showCaptcha,
       subreddit: { name: subredditName, iconUrl },
     };
   }
@@ -184,7 +183,6 @@ const mergeProps = (stateProps, dispatchProps) => {
     title,
     meta,
     gRecaptchaResponse,
-    captchaIden,
     showCaptcha,
     submissionType,
     readyToPost,
@@ -205,7 +203,7 @@ const mergeProps = (stateProps, dispatchProps) => {
     onSubmit: () => {
       if (!readyToPost) { return; }
       _onSubmit(
-        { title, meta, gRecaptchaResponse, captchaIden, sr: subreddit.name, kind: submissionType }
+        { title, meta, gRecaptchaResponse, showCaptcha, sr: subreddit.name, kind: submissionType }
       );
     },
   };

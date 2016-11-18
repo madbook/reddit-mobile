@@ -43,7 +43,6 @@ export const submitPost = data => async (dispatch, getState) => {
     [meta_param]: data.meta,
     title: data.title,
     gRecaptchaResponse: data.gRecaptchaResponse,
-    iden: data.captchaIden,
     sendreplies: true,
     resubmit: false,
   };
@@ -63,7 +62,7 @@ export const submitPost = data => async (dispatch, getState) => {
     // simply show the captcha box. This also has the nice side effect of making
     // any mistyped captcha "refresh" when the submission fails.
     if (e instanceof BadCaptchaError) {
-      dispatch({ type: CAPTCHA_NEEDED, captchaIden: e.newCaptcha });
+      dispatch({ type: CAPTCHA_NEEDED });
 
     } else if (e instanceof ValidationError) {
       // The toaster can only fit one error comfortably and there's not much
