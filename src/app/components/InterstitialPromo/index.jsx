@@ -5,6 +5,9 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { redirect } from '@r/platform/actions';
+
+import { markBannerClosed } from 'lib/smartBannerState';
 
 import { flags } from 'app/constants';
 import { getDevice } from 'lib/getDeviceFromState';
@@ -40,10 +43,10 @@ function List() {
 }
 
 function Rating(props) {
-  const { device, url } = props;
+  const { device, navigate } = props;
 
   return (
-    <a href={ url }>
+    <div onClick={ navigate }>
       <div className='InterstitialPromo__rating'>
         <div className='InterstitialPromo__rating_icon'>
           <SnooIcon />
@@ -64,12 +67,12 @@ function Rating(props) {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
 function InterstitialPromo(props) {
-  const { urls, onClose, features, device } = props;
+  const { urls, onClose, features, device, navigator } = props;
 
   return (
     <div className='InterstitialPromo'>
@@ -92,15 +95,15 @@ function InterstitialPromo(props) {
           </div>
           { features.enabled(VARIANT_XPROMO_LIST) ? <List /> : null }
         </div>
-        <a
+        <div
           className='InterstitialPromo__button'
-          href={ urls[0] }
+          onClick={ navigator(urls[0]) }
         >
           { CTA }
           <span className="icon icon-play"></span>
-        </a>
+        </div>
         { features.enabled(VARIANT_XPROMO_RATING) ?
-            <Rating device={ device} url={ urls[1] }/> : null }
+            <Rating device={ device} navigate={ navigator(urls[1]) }/> : null }
         <div className='InterstitialPromo__dismissal'>
           or go to the <a onClick={ onClose }>mobile site</a>
         </div>
@@ -137,6 +140,10 @@ const selector = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(smartBannerActions.close()),
+  navigator: (url) => (() => {
+    markBannerClosed();
+    dispatch(redirect(url));
+  }),
 });
 
 export default connect(selector, mapDispatchToProps)(InterstitialPromo);
