@@ -3,24 +3,36 @@ import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
 
 import getSubreddit from 'lib/getSubredditFromState';
+import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import url from 'url';
 import { getEventTracker } from 'lib/eventTracker';
+import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
 
 import { flags as flagConstants } from './constants';
 
 const {
   BETA,
   SMARTBANNER,
+  USE_BRANCH,
   VARIANT_NEXTCONTENT_BOTTOM,
   VARIANT_RECOMMENDED_BOTTOM,
   VARIANT_RECOMMENDED_TOP,
   VARIANT_RECOMMENDED_TOP_PLAIN,
   VARIANT_SUBREDDIT_HEADER,
+  VARIANT_XPROMO_BASE,
+  VARIANT_XPROMO_LIST,
+  VARIANT_XPROMO_RATING,
 } = flagConstants;
 
 const config = {
   [BETA]: true,
-  [SMARTBANNER]: true,
+  [SMARTBANNER]: {
+    and: [
+      { allowedPages: ['index', 'listing'] },
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+    ],
+  },
+  [USE_BRANCH]: true,
   [VARIANT_NEXTCONTENT_BOTTOM]: {
     url: 'experimentnextcontentbottom',
     and: [{
@@ -68,6 +80,72 @@ const config = {
     }, {
       seoReferrer: true,
     }],
+  },
+  [VARIANT_XPROMO_BASE]: {
+    and: [
+      { loggedin: false },
+      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { directVisit: true },
+      { allowedPages: ['index'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_android:base',
+            url: 'xpromobase',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_ios:base',
+            url: 'xpromobase',
+          },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LIST]: {
+    and: [
+      { loggedin: false },
+      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { directVisit: true },
+      { allowedPages: ['index'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_android:list',
+            url: 'xpromolist',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_ios:list',
+            url: 'xpromolist',
+          },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_RATING]: {
+    and: [
+      { loggedin: false },
+      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { directVisit: true },
+      { allowedPages: ['index'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_android:rating',
+            url: 'xpromorating',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_ios:rating',
+            url: 'xpromorating',
+          },
+        ] },
+      ] },
+    ],
   },
 };
 
@@ -173,6 +251,45 @@ flags.addRule('seoReferrer', function (wantSEO) {
 
   // Compare if we want the user to be from SEO or not
   return (isSEO === wantSEO);
+});
+
+flags.addRule('directVisit', function (wantDirect) {
+  const referrer = this.state.platform.currentPage.referrer;
+
+  // TODO: We end up adding the initial page to the history twice, once due to
+  // the platform SET_STATUS action and once due to the SET_PAGE action.
+  const isDirect = !referrer && this.state.platform.history.length <= 2;
+
+  return isDirect === wantDirect;
+});
+
+flags.addRule('allowedPages', function (allowedPages) {
+  const routeMeta = getRouteMetaFromState(this.state);
+  const actionName = routeMeta && routeMeta.name;
+  return allowedPages.includes(actionName);
+});
+
+// This returns false when no loidCreated value is present, but it should
+// really be used in conjunction with a loggedin: false rule, in which case we
+// expect to have an loidCreated value.
+flags.addRule('minLoidAge', function (minAge) {
+  const loidCreated = this.state.accounts.me && this.state.accounts.me.loidCreated;
+
+  if (!loidCreated) {
+    return false;
+  }
+
+  const age = (new Date()) - (new Date(loidCreated));
+  if (age < minAge) { return false; }
+
+  return true;
+});
+
+flags.addRule('allowedDevices', function (allowed) {
+  const device = getDevice(this.state);
+  // If we don't know what device we're on, then we should not match any list
+  // of allowed devices.
+  return (!!device) && allowed.includes(device);
 });
 
 export default flags;

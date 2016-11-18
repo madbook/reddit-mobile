@@ -1,11 +1,10 @@
 import merge from '@r/platform/merge';
+import * as platformActions from '@r/platform/actions';
 
 import * as smartBannerActions from 'app/actions/smartBanner';
 
 export const DEFAULT = {
   showBanner: false,
-  clickUrl: null,
-  impressionUrl: null,
 };
 
 export default function(state=DEFAULT, action={}) {
@@ -18,6 +17,10 @@ export default function(state=DEFAULT, action={}) {
     }
 
     case smartBannerActions.HIDE: {
+      return DEFAULT;
+    }
+
+    case platformActions.NAVIGATE_TO_URL: {
       return DEFAULT;
     }
 

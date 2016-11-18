@@ -1,105 +1,87 @@
-import localStorageAvailable from './localStorageAvailable';
-import * as constants from 'app/constants';
+import url from 'url';
 
-const BASE_VAL = {
-  showBanner: false,
-  impressionUrl: '',
-  clickUrl: '',
-};
+import localStorageAvailable from './localStorageAvailable';
+import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
+import * as constants from 'app/constants';
+import features from 'app/featureFlags';
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
 
-const ALLOWED_PAGES = new Set([
-  'index',
-  'listing',
-  'comments',
-]);
+const { USE_BRANCH } = constants.flags;
 
-const IOS_USER_AGENTS = [
-  'iPhone',
-  'iPod',
-];
+export function getBranchLink(state, payload={}) {
+  const { me={} } = state.accounts;
+  const { loid, loidCreated } = me;
 
-const ANDROID_USER_AGENTS = [
-  'Android',
-];
+  const basePayload = {
+    channel: 'mweb_branch',
+    feature: 'smartbanner',
+    campaign: 'xpromo_banner',
+    // We can use this space to fill "tags" which will populate on the
+    // branch dashboard and allow you sort/parse data. Optional/not required.
+    // tags: [ 'tag1', 'tag2' ],
+    // Pass in data you want to appear and pipe in the app,
+    // including user token or anything else!
+    '$og_redirect': window.location.href,
+    '$deeplink_path': window.location.href.split(window.location.host)[1],
+    mweb_loid: loid,
+    mweb_loid_created: loidCreated,
+    utm_source: 'mweb_branch',
+    utm_medium: 'smartbanner',
+    utm_name: 'xpromo_banner',
+    // We currently only pass along data for logged-out users, but we will
+    // populate these fields if we build and test cross-promotion experiences
+    // for logged-in users.
+    mweb_user_id36: null,
+    mweb_user_name: null,
+  };
 
-const ALLOWED_DEVICES = IOS_USER_AGENTS.concat(ANDROID_USER_AGENTS);
+  return url.format({
+    protocol: 'https',
+    host: 'reddit.app.link',
+    pathname: '/',
+    query: {...basePayload, ...payload},
+  });
+}
 
-const PAGE_PERCENTAGES = {
-  'comments': 5,
-};
+export function getDeepLink(state) {
+  const device = getDevice(state);
 
-const USE_TUNE = 100;
+  // See if we should use a Branch link
+  const feature = features.withContext({ state });
+  if (feature && feature.enabled(USE_BRANCH)) {
+    // just use the universal Branch link
+    return getBranchLink(state);
+  }
 
-const checkDeviceType = (allowedAgents, userAgentString) => {
-  return allowedAgents.some(a => userAgentString.indexOf(a) > -1);
-};
+  // Otherwise use a basic deep link
 
-export function shouldShowBanner({ actionName, user, userAgent }={}) {
-  // Lots of options we have to consider.
-  // 1) Easiest. Make sure local storage exists
-  if (!localStorageAvailable()) { return BASE_VAL; }
+  if (IOS_DEVICES.includes(device)) {
+    return constants.BANNER_URLS_DIRECT.IOS;
+  }
 
-  // 2) Check if it's been dismissed recently
+  if (device === ANDROID) {
+    return constants.BANNER_URLS_DIRECT.ANDROID;
+  }
+}
+
+export function shouldShowBanner() {
+  // Most of the decision for showing a cross-promo component will happen in
+  // the featureFlags component, but we have a couple of things to consider
+  // here.
+
+  // Make sure local storage exists
+  if (!localStorageAvailable()) { return false; }
+
+  // Check if it's been dismissed recently
   const lastClosedStr = localStorage.getItem('bannerLastClosed');
   const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : 0;
   const lastClosedLimit = lastClosed + TWO_WEEKS;
   if (lastClosedLimit > Date.now()) {
-    return BASE_VAL;
+    return false;
   }
 
-  // 3) Check if we're on the right page.
-  if (!ALLOWED_PAGES.has(actionName)) { return BASE_VAL; }
-
-  // 4) Check the user agent
-  if (!checkDeviceType(ALLOWED_DEVICES, userAgent)) { return BASE_VAL; }
-
-  // Create a bucket; a few rules are going to depend on that
-  let userId = '';
-  if (user) { userId = user.loid || user.id; }
-  const userIdSum = userId.split('').reduce((sum, chr) => sum + chr.charCodeAt(0), 0);
-  const bucket = userIdSum % 100;
-
-  // 5) only show to a certain % of users that land on a given page
-  for (const pageName in PAGE_PERCENTAGES) {
-    if ((actionName === pageName) && (bucket > PAGE_PERCENTAGES[pageName])) {
-      return BASE_VAL;
-    }
-  }
-
-  // Ok, now we know we're actually going to show the banner. Next, we need to
-  // determine what urls we're going to use
-  // A) Use Tune links
-  if (bucket < USE_TUNE) {
-    // just use the universal Tune links
-    return {
-      ...BASE_VAL,
-      showBanner: true,
-      clickUrl: constants.BANNER_URLS_TUNE.CLICK,
-      impressionUrl: constants.BANNER_URLS_TUNE.IMPRESSION,
-    };
-  }
-
-  // B) Use direct link. have to determine device type
-  if (checkDeviceType(IOS_USER_AGENTS, userAgent)) {
-    return {
-      ...BASE_VAL,
-      showBanner: true,
-      clickUrl: constants.BANNER_URLS_DIRECT.IOS,
-    };
-  }
-
-  if (checkDeviceType(ANDROID_USER_AGENTS, userAgent)) {
-    return {
-      ...BASE_VAL,
-      showBanner: true,
-      clickUrl: constants.BANNER_URLS_DIRECT.ANDROID,
-    };
-  }
-
-  // C) don't have that device listed. infamous 'this should never happen' here.
-  return BASE_VAL;
+  return true;
 }
 
 export function markBannerClosed() {

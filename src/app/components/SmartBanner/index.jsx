@@ -7,6 +7,8 @@ import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { getDeepLink } from 'lib/smartBannerState';
+
 import * as smartBannerActions from 'app/actions/smartBanner';
 import SnooIcon from '../SnooIcon';
 
@@ -32,6 +34,12 @@ class SmartBanner extends React.Component {
   render() {
     const { url, onClose } = this.props;
     const { isShowing } = this.state;
+
+    // Just in case we were unable to generate a URL for some reason, we should
+    // not show a nonfunctional promo banner.
+    if (!url) {
+      return null;
+    }
 
     const startStyles = isShowing
       ? { bottom: -HEIGHT, opacity: 0 }
@@ -77,7 +85,7 @@ SmartBanner.propTypes = {
 };
 
 const selector = createSelector(
-  state => state.smartBanner.clickUrl,
+  state => getDeepLink(state),
   url => ({ url })
 );
 

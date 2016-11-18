@@ -1,0 +1,222 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+.InterstitialPromo {
+  @logo-size: 80px;
+  @wordmark-size: 36px;
+  @rating-logo-size: 64px;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+
+  .themeify({
+    color: @black;
+    fill: @black;
+  });
+
+  .themeify({
+    background-image: -webkit-linear-gradient(top, rgba(255,255,255,0), @white), url(/img/white-pattern.jpg);
+    background-image: -moz-linear-gradient(top, rgba(255,255,255,0), @white), url(/img/white-pattern.jpg);
+    background-image: -o-linear-gradient(top, rgba(255,255,255,0), @white), url(/img/white-pattern.jpg);
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0), @white), url(/img/white-pattern.jpg);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 100% 75%, auto 75%;
+    background-color: @white;
+  });
+
+  &__close {
+    position: absolute;
+    top: @grid-size;
+    right: @grid-size;
+    display: inline-block;
+    vertical-align: middle;
+    padding: @grid-size @half-grid-size;
+    .themeify({
+      color: @semi-black-text;
+    });
+    font-size: @font-size-h2;
+  }
+
+  &__icon {
+    display: inline-block;
+    margin-top: calc(30vh ~ '- 120px');
+    margin-bottom: @grid-size;
+    
+
+    .SnooIcon {
+      height: @logo-size;
+      width: @logo-size;
+      float: left;
+      border-radius: @logo-size / 2;
+      background-color: @orangered;
+      line-height: @logo-size;
+      text-align: center;
+      font-size: 48px;
+      color: @white;
+    }
+  }
+  &__wordmark {
+    display: inline-block;
+    margin: (@logo-size - @wordmark-size) / 2 (2 * @grid-size);
+    .Logo {
+      height: @wordmark-size;
+      width: auto;
+    }
+  }
+
+  &__bottom {
+    position: absolute;
+    bottom: 5*@grid-size;
+    left: 50%;
+    max-width: 320px + 6*@grid-size;
+    width: 100%;
+    transform: translate(-50%, 0);
+  }
+
+  &__header {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 6*@grid-size 3*@grid-size @grid-size 3*@grid-size;
+  }
+
+  &__title {
+    margin-bottom: 2px;
+    font-size: @font-size-h2;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  &__subtitle {
+    .themeify({
+      color: @dark-grey;
+    });
+    font-size: @font-size-h4;
+    line-height: 1.2;
+    margin-top: 2 * @grid-size;
+    margin-bottom: 2 * @grid-size;
+    max-width: 320px;
+  }
+
+  &__bulletlist {
+    font-size: @font-size-h3;
+    line-height: 1.2;
+    ul {
+      text-align: left;
+      display: inline-block;
+      padding-left: 4*@grid-size;
+      -webkit-padding-start: 4*@grid-size;
+      margin-left: -2*@grid-size;
+      .themeify({
+        color: @red;
+      });
+
+      span {
+        font-size: @font-size-h4;
+        .themeify({
+          color: @black;
+        });
+      }
+    }
+  }
+
+  &__rating {
+    .themeify({
+      color: @black;
+      fill: @black;
+    });
+    display: inline-block;
+    padding: @grid-size;
+    margin: @grid-size 3*@grid-size;
+    width: calc(100% ~ '-' @grid-size*6);
+    max-width: 320px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: @grey-text;
+    border-radius: @grid-size / 2;
+    text-align: left;
+
+  }
+
+  &__rating_icon {
+    display: inline-block;
+    .SnooIcon {
+      height: @rating-logo-size;
+      width: @rating-logo-size;
+      border-radius: @grid-size / 2;
+      background-color: @orangered;
+      line-height: @rating-logo-size;
+      color: @white;
+    }
+  }
+
+  &__rating_right {
+    display: inline-block;
+    font-size: @font-size-h4;
+    text-align: left;
+    padding-left: 2*@grid-size;
+    padding-top: @grid-size;
+    vertical-align: top;
+  }
+
+  &__rating_stars {
+    font-size: @font-size-h3;
+  }
+
+  &__rating_text {
+    font-size: @font-size-base;
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: @font-size-h4;
+    line-height: 1.5;
+    text-align: center;
+    margin: @grid-size @grid-size*3;
+    width: calc(100% ~ '-' @grid-size*6);
+    max-width: 320px;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    .themeify({
+      background-color: @theme-button-color;
+    });
+
+    &, &:visited, &:hover {
+      text-decoration: none;
+
+      .themeify({
+        color: @theme-button-text-color;
+      });
+    }
+
+    .icon {
+      font-size: @font-size-h3;
+      line-height: 1;
+      vertical-align: text-bottom;
+      .themeify({
+        color: @theme-button-text-color;
+      });
+    }
+  }
+
+  &__dismissal {
+    color: @grey-text;
+    a, a:visited, a:hover {
+      text-decoration: underline;
+      .themeify({
+        color: @grey-text;
+      });
+    }
+  }
+}
+
+.InterstitialPromo + .TopNav {
+  position: relative;
+}
+
+.InterstitialPromo + .TopNav + .BelowTopNav {
+  margin-top: 0;
+  position: relative;
+}
