@@ -6,8 +6,10 @@ export const show = () => ({ type: SHOW });
 export const HIDE = 'SMARTBANNER__HIDE';
 export const hide = () => ({ type: HIDE });
 
-export const close = () => async (dispatch) => {
-  markBannerClosed();
+// element is the interface element through which the user dismissed the
+// crosspromo experience.
+export const close = () => async (dispatch, getState) => {
+  markBannerClosed(getState());
   dispatch(hide());
 };
 

@@ -126,6 +126,14 @@ export function trackPageEvents(state, additionalEventData={}) {
   }
 }
 
+export function trackPreferenceEvent(state, additionalEventData={}) {
+  const payload = {
+    ...getBasePayload(state),
+    ...additionalEventData,
+  };
+  getEventTracker().track('user_preference_events', 'cs.save_preference_cookie', payload);
+}
+
 const gtmPageView = state => {
   const { platform: { currentPage }} = state;
 

@@ -2,12 +2,15 @@ import url from 'url';
 
 import localStorageAvailable from './localStorageAvailable';
 import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
+import { trackPreferenceEvent } from 'lib/eventUtils';
 import * as constants from 'app/constants';
 import features from 'app/featureFlags';
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
 
 const { USE_BRANCH } = constants.flags;
+
+const EXTERNAL_PREF_NAME = 'hide_mweb_xpromo_banner';
 
 export function getBranchLink(state, payload={}) {
   const { me={} } = state.accounts;
@@ -84,8 +87,17 @@ export function shouldShowBanner() {
   return true;
 }
 
-export function markBannerClosed() {
+export function markBannerClosed(state) {
   if (!localStorageAvailable()) { return false; }
+
+  // We use a separate externally-visible name/value for the preference for
+  // clarity when analyzing these events in our data pipeline.
+  trackPreferenceEvent(state, {
+    modifiedPreferences: [EXTERNAL_PREF_NAME],
+    preferences: {
+      [EXTERNAL_PREF_NAME]: true,
+    },
+  });
 
   // note that we dismissed the banner
   localStorage.setItem('bannerLastClosed', new Date());
