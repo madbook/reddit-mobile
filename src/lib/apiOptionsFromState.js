@@ -18,8 +18,8 @@ export const apiOptionsFromState = state => {
   if (userAccount && userAccount.isEmployee) {
     options = {
       ...options,
-      headers: {
-        'X-Reddit-Web-Client': 'mweb2x',
+      queryParams: {
+        redditWebClient: 'mweb2x',
       },
     };
   }
