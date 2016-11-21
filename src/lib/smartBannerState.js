@@ -93,8 +93,8 @@ export function markBannerClosed(state) {
   // We use a separate externally-visible name/value for the preference for
   // clarity when analyzing these events in our data pipeline.
   trackPreferenceEvent(state, {
-    modifiedPreferences: [EXTERNAL_PREF_NAME],
-    preferences: {
+    modified_preferences: [EXTERNAL_PREF_NAME],
+    user_preferences: {
       [EXTERNAL_PREF_NAME]: true,
     },
   });
