@@ -1,4 +1,5 @@
 import url from 'url';
+import cookies from 'js-cookie';
 
 import localStorageAvailable from './localStorageAvailable';
 import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
@@ -9,9 +10,37 @@ const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
 
 const { USE_BRANCH } = constants.flags;
 
+// Get loid values either from the account state or the cookies.
+function getLoidValues(accounts) {
+  if (accounts.me) {
+    return {
+      loid: accounts.me.loid,
+      loidCreated: accounts.me.loidCreated,
+    };
+  }
+
+  const loid = cookies.get('loid');
+  const loidCreated = cookies.get('loidcreated');
+
+  return {
+    loid,
+    loidCreated,
+  };
+}
+
 export function getBranchLink(state, payload={}) {
-  const { me={} } = state.accounts;
-  const { loid, loidCreated } = me;
+  const { user, accounts } = state;
+
+  const { loid, loidCreated } = getLoidValues(accounts);
+
+  let userName;
+  let userId;
+
+  const userAccount = user.loggedOut ? null : accounts[user.name];
+  if (userAccount) {
+    userName = userAccount.name;
+    userId = userAccount.id;
+  }
 
   const basePayload = {
     channel: 'mweb_branch',
@@ -29,11 +58,8 @@ export function getBranchLink(state, payload={}) {
     utm_source: 'mweb_branch',
     utm_medium: 'smartbanner',
     utm_name: 'xpromo_banner',
-    // We currently only pass along data for logged-out users, but we will
-    // populate these fields if we build and test cross-promotion experiences
-    // for logged-in users.
-    mweb_user_id36: null,
-    mweb_user_name: null,
+    mweb_user_id36: userId,
+    mweb_user_name: userName,
   };
 
   return url.format({
