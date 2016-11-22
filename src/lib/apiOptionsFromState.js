@@ -9,20 +9,14 @@ export const apiOptionsFromState = state => {
   let options = (session && session.accessToken)
     ? optionsWithAuth(session.accessToken)
     : { ...APIOptions };
-    
-  // TEST: We're testing outbound links for employees only. To do this,
-  // we only send the `X-Reddit-Web-Client` client if the logged in user
-  // is an employee.
-  const { user, accounts } = state;
-  const userAccount = user.loggedOut ? null : accounts[user.name];
-  if (userAccount && userAccount.isEmployee) {
-    options = {
-      ...options,
-      queryParams: {
-        redditWebClient: 'mweb2x',
-      },
-    };
-  }
+
+  // Identify ourselves as the mweb app for api purposes
+  options = {
+    ...options,
+    queryParams: {
+      redditWebClient: 'mweb2x',
+    },
+  };
 
   // grab loids if we have them, and set the cookie if on the server
   const {
