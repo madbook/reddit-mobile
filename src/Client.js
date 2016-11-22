@@ -128,6 +128,13 @@ const client = Client({
           }
         }
       } catch (e) { console.warn(e); }
+
+      try {
+        const optOuts = window.localStorage.optOuts;
+        if (optOuts !== undefined) {
+          data.optOuts = JSON.parse(optOuts);
+        }
+      } catch (e) { console.warn(e); }
     }
 
     return data;

@@ -64,6 +64,8 @@ export const VISITED_POSTS_COUNT = 20;
 
 export const RECENT_CLICKS_LENGTH = 5;
 
+export const XPROMO_INTERSTITIAL_OPT_OUT = 'no_xpromo_interstitial';
+
 // Post content
 
 export const POST_COMPACT_THUMBNAIL_WIDTH = 70;
@@ -89,6 +91,9 @@ export const flags = {
   VARIANT_XPROMO_BASE: 'experimentXPromoBase',
   VARIANT_XPROMO_LIST: 'experimentXPromoList',
   VARIANT_XPROMO_RATING: 'experimentXPromoRating',
+  VARIANT_XPROMO_LISTING: 'experimentXPromoListing',
+  VARIANT_XPROMO_SUBREDDIT: 'experimentXPromoSubreddit',
+  VARIANT_XPROMO_CLICK: 'experimentXPromoClick',
 };
 
 export const themes = {

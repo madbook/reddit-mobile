@@ -23,6 +23,9 @@ export default (state=DEFAULT, action={}) => {
     case reportingActions.REPORT:
       return merge(state, { type: action.modalType, props: action.modalProps });
 
+    case modalActions.XPROMO_CLICK:
+      return merge(state, { type: modalActions.XPROMO_CLICK, props: action.modalProps });
+
     case modalActions.CLOSE:
       return merge(state, { type: null, props: {} });
 

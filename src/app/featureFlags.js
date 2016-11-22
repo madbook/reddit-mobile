@@ -22,6 +22,9 @@ const {
   VARIANT_XPROMO_BASE,
   VARIANT_XPROMO_LIST,
   VARIANT_XPROMO_RATING,
+  VARIANT_XPROMO_LISTING,
+  VARIANT_XPROMO_SUBREDDIT,
+  VARIANT_XPROMO_CLICK,
 } = flagConstants;
 
 const config = {
@@ -83,7 +86,7 @@ const config = {
   },
   [VARIANT_XPROMO_BASE]: {
     and: [
-      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { notOptedOut: 'xpromoInterstitial' },
       { allowedPages: ['index'] },
       { or: [
         { and: [
@@ -103,7 +106,7 @@ const config = {
   },
   [VARIANT_XPROMO_LIST]: {
     and: [
-      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { notOptedOut: 'xpromoInterstitial' },
       { allowedPages: ['index'] },
       { or: [
         { and: [
@@ -123,7 +126,7 @@ const config = {
   },
   [VARIANT_XPROMO_RATING]: {
     and: [
-      { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
+      { notOptedOut: 'xpromoInterstitial' },
       { allowedPages: ['index'] },
       { or: [
         { and: [
@@ -136,6 +139,66 @@ const config = {
           { allowedDevices: IOS_DEVICES },
           { variant: 'mweb_xpromo_interstitial_fp_ios:rating',
             url: 'xpromorating',
+          },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LISTING]: {
+    and: [
+      { notOptedOut: 'xpromoInterstitial' },
+      { allowedPages: ['listing'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_listing_android:listing',
+            url: 'xpromolisting',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_listing_ios:listing',
+            url: 'xpromolisting',
+          },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_SUBREDDIT]: {
+    and: [
+      { notOptedOut: 'xpromoInterstitial' },
+      { allowedPages: ['listing'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_listing_android:subreddit',
+            url: 'xpromosubreddit',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_listing_ios:subreddit',
+            url: 'xpromosubreddit',
+          },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_CLICK]: {
+    and: [
+      { notOptedOut: 'xpromoInterstitial' },
+      { allowedPages: ['listing'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { variant: 'mweb_xpromo_interstitial_listing_android:click',
+            url: 'xpromoclick',
+          },
+        ] },
+        { and: [
+          { allowedDevices: IOS_DEVICES },
+          { variant: 'mweb_xpromo_interstitial_listing_ios:click',
+            url: 'xpromoclick',
           },
         ] },
       ] },
@@ -284,6 +347,11 @@ flags.addRule('allowedDevices', function (allowed) {
   // If we don't know what device we're on, then we should not match any list
   // of allowed devices.
   return (!!device) && allowed.includes(device);
+});
+
+flags.addRule('notOptedOut', function (flag) {
+  const optedOut = this.state.optOuts[flag];
+  return !optedOut;
 });
 
 export default flags;

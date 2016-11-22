@@ -31,6 +31,7 @@ import PostSubmitModal from 'app/components/PostSubmitModal';
 import Register from 'app/components/Register';
 import SmartBanner from 'app/components/SmartBanner';
 import InterstitialPromo from 'app/components/InterstitialPromo';
+import InterstitialListing from 'app/components/InterstitialListing';
 import Toaster from 'app/components/Toaster';
 import TopNav from 'app/components/TopNav';
 
@@ -41,6 +42,9 @@ const {
   VARIANT_XPROMO_BASE,
   VARIANT_XPROMO_LIST,
   VARIANT_XPROMO_RATING,
+  VARIANT_XPROMO_LISTING,
+  VARIANT_XPROMO_SUBREDDIT,
+  VARIANT_XPROMO_CLICK,
 } = flagConstants;
 
 const AppMain = props => {
@@ -54,6 +58,7 @@ const AppMain = props => {
     showDropdownCover,
     showSmartBanner,
     showInterstitial,
+    showInterstitialListing,
   } = props;
 
   if (statusCode !== 200) {
@@ -91,6 +96,7 @@ const AppMain = props => {
           return (
             <div>
               { showInterstitial ? <InterstitialPromo /> : null }
+              { showInterstitialListing ? <InterstitialListing /> : null }
               <TopNav />
               <div className='BelowTopNav'>
                 <EUCookieNotice />
@@ -168,11 +174,19 @@ function crossPromoSelector(state) {
       VARIANT_XPROMO_BASE,
       VARIANT_XPROMO_LIST,
       VARIANT_XPROMO_RATING,
+      VARIANT_XPROMO_LISTING,
     ], variant => features.enabled(variant));
-  const showSmartBanner = !showInterstitial && showBanner && features.enabled(SMARTBANNER);
+  const showInterstitialListing = showBanner &&
+    some([
+      VARIANT_XPROMO_SUBREDDIT,
+    ], variant => features.enabled(variant));
+  const showSmartBanner = !showInterstitial && !showInterstitialListing && showBanner
+                          && !features.enabled(VARIANT_XPROMO_CLICK)
+                          && features.enabled(SMARTBANNER);
 
   return {
     showInterstitial,
+    showInterstitialListing,
     showSmartBanner,
   };
 }
@@ -192,13 +206,14 @@ const selector = createSelector(
     isModalOpen,
     crossPromo,
   ) => {
-    const { showInterstitial, showSmartBanner } = crossPromo;
+    const { showInterstitial, showInterstitialListing, showSmartBanner } = crossPromo;
 
     return {
       isModalOpen,
       isToasterOpen,
       showSmartBanner,
       showInterstitial,
+      showInterstitialListing,
       showDropdownCover: isTooltipOpen || isCaptchaOpen || isModalOpen,
       url: currentPage.url,
       referrer: currentPage.referrer,

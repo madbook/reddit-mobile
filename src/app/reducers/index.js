@@ -20,6 +20,7 @@ import meta from './meta';
 import messages from './messages';
 import modal from './modal';
 import moreCommentsRequests from './moreCommentsRequests';
+import optOuts from './optOuts';
 import overlay from './overlay';
 import pageMetadata from './pageMetadata';
 import posting from './posting';
@@ -68,6 +69,7 @@ export default {
   messages,
   modal,
   moreCommentsRequests,
+  optOuts,
   overlay,
   pageMetadata,
   posting,

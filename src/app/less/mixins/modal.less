@@ -1,0 +1,34 @@
+// This exposes a mixin for rendering a modal wrapper
+// and the modal content itself. This wrapper will
+// center its content horizontally and vertically,
+// and the modal will grow up to 20px horizontal padding
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+
+.ModalWrapper() {
+  z-index: @z-index-modal;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// You can set an explicit height on your modal if desired,
+// but you can otherwise just let it grow to the content height.
+// If you do let it grow, be mindful of it taking more height than the window
+.Modal() {
+  flex-grow: 1;
+  margin: auto 20px;
+
+  // Setup basic background color and border for nightmode
+  .themeify({
+    background-color: @theme-modal-body-color;
+  }, @inNightMode: {
+    border: @theme-border;
+  });
+}

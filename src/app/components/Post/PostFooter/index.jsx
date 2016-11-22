@@ -25,6 +25,7 @@ export default class PostFooter extends React.Component {
     onEdit: T.func.isRequired,
     onDelete: T.func.isRequired,
     onToggleSave: T.func.isRequired,
+    onElementClick: T.func.isRequired,
   };
 
   constructor(props) {
@@ -53,6 +54,7 @@ export default class PostFooter extends React.Component {
       <Anchor
         className='PostFooter__hit-area PostFooter__comments-link'
         href={ post.cleanPermalink }
+        onClick = { this.props.onElementClick }
       >
         <span className='PostFooter__comments-icon icon icon-comment' />
         { this.numCommentsText(numComments) }

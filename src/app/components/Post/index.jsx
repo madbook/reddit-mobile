@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 const { PostModel } = models;
 
+import * as modalActions from 'app/actions/modal';
 import * as postActions from 'app/actions/posts';
 import * as reportingActions from 'app/actions/reporting';
 
@@ -86,6 +87,7 @@ export function Post(props) {
     onToggleHidePost,
     onReportPost,
     onUpdateSelftext,
+    onElementClick,
     toggleExpanded,
     toggleShowNSFW,
     winWidth,
@@ -161,6 +163,7 @@ export function Post(props) {
           showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
+          onElementClick={ onElementClick }
         />
       </div>
       { contentOrNil }
@@ -175,6 +178,7 @@ export function Post(props) {
         onToggleSave={ onToggleSavePost }
         onToggleHide={ onToggleHidePost }
         onReportPost={ onReportPost }
+        onElementClick={ onElementClick }
       />
     </article>
   );
@@ -215,6 +219,7 @@ const mapDispatchToProps = (dispatch, { postId }) => ({
   onToggleSavePost: () => dispatch(postActions.toggleSavePost(postId)),
   onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),
+  onElementClick: () => dispatch(modalActions.showXpromoModal()),
 });
 
 export default connect(selector, mapDispatchToProps)(Post);

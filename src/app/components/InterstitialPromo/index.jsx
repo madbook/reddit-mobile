@@ -10,6 +10,7 @@ import { redirect } from '@r/platform/actions';
 import { markBannerClosed } from 'lib/smartBannerState';
 
 import { flags } from 'app/constants';
+import featureFlags from 'app/featureFlags';
 import { getDevice } from 'lib/getDeviceFromState';
 import { getBranchLink } from 'lib/smartBannerState';
 
@@ -23,6 +24,7 @@ const T = React.PropTypes;
 const {
   VARIANT_XPROMO_LIST,
   VARIANT_XPROMO_RATING,
+  VARIANT_XPROMO_LISTING,
 } = flags;
 
 // String constants
@@ -73,6 +75,8 @@ function Rating(props) {
 
 function InterstitialPromo(props) {
   const { urls, onClose, features, device, navigator } = props;
+  const listVariants = features.enabled(VARIANT_XPROMO_LIST) ||
+                       features.enabled(VARIANT_XPROMO_LISTING);
 
   return (
     <div className='InterstitialPromo'>
@@ -93,7 +97,7 @@ function InterstitialPromo(props) {
             Reddit is better with the app.
             We&nbsp;hate to intrude, but&nbsp;you&nbsp;deserve&nbsp;the&nbsp;best.
           </div>
-          { features.enabled(VARIANT_XPROMO_LIST) ? <List /> : null }
+          { listVariants ? <List /> : null }
         </div>
         <div
           className='InterstitialPromo__button'
@@ -117,23 +121,32 @@ InterstitialPromo.propTypes = {
   onClose: T.func,
 };
 
-const selector = createStructuredSelector({
-  urls: state => [
+function getUrls(state) {
+  const features = featureFlags.withContext({ state });
+  const campaign = features.enabled(VARIANT_XPROMO_LISTING)
+    ? 'xpromo_interstitial_listing'
+    : 'xpromo_interstitial';
+
+  return [
     getBranchLink(state, {
       feature: 'interstitial',
-      campaign: 'xpromo_interstitial',
+      campaign,
       utm_medium: 'interstitial',
-      utm_name: 'xpromo_interstitial',
+      utm_name: campaign,
       utm_content: 'element_1',
     }),
     getBranchLink(state, {
       feature: 'interstitial',
-      campaign: 'xpromo_interstitial',
+      campaign,
       utm_medium: 'interstitial',
-      utm_name: 'xpromo_interstitial',
+      utm_name: campaign,
       utm_content: 'element_2',
     }),
-  ],
+  ];
+}
+
+const selector = createStructuredSelector({
+  urls: getUrls,
   features: featuresSelector,
   device: getDevice,
 });

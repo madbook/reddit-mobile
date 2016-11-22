@@ -1,0 +1,320 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+@import (reference) '~app/less/mixins/modal';
+@import (reference) '~app/less/mixins/clearfix';
+
+
+.InterstitialListing {
+  @logo-size: 80px;
+  @wordmark-size: 36px;
+  @rating-logo-size: 64px;
+  text-align: center;
+
+  &__content {
+    width: 100%;
+    height: 100vh;
+  }
+
+  &__modalCover {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: @z-index-modal - 1;
+
+    .themeify({
+      background-color: @theme-overlay-color;
+    });
+  }
+
+  &__modal {
+    .ModalWrapper();
+  }
+
+  &__modalcontent {
+    .Modal();
+    margin-bottom: @grid-size;
+    height: 94vh;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    top: @grid-size;
+    right: @grid-size;
+    display: inline-block;
+    vertical-align: middle;
+    padding: @grid-size @half-grid-size;
+    .themeify({
+      color: @semi-black-text;
+    });
+    font-size: @font-size-h2;
+  }
+
+  &__bottom {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    .themeify({
+      background-color: @theme-body-color;
+    });
+  }
+
+  &__bottomContent {
+    max-width: 320px;
+    margin: auto;
+    padding: 0 2 * @grid-size;
+  }
+
+  &__header {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  &__thumbnailGrid {
+    .clearfix();
+    width: 85%;
+    padding-top: 3px;
+    margin: auto;
+  }
+
+  &__thumbnailWrapper {
+    float: left;
+    position: relative;
+    overflow: hidden;
+    width: 33%;
+    padding-bottom: 33%;
+  }
+
+  &__thumbnail {
+    border-radius: 5px;
+    position: absolute;
+    left: 2%;
+    right: 2%;
+    top: 2%;
+    bottom: 2%;
+
+    background-size: cover;
+    overflow: hidden;
+  }
+
+  &__appPreview {
+    background: url(/img/white-texture.png);
+    background-color: @mint;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 85%;
+  }
+
+  &__appPreviewImage {
+    background: url(/img/app-preview-iphone.png);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 65%;
+  }
+
+  &__headerPlaceholder {
+    padding-bottom: 85%;
+  }
+
+  @media (max-width: 345px) {
+    &__appPreview {
+      padding-bottom: 55%;
+    }
+
+    &__appPreviewImage {
+      background-size: 40%;
+    }
+
+    &__headerPlaceholder {
+      padding-bottom: 65;
+    }
+
+    &__thumbnailGrid {
+      width: 39vh;
+    }
+  }
+
+  @media (max-width: 345px) and (max-height: 495px) {
+    &__thumbnailGrid {
+      width: 49vh;
+    }
+
+    &__modalContent {
+      .InterstitialListing {
+        &__thumbnailGrid {
+          width: 38vh;
+        }
+
+        &__thumbnailWrapper {
+          width: 50%;
+          padding-bottom: 50%;
+        }
+
+        &__bottom {
+          bottom: 0;
+          padding-bottom: 16px;
+        }
+      }
+    }
+  }
+
+  &__title {
+    font-size: 22px;
+    line-height: 24px;
+    font-weight: bold;
+    margin: @grid-size;
+    text-align: center;
+
+
+    @media (max-width: 270px) {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+
+  &__subtitle {
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 24px;
+    margin: 2 * @grid-size auto;
+    padding: 0 @grid-size;
+    text-align: center;
+    max-width: 320px;
+
+    @media (max-width: 270px) {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+
+  &__bulletList {
+    font-size: @font-size-h3;
+    line-height: 1.2;
+    margin: @grid-size auto;
+    width: 140px;
+    text-align: left;
+  }
+
+  &__bulletItem {
+    font-size: 17px;
+    line-height: 30px;
+  }
+
+  &__bulletIcon {
+    display: inline-block;
+    width: 4 * @grid-size;
+    text-align: left;
+
+        &.icon {
+      color: @mint;
+    }
+
+    &.icon-compact {
+      position: relative;
+      left: -2px;
+    }
+  }
+
+  &__rating {
+    .themeify({
+      color: @black;
+      fill: @black;
+    });
+
+    display: inline-block;
+    padding: @grid-size;
+    margin: @grid-size 3*@grid-size;
+    width: calc(100% ~ '-' @grid-size*6);
+    max-width: 320px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: @grey-text;
+    border-radius: @grid-size / 2;
+    text-align: left;
+  }
+
+  &__rating_icon {
+    display: inline-block;
+    .SnooIcon {
+      height: @rating-logo-size;
+      width: @rating-logo-size;
+      border-radius: @grid-size / 2;
+      background-color: @orangered;
+      line-height: @rating-logo-size;
+      color: @white;
+    }
+  }
+
+  &__rating_right {
+    display: inline-block;
+    font-size: @font-size-h4;
+    text-align: left;
+    padding-left: 2*@grid-size;
+    padding-top: @grid-size;
+    vertical-align: top;
+  }
+
+  &__rating_stars {
+    font-size: @font-size-h3;
+  }
+
+  &__rating_text {
+    font-size: @font-size-base;
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 0 20px;
+    font-size: 14px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    margin: @grid-size @grid-size*3;
+    width: calc(100% ~ '-' @grid-size*6);
+    max-width: 320px;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    background-color: @orangered;
+    color: @white;
+
+    &:hover {
+      background-color: darken(@orangered, 10%);
+    }
+  }
+
+  &__dismissal {
+    color: @grey-text;
+    a, a:visited, a:hover {
+      text-decoration: underline;
+      .themeify({
+        color: @grey-text;
+      });
+    }
+  }
+}
+
+.InterstitialListing + .TopNav {
+  position: relative;
+}
+
+.InterstitialListing + .TopNav + .BelowTopNav {
+  margin-top: 0;
+  position: relative;
+}
