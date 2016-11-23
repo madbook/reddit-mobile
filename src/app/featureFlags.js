@@ -83,20 +83,18 @@ const config = {
   },
   [VARIANT_XPROMO_BASE]: {
     and: [
-      { loggedin: false },
       { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
-      { directVisit: true },
       { allowedPages: ['index'] },
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_android:base',
+          { variant: 'mweb_xpromo_interstitial_fp_android:base',
             url: 'xpromobase',
           },
         ] },
         { and: [
           { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_ios:base',
+          { variant: 'mweb_xpromo_interstitial_fp_ios:base',
             url: 'xpromobase',
           },
         ] },
@@ -105,20 +103,18 @@ const config = {
   },
   [VARIANT_XPROMO_LIST]: {
     and: [
-      { loggedin: false },
       { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
-      { directVisit: true },
       { allowedPages: ['index'] },
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_android:list',
+          { variant: 'mweb_xpromo_interstitial_fp_android:list',
             url: 'xpromolist',
           },
         ] },
         { and: [
           { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_ios:list',
+          { variant: 'mweb_xpromo_interstitial_fp_ios:list',
             url: 'xpromolist',
           },
         ] },
@@ -127,20 +123,18 @@ const config = {
   },
   [VARIANT_XPROMO_RATING]: {
     and: [
-      { loggedin: false },
       { minLoidAge: 24 * 60 * 60 * 1000 }, // 1 day in ms
-      { directVisit: true },
       { allowedPages: ['index'] },
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_android:rating',
+          { variant: 'mweb_xpromo_interstitial_fp_android:rating',
             url: 'xpromorating',
           },
         ] },
         { and: [
           { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_ios:rating',
+          { variant: 'mweb_xpromo_interstitial_fp_ios:rating',
             url: 'xpromorating',
           },
         ] },
