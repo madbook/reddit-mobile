@@ -76,7 +76,12 @@ export function InterstitialListingCommon(props) {
             { buttonText }
           </div>
           <div className='InterstitialListing__dismissal'>
-            or go to the <a onClick={ onClose }>mobile site</a>
+            <span className='InterstitialListing__dismissalText'>
+              { 'or go to the '}
+            </span>
+            <a className='InterstitialListing__dismissalLink' onClick={ onClose }>
+              mobile site
+            </a>
           </div>
         </div>
       </div>

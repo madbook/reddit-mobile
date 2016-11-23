@@ -285,7 +285,7 @@
     height: 48px;
     line-height: 48px;
     text-align: center;
-    margin: @grid-size @grid-size*3;
+    margin: @grid-size @grid-size*3 @half-grid-size;
     width: calc(100% ~ '-' @grid-size*6);
     max-width: 320px;
     border-radius: 5px;
@@ -299,14 +299,32 @@
     }
   }
 
-  &__dismissal {
-    color: @grey-text;
-    a, a:visited, a:hover {
+  @closeLinkHPadding: 2 * @grid-size;
+
+  &__dismissalLink {
+    // give the link a bigger hit are all around, but make sure any clicks
+    // below it register as this is very close to the bottom of the screen
+    padding: @grid-size @closeLinkHPadding 3 * @grid-size;
+
+    &, &:visited, &:hover {
       text-decoration: underline;
+
       .themeify({
         color: @grey-text;
       });
     }
+  }
+
+  &__dismissalText {
+    // padding on the link moves this text to left, we want to
+    // pull it to the link so we maintain visual text-centering
+    position: relative;
+    right: -@closeLinkHPadding;
+  }
+
+  &__dismissal {
+    margin-top: @grid-size;
+    color: @grey-text;
   }
 }
 
