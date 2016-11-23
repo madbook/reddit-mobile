@@ -11,8 +11,6 @@ import { getBranchLink } from 'lib/smartBannerState';
 import PostsFromSubreddit from 'app/router/handlers/PostsFromSubreddit';
 import { paramsToPostsListsId } from 'app/models/PostsList';
 import { featuresSelector} from 'app/selectors/features';
-import SnooIcon from '../SnooIcon';
-import Logo from '../Logo';
 
 const T = React.PropTypes;
 
