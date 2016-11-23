@@ -31,12 +31,33 @@ export function buildSubredditData(state) {
   };
 }
 
+export function getListingName(state) {
+  const subredditName = state.platform.currentPage.urlParams.subredditName;
+  return { 'listing_name': subredditName ? subredditName : 'frontpage'};
+  // we don't support multis yet but we will need to update this when we do.
+}
+
+export function getUserInfoOrLoid(state) {
+  const user = state.user;
+  const userInfo = state.accounts[user.name];
+  if (!user.loggedOut) {
+    return {
+      'user_id': convertId(userInfo.id),
+      'user_name': user.name,
+    };
+  }
+
+  const loid = state.loid; 
+  return {
+    'loid': loid.loid,
+    'loid_created': loid.loidCreated,
+  };
+}
+
 
 export function getBasePayload(state) {
   // NOTE: this is only for usage on the client since it has references to window
-  const { user, accounts } = state;
   const referrer = state.platform.currentPage.referrer || '';
-  const userAccount = user.loggedOut ? null : accounts[user.name];
 
   const payload = {
     domain: state.meta.domain,
@@ -49,15 +70,8 @@ export function getBasePayload(state) {
     dnt: !!window.DO_NOT_TRACK,
     compact_view: state.compact,
     adblock: hasAdblock(),
+    ...getUserInfoOrLoid(state),
   };
-
-  if (userAccount) {
-    payload.user_name = userAccount.name;
-    payload.user_id = convertId(userAccount.id);
-  } else {
-    payload.loid = state.loid.loid;
-    payload.loid_created = state.loid.loidCreated;
-  }
 
   return payload;
 }

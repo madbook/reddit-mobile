@@ -263,7 +263,8 @@ export default class PostContent extends React.Component {
     } else {
       callOnTapExpand = e => {
         e.preventDefault();
-        onTapExpand();
+        const clickTarget = 'thumbnail';
+        onTapExpand(clickTarget);
       };
     }
  

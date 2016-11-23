@@ -4,11 +4,44 @@ const { SavedEndpoint, HiddenEndpoint, EditUserTextEndpoint } = endpoints;
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
+import { getEventTracker } from 'lib/eventTracker';
+import { getBasePayload, buildSubredditData, getListingName, getUserInfoOrLoid } from 'lib/eventUtils';
+
 export const TOGGLE_EXPANDED = 'POSTS__TOGGLE_EXPANDED';
 export const toggleExpanded = postId => ({
   type: TOGGLE_EXPANDED,
   postId,
 });
+
+export const toggleExpandPost = (postId, clickTarget) => async (dispatch, getState) => {
+  dispatch(toggleExpanded(postId));
+  trackExpandToggle(getState(), postId, clickTarget);
+};
+
+function trackExpandToggle(state, postId, clickTarget) {
+  const eventType = state.expandedPosts[postId] ? 'cs.expand_user' : 'cs.collapse_user';
+  getEventTracker().track('expando_events', eventType, {
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
+    ...getListingName(state),
+    ...getPostInfo(state, postId),
+    ...getUserInfoOrLoid(state),
+    'click_target': clickTarget,
+  });
+}
+
+function getPostInfo(state, postId) {
+  const post = state.posts[postId];
+  return {
+    'target_author_id': post.id,
+    'target_created_ts': post.createdUTC,
+    'target_id': post.id,
+    'target_url_domain': post.domain,
+    'target_url': post.cleanUrl,
+    'target_type': post.isSelf ? 'self' : 'link',
+    'nsfw': post.over18,
+  };
+}
 
 export const TOGGLE_NSFW_BLUR = 'POSTS__TOGGLE_NSFW_BLUR';
 export const toggleNSFWBlur = postId => ({

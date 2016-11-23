@@ -19,6 +19,13 @@ import PostHeader from './PostHeader';
 import PostContent from './PostContent';
 import PostFooter from './PostFooter';
 
+import features from 'app/featureFlags';
+import { flags } from 'app/constants'; 
+
+const { 
+  VARIANT_TITLE_EXPANDO,
+} = flags;
+
 const T = React.PropTypes;
 
 function _isCompact(props) {
@@ -81,6 +88,7 @@ export function Post(props) {
     single,
     hideSubredditLabel,
     hideWhen,
+    inTitleExpandoExp,
     userActivityPage,
     onToggleEdit,
     onToggleSavePost,
@@ -147,6 +155,7 @@ export function Post(props) {
   }
 
   const postCssClass = `Post ${compact ? 'size-compact' : 'size-default'}`;
+  const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed; 
 
   return (
     <article className={ postCssClass } style={ { zIndex: z} }>
@@ -164,6 +173,8 @@ export function Post(props) {
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
           onElementClick={ onElementClick }
+          titleOpensExpando={ inTitleExpandoExp && canExpand }
+          onTapExpand={ toggleExpanded }
         />
       </div>
       { contentOrNil }
@@ -193,7 +204,8 @@ const selector = createSelector(
   (state, props) => !!state.expandedPosts[props.postId],
   (state, props) => !!state.unblurredPosts[props.postId],
   (state, props) => state.editingText[props.postId],
-  (user, postId, single, compact, post, expanded, unblurred, editingState) => {
+  state => features.withContext({ state }).enabled(VARIANT_TITLE_EXPANDO),
+  (user, postId, single, compact, post, expanded, unblurred, editingState, inTitleExpandoExp) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
 
@@ -207,12 +219,13 @@ const selector = createSelector(
       unblurred,
       editing,
       editPending,
+      inTitleExpandoExp,
     };
   }
 );
 
 const mapDispatchToProps = (dispatch, { postId }) => ({
-  toggleExpanded: () => dispatch(postActions.toggleExpanded(postId)),
+  toggleExpanded: (clickTarget) => dispatch(postActions.toggleExpandPost(postId, clickTarget)),
   toggleShowNSFW: () => dispatch(postActions.toggleNSFWBlur(postId)),
   onToggleEdit: () => dispatch(postActions.toggleEdit(postId)),
   onUpdateSelftext: (newSelfText) => dispatch(postActions.updateSelfText(postId, newSelfText)),

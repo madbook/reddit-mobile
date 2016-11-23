@@ -94,6 +94,7 @@ export const flags = {
   VARIANT_XPROMO_LISTING: 'experimentXPromoListing',
   VARIANT_XPROMO_SUBREDDIT: 'experimentXPromoSubreddit',
   VARIANT_XPROMO_CLICK: 'experimentXPromoClick',
+  VARIANT_TITLE_EXPANDO: 'experimentTitleExpando',
 };
 
 export const themes = {

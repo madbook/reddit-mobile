@@ -65,6 +65,7 @@ PostHeader.propTypes = {
   renderMediaFullbleed: T.bool.isRequired,
   showLinksInNewTab: T.bool.isRequired,
   onElementClick: T.func.isRequired,
+  titleOpensExpando: T.bool.isRequired,
 };
 
 function postTextColorClass(distinguished) {
@@ -320,7 +321,8 @@ function renderPostHeaderLink(post, showLinksInNewTab) {
   );
 }
 
-function renderPostTitleLink(post, showLinksInNewTab, onElementClick) {
+function renderPostTitleLink(post, showLinksInNewTab, onElementClick,
+                             titleOpensExpando, onTapExpand) {
   const linkExternally = post.promoted && !post.isSelf;
   const url = linkExternally ? post.cleanUrl : cleanPostHREF(mobilify(post.cleanPermalink));
   const { title } = post;
@@ -343,7 +345,19 @@ function renderPostTitleLink(post, showLinksInNewTab, onElementClick) {
     );
   }
 
-  const anchorProps = { ...props, onClick: onElementClick };
+  const anchorProps = {
+    ...props, 
+    onClick: e => {
+      if (titleOpensExpando) {
+        e.preventDefault();
+        const clickTarget = 'title';
+        onTapExpand(clickTarget); 
+      }
+
+      onElementClick();
+    },
+  };
+
   return (
     <Anchor { ...anchorProps }>
       { title }
@@ -364,6 +378,8 @@ export default function PostHeader(props) {
     renderMediaFullbleed,
     showLinksInNewTab,
     onElementClick,
+    titleOpensExpando,
+    onTapExpand,
   } = props;
 
   const showSourceLink = showingLink && !renderMediaFullbleed;
@@ -381,7 +397,8 @@ export default function PostHeader(props) {
           isPromotedUserPost,
         )
       }
-      { renderPostTitleLink(post, showLinksInNewTab, onElementClick) }
+      { renderPostTitleLink(post, showLinksInNewTab, onElementClick,
+                            titleOpensExpando, onTapExpand) }
       { showSourceLink ? renderPostHeaderLink(post, showLinksInNewTab) : null }
       { single && !isPromotedUserPost ? renderDetailViewSubline(post, hideWhen) : null }
     </header>
