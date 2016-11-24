@@ -18,6 +18,7 @@ const {
   VARIANT_XPROMO_SUBREDDIT,
 } = flags;
 
+const THUMBNAIL_THRESHOLD = 9;
 
 function List() {
   return (
@@ -175,11 +176,13 @@ export const selector = createSelector(
     }
 
     // For subreddit listings, we use the listing data we're already
-    // grabbing and return 9 thumbails if there are at least that many.
+    // grabbing and return the thumbnails if we have enough
     let hash = null;
     if (modal.type) {
+      // In modal mode, we get the hash set at the time it's activated
       hash = modal.props ? modal.props.hash : null;
     } else {
+      // Otherwise, we look at our current params to get the hash
       const { urlParams, queryParams } = currentPage;
       const getPageParams = PostsFromSubreddit.pageParamsToSubredditPostsParams;
       const pageParams = getPageParams({ urlParams, queryParams });
@@ -187,15 +190,19 @@ export const selector = createSelector(
     }
     const postsList = hash && postsLists[hash];
     if (postsList && !postsList.loading) {
+      // We have posts!  Look for thumbails, stripping out nsfw, stickied, etc.
       const uuids = postsList.results.map(item => item.uuid);
       const allThumbs = uuids
         .filter(item => over18 || !posts[item].over18)
         .filter(item => !posts[item].stickied)
         .map(item => posts[item].thumbnail)
         .filter(item => !!item && item.startsWith('http'));
-      if (allThumbs.length >= 9) {
-        thumbnails = allThumbs.slice(0, 9);
+      if (allThumbs.length >= THUMBNAIL_THRESHOLD) {
+        // We have enough, so pass up the array
+        thumbnails = allThumbs.slice(0, THUMBNAIL_THRESHOLD);
       } else {
+        // 'null' means we know we don't have enough
+        // 'undefined' (before we have posts) means we don't know yet
         thumbnails = null;
       }
     }

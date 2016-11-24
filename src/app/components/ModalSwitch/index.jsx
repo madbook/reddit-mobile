@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-//import InterstitialModal from '../InterstitialModal';
 import InterstitialModal from '../InterstitialListing/modal';
 import ReportingModal from '../ReportingModal';
 
