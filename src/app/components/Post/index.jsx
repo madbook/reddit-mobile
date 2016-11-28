@@ -10,6 +10,8 @@ import * as modalActions from 'app/actions/modal';
 import * as postActions from 'app/actions/posts';
 import * as reportingActions from 'app/actions/reporting';
 
+import imageDomains from 'lib/imageDomains';
+
 import {
   isPostDomainExternal,
   postShouldRenderMediaFullbleed,
@@ -24,7 +26,10 @@ import { flags } from 'app/constants';
 
 const { 
   VARIANT_TITLE_EXPANDO,
+  VARIANT_MIXED_VIEW,
 } = flags;
+
+const noExpandoPostTypes = new Set(['link', 'self', '']);
 
 const T = React.PropTypes;
 
@@ -89,6 +94,7 @@ export function Post(props) {
     hideSubredditLabel,
     hideWhen,
     inTitleExpandoExp,
+    inMixedViewExp,
     userActivityPage,
     onToggleEdit,
     onToggleSavePost,
@@ -102,13 +108,18 @@ export function Post(props) {
     z,
   } = props;
 
+  const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed;
+  const isImage = imageDomains.has(post.domain);
+  const mixedExpActive = inMixedViewExp &&
+    (noExpandoPostTypes.has(post.postHint) && !isImage);
+  const displayCompact = compact || mixedExpActive;
   if (post.isBlankAd) {
     // Return an empty div if it's a blank ad
     return <div class='blankAd'/>;
   }
 
   let thumbnailOrNil;
-  if (compact) {
+  if (displayCompact) {
     thumbnailOrNil = (
       <PostContent
         post={ post }
@@ -131,14 +142,14 @@ export function Post(props) {
   const hasExpandedCompact = compact && expanded;
   const isPromotedUserPost = post.promoted && post.originalLink;
   let contentOrNil;
-  if (!compact || hasExpandedCompact) {
+  if (!displayCompact || hasExpandedCompact) {
     contentOrNil = (
       <PostContent
         post={ post }
         editing={ editing }
         editPending={ editPending }
         single={ single }
-        compact={ compact }
+        compact={ displayCompact }
         expandedCompact={ hasExpandedCompact }
         onTapExpand={ toggleExpanded }
         onToggleEdit={ onToggleEdit }
@@ -154,8 +165,7 @@ export function Post(props) {
     );
   }
 
-  const postCssClass = `Post ${compact ? 'size-compact' : 'size-default'}`;
-  const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed; 
+  const postCssClass = `Post ${displayCompact ? 'size-compact' : 'size-default'}`;
 
   return (
     <article className={ postCssClass } style={ { zIndex: z} }>
@@ -165,11 +175,11 @@ export function Post(props) {
           post={ post }
           isPromotedUserPost={ isPromotedUserPost }
           single={ single }
-          compact={ compact }
+          compact={ displayCompact }
           hideSubredditLabel={ hideSubredditLabel }
           hideWhen={ hideWhen }
           nextToThumbnail={ !!thumbnailOrNil }
-          showingLink={ !!(compact && !hasExpandedCompact && externalDomain) }
+          showingLink={ !!(displayCompact && !hasExpandedCompact && externalDomain) }
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
           onElementClick={ onElementClick }
@@ -181,7 +191,7 @@ export function Post(props) {
       <PostFooter
         user={ user }
         single={ single }
-        compact={ compact }
+        compact={ displayCompact }
         post={ post }
         viewComments={ !single }
         hideDownvote={ userActivityPage || post.archived }
@@ -205,7 +215,9 @@ const selector = createSelector(
   (state, props) => !!state.unblurredPosts[props.postId],
   (state, props) => state.editingText[props.postId],
   state => features.withContext({ state }).enabled(VARIANT_TITLE_EXPANDO),
-  (user, postId, single, compact, post, expanded, unblurred, editingState, inTitleExpandoExp) => {
+  state => features.withContext({ state }).enabled(VARIANT_MIXED_VIEW),
+  (user, postId, single, compact, post, expanded, unblurred, editingState,
+                                        inTitleExpandoExp, inMixedViewExp) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
 
@@ -220,6 +232,7 @@ const selector = createSelector(
       editing,
       editPending,
       inTitleExpandoExp,
+      inMixedViewExp,
     };
   }
 );
