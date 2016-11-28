@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import omit from 'lodash/omit';
 
 import { convertId } from 'lib/eventUtils';
+import findNearestLinkElement from 'lib/findNearestLinkElement';
 
 const T = React.PropTypes;
 
@@ -29,22 +30,32 @@ const addUserIdParam = (url, userId) => {
   return `${baseUrl}${newQuery}`;
 };
 
-const setOutboundURL = ($link, outboundLink, userId) => {
+const setOutboundURL = ($target, outboundLink, userId) => {
+  const $link = findNearestLinkElement($target);
+  if (!$link) {
+    return;
+  }
+
   // if our link hasn't expired, set the href to the outbound link
   if (outboundLink.expiration > Date.now()) {
     $link.href = addUserIdParam(outboundLink.url, userId);
   }
 };
 
-const resetOriginalURL = ($link, href) => {
+const resetOriginalURL = ($target, href) => {
+  const $link = findNearestLinkElement($target);
+  if (!$link) {
+    return;
+  }
+
   $link.href = href;
 };
 
 function OutboundLink(props) {
   const { outboundLink, userId, href } = props;
   // get all of the props we want to pass to standard react components (styles, className, etc)
-  const linkProps = omit(props, 'outboundLink'); 
-  
+  const linkProps = omit(props, 'outboundLink');
+
   if (!outboundLink) {
     // we don't have outbound link data, pass through to a normal anchor with no special handlers
     return <a { ...linkProps } />;
