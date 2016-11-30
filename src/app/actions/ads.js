@@ -109,6 +109,12 @@ export const fetchNewAdForPostsList = (postsListId, pageParams) =>
       return;
     }
 
+    const hideAds = loadedState.preferences.hideAds;
+    if (hideAds) {
+      dispatch(noAd(adId));
+      return;
+    }
+
     await fetchAddBasedOnResults(dispatch, loadedState, adId, postsList, pageParams);
   };
 
