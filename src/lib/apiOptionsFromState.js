@@ -11,12 +11,26 @@ export const apiOptionsFromState = state => {
     : { ...APIOptions };
 
   // Identify ourselves as the mweb app for api purposes
-  options = {
-    ...options,
-    queryParams: {
-      redditWebClient: 'mweb2x',
-    },
-  };
+  // TODO(prashtx,2016-11-30): The API returns unexpected results for
+  // /api/me.json when we add this query parameter. In particular, we fail to
+  // receive experiment configuration data. We only perform the /api/me.json
+  // call for logged-out users and only on the server. And we currently only
+  // use the `redditWebClient` param to help enable outbound click tracking.
+  // Since there are no outbound links to rewrite for shell renders, it should
+  // be a safe, temporary workaround to skip the parameter for shell renders.
+  // Non-shell renders are currently only for bots, which should not be subject
+  // to user experiments (so the buggy /api/me.json results are not
+  // problematic) and which will not encounter outbound click tracking rewrites
+  // (so we don't really care if we add the `redditWebClient` parameter for
+  // those "users" or not).
+  if (!state.platform.shell) {
+    options = {
+      ...options,
+      queryParams: {
+        redditWebClient: 'mweb2x',
+      },
+    };
+  }
 
   // grab loids if we have them, and set the cookie if on the server
   const {
