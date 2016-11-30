@@ -84,26 +84,12 @@ const config = {
       seoReferrer: true,
     }],
   },
-  [VARIANT_XPROMO_BASE]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['index'] },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_fp_android:base',
-            url: 'xpromobase',
-          },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_fp_ios:base',
-            url: 'xpromobase',
-          },
-        ] },
-      ] },
-    ],
-  },
+  [VARIANT_XPROMO_BASE]: false,
+  // As a temporary hack, we are showing the list treatment also to users
+  // bucketed into the control groups. We want to continue to get bucketing
+  // events, so we know when a user has been exposed to this feature, and we
+  // want to show 100% of users the list treatment. We can't eliminate control
+  // groups in the API's bucketing mechanism, so we use this hack instead.
   [VARIANT_XPROMO_LIST]: {
     and: [
       { notOptedOut: 'xpromoInterstitial' },
@@ -111,59 +97,33 @@ const config = {
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_fp_android:list',
-            url: 'xpromolist',
-          },
+          { or: [
+            { variant: 'mweb_xpromo_interstitial_fp_android:list' },
+            { variant: 'mweb_xpromo_interstitial_fp_android:control_1' },
+            { variant: 'mweb_xpromo_interstitial_fp_android:control_2' },
+            { url: 'xpromolist' },
+          ] },
         ] },
         { and: [
           { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_fp_ios:list',
-            url: 'xpromolist',
-          },
+          { or: [
+            { variant: 'mweb_xpromo_interstitial_fp_ios:list' },
+            { variant: 'mweb_xpromo_interstitial_fp_ios:control_1' },
+            { variant: 'mweb_xpromo_interstitial_fp_ios:control_2' },
+            { url: 'xpromolist' },
+          ] },
         ] },
       ] },
     ],
   },
-  [VARIANT_XPROMO_RATING]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['index'] },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_fp_android:rating',
-            url: 'xpromorating',
-          },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_fp_ios:rating',
-            url: 'xpromorating',
-          },
-        ] },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LISTING]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['listing'] },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_listing_android:listing',
-            url: 'xpromolisting',
-          },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_listing_ios:listing',
-            url: 'xpromolisting',
-          },
-        ] },
-      ] },
-    ],
-  },
+  [VARIANT_XPROMO_RATING]: false,
+  [VARIANT_XPROMO_LISTING]: false,
+  // As a temporary hack, we are showing the subreddit treatment also to users
+  // bucketed into the control groups. We want to continue to get bucketing
+  // events, so we know when a user has been exposed to this feature, and we
+  // want to show 100% of users the subreddit treatment. We can't eliminate
+  // control groups in the API's bucketing mechanism, so we use this hack
+  // instead.
   [VARIANT_XPROMO_SUBREDDIT]: {
     and: [
       { notOptedOut: 'xpromoInterstitial' },
@@ -171,39 +131,26 @@ const config = {
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_listing_android:subreddit',
-            url: 'xpromosubreddit',
-          },
+          { or: [
+            { variant: 'mweb_xpromo_interstitial_listing_android:subreddit' },
+            { variant: 'mweb_xpromo_interstitial_listing_android:control_1' },
+            { variant: 'mweb_xpromo_interstitial_listing_android:control_2' },
+            { url: 'xpromosubreddit' },
+          ] },
         ] },
         { and: [
           { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_listing_ios:subreddit',
-            url: 'xpromosubreddit',
-          },
+          { or: [
+            { variant: 'mweb_xpromo_interstitial_listing_ios:subreddit' },
+            { variant: 'mweb_xpromo_interstitial_listing_ios:control_1' },
+            { variant: 'mweb_xpromo_interstitial_listing_ios:control_2' },
+            { url: 'xpromosubreddit' },
+          ] },
         ] },
       ] },
     ],
   },
-  [VARIANT_XPROMO_CLICK]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['listing'] },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { variant: 'mweb_xpromo_interstitial_listing_android:click',
-            url: 'xpromoclick',
-          },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { variant: 'mweb_xpromo_interstitial_listing_ios:click',
-            url: 'xpromoclick',
-          },
-        ] },
-      ] },
-    ],
-  },
+  [VARIANT_XPROMO_CLICK]: false,
 };
 
 const flags = new Flags(config);
