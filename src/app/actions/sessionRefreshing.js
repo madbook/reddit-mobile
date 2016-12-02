@@ -6,7 +6,7 @@ export const refreshing = () => ({ type: SESSION_REFRESHING });
 export const SESSION_REFRESHED = 'SESSION_REFRESHED';
 export const refreshed = () => ({ type: SESSION_REFRESHED });
 
-export const refresh = () => async (dispatch, getState) => {
+export const refresh = (retry=true) => async (dispatch, getState) => {
   const { sessionRefreshing, session } = getState();
   // note, we shouldn't check session.isvalid here becuase
   // then we wouldn't be able to pre-emptively refresh
@@ -20,7 +20,11 @@ export const refresh = () => async (dispatch, getState) => {
   } catch (e) {
     dispatch(refreshed());
 
+    if (!retry) {
+      return;
+    }
+
     // retry, only once, somewhere between 1 and 3 seconds later
-    setTimeout(() => dispatch(refresh()), Math.floor(1000 + Math.random() * 1000));
+    setTimeout(() => dispatch(refresh(false)), Math.floor(1000 + Math.random() * 2000));
   }
 };
