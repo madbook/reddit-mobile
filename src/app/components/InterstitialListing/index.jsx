@@ -7,6 +7,8 @@ import { redirect } from '@r/platform/actions';
 import { markBannerClosed } from 'lib/smartBannerState';
 import * as smartBannerActions from 'app/actions/smartBanner';
 
+import XPromoWrapper from 'app/components/XPromoWrapper';
+
 import {
   InterstitialListingCommon,
   selector,
@@ -14,11 +16,13 @@ import {
 
 export function InterstitialListing(props) {
   return (
-    <div className='InterstitialListing'>
-      <div className='InterstitialListing__content'>
-        <InterstitialListingCommon { ... props } />
+    <XPromoWrapper>
+      <div className='InterstitialListing'>
+        <div className='InterstitialListing__content'>
+          <InterstitialListingCommon { ... props } />
+        </div>
       </div>
-    </div>
+    </XPromoWrapper>
   );
 }
 

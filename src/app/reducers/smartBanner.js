@@ -5,6 +5,8 @@ import * as smartBannerActions from 'app/actions/smartBanner';
 
 export const DEFAULT = {
   showBanner: false,
+  haveShownXPromo: false,
+  xPromoShownUrl: null,
 };
 
 export default function(state=DEFAULT, action={}) {
@@ -20,8 +22,21 @@ export default function(state=DEFAULT, action={}) {
       return DEFAULT;
     }
 
+    case smartBannerActions.RECORD_SHOWN: {
+      return merge(state, {
+        haveShownXPromo: true,
+        xPromoShownUrl: action.url,
+      });
+    }
+
     case platformActions.NAVIGATE_TO_URL: {
-      return DEFAULT;
+      if (state.haveShownXPromo) {
+        return merge(state, {
+          showBanner: false,
+        });
+      }
+
+      return state;
     }
 
     default:

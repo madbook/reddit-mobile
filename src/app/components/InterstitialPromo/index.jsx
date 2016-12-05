@@ -18,6 +18,7 @@ import { featuresSelector} from 'app/selectors/features';
 import * as smartBannerActions from 'app/actions/smartBanner';
 import SnooIcon from '../SnooIcon';
 import Logo from '../Logo';
+import XPromoWrapper from '../XPromoWrapper';
 
 const T = React.PropTypes;
 
@@ -79,40 +80,42 @@ function InterstitialPromo(props) {
                        features.enabled(VARIANT_XPROMO_LISTING);
 
   return (
-    <div className='InterstitialPromo'>
-      <div
-        className='InterstitialPromo__close icon icon-x'
-        onClick={ onClose }
-      />
-      <div className='InterstitialPromo__icon'>
-        <SnooIcon />
-        <div className='InterstitialPromo__wordmark'>
-          <Logo />
-        </div>
-      </div>
-      <div className='InterstitialPromo__bottom'>
-        <div className='InterstitialPromo__header'>
-          <div className='InterstitialPromo__title'>{ TITLE }</div>
-          <div className='InterstitialPromo__subtitle'>
-            Reddit is better with the app.
-            We&nbsp;hate to intrude, but&nbsp;you&nbsp;deserve&nbsp;the&nbsp;best.
-          </div>
-          { listVariants ? <List /> : null }
-        </div>
+    <XPromoWrapper>
+      <div className='InterstitialPromo'>
         <div
-          className='InterstitialPromo__button'
-          onClick={ navigator(urls[0]) }
-        >
-          { CTA }
-          <span className="icon icon-play"></span>
+          className='InterstitialPromo__close icon icon-x'
+          onClick={ onClose }
+        />
+        <div className='InterstitialPromo__icon'>
+          <SnooIcon />
+          <div className='InterstitialPromo__wordmark'>
+            <Logo />
+          </div>
         </div>
-        { features.enabled(VARIANT_XPROMO_RATING) ?
-            <Rating device={ device} navigate={ navigator(urls[1]) }/> : null }
-        <div className='InterstitialPromo__dismissal'>
-          or go to the <a onClick={ onClose }>mobile site</a>
+        <div className='InterstitialPromo__bottom'>
+          <div className='InterstitialPromo__header'>
+            <div className='InterstitialPromo__title'>{ TITLE }</div>
+            <div className='InterstitialPromo__subtitle'>
+              Reddit is better with the app.
+              We&nbsp;hate to intrude, but&nbsp;you&nbsp;deserve&nbsp;the&nbsp;best.
+            </div>
+            { listVariants ? <List /> : null }
+          </div>
+          <div
+            className='InterstitialPromo__button'
+            onClick={ navigator(urls[0]) }
+          >
+            { CTA }
+            <span className="icon icon-play"></span>
+          </div>
+          { features.enabled(VARIANT_XPROMO_RATING) ?
+              <Rating device={ device} navigate={ navigator(urls[1]) }/> : null }
+          <div className='InterstitialPromo__dismissal'>
+            or go to the <a onClick={ onClose }>mobile site</a>
+          </div>
         </div>
       </div>
-    </div>
+    </XPromoWrapper>
   );
 }
 

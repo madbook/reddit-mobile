@@ -7,6 +7,12 @@ export const show = () => ({ type: SHOW });
 export const HIDE = 'SMARTBANNER__HIDE';
 export const hide = () => ({ type: HIDE });
 
+export const RECORD_SHOWN = 'SMARTBANNER__RECORD_SHOWN';
+export const recordShown = url => ({
+  type: RECORD_SHOWN,
+  url,
+});
+
 const EXTERNAL_PREF_NAME = 'hide_mweb_xpromo_banner';
 
 // element is the interface element through which the user dismissed the
