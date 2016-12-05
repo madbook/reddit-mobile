@@ -193,7 +193,7 @@ export const selector = createSelector(
       // We have posts!  Look for thumbails, stripping out nsfw, stickied, etc.
       const uuids = postsList.results.map(item => item.uuid);
       const allThumbs = uuids
-        .filter(item => over18 || !posts[item].over18)
+        .filter(item => !(over18 || posts[item].over18))
         .filter(item => !posts[item].stickied)
         .map(item => posts[item].thumbnail)
         .filter(item => !!item && item.startsWith('http'));
