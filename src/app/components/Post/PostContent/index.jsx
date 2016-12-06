@@ -66,7 +66,7 @@ function postToPlayableType(post) {
     }
   }
 
-  if (post.url && post.url.indexOf('.gif') > -1) {
+  if (post.cleanUrl && post.cleanUrl.indexOf('.gif') > -1) {
     return PLAYABLE_TYPE.INLINE;
   }
 
