@@ -11,9 +11,12 @@ import * as gtm from 'lib/gtm';
 
 const ID_REGEX = /(?:t\d+_)?(.*)/;
 
+export function removePrefix(prefixedId) {
+  return ID_REGEX.exec(prefixedId)[1];
+}
+
 export function convertId(id) {
-  const unprefixedId = ID_REGEX.exec(id)[1];
-  return parseInt(unprefixedId, 36);
+  return parseInt(removePrefix(id), 36);
 }
 
 

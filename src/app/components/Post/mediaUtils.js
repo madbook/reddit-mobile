@@ -100,7 +100,7 @@ export function findPreviewVideo(preview) {
   return largestFirst[0];
 }
 
-function findBestFitPreviewImage(isCompact, previewImage, imageWidth, needsNSFWBlur) {
+function findBestFitPreviewImage(isThumbnail, previewImage, imageWidth, needsNSFWBlur) {
   if (needsNSFWBlur) {
     // for logged out users and users who have the 'make safer for work'
     // option enabled there will be no nsfw variants returned.
@@ -118,7 +118,7 @@ function findBestFitPreviewImage(isCompact, previewImage, imageWidth, needsNSFWB
         return a.width - b.width;
       })
       .find((r) => {
-        if (isCompact) {
+        if (isThumbnail) {
           return r.width >= imageWidth && r.height >= imageWidth;
         }
 

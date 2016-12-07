@@ -103,6 +103,18 @@ export const toggleEdit = postId => ({
   thingId: postId,
 });
 
+export const START_PLAYING = 'POSTS__START_PLAYING';
+export const startPlaying = postId => ({
+  type: START_PLAYING,
+  thingId: postId,
+});
+
+export const STOP_PLAYING = 'POSTS__STOP_PLAYING';
+export const stopPlaying = postId => ({
+  type: STOP_PLAYING,
+  thingId: postId,
+});
+
 export const UPDATING_SELF_TEXT = 'POSTS__UPDATING_SELF_TEXT';
 export const updatingSelfText = postId => ({
   type: UPDATING_SELF_TEXT,

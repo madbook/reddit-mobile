@@ -23,6 +23,7 @@ import moreCommentsRequests from './moreCommentsRequests';
 import optOuts from './optOuts';
 import overlay from './overlay';
 import pageMetadata from './pageMetadata';
+import playingPosts from './playingPosts';
 import posting from './posting';
 import posts from './posts';
 import postsLists from './postsLists';
@@ -75,6 +76,7 @@ export default {
   optOuts,
   overlay,
   pageMetadata,
+  playingPosts,
   posting,
   posts,
   postsLists,

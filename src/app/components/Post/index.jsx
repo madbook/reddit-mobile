@@ -24,6 +24,7 @@ import PostFooter from './PostFooter';
 
 import features from 'app/featureFlags';
 import { flags } from 'app/constants'; 
+import { removePrefix } from 'lib/eventUtils';
 
 const { 
   VARIANT_TITLE_EXPANDO,
@@ -100,11 +101,14 @@ export function Post(props) {
     hideWhen,
     inTitleExpandoExp,
     inMixedViewExp,
+    isPlaying,
     userActivityPage,
     onPostClick,
     onToggleEdit,
     onToggleSavePost,
     onToggleHidePost,
+    onStartPlaying,
+    onStopPlaying,
     onReportPost,
     onUpdateSelftext,
     onElementClick,
@@ -125,6 +129,10 @@ export function Post(props) {
     return <div class='blankAd'/>;
   }
 
+  const hasExpandedCompact = compact && expanded;
+  const shouldPlay = !isPlaying && ((compact && !hasExpandedCompact) || !compact);  
+  const onTogglePlaying = shouldPlay ? onStartPlaying : onStopPlaying;
+
   let thumbnailOrNil;
   if (displayCompact) {
     thumbnailOrNil = (
@@ -132,8 +140,10 @@ export function Post(props) {
         post={ post }
         single={ single }
         compact={ true }
+        isThumbnail={ true }
         expandedCompact={ false }
         onTapExpand={ toggleExpanded }
+        togglePlaying={ onTogglePlaying }
         width={ winWidth }
         toggleShowNSFW={ toggleShowNSFW }
         showNSFW={ showNSFW }
@@ -146,7 +156,6 @@ export function Post(props) {
     );
   }
 
-  const hasExpandedCompact = compact && expanded;
   const isPromotedUserPost = post.promoted && post.originalLink;
   let contentOrNil;
   if (!displayCompact || hasExpandedCompact) {
@@ -157,10 +166,13 @@ export function Post(props) {
         editPending={ editPending }
         single={ single }
         compact={ displayCompact }
+        isPlaying={ isPlaying }
+        isThumbnail={ false }
         expandedCompact={ hasExpandedCompact }
         onTapExpand={ toggleExpanded }
         onToggleEdit={ onToggleEdit }
         onUpdateSelftext={ onUpdateSelftext }
+        togglePlaying={ onTogglePlaying }
         width={ winWidth }
         showNSFW={ showNSFW }
         toggleShowNSFW={ toggleShowNSFW }
@@ -224,8 +236,9 @@ const selector = createSelector(
   (state, props) => state.editingText[props.postId],
   state => features.withContext({ state }).enabled(VARIANT_TITLE_EXPANDO),
   state => features.withContext({ state }).enabled(VARIANT_MIXED_VIEW),
+  (state, props) => state.playingPosts[removePrefix(props.postId)],
   (user, postId, single, compact, post, expanded, unblurred, editingState,
-                                        inTitleExpandoExp, inMixedViewExp) => {
+   inTitleExpandoExp, inMixedViewExp, isPlaying) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
 
@@ -241,6 +254,7 @@ const selector = createSelector(
       editPending,
       inTitleExpandoExp,
       inMixedViewExp,
+      isPlaying,
     };
   }
 );
@@ -252,6 +266,8 @@ const mapDispatchToProps = (dispatch, { postId }) => ({
   onUpdateSelftext: (newSelfText) => dispatch(postActions.updateSelfText(postId, newSelfText)),
   onToggleSavePost: () => dispatch(postActions.toggleSavePost(postId)),
   onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
+  onStopPlaying: () => dispatch(postActions.stopPlaying(postId)),
+  onStartPlaying: () => dispatch(postActions.startPlaying(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),
   onElementClick: () => dispatch(modalActions.showXpromoModal()),
   onToggleModal: () => dispatch(toggleModal(null)),
