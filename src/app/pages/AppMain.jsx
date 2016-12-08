@@ -143,6 +143,8 @@ const AppMain = props => {
                     component={ CommentsPage }
                   />
                   <Page url='/user/:userName/activity' component={ UserActivityPage } />
+                  <Page url='/user/:userName/comments' component={ UserActivityPage } />
+                  <Page url='/user/:userName/submitted' component={ UserActivityPage } />
                   <Page url='/user/:userName/gild' component={ UserProfilePage } />
                   <Page
                     url='/user/:userName/:savedOrHidden(saved|hidden)'
