@@ -1,22 +1,14 @@
 import { setPage, navigateToUrl } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
 
-import { COMMENTS_ACTIVITY, POSTS_ACTIVITY } from 'app/actions/activities';
+import UserActivityHandler from 'app/router/handlers/UserActivity';
 
 export default class UserActivityRerouteHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
     const { platform: { currentPage }} = getState();
     const { urlParams, queryParams, hashParams, referrer } = currentPage;
     const { userName } = urlParams;
-    let url = '';
-
-    if (queryParams.activity === COMMENTS_ACTIVITY) {
-      url = `/user/${userName}/comments`;
-    } else if (queryParams.activity === POSTS_ACTIVITY) {
-      url = `/user/${userName}/submitted`;
-    } else {
-      url = `/user/${userName}`;
-    }
+    const url = UserActivityHandler.activityUrl(userName, queryParams.activity);
 
     if (process.env.ENV === 'client') {
       // redirect the url and make sure platform runs the handler

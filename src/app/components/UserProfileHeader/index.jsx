@@ -3,6 +3,7 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 
+import UserActivityHandler from 'app/router/handlers/UserActivity';
 import { POSTS_ACTIVITY, COMMENTS_ACTIVITY } from 'app/actions/activities';
 
 const T = React.PropTypes;
@@ -34,19 +35,19 @@ const UserProfileTabs = props => {
   return (
     <nav className='UserProfileHeader__tabs'>
       <UserProfileTab
-        href={ `/user/${userName}` }
+        href={ UserActivityHandler.activityUrl(userName, null) }
         icon='icon-user-account'
         text='ABOUT'
         selected={ currentActivity === undefined }
       />
       <UserProfileTab
-        href={ `/user/${userName}/submitted` }
+        href={ UserActivityHandler.activityUrl(userName, POSTS_ACTIVITY) }
         icon='icon-posts'
         text='POSTS'
         selected={ currentActivity === POSTS_ACTIVITY }
       />
       <UserProfileTab
-        href={ `/user/${userName}/comments` }
+        href={ UserActivityHandler.activityUrl(userName, COMMENTS_ACTIVITY) }
         icon='icon-comment'
         text='COMMENTS'
         selected={ currentActivity === COMMENTS_ACTIVITY }
