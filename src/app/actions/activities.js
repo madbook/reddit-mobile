@@ -28,7 +28,7 @@ export const failed = (id, error) => ({
   error,
 });
 
-export const fetch = (activiesParams) => async (dispatch, getState) => {
+export const fetch = activiesParams => async (dispatch, getState) => {
   const state = getState();
   const id = paramsToActiviesRequestId(activiesParams);
 
