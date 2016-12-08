@@ -1,8 +1,10 @@
-import { BaseHandler } from '@r/platform/router';
+import { BaseHandler, METHODS } from '@r/platform/router';
 
 import { cleanObject } from 'lib/cleanObject';
 import { SORTS } from 'app/sortValues';
-import { POSTS_ACTIVITY } from 'app/actions/activities';
+import { COMMENTS_ACTIVITY, POSTS_ACTIVITY } from 'app/actions/activities';
+import * as activitiesActions from 'app/actions/activities';
+import { fetchUserBasedData } from './handlerCommon';
 import { listingTime } from 'lib/listingTime';
 
 export default class UserActivityHandler extends BaseHandler {
@@ -29,5 +31,19 @@ export default class UserActivityHandler extends BaseHandler {
       before,
       after,
     });
+  }
+
+  async [METHODS.GET](dispatch, getState) {
+    if (getState().platform.shell) {
+      return;
+    }
+
+    const { platform: { currentPage }} = getState();
+    const { urlParams } = currentPage;
+    this.queryParams.activity = urlParams.commentsOrSubmitted;
+    const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(this);
+
+    dispatch(activitiesActions.fetch(activitiesParams));
+    fetchUserBasedData(dispatch);
   }
 }
