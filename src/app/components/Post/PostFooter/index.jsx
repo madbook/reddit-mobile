@@ -44,7 +44,7 @@ export default class PostFooter extends React.Component {
   }
 
   renderCommentsLink(post) {
-    if (post.disable_comments) {
+    if (post.disableComments) {
       return;
     }
 

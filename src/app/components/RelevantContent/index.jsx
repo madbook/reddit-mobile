@@ -59,7 +59,7 @@ function NextPost(props) {
     return null;
   }
 
-  const linkExternally = post.disable_comments;
+  const linkExternally = post.disableComments;
   const url = cleanPostHREF(mobilify(linkExternally ? post.url : post.cleanPermalink));
   const { id, title, name } = post;
   // Make sure we always have an image to show
