@@ -5,10 +5,11 @@
 2. Build:
   `npm run build` (optionally watch for updates with `npm run watch`)
 3. Run:
-  dev: `npm run dev-server`
-  production `npm run server`
+  * dev: `npm run dev-server`
+  * production: `npm run server`
+4. Visit http://localhost:4444/
 
-### Configuring your dev envirnoment
+### Configuring your dev environment
 
 Create a file in the root called `start.sh` and make it executable `chmod +x start.sh`.
 This file is automatically ignore by git and you can use it to start the server instead
