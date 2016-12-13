@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 import { Anchor } from '@r/platform/components';
+import { toggleModal } from '@r/widgets/modal';
 
 import mobilify from 'lib/mobilify';
 import * as replyActions from 'app/actions/reply';
@@ -134,6 +135,7 @@ function renderTools(props) {
     onToggleReply,
     commentingDisabled,
     votingDisabled,
+    onToggleModal,
   } = props;
 
   const className = cx('Comment__toolsContainer', 'clearfix', {
@@ -160,6 +162,7 @@ function renderTools(props) {
           onToggleReply={ onToggleReply }
           commentingDisabled={ commentingDisabled }
           votingDisabled={ votingDisabled }
+          onToggleModal={ onToggleModal }
         />
       </div>
     </div>
@@ -326,6 +329,7 @@ const mapDispatchToProps = (dispatch, { commentId }) => ({
     e.preventDefault();
     dispatch(replyActions.toggle(commentId));
   },
+  onToggleModal: () => dispatch(toggleModal(null)),
 });
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Dropdown, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
+import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 
 const T = React.PropTypes;
 
@@ -15,12 +15,13 @@ export default function CommentDropdown(props) {
     onDelete,
     onToggleSave,
     onReportComment,
+    onToggleModal,
   } = props;
 
   const userIsAuthor = commentAuthor === username;
 
   return (
-    <Dropdown id={ id }>
+    <DropdownModal id={ id } onClick={ onToggleModal }>
       { userIsAuthor
         ? <DropdownRow icon='post_edit' text='Edit Comment' onClick={ onEdit }/>
         : null }
@@ -37,7 +38,7 @@ export default function CommentDropdown(props) {
       { username
         ? <DropdownRow onClick={ onReportComment } icon='flag' text='Report'/>
         : null }
-    </Dropdown>
+    </DropdownModal>
   );
 }
 
@@ -59,4 +60,5 @@ CommentDropdown.defaultProps = {
   onEdit: () => {},
   onDelete: () => {},
   onToggleSave: () => {},
+  onToggleModal: () => {},
 };

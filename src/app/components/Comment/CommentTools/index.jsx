@@ -1,6 +1,6 @@
 import './styles.less';
 import React from 'react';
-import { TooltipTarget } from '@r/widgets/tooltip';
+import { ModalTarget } from '@r/widgets/modal';
 
 import VotingBox from 'app/components/VotingBox';
 import CommentDropdown from '../CommentDropdown';
@@ -24,18 +24,19 @@ export default function CommentTools(props) {
     onDelete,
     onToggleSave,
     onReportComment,
+    onToggleModal,
   } = props;
 
-  const tooltipId = `comment-tooltip-${id}`;
+  const modalId = `comment-modal-${id}`;
 
   return (
     <div className='CommentTools'>
       { commentingDisabled ? null : renderReply(props) }
-      { renderSeashells(tooltipId) }
+      { renderSeashells(modalId) }
       { renderDivider(props) }
       { renderVote(id, score, scoreHidden, voteDirection, votingDisabled) }
-      { renderDropdown(tooltipId, permalinkUrl, commentAuthor, username, saved,
-                       onEdit, onDelete, onToggleSave, onReportComment) }
+      { renderDropdown(modalId, permalinkUrl, commentAuthor, username, saved,
+                       onEdit, onDelete, onToggleSave, onReportComment, onToggleModal) }
     </div>
   );
 }
@@ -55,6 +56,7 @@ CommentTools.propTypes = {
   onToggleSave: T.func,
   onReportComment: T.func.isRequired,
   onReplyOpen: T.func,
+  onToggleModal: T.func.isRequired,
 };
 
 CommentTools.defaultProps = {
@@ -67,6 +69,7 @@ CommentTools.defaultProps = {
   onDelete: () => {},
   onToggleSave: () => {},
   onToggleReply: () => {},
+  onToggleModal: () => {},
 };
 
 const renderReply = ({ commentReplying, onToggleReply }) => {
@@ -80,13 +83,12 @@ const renderReply = ({ commentReplying, onToggleReply }) => {
   );
 };
 
-const renderSeashells = tooltipId => (
-  <TooltipTarget
-    id={ tooltipId }
-    type={ TooltipTarget.TYPE.CLICK }
+const renderSeashells = modalId => (
+  <ModalTarget
+    id={ modalId }
   >
     <div className='CommentTools__more icon icon-seashells'/>
-  </TooltipTarget>
+  </ModalTarget>
 );
 
 const renderVote = (id, score, scoreHidden, voteDirection, votingDisabled) => (
@@ -113,6 +115,7 @@ const renderDropdown = (
   onDelete,
   onToggleSave,
   onReportComment,
+  onToggleModal,
 ) => (
   <CommentDropdown
     id={ tooltipId }
@@ -124,5 +127,6 @@ const renderDropdown = (
     onDelete={ onDelete }
     onToggleSave={ onToggleSave }
     onReportComment={ onReportComment }
+    onToggleModal={ onToggleModal }
   />
 );
