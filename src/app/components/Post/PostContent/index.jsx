@@ -267,7 +267,7 @@ export default class PostContent extends React.Component {
         onTapExpand(clickTarget);
       };
     }
- 
+
     const sourceURL = post.cleanUrl;
 
     if (isCompact && previewImage && previewImage.url) {
@@ -281,8 +281,11 @@ export default class PostContent extends React.Component {
     //  * a gif that we're playing ourselves with html5 video or inline
     if (playableType !== PLAYABLE_TYPE.NOT_PLAYABLE
           && previewImage && this.useOurOwnPlayingOrPreviewing(oembed, sourceURL)) {
+      // if compact, preview should expand to full content
+      // if card mode, content should start playing
+      const callback = isCompact ? callOnTapExpand : this.togglePlaying;
       return this.buildImagePreview(previewImage, sourceURL, linkDescriptor,
-        this.togglePlaying, needsNSFWBlur, isCompact, playableType);
+        callback, needsNSFWBlur, isCompact, playableType);
     }
 
     if (oembed) {
