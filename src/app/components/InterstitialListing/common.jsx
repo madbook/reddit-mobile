@@ -43,14 +43,14 @@ export function InterstitialListingCommon(props) {
   /* NOTE: We default to the VARIANT_XPROMO_CLICK case because
    * it breaks otherwise when we navigate off a listing page.
    */
-  const { urls, onClose, features, subreddit, thumbnails, navigator } = props;
+  const { urls, onClose, features, thumbnails, navigator } = props;
 
   const titleText = features.enabled(VARIANT_XPROMO_SUBREDDIT)
     ? ''
     : 'View this post in the official Reddit app';
 
   const subtitleText = features.enabled(VARIANT_XPROMO_SUBREDDIT)
-    ? `r/${ subreddit } is better with the app. We hate to intrude, ` +
+    ? 'Reddit is better with the app. We hate to intrude, ' +
       'but you deserve the best.'
     : '';
 
@@ -164,14 +164,11 @@ export const selector = createSelector(
     modal,
     currentPage,
   ) => {
-    let subreddit = subredditName;
     let thumbnails;
     let over18 = false;
 
-    // Show the subreddit's displayName if possible
     const subredditInfo = subreddits[subredditName.toLowerCase()];
     if (subredditInfo) {
-      subreddit = subredditInfo.displayName;
       over18 = subredditInfo.over18;
     }
 
@@ -211,7 +208,6 @@ export const selector = createSelector(
       urls,
       features,
       device,
-      subreddit,
       thumbnails,
     };
   },
