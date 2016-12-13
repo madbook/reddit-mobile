@@ -2,7 +2,7 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { models } from '@r/api-client';
-import { TooltipTarget } from '@r/widgets/tooltip';
+import { ModalTarget } from '@r/widgets/modal';
 
 import PostDropdown from '../PostDropdown';
 import VotingBox from 'app/components/VotingBox';
@@ -26,6 +26,7 @@ export default class PostFooter extends React.Component {
     onDelete: T.func.isRequired,
     onToggleSave: T.func.isRequired,
     onElementClick: T.func.isRequired,
+    onToggleModal: T.func.isRequired,
   };
 
   constructor(props) {
@@ -83,6 +84,7 @@ export default class PostFooter extends React.Component {
       onToggleHide,
       onReportPost,
       single,
+      onToggleModal,
     } = this.props;
 
     const isLoggedIn = user && !user.loggedOut;
@@ -93,12 +95,11 @@ export default class PostFooter extends React.Component {
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
         { this.renderCommentsLink(post) }
         <div className='PostFooter__vote-and-tools-wrapper'>
-          <TooltipTarget
+          <ModalTarget
             id={ post.name }
-            type={ TooltipTarget.TYPE.CLICK }
           >
             <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'/>
-          </TooltipTarget>
+          </ModalTarget>
           <span className='PostFooter__vertical-divider' />
           <VotingBox
             thingId = { post.name }
@@ -120,6 +121,7 @@ export default class PostFooter extends React.Component {
           onToggleSave={ onToggleSave }
           onToggleHide={ onToggleHide }
           onReportPost={ onReportPost }
+          onToggleModal={ onToggleModal }
         />
       </footer>
     );

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
+import { toggleModal } from '@r/widgets/modal';
 const { PostModel } = models;
 
 import * as modalActions from 'app/actions/modal';
@@ -57,6 +58,7 @@ Post.propTypes = {
   onToggleSavePost: T.func,
   onToggleHidePost: T.func,
   onReportPost: T.func.isRequired,
+  onToggleModal: T.func.isRequired,
 };
 
 Post.defaultProps = {
@@ -69,6 +71,7 @@ Post.defaultProps = {
   winWidth: 360,
   onToggleSavePost: () => {},
   onToggleHidePost: () => {},
+  onToggleModal: () => {},
 };
 
 export function Post(props) {
@@ -106,6 +109,7 @@ export function Post(props) {
     toggleShowNSFW,
     winWidth,
     z,
+    onToggleModal,
   } = props;
 
   const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed;
@@ -200,6 +204,7 @@ export function Post(props) {
         onToggleHide={ onToggleHidePost }
         onReportPost={ onReportPost }
         onElementClick={ onElementClick }
+        onToggleModal={ onToggleModal }
       />
     </article>
   );
@@ -246,6 +251,7 @@ const mapDispatchToProps = (dispatch, { postId }) => ({
   onToggleHidePost: () => dispatch(postActions.toggleHidePost(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),
   onElementClick: () => dispatch(modalActions.showXpromoModal()),
+  onToggleModal: () => dispatch(toggleModal(null)),
 });
 
 export default connect(selector, mapDispatchToProps)(Post);

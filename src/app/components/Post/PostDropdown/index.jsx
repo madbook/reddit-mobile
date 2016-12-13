@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Dropdown, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
+import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 
 const T = React.PropTypes;
 
@@ -25,10 +25,11 @@ export default function PostDropdown(props) {
     onToggleHide,
     onReportPost,
     onToggleSave,
+    onToggleModal,
   } = props;
 
   return (
-    <Dropdown id={ id }>
+    <DropdownModal id={ id } onClick={ onToggleModal }>
       { canModify && <DropdownRow icon='post_edit' text='Edit Post' onClick={ onToggleEdit } /> }
       <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>
       { subreddit && renderSubredditDropdownLinkRow(subreddit) }
@@ -36,7 +37,7 @@ export default function PostDropdown(props) {
       { isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null }
       { isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null }
       { isLoggedIn ? <DropdownRow onClick={ onReportPost } icon='flag' text='Report'/> : null }
-    </Dropdown>
+    </DropdownModal>
   );
 }
 
@@ -52,6 +53,7 @@ PostDropdown.propTypes = {
   onToggleHide: T.func,
   onReportPost: T.func.isRequired,
   onToggleEdit: T.func,
+  onToggleModal: T.func,
 };
 
 PostDropdown.defaultProps = {
@@ -61,4 +63,5 @@ PostDropdown.defaultProps = {
   onToggleSave: () => {},
   onToggleHide: () => {},
   onToggleEdit: () => {},
+  onToggleModal: () => {},
 };

@@ -2,6 +2,7 @@ import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
 import { Tooltip } from '@r/widgets/tooltip';
+import { Modal } from '@r/widgets/modal';
 
 import cx from 'lib/classNames';
 
@@ -24,6 +25,26 @@ export function Dropdown(props) {
 
 Dropdown.propTypes = {
   id: T.string.isRequired,
+};
+
+export function DropdownModal(props) {
+  return (
+    <div className='DropdownModalWrapper'>
+      <Modal
+        id={ props.id }
+        className='DropdownModal'
+      >
+        <div onClick={ props.onClick }>
+          { props.children }
+        </div>
+      </Modal>
+    </div>
+  );
+}
+
+DropdownModal.propTypes = {
+  id: T.string.isRequired,
+  onClick: T.func,
 };
 
 export function DropdownRow(props) {

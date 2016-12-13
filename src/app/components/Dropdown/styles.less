@@ -20,6 +20,32 @@
   }
 }
 
+.DropdownModal {
+  .themeify({
+    border: @theme-border;
+  });
+
+  @max-width: 600px;
+  @buffer: 200px;
+  max-width: 95%;
+  margin: auto;
+  position: absolute;
+  top: 30%;
+  bottom: auto;
+  left: 0;
+  right: 0;
+  overflow: scroll;
+
+  // if the viewport is larger than the modal,
+  @media(min-width: @max-width) {
+    top: @buffer;
+    bottom: auto;
+    left: 50%;
+    margin-left: -(@max-width / 2);
+    max-width: @max-width;
+  }
+}
+
 .DropdownRow,
 .DropdownLinkRow {
   @row-height: 50px;
