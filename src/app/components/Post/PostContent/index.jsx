@@ -283,7 +283,7 @@ export default class PostContent extends React.Component {
           && previewImage && this.useOurOwnPlayingOrPreviewing(oembed, sourceURL)) {
       // if compact, preview should expand to full content
       // if card mode, content should start playing
-      const callback = isCompact ? callOnTapExpand : this.togglePlaying
+      const callback = isCompact ? callOnTapExpand : this.togglePlaying;
       return this.buildImagePreview(previewImage, sourceURL, linkDescriptor,
         callback, needsNSFWBlur, isCompact, playableType);
     }
