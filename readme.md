@@ -11,24 +11,11 @@
 
 ### Configuring your dev environment
 
-Create a file in the root called `start.sh` and make it executable `chmod +x start.sh`.
-This file is automatically ignore by git and you can use it to start the server instead
-of `npm run`.
+    cp start.sh.example start.sh
+    chmod u+wx start.sh
+    vim start.sh  # Add secret keys for your reddit install
 
-#### Example
+`start.sh` is automatically ignored by git. DO NOT EDIT `start.sh.example`
 
-```sh
-#!/bin/bash
-GOOGLE_ANALYTICS_ID='UA-XXXXXX-1' \
-LIVERELOAD=true \
-DEBUG_LEVEL='info' \
-OAUTH_CLIENT_ID=XXXXXXXXX \
-SECRET_OAUTH_CLIENT_ID=XXXXXXXXX \
-OAUTH_SECRET=XXXXXXXXX \
-PROCESSES=2 \
-API_PASS_THROUGH_HEADERS='accept-language' \
-LOGIN_PATH="/login" \
-MINIFY_ASSETS="false" \
-STATSD_DEBUG="true" \
-npm run dev-server
-```
+After creating `start.sh`, you can start your dev server by calling `./start.sh` from the command line.
+

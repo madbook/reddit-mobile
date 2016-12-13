@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Configuration
+PORT=4444
+PROCESSES=2
+API_PASS_THROUGH_HEADERS='accept-language'
+STATSD_DEBUG="true"
+OAUTH_APP_ORIGIN="https://m.reddit.com"
+
+# Secrets shhh
+TRACKER_KEY=""
+TRACKER_ENDPOINT=""
+TRACKER_CLIENT_NAME=""
+TRACKER_SECRET=""
+SECRET_OAUTH_CLIENT_ID=""
+OAUTH_SECRET=""
+RECAPTCHA_SITEKEY=""
+
+# Ready, hit it
+npm run dev-server
