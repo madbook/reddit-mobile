@@ -54,7 +54,7 @@ export function DropdownRow(props) {
 
   return (
     <div className='DropdownRow' onClick={ props.onClick }>
-      <div className={ className } />
+      <div className={ props.icon ? className : '' } />
       <div className='DropdownRow__text'>{ props.text }</div>
     </div>
   );

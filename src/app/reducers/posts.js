@@ -14,6 +14,7 @@ import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
+import * as modToolActions from 'app/actions/modTools';
 import * as similarPostsActions from 'app/actions/similarPosts';
 import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 
@@ -66,6 +67,46 @@ export default function(state=DEFAULT, action={}) {
     case voteActions.SUCCESS:
     case postActions.UPDATED_SELF_TEXT: {
       return mergeUpdatedModel(state, action, { restrictType: POST });
+    }
+
+    case modToolActions.MODTOOLS_APPROVAL_SUCCESS: {
+      const { thing, username } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          { 
+            model: thing.set({
+              approved: true,
+              removed: false,
+              spam: false,
+              approvedBy: username,
+            }),
+          },
+        );
+      }
+
+      return state;
+    }
+
+    case modToolActions.MODTOOLS_REMOVAL_SUCCESS: {
+      const { thing, spam, username } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          { 
+            model: thing.set({
+              approved: false,
+              removed: !spam,
+              spam: spam,
+              bannedBy: username,
+            }),
+          },
+        );
+      }
+
+      return state;
     }
 
     // Posts from the comments page api don't always have the same previews

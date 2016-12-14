@@ -74,7 +74,7 @@
     overflow: hidden;
     position: relative;
     vertical-align: middle;
-    padding-right: 3em;
+    flex: 1 1 100%;
 
     .themeify({
       color: @theme-meta-text-color;
@@ -113,6 +113,15 @@
           fade(@theme-body-color, 100%) 70%);
       });
     }
+  }
+
+  &__metadata-container {
+    display: flex;
+  }
+
+  &__metadata {
+    flex: 0 1 0;
+    padding: 5 5 0 0;
   }
 
   &__subreddit-link {

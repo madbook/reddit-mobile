@@ -15,6 +15,7 @@ import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
+import * as modToolActions from 'app/actions/modTools';
 
 createTest({ reducers: { comments } }, ({ getStore, expect }) => {
   describe('comments', () => {
@@ -288,6 +289,224 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
         const { comments } = store.getState();
         expect(comments).to.eql({
           [DELETED.uuid]: DELETED,
+        });
+      });
+    });
+
+    describe('MODTOOLS_APPROVAL_SUCCESS', () => {
+      it('should mark a comment as approved', () => {
+        const COMMENT = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const APPROVED = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: true,
+          removed: false,
+          spam: false,
+          approvedBy: 'foobar',
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(modToolActions.approvalSuccess(COMMENT, 'foobar'));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT.uuid]: APPROVED,
+        });
+      });
+
+      it('should only update if thing.type is COMMENT', () => {
+        const NOT_COMMENT = {
+          type: 'BAD_TYPE',
+        };
+
+        const COMMENT = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        // This should not do anything to the comment model
+        store.dispatch(modToolActions.approvalSuccess(NOT_COMMENT, 'foobar'));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT.uuid]: COMMENT,
+        });
+
+      });
+    });
+
+    describe('MODTOOLS_REMOVAL_SUCCESS', () => {
+      it('should mark a comment as removed', () => {
+        const COMMENT = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const REMOVED = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: false,
+          removed: true,
+          spam: false,
+          approvedBy: null,
+          bannedBy: 'foobar',
+          type: 'comment',
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(modToolActions.removalSuccess(false, COMMENT, 'foobar'));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT.uuid]: REMOVED,
+        });
+      });
+
+      it('should mark a comment as spam', () => {
+        const COMMENT = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const SPAM = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: false,
+          removed: false,
+          spam: true,
+          approvedBy: null,
+          bannedBy: 'foobar',
+          type: 'comment',
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        store.dispatch(modToolActions.removalSuccess(true, COMMENT, 'foobar'));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT.uuid]: SPAM,
+        });
+      });
+
+      it('should only update if thing.type is COMMENT', () => {
+        const NOT_COMMENT = {
+          type: 'BAD_TYPE',
+        };
+
+        const COMMENT = CommentModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'comment',
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT.uuid]: COMMENT,
+          },
+        });
+
+        // This should not do anything to the comment model
+        store.dispatch(modToolActions.removalSuccess(NOT_COMMENT, 'foobar'));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT.uuid]: COMMENT,
         });
       });
     });

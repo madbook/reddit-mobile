@@ -26,19 +26,30 @@ export default function CommentTools(props) {
     onReportComment,
     onToggleModal,
     isSubredditModerator,
+    isApproved,
+    isSpam,
+    isRemoved,
+    approvedBy,
+    removedBy,
   } = props;
 
-  const modalId = `comment-modal-${id}`;
+  const modModalId = `mod-${id}`;
 
   return (
     <div className='CommentTools'>
       { commentingDisabled ? null : renderReply(props) }
-      { renderSeashells(modalId) }
+      { renderSeashells(id) }
+      { isSubredditModerator ? renderModShield(modModalId) : null }
       { renderDivider(props) }
       { renderVote(id, score, scoreHidden, voteDirection, votingDisabled) }
-      { renderDropdown(modalId, permalinkUrl, commentAuthor, username, saved,
+      { renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
-                       isSubredditModerator) }
+                       isSubredditModerator, isApproved, isSpam, isRemoved,
+                       approvedBy, removedBy, false, null) }
+      { isSubredditModerator ? renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
+                       onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
+                       isSubredditModerator, isApproved, isSpam, isRemoved,
+                       approvedBy, removedBy, true, modModalId) : null }
     </div>
   );
 }
@@ -59,6 +70,11 @@ CommentTools.propTypes = {
   onReportComment: T.func.isRequired,
   onReplyOpen: T.func,
   onToggleModal: T.func.isRequired,
+  isSpam: T.bool,
+  isRemoved: T.bool,
+  isApproved: T.bool,
+  approvedBy: T.string,
+  removedBy: T.string,
 };
 
 CommentTools.defaultProps = {
@@ -85,9 +101,17 @@ const renderReply = ({ commentReplying, onToggleReply }) => {
   );
 };
 
-const renderSeashells = modalId => (
+const renderModShield = (modModalId) => (
   <ModalTarget
-    id={ modalId }
+    id={ modModalId }
+  >
+    <div className='CommentTools__more icon icon-mod'/>
+  </ModalTarget>
+);
+
+const renderSeashells = id => (
+  <ModalTarget
+    id={ id }
   >
     <div className='CommentTools__more icon icon-seashells'/>
   </ModalTarget>
@@ -108,7 +132,7 @@ const renderDivider = () => (
 );
 
 const renderDropdown = (
-  tooltipId,
+  id,
   permalink,
   commentAuthor,
   username,
@@ -119,9 +143,16 @@ const renderDropdown = (
   onReportComment,
   onToggleModal,
   isSubredditModerator,
+  isApproved,
+  isSpam,
+  isRemoved,
+  approvedBy,
+  removedBy,
+  showModModal,
+  modModalId
 ) => (
   <CommentDropdown
-    id={ tooltipId }
+    id={ id }
     permalink={ permalink }
     commentAuthor={ commentAuthor }
     username={ username }
@@ -132,5 +163,12 @@ const renderDropdown = (
     onReportComment={ onReportComment }
     onToggleModal={ onToggleModal }
     isSubredditModerator={ isSubredditModerator }
+    isApproved={ isApproved }
+    isSpam={ isSpam }
+    isRemoved={ isRemoved }
+    approvedBy={ approvedBy }
+    removedBy={ removedBy }
+    showModModal={ showModModal }
+    modModalId={ modModalId }
   />
 );

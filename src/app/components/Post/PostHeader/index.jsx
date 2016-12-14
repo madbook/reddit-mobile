@@ -4,6 +4,7 @@ import { Anchor } from '@r/platform/components';
 
 import { short } from 'lib/formatDifference';
 import mobilify from 'lib/mobilify';
+import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
 
 import { models } from '@r/api-client';
 const { PostModel } = models;
@@ -15,6 +16,7 @@ import {
 } from '../postUtils';
 
 import OutboundLink from 'app/components/OutboundLink';
+import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
 
 const T = React.PropTypes;
 
@@ -57,6 +59,18 @@ const GILDED_FLAIR = (
 
 const PROMOTED_FLAIR = (
   <span className='PostHeader__promoted-flair'>PROMOTED</span>
+);
+
+const APPROVED_FLAIR = (
+  <span className='icon icon-check-circled green' />
+);
+
+const REMOVED_FLAIR = (
+  <span className='icon icon-delete_remove ban-red' />
+);
+
+const SPAM_FLAIR = (
+  <span className='icon icon-spam nsfw-salmon' />
 );
 
 PostHeader.propTypes = {
@@ -188,6 +202,20 @@ function renderPostFlair(post, single) {
   );
 }
 
+function renderApprovalStatusFlair(isApproved, isRemoved, isSpam) {
+  if (!(isApproved || isRemoved || isSpam)) {
+    return null;
+  }
+
+  return (
+    <span className='PostHeader__approval-status-flair'>
+      { isApproved ? APPROVED_FLAIR : null }
+      { isRemoved ? REMOVED_FLAIR : null }
+      { isSpam ? SPAM_FLAIR : null }
+    </span>
+  );
+}
+
 function renderPromotedUserPostDescriptor({ author, promotedUrl, promotedDisplayName }) {
   const displayAuthor = promotedDisplayName || author;
   const urlProps = {
@@ -247,16 +275,23 @@ function renderPostDescriptor(
     authorOrNil,
     !hideSubredditLabel && flairOrNil,
   ]);
+  const approvalStatusFlair = renderApprovalStatusFlair(post.approved, post.removed, post.spam);
 
   return (
-    <div className='PostHeader__post-descriptor-line'>
-      <div className='PostHeader__post-descriptor-line-overflow'>
-        <span
-          className={ distinguishingCssClass }
-          children={
-            isPromotedUserPost ? promotedUserPostDescriptor : normalPostDescriptor
-          }
-        />
+    <div className='PostHeader__metadata-container'>
+      <div className='PostHeader__post-descriptor-line'>
+        <div className='PostHeader__post-descriptor-line-overflow'>
+          <span
+            className={ distinguishingCssClass }
+            children={
+              isPromotedUserPost ? promotedUserPostDescriptor : normalPostDescriptor
+            }
+          />
+          
+        </div>
+      </div>
+      <div className='PostHeader__metadata'>
+        { approvalStatusFlair }
       </div>
     </div>
   );
@@ -388,13 +423,31 @@ export default function PostHeader(props) {
     onElementClick,
     titleOpensExpando,
     onTapExpand,
+    isSubredditModerator,
   } = props;
 
   const showSourceLink = showingLink && !renderMediaFullbleed;
   const sizeClass = `${compact ? 'size-compact' : ''}`;
   const thumbnailClass = `${nextToThumbnail ? 'm-thumbnail-margin' : ''}`;
+  const approvalStatus = getApprovalStatus(post.approved,
+                                           post.removed,
+                                           post.spam,);
+  const statusBy = getStatusBy(post.approved,
+                               post.removed,
+                               post.spam,
+                               post.bannedBy,
+                               post.approvedBy);
+
   return (
     <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
+      { single && isSubredditModerator
+        ? <ApprovalStatusBanner
+            status={ approvalStatus }
+            statusBy={ statusBy }
+            pageName={ 'postHeader' }
+          />
+        : null
+      }
       {
         renderPostDescriptor(
           post,

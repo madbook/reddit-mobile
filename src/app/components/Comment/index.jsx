@@ -42,7 +42,7 @@ export function Comment(props) {
     editing,
   } = props;
 
-  const commentClasses = cx('Comment', { 'in-comment-tree': !preview });
+  const commentClasses = cx('Comment', { 'in-comment-tree': !preview, 'm-removed': comment.spam || comment.removed });
   const bodyClasses = cx('Comment__body', {
     'm-hidden': commentCollapsed && !isUserActivityPage,
   });
@@ -63,6 +63,9 @@ export function Comment(props) {
           highlight={ comment.id === highlightedComment }
           stickied={ comment.stickied }
           onToggleCollapse={ onToggleCollapse }
+          isApproved={ comment.approved }
+          isRemoved={ comment.removed }
+          isSpam={ comment.spam }
         />
       </div>
 
@@ -168,6 +171,11 @@ function renderTools(props) {
           votingDisabled={ votingDisabled }
           onToggleModal={ onToggleModal }
           isSubredditModerator={ isSubredditModerator }
+          isSpam={ comment.spam }
+          isRemoved={ comment.removed }
+          isApproved={ comment.approved }
+          approvedBy={ comment.approvedBy }
+          removedBy={ comment.bannedBy }
         />
       </div>
     </div>
@@ -308,7 +316,7 @@ const selector = createSelector(
     commentCollapsed,
     commentReplying,
     editingState,
-    moderatingSubreddits
+    moderatingSubreddits,
   ) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;

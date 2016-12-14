@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
-import { ModeratorModal } from 'app/components/ModeratorModal';
+import ModeratorModal from 'app/components/ModeratorModal';
 
 const T = React.PropTypes;
 
@@ -28,6 +28,13 @@ export default function PostDropdown(props) {
     onToggleSave,
     onToggleModal,
     isSubredditModerator,
+    isRemoved,
+    isApproved,
+    isSpam,
+    approvedBy,
+    removedBy,
+    showModModal,
+    modModalId,
   } = props;
 
   const modalContent = [
@@ -42,10 +49,18 @@ export default function PostDropdown(props) {
 
   let modal;
 
-  if (isSubredditModerator) {
+  if (showModModal && isSubredditModerator) {
     modal = (
-      <ModeratorModal id={ id } onClick={ onToggleModal }>
-        { modalContent }
+      <ModeratorModal
+        id={ id }
+        modModalId={ modModalId }
+        onClick={ onToggleModal }
+        isRemoved={ isRemoved }
+        isApproved={ isApproved }
+        isSpam={ isSpam }
+        approvedBy={ approvedBy }
+        removedBy={ removedBy }
+      >
       </ModeratorModal>
     );
   } else {
@@ -72,6 +87,13 @@ PostDropdown.propTypes = {
   onReportPost: T.func.isRequired,
   onToggleEdit: T.func,
   onToggleModal: T.func,
+  isRemoved: T.bool,
+  isApproved: T.bool,
+  isSpam: T.bool,
+  approvedBy: T.string,
+  removedBy: T.string,
+  modModalId: T.string,
+  showModModal: T.bool,
 };
 
 PostDropdown.defaultProps = {
@@ -82,4 +104,6 @@ PostDropdown.defaultProps = {
   onToggleHide: () => {},
   onToggleEdit: () => {},
   onToggleModal: () => {},
+  modModalId: null,
+  showModModal: false,
 };

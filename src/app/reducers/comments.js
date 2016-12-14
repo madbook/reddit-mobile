@@ -15,6 +15,8 @@ import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
 import * as commentActions from 'app/actions/comment';
+import * as modToolActions from 'app/actions/modTools';
+
 
 const DEFAULT = {};
 
@@ -71,6 +73,46 @@ export default function(state=DEFAULT, action={}) {
     case voteActions.PENDING:
     case voteActions.SUCCESS: {
       return mergeUpdatedModel(state, action, { restrictType: COMMENT });
+    }
+
+    case modToolActions.MODTOOLS_APPROVAL_SUCCESS: {
+      const { thing, username } = action;
+
+      if (thing.type === COMMENT) {
+        return mergeUpdatedModel(
+          state,
+          { 
+            model: thing.set({
+              approved: true,
+              removed: false,
+              spam: false,
+              approvedBy: username,
+            }),
+          },
+        );
+      }
+
+      return state;
+    }
+
+    case modToolActions.MODTOOLS_REMOVAL_SUCCESS: {
+      const { thing, spam, username } = action;
+
+      if (thing.type === COMMENT) {
+        return mergeUpdatedModel(
+          state,
+          { 
+            model: thing.set({
+              approved: false,
+              removed: !spam,
+              spam: spam,
+              bannedBy: username,
+            }),
+          },
+        );
+      }
+
+      return state;
     }
 
     case commentActions.UPDATED_BODY: {

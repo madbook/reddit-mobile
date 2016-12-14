@@ -1,4 +1,6 @@
 import createTest from '@r/platform/createTest';
+import { models } from '@r/api-client';
+const { PostModel } = models;
 
 import posts from './posts';
 
@@ -14,6 +16,7 @@ import * as similarPostsActions from 'app/actions/similarPosts';
 import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
+import * as modToolActions from 'app/actions/modTools';
 
 createTest({ reducers: { posts } }, ({ getStore, expect }) => {
   describe('posts', () => {
@@ -218,6 +221,224 @@ createTest({ reducers: { posts } }, ({ getStore, expect }) => {
         store.dispatch(voteActions.success('2', { type: 'comment' }));
         const { posts } = store.getState();
 
+        expect(posts).to.eql({
+          [POST.uuid]: POST,
+        });
+      });
+    });
+
+    describe('MODTOOLS_APPROVAL_SUCCESS', () => {
+      it('should mark a post as approved', () => {
+        const POST = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const APPROVED = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: true,
+          removed: false,
+          spam: false,
+          approvedBy: 'foobar',
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(modToolActions.approvalSuccess(POST, 'foobar'));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST.uuid]: APPROVED,
+        });
+      });
+
+      it('should only update if thing.type is POST', () => {
+        const NOT_POST = {
+          type: 'BAD_TYPE',
+        };
+
+        const POST = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        // This should not do anything to the post model
+        store.dispatch(modToolActions.approvalSuccess(NOT_POST, 'foobar'));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST.uuid]: POST,
+        });
+
+      });
+    });
+
+    describe('MODTOOLS_REMOVAL_SUCCESS', () => {
+      it('should mark a post as removed', () => {
+        const POST = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const REMOVED = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: false,
+          removed: true,
+          spam: false,
+          approvedBy: null,
+          bannedBy: 'foobar',
+          type: 'post',
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(modToolActions.removalSuccess(false, POST, 'foobar'));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST.uuid]: REMOVED,
+        });
+      });
+
+      it('should mark a post as spam', () => {
+        const POST = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const SPAM = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: false,
+          removed: false,
+          spam: true,
+          approvedBy: null,
+          bannedBy: 'foobar',
+          type: 'post',
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        store.dispatch(modToolActions.removalSuccess(true, POST, 'foobar'));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST.uuid]: SPAM,
+        });
+      });
+
+      it('should only update if thing.type is POST', () => {
+        const NOT_POST = {
+          type: 'BAD_TYPE',
+        };
+
+        const POST = PostModel.fromJSON({
+          name: 't3_1',
+          id: '1',
+          subreddit: 'askreddit',
+          link_id: '1',
+          replies: [],
+          author: 'nramadas',
+          bodyHTML: 'nramadas is the best',
+          approved: null,
+          removed: null,
+          spam: null,
+          approvedBy: null,
+          bannedBy: null,
+          type: 'post',
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST.uuid]: POST,
+          },
+        });
+
+        // This should not do anything to the post model
+        store.dispatch(modToolActions.removalSuccess(NOT_POST, 'foobar'));
+
+        const { posts } = store.getState();
         expect(posts).to.eql({
           [POST.uuid]: POST,
         });

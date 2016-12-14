@@ -74,11 +74,9 @@ export default class PostFooter extends React.Component {
     return `${numberOfComments} Comments`;
   }
 
-  render() {
+  renderDropdown(props, showModModal, modModalId) {
     const {
       post,
-      compact,
-      hideDownvote,
       user,
       onToggleEdit,
       onToggleSave,
@@ -87,11 +85,46 @@ export default class PostFooter extends React.Component {
       single,
       onToggleModal,
       isSubredditModerator,
-    } = this.props;
+    } = props;
 
     const isLoggedIn = user && !user.loggedOut;
     const canModify = single && isLoggedIn && user.name === post.author;
 
+    return (
+      <PostDropdown
+        id={ post.name }
+        canModify={ canModify }
+        permalink={ post.cleanPermalink }
+        subreddit={ post.subreddit }
+        author={ post.author }
+        isSaved={ post.saved }
+        isLoggedIn={ isLoggedIn }
+        onToggleEdit={ onToggleEdit }
+        onToggleSave={ onToggleSave }
+        onToggleHide={ onToggleHide }
+        onReportPost={ onReportPost }
+        onToggleModal={ onToggleModal }
+        isSubredditModerator={ isSubredditModerator }
+        isRemoved={ post.removed }
+        isApproved={ post.approved }
+        isSpam={ post.spam }
+        approvedBy={ post.approvedBy }
+        removedBy={ post.bannedBy }
+        showModModal={ showModModal }
+        modModalId={ modModalId }
+      />
+    );
+  }
+
+  render() {
+    const {
+      post,
+      compact,
+      hideDownvote,
+      isSubredditModerator,
+    } = this.props;
+
+    const modModalId = `mod-${post.name}`;
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
     return (
       <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
@@ -102,6 +135,14 @@ export default class PostFooter extends React.Component {
           >
             <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'/>
           </ModalTarget>
+          { isSubredditModerator
+            ? (<ModalTarget
+                id={ modModalId }
+              >
+                <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-mod'/>
+              </ModalTarget>)
+            : null
+          }
           <span className='PostFooter__vertical-divider' />
           <VotingBox
             thingId = { post.name }
@@ -111,21 +152,8 @@ export default class PostFooter extends React.Component {
             hideDownvote={ hideDownvote }
           />
         </div>
-        <PostDropdown
-          id={ post.name }
-          canModify={ canModify }
-          permalink={ post.cleanPermalink }
-          subreddit={ post.subreddit }
-          author={ post.author }
-          isSaved={ post.saved }
-          isLoggedIn={ isLoggedIn }
-          onToggleEdit={ onToggleEdit }
-          onToggleSave={ onToggleSave }
-          onToggleHide={ onToggleHide }
-          onReportPost={ onReportPost }
-          onToggleModal={ onToggleModal }
-          isSubredditModerator={ isSubredditModerator }
-        />
+        { this.renderDropdown(this.props, false, null) }
+        { isSubredditModerator ? this.renderDropdown(this.props, true, modModalId) : null }
       </footer>
     );
   }

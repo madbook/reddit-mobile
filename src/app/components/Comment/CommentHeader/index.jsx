@@ -8,6 +8,18 @@ import { short } from 'lib/formatDifference';
 const T = React.PropTypes;
 const separator = <div className='CommentHeader__separator'> • </div>;
 
+const APPROVED_FLAIR = (
+  <td className='CommentHeader__approvalStatus icon icon-check-circled green' />
+);
+
+const REMOVED_FLAIR = (
+  <td className='CommentHeader__approvalStatus icon icon-delete_remove ban-red' />
+);
+
+const SPAM_FLAIR = (
+  <td className='CommentHeader__approvalStatus icon icon-spam nsfw-salmon' />
+);
+
 function getAuthorIcon(authorType) {
   switch (authorType) {
     case 'self': return 'icon icon-user-account mint';
@@ -111,6 +123,9 @@ export default function CommentHeader(props) {
     authorType,
     gildCount,
     stickied,
+    isApproved,
+    isRemoved,
+    isSpam,
   } = props;
 
   return (
@@ -121,6 +136,9 @@ export default function CommentHeader(props) {
             { renderCaron(collapsed, topLevel, dots, highlight) }
             { renderInfo(author, flair, created, authorType, highlight, stickied) }
             { gildCount ? renderGold(gildCount) : null }
+            { isApproved ? APPROVED_FLAIR : null }
+            { isRemoved ? REMOVED_FLAIR : null }
+            { isSpam ? SPAM_FLAIR : null }
           </tr>
         </tbody>
       </table>
@@ -139,6 +157,9 @@ CommentHeader.propTypes = {
   dots: T.number,
   highlight: T.bool,
   stickied: T.bool,
+  isApproved: T.bool,
+  isRemoved: T.bool,
+  isSpam: T.bool,
 };
 
 CommentHeader.defaultProps = {
@@ -148,4 +169,7 @@ CommentHeader.defaultProps = {
   dots: 0,
   highlight: false,
   stickied: false,
+  isApproved: false,
+  isRemoved: false,
+  isSpam: false,
 };

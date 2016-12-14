@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
-import { ModeratorModal } from 'app/components/ModeratorModal';
+import ModeratorModal from 'app/components/ModeratorModal';
 
 const T = React.PropTypes;
 
@@ -18,6 +18,13 @@ export default function CommentDropdown(props) {
     onReportComment,
     onToggleModal,
     isSubredditModerator,
+    isRemoved,
+    isSpam,
+    isApproved,
+    approvedBy,
+    removedBy,
+    showModModal,
+    modModalId,
   } = props;
 
   const userIsAuthor = commentAuthor === username;
@@ -43,10 +50,18 @@ export default function CommentDropdown(props) {
 
   let modal;
 
-  if (isSubredditModerator) {
+  if (showModModal && isSubredditModerator) {
     modal = (
-      <ModeratorModal id={ id } onClick={ onToggleModal }>
-        { modalContent }
+      <ModeratorModal
+        id={ id }
+        modModalId={ modModalId }
+        onClick={ onToggleModal }
+        isRemoved={ isRemoved }
+        isApproved={ isApproved }
+        isSpam={ isSpam }
+        approvedBy={ approvedBy }
+        removedBy={ removedBy }
+      >
       </ModeratorModal>
     );
   } else {
@@ -71,6 +86,13 @@ CommentDropdown.propTypes = {
   onToggleSave: T.func,
   onReportComment: T.func.isRequired,
   isSubredditModerator: T.bool.isRequired,
+  isRemoved: T.bool,
+  isSpam: T.bool,
+  isApproved: T.bool,
+  approvedBy: T.string,
+  removedBy: T.string,
+  showModModal: T.bool,
+  modModalId: T.string,
 };
 
 CommentDropdown.defaultProps = {
@@ -80,4 +102,11 @@ CommentDropdown.defaultProps = {
   onDelete: () => {},
   onToggleSave: () => {},
   onToggleModal: () => {},
+  isRemoved: false,
+  isSpam: false,
+  isApproved: false,
+  approvedBy: null,
+  removedBy: null,
+  showModModal: false,
+  modModalId: null,
 };

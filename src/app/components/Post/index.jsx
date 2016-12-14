@@ -217,6 +217,7 @@ export function Post(props) {
           onElementClick={ () => { onPostClick(post); onElementClick(); } }
           titleOpensExpando={ inTitleExpandoExp && canExpand }
           onTapExpand={ toggleExpanded }
+          isSubredditModerator={ isSubredditModerator }
         />
       </div>
       { contentOrNil }
@@ -233,7 +234,7 @@ export function Post(props) {
         onReportPost={ onReportPost }
         onElementClick={ () => { onPostClick(post); onElementClick(); } }
         onToggleModal={ onToggleModal }
-        isSubredditModerator= { isSubredditModerator }
+        isSubredditModerator={ isSubredditModerator }
       />
     </article>
   );
@@ -264,7 +265,7 @@ const selector = createSelector(
     inTitleExpandoExp,
     inMixedViewExp,
     isPlaying,
-    moderatingSubreddits
+    moderatingSubreddits,
   ) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
