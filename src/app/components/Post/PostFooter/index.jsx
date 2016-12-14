@@ -27,6 +27,7 @@ export default class PostFooter extends React.Component {
     onToggleSave: T.func.isRequired,
     onElementClick: T.func.isRequired,
     onToggleModal: T.func.isRequired,
+    isSubredditModerator: T.bool.isRequired,
   };
 
   constructor(props) {
@@ -85,6 +86,7 @@ export default class PostFooter extends React.Component {
       onReportPost,
       single,
       onToggleModal,
+      isSubredditModerator,
     } = this.props;
 
     const isLoggedIn = user && !user.loggedOut;
@@ -122,6 +124,7 @@ export default class PostFooter extends React.Component {
           onToggleHide={ onToggleHide }
           onReportPost={ onReportPost }
           onToggleModal={ onToggleModal }
+          isSubredditModerator={ isSubredditModerator }
         />
       </footer>
     );

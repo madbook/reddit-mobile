@@ -25,6 +25,7 @@ export default function CommentTools(props) {
     onToggleSave,
     onReportComment,
     onToggleModal,
+    isSubredditModerator,
   } = props;
 
   const modalId = `comment-modal-${id}`;
@@ -36,7 +37,8 @@ export default function CommentTools(props) {
       { renderDivider(props) }
       { renderVote(id, score, scoreHidden, voteDirection, votingDisabled) }
       { renderDropdown(modalId, permalinkUrl, commentAuthor, username, saved,
-                       onEdit, onDelete, onToggleSave, onReportComment, onToggleModal) }
+                       onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
+                       isSubredditModerator) }
     </div>
   );
 }
@@ -116,6 +118,7 @@ const renderDropdown = (
   onToggleSave,
   onReportComment,
   onToggleModal,
+  isSubredditModerator,
 ) => (
   <CommentDropdown
     id={ tooltipId }
@@ -128,5 +131,6 @@ const renderDropdown = (
     onToggleSave={ onToggleSave }
     onReportComment={ onReportComment }
     onToggleModal={ onToggleModal }
+    isSubredditModerator={ isSubredditModerator }
   />
 );

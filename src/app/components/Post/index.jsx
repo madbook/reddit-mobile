@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 import { toggleModal } from '@r/widgets/modal';
+import includes from 'lodash/includes';
 const { PostModel } = models;
 
 import * as modalActions from 'app/actions/modal';
@@ -117,6 +118,7 @@ export function Post(props) {
     winWidth,
     z,
     onToggleModal,
+    moderatingSubreddits,
   } = props;
 
   const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed;
@@ -132,6 +134,7 @@ export function Post(props) {
   const hasExpandedCompact = compact && expanded;
   const shouldPlay = !isPlaying && ((compact && !hasExpandedCompact) || !compact);  
   const onTogglePlaying = shouldPlay ? onStartPlaying : onStopPlaying;
+  const isSubredditModerator = includes(moderatingSubreddits.names, post.subreddit);
 
   let thumbnailOrNil;
   if (displayCompact) {
@@ -220,6 +223,7 @@ export function Post(props) {
         onReportPost={ onReportPost }
         onElementClick={ () => { onPostClick(post); onElementClick(); } }
         onToggleModal={ onToggleModal }
+        isSubredditModerator= { isSubredditModerator }
       />
     </article>
   );
@@ -237,8 +241,21 @@ const selector = createSelector(
   state => features.withContext({ state }).enabled(VARIANT_TITLE_EXPANDO),
   state => features.withContext({ state }).enabled(VARIANT_MIXED_VIEW),
   (state, props) => state.playingPosts[removePrefix(props.postId)],
-  (user, postId, single, compact, post, expanded, unblurred, editingState,
-   inTitleExpandoExp, inMixedViewExp, isPlaying) => {
+  state => state.moderatingSubreddits,
+  (
+    user,
+    postId,
+    single,
+    compact,
+    post,
+    expanded,
+    unblurred,
+    editingState,
+    inTitleExpandoExp,
+    inMixedViewExp,
+    isPlaying,
+    moderatingSubreddits
+  ) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
 
@@ -255,6 +272,7 @@ const selector = createSelector(
       inTitleExpandoExp,
       inMixedViewExp,
       isPlaying,
+      moderatingSubreddits,
     };
   }
 );

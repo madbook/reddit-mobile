@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import { models } from '@r/api-client';
 import { Anchor } from '@r/platform/components';
 import { toggleModal } from '@r/widgets/modal';
+import includes from 'lodash/includes';
 
 import mobilify from 'lib/mobilify';
 import * as replyActions from 'app/actions/reply';
@@ -136,11 +137,14 @@ function renderTools(props) {
     commentingDisabled,
     votingDisabled,
     onToggleModal,
+    moderatingSubreddits,
   } = props;
 
   const className = cx('Comment__toolsContainer', 'clearfix', {
     'm-hidden': commentCollapsed,
   });
+
+  const isSubredditModerator = includes(moderatingSubreddits.names, comment.subreddit);
 
   return (
     <div className={ className }>
@@ -163,6 +167,7 @@ function renderTools(props) {
           commentingDisabled={ commentingDisabled }
           votingDisabled={ votingDisabled }
           onToggleModal={ onToggleModal }
+          isSubredditModerator={ isSubredditModerator }
         />
       </div>
     </div>
@@ -294,8 +299,17 @@ const selector = createSelector(
   (state, props) => !!state.collapsedComments[props.commentId],
   (state, props) => !!state.replying[props.commentId],
   (state, props) => state.editingText[props.commentId],
-
-  (user, currentPage, comment, moreCommentStatus, commentCollapsed, commentReplying, editingState) => {
+  state => state.moderatingSubreddits,
+  (
+    user,
+    currentPage,
+    comment,
+    moreCommentStatus,
+    commentCollapsed,
+    commentReplying,
+    editingState,
+    moderatingSubreddits
+  ) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
     const editError = editing ? editingState.error : null;
@@ -311,6 +325,7 @@ const selector = createSelector(
       editError,
       moreCommentStatus,
       highlightedComment: currentPage.urlParams.commentId,
+      moderatingSubreddits,
     };
   },
 );

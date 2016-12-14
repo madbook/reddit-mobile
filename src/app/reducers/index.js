@@ -19,6 +19,7 @@ import mail from './mail';
 import meta from './meta';
 import messages from './messages';
 import modal from './modal';
+import moderatingSubreddits from './moderatingSubreddits';
 import moreCommentsRequests from './moreCommentsRequests';
 import optOuts from './optOuts';
 import overlay from './overlay';
@@ -72,6 +73,7 @@ export default {
   meta,
   messages,
   modal,
+  moderatingSubreddits,
   moreCommentsRequests,
   optOuts,
   overlay,

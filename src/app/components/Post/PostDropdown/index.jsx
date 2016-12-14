@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
+import { ModeratorModal } from 'app/components/ModeratorModal';
 
 const T = React.PropTypes;
 
@@ -26,19 +27,36 @@ export default function PostDropdown(props) {
     onReportPost,
     onToggleSave,
     onToggleModal,
+    isSubredditModerator,
   } = props;
 
-  return (
-    <DropdownModal id={ id } onClick={ onToggleModal }>
-      { canModify && <DropdownRow icon='post_edit' text='Edit Post' onClick={ onToggleEdit } /> }
-      <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>
-      { subreddit && renderSubredditDropdownLinkRow(subreddit) }
-      <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>
-      { isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null }
-      { isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null }
-      { isLoggedIn ? <DropdownRow onClick={ onReportPost } icon='flag' text='Report'/> : null }
-    </DropdownModal>
-  );
+  const modalContent = [
+    canModify && <DropdownRow icon='post_edit' text='Edit Post' onClick={ onToggleEdit } />,
+    <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>,
+    subreddit && renderSubredditDropdownLinkRow(subreddit),
+    <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>,
+    isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null,
+    isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null,
+    isLoggedIn ? <DropdownRow onClick={ onReportPost } icon='flag' text='Report'/> : null,
+  ];
+
+  let modal;
+
+  if (isSubredditModerator) {
+    modal = (
+      <ModeratorModal id={ id } onClick={ onToggleModal }>
+        { modalContent }
+      </ModeratorModal>
+    );
+  } else {
+    modal = (
+      <DropdownModal id={ id } onClick={ onToggleModal }>
+        { modalContent }
+      </DropdownModal>
+    );
+  }
+
+  return modal;
 }
 
 PostDropdown.propTypes = {
