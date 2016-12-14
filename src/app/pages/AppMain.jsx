@@ -133,6 +133,7 @@ const AppMain = props => {
         <FramedPage url='/comments/:postId/:postTitle?' component={ CommentsPage } />
         <FramedPage url='/user/:userName/activity' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/comments' component={ UserActivityPage } />
+        <FramedPage url='/user/:userName/submitted' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/gild' component={ UserProfilePage } />
         <FramedPage
             url='/user/:userName/:savedOrHidden(saved|hidden)'
