@@ -117,8 +117,8 @@ export function startServer() {
       },
       async (ctx, next) => {
         await next();
-        const redirectToDesktop = !!ctx.cookies.get('mweb-no-redirect');
-        if (redirectToDesktop) {
+        const desktopPreferredCookie = ctx.cookies.get('mweb-no-redirect');
+        if (parseInt(desktopPreferredCookie, 10) === 1) {
           const path = urlParser.parse(ctx.url).path;
           ctx.redirect(config.reddit + path);
         }
