@@ -6,7 +6,10 @@ import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as subredditActions from 'app/actions/subreddits';
-import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
+//import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
+import * as similarPostsActions from 'app/actions/similarPosts';
+import * as subredditsByPostActions from 'app/actions/subredditsByPost';
+import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 import { flags } from 'app/constants';
 import features from 'app/featureFlags';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
@@ -14,8 +17,12 @@ import { setTitle } from 'app/actions/pageMetadata';
 import { convertId, trackPageEvents } from 'lib/eventUtils';
 
 const {
-  VARIANT_RECOMMENDED_TOP_PLAIN,
-  VARIANT_SUBREDDIT_HEADER,
+  //VARIANT_RECOMMENDED_TOP_PLAIN,
+  //VARIANT_SUBREDDIT_HEADER,
+  VARIANT_RECOMMENDED_BY_POST_TOP_ALL,
+  VARIANT_RECOMMENDED_BY_POST_TOP_DAY,
+  VARIANT_RECOMMENDED_BY_POST_TOP_MONTH,
+  VARIANT_RECOMMENDED_BY_POST_HOT,
 } = flags;
 
 
@@ -88,8 +95,10 @@ export default class CommentsPage extends BaseHandler {
       subredditName = post.subreddit;
     }
 
-    if (subredditName) {
-      fetchRecommendedSubreddits(state, dispatch, subredditName);
+    if (post) {
+      fetchSimilarPosts(state, dispatch, post);
+      fetchRecommendedSubredditsByPost(state, dispatch, post);
+      fetchRecommendedSubredditsToPostsByPost(state, dispatch, post);
     }
 
     dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
@@ -101,6 +110,7 @@ export default class CommentsPage extends BaseHandler {
   }
 }
 
+/* deprecated for now, comment out to prevent lint error
 const fetchRecommendedSubreddits = (state, dispatch, subredditName) => {
   const feature = features.withContext({ state });
 
@@ -114,6 +124,38 @@ const fetchRecommendedSubreddits = (state, dispatch, subredditName) => {
   }
 
   dispatch(recommendedSubredditsActions.fetchRecommendedSubreddits(subredditName, max_recs));
+};
+*/
+
+const fetchSimilarPosts = (state, dispatch, post) => {
+  let experimentId = 105;
+  dispatch(similarPostsActions.fetchSimilarPosts(post, experimentId));
+};
+
+const fetchRecommendedSubredditsByPost = (state, dispatch, post) => {
+  let experimentId = 105;
+  dispatch(subredditsByPostActions.fetchSubredditsByPost(post, experimentId));
+};
+
+const fetchRecommendedSubredditsToPostsByPost = (state, dispatch, post) => {
+  const feature = features.withContext({ state });
+  let experimentId = 105;
+  let time = '';
+  let sort = '';
+  if (feature.enabled(VARIANT_RECOMMENDED_BY_POST_TOP_ALL)) {
+    sort = 'top';
+    time = 'all';
+  } else if (feature.enabled(VARIANT_RECOMMENDED_BY_POST_TOP_DAY)) {
+    sort = 'top';
+    time = 'day';
+  } else if (feature.enabled(VARIANT_RECOMMENDED_BY_POST_TOP_MONTH)) {
+    sort = 'top';
+    time = 'month';
+  } else if (feature.enabled(VARIANT_RECOMMENDED_BY_POST_HOT)) {
+    sort = 'hot';
+    time = 'all';
+  }
+  dispatch(subredditsToPostsByPostActions.fetchSubredditsToPostsByPost(post, sort, time, experimentId));
 };
 
 function buildAdditionalEventData(state) {

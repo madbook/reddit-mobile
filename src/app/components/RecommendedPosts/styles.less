@@ -1,0 +1,70 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.RecommendedPosts__container {
+  .themeify({
+     background-color: @theme-comment-body-color;
+   }, @inNightMode: {
+      background-color: #222;
+  });
+
+  .RecommendedPosts__title {
+    margin: 0px 40px;
+    padding: 10px 10px 0px 10px;
+    text-align: center;
+  }
+
+  .title-text {
+    padding: 10px;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    padding: 0;
+    width: 90%;
+
+    .themeify({
+      border-top: @theme-border;
+    });
+  }
+
+  .Post__header-wrapper {
+    padding-left: 16px;
+  }
+
+  .PostFooter {
+    padding-left: 16px;
+  }
+
+  .PostContent {
+    left: 16px;
+  }
+
+  .Post, .PostsList {
+    .themeify({
+       background-color: @theme-comment-body-color;
+     }, @inNightMode: {
+        background-color: #222;
+    });
+
+    .PostHeader__post-descriptor-line:after {
+      background: none;
+    }
+  }
+
+  .PaginationButtons {
+    display: none;
+  }
+
+  .PostContent.size-compact + .PostHeader.m-thumbnail-margin {
+    margin-left: 80px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  .RecommendedPosts__title {
+    font-size: 13pt;
+  }
+}

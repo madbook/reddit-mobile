@@ -1,104 +1,114 @@
 import './styles.less';
 
-import url from 'url';
 import React from 'react';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { Anchor } from '@r/platform/components';
+import * as subredditsByPostActions from 'app/actions/subredditsByPost';
 
-import cx from 'lib/classNames';
+const T = React.PropTypes;
 
-export default function RecommendedSubreddits(props) {
-  const { recommendedSubreddits, cssClass, variant, currentSubreddit } = props;
+function RecommendedSubreddits(props) {
+  const { subreddits, recommendedSubredditIds, trackSubredditRecommendationClick } = props;
 
-  let subredditListing, subredditHeader;
+  const hasRecommendations = recommendedSubredditIds.length > 0;
+  let recommendedSubreddits = [];
+  if (hasRecommendations) {
+    recommendedSubreddits = Object.values(subreddits).filter(subreddit => recommendedSubredditIds.includes(subreddit.uuid));
+  } else {
+    return null;
+  }
 
-  let title = [
+  const title = [
     <div className='RecommendedSubreddits__title'>
-      <div className='title-text'>Recommended Communities</div>
+      <div className='title-text'>You May Also Like</div>
     </div>,
     <hr/>,
   ];
 
-  if (variant === 'topPlain') {
-    subredditListing = recommendedSubreddits.map((sr, index) => {
-      return (
-        <div className={ cssClass }>
+  const subredditListing = recommendedSubreddits.map((sr) => {
+    return (
+      <div className='RecommendedSubreddits__top'>
+        <div
+          className='subreddit-icon-image'
+          style={ Object.assign({ 'backgroundColor': sr.keyColor },
+                  sr.iconImage
+                  ? { 'backgroundImage': `url(${sr.iconImage})`,
+                      'backgroundPosition': '-1px 0px' }
+                  : { }
+                ) }
+        />
+        <div className='RecommendedSubreddits__SubredditInfo'>
           <Anchor
-            href={ addUtmTracking(sr.url, index, variant) }
+            href={ sr.url }
             className='sr-url'
-          >
-            { formatSubredditHref(sr.url) }
-          </Anchor>
-        </div>
-      );
-    });
-  } else if (variant === 'subredditHeader') {
-    title = null;
-    subredditHeader = true;
-    subredditListing = (
-      <div className={ cssClass }>
-        <Anchor
-          href={ addUtmTracking(currentSubreddit.url, 0, variant) }
-          className='sr-url'
-        >
-          See more at { formatSubredditHref(currentSubreddit.url) }
-        </Anchor>
-      </div>
-    );
-  } else {
-    subredditListing = recommendedSubreddits.map((sr, index) => {
-      return (
-        <div className={ cssClass }>
-          <div
-            className='subreddit-icon-image'
-            style={ sr.iconImage
-                    ? { 'backgroundImage': `url(${sr.iconImage})`,
-                        'backgroundPosition': '-1px 0px' }
-                    : {}
-                  }
-          />
-          <Anchor
-            href={ addUtmTracking(sr.url, index, variant) }
-            className='sr-url'
+            onClick={ () => trackSubredditRecommendationClick(sr) }
           >
             { formatSubredditHref(sr.url) }
           </Anchor>
           <div className='sr-subscriber-count'>
             { Number(sr.subscribers).toLocaleString('en') +
-              (sr.subscribers > 1 ? ' subscribers' : ' subscriber') }
+              (sr.subscribers > 1 ? ' people' : ' person') + ' subscribed to ' + sr.displayName }
           </div>
         </div>
-      );
-    });
-  }
+      </div>
+    );
+  });
 
   return (
-    <div className={ cx('RecommendedSubreddits__container',
-                       { 'sr-header' : subredditHeader }) }>
+    <div className='RecommendedSubreddits__container'>
       { title }
       { subredditListing }
     </div>
   );
 }
 
-
-const addUtmTracking = (urlString, position, variant) => {
-  const urlObject = url.parse(urlString, true);
-
-  return url.format({
-    pathname: urlObject.pathname,
-    query: { // we're appending utm params to the query. to do so we need to
-      // splat the query object from the parsed url and add the utm params
-      ...urlObject.query,
-      utm_source: 'mweb',
-      utm_medium: 'sr_recommendations',
-      utm_name: 'experiment_70',
-      utm_content: position,
-      utm_term: variant,
-    },
-  });
+RecommendedSubreddits.propTypes = {
+  subreddits: T.object.isRequired,
+  recommendedSubredditIds: T.arrayOf(T.string).isRequired,
+  trackSubredditRecommendationClick: T.func.isRequired,
 };
 
 const formatSubredditHref = (url) => {
   // remove leading & trailing slash if they exist
   return url.replace(/^\//, '').replace(/\/$/, '');
 };
+
+const stateProps = createSelector(
+  state => state.subreddits,
+  (state, props) => {
+    const postId = props.postId;
+    const postLoaded = props.postLoaded;
+    let recommendedSubredditIds = null;
+    if (postLoaded && postId in state.subredditsByPost) {
+      recommendedSubredditIds = state.subredditsByPost[postId];
+    }
+    return recommendedSubredditIds;
+  },
+  (subreddits, recommendedSubredditIds) => {
+    return {
+      subreddits,
+      recommendedSubredditIds: !recommendedSubredditIds ? [] : recommendedSubredditIds,
+    };
+  },
+);
+
+const dispatchProps = dispatch => ({
+  trackSubredditRecommendationClick: subreddit => dispatch(
+    subredditsByPostActions.trackSubredditRecommendationClick(subreddit)
+  ),
+});
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const {
+    trackSubredditRecommendationClick,
+  } = dispatchProps;
+
+  return {
+    ...stateProps,
+    ...ownProps,
+    trackSubredditRecommendationClick: subreddit => { trackSubredditRecommendationClick(subreddit); },
+  };
+};
+
+export default connect(stateProps, dispatchProps, mergeProps)(RecommendedSubreddits);

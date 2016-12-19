@@ -35,6 +35,7 @@ PostsList.propTypes = {
   shouldPage: T.bool,
   forceCompact: T.bool,
   subredditIsNSFW: T.bool,
+  onPostClick: T.func,
 };
 
 PostsList.defaultProps = {
@@ -46,7 +47,7 @@ PostsList.defaultProps = {
 };
 
 const renderPostsList = props => {
-  const { postRecords, ad, adId, forceCompact, subredditIsNSFW } = props;
+  const { postRecords, ad, adId, forceCompact, subredditIsNSFW, onPostClick } = props;
   const records = ad ? recordsWithAd(postRecords, ad) : postRecords;
 
   return records.map((postRecord, index) => {
@@ -57,6 +58,7 @@ const renderPostsList = props => {
       forceCompact,
       subredditIsNSFW,
       key: `post-id-${postId}`,
+      onPostClick,
     };
 
     if (ad && postId === ad.uuid) {

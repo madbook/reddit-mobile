@@ -6,7 +6,6 @@
 
 .RecommendedSubredditsBottom__wrapper {
   .listing-comment-collapsed-more {
-    font-family: Helvetica Neue;
     font-weight: bold;
     font-size: 11pt;
     text-transform: uppercase;
@@ -23,6 +22,10 @@
   }
 }
 
+.RecommendedSubreddits__SubredditInfo {
+  margin-top: 8px;
+}
+
 .RecommendedSubreddits__button_wrapper {
   display: block;
   padding: 15px;
@@ -34,19 +37,20 @@
 
 .RecommendedSubreddits__container {
   padding-bottom: 20px;
-  font-family: Helvetica Neue;
   font-weight: 500;
   font-size: 16pt;
 
   .themeify({
-    background-color: @theme-line-color;
+     background-color: @theme-comment-body-color;
+   }, @inNightMode: {
+      background-color: #222;
   });
 
   .subreddit-icon-image {
     width: @community-icon-size;
     height: @community-icon-size;
     float: left;
-    margin-right: 25px;
+    margin-right: 16px;
 
     border-radius: @community-icon-half-size;
     background: url(/img/snoo-128.png);
@@ -68,10 +72,6 @@
     margin: 0px 40px;
     padding: 10px 10px 0px 10px;
     text-align: center;
-
-    .themeify({
-      color: @theme-toast-color;
-    });
   }
 
   .title-text {
@@ -82,9 +82,12 @@
     display: block;
     height: 1px;
     border: 0;
-    border-top: 1px solid #DFDFDD;
     padding: 0;
     width: 90%;
+
+    .themeify({
+      border-top: @theme-border;
+    });
   }
 
   .sr-url {
@@ -94,7 +97,6 @@
   }
 
   .sr-subscriber-count {
-    font-family: Helvetica Neue;
     font-weight: regular;
     font-size: 10pt;
     .themeify({

@@ -20,6 +20,12 @@ const {
   VARIANT_RECOMMENDED_BOTTOM,
   VARIANT_RECOMMENDED_TOP,
   VARIANT_RECOMMENDED_TOP_PLAIN,
+  VARIANT_RECOMMENDED_BY_POST,
+  VARIANT_RECOMMENDED_BY_POST_TOP_ALL,
+  VARIANT_RECOMMENDED_BY_POST_TOP_DAY,
+  VARIANT_RECOMMENDED_BY_POST_TOP_MONTH,
+  VARIANT_RECOMMENDED_BY_POST_HOT,
+  VARIANT_RECOMMENDED_SIMILAR_POSTS,
   VARIANT_SUBREDDIT_HEADER,
   VARIANT_XPROMO_BASE,
   VARIANT_XPROMO_LIST,
@@ -77,6 +83,54 @@ const config = {
       loggedin: false,
     }, {
       seoReferrer: true,
+    }],
+  },
+  [VARIANT_RECOMMENDED_BY_POST]: {
+    url: 'experimentrecommendedposttosubreddits',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:sr_by_post',
+    }],
+  },
+  [VARIANT_RECOMMENDED_BY_POST_TOP_ALL]: {
+    url: 'experimentrecommendedposttosubredditstopoststopall',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:posts_by_sr_by_post_top_all',
+    }],
+  },
+  [VARIANT_RECOMMENDED_BY_POST_TOP_DAY]: {
+    url: 'experimentrecommendedposttosubredditstopoststopday',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:posts_by_sr_by_post_top_day',
+    }],
+  },
+  [VARIANT_RECOMMENDED_BY_POST_TOP_MONTH]: {
+    url: 'experimentrecommendedposttosubredditstopoststopmonth',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:posts_by_sr_by_post_top_month',
+    }],
+  },
+  [VARIANT_RECOMMENDED_BY_POST_HOT]: {
+    url: 'experimentrecommendedposttosubredditstopostshot',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:posts_by_sr_by_post_hot',
+    }],
+  },
+  [VARIANT_RECOMMENDED_SIMILAR_POSTS]: {
+    url: 'experimentrecommendedsimilarposts',
+    and: [{
+      loggedin: false,
+    }, {
+      variant: 'subreddits_by_post:similar_posts',
     }],
   },
   [VARIANT_SUBREDDIT_HEADER]: {

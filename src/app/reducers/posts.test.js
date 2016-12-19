@@ -10,6 +10,8 @@ import * as postsListActions from 'app/actions/postsList';
 import * as hiddenActions from 'app/actions/hidden';
 import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
+import * as similarPostsActions from 'app/actions/similarPosts';
+import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
 
@@ -46,6 +48,8 @@ createTest({ reducers: { posts } }, ({ getStore, expect }) => {
         savedActions.received,
         searchActions.received,
         mailActions.setInboxSuccess,
+        subredditsToPostsByPostActions.received,
+        similarPostsActions.received,
       ];
 
       it('should pull posts from all expected soure actions', () => {

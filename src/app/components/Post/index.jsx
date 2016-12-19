@@ -59,6 +59,7 @@ Post.propTypes = {
   onToggleHidePost: T.func,
   onReportPost: T.func.isRequired,
   onToggleModal: T.func.isRequired,
+  onPostClick: T.func,
 };
 
 Post.defaultProps = {
@@ -72,6 +73,7 @@ Post.defaultProps = {
   onToggleSavePost: () => {},
   onToggleHidePost: () => {},
   onToggleModal: () => {},
+  onPostClick: () => {},
 };
 
 export function Post(props) {
@@ -99,6 +101,7 @@ export function Post(props) {
     inTitleExpandoExp,
     inMixedViewExp,
     userActivityPage,
+    onPostClick,
     onToggleEdit,
     onToggleSavePost,
     onToggleHidePost,
@@ -186,7 +189,7 @@ export function Post(props) {
           showingLink={ !!(displayCompact && !hasExpandedCompact && externalDomain) }
           renderMediaFullbleed={ renderMediaFullbleed }
           showLinksInNewTab={ showLinksInNewTab }
-          onElementClick={ onElementClick }
+          onElementClick={ () => { onPostClick(post); onElementClick(); } }
           titleOpensExpando={ inTitleExpandoExp && canExpand }
           onTapExpand={ toggleExpanded }
         />
@@ -203,7 +206,7 @@ export function Post(props) {
         onToggleSave={ onToggleSavePost }
         onToggleHide={ onToggleHidePost }
         onReportPost={ onReportPost }
-        onElementClick={ onElementClick }
+        onElementClick={ () => { onPostClick(post); onElementClick(); } }
         onToggleModal={ onToggleModal }
       />
     </article>

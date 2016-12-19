@@ -15,6 +15,8 @@ import CommentsPageTools from 'app/components/CommentsPage/CommentsPageTools';
 import GoogleCarouselMetadata from 'app/components/GoogleCarouselMetadata';
 import Post from 'app/components/Post';
 import Loading from 'app/components/Loading';
+import RecommendedPosts from 'app/components/RecommendedPosts';
+import RecommendedSubreddits from 'app/components/RecommendedSubreddits';
 import SubNav from 'app/components/SubNav';
 
 import CommentsPageHandler from 'app/router/handlers/CommentsPage';
@@ -51,6 +53,14 @@ function CommentsPage(props) {
     <div className='CommentsPage'>
       <SubNav />
       <Post postId={ pageParams.id } single={ true } key='post' />
+      <RecommendedPosts
+        postId={ pageParams.id }
+        postLoaded={ postLoaded }
+      />
+      <RecommendedSubreddits
+        postId={ pageParams.id }
+        postLoaded={ postLoaded }
+      />
       <CommentsPageTools
         key='tools'
         isReplying={ isReplying }
@@ -148,7 +158,10 @@ const dispatchProps = dispatch => ({
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { currentPage: { url, queryParams } } = stateProps;
-  const { navigateToUrl, onToggleReply } = dispatchProps;
+  const {
+    navigateToUrl,
+    onToggleReply,
+  } = dispatchProps;
 
   return {
     ...stateProps,

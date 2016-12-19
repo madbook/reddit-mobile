@@ -2,6 +2,7 @@ import mergeAPIModels from './helpers/mergeAPIModels';
 import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';
 import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';
+import * as subredditsByPostActions from 'app/actions/subredditsByPost';
 import * as searchActions from 'app/actions/search';
 import * as subredditActions from 'app/actions/subreddits';
 import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
@@ -17,6 +18,7 @@ export default function(state=DEFAULT, action={}) {
 
     case recommendedSubredditsActions.RECEIVED_RECOMMENDED_SUBREDDITS:
     case searchActions.RECEIVED_SEARCH_REQUEST:
+    case subredditsByPostActions.RECEIVED_SUBREDDITS_BY_POST:
     case subscribedSubredditsActions.RECEIVED_SUBSCRIBED_SUBREDDITS: {
       const { subreddits } = action.apiResponse;
       return mergeAPIModels(state, subreddits);

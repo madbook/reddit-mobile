@@ -5,6 +5,7 @@ import subreddits from './subreddits';
 import * as loginActions from 'app/actions/login';
 import * as searchActions from 'app/actions/search';
 import * as subredditActions from 'app/actions/subreddits';
+import * as subredditsByPostActions from 'app/actions/subredditsByPost';
 import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
 
 
@@ -120,6 +121,27 @@ createTest({ reducers: { subreddits }}, ({ getStore, expect }) => {
         const { subreddits: toggledSubreddits } = store.getState();
         expect(toggledSubreddits).to.eql({
           [SUBREDDIT.uuid]: SUBSCRIBED,
+        });
+      });
+    });
+
+    describe('RECEIVED_SUBREDDIT_BY_POST_RECOMMENDATIONS', () => {
+      it('should consume subreddits from recommendations based on the post', () => {
+        const SUBREDDIT = {
+          uuid: 'askreddit',
+          name: 't5_1',
+        };
+        const POST_ID = 't3_1';
+
+        const { store } = getStore();
+        store.dispatch(subredditsByPostActions.received(
+          POST_ID,
+          { subreddits: {[SUBREDDIT.uuid]: SUBREDDIT}, response: { status: 200 } },
+        ));
+
+        const { subreddits } = store.getState();
+        expect(subreddits).to.eql({
+          [SUBREDDIT.uuid]: SUBREDDIT,
         });
       });
     });

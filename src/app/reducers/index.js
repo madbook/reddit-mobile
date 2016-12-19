@@ -39,6 +39,9 @@ import scrollPositions from './scrollPositions';
 import smartBanner from './smartBanner';
 import subredditRequests from './subredditRequests';
 import subreddits from './subreddits';
+import similarPosts from './similarPosts';
+import subredditsByPost from './subredditsByPost';
+import subredditsToPostsByPost from './subredditsToPostsByPost';
 import subscribedSubreddits from './subscribedSubreddits';
 import theme from './theme';
 import toaster from './toaster';
@@ -87,6 +90,9 @@ export default {
   scrollPositions,
   smartBanner,
   subreddits,
+  similarPosts,
+  subredditsByPost,
+  subredditsToPostsByPost,
   subscribedSubreddits,
   subredditRequests,
   theme,

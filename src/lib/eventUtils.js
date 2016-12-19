@@ -85,6 +85,20 @@ function trackScreenViewEvent(state, additionalEventData) {
   getEventTracker().track('screenview_events', 'cs.screenview_mweb', payload);
 }
 
+export function trackExperimentClickEvent(state, experimentName, experimentId, targetThing) {
+  const payload = {
+    ...getBasePayload(state),
+    'experiment_name': experimentName,
+    'experiment_id': experimentId,
+    'target_fullname': targetThing.name,
+    'target_url': targetThing.url,
+    'target_type': targetThing.type === 'post' ? targetThing.isSelf ? 'self' : 'link' : targetThing.type,
+    'target_id': convertId(targetThing.id),
+    'target_name': targetThing.type === 'subreddit' ? targetThing.displayName : undefined,
+  };
+  getEventTracker().track('internal_click_events', 'cs.experiment_click', payload);
+}
+
 function trackCrawlEvent(state, additionalEventData) {
   const { protocol, method, crawler, userAgent, domain } = state.meta;
 

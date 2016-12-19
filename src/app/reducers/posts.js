@@ -14,6 +14,8 @@ import * as savedActions from 'app/actions/saved';
 import * as searchActions from 'app/actions/search';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
+import * as similarPostsActions from 'app/actions/similarPosts';
+import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 
 const DEFAULT = {};
 
@@ -45,6 +47,8 @@ export default function(state=DEFAULT, action={}) {
     case hiddenActions.RECEIVED_HIDDEN:
     case savedActions.RECEIVED_SAVED:
     case searchActions.RECEIVED_SEARCH_REQUEST:
+    case subredditsToPostsByPostActions.RECEIVED_SUBREDDITS_TO_POSTS_BY_POST:
+    case similarPostsActions.RECEIVED_SIMILAR_POSTS:
     case mailActions.RECEIVED: {
       const { posts } = action.apiResponse;
       return mergeAPIModels(state, posts);
