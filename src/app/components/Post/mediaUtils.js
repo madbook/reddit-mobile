@@ -1,5 +1,6 @@
 import { POST_COMPACT_THUMBNAIL_WIDTH } from '../../constants';
 import has from 'lodash/has';
+import isEmpty from 'lodash/isEmpty';
 
 export const DEFAULT_ASPECT_RATIO = 16 / 9;
 
@@ -65,6 +66,38 @@ export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, n
   if (oembed) {
     return oembedPreviewImage(oembed, needsNSFWBlur);
   }
+}
+
+/**
+ * Returns the largest MP4 variant of a preview if that image
+ * has both GIF and MP4 variants. This assumes that all GIF previews
+ * will have both variants present. If that condition is not true,
+ * we return null.
+ * @returns {Object|null}
+ */
+export function findPreviewVideo(preview) {
+  if (isEmpty(preview) || isEmpty(preview.images)) {
+    return null;
+  }
+
+  const img = preview.images[0];
+  // If image has both gif and mp4 variants, we must be looking at a gif.
+  // Let's choose the MP4 variant to save on bandwidth.
+  if (!(has(img, 'variants.gif.resolutions') &&
+      has(img, 'variants.mp4.resolutions'))) {
+    return null;
+  }
+
+  const variant = img.variants.mp4;
+
+  if (!variant.resolutions) {
+    return variant.source;
+  }
+
+  const largestFirst = variant.resolutions.sort((a, b) => {
+    return b.width - a.width;
+  });
+  return largestFirst[0];
 }
 
 function findBestFitPreviewImage(isCompact, previewImage, imageWidth, needsNSFWBlur) {

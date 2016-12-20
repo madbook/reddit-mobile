@@ -6,8 +6,7 @@ import { models } from '@r/api-client';
 const { PostModel } = models;
 
 import mobilify from 'lib/mobilify';
-import gifToHTML5Sources from 'lib/gifToHTML5Sources';
-import { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
+import gifToHTML5Sources, { posterForHrefIfGiphyCat } from 'lib/gifToHTML5Sources';
 
 import EditForm from 'app/components/EditForm';
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
@@ -24,6 +23,7 @@ import {
   limitAspectRatio,
   aspectRatioClass,
   findPreviewImage,
+  findPreviewVideo,
   DEFAULT_ASPECT_RATIO,
 } from '../mediaUtils';
 
@@ -71,6 +71,36 @@ function postToPlayableType(post) {
   }
 
   return PLAYABLE_TYPE.NOT_PLAYABLE;
+}
+
+/**
+ * Determines if a post is for a self-hosted gif
+ * and tries to swap it for an MP4 preview. The MP4
+ * may have smaller dimensions, but considering the
+ * filesize of a long GIF, this is worth it.
+ * @returns {Object|null}
+ */
+function gifToMp4Content(post) {
+  const url = post.cleanUrl;
+  // if the url is for a gif hosted by reddit,
+  // try to show a video in its place
+  if (post.domain === 'i.redd.it' && url.indexOf('.gif') > -1) {
+    const mp4Sub = findPreviewVideo(post.preview);
+    if (mp4Sub && mp4Sub.url.indexOf('fm=mp4') > -1) {
+      return mp4Sub;
+    }
+  }
+  return null;
+}
+
+/**
+ * Attempts to swap a GIF URL for an MP4 URL
+ * if we host it. Returns the original URL if this is
+ * not possible.
+ */
+function optimizeContent(post) {
+  const { url } = gifToMp4Content(post) || {};
+  return url || post.cleanUrl;
 }
 
 class LinkDescriptor {
@@ -240,6 +270,7 @@ export default class PostContent extends React.Component {
     const isNSFW = isPostNSFW(post);
     const needsNSFWBlur = this.needsNSFWBlur(isNSFW, showNSFW);
     const playableType = postToPlayableType(post);
+    const sourceURL = optimizeContent(post);
 
     let previewImage;
     if (post.preview || oembed) {
@@ -267,8 +298,6 @@ export default class PostContent extends React.Component {
         onTapExpand(clickTarget);
       };
     }
-
-    const sourceURL = post.cleanUrl;
 
     if (isCompact && previewImage && previewImage.url) {
       // the thumbnail
@@ -301,7 +330,7 @@ export default class PostContent extends React.Component {
 
   buildImagePreview(previewImage, imageURL, linkDescriptor, callback, needsNSFWBlur,
       isCompact, playableType) {
-    const html5sources = gifToHTML5Sources(imageURL);
+    const html5sources = gifToHTML5Sources(imageURL, previewImage.url);
     const { single } = this.props;
 
     if (this.state.playing && html5sources) {

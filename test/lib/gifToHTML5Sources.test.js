@@ -74,6 +74,12 @@ describe('lib: gifToHTML5Sources', () => {
     expect(giphySources).to.exist.and.to.include.keys(['mp4', 'poster']);
     expect(giphySources.mp4).to.match(/\.mp4$/);
   });
+
+  it('recognizes Reddit-hosted MP4s', () => {
+    const redditMp4 = 'https://g.redditmedia.com/samplemcfake.gif?fm=mp4';
+    const redditSources = gifToHTML5Sources(redditMp4);
+    expect(redditSources).to.exist.and.to.include.key('mp4');
+  });
 });
 
 describe('lib: posterForHrefIfGiphyCat', () => {

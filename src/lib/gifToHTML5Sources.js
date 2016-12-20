@@ -6,9 +6,16 @@ const _gfycatWebmBase = 'https://zippy.gfycat.com';
 const _GIF_EXTENSION = /\.gif$/;
 const _GIF_V_EXTENSION = /\.gifv$/;
 
+// Checks for an ending like '.gif?fm=mp4' or '.gif?foo=bar&fm=mp4'
+const _redditMp4Ending = /\.gif\?(.*&)*fm=mp4(&|$)/;
+
 const _IMGUR_GALLERY_PATH = /\/gallery\//;
 
 const _IMGUR_GIFV_QUERY_PARAMS = /\.gif\?.*$/;
+
+function urlToHTTPS(url) {
+  return url.replace(/^http:\/\//, 'https://');
+}
 
 function gfycatUrlHelper(gfyCatUrl, baseUrl, extension) {
   // Preserve arguments sent after the hash mark
@@ -41,7 +48,7 @@ function posterForHrefIfGiphyCat(url) {
 
 export { posterForHrefIfGiphyCat };
 
-export default function gifToHTML5Sources(url) {
+export default function gifToHTML5Sources(url, previewUrl) {
   const urlRoot = rootDomain(url);
   if (!urlRoot) {
     return;
@@ -55,9 +62,18 @@ export default function gifToHTML5Sources(url) {
     };
   }
 
+  if (urlRoot === 'redditmedia.com' && _redditMp4Ending.test(url)) {
+    // convert to https (if using http)
+    const redditUrl = urlToHTTPS(url);
+    return {
+      mp4: redditUrl,
+      poster: previewUrl,
+    };
+  }
+
   if (urlRoot === 'giphy.com' && _GIF_EXTENSION.test(url)) {
     // convert to https (if using http)
-    const giphyURL = url.replace(/^http:\/\//, 'https://');
+    const giphyURL = urlToHTTPS(url);
     return {
       mp4: giphyURL.replace(_GIF_EXTENSION, '.mp4'),
       poster: giphyURL.replace(_GIF_EXTENSION, '_s.gif'),
@@ -67,7 +83,7 @@ export default function gifToHTML5Sources(url) {
   // If it's imgur, make a gifv link
   if (urlRoot === 'imgur.com') {
     // convert to https (if using http)
-    let imgurURL = url.replace(/^http:\/\//, 'https://');
+    let imgurURL = urlToHTTPS(url);
 
     // strip query params
     imgurURL = imgurURL.replace(_IMGUR_GIFV_QUERY_PARAMS, '.gifv');
