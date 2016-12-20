@@ -12,16 +12,17 @@ import Loading from 'app/components/Loading';
 
 const T = React.PropTypes;
 
-const mapStateToProps = createSelector(
-  (state, props) => state[props.requestLocation][props.requestId],
-  (request) => ({
-    request,
-    loading: !request || request.loading,
-    records: request ? request.results : [],
-  }),
-);
+PostAndCommentList.propTypes = {
+  loading: T.bool.isRequired,
+  records: T.array.isRequired,
+  thingProps: T.object,
+};
 
-export const PostAndCommentList = props => {
+PostAndCommentList.defaultProps = {
+  thingProps: {},
+};
+
+export function PostAndCommentList(props) {
   const { loading, records, shouldPage, thingProps } = props;
 
   if (loading) {
@@ -37,19 +38,7 @@ export const PostAndCommentList = props => {
       />
     </div>
   );
-};
-
-PostAndCommentList.propTypes = {
-  loading: T.bool.isRequired,
-  records: T.array.isRequired,
-  thingProps: T.object,
-};
-
-PostAndCommentList.defaultProps = {
-  thingProps: {},
-};
-
-export default connect(mapStateToProps)(PostAndCommentList);
+}
 
 const PostsCommentsAndPagination = props => {
   const { records, thingProps } = props;
@@ -76,3 +65,35 @@ const renderRecordWithProps = (thingProps, record) => {
     default: return null;
   }
 };
+
+const getThingFilter = (posts, comments, requestLocation) => {
+  if (requestLocation === 'activitiesRequests') {
+    return thing => {
+      const collection = thing.type === 'comment' ? comments : posts;
+      return collection[thing.uuid];
+    };
+  }
+
+  return thing => {
+    const collection = thing.type === 'comment' ? comments : posts;
+    const key = requestLocation === 'savedRequests' ? 'saved' : 'hidden';
+    return collection[thing.uuid][key];
+  };
+};
+
+const mapStateToProps = createSelector(
+  state => state.posts,
+  state => state.comments,
+  (_, props) => props.requestLocation,
+  (state, props) => state[props.requestLocation][props.requestId],
+  (posts, comments, requestLocation, request) => {
+    const filter = getThingFilter(posts, comments, requestLocation);
+    return {
+      request,
+      loading: !request || request.loading,
+      records: request ? request.results.filter(filter) : [],
+    };
+  },
+);
+
+export default connect(mapStateToProps)(PostAndCommentList);

@@ -99,6 +99,7 @@ export default class PostFooter extends React.Component {
         author={ post.author }
         isSticky={ post.stickied }
         isSaved={ post.saved }
+        isHidden={ post.hidden }
         isLoggedIn={ isLoggedIn }
         onToggleEdit={ onToggleEdit }
         onToggleSave={ onToggleSave }

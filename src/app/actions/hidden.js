@@ -30,8 +30,6 @@ export const fetch = params => async (dispatch, getState) => {
   const state = getState();
   const id = paramsToHiddenRequestid(params);
 
-  if (state.hiddenRequests[id]) { return; }
-
   dispatch(fetching(id, params));
 
   try {

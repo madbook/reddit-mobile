@@ -2,19 +2,15 @@ import React from 'react';
 
 import { models } from '@r/api-client';
 
-import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 import ModeratorModal from 'app/components/ModeratorModal';
+import {
+  DropdownModal,
+  DropdownRow,
+  DropdownLinkRow,
+} from 'app/components/Dropdown';
 
 const { ModelTypes } = models;
 const T = React.PropTypes;
-
-const renderSubredditDropdownLinkRow = subreddit => (
-  <DropdownLinkRow
-    href={ `/r/${subreddit}` }
-    icon='snoosilhouette'
-    text={ `More from r/${subreddit}` }
-  />
-);
 
 export default function PostDropdown(props) {
   const {
@@ -24,11 +20,7 @@ export default function PostDropdown(props) {
     subreddit,
     author,
     isLoggedIn,
-    isSaved,
     onToggleEdit,
-    onToggleHide,
-    onReportPost,
-    onToggleSave,
     onToggleModal,
     isSticky,
     isSubredditModerator,
@@ -46,20 +38,8 @@ export default function PostDropdown(props) {
     isMine,
   } = props;
 
-  const modalContent = [
-    canModify && <DropdownRow icon='post_edit' text='Edit Post' onClick={ onToggleEdit } />,
-    <DropdownLinkRow href={ permalink } icon='link' text='Permalink'/>,
-    subreddit && renderSubredditDropdownLinkRow(subreddit),
-    <DropdownLinkRow href={ `/user/${author}` } icon='user-account' text={ `${author}'s profile` }/>,
-    isLoggedIn ? <DropdownRow icon='save' text={ isSaved ? 'Saved' : 'Save' } onClick={ onToggleSave } isSelected={ isSaved }/> : null,
-    isLoggedIn ? <DropdownRow icon='hide' text='Hide' onClick={ onToggleHide }/> : null,
-    isLoggedIn ? <DropdownRow onClick={ onReportPost } icon='flag' text='Report'/> : null,
-  ];
-
-  let modal;
-
   if (showModModal && isSubredditModerator) {
-    modal = (
+    return (
       <ModeratorModal
         id={ id }
         modModalId={ modModalId }
@@ -79,15 +59,63 @@ export default function PostDropdown(props) {
       >
       </ModeratorModal>
     );
-  } else {
-    modal = (
-      <DropdownModal id={ id } onClick={ onToggleModal }>
-        { modalContent }
-      </DropdownModal>
-    );
   }
 
-  return modal;
+  return (
+    <DropdownModal id={ id } onClick={ onToggleModal }>
+      { canModify ?
+        <DropdownRow
+          icon='post_edit'
+          text='Edit Post'
+          onClick={ onToggleEdit }
+        /> : null }
+      <DropdownLinkRow
+        href={ permalink }
+        icon='link'
+        text='Permalink'
+      />
+      { subreddit ? renderSubredditRow(subreddit) : null }
+      <DropdownLinkRow
+        href={ `/user/${author}` }
+        icon='user-account'
+        text={ `${author}'s profile` }
+      />
+      { isLoggedIn ? renderLoggedInRows(props) : null }
+    </DropdownModal>
+  );
+}
+
+function renderLoggedInRows(props) {
+  const { isSaved, isHidden, onToggleSave,
+          onToggleHide, onReportPost } = props;
+  return [
+    <DropdownRow
+      icon='save'
+      text={ isSaved ? 'Saved' : 'Save' }
+      onClick={ onToggleSave }
+      isSelected={ isSaved }
+    />,
+    <DropdownRow
+      icon='hide'
+      text={ isHidden ? 'Unhide': 'Hide' }
+      onClick={ onToggleHide }
+    />,
+    <DropdownRow
+      onClick={ onReportPost }
+      icon='flag'
+      text='Report'
+    />,
+  ];
+}
+
+function renderSubredditRow(subreddit) {
+  return (
+    <DropdownLinkRow
+      href={ `/r/${subreddit}` }
+      icon='snoosilhouette'
+      text={ `More from r/${subreddit}` }
+    />
+  );
 }
 
 PostDropdown.propTypes = {
@@ -98,6 +126,7 @@ PostDropdown.propTypes = {
   isSticky: T.bool,
   isSaved: T.bool,
   isLoggedIn: T.bool,
+  isHidden: T.bool,
   subreddit: T.string,
   onToggleSave: T.func,
   onToggleHide: T.func,
@@ -121,6 +150,7 @@ PostDropdown.defaultProps = {
   isSticky: false,
   isSaved: false,
   isLoggedIn: false,
+  isHidden: false,
   onToggleSave: () => {},
   onToggleHide: () => {},
   onToggleEdit: () => {},

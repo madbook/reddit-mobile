@@ -30,8 +30,6 @@ export const fetch = params => async (dispatch, getState) => {
   const state = getState();
   const id = paramsToSavedRequestId(params);
 
-  if (state.savedRequests[id]) { return; }
-
   dispatch(fetching(id, params));
 
   try {
