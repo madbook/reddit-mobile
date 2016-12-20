@@ -4,6 +4,8 @@ import { PrivateAPI } from '@r/private';
 import { logServerError } from 'lib/errorLog';
 import proxiedApiOptions from 'lib/proxiedApiOptions';
 
+import { loginErrors, genericErrors } from 'app/constants';
+
 
 export default (router, apiOptions) => {
   router.post('/loginproxy', async (ctx) => {
@@ -19,12 +21,15 @@ export default (router, apiOptions) => {
       // writeSessionToResponse will set the cookies
       writeSessionToResponse(ctx, data);
     } catch (error) {
-      // TODO: the errors we get back aren't helpful, in most cases we
-      // only get back 'WRONG_PASSWORD' even if the user field is blank
       ctx.status = 401;
-      if (error === 'WRONG_PASSWORD') {
+      if (error === loginErrors.WRONG_PASSWORD ||
+          error === loginErrors.BAD_USERNAME ||
+          error === loginErrors.INCORRECT_USERNAME_PASSWORD) {
         ctx.body = { error };
-      } else { // we're not sure what this error is, log it for now
+      } else {
+        // If we don't know the error type, we still want to convey to the
+        // client that an error occurred.
+        ctx.body = { error: genericErrors.UNKNOWN_ERROR };
         logServerError(error, ctx);
       }
     }

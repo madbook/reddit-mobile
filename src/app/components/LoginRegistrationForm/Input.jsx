@@ -1,5 +1,6 @@
 import './Input.less';
 import React from 'react';
+import isString from 'lodash/isString';
 
 import cx from 'lib/classNames';
 
@@ -22,7 +23,7 @@ function LoginInput(props) {
     'error': !!error,
     'show-top': showTopBorder,
   });
-  const errorMessage = error ? <p className='LoginInput__error-text'>{ error }</p> : null;
+  const errorMessage = isString(error) ? <p className='LoginInput__error-text'>{ error }</p> : null;
 
   return (
     <div>
