@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import InterstitialModal from '../InterstitialListing/modal';
+import InterstitialModal from '../DualPartInterstitial/modal';
 import ReportingModal from '../ReportingModal';
 
 import * as modalActions from 'app/actions/modal';

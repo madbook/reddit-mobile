@@ -30,8 +30,15 @@ const {
   VARIANT_XPROMO_BASE,
   VARIANT_XPROMO_LIST,
   VARIANT_XPROMO_RATING,
-  VARIANT_XPROMO_LISTING,
   VARIANT_XPROMO_SUBREDDIT,
+  VARIANT_XPROMO_LISTING,
+  VARIANT_XPROMO_FP_GIF,
+  VARIANT_XPROMO_FP_STATIC,
+  VARIANT_XPROMO_FP_SPEED,
+  VARIANT_XPROMO_FP_TRANSPARENT,
+  VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
+  VARIANT_XPROMO_SUBREDDIT_EMBEDDED_APP,
+  VARIANT_XPROMO_SUBREDDIT_POSTS,
   VARIANT_XPROMO_CLICK,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
@@ -43,6 +50,7 @@ const config = {
   [SMARTBANNER]: {
     and: [
       { allowedPages: ['index', 'listing'] },
+      { allowNSFW: false },
       { allowedDevices: IOS_DEVICES.concat(ANDROID) },
     ],
   },
@@ -187,6 +195,7 @@ const config = {
     and: [
       { notOptedOut: 'xpromoInterstitial' },
       { allowedPages: ['listing'] },
+      { allowNSFW: false },
       { or: [
         { and: [
           { allowedDevices: [ANDROID] },
@@ -209,13 +218,86 @@ const config = {
       ] },
     ],
   },
+  [VARIANT_XPROMO_FP_GIF]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['index'] },
+      { or: [
+        { url: 'xpromofpgif' },
+        { variant: 'mweb_xpromo_interstitial_fp_v2:gif' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_FP_TRANSPARENT]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['index'] },
+      { or: [
+        { url: 'xpromofptransparent' },
+        { variant: 'mweb_xpromo_interstitial_fp_v2:transparent' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_FP_STATIC]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['index'] },
+      { or: [
+        { url: 'xpromofpstatic' },
+        { variant: 'mweb_xpromo_interstitial_fp_v2:static' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_FP_SPEED]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['index'] },
+      { or: [
+        { url: 'xpromofpspeed' },
+        { variant: 'mweb_xpromo_interstitial_fp_v2:speed' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_SUBREDDIT_TRANSPARENT]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { or: [
+        { url: 'xpromosubreddittransparent' },
+        { variant: 'mweb_xpromo_interstitial_listing_v2:transparent' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_SUBREDDIT_EMBEDDED_APP]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { or: [
+        { url: 'xpromosubredditembedded' },
+        { variant: 'mweb_xpromo_interstitial_listing_v2:embedded' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_SUBREDDIT_POSTS]: {
+    and: [
+      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { or: [
+        { url: 'xpromosubredditposts' },
+        { variant: 'mweb_xpromo_interstitial_listing_v2:posts' },
+      ] },
+    ],
+  },
   [VARIANT_XPROMO_CLICK]: false,
   [VARIANT_TITLE_EXPANDO]: {
     and: [
       { compact: true},
       { or: [
-          { variant: 'mweb_post_title_expando:active' },
           { url: 'titleexpando' },
+          { variant: 'mweb_post_title_expando:active' },
       ] },
     ],
   },
@@ -428,6 +510,25 @@ flags.addRule('pageBucketPercent', function(config) {
     ) % 1000;
 
   return val <= 10 * percentage;
+});
+
+flags.addRule('allowNSFW', function(allowed) {
+  const { subreddits } = this.state;
+  const subredditName = getSubreddit(this.state);
+
+  if (allowed) {
+    return true;
+  }
+
+  if (!subredditName) {
+    return false;
+  }
+
+  const subredditInfo = subreddits[subredditName.toLowerCase()];
+  if (subredditInfo) {
+    return !subredditInfo.over18;
+  }
+  return false;
 });
 
 export default flags;

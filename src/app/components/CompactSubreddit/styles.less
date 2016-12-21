@@ -1,0 +1,105 @@
+@import (reference) '~app/less/variables';
+
+.CompactSubreddit {
+
+  &__banner {
+    width: 100%;
+    height: 12%;
+    background-image: url(/img/alpha-pattern.png);
+
+    &__community {
+      width: 100%;
+      height: 101%;
+      background-position: top center;
+      background-size: cover;
+    }
+
+    &__generic {
+      width: @grid-size * 20;
+      margin: 0 auto;
+      color: @white;
+
+      .SnooIcon {
+        width: @grid-size * 6;
+        height: auto;
+        transform: translate(0%, 20%);
+
+        @media (max-height: 500px) {
+          transform: translate(0%, 10%);
+        }
+      }
+
+      .Logo {
+        width: @grid-size * 10;
+        height: auto;
+        transform: translate(20%, -10%);
+
+        @media (max-height: 500px) {
+          transform: translate(20%, -35%);
+        }
+      }
+    }
+  }
+
+  &__name {
+    font-family: Helvetica Neue;
+    font-size: 28px;
+    background-color: @white;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  &__posts {
+    position: relative;
+    top: -1px;
+    width: 101%;
+    height: calc(~'100vh - 270px');
+    display: flex;
+    flex-direction: column;
+    background-color: #F8F8F8;
+
+    @media (max-height: 500px) {
+      height: calc(~'100vh - 258px');
+
+      :nth-child(n + 4) {
+        display: none;
+      }
+    }
+  }
+}
+
+.MiniPost {
+  height: 25%;
+  display: flex;
+  padding: @grid-size;
+
+  @media (max-height: 500px) {
+    height: 30%;
+  }
+
+  &__thumbnail-wrapper {
+    flex-shrink: 0;
+    width: @grid-size * 9;
+    height: @grid-size * 9;
+    padding: @grid-size;
+  }
+
+  &__thumbnail {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    border-radius: 5px;
+  }
+
+  &__text {
+    padding: @grid-size;
+    font-family: Helvetica Neue;
+    font-size: 12px;
+    font-weight: bold;
+
+    @media (min-height: 650px) {
+      font-size: 15px;
+    }
+  }
+}

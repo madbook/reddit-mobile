@@ -1,0 +1,143 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+
+.DualPartInterstitialFooter {
+  position: absolute;
+  padding-bottom: 16px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: @z-index-navbar + 2;
+  background-color: @white;
+  text-align: center;
+
+  &__subtitle {
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 24px;
+    margin: 2 * @grid-size auto;
+    padding: 0 @grid-size;
+    text-align: center;
+
+    @media (max-width: 320px) {
+      font-size: 20px;
+      line-height: 22px;
+    }
+  }
+
+  &__content {
+    margin: auto;
+    padding: 0 2 * @grid-size;
+  }
+
+  &__bulletList {
+    font-size: @font-size-h3;
+    line-height: 1.2;
+    margin: @grid-size auto;
+    width: 140px;
+    text-align: left;
+  }
+
+  &__bulletItem {
+    font-size: 17px;
+    line-height: 30px;
+    display: flex;
+
+    &.feature-speed {
+      font-family: Helvetica Neue;
+      font-size: 22px;
+      font-weight: bold;
+      line-height: 27px;
+      width: 230px;
+      display: flex;
+      min-width: 285px;
+      text-align: left;
+      text-transform: uppercase;
+      margin: 0 auto;
+
+      div {
+        padding: 0 24px;
+      }
+
+      .icon {
+        font-size: 46px;
+        line-height: 54px;
+      }
+    }
+
+    &.no-feature {
+      @media (max-height: 500px) {
+        &:nth-child(n + 2) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__bulletIcon {
+    display: inline-block;
+    width: 4 * @grid-size;
+    text-align: left;
+
+    &.icon {
+      line-height: 30px;
+      color: @mint;
+    }
+
+    &.icon-compact {
+      position: relative;
+      left: -2px;
+    }
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 0 20px;
+    font-size: 14px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    margin: @grid-size @grid-size*3 @half-grid-size;
+    width: calc(100% ~ '-' @grid-size*6);
+    max-width: 320px;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    background-color: @orangered;
+    color: @white;
+
+    &:hover {
+      background-color: darken(@orangered, 10%);
+    }
+  }
+
+  @closeLinkHPadding: 2 * @grid-size;
+
+  &__dismissalLink {
+    // give the link a bigger hit are all around, but make sure any clicks
+    // below it register as this is very close to the bottom of the screen
+    padding: @grid-size @closeLinkHPadding 3 * @grid-size;
+
+    &, &:visited, &:hover {
+      text-decoration: underline;
+
+      .themeify({
+        color: @grey-text;
+      });
+    }
+  }
+
+  &__dismissalText {
+    // padding on the link moves this text to left, we want to
+    // pull it to the link so we maintain visual text-centering
+    position: relative;
+    right: -@closeLinkHPadding;
+  }
+
+  &__dismissal {
+    margin-top: @grid-size;
+    color: @grey-text;
+  }
+}

@@ -84,7 +84,7 @@ const AppMain = props => {
       <div className='AppMainPage'>
         <NavFrame
             showInterstitial={ false }
-            showInterstitialListing={ false }
+            showDualPartInterstitial={ false }
             showSmartBanner={ false }
         >
           <ErrorPage status={ statusCode } url={ url } referrer={ referrer } />

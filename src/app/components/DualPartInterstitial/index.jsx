@@ -10,16 +10,16 @@ import * as smartBannerActions from 'app/actions/smartBanner';
 import XPromoWrapper from 'app/components/XPromoWrapper';
 
 import {
-  InterstitialListingCommon,
+  DualPartInterstitialCommon,
   selector,
 } from './common';
 
-export function InterstitialListing(props) {
+export function DualPartInterstitial(props) {
   return (
     <XPromoWrapper>
-      <div className='InterstitialListing'>
-        <div className='InterstitialListing__content'>
-          <InterstitialListingCommon { ... props } />
+      <div className='DualPartInterstitial'>
+        <div className='DualPartInterstitial__content'>
+          <DualPartInterstitialCommon { ...props } />
         </div>
       </div>
     </XPromoWrapper>
@@ -34,4 +34,4 @@ const mapDispatchToProps = dispatch => ({
   }),
 });
 
-export default connect(selector, mapDispatchToProps)(InterstitialListing);
+export default connect(selector, mapDispatchToProps)(DualPartInterstitial);

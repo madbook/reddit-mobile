@@ -10,18 +10,18 @@ import * as modalActions from 'app/actions/modal';
 import XPromoWrapper from 'app/components/XPromoWrapper';
 
 import {
-  InterstitialListingCommon,
+  DualPartInterstitialCommon,
   selector,
 } from './common';
 
 export function InterstitialModal(props) {
   return (
     <XPromoWrapper>
-      <div className='InterstitialListing'>
-        <div className='InterstitialListing__modalCover' />
-        <div className='InterstitialListing__modal'>
-          <div className='InterstitialListing__modalcontent'>
-            <InterstitialListingCommon { ... props } />
+      <div className='DualPartInterstitial'>
+        <div className='DualPartInterstitial__modalCover' />
+        <div className='DualPartInterstitial__modal'>
+          <div className='DualPartInterstitial__modalcontent'>
+            <DualPartInterstitialCommon { ... props } />
           </div>
         </div>
       </div>
