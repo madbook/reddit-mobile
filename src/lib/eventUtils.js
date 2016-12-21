@@ -57,21 +57,26 @@ export function getUserInfoOrLoid(state) {
   };
 }
 
+function getDomain(referrer, meta) {
+  const x = url.parse(referrer);
+  return x.host || meta.domain;
+}
 
 export function getBasePayload(state) {
   // NOTE: this is only for usage on the client since it has references to window
-  const referrer = state.platform.currentPage.referrer || '';
+  const { platform, meta, compact, preferences } = state;
+  const referrer = platform.currentPage.referrer;
 
   const payload = {
-    domain: state.meta.domain,
-    geoip_country: state.meta.country,
-    user_agent: state.meta.userAgent,
-    base_url: state.platform.currentPage.url,
-    referrer_domain: url.parse(referrer).host || state.meta.domain,
+    domain: meta.domain,
+    geoip_country: meta.country,
+    user_agent: meta.userAgent,
+    base_url: platform.currentPage.url,
+    referrer_domain: referrer ? getDomain(referrer, meta) : '',
     referrer_url: referrer,
-    language: state.preferences.lang,
+    language: preferences.lang,
     dnt: !!window.DO_NOT_TRACK,
-    compact_view: state.compact,
+    compact_view: compact,
     adblock: hasAdblock(),
     ...getUserInfoOrLoid(state),
   };
