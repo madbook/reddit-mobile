@@ -12,4 +12,10 @@
   &__try-logging-in {
     margin-top: 2 * @grid-size;
   }
+
+  // Currently, TOC links lead to 404s because the platform router
+  // can't handle the anchor links in the table of contents.
+  &__content .toc {
+    display: none;
+  }
 }
