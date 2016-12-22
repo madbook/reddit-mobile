@@ -25,6 +25,7 @@ module.exports = function(isProduction) {
         GOOGLE_TAG_MANAGER_ID: JSON.stringify(process.env.GOOGLE_TAG_MANAGER_ID),
         MEDIA_DOMAIN: JSON.stringify(process.env.MEDIA_DOMAIN),
         REDDIT: JSON.stringify(process.env.REDDIT),
+        STATIC_BASE: JSON.stringify(process.env.STATIC_BASE),
         STATS_URL: JSON.stringify(process.env.STATS_URL),
         TRACKER_CLIENT_NAME: JSON.stringify(process.env.TRACKER_CLIENT_NAME),
         TRACKER_ENDPOINT: JSON.stringify(process.env.TRACKER_ENDPOINT),
