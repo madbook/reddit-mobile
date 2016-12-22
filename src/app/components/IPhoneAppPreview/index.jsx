@@ -2,17 +2,20 @@ import './styles.less';
 
 import React from 'react';
 
+import config from 'config';
+
 export default (props) => {
   // We currently support 3 "content" values.
   // static - a picture of cat
   // gif - a picture of a corgi getting tickled
   // embedded - we embed the the children prop to be inside of the iphone.
   const { children, content } = props;
+  const { assetPath } = config;
   let innerContent;
   if (content === 'static') {
-    innerContent = <img src='/img/cat-app-preview.png'/>;
+    innerContent = <img src={ `${assetPath}/img/cat-app-preview.png` }/>;
   } else if (content === 'gif') {
-    innerContent = <img src='/img/corgi-app-preview.gif'/>;
+    innerContent = <img src={ `${assetPath}/img/corgi-app-preview.gif` }/>;
   } else { // content === 'embedded'
     innerContent = children;
   }

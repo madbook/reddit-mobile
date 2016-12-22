@@ -37,7 +37,7 @@ const DualPartInterstitialHeader = props => {
 
   let innerContent, backgroundClass;
 
-  if (showThumbnailGrid) {
+  if (showThumbnailGrid || showTransparency) {
     backgroundClass = 'plain';
   } else {
     backgroundClass = 'colorful';
