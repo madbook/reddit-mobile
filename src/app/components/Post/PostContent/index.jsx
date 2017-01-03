@@ -184,7 +184,9 @@ function buildMediaContent(post, linkDescriptor, props) {
       e.preventDefault();
       const clickTarget = 'thumbnail';
       onTapExpand(clickTarget);
-      togglePlaying();
+      if (playableType !== PLAYABLE_TYPE.NOT_PLAYABLE) {
+        togglePlaying();
+      }
     };
   }
 
@@ -331,7 +333,7 @@ function renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor,
 
   const style = {};
 
-  if (previewImage.url) {
+  if (previewImage.url && !isPlaying) {
     const giphyPosterHref = posterForHrefIfGiphyCat(imageURL);
     const backgroundImage = giphyPosterHref && !nsfwNode ?
       giphyPosterHref : previewImage.url;
