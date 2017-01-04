@@ -29,6 +29,12 @@ const NSFW_FLAIR = (
   </span>
 );
 
+const SPOILER_FLAIR = (
+  <span className='PostHeader__spoiler-text'>
+    SPOILER
+  </span>
+);
+
 const STICKY_FLAIR = (
   <span className='icon icon-sticky green' />
 );
@@ -158,11 +164,12 @@ function renderPostFlair(post, single) {
     gilded,
     locked,
     promoted,
+    spoiler,
   } = post;
 
   const showingGilded = gilded && single;
 
-  if (!(stickied || showingGilded || locked || distinguished || isNSFW || promoted)) {
+  if (!(stickied || showingGilded || locked || distinguished || isNSFW || promoted || spoiler)) {
     return null;
   }
 
@@ -175,6 +182,7 @@ function renderPostFlair(post, single) {
       { distinguished === 'moderator' ? MOD_FLAIR : null }
       { distinguished === 'admin' ? ADMIN_FLAIR : null }
       { isNSFW ? NSFW_FLAIR : null }
+      { spoiler ? SPOILER_FLAIR : null }
       { promoted ? PROMOTED_FLAIR : null }
     </span>
   );
