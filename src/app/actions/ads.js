@@ -60,7 +60,12 @@ export const track = adId => async (dispatch, getState) => {
   trackAdPost(post);
 };
 
-const IMPRESSION_PROPS = ['impPixel', 'adserverImpPixel'];
+const IMPRESSION_PROPS = [
+  'impPixel',
+  'adserverImpPixel',
+  'thirdPartyTracking',
+  'thirdPartyTracking2',
+];
 const trackAdPost = post => {
   IMPRESSION_PROPS.forEach(prop => {
     const pixel = new Image();
