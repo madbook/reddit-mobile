@@ -18,6 +18,7 @@ import Loading from 'app/components/Loading';
 import RecommendedPosts from 'app/components/RecommendedPosts';
 import RecommendedSubreddits from 'app/components/RecommendedSubreddits';
 import SubNav from 'app/components/SubNav';
+import getSubreddit from 'lib/getSubredditFromState';
 
 import CommentsPageHandler from 'app/router/handlers/CommentsPage';
 import { paramsToCommentsPageId } from 'app/models/CommentsPage';
@@ -39,6 +40,7 @@ function CommentsPage(props) {
     postLoaded,
     onSortChange,
     onToggleReply,
+    spoilersEnabled,
   } = props;
 
   if (!postLoaded) {
@@ -52,7 +54,7 @@ function CommentsPage(props) {
   return (
     <div className='CommentsPage'>
       <SubNav />
-      <Post postId={ pageParams.id } single={ true } key='post' />
+      <Post postId={ pageParams.id } single={ true } subredditShowSpoilers={ spoilersEnabled } key='post' />
       <RecommendedPosts
         postId={ pageParams.id }
         postLoaded={ postLoaded }
@@ -129,10 +131,15 @@ const stateProps = createSelector(
     const pageParams = CommentsPageHandler.pageParamsToCommentsPageParams(props);
     return !!state.replying[pageParams.id];
   },
+  state => {
+    const subredditName = getSubreddit(state);
+    const subreddit = state.subreddits[subredditName];
+    return subreddit ? subreddit.spoilersEnabled : false;
+  },
   state => state.platform.currentPage,
   state => state.preferences,
   crawlerRequestSelector,
-  (commentsPage, post, isReplying, currentPage, preferences, isCrawlerRequest) => {
+  (commentsPage, post, isReplying, spoilersEnabled, currentPage, preferences, isCrawlerRequest) => {
     const postLoaded = !!post;
 
     return {
@@ -145,6 +152,7 @@ const stateProps = createSelector(
       isCrawlerRequest,
       postLoaded,
       op: postLoaded ? post.author : '',
+      spoilersEnabled,
     };
   },
 );

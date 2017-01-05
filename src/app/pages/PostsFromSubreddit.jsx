@@ -88,6 +88,7 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
       <PostsList
         postsListId={ postsListId }
         subredditIsNSFW={ !!subreddit && subreddit.over18 }
+        subredditShowSpoilers={ !!subreddit && subreddit.spoilersEnabled }
       />
     </div>
   );

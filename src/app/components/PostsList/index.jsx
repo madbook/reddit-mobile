@@ -35,6 +35,7 @@ PostsList.propTypes = {
   shouldPage: T.bool,
   forceCompact: T.bool,
   subredditIsNSFW: T.bool,
+  subredditSpoilersEnabled: T.bool,
   onPostClick: T.func,
 };
 
@@ -43,11 +44,12 @@ PostsList.defaultProps = {
   prevUrl: '',
   forceCompact: false,
   subredditIsNSFW: false,
+  subredditSpoilersEnabled: false,
   shouldPage: true,
 };
 
 const renderPostsList = props => {
-  const { postRecords, ad, adId, forceCompact, subredditIsNSFW, onPostClick } = props;
+  const { postRecords, ad, adId, forceCompact, subredditIsNSFW, subredditShowSpoilers, onPostClick } = props;
   const records = ad ? recordsWithAd(postRecords, ad) : postRecords;
 
   return records.map((postRecord, index) => {
@@ -57,6 +59,7 @@ const renderPostsList = props => {
       postId,
       forceCompact,
       subredditIsNSFW,
+      subredditShowSpoilers,
       key: `post-id-${postId}`,
       onPostClick,
     };

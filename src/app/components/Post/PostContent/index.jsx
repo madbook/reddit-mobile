@@ -50,6 +50,7 @@ PostContent.propTypes = {
   toggleShowNSFW: T.func.isRequired,
   togglePlaying: T.func.isRequired,
   showNSFW: T.bool.isRequired,
+  showSpoilers: T.bool.isRequired,
   editing: T.bool,
   editPending: T.bool,
   onToggleEdit: T.func.isRequired,
@@ -149,7 +150,7 @@ function renderTextEditor(rawMarkdown, props) {
 
 function buildMediaContent(post, linkDescriptor, props) {
   const { isPlaying, isThumbnail, single, width, showNSFW, onTapExpand,
-          togglePlaying } = props;
+          togglePlaying, showSpoilers } = props;
   const oembed = post.media ? post.media.oembed : null;
 
   if (isThumbnail && !(post.preview || oembed)) {
@@ -157,14 +158,15 @@ function buildMediaContent(post, linkDescriptor, props) {
   }
 
   const isNSFW = isPostNSFW(post);
-  const needsNSFWBlur = showNSFWBlur(isNSFW, showNSFW);
+  const isSpoiler = post.spoiler;
+  const needsObfuscating = showObfuscated(isNSFW, isSpoiler, showNSFW, showSpoilers);
   const playableType = postToPlayableType(post);
   const sourceURL = optimizeContent(post);
 
   let previewImage;
   if (post.preview || oembed) {
     previewImage = findPreviewImage(
-      isThumbnail, post.preview, post.thumbnail, oembed, width, needsNSFWBlur);
+      isThumbnail, post.preview, post.thumbnail, oembed, width, needsObfuscating);
   }
 
   // if we got a preview image that's a gif, convert it to a still image if possible
@@ -192,7 +194,7 @@ function buildMediaContent(post, linkDescriptor, props) {
 
   if (isThumbnail && previewImage && previewImage.url) {
     return renderImage(previewImage, sourceURL, linkDescriptor, callOnTapExpand,
-                       needsNSFWBlur, playableType, props);
+                       needsObfuscating, playableType, props);
   }
 
   // handles:
@@ -205,7 +207,7 @@ function buildMediaContent(post, linkDescriptor, props) {
       togglePlaying();
     };
     return buildImagePreview(previewImage, sourceURL, linkDescriptor,
-                             togglePlay, needsNSFWBlur, playableType, props);
+                             togglePlay, needsObfuscating, playableType, props);
   }
 
   if (oembed) {
@@ -213,18 +215,18 @@ function buildMediaContent(post, linkDescriptor, props) {
   }
 
   if (previewImage) {
-    const callback = isNSFW ? e => {
+    const callback = (isNSFW || isSpoiler) ? e => {
       e.preventDefault();
       props.toggleShowNSFW();
     } : null;
     return buildImagePreview(previewImage, sourceURL, linkDescriptor, callback,
-                             needsNSFWBlur, playableType, props);
+                             needsObfuscating, playableType, props);
   }
 }
 
 
 function buildImagePreview(previewImage, imageURL, linkDescriptor, callback,
-                           needsNSFWBlur, playableType, props) {
+                           needsObfuscating, playableType, props) {
   const html5sources = gifToHTML5Sources(imageURL, previewImage.url);
   const { single, isPlaying } = props;
 
@@ -247,7 +249,7 @@ function buildImagePreview(previewImage, imageURL, linkDescriptor, callback,
   }
 
   return renderImage(previewImage, imageURL, linkDescriptor, callback,
-    needsNSFWBlur, playableType, props);
+    needsObfuscating, playableType, props);
 }
 
 function buildMediaPreview(post, sourceURL, oembed, single) {
@@ -273,17 +275,17 @@ function renderRichOembed(oembedHtml, aspectRatio) {
 }
 
 function renderImage(previewImage, imageURL, linkDescriptor, onClick,
-                     needsNSFWBlur, playableType, props) {
+                     needsObfuscating, playableType, props) {
   const { isThumbnail, single, showLinksInNewTab,
           post, forceHTTPS, isPlaying } = props;
   let playbackControlNode;
-  if (playableType && !needsNSFWBlur) {
+  if (playableType && !needsObfuscating) {
     playbackControlNode = renderPlaybackIcon(playableType, isThumbnail);
   }
 
-  let nsfwNode;
-  if (needsNSFWBlur) {
-    nsfwNode = renderNSFWWarning(isThumbnail);
+  let obfuscatedNode;
+  if (needsObfuscating) {
+    obfuscatedNode = renderWarning(isThumbnail, post);
   }
 
   const aspectRatio = getAspectRatio(single, previewImage.width,
@@ -293,23 +295,23 @@ function renderImage(previewImage, imageURL, linkDescriptor, onClick,
   if (previewImage && previewImage.url && !aspectRatio) {
     return renderImageOfUnknownSize(
       previewImage.url, linkDescriptor, onClick, playbackControlNode,
-      nsfwNode, linkTarget, post.outboundLink);
+      obfuscatedNode, linkTarget, post.outboundLink);
   }
 
   return renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor,
                                     aspectRatio, onClick, isThumbnail,
-                                    playbackControlNode, nsfwNode, linkTarget,
+                                    playbackControlNode, obfuscatedNode, linkTarget,
                                     post.outboundLink, forceHTTPS, isPlaying);
 }
 
-function baseImageLinkClass(imageUrl, hasNSFWBlur) {
-  return `PostContent__image-link ${hasNSFWBlur && !imageUrl ? 'placeholder' :''}`;
+function baseImageLinkClass(imageUrl, isObfuscated) {
+  return `PostContent__image-link ${isObfuscated && !imageUrl ? 'placeholder' :''}`;
 }
 
 function renderImageOfUnknownSize(imageURL, linkDescriptor, onClick,
-                                  playbackControlNode, nsfwNode, linkTarget,
+                                  playbackControlNode, obfuscatedNode, linkTarget,
                                   outboundLink) {
-  const linkClass = baseImageLinkClass(imageURL, !!nsfwNode);
+  const linkClass = baseImageLinkClass(imageURL, !!obfuscatedNode);
   return (
     <OutboundLink
       className={ linkClass }
@@ -320,7 +322,7 @@ function renderImageOfUnknownSize(imageURL, linkDescriptor, onClick,
     >
       <img className='PostContent__image-img' src={ imageURL } />
       { playbackControlNode }
-      { nsfwNode }
+      { obfuscatedNode }
     </OutboundLink>
   );
 }
@@ -328,19 +330,19 @@ function renderImageOfUnknownSize(imageURL, linkDescriptor, onClick,
 
 function renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor,
                                     aspectRatio, onClick, isThumbnail,
-                                    playbackControlNode, nsfwNode, linkTarget,
+                                    playbackControlNode, obfuscatedNode, linkTarget,
                                     outboundLink, forceHTTPS, isPlaying) {
 
   const style = {};
 
   if (previewImage.url && !isPlaying) {
     const giphyPosterHref = posterForHrefIfGiphyCat(imageURL);
-    const backgroundImage = giphyPosterHref && !nsfwNode ?
+    const backgroundImage = giphyPosterHref && !obfuscatedNode ?
       giphyPosterHref : previewImage.url;
     style.backgroundImage = `url("${forceProtocol(backgroundImage, forceHTTPS)}")`;
   }
 
-  let linkClass = baseImageLinkClass(previewImage.url, !!nsfwNode);
+  let linkClass = baseImageLinkClass(previewImage.url, !!obfuscatedNode);
   if (!isThumbnail) {
     linkClass += ` ${aspectRatioClass(aspectRatio)}`;
   }
@@ -357,7 +359,7 @@ function renderImageWithAspectRatio(previewImage, imageURL, linkDescriptor,
       { isPlaying
         ? <img className='PostContent__inline-gif' src={ imageURL } />
         : playbackControlNode }
-      { nsfwNode }
+      { obfuscatedNode }
     </OutboundLink>
   );
 }
@@ -464,19 +466,24 @@ function renderLinkBar(displayText, href, showLinksInNewTab, outboundLink) {
   );
 }
 
-function renderNSFWWarning(isThumbnail) {
+function renderWarning(isThumbnail, post) {
   if (isThumbnail) {
-    return (
-      <div className='PostContent__nsfw-warning'>
-        <p className='PostContent__nsfw-warning-text'>NSFW</p>
-      </div>
-    );
+    return;
+  }
+
+  let obfuscationText;
+  if (isPostNSFW(post) && post.spoiler) {
+    obfuscationText = 'NSFW and as a spoiler';
+  } else if (isPostNSFW(post)) {
+    obfuscationText = 'NSFW';
+  } else if (post.spoiler) {
+    obfuscationText = 'a spoiler';
   }
 
   return (
-    <div className='PostContent__nsfw-warning'>
-      <p className='PostContent__nsfw-warning-text'>This post is marked as NSFW</p>
-      <p className='PostContent__nsfw-warning-button'>Show Post?</p>
+    <div className='PostContent__warning'>
+      <p className='PostContent__warning-text'>This post is marked as { obfuscationText }</p>
+      <p className='PostContent__warning-button'>Show Post?</p>
     </div>
   );
 }
@@ -495,8 +502,8 @@ function useOurOwnPlayingOrPreviewing(oembed, url, isPlaying) {
   return (provider === 'gfycat' || provider === 'imgur' || /\.gif$/.test(url));
 }
 
-function showNSFWBlur(isNSFW, showNSFW) {
-  return isNSFW && !showNSFW;
+function showObfuscated(isNSFW, isSpoiler, showNSFW, showSpoilers) {
+  return (isNSFW && !showNSFW) || (isSpoiler && showSpoilers);
 }
 
 function getAspectRatio(single, width, height) {

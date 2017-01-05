@@ -41,10 +41,10 @@ export function aspectRatioClass(ratio) {
   return `aspect-ratio-${(w / lcd)}x${(_HEIGHT / lcd)}`;
 }
 
-export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, needsNSFWBlur) {
+export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, needsObfuscating) {
   const imageWidth = isCompact ? POST_COMPACT_THUMBNAIL_WIDTH : width;
 
-  if (isCompact && thumbnail && !needsNSFWBlur) {
+  if (isCompact && thumbnail && !needsObfuscating) {
     return {
       url: thumbnail,
       width: POST_COMPACT_THUMBNAIL_WIDTH,
@@ -55,7 +55,7 @@ export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, n
   if (preview) {
     if (preview.images.length) {
       const bestFitPreviewImage = findBestFitPreviewImage(
-        isCompact, preview.images[0], imageWidth, needsNSFWBlur);
+        isCompact, preview.images[0], imageWidth, needsObfuscating);
 
       if (bestFitPreviewImage) {
         return bestFitPreviewImage;
@@ -64,7 +64,7 @@ export function findPreviewImage(isCompact, preview, thumbnail, oembed, width, n
   }
 
   if (oembed) {
-    return oembedPreviewImage(oembed, needsNSFWBlur);
+    return oembedPreviewImage(oembed, needsObfuscating);
   }
 }
 
@@ -100,12 +100,12 @@ export function findPreviewVideo(preview) {
   return largestFirst[0];
 }
 
-function findBestFitPreviewImage(isThumbnail, previewImage, imageWidth, needsNSFWBlur) {
-  if (needsNSFWBlur) {
+function findBestFitPreviewImage(isThumbnail, previewImage, imageWidth, needsObfuscating) {
+  if (needsObfuscating) {
     // for logged out users and users who have the 'make safer for work'
     // option enabled there will be no nsfw variants returned.
-    if (has(previewImage, 'variants.nsfw.resolutions')) {
-      previewImage = previewImage.variants.nsfw;
+    if (has(previewImage, 'variants.obfuscated.resolutions')) {
+      previewImage = previewImage.variants.obfuscated;
     } else {
       return {};
     }
@@ -135,8 +135,8 @@ function findBestFitPreviewImage(isThumbnail, previewImage, imageWidth, needsNSF
   }
 }
 
-function oembedPreviewImage(oembed, needsNSFWBlur) {
-  if (!needsNSFWBlur) {
+function oembedPreviewImage(oembed, needsObfuscating) {
+  if (!needsObfuscating) {
     return {
       url: oembed.thumbnail_url,
       width: oembed.thumbnail_width,

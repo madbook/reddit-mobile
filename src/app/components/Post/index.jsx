@@ -53,6 +53,7 @@ Post.propTypes = {
   hideSubredditLabel: T.bool,
   hideWhen: T.bool,
   subredditIsNSFW: T.bool,
+  subredditShowSpoilers: T.bool,
   showOver18Interstitial: T.bool,
   single: T.bool,
   userActivityPage: T.bool,
@@ -70,6 +71,7 @@ Post.defaultProps = {
   hideSubredditLabel: false,
   single: false,
   subredditIsNSFW: false,
+  subredditShowSpoilers: false,
   showOver18Interstitial: false,
   winWidth: 360,
   onToggleSavePost: () => {},
@@ -90,6 +92,12 @@ export function Post(props) {
   const isAndroid = userAgent && /android/i.test(userAgent);
   const showLinksInNewTab = externalDomain && isAndroid;
   const showNSFW = props.subredditIsNSFW || props.unblurred;
+
+  // Spoilers differ from NSFW in that if a subreddit disables spoilers
+  // we should not render the spoiler treatment. If the preference is
+  // enabled we should show the spoiler treatment. We will also only show
+  // the unobfuscated image if the post has been unblurred.
+  const showSpoilers = props.subredditShowSpoilers && !props.unblurred;
 
   const {
     post,
@@ -150,6 +158,7 @@ export function Post(props) {
         width={ winWidth }
         toggleShowNSFW={ toggleShowNSFW }
         showNSFW={ showNSFW }
+        showSpoilers={ showSpoilers }
         editing={ false }
         forceHTTPS={ forceHTTPS }
         isDomainExternal={ externalDomain }
@@ -178,6 +187,7 @@ export function Post(props) {
         togglePlaying={ onTogglePlaying }
         width={ winWidth }
         showNSFW={ showNSFW }
+        showSpoilers={ showSpoilers }
         toggleShowNSFW={ toggleShowNSFW }
         forceHTTPS={ forceHTTPS }
         isDomainExternal={ externalDomain }
