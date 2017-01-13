@@ -45,33 +45,9 @@
     line-height: 30px;
     display: flex;
 
-    &.feature-speed {
-      font-family: Helvetica Neue;
-      font-size: 22px;
-      font-weight: bold;
-      line-height: 27px;
-      width: 230px;
-      display: flex;
-      min-width: 285px;
-      text-align: left;
-      text-transform: uppercase;
-      margin: 0 auto;
-
-      div {
-        padding: 0 24px;
-      }
-
-      .icon {
-        font-size: 46px;
-        line-height: 54px;
-      }
-    }
-
-    &.no-feature {
-      @media (max-height: 500px) {
-        &:nth-child(n + 2) {
-          display: none;
-        }
+    @media (max-height: 500px) {
+      &:nth-child(n + 2) {
+        display: none;
       }
     }
   }

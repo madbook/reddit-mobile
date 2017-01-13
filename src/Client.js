@@ -18,7 +18,7 @@ import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
 import { sendTimings, onHandlerCompleteTimings } from 'lib/timing';
 import Session from 'app/models/Session';
-import * as smartBannerActions from 'app/actions/smartBanner';
+import * as xpromoActions from 'app/actions/xpromo';
 
 // Bits to help in the gathering of client side timings to relay back
 // to the server
@@ -148,5 +148,5 @@ isShell = client.getState().platform.shell;
 client.dispatch(platformActions.activateClient());
 
 if (isShell) {
-  client.dispatch(smartBannerActions.checkAndSet());
+  client.dispatch(xpromoActions.checkAndSet());
 }

@@ -8,7 +8,6 @@ import { toggleModal } from '@r/widgets/modal';
 import includes from 'lodash/includes';
 const { PostModel } = models;
 
-import * as modalActions from 'app/actions/modal';
 import * as postActions from 'app/actions/posts';
 import * as reportingActions from 'app/actions/reporting';
 
@@ -24,10 +23,10 @@ import PostContent from './PostContent';
 import PostFooter from './PostFooter';
 
 import features from 'app/featureFlags';
-import { flags } from 'app/constants'; 
+import { flags } from 'app/constants';
 import { removePrefix } from 'lib/eventUtils';
 
-const { 
+const {
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
 } = flags;
@@ -140,7 +139,7 @@ export function Post(props) {
   }
 
   const hasExpandedCompact = compact && expanded;
-  const shouldPlay = !isPlaying && ((compact && !hasExpandedCompact) || !compact);  
+  const shouldPlay = !isPlaying && ((compact && !hasExpandedCompact) || !compact);
   const onTogglePlaying = shouldPlay ? onStartPlaying : onStopPlaying;
   const isSubredditModerator = includes(moderatingSubreddits.names, post.subreddit);
 
@@ -298,7 +297,6 @@ const mapDispatchToProps = (dispatch, { postId }) => ({
   onStopPlaying: () => dispatch(postActions.stopPlaying(postId)),
   onStartPlaying: () => dispatch(postActions.startPlaying(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),
-  onElementClick: () => dispatch(modalActions.showXpromoModal()),
   onToggleModal: () => dispatch(toggleModal(null)),
 });
 

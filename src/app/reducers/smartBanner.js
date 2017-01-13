@@ -1,7 +1,7 @@
 import merge from '@r/platform/merge';
 import * as platformActions from '@r/platform/actions';
 
-import * as smartBannerActions from 'app/actions/smartBanner';
+import * as xpromoActions from 'app/actions/xpromo';
 
 export const DEFAULT = {
   showBanner: false,
@@ -11,18 +11,18 @@ export const DEFAULT = {
 
 export default function(state=DEFAULT, action={}) {
   switch (action.type) {
-    case smartBannerActions.SHOW: {
+    case xpromoActions.SHOW: {
       return merge(state, {
         showBanner: true,
         ...action.data,
       });
     }
 
-    case smartBannerActions.HIDE: {
+    case xpromoActions.HIDE: {
       return DEFAULT;
     }
 
-    case smartBannerActions.RECORD_SHOWN: {
+    case xpromoActions.RECORD_SHOWN: {
       return merge(state, {
         haveShownXPromo: true,
         xPromoShownUrl: action.url,

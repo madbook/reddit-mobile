@@ -5,7 +5,7 @@ import * as platformActions from '@r/platform/actions';
 import routes from 'app/router';
 import smartBanner, { DEFAULT } from './smartBanner';
 
-import * as smartBannerActions from 'app/actions/smartBanner';
+import * as xpromoActions from 'app/actions/xpromo';
 
 
 createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
@@ -18,7 +18,7 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
           showBanner: true,
         };
 
-        store.dispatch(smartBannerActions.show());
+        store.dispatch(xpromoActions.show());
         const { smartBanner } = store.getState();
         expect(smartBanner).to.eql(expected);
       });
@@ -30,8 +30,8 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
 
         // Show and then hide to make sure we're setting and then clearing
         // The SHOW test verifies that setting works.
-        store.dispatch(smartBannerActions.show('foo', 'bar'));
-        store.dispatch(smartBannerActions.hide());
+        store.dispatch(xpromoActions.show('foo', 'bar'));
+        store.dispatch(xpromoActions.hide());
         const { smartBanner } = store.getState();
         expect(smartBanner).to.eql(DEFAULT);
       });
@@ -43,8 +43,8 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
         const url = '/foo/bar';
 
         // Indicate desire to show, and then record that we showed.
-        store.dispatch(smartBannerActions.show());
-        store.dispatch(smartBannerActions.recordShown(url));
+        store.dispatch(xpromoActions.show());
+        store.dispatch(xpromoActions.recordShown(url));
         const { smartBanner } = store.getState();
         expect(smartBanner).to.eql({
           showBanner: true,
@@ -59,8 +59,8 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
         const { store } = getStore({ smartBanner: DEFAULT });
 
         // Indicate desire to show, record that we showed, navigate.
-        store.dispatch(smartBannerActions.show());
-        store.dispatch(smartBannerActions.recordShown('/foo/bar'));
+        store.dispatch(xpromoActions.show());
+        store.dispatch(xpromoActions.recordShown('/foo/bar'));
         store.dispatch(platformActions.navigateToUrl(METHODS.GET, '/user/foobar'));
         const { smartBanner } = store.getState();
         const { showBanner } = smartBanner;
@@ -71,7 +71,7 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
         const { store } = getStore({ smartBanner: DEFAULT });
 
         // Indicate desire to show, navigate.
-        store.dispatch(smartBannerActions.show());
+        store.dispatch(xpromoActions.show());
         store.dispatch(platformActions.navigateToUrl(METHODS.GET, '/user/foobar'));
         const { smartBanner } = store.getState();
         const { showBanner } = smartBanner;

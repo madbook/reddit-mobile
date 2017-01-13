@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import * as smartBannerActions from 'app/actions/smartBanner';
+import * as xpromoActions from 'app/actions/xpromo';
 
 
 const T = React.PropTypes;
@@ -31,7 +31,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...stateProps,
   ...dispatchProps,
   recordXPromoShown: () =>
-    dispatchProps.dispatch(smartBannerActions.recordShown(stateProps.currentUrl)),
+    dispatchProps.dispatch(xpromoActions.recordShown(stateProps.currentUrl)),
   ...ownProps,
 });
 

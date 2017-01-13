@@ -1,13 +1,13 @@
 import { markBannerClosed, shouldShowBanner } from 'lib/smartBannerState';
 import { trackPreferenceEvent } from 'lib/eventUtils';
 
-export const SHOW = 'SMARTBANNER__SHOW';
+export const SHOW = 'XPROMO__SHOW';
 export const show = () => ({ type: SHOW });
 
-export const HIDE = 'SMARTBANNER__HIDE';
+export const HIDE = 'XPROMO__HIDE';
 export const hide = () => ({ type: HIDE });
 
-export const RECORD_SHOWN = 'SMARTBANNER__RECORD_SHOWN';
+export const RECORD_SHOWN = 'XPROMO__RECORD_SHOWN';
 export const recordShown = url => ({
   type: RECORD_SHOWN,
   url,

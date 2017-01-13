@@ -27,19 +27,8 @@ const {
   VARIANT_RECOMMENDED_BY_POST_HOT,
   VARIANT_RECOMMENDED_SIMILAR_POSTS,
   VARIANT_SUBREDDIT_HEADER,
-  VARIANT_XPROMO_BASE,
-  VARIANT_XPROMO_LIST,
-  VARIANT_XPROMO_RATING,
-  VARIANT_XPROMO_SUBREDDIT,
-  VARIANT_XPROMO_LISTING,
-  VARIANT_XPROMO_FP_GIF,
-  VARIANT_XPROMO_FP_STATIC,
-  VARIANT_XPROMO_FP_SPEED,
   VARIANT_XPROMO_FP_TRANSPARENT,
   VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
-  VARIANT_XPROMO_SUBREDDIT_EMBEDDED_APP,
-  VARIANT_XPROMO_SUBREDDIT_POSTS,
-  VARIANT_XPROMO_CLICK,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -151,73 +140,6 @@ const config = {
       seoReferrer: true,
     }],
   },
-  [VARIANT_XPROMO_BASE]: false,
-  // As a temporary hack, we are showing the list treatment also to users
-  // bucketed into the control groups. We want to continue to get bucketing
-  // events, so we know when a user has been exposed to this feature, and we
-  // want to show 100% of users the list treatment. We can't eliminate control
-  // groups in the API's bucketing mechanism, so we use this hack instead.
-  [VARIANT_XPROMO_LIST]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['index'] },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { or: [
-            { variant: 'mweb_xpromo_interstitial_fp_android:list' },
-            { variant: 'mweb_xpromo_interstitial_fp_android:control_1' },
-            { variant: 'mweb_xpromo_interstitial_fp_android:control_2' },
-            { url: 'xpromolist' },
-          ] },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { or: [
-            { variant: 'mweb_xpromo_interstitial_fp_ios:list' },
-            { variant: 'mweb_xpromo_interstitial_fp_ios:control_1' },
-            { variant: 'mweb_xpromo_interstitial_fp_ios:control_2' },
-            { url: 'xpromolist' },
-          ] },
-        ] },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_RATING]: false,
-  [VARIANT_XPROMO_LISTING]: false,
-  // As a temporary hack, we are showing the subreddit treatment also to users
-  // bucketed into the control groups. We want to continue to get bucketing
-  // events, so we know when a user has been exposed to this feature, and we
-  // want to show 100% of users the subreddit treatment. We can't eliminate
-  // control groups in the API's bucketing mechanism, so we use this hack
-  // instead.
-  [VARIANT_XPROMO_SUBREDDIT]: {
-    and: [
-      { notOptedOut: 'xpromoInterstitial' },
-      { allowedPages: ['listing'] },
-      { allowNSFW: false },
-      { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { or: [
-            { variant: 'mweb_xpromo_interstitial_listing_android:subreddit' },
-            { variant: 'mweb_xpromo_interstitial_listing_android:control_1' },
-            { variant: 'mweb_xpromo_interstitial_listing_android:control_2' },
-            { url: 'xpromosubreddit' },
-          ] },
-        ] },
-        { and: [
-          { allowedDevices: IOS_DEVICES },
-          { or: [
-            { variant: 'mweb_xpromo_interstitial_listing_ios:subreddit' },
-            { variant: 'mweb_xpromo_interstitial_listing_ios:control_1' },
-            { variant: 'mweb_xpromo_interstitial_listing_ios:control_2' },
-            { url: 'xpromosubreddit' },
-          ] },
-        ] },
-      ] },
-    ],
-  },
   // As a temporary hack, we are showing the list treatment also to users
   // bucketed into the control groups. We want to continue to get bucketing
   // events, so we know when a user has been exposed to this feature, and we
@@ -235,9 +157,6 @@ const config = {
       ] },
     ],
   },
-  [VARIANT_XPROMO_FP_GIF]: false,
-  [VARIANT_XPROMO_FP_STATIC]: false,
-  [VARIANT_XPROMO_FP_SPEED]: false,
   // As a temporary hack, we are showing the list treatment also to users
   // bucketed into the control groups. We want to continue to get bucketing
   // events, so we know when a user has been exposed to this feature, and we
@@ -256,9 +175,6 @@ const config = {
       ] },
     ],
   },
-  [VARIANT_XPROMO_SUBREDDIT_EMBEDDED_APP]: false,
-  [VARIANT_XPROMO_SUBREDDIT_POSTS]: false,
-  [VARIANT_XPROMO_CLICK]: false,
   [VARIANT_TITLE_EXPANDO]: {
     and: [
       { compact: true},
