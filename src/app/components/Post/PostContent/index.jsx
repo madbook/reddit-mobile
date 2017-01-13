@@ -468,7 +468,9 @@ function renderLinkBar(displayText, href, showLinksInNewTab, outboundLink) {
 
 function renderWarning(isThumbnail, post) {
   if (isThumbnail) {
-    return;
+    return (
+      <div className='PostContent__warning' />
+    );
   }
 
   let obfuscationText;
