@@ -12,6 +12,7 @@ import DomModifier from './side-effect-components/DomModifier';
 import LocalStorageSync from './side-effect-components/LocalStorageSync';
 import SessionRefresher from './side-effect-components/SessionRefresher';
 import ScrollPositionSync from './side-effect-components/ScrollPositionSync';
+import TrackingPixel from 'app/side-effect-components/TrackingPixel';
 
 export default class App extends React.Component {
   render() {
@@ -27,6 +28,7 @@ export default class App extends React.Component {
         <SessionRefresher />
         <TooltipShutter />
         <AdblockTester />
+        <TrackingPixel />
       </div>
     );
   }

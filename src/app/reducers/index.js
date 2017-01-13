@@ -46,6 +46,7 @@ import subredditsToPostsByPost from './subredditsToPostsByPost';
 import subscribedSubreddits from './subscribedSubreddits';
 import theme from './theme';
 import toaster from './toaster';
+import tracking from './tracking';
 import unblurredPosts from './unblurredPosts';
 import user from './user';
 import visitedPosts from './visitedPosts';
@@ -99,6 +100,7 @@ export default {
   subredditRequests,
   theme,
   toaster,
+  tracking,
   unblurredPosts,
   user,
   visitedPosts,
