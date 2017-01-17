@@ -18,8 +18,7 @@ export default function(state=DEFAULT, action={}) {
     case savedActions.RECEIVED_SAVED:
     case searchActions.RECEIVED_SEARCH_REQUEST:
     case similarPostsActions.RECEIVED_SIMILAR_POSTS:
-    case wikiActions.RECEIVED_WIKI:
-    {
+    case wikiActions.RECEIVED_WIKI: {
       const pixel = action.apiResponse.response.headers['x-reddit-tracking'] || state.pixel;
       return {
         ...state,

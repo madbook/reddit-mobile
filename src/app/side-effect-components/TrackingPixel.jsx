@@ -28,11 +28,7 @@ class TrackingPixel extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     // prevent re-firing if platform updates but we don't get a new tracking pixel
-    if (nextProps.pixelTrackerUrl === this.props.pixelTrackerUrl) {
-      return false;
-    } else {
-      return true;
-    }
+     return nextProps.pixelTrackerUrl !== this.props.pixelTrackerUrl;
   }
 
   componentDidUpdate() {
