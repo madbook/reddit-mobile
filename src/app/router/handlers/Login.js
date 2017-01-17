@@ -15,7 +15,7 @@ export default class Login extends BaseHandler {
   }
 
   async [METHODS.POST](dispatch, getState) {
-    const { username, password } = this.bodyParams;
+    const { username, password, redirectTo } = this.bodyParams;
     let successful = true;
     let errorCode = null;
 
@@ -25,8 +25,7 @@ export default class Login extends BaseHandler {
       dispatch(loginActions.loggedIn());
 
       // This is awaited to guarantee the user is loaded for event logging
-      await dispatch(platformActions.navigateToUrl(METHODS.GET, '/'));
-
+      await dispatch(platformActions.redirect(redirectTo));
     } catch (e) {
       successful = false;
       if (e instanceof errors.ValidationError && e.errors && e.errors[0]) {

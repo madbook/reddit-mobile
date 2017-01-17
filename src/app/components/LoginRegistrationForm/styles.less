@@ -4,7 +4,7 @@
 @size: @grid-size*6;
 
 .Login, .Register {
-  padding: @size;
+  padding: @size / 2;
   text-align: center;
   position: relative;
 
@@ -37,6 +37,10 @@
 
   &__form {
     margin-top: 40px;
+
+    @media (max-height: 600px) {
+      margin-top: 2 * @grid-size;
+    }
   }
 
   &__checkbox-label {
@@ -56,7 +60,10 @@
 
   &__submit {
     height: 45px;
-    margin-top: 40px;
+
+    @media (max-height: 600px) {
+      margin-top: 0;
+    }
   }
 
   &__login-link, &__register-link {
@@ -76,6 +83,49 @@
 
     &:focus {
       outline: none;
+    }
+  }
+
+  &__app-promo {
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 2 * @grid-size;
+    margin: @grid-size auto;
+
+    @media (max-height: 600px) {
+      margin: 2 * @grid-size 0;
+    }
+
+    &__or {
+      color: @grey-text;
+      margin: 3 * @grid-size 0;
+
+      &:before,
+      &:after {
+        background-color: @grey-text;
+        content: "";
+        display: inline-block;
+        height: 2px;
+        position: relative;
+        vertical-align: middle;
+        width: 44.5%;
+      }
+
+      &:before {
+        right: 0.5em;
+        margin-left: -50%;
+      }
+
+      &:after {
+        left: 0.5em;
+        margin-right: -50%;
+      }
+    }
+
+    &__subtext {
+      padding: @grid-size 0;
+      color: @grey-text;
+      font-size: 14px;
     }
   }
 

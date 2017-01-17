@@ -3,7 +3,7 @@
 
 .SquareButton {
   position: relative;
-  height: 100%;
+  height: 6 * @grid-size;
   width: 100%;
   background-color: @blue;
 
@@ -17,14 +17,16 @@
     background-color: @ban-red;
   }
 
+  &.orangered {
+    background-color: @orangered;
+  }
+
   &__content {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 1.5;
-    color: @off-white;
-    letter-spacing: 1.6;
+    color: @white;
+    letter-spacing: 1.4;
   }
 }

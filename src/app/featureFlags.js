@@ -3,14 +3,13 @@ import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
 import sha1 from 'sha1';
 
+import { flags as flagConstants } from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import getContentId from 'lib/getContentIdFromState';
 import url from 'url';
 import { getEventTracker } from 'lib/eventTracker';
-import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
-
-import { flags as flagConstants } from './constants';
+import { getDevice, IPHONE, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
 
 const {
   BETA,
@@ -29,6 +28,8 @@ const {
   VARIANT_SUBREDDIT_HEADER,
   VARIANT_XPROMO_FP_TRANSPARENT,
   VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
+  VARIANT_XPROMO_FP_LOGIN_REQUIRED,
+  VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -147,7 +148,7 @@ const config = {
   // groups in the API's bucketing mechanism, so we use this hack instead.
   [VARIANT_XPROMO_FP_TRANSPARENT]: {
     and: [
-      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedDevices: [IPHONE, ANDROID] },
       { allowedPages: ['index'] },
       { or: [
         { url: 'xpromofptransparent' },
@@ -164,7 +165,7 @@ const config = {
   // groups in the API's bucketing mechanism, so we use this hack instead.
   [VARIANT_XPROMO_SUBREDDIT_TRANSPARENT]: {
     and: [
-      { allowedDevices: IOS_DEVICES.concat(ANDROID) },
+      { allowedDevices: [IPHONE, ANDROID] },
       { allowedPages: ['listing'] },
       { allowNSFW: false },
       { or: [
@@ -172,6 +173,49 @@ const config = {
         { variant: 'mweb_xpromo_transparent_listing:transparent' },
         { variant: 'mweb_xpromo_transparent_listing:control_1' },
         { variant: 'mweb_xpromo_transparent_listing:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_FP_LOGIN_REQUIRED]: {
+    and: [
+      { allowedPages: ['index'] },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { or: [
+            { url: 'xpromofploginrequired' },
+            { variant: 'mweb_xpromo_require_login_fp_android:login_required' },
+          ] },
+        ] },
+        { and: [
+          { allowedDevices: [IPHONE] },
+          { or: [
+            { url: 'xpromofploginrequired' },
+            { variant: 'mweb_xpromo_require_login_fp_ios:login_required' },
+          ] },
+        ] },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED]: {
+    and: [
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { or: [
+        { and: [
+          { allowedDevices: [ANDROID] },
+          { or: [
+            { url: 'xpromosubredditloginrequired' },
+            { variant: 'mweb_xpromo_require_login_listing_android:login_required' },
+          ] },
+        ] },
+        { and: [
+          { allowedDevices: [IPHONE] },
+          { or: [
+            { url: 'xpromosubredditloginrequired' },
+            { variant: 'mweb_xpromo_require_login_listing_ios:login_required' },
+          ] },
+        ] },
       ] },
     ],
   },

@@ -7,11 +7,17 @@ export const show = () => ({ type: SHOW });
 export const HIDE = 'XPROMO__HIDE';
 export const hide = () => ({ type: HIDE });
 
+export const PROMO_CLICKED = 'XPROMO__PROMO_CLICKED';
+export const promoClicked = () => ({ type: PROMO_CLICKED });
+
 export const RECORD_SHOWN = 'XPROMO__RECORD_SHOWN';
 export const recordShown = url => ({
   type: RECORD_SHOWN,
   url,
 });
+
+export const LOGIN_REQUIRED = 'XPROMO__LOGIN_REQUIRED';
+export const loginRequired = () => ({ type: LOGIN_REQUIRED });
 
 const EXTERNAL_PREF_NAME = 'hide_mweb_xpromo_banner';
 

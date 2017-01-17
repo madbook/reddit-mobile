@@ -6,11 +6,10 @@ import { createSelector } from 'reselect';
 import { redirect } from '@r/platform/actions';
 
 import { getDevice } from 'lib/getDeviceFromState';
-import { getBranchLink, markBannerClosed } from 'lib/smartBannerState';
-import * as xpromoActions from 'app/actions/xpromo';
 import DualPartInterstitialHeader from 'app/components/DualPartInterstitial/Header';
 import DualPartInterstitialFooter from 'app/components/DualPartInterstitial/Footer';
 import XPromoWrapper from 'app/components/XPromoWrapper';
+import { promoClicked } from 'app/actions/xpromo';
 
 export function DualPartInterstitial(props) {
   return (
@@ -27,28 +26,14 @@ export function DualPartInterstitial(props) {
   );
 }
 
-function createNativeAppLink(state) {
-  return getBranchLink(state, {
-    feature: 'interstitial',
-    campaign: 'xpromo_interstitial_listing',
-    utm_medium: 'interstitial',
-    utm_name: 'xpromo_interstitial_listing',
-    utm_content: 'element_1',
-  });
-}
-
 export const selector = createSelector(
-  createNativeAppLink,
   getDevice,
-  (nativeAppLink, device) => {
-    return { nativeAppLink, device };
-  }
+  (device) => ({ device }),
 );
 
 const mapDispatchToProps = dispatch => ({
-  onClose: () => dispatch(xpromoActions.close()),
   navigator: (url) => (() => {
-    markBannerClosed();
+    dispatch(promoClicked());
     dispatch(redirect(url));
   }),
 });

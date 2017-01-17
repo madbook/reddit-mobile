@@ -8,11 +8,6 @@ const T = React.PropTypes;
 function SquareButton(props) {
   const { enabled, modifier } = props;
   const cls = cx('SquareButton', { 'm-disabled': !enabled, [modifier]: modifier.length });
-  const style = {
-    fontSize: props.fontSize,
-    marginTop: -(1.5 * props.fontSize) / 2,
-  };
-
   function fireClick(e) {
     if (props.enabled) { props.onClick(e); }
   }
@@ -23,7 +18,7 @@ function SquareButton(props) {
       className={ cls }
       onClick={ fireClick }
     >
-      <div className='SquareButton__content' style={ style }>
+      <div className='SquareButton__content'>
         { props.text }
       </div>
     </button>
