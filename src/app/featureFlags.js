@@ -347,7 +347,7 @@ flags.addRule('variant', function (name) {
   const user = extractUser(this);
 
   if (user && user.features && user.features[experiment_name]) {
-    const { variant, experiment_id } = user.features[experiment_name];
+    const { variant, experiment_id, owner } = user.features[experiment_name];
 
     // we only want to bucket the user once per session for any given experiment.
     // to accomplish this, we're going to use the fact that featureFlags is a
@@ -365,6 +365,7 @@ flags.addRule('variant', function (name) {
         user_name: !this.state.user.loggedOut ? user.name : null,
         loid: this.state.user.loggedOut ? this.state.loid.loid : null,
         loidcreated: this.state.user.loggedOut ? this.state.loid.loidCreated : null,
+        owner: owner || null,
       };
 
       eventTracker.track('bucketing_events', 'cs.bucket', omitBy(payload, isNull));
