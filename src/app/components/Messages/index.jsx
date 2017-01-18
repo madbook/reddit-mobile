@@ -87,7 +87,7 @@ const renderItem = (type, id, messages, comments, posts) => {
 
 const selector = createSelector(
   state => state.messages,
-  state => state.comments,
+  state => state.comments.data,
   state => state.posts,
   state => state.platform.currentPage,
   (state, ownProps) => state.mail[ownProps.urlParams.mailType],

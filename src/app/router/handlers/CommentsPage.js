@@ -58,13 +58,8 @@ export default class CommentsPage extends BaseHandler {
     });
   }
 
-  buildTitle (state, pageId) {
-    const page = state.commentsPages[pageId];
-    const post = state.posts[page.postId];
-
-    if (post) {
-      return `${post.title} - ${post.subreddit}`;
-    }
+  buildTitle (post) {
+    return `${post.title} - ${post.subreddit}`;
   }
 
   async [METHODS.GET](dispatch, getState) {
@@ -99,9 +94,9 @@ export default class CommentsPage extends BaseHandler {
       fetchRecommendedSubredditsToPostsByPost(state, dispatch, post);
     }
 
-    dispatch(setStatus(getState().commentsPages[commentsPageId].responseCode));
+    dispatch(setStatus(getState().commentsPages.api[commentsPageId].responseCode));
 
-    dispatch(setTitle(this.buildTitle(getState(), commentsPageId)));
+    dispatch(setTitle(this.buildTitle(post)));
 
     const latestState = getState();
     trackPageEvents(latestState, buildAdditionalEventData(latestState));

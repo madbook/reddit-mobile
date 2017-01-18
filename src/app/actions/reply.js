@@ -43,10 +43,7 @@ export const submit = (parentId, { text }) => async (dispatch, getState) => {
 
 
 function logReply(reply, state) {
-  // If the parent starts with a t1, then its parent is a comment. If not,
-  // then its parent is a post.
-  const stateKey = reply.parentId.startsWith('t1') ? 'comments' : 'posts';
-  const parent = state[stateKey][reply.parentId];
+  const parent = modelFromThingId(reply.parentId, state);
   const post = state.posts[reply.linkId];
 
   getEventTracker().track('comment_events', 'cs.comment', {

@@ -9,6 +9,8 @@ import Post from 'app/components/Post';
 import CommentPreview from 'app/components/CommentPreview';
 import Loading from 'app/components/Loading';
 
+import commentDispatchers from 'app/components/Comment/dispatchers';
+
 const T = React.PropTypes;
 
 PostAndCommentList.propTypes = {
@@ -22,45 +24,49 @@ PostAndCommentList.defaultProps = {
 };
 
 export function PostAndCommentList(props) {
-  const { loading, records, shouldPage, thingProps } = props;
+  const { loading, records } = props;
 
   if (loading) {
     return <Loading />;
   }
 
+  const renderRecord = record =>
+    renderRecordWithProps(props, record);
+
   return (
     <div className='PostAndCommentList'>
-      <PostsCommentsAndPagination
-        records={ records }
-        thingProps={ thingProps }
-        shouldPage={ shouldPage }
-      />
+      <div>
+        { records.map(renderRecord) }
+        { records.length > 0 && <PaginationButtons records={ records } /> }
+      </div>
     </div>
   );
 }
 
-const PostsCommentsAndPagination = props => {
-  const { records, thingProps } = props;
-  const renderRecord = record => renderRecordWithProps(thingProps, record);
-
-  return (
-    <div>
-      { records.map(renderRecord) }
-      { records.length > 0 && <PaginationButtons records={ records } /> }
-    </div>
-  );
-};
-
-const renderRecordWithProps = (thingProps, record) => {
+const renderRecordWithProps = (props, record) => {
+  const { user, comments, commentDispatchers,
+          thingProps, thingsBeingEdited, replyingList } = props;
   const { uuid, type } = record;
 
   switch (type) {
-    case POST:
+    case POST: {
       return <Post postId={ uuid } key={ `post-id-${uuid}` } { ...thingProps } />;
-
-    case COMMENT:
-      return <CommentPreview commentId={ uuid } key={ `comment-id-${uuid}` } { ...thingProps } />;
-
+    }
+    case COMMENT: {
+      const editObject = thingsBeingEdited[uuid];
+      return (
+        <CommentPreview
+          comment={ comments[record.uuid] }
+          key={ `comment-id-${uuid}` }
+          { ...thingProps }
+          commentDispatchers={ commentDispatchers }
+          user={ user }
+          commentReplying={ !!replyingList[uuid] }
+          editing={ !!editObject }
+          editPending={ !!(editObject && editObject.pending) }
+        />
+      );
+    }
     default: return null;
   }
 };
@@ -81,18 +87,29 @@ const getThingFilter = (posts, comments, requestLocation) => {
 };
 
 const mapStateToProps = createSelector(
+  state => state.user,
   state => state.posts,
-  state => state.comments,
+  state => state.comments.data,
   (_, props) => props.requestLocation,
   (state, props) => state[props.requestLocation][props.requestId],
-  (posts, comments, requestLocation, request) => {
+  state => state.editingText,
+  state => state.replying,
+  (user, posts, comments, requestLocation, request, thingsBeingEdited, replyingList) => {
     const filter = getThingFilter(posts, comments, requestLocation);
     return {
+      user,
       request,
+      comments,
+      thingsBeingEdited,
+      replyingList,
       loading: !request || request.loading,
       records: request ? request.results.filter(filter) : [],
     };
   },
 );
 
-export default connect(mapStateToProps)(PostAndCommentList);
+const dispatchToProps = (dispatch) => ({
+  commentDispatchers: commentDispatchers(dispatch),
+});
+
+export default connect(mapStateToProps, dispatchToProps)(PostAndCommentList);

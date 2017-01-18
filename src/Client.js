@@ -119,7 +119,7 @@ const client = Client({
       try {
         const collapsedComments = window.localStorage.collapsedComments;
         if (collapsedComments !== undefined) {
-          data.collapsedComments = JSON.parse(collapsedComments);
+          data.comments.collapsed = JSON.parse(collapsedComments);
         }
       } catch (e) { console.warn(e); }
 

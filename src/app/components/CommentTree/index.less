@@ -1,0 +1,98 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/themes/themeify';
+
+.CommentTree {
+  @arrow-size: 16px;
+
+  &__tree {
+    padding: @grid-size 0;
+    padding-right: @grid-size;
+  }
+
+  &__comment {
+    position: relative;
+    padding: 0;
+
+    &.m-hidden {
+      display: none;
+    }
+  }
+
+  &__commentContent {
+    position: relative;
+
+    &.m-hasArrow {
+      padding-left: @arrow-size + @grid-size;
+    }
+  }
+
+  &__commentDepthLine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid;
+
+    .themeify({
+      border-left: @theme-border;
+    });
+
+    &.m-last {
+      top: @arrow-size + @double-grid-size;
+    }
+
+    &.m-thick {
+      border-left-width: 2px;
+    }
+  }
+
+  &__commentArrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: @arrow-size;
+    height: @arrow-size;
+    color: @white;
+    border-radius: @arrow-size;
+    text-align: center;
+    line-height: @arrow-size;
+    background-color: @neutral;
+    cursor: pointer;
+    font-size: @arrow-size - 3px; // make sure the icon font fits within the circle
+
+    &.m-toplevel {
+      background-color: @mint;
+    }
+
+    &.m-collapsed {
+      transform: rotate(-90deg);
+    }
+  }
+
+  &__continueThread {
+    padding-left: 6px;
+    padding-top: 5px;
+    font-size: 11px;
+    letter-spacing: 1.2;
+    font-weight: bold;
+    line-height: 1.5;
+    color: @blue;
+    cursor: pointer;
+
+    .icon {
+      font-size: 12px;
+      transform: rotate(-90deg);
+      padding: 0 5px;
+      display: inline-block;
+      position: relative;
+      top: -2px;
+    }
+  }
+
+  &__continueThreadIcon {
+    margin-left: 11px;
+    display: inline-block;
+    line-height: 1.5;
+    vertical-align: middle;
+  }
+}
+

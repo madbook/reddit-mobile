@@ -21,22 +21,28 @@ const {
 export const FETCHING_COMMENTS_PAGE = 'FETCHING_COMMENTS_PAGE';
 export const fetching = (commentsPageId, commentsPageParams) => ({
   type: FETCHING_COMMENTS_PAGE,
-  commentsPageId,
-  commentsPageParams,
+  payload: {
+    commentsPageId,
+    commentsPageParams,
+  },
 });
 
 export const RECEIVED_COMMENTS_PAGE = 'RECEIVED_COMMENTS_PAGE';
 export const received = (commentsPageId, apiResponse) => ({
   type: RECEIVED_COMMENTS_PAGE,
-  commentsPageId,
-  apiResponse,
+  payload: {
+    pageId: commentsPageId,
+    ...apiResponse,
+  },
 });
 
 export const FAILED = 'FAILED_COMMENTS_PAGE';
 export const failed = (commentsPageId, error) => ({
   type: FAILED,
-  commentsPageId,
-  error,
+  payload: {
+    commentsPageId,
+    error,
+  },
 });
 
 export const VISITED_COMMENTS_PAGE = 'VISITED_COMMENTS_PAGE';

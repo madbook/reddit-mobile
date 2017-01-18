@@ -8,5 +8,9 @@ export default function(thingId, state) {
   // this assumes that all model types will be stored in state in their plural form.
   // e.g. models of type 'post' will be stored in state as 'posts'
   const models = state[`${type}s`];
+  if (models.data) {
+    return models.data[thingId];
+  }
+
   return models[thingId];
 }

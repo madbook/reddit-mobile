@@ -56,14 +56,10 @@ export const updateBody = (commentId, newBodyText) => async (dispatch, getState)
 };
 
 export const TOGGLE_COLLAPSE = 'COMMENT__TOGGLE_COLLAPSE';
-
-export const toggledCollapse = (id, collapse) => ({ type: TOGGLE_COLLAPSE, id, collapse });
-export const toggleCollapse = (id, collapse) => async (dispatch) => {
-  dispatch(toggledCollapse(id, collapse));
-};
-
-export const RESET_COLLAPSE = 'COMMENT__RESET_COLLAPSE';
-export const resetCollapse = collapse => ({ type: RESET_COLLAPSE, collapse });
+export const toggleCollapse = id => ({
+  type: TOGGLE_COLLAPSE,
+  payload: { id },
+});
 
 export const SAVED = 'COMMENT__SAVED';
 export const saved = comment => ({
@@ -79,7 +75,7 @@ export const deleted = comment => ({
 
 export const toggleSave = id => async (dispatch, getState) => {
   const state = getState();
-  const comment = state.comments[id];
+  const comment = state.comments.data[id];
   const method = comment.saved ? 'del' : 'post';
   await SavedEndpoint[method](apiOptionsFromState(state), { id });
   // the response doesn't have anything in it (yay api), so emit a new model
@@ -103,57 +99,54 @@ export const del = id => async (dispatch, getState) => {
   dispatch(deleted(newComment));
 };
 
-export const MORE_COMMENTS_FETCHING = 'COMMENTS__MORE_FETCHING';
-export const MORE_COMMENTS_RECEIVED = 'COMMENTS__MORE_RECEIVED';
+export const MORE_COMMENTS_PENDING = 'COMMENTS__MORE_FETCHING';
+export const MORE_COMMENTS_SUCCESS = 'COMMENTS__MORE_RECEIVED';
 export const MORE_COMMENTS_FAILURE = 'COMMENTS__MORE_FAILURE';
 
-export const fetching = parentCommentId => ({ parentCommentId, type: MORE_COMMENTS_FETCHING });
-export const received = (parentCommentId, comments) => {
+export const pending = loadMoreId => ({
+  payload: { loadMoreId },
+  type: MORE_COMMENTS_PENDING,
+});
+
+export const success = (resp, pageId, loadMoreId) => {
   return {
-    comments,
-    parentCommentId,
-    type: MORE_COMMENTS_RECEIVED,
+    payload: {
+      pageId,
+      loadMoreId,
+      ...resp,
+    },
+    type: MORE_COMMENTS_SUCCESS,
   };
 };
 
-export const failure = (parentCommentId, error) => {
+export const failure = (loadMoreId, error) => {
   return {
-    error,
-    parentCommentId,
+    payload: {
+      error,
+      loadMoreId,
+    },
     type: MORE_COMMENTS_FAILURE,
   };
 };
 
-export const loadMore = comment => {
+export const loadMore = (loadMoreId, pageId, postId) => {
   return async (dispatch, getState) => {
-    dispatch(fetching(comment.uuid));
+    const loadMoreObject = getState().comments.loadMore[loadMoreId];
+    const ids = loadMoreObject.children;
+    dispatch(pending(loadMoreObject.uuid));
 
     try {
       const resp = await CommentsEndpoint.get(apiOptionsFromState(getState()), {
-        linkId: comment.linkId,
-        commentIds: comment.loadMoreIds,
+        linkId: postId,
+        commentIds: ids,
         sort: 'confidence',
       });
 
-      // Doing this in here since doing it in api-client is messy. Since we
-      // need to mix the current comment replies with the new, the `get` api
-      // would need to accept the comment. This is tricky since that function
-      // actually covers multiple endpoints and would need special handling of
-      // the comment object.
-      const newComment = comment.set({
-        replies: [ ...comment.replies, ...resp.results ],
-        loadMoreIds: [],
-        loadMore: false,
-      });
-
-      dispatch(received(
-        comment.uuid,
-        { ...resp.comments, [newComment.uuid]: newComment },
-      ));
+      dispatch(success(resp, pageId, loadMoreId));
 
     } catch (e) {
       if (e instanceof ResponseError) {
-        dispatch(failure(e));
+        dispatch(failure(loadMoreId, e));
       } else {
         throw e;
       }

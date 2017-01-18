@@ -29,7 +29,7 @@ export default function errorLogger() {
     platformActions.GOTO_PAGE_INDEX,
     accountActions.FETCHING_ACCOUNT,
     activityActions.FETCHING_ACTIVITIES,
-    commentActions.MORE_COMMENTS_FETCHING,
+    commentActions.MORE_COMMENTS_PENDING,
     commentsPageActions.FETCHING_COMMENTS_PAGE,
     hiddenActions.FETCHING_HIDDEN,
     mailActions.FETCHING,

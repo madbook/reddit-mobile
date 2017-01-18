@@ -37,9 +37,6 @@ import { dispatchInitialUser } from 'server/initialState/dispatchInitialUser';
 import metaRoutes from 'server/meta';
 import statsRouterMiddleware from 'server/meta/stats';
 
-import dispatchInitialCollapsedComments from
-  'server/initialState/dispatchInitialCollapsedComments';
-
 Raven
   .config(process.env.SENTRY_SERVER_PRIVATE_URL, {
     release: __GLOBALS__.release,
@@ -105,7 +102,6 @@ export function startServer() {
       dispatchAPIPassThroughHeaders(ctx, dispatch);
       await dispatchSession(ctx, dispatch, ConfigedAPIOptions);
       dispatchInitialTheme(ctx, dispatch);
-      dispatchInitialCollapsedComments(ctx, dispatch);
       dispatchInitialCompact(ctx, dispatch);
       dispatchInitialMeta(ctx, dispatch);
       dispatchInitialEUCookieNotice(ctx, dispatch, getState);

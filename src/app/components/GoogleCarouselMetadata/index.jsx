@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import omit from 'lodash/omit';
 import url from 'url';
 
@@ -16,7 +14,7 @@ const { reddit } = config;
 const PARSED_REDDIT_URL = url.parse(reddit);
 const { host: REDDIT_HOST, protocol: REDDIT_PROTOCOL }= PARSED_REDDIT_URL;
 
-export const GoogleCarouselMetadata = (props) => {
+const GoogleCarouselMetadata = (props) => {
   const { post, comments, pageUrl } = props;
   // post, comments, and pageUrl all specify `isRequired` in their propTypes.
   // This makes it easier in debug to tell when we aren't passing in
@@ -45,13 +43,7 @@ GoogleCarouselMetadata.propTypes = {
   pageUrl: T.string.isRequired,
 };
 
-const selector = createSelector(
-  (state, props) => state.posts[props.postId],
-  (state, props) => props.commentRecords.map(r => state.comments[r.uuid]),
-  (post, comments) => ({ post, comments }),
-);
-
-export default connect(selector)(GoogleCarouselMetadata);
+export default GoogleCarouselMetadata;
 
 const commentsPageMetaData = (pageUrl, post, comments) => ({
   '@context': 'http://schema.org',

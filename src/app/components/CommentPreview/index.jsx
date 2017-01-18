@@ -1,19 +1,14 @@
 import './styles.less';
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import { Anchor } from '@r/platform/components';
 
 import Comment from '../Comment';
+import { returnDispatchers } from 'app/components/Comment/dispatchers';
 
-export default connect(createSelector(
-  (state, props) => state.comments[props.commentId],
-  (comment) => ({ comment }),
-))(CommentPreview);
-
-export function CommentPreview(props) {
-  const { commentId, comment, userActivityPage } = props;
+export default function CommentPreview(props) {
+  const { comment, userActivityPage, commentDispatchers, user,
+          commentReplying, editing, editPending } = props;
 
   return (
     <div className={ `CommentPreview ${userActivityPage ? 'in-list' : 'separated'}` } >
@@ -22,9 +17,15 @@ export function CommentPreview(props) {
           { comment.linkTitle }
         </Anchor>
         <Comment
-          commentId={ commentId }
-          userActivityPage={ userActivityPage }
+          comment={ comment }
+          isUserActivityPage={ userActivityPage }
           preview={ true }
+          isTopLevel={ false }
+          user={ user }
+          commentReplying={ commentReplying }
+          editing={ editing }
+          editPending={ editPending }
+          { ...returnDispatchers(commentDispatchers, comment.name) }
         />
       </div>
     </div>

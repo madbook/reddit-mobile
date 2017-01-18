@@ -1,6 +1,6 @@
 import { makeLocalStorageArchiver } from './StateArchiver';
 
-const collapsedSelector = state => state.collapsedComments;
+const collapsedSelector = state => state.comments.collapsed;
 const expandedSelector = state => state.expandedPosts;
 const visitedPostsSelector = state => JSON.stringify(state.visitedPosts);
 const optOutsSelector = state => state.optOuts;

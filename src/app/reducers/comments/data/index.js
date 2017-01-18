@@ -1,33 +1,57 @@
-import merge from '@r/platform/merge';
 import { COMMENT } from 'apiClient/models/thingTypes';
 
-import mergeAPIModels from './helpers/mergeAPIModels';
-import mergeUpdatedModel from './helpers/mergeUpdatedModel';
-import * as loginActions from 'app/actions/login';
-import * as activitiesActions from 'app/actions/activities';
+import * as commentActions from 'app/actions/comment';
 import * as commentsPageActions from 'app/actions/commentsPage';
-import * as postsListActions from 'app/actions/postsList';
-import * as hiddenActions from 'app/actions/hidden';
+
 import * as replyActions from 'app/actions/reply';
-import * as savedActions from 'app/actions/saved';
-import * as searchActions from 'app/actions/search';
+import * as loginActions from 'app/actions/login';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
-import * as commentActions from 'app/actions/comment';
 import * as modToolActions from 'app/actions/modTools';
 
+import * as searchActions from 'app/actions/search';
+import * as savedActions from 'app/actions/saved';
+import * as hiddenActions from 'app/actions/hidden';
+import * as postsListActions from 'app/actions/postsList';
+import * as activitiesActions from 'app/actions/activities';
+
+import mergeAPIModels from 'app/reducers/helpers/mergeAPIModels';
+import mergeUpdatedModel from 'app/reducers/helpers/mergeUpdatedModel';
+import merge from '@r/platform/merge';
 
 const DEFAULT = {};
 
-export default function(state=DEFAULT, action={}) {
+/**
+ * Reducer for storing comments. Comments are stored flat and keyed by their id.
+ * Structure in state: STATE.comments.data
+ * @name data
+ * @memberof module:reducers/comments
+ * @function
+ * @param   {object} state - The value of previous state
+ * @param   {object} action - The action to interpret. Contains 'type' and 'payload'
+ * @returns {object} New version of state
+ **/
+export default (state=DEFAULT, action={}) => {
   switch (action.type) {
     case loginActions.LOGGED_IN:
     case loginActions.LOGGED_OUT: {
       return DEFAULT;
     }
-
-    case activitiesActions.RECEIVED_ACTIVITIES:
     case commentsPageActions.RECEIVED_COMMENTS_PAGE:
+    case commentActions.MORE_COMMENTS_SUCCESS: {
+      const { comments } = action.payload;
+      return { ...state, ...comments };
+    }
+    case replyActions.SUCCESS: {
+      const { model } = action;
+      return { ...state, [model.uuid]: model };
+    }
+    case commentActions.SAVED:
+    case commentActions.DELETED: {
+      const { comment } = action;
+      return mergeAPIModels(state, { [comment.uuid]: comment });
+    }
+    case activitiesActions.RECEIVED_ACTIVITIES:
     case postsListActions.RECEIVED_POSTS_LIST:
     case hiddenActions.RECEIVED_HIDDEN:
     case savedActions.RECEIVED_SAVED:
@@ -36,39 +60,13 @@ export default function(state=DEFAULT, action={}) {
       const { comments } = action.apiResponse;
       return mergeAPIModels(state, comments);
     }
-
-    case commentActions.MORE_COMMENTS_RECEIVED: {
-      return mergeAPIModels(state, action.comments);
-    }
-
-    case commentActions.SAVED:
-    case commentActions.DELETED: {
-      const { comment } = action;
-      return mergeAPIModels(state, { [comment.uuid]: comment });
-    }
-
-    case replyActions.SUCCESS: {
+    case commentActions.UPDATED_BODY: {
       const { model } = action;
-      const parentComment = state[model.parentId];
-      if (!parentComment) {
-        // If the comment doesn't have a parent, it's in reply to a post.
-        // Just merge it into state
-        return mergeUpdatedModel(state, action);
-      }
-
-      // If the comment is in reply to another comment, we need to update
-      // that comment to include the reply
-
-      const updatedParent = parentComment.set({
-        replies: [ model.toRecord(), ...parentComment.replies],
-      });
 
       return merge(state, {
         [model.uuid]: model,
-        [updatedParent.uuid]: updatedParent,
       });
     }
-
     case voteActions.PENDING:
     case voteActions.SUCCESS: {
       return mergeUpdatedModel(state, action, { restrictType: COMMENT });
@@ -80,7 +78,7 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === COMMENT) {
         return mergeUpdatedModel(
           state,
-          { 
+          {
             model: thing.set({
               approved: true,
               removed: false,
@@ -100,7 +98,7 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === COMMENT) {
         return mergeUpdatedModel(
           state,
-          { 
+          {
             model: thing.set({
               approved: false,
               removed: !spam,
@@ -135,7 +133,7 @@ export default function(state=DEFAULT, action={}) {
       const { thing, isStickied } = action;
 
       if (thing.type !== COMMENT) { return state; }
-      
+
       return mergeUpdatedModel(
         state,
         {
@@ -146,26 +144,6 @@ export default function(state=DEFAULT, action={}) {
       );
     }
 
-    case commentActions.UPDATED_BODY: {
-      let { model } = action;
-      const currentComment = state[model.uuid];
-
-      // When we update the body text of a comment, we don't get the replies
-      // back. This means we have to manually copy our current copy's replies
-      // field, otherwise the comment tree below the updated comment will vanish.
-      if (currentComment && currentComment.replies.length && !model.replies.length) {
-        model = model.set({
-          replies: currentComment.replies,
-          loadMoreIds: currentComment.loadMoreIds,
-          loadMore: currentComment.loadMore,
-        });
-      }
-
-      return merge(state, {
-        [model.uuid]: model,
-      });
-    }
-
     default: return state;
   }
-}
+};

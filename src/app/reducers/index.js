@@ -6,7 +6,6 @@ import activitiesRequests from './activitiesRequests';
 import adRequests from './adRequests';
 import apiRequestHeaders from './apiRequestHeaders';
 import autocompleteSubreddits from './autocompleteSubreddits';
-import collapsedComments from './collapsedComments';
 import comments from './comments';
 import commentsPages from './commentsPages';
 import compact from './compact';
@@ -20,7 +19,6 @@ import meta from './meta';
 import messages from './messages';
 import modal from './modal';
 import moderatingSubreddits from './moderatingSubreddits';
-import moreCommentsRequests from './moreCommentsRequests';
 import optOuts from './optOuts';
 import overlay from './overlay';
 import pageMetadata from './pageMetadata';
@@ -63,7 +61,6 @@ export default {
   adRequests,
   apiRequestHeaders,
   autocompleteSubreddits,
-  collapsedComments,
   comments,
   commentsPages,
   compact,
@@ -77,7 +74,6 @@ export default {
   messages,
   modal,
   moderatingSubreddits,
-  moreCommentsRequests,
   optOuts,
   overlay,
   pageMetadata,

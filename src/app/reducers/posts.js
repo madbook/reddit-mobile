@@ -182,7 +182,7 @@ export default function(state=DEFAULT, action={}) {
     // as that same post from the listings api. Preserve the previews so things
     // don't disappear unexpectedly
     case commentsPageActions.RECEIVED_COMMENTS_PAGE: {
-      const { posts } = action.apiResponse;
+      const { posts } = action.payload;
       const newPosts = Object.keys(posts).reduce((newPosts, uuid) => {
         return {
           ...newPosts,

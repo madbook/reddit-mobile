@@ -5,6 +5,7 @@ import ResponseError from 'apiClient/errors/ResponseError';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 
+import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 
 export const PENDING = 'VOTE__PENDING';
 export const SUCCESS = 'VOTE__SUCCESS';
@@ -28,7 +29,7 @@ export const vote = (id, direction) => async (dispatch, getState) => {
   }
 
   const type = thingType(id);
-  const thing = state[`${type}s`][id];
+  const thing = modelFromThingId(id, state);
 
   const stub = thing._vote(apiOptionsFromState(state), direction);
   dispatch(pending(id, stub));

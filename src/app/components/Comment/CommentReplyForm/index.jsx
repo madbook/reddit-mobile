@@ -56,7 +56,7 @@ export class CommentReplyForm extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch, { parentId }) => ({
-  onSubmitReply: text => dispatch(replyActions.submit(parentId, text)),
+  onSubmitReply: formData => dispatch(replyActions.submit(parentId, formData)),
 });
 
 export default connect(null, mapDispatchToProps)(CommentReplyForm);

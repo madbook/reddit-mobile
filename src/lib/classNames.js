@@ -8,6 +8,7 @@ import isObject from 'lodash/isObject';
  *   classNames('foo', ['bar', ''], { baz: false, bob: true });
  *   => 'foo bar bob'
  *
+ * @module helpers/classNames
  * @param {...(String|String[]|Object)} args
  * @returns {String}
  */

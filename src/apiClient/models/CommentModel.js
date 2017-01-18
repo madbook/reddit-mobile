@@ -1,6 +1,6 @@
-import Record from '../apiBase/Record';
+import { DepthRecord } from '../apiBase/Record';
 import RedditModel from './RedditModel';
-import { COMMENT, COMMENT_LOAD_MORE } from './thingTypes';
+import { COMMENT } from './thingTypes';
 
 import votable from './mixins/votable';
 
@@ -27,8 +27,6 @@ export default class CommentModel extends RedditModel {
     name: T.string,
     replies: T.array,
     numReplies: T.number,
-    loadMore: T.bool,
-    loadMoreIds: T.arrayOf(T.string),
     saved: T.bool,
     score: T.number,
     stickied: T.bool,
@@ -37,6 +35,7 @@ export default class CommentModel extends RedditModel {
     removed: T.bool,
     approved: T.bool,
     spam: T.bool,
+    depth: T.number,
 
     // aliases
     approvedBy: T.string,
@@ -56,7 +55,6 @@ export default class CommentModel extends RedditModel {
 
     // derived
     cleanPermalink: T.link,
-    canContinueThread: T.bool,
   };
 
   static API_ALIASES = {
@@ -90,30 +88,13 @@ export default class CommentModel extends RedditModel {
 
       return `/r/${subreddit}/comments/${link_id.substr(3)}/comment/${id}`;
     },
-
-    canContinueThread(data) {
-      // We derive this property to make the logic for rendering loadMore and
-      // continue thread more explicit
-      return data.loadMore && data.loadMoreIds.length === 0;
-    },
   };
 
-  makeUUID(data) {
-    if (data.name === 't1__' && data.parent_id) {
-      // This is a stub for load more, parentId is needed to fetch more
-      return data.parent_id;
-    }
-
-    return data.name;
-  }
-
   toRecord() {
-    if (this.uuid === this.name) {
-      return super.toRecord();
-    }
-
-    // otherwise its a load more stub for super nested comments
-    return new Record(COMMENT_LOAD_MORE, this.parentId);
+    return new DepthRecord(this.type,
+                           this.uuid,
+                           this.paginationId,
+                           this.depth);
   }
 
   reply (apiOptions, text) {
