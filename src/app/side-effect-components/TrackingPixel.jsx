@@ -82,11 +82,11 @@ TrackingPixel.defaultProps = {
 };
 
 const selector = createSelector(
-  ({compact}) => compact,
-  ({user}) => user,
-  ({loid}) => loid,
-  ({platform}) => platform,
-  ({tracking}) => tracking,
+  state => state.compact,
+  state => state.user,
+  state => state.loid,
+  state => state.platform,
+  state => state.tracking,
   (compact, user, loid, platform, tracking) => ({
     compact,
     dnt: !!global.DO_NOT_TRACK,
