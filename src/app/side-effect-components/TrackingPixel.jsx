@@ -5,22 +5,6 @@ import url from 'url';
 
 const T = React.PropTypes;
 
-const selector = createSelector(
-  ({compact}) => compact,
-  ({user}) => user,
-  ({loid}) => loid,
-  ({platform}) => platform,
-  ({tracking}) => tracking,
-  (compact, user, loid, platform, tracking) => ({
-    compact,
-    dnt: !!global.DO_NOT_TRACK,
-    loid: user.loggedOut ? loid.loid : null,
-    loidCreated: user.loggedOut ? loid.loidCreated : null,
-    referrer: platform.currentPage.referrer,
-    pixelTrackerUrl: tracking.pixel,
-  })
-);
-
 class TrackingPixel extends React.Component {
   componentDidMount() {
     this.fire();
@@ -96,5 +80,21 @@ TrackingPixel.defaultProps = {
   referrer: '',
   pixelTrackerUrl: '',
 };
+
+const selector = createSelector(
+  ({compact}) => compact,
+  ({user}) => user,
+  ({loid}) => loid,
+  ({platform}) => platform,
+  ({tracking}) => tracking,
+  (compact, user, loid, platform, tracking) => ({
+    compact,
+    dnt: !!global.DO_NOT_TRACK,
+    loid: user.loggedOut ? loid.loid : null,
+    loidCreated: user.loggedOut ? loid.loidCreated : null,
+    referrer: platform.currentPage.referrer,
+    pixelTrackerUrl: tracking.pixel,
+  })
+);
 
 export default connect(selector)(TrackingPixel);
