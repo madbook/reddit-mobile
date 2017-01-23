@@ -2,7 +2,10 @@
 @import (reference) '~app/less/themes/themeify';
 
 .Subnav {
-  background-color: white;
+  .themeify({
+    background-color: @theme-nav-bar-color;
+  });
+
   display: flex;
   justify-content: space-between;
   line-height: 4 * @grid-size;
