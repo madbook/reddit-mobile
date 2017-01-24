@@ -8,7 +8,7 @@ import config from 'config';
 // they block DOMContentLoaded events.
 let PENDING_GTM_EVENTS = [];
 
-export const initGoogleTagManager = initialSubredditName => {
+export const initGoogleTagManager = () => {
   if (window.DO_NOT_TRACK) {
     return;
   }
@@ -22,9 +22,8 @@ export const initGoogleTagManager = initialSubredditName => {
   gtmJail.style.display = 'none';
   gtmJail.id = GTM_JAIL_ID;
   gtmJail.name = JSON.stringify({
-    subreddit: initialSubredditName || '',
     origin: location.origin,
-    pathname: location.pathname,
+    pathname: location.pathname || '/',
   });
 
   gtmJail.src = `https://${mediaDomain}/gtm/jail?id=${googleTagManagerId}`;

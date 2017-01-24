@@ -32,14 +32,20 @@ export function convertId(id) {
   return parseInt(removePrefix(id), 36);
 }
 
-
-export function buildSubredditData(state) {
+function getSubredditFromState(state) {
   const { subredditName } = state.platform.currentPage.urlParams;
 
-  if (!subredditName || isFakeSubreddit(subredditName)) { return {}; }
+  if (subredditName && !isFakeSubreddit(subredditName)) {
+    return state.subreddits[subredditName.toLowerCase()];
+  }
+}
 
-  const subreddit = state.subreddits[subredditName.toLowerCase()];
-  if (!subreddit) { return {}; }
+export function buildSubredditData(state) {
+  const subreddit = getSubredditFromState(state);
+
+  if (!subreddit) {
+    return {};
+  }
 
   return {
     sr_id: convertId(subreddit.name),
@@ -219,14 +225,16 @@ export function trackPreferenceEvent(state, additionalEventData={}) {
 }
 
 const gtmPageView = state => {
-  const { platform: { currentPage }} = state;
+  const subreddit = getSubredditFromState(state);
+  const userInfo = getUserInfoOrLoid(state);
 
   gtm.trigger('pageview', {
-    subreddit: currentPage.urlParams.subredditName || '',
-    pathname: currentPage.url || '/',
+    userId: userInfo.user_id,
+    subreddit: subreddit ? subreddit.displayName : null,
+    pathname: state.platform.currentPage.url || '/',
+    advertiserCategory: subreddit ? subreddit.advertiserCategory : null,
   });
 };
-
 
 const hasAdblock = () => {
   const adblockTester = document.getElementById(ADBLOCK_TEST_ID);
