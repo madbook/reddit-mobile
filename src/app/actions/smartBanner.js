@@ -2,7 +2,12 @@ import { markBannerClosed, shouldShowBanner } from 'lib/smartBannerState';
 import { trackPreferenceEvent } from 'lib/eventUtils';
 
 export const SHOW = 'SMARTBANNER__SHOW';
-export const show = () => ({ type: SHOW });
+export const show = clickUrl => ({
+  type: SHOW,
+  data: {
+    clickUrl,
+  },
+});
 
 export const HIDE = 'SMARTBANNER__HIDE';
 export const hide = () => ({ type: HIDE });

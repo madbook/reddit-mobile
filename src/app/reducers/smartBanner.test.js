@@ -16,9 +16,10 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
         const expected = {
           ...DEFAULT,
           showBanner: true,
+          clickUrl: 'foo',
         };
 
-        store.dispatch(smartBannerActions.show());
+        store.dispatch(smartBannerActions.show('foo'));
         const { smartBanner } = store.getState();
         expect(smartBanner).to.eql(expected);
       });
@@ -50,6 +51,7 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
           showBanner: true,
           haveShownXPromo: true,
           xPromoShownUrl: url,
+          clickUrl: undefined,
         });
       });
     });
