@@ -4,8 +4,8 @@ import * as loginActions from 'app/actions/login';
 
 const DEFAULT = {
   loading: false,
-  responseCode: null,
-  names: [],
+  error: null,
+  names: null,
 };
 
 export default function(state=DEFAULT, action={}) {
@@ -13,8 +13,8 @@ export default function(state=DEFAULT, action={}) {
     case modToolActions.FETCHING_MODERATING_SUBREDDITS: {
       const moderatingSubreddits = {
         loading: true,
-        responseCode: null,
-        names: [],
+        names: null,
+        error: null,
       };
       return merge(state, moderatingSubreddits);
     }
@@ -24,8 +24,8 @@ export default function(state=DEFAULT, action={}) {
       const moderatingSubredditNames = action.apiResponse.results.map(sr => sr.uuid);
       const moderatingSubreddits = {
         loading: false,
-        responseCode: action.apiResponse.response.status,
         names: moderatingSubredditNames,
+        error: null,
       };
       return merge(state, moderatingSubreddits);
     }
@@ -33,7 +33,7 @@ export default function(state=DEFAULT, action={}) {
     case modToolActions.FETCH_FAILED_MODERATING_SUBREDDITS: {
       const moderatingSubreddits = {
         loading: false,
-        responseCode: action.error.status,
+        error: action.error,
         names: [],
       };
       return merge(state, moderatingSubreddits);

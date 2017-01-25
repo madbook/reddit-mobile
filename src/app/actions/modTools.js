@@ -277,13 +277,12 @@ export const fetchModeratingSubreddits = () => async (dispatch, getState) => {
 
   const subredditsAlreadyFetched = (
     state.moderatingSubreddits.loading === true ||
-    state.moderatingSubreddits.responseCode === 200);
+    !!state.moderatingSubreddits.names);
 
   // don't make API call again
   if (subredditsAlreadyFetched) { return; }
 
   dispatch(fetchingSubs());
-
   try {
     const moderatingSubs = await ModeratingSubreddits.fetch(apiOptions);
     dispatch(receivedSubs(moderatingSubs.apiResponse));

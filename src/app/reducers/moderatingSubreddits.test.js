@@ -12,7 +12,7 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { store } = getStore({
           moderatingSubreddits: {
             names: ['test'],
-            responseCode: 200,
+            error: null,
             loading: false,
           },
         });
@@ -21,8 +21,8 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { moderatingSubreddits } = store.getState();
         expect(moderatingSubreddits).to.eql({
           loading: false,
-          responseCode: null,
-          names: [],
+          error: null,
+          names: null,
         });
       });
 
@@ -30,7 +30,7 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { store } = getStore({
           moderatingSubreddits: {
             names: ['test'],
-            responseCode: 200,
+            error: null,
             loading: false,
           },
         });
@@ -39,8 +39,8 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { moderatingSubreddits } = store.getState();
         expect(moderatingSubreddits).to.eql({
           loading: false,
-          responseCode: null,
-          names: [],
+          error: null,
+          names: null,
         });
       });
     });
@@ -49,8 +49,25 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
       it('should not make API call if moderatingSubreddits exists in state', () => {
         const MODERATING_SUBREDDITS = {
           loading: false,
-          responseCode: 200,
+          error: null,
           names: ['test', 'test1'],
+        };
+
+        const { store } = getStore({
+          moderatingSubreddits: MODERATING_SUBREDDITS,
+        });
+
+        store.dispatch(modToolActions.fetchModeratingSubreddits());
+
+        const { moderatingSubreddits } = store.getState();
+        expect(moderatingSubreddits).to.equal(MODERATING_SUBREDDITS);
+      });
+
+      it('should not make API call if moderatingSubreddits is []', () => {
+        const MODERATING_SUBREDDITS = {
+          loading: false,
+          error: null,
+          names: [],
         };
 
         const { store } = getStore({
@@ -66,8 +83,8 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
       it('should fetch moderatingSubreddits for a user', () => {
         const MODERATING_SUBREDDITS = {
           loading: false,
-          responseCode: null,
-          names: [],
+          error: null,
+          names: null,
         };
 
         const { store } = getStore({
@@ -79,8 +96,8 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { moderatingSubreddits } = store.getState();
         expect(moderatingSubreddits).to.eql(merge(moderatingSubreddits, {
           loading: true,
-          responseCode: null,
-          names: [],
+          error: null,
+          names: null,
         }));
       });
     });
@@ -89,8 +106,8 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
       it('should update the loading state and results of moderatingSubreddits', () => {
         const MODERATING_SUBREDDITS = {
           loading: true,
-          responseCode: null,
-          names: [],
+          error: null,
+          names: null,
         };
 
         const RESULTS = [
@@ -113,18 +130,18 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         expect(moderatingSubreddits).to.eql(merge(moderatingSubreddits, {
           loading: false,
           names: ['pics', 'test', 'askHistorians'],
-          responseCode: 200,
+          error: null,
         }));
       });
     });
 
     describe('FAILED', () => {
-      it('should update the loading state and set responseCode', () => {
+      it('should update the loading state and set error', () => {
         const { store } = getStore({
           moderatingSubreddits: {
             loading: true,
-            responseCode: null,
-            names: [],
+            error: null,
+            names: null,
           },
         });
 
@@ -135,7 +152,7 @@ createTest({ reducers: { moderatingSubreddits } }, ({ getStore, expect }) => {
         const { moderatingSubreddits } = store.getState();
         expect(moderatingSubreddits).to.eql(merge(moderatingSubreddits, {
           loading: false,
-          responseCode: 404,
+          error: { status: 404 },
           names: [],
         }));
       });
