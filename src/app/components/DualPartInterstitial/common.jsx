@@ -4,7 +4,7 @@ import React from 'react';
 import { createSelector } from 'reselect';
 
 import { getDevice } from 'lib/getDeviceFromState';
-import { getBranchLink } from 'lib/smartBannerState';
+import { generateBranchLink } from 'lib/branch';
 
 import DualPartInterstitialHeader from 'app/components/DualPartInterstitial/Header';
 import DualPartInterstitialFooter from 'app/components/DualPartInterstitial/Footer';
@@ -27,14 +27,14 @@ DualPartInterstitialCommon.propTypes = {
 
 function getUrls(state) {
   return [
-    getBranchLink(state, {
+    generateBranchLink(state, {
       feature: 'interstitial',
       campaign: 'xpromo_interstitial_listing',
       utm_medium: 'interstitial',
       utm_name: 'xpromo_interstitial_listing',
       utm_content: 'element_1',
     }),
-    getBranchLink(state, {
+    generateBranchLink(state, {
       feature: 'interstitial',
       campaign: 'xpromo_interstitial_listing',
       utm_medium: 'interstitial',
