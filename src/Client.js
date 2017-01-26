@@ -2,7 +2,6 @@ import 'babel-polyfill';
 import './lib/dnt';
 
 import React from 'react';
-import Raven from 'raven-js';
 import Client from '@r/platform/Client';
 import * as platformActions from '@r/platform/actions';
 import { models } from '@r/api-client';
@@ -17,17 +16,9 @@ import { initGoogleTagManager } from 'lib/gtm';
 import routes from 'app/router';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
-import ravenMiddleware from 'app/reduxMiddleware/raven';
 import { sendTimings, onHandlerCompleteTimings } from 'lib/timing';
 import Session from 'app/models/Session';
 import * as smartBannerActions from 'app/actions/smartBanner';
-
-Raven
-  .config(process.env.SENTRY_CLIENT_PUBLIC_URL, {
-    release: __GLOBALS__.release,
-    environment: process.env.NODE_ENV,
-  })
-  .install();
 
 // Bits to help in the gathering of client side timings to relay back
 // to the server
@@ -78,8 +69,6 @@ window.onerror = (message, url, line, column, error) => {
     line,
     column,
   }, ERROR_ENDPOINTS, ERROR_LOG_OPTIONS);
-
-  Raven.captureException(error);
 };
 
 // This isn't supported in most mobile browsers right now but it is in chrome.
@@ -90,16 +79,13 @@ window.onunhandledrejection = rejection => {
     ...getUserAgentAndURL(),
     rejection,
   }, ERROR_ENDPOINTS, ERROR_LOG_OPTIONS);
-
-  // raven does not automatically listen to this, unlike window.onerror
-  Raven.captureException(rejection.reason);
 };
 
 // start the app now
 const client = Client({
   routes,
   reducers,
-  reduxMiddleware: [ravenMiddleware(Raven)].concat(reduxMiddleware),
+  reduxMiddleware,
   modifyData: data => {
     // TODO if we start not using shell rendering in a serious way,
     // we'll need to unserialize all of the api models. This should

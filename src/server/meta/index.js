@@ -56,16 +56,9 @@ const appleAppSiteAssociation = JSON.stringify({
   },
 });
 
-const EXCLUDED_ROUTES = [
-  '*',
-  '/robots.txt',
-  '/live/:idOrFilter?',
-  '/goto',
-  '/faq',
-  '/health',
-  '/routes',
-  '/apple-app-site-association',
-];
+const EXCLUDED_ROUTES = ['*', '/robots.txt', '/live/:idOrFilter?',
+                         '/goto', '/faq', '/health', '/routes',
+                         '/apple-app-site-association'];
 
 export default (router, apiOptions) => {
   router.get('/routes', (ctx) => {

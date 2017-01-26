@@ -27,18 +27,16 @@ function RecommendedSubreddits(props) {
   ];
 
   const subredditListing = recommendedSubreddits.map((sr) => {
-    const withBackground = { 
-      'backgroundImage': `url(${sr.iconImage})`,
-      'backgroundPosition': '-1px 0px',
-    };
-    const subIconStyle = Object.assign({ 'backgroundColor': sr.keyColor },
-      sr.iconImage ? withBackground : {}
-    );
     return (
       <div className='RecommendedSubreddits__top'>
         <div
           className='subreddit-icon-image'
-          style={ subIconStyle }
+          style={ Object.assign({ 'backgroundColor': sr.keyColor },
+                  sr.iconImage
+                  ? { 'backgroundImage': `url(${sr.iconImage})`,
+                      'backgroundPosition': '-1px 0px' }
+                  : { }
+                ) }
         />
         <div className='RecommendedSubreddits__SubredditInfo'>
           <Anchor

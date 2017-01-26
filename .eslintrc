@@ -13,13 +13,11 @@
 
   "extends": "eslint:recommended",
 
-   // false here means the global cannot be overwritten
   "globals": {
     // having some trouble getting eslint to recognize es6 features
     "Promise": false,
     "Set": false,
-    "Map": false,
-    "__GLOBALS__": false
+    "Map": flase,
   },
 
   // plugins let use use custom rules below
@@ -77,7 +75,6 @@
     "no-extra-boolean-cast": 2,
     "no-extra-semi": 2,
     "no-func-assign": 2,
-    "no-global-assign": 2,
     "no-invalid-regexp": 2,
     "no-irregular-whitespace": 2,
     "no-negated-in-lhs": 2,
@@ -99,7 +96,7 @@
 
     // style
     "curly": 2,
-    "dot-location": [2, "property"],
+    "dot-location": [2, 'property'],
     "dot-notation": 2,
     "eol-last": 2,
     "eqeqeq": 2,
