@@ -7,7 +7,6 @@ export const DEFAULT = {
   showBanner: false,
   haveShownXPromo: false,
   xPromoShownUrl: null,
-  clickUrl: null,
 };
 
 export default function(state=DEFAULT, action={}) {
