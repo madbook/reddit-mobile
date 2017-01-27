@@ -161,6 +161,9 @@ export const setStickyPost = (id, isSettingSticky) => async (dispatch, getState)
     await Modtools.setSubredditSticky(apiOptions, id, isSettingSticky);
     dispatch(setStickyPostSuccess(model, isSettingSticky));
 
+    // If setting a sticky in a subreddit that already has two stickies, the
+    // second existing sticky is replaced.  If we're viewing a listing, find
+    // the second existing sticky and unsticky it.
     if (isSettingSticky) {
       const modelToUnsticky = stickyPostsFromState(state)[1];
       if (modelToUnsticky) {
