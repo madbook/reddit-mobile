@@ -21,4 +21,4 @@ export default function(state) {
                                           .filter(r => r.stickied);
 
   return stickiedPosts;
-};
+}
