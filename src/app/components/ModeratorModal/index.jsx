@@ -38,6 +38,7 @@ export class ModeratorModal extends React.Component {
                     icon='sticky'
                     text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
                     onClick={ this.props.onToggleSticky }
+                    isSelected={ this.props.isSticky }
                   />
                 : null
               }
