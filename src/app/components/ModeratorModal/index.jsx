@@ -1,7 +1,7 @@
 import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
-import { endpoints } from '@r/api-client';
+import { endpoints, models } from '@r/api-client';
 import { Modal } from '@r/widgets/modal';
 import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
 import { DropdownRow } from 'app/components/Dropdown';
@@ -11,6 +11,7 @@ import * as modActions from 'app/actions/modTools';
 
 const { Modtools } = endpoints;
 const DISTINGUISH_TYPES = Modtools.DISTINGUISH_TYPES;
+const { ModelTypes } = models;
 const T = React.PropTypes;
 
 export class ModeratorModal extends React.Component {
@@ -55,6 +56,15 @@ export class ModeratorModal extends React.Component {
                   />
                 : null
               }
+              { this.props.targetType === ModelTypes.POST
+                ? <DropdownRow
+                    icon='sticky'
+                    text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
+                    onClick={ this.props.onToggleSticky }
+                    isSelected={ this.props.isSticky }
+                  />
+                : null
+              }
               <div className='m-nonToggleActions'>
                 <DropdownRow
                   icon='delete_remove'
@@ -90,6 +100,7 @@ ModeratorModal.propTypes = {
   onSpam: T.func.isRequired,
   onApprove: T.func.isRequired,
   onRemove: T.func.isRequired,
+  isSticky: T.bool.isRequired,
   isApproved: T.bool.isRequired,
   isRemoved: T.bool.isRequired,
   isSpam: T.bool.isRequired,
@@ -97,13 +108,15 @@ ModeratorModal.propTypes = {
   approvedBy: T.string,
   distinguishType: T.string,
   isMine: T.bool,
+  targetType: T.oneOf([ModelTypes.COMMENT, ModelTypes.POST]),
 };
 
-const mapDispatchToProps = (dispatch, { id }) => ({
+const mapDispatchToProps = (dispatch, { id, isSticky }) => ({
   onSpam: () => dispatch(modActions.remove(id, true)),
   onApprove: () => dispatch(modActions.approve(id)),
   onRemove: () => dispatch(modActions.remove(id, false)),
   onDistinguish: (distinguishType) => dispatch(modActions.distinguish(id, distinguishType)),
+  onToggleSticky: () => dispatch(modActions.setStickyPost(id, !isSticky)),
 });
 
 export default connect(null, mapDispatchToProps)(ModeratorModal);
