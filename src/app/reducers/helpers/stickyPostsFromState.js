@@ -15,7 +15,7 @@ export default function(state) {
   if (!postsListId) { return []; }
   
   const activeList = state.postsLists[postsListId];
-  if (!activeList.results.length) { return []; }
+  if (!(activeList && activeList.results.length)) { return []; }
 
   const stickiedPosts = activeList.results.map(r => modelFromThingId(r.uuid, state))
                                           .filter(r => r.stickied);
