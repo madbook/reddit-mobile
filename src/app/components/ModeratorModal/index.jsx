@@ -1,6 +1,7 @@
 import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
+import { models } from '@r/api-client';
 import { Modal } from '@r/widgets/modal';
 import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
 import { DropdownRow } from 'app/components/Dropdown';
@@ -8,6 +9,7 @@ import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
 
 import * as modActions from 'app/actions/modTools';
 
+const { ModelTypes } = models;
 const T = React.PropTypes;
 
 export class ModeratorModal extends React.Component {
@@ -31,11 +33,14 @@ export class ModeratorModal extends React.Component {
           />
           <div onClick={ this.props.onClick }>
             <div className='ModeratorModalRowWrapper'>
-              <DropdownRow
-                icon='sticky'
-                text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
-                onClick={ this.props.onToggleSticky }
-              />
+              { this.props.targetType === ModelTypes.POST
+                ? <DropdownRow
+                    icon='sticky'
+                    text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
+                    onClick={ this.props.onToggleSticky }
+                  />
+                : null
+              }
               <DropdownRow
                 icon='delete_remove'
                 text='Remove'
@@ -75,6 +80,7 @@ ModeratorModal.propTypes = {
   isSpam: T.bool.isRequired,
   removedBy: T.string,
   approvedBy: T.string,
+  targetType: T.oneOf([ModelTypes.COMMENT, ModelTypes.POST]),
 };
 
 const mapDispatchToProps = (dispatch, { id, isSticky }) => ({
