@@ -1,8 +1,11 @@
 import React from 'react';
 
+import { models } from '@r/api-client';
+
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 import ModeratorModal from 'app/components/ModeratorModal';
 
+const { ModelTypes } = models;
 const T = React.PropTypes;
 
 const renderSubredditDropdownLinkRow = subreddit => (
@@ -27,6 +30,7 @@ export default function PostDropdown(props) {
     onReportPost,
     onToggleSave,
     onToggleModal,
+    isSticky,
     isSubredditModerator,
     isRemoved,
     isApproved,
@@ -57,6 +61,7 @@ export default function PostDropdown(props) {
         id={ id }
         modModalId={ modModalId }
         onClick={ onToggleModal }
+        isSticky={ isSticky }
         isRemoved={ isRemoved }
         isApproved={ isApproved }
         isSpam={ isSpam }
@@ -64,6 +69,7 @@ export default function PostDropdown(props) {
         removedBy={ removedBy }
         isMine={ isMine }
         distinguishType={ distinguishType }
+        targetType={ ModelTypes.POST }
       >
       </ModeratorModal>
     );
@@ -83,6 +89,7 @@ PostDropdown.propTypes = {
   canModify: T.bool, // can edit / can delete
   permalink: T.string.isRequired,
   author: T.string.isRequired,
+  isSticky: T.bool,
   isSaved: T.bool,
   isLoggedIn: T.bool,
   subreddit: T.string,
@@ -102,6 +109,7 @@ PostDropdown.propTypes = {
 
 PostDropdown.defaultProps = {
   canModify: false,
+  isSticky: false,
   isSaved: false,
   isLoggedIn: false,
   onToggleSave: () => {},

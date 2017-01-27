@@ -126,6 +126,21 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_SET_STICKY_POST_SUCCESS: {
+      const { thing, isStickied } = action;
+
+      if (thing.type !== POST) { return state; }
+      
+      return mergeUpdatedModel(
+        state,
+        {
+          model: thing.set({
+            stickied: isStickied,
+          }),
+        },
+      );
+    }
+
     // Posts from the comments page api don't always have the same previews
     // as that same post from the listings api. Preserve the previews so things
     // don't disappear unexpectedly

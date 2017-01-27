@@ -1,8 +1,11 @@
 import React from 'react';
 
+import { models } from '@r/api-client';
+
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 import ModeratorModal from 'app/components/ModeratorModal';
 
+const { ModelTypes } = models;
 const T = React.PropTypes;
 
 export default function CommentDropdown(props) {
@@ -65,6 +68,7 @@ export default function CommentDropdown(props) {
         removedBy={ removedBy }
         distinguishType={ distinguishType }
         isMine={ isMine }
+        targetType={ ModelTypes.COMMENT }
       >
       </ModeratorModal>
     );

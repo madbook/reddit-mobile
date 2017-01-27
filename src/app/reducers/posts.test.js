@@ -444,5 +444,57 @@ createTest({ reducers: { posts } }, ({ getStore, expect }) => {
         });
       });
     });
+
+    describe('MODTOOLS_SET_STICKY_POST_SUCCESS', () => {
+      it('should mark a post as sticky', () => {
+        const POST_UNSTICKIED = PostModel.fromJSON({
+          name: 't1_1',
+          stickied: false,
+        });
+
+        const POST_STICKIED = PostModel.fromJSON({
+          name: 't1_1',
+          stickied: true,
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST_UNSTICKIED.uuid]: POST_UNSTICKIED,
+          },
+        });
+
+        store.dispatch(modToolActions.setStickyPostSuccess(POST_UNSTICKIED, true));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST_UNSTICKIED.uuid]: POST_STICKIED,
+        });
+      });
+
+      it('should unmark a stickied post', () => {
+        const POST_UNSTICKIED = PostModel.fromJSON({
+          name: 't1_1',
+          stickied: false,
+        });
+
+        const POST_STICKIED = PostModel.fromJSON({
+          name: 't1_1',
+          stickied: true,
+        });
+
+        const { store } = getStore({
+          posts: {
+            [POST_STICKIED.uuid]: POST_STICKIED,
+          },
+        });
+
+        store.dispatch(modToolActions.setStickyPostSuccess(POST_STICKIED, false));
+
+        const { posts } = store.getState();
+        expect(posts).to.eql({
+          [POST_STICKIED.uuid]: POST_UNSTICKIED,
+        });
+      });
+    });
   });
 });
