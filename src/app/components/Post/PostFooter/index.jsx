@@ -97,6 +97,7 @@ export default class PostFooter extends React.Component {
         permalink={ post.cleanPermalink }
         subreddit={ post.subreddit }
         author={ post.author }
+        isSticky={ post.stickied }
         isSaved={ post.saved }
         isLoggedIn={ isLoggedIn }
         onToggleEdit={ onToggleEdit }

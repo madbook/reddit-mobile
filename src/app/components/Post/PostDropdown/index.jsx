@@ -27,6 +27,7 @@ export default function PostDropdown(props) {
     onReportPost,
     onToggleSave,
     onToggleModal,
+    isSticky,
     isSubredditModerator,
     isRemoved,
     isApproved,
@@ -55,6 +56,7 @@ export default function PostDropdown(props) {
         id={ id }
         modModalId={ modModalId }
         onClick={ onToggleModal }
+        isSticky={ isSticky }
         isRemoved={ isRemoved }
         isApproved={ isApproved }
         isSpam={ isSpam }
@@ -79,6 +81,7 @@ PostDropdown.propTypes = {
   canModify: T.bool, // can edit / can delete
   permalink: T.string.isRequired,
   author: T.string.isRequired,
+  isSticky: T.bool,
   isSaved: T.bool,
   isLoggedIn: T.bool,
   subreddit: T.string,
@@ -98,6 +101,7 @@ PostDropdown.propTypes = {
 
 PostDropdown.defaultProps = {
   canModify: false,
+  isSticky: false,
   isSaved: false,
   isLoggedIn: false,
   onToggleSave: () => {},

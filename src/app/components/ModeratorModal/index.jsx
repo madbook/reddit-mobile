@@ -32,6 +32,11 @@ export class ModeratorModal extends React.Component {
           <div onClick={ this.props.onClick }>
             <div className='ModeratorModalRowWrapper'>
               <DropdownRow
+                icon='sticky'
+                text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
+                onClick={ this.props.onToggleSticky }
+              />
+              <DropdownRow
                 icon='delete_remove'
                 text='Remove'
                 onClick={ this.props.onRemove }
@@ -64,6 +69,7 @@ ModeratorModal.propTypes = {
   onSpam: T.func.isRequired,
   onApprove: T.func.isRequired,
   onRemove: T.func.isRequired,
+  isSticky: T.bool.isRequired,
   isApproved: T.bool.isRequired,
   isRemoved: T.bool.isRequired,
   isSpam: T.bool.isRequired,
@@ -71,10 +77,11 @@ ModeratorModal.propTypes = {
   approvedBy: T.string,
 };
 
-const mapDispatchToProps = (dispatch, { id }) => ({
+const mapDispatchToProps = (dispatch, { id, isSticky }) => ({
   onSpam: () => dispatch(modActions.remove(id, true)),
   onApprove: () => dispatch(modActions.approve(id)),
   onRemove: () => dispatch(modActions.remove(id, false)),
+  onToggleSticky: () => dispatch(modActions.setStickyPost(id, !isSticky)),
 });
 
 export default connect(null, mapDispatchToProps)(ModeratorModal);
