@@ -214,10 +214,10 @@ function renderModStatusFlair(post) {
 
   return (
     <span className='PostHeader__approval-status-flair'>
+      { stickied ? STICKY_FLAIR : null }
       { approved ? APPROVED_FLAIR : null }
       { removed ? REMOVED_FLAIR : null }
       { spam ? SPAM_FLAIR : null }
-      { stickied ? STICKY_FLAIR : null }
     </span>
   );
 }
