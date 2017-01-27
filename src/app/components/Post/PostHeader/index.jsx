@@ -174,7 +174,6 @@ function renderPostFlair(post, single) {
 
   const {
     distinguished,
-    stickied,
     gilded,
     locked,
     promoted,
@@ -183,13 +182,12 @@ function renderPostFlair(post, single) {
 
   const showingGilded = gilded && single;
 
-  if (!(stickied || showingGilded || locked || distinguished || isNSFW || promoted || spoiler)) {
+  if (!(showingGilded || locked || distinguished || isNSFW || promoted || spoiler)) {
     return null;
   }
 
   return (
     <span>
-      { stickied ? STICKY_FLAIR : null }
       { locked ? LOCKED_FLAIR : null }
       { showingGilded ? GILDED_FLAIR : null }
       { showingGilded && gilded !== 1 ? gilded : null }
@@ -202,16 +200,24 @@ function renderPostFlair(post, single) {
   );
 }
 
-function renderApprovalStatusFlair(isApproved, isRemoved, isSpam) {
-  if (!(isApproved || isRemoved || isSpam)) {
+function renderModStatusFlair(post) {
+  const {
+    approved,
+    removed,
+    spam,
+    stickied,
+  } = post;
+
+  if (!(approved || removed || spam || stickied)) {
     return null;
   }
 
   return (
     <span className='PostHeader__approval-status-flair'>
-      { isApproved ? APPROVED_FLAIR : null }
-      { isRemoved ? REMOVED_FLAIR : null }
-      { isSpam ? SPAM_FLAIR : null }
+      { approved ? APPROVED_FLAIR : null }
+      { removed ? REMOVED_FLAIR : null }
+      { spam ? SPAM_FLAIR : null }
+      { stickied ? STICKY_FLAIR : null }
     </span>
   );
 }
@@ -275,7 +281,7 @@ function renderPostDescriptor(
     authorOrNil,
     !hideSubredditLabel && flairOrNil,
   ]);
-  const approvalStatusFlair = renderApprovalStatusFlair(post.approved, post.removed, post.spam);
+  const approvalStatusFlair = renderModStatusFlair(post);
 
   return (
     <div className='PostHeader__metadata-container'>
