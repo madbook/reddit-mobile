@@ -115,6 +115,23 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_DISTINGUISH_SUCCESS: {
+      const { thing, distinguishType } = action;
+
+      if (thing.type === COMMENT) {
+        return mergeUpdatedModel(
+          state,
+          {
+            model: thing.set({
+              distinguished: distinguishType,
+            }),
+          },
+        );
+      }
+
+      return state;
+    }
+
     case commentActions.UPDATED_BODY: {
       let { model } = action;
       const currentComment = state[model.uuid];

@@ -3,6 +3,7 @@ import * as platformActions from '@r/platform/actions';
 
 import * as replyActions from 'app/actions/reply';
 import * as commentActions from 'app/actions/comment';
+import * as modActions from 'app/actions/modTools';
 import * as toasterActions from 'app/actions/toaster';
 import * as postActions from 'app/actions/posts';
 import * as postingActions from 'app/actions/posting';
@@ -23,6 +24,7 @@ export default function(state=DEFAULT, action={}) {
     case replyActions.FAILURE:
     case commentActions.FAILED_UPDATE_BODY:
     case mailActions.FAILED_MESSAGE:
+    case modActions.MODTOOLS_DISTINGUISH_ERROR:
     case postActions.FAILED_UPDATE_SELF_TEXT:
     case postingActions.FAILURE:
     case postingActions.VALIDATION_FAILURE:

@@ -112,6 +112,8 @@ export default class PostFooter extends React.Component {
         removedBy={ post.bannedBy }
         showModModal={ showModModal }
         modModalId={ modModalId }
+        distinguishType={ post.distinguished }
+        isMine={ user && user.name === post.author }
       />
     );
   }

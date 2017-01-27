@@ -98,11 +98,11 @@ function isValidKeyColorForRendering(keyColor) {
   return keyColor !== '#efefed' && keyColor !== '#222222';
 }
 
-function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, hasDistinguishing) {
+function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel) {
   if (hideSubredditLabel || !subreddit) { return; }
 
   const keyColorStyle = {};
-  if (!hasDistinguishing && sr_detail && sr_detail.key_color) {
+  if (sr_detail && sr_detail.key_color) {
     if (isValidKeyColorForRendering(sr_detail.key_color)) {
       const { key_color } = sr_detail;
       Object.assign(keyColorStyle, { color: key_color});
@@ -134,14 +134,14 @@ function renderLinkFlairText(post) {
   );
 }
 
-function renderAuthorAndTimeStamp(post, single, hideWhen) {
+function renderAuthorAndTimeStamp(post, single, hideWhen, className) {
   const {
     author,
     createdUTC,
   } = post;
 
   const authorLink = (
-    <Anchor className='PostHeader__author-link' href={ `/user/${author}` }>
+    <Anchor className={ `PostHeader__author-link ${className}` } href={ `/user/${author}` }>
       { `u/${author}` }
     </Anchor>
   );
@@ -183,7 +183,7 @@ function renderPostFlair(post, single) {
 
   const showingGilded = gilded && single;
 
-  if (!(stickied || showingGilded || locked || distinguished || isNSFW || promoted || spoiler)) {
+  if (!(stickied || showingGilded || locked || distinguished === 'admin' || isNSFW || promoted || spoiler)) {
     return null;
   }
 
@@ -193,7 +193,6 @@ function renderPostFlair(post, single) {
       { locked ? LOCKED_FLAIR : null }
       { showingGilded ? GILDED_FLAIR : null }
       { showingGilded && gilded !== 1 ? gilded : null }
-      { distinguished === 'moderator' ? MOD_FLAIR : null }
       { distinguished === 'admin' ? ADMIN_FLAIR : null }
       { isNSFW ? NSFW_FLAIR : null }
       { spoiler ? SPOILER_FLAIR : null }
@@ -202,16 +201,24 @@ function renderPostFlair(post, single) {
   );
 }
 
-function renderApprovalStatusFlair(isApproved, isRemoved, isSpam) {
-  if (!(isApproved || isRemoved || isSpam)) {
+function renderApprovalStatusFlair(post) {
+  const {
+    approved,
+    removed,
+    spam,
+    distinguished,
+  } = post;
+  
+  if (!(approved || removed || spam || distinguished !== '')) {
     return null;
   }
 
   return (
     <span className='PostHeader__approval-status-flair'>
-      { isApproved ? APPROVED_FLAIR : null }
-      { isRemoved ? REMOVED_FLAIR : null }
-      { isSpam ? SPAM_FLAIR : null }
+      { distinguished === 'moderator' ? MOD_FLAIR : null }
+      { approved ? APPROVED_FLAIR : null }
+      { removed ? REMOVED_FLAIR : null }
+      { spam ? SPAM_FLAIR : null }
     </span>
   );
 }
@@ -249,16 +256,13 @@ function renderPostDescriptor(
   isPromotedUserPost,
 ) {
   const {
-    distinguished,
     sr_detail,
     subreddit,
   } = post;
 
   const postFlairOrNil = renderPostFlair(post, single);
-  const distinguishingCssClass = postTextColorClass(distinguished);
-  const hasDistinguishing = !!distinguishingCssClass;
   const subredditLabelOrNil = subredditLabelIfNeeded(sr_detail, subreddit,
-    hideSubredditLabel, hasDistinguishing);
+    hideSubredditLabel);
 
   let authorOrNil;
   if (!single) {
@@ -275,14 +279,13 @@ function renderPostDescriptor(
     authorOrNil,
     !hideSubredditLabel && flairOrNil,
   ]);
-  const approvalStatusFlair = renderApprovalStatusFlair(post.approved, post.removed, post.spam);
+  const approvalStatusFlair = renderApprovalStatusFlair(post);
 
   return (
     <div className='PostHeader__metadata-container'>
       <div className='PostHeader__post-descriptor-line'>
         <div className='PostHeader__post-descriptor-line-overflow'>
           <span
-            className={ distinguishingCssClass }
             children={
               isPromotedUserPost ? promotedUserPostDescriptor : normalPostDescriptor
             }
@@ -334,9 +337,7 @@ function renderDetailViewSubline(post, hideWhen) {
   return (
     <div className='PostHeader__post-descriptor-line'>
       <div className='PostHeader__post-descriptor-line-overflow'>
-        <span className={ distinguishingCssClass }>
-          { renderAuthorAndTimeStamp(post, true, hideWhen) }
-        </span>
+        { renderAuthorAndTimeStamp(post, true, hideWhen, distinguishingCssClass) }
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ export const MODTOOLS_REMOVAL_SUCCESS = 'MODTOOLS_REMOVAL_SUCCESS';
 export const MODTOOLS_APPROVAL_PENDING = 'MODTOOLS_APPROVAL_PENDING';
 export const MODTOOLS_APPROVAL_ERROR = 'MODTOOLS_APPROVAL_ERROR';
 export const MODTOOLS_APPROVAL_SUCCESS = 'MODTOOLS_APPROVAL_SUCCESS';
+export const MODTOOLS_DISTINGUISH_SUCCESS = 'MODTOOLS_DISTINGUISH_SUCCESS';
+export const MODTOOLS_DISTINGUISH_ERROR = 'MODTOOLS_DISTINGUISH_ERROR';
 export const FETCHING_MODERATING_SUBREDDITS = 'FETCHING_MODERATING_SUBREDDITS';
 export const RECEIVED_MODERATING_SUBREDDITS = 'RECEIVED_MODERATING_SUBREDDITS';
 export const FETCH_FAILED_MODERATING_SUBREDDITS = 'FETCH_FAILED_MODERATING_SUBREDDITS';
@@ -45,6 +47,18 @@ export const approvalSuccess = (thing, username) => ({
   type: MODTOOLS_APPROVAL_SUCCESS,
   thing,
   username,
+});
+
+export const distinguishError = error => ({
+  type: MODTOOLS_DISTINGUISH_ERROR,
+  error,
+  message: 'You can not distinguish that.',
+});
+
+export const distinguishSuccess = (thing, distinguishType) => ({
+  type: MODTOOLS_DISTINGUISH_SUCCESS,
+  thing,
+  distinguishType,
 });
 
 export const fetchingSubs = () => ({
@@ -95,6 +109,23 @@ export const approve = id => async (dispatch, getState) => {
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(approvalError(e));
+    } else {
+      throw e;
+    }
+  }
+};
+
+export const distinguish = (id, distinguishType) => async (dispatch, getState) => {
+  const state = getState();
+  const apiOptions = apiOptionsFromState(state);
+  const model = modelFromThingId(id, state);
+
+  try {
+    await Modtools.distinguish(apiOptions, id, distinguishType);
+    dispatch(distinguishSuccess(model, distinguishType));
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(distinguishError(e));
     } else {
       throw e;
     }

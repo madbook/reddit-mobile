@@ -109,6 +109,23 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_DISTINGUISH_SUCCESS: {
+      const { thing, distinguishType } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          {
+            model: thing.set({
+              distinguished: distinguishType,
+            }),
+          },
+        );
+      }
+
+      return state;
+    }
+
     // Posts from the comments page api don't always have the same previews
     // as that same post from the listings api. Preserve the previews so things
     // don't disappear unexpectedly

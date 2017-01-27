@@ -176,6 +176,8 @@ function renderTools(props) {
           isApproved={ comment.approved }
           approvedBy={ comment.approvedBy }
           removedBy={ comment.bannedBy }
+          isMine={ user && user.name === comment.author }
+          distinguishType={ comment.distinguished }
         />
       </div>
     </div>

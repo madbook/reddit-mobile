@@ -25,6 +25,8 @@ export default function CommentDropdown(props) {
     removedBy,
     showModModal,
     modModalId,
+    isMine,
+    distinguishType,
   } = props;
 
   const userIsAuthor = commentAuthor === username;
@@ -61,6 +63,8 @@ export default function CommentDropdown(props) {
         isSpam={ isSpam }
         approvedBy={ approvedBy }
         removedBy={ removedBy }
+        distinguishType={ distinguishType }
+        isMine={ isMine }
       >
       </ModeratorModal>
     );
@@ -93,6 +97,8 @@ CommentDropdown.propTypes = {
   removedBy: T.string,
   showModModal: T.bool,
   modModalId: T.string,
+  distinguishType: T.string,
+  isMine: T.bool,
 };
 
 CommentDropdown.defaultProps = {
@@ -109,4 +115,6 @@ CommentDropdown.defaultProps = {
   removedBy: null,
   showModModal: false,
   modModalId: null,
+  isDistinguished: '',
+  isMine: false,
 };

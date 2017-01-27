@@ -35,6 +35,8 @@ export default function PostDropdown(props) {
     removedBy,
     showModModal,
     modModalId,
+    distinguishType,
+    isMine,
   } = props;
 
   const modalContent = [
@@ -60,6 +62,8 @@ export default function PostDropdown(props) {
         isSpam={ isSpam }
         approvedBy={ approvedBy }
         removedBy={ removedBy }
+        isMine={ isMine }
+        distinguishType={ distinguishType }
       >
       </ModeratorModal>
     );
