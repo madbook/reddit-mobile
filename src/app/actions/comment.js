@@ -1,9 +1,11 @@
-import { endpoints, models, errors } from '@r/api-client';
-
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
-const { SavedEndpoint, CommentsEndpoint, EditUserTextEndpoint } = endpoints;
-const { ResponseError, ValidationError } = errors;
+import CommentsEndpoint from 'apiClient/apis/CommentsEndpoint';
+import CommentModel from 'apiClient/models/CommentModel';
+import EditUserTextEndpoint from 'apiClient/apis/EditUserTextEndpoint';
+import SavedEndpoint from 'apiClient/apis/SavedEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
+import ValidationError from 'apiClient/errors/ValidationError';
 
 
 export const TOGGLE_EDIT = 'COMMENT__TOGGLE_EDIT_FORM';
@@ -82,7 +84,7 @@ export const toggleSave = id => async (dispatch, getState) => {
   await SavedEndpoint[method](apiOptionsFromState(state), { id });
   // the response doesn't have anything in it (yay api), so emit a new model
   // on the client side;
-  const newComment = models.CommentModel.fromJSON({ ...comment.toJSON(), saved: !comment.saved });
+  const newComment = CommentModel.fromJSON({ ...comment.toJSON(), saved: !comment.saved });
   dispatch(saved(newComment));
 };
 
@@ -93,7 +95,7 @@ export const del = id => async (dispatch, getState) => {
   await CommentsEndpoint.del(apiOptions, id);
   // the response doesn't have anything in it, so we're going to guess what the
   // comment should look like
-  const newComment = models.CommentModel.fromJSON({
+  const newComment = CommentModel.fromJSON({
     ...comment.toJSON(),
     author: '[deleted]',
     bodyHTML: '[deleted]',

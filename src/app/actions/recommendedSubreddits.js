@@ -1,9 +1,8 @@
-import { endpoints, errors } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 
-const { RecommendedSubreddits } = endpoints;
-const { ResponseError } = errors;
+import RecommendedSubreddits from 'apiClient/apis/RecommendedSubreddits';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_RECOMMENDED_SUBREDDITS = 'FETCHING_RECOMMENDED_SUBREDDITS';
 export const fetching = name => ({

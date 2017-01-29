@@ -1,6 +1,4 @@
-import { models } from '@r/api-client';
-const { Preferences } = models;
-
+import Preferences from 'apiClient/models/Preferences';
 import * as loginActions from 'app/actions/login';
 import * as preferenceActions from 'app/actions/preferences';
 

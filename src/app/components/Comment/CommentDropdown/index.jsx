@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { models } from '@r/api-client';
-
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 import ModeratorModal from 'app/components/ModeratorModal';
 
-const { ModelTypes } = models;
+import { COMMENT } from 'apiClient/models/thingTypes';
+
 const T = React.PropTypes;
 
 export default function CommentDropdown(props) {
@@ -70,7 +69,7 @@ export default function CommentDropdown(props) {
         distinguishType={ distinguishType }
         isMine={ isMine }
         isSticky={ isSticky }
-        targetType={ ModelTypes.COMMENT }
+        targetType={ COMMENT }
       >
       </ModeratorModal>
     );

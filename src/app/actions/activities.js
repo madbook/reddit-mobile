@@ -1,6 +1,5 @@
-import { endpoints, errors } from '@r/api-client';
-const { ActivitiesEndpoint } = endpoints;
-const { ResponseError } = errors;
+import ActivitiesEndpoint from 'apiClient/apis/ActivitiesEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToActiviesRequestId } from 'app/models/ActivitiesRequest';

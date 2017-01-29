@@ -1,17 +1,15 @@
-import { endpoints, models, requestUtils, errors } from '@r/api-client';
 import uniqueId from 'lodash/uniqueId';
+
+import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
+import PostModel from 'apiClient/models/PostModel';
+import { rawSend } from 'apiClient/apiBase/APIRequestUtils';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import config from 'config';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import adLocationForPostRecords from 'lib/adLocationForPostRecords';
 import { logClientAdblock } from 'lib/eventUtils';
-
-
-const { PostsEndpoint } = endpoints;
-const { PostModel } = models;
-const { rawSend } = requestUtils;
-const { ResponseError } = errors;
 
 export const FETCHING = 'FETCHING_AD';
 export const fetching = (adId, postsListId) => ({

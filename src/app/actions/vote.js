@@ -1,11 +1,10 @@
-import { models, errors } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
 
+import { thingType } from 'apiClient/models/thingTypes';
+import ResponseError from 'apiClient/errors/ResponseError';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 
-
-const { ResponseError } = errors;
 
 export const PENDING = 'VOTE__PENDING';
 export const SUCCESS = 'VOTE__SUCCESS';
@@ -28,7 +27,7 @@ export const vote = (id, direction) => async (dispatch, getState) => {
     return;
   }
 
-  const type = models.ModelTypes.thingType(id);
+  const type = thingType(id);
   const thing = state[`${type}s`][id];
 
   const stub = thing._vote(apiOptionsFromState(state), direction);

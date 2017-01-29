@@ -1,6 +1,5 @@
-import { endpoints, errors } from '@r/api-client';
-const { HiddenEndpoint } = endpoints;
-const { ResponseError } = errors;
+import HiddenEndpoint from 'apiClient/apis/HiddenEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToHiddenRequestid } from 'app/models/HiddenRequest';

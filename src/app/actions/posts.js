@@ -1,6 +1,9 @@
-import { endpoints, models, errors } from '@r/api-client';
-const { ResponseError, ValidationError } = errors;
-const { SavedEndpoint, HiddenEndpoint, EditUserTextEndpoint } = endpoints;
+import ResponseError from 'apiClient/errors/ResponseError';
+import ValidationError from 'apiClient/errors/ValidationError';
+import SavedEndpoint from 'apiClient/apis/SavedEndpoint';
+import HiddenEndpoint from 'apiClient/apis/HiddenEndpoint';
+import EditUserTextEndpoint from 'apiClient/apis/EditUserTextEndpoint';
+import PostModel from 'apiClient/models/PostModel';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
@@ -71,7 +74,7 @@ export const toggleSavePost = postId => async (dispatch, getState) => {
     await SavedEndpoint[method](apiOptions, { id: post.uuid });
     // the response doesn't actually give us anything back, so we'll just emit
     // a new model on the frontend if the call succeeeds.
-    const newPost = models.PostModel.fromJSON({ ...post.toJSON(), saved: !post.saved });
+    const newPost = PostModel.fromJSON({ ...post.toJSON(), saved: !post.saved });
     dispatch(toggleSavedReceived(newPost));
   } catch (e) {
     // TODO: handle these errors in the toaster
@@ -89,7 +92,7 @@ export const toggleHidePost = postId => async (dispatch, getState) => {
     await HiddenEndpoint[method](apiOptions, { id: post.uuid });
     // the response doesn't actually give us anything back, so we'll just emit
     // a new model on the frontend if the call succeeeds.
-    const newPost = models.PostModel.fromJSON({ ...post.toJSON(), hidden: !post.hidden });
+    const newPost = PostModel.fromJSON({ ...post.toJSON(), hidden: !post.hidden });
     dispatch(toggleHideReceived(newPost));
   } catch (e) {
     // TODO: handle these errors in the toaster

@@ -1,7 +1,7 @@
 import createTest from '@r/platform/createTest';
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
 
+import Record from 'apiClient/apiBase/Record';
 import searchRequests from './searchRequests';
 import * as searchActions from 'app/actions/search';
 import * as loginActions from 'app/actions/login';
@@ -75,10 +75,10 @@ createTest({ reducers: { searchRequests } }, ({ getStore, expect }) => {
       it('should update a searchRequest\'s loading state, subreddits, and posts', () => {
         const SEARCH_REQUEST_ID = '1';
         const SUBREDDITS = [
-          new models.Record('subreddit', 'tests', 't5_12345'),
+          new Record('subreddit', 'tests', 't5_12345'),
         ];
 
-        const POSTS = [ new models.Record('post', 't3_12345') ];
+        const POSTS = [ new Record('post', 't3_12345') ];
 
         const { store } = getStore({
           searchRequests: {

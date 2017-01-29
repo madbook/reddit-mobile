@@ -1,8 +1,8 @@
 import superagent from 'superagent';
 import { btoa } from 'Base64';
-import { errors } from '@r/api-client';
 
-const { ValidationError, ResponseError } = errors;
+import ResponseError from 'apiClient/errors/ResponseError';
+import ValidationError from 'apiClient/errors/ValidationError';
 
 const fetchLogin = (username, password) => new Promise((resolve, reject) => {
   superagent

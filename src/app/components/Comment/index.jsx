@@ -3,11 +3,11 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { models } from '@r/api-client';
 import { Anchor } from '@r/platform/components';
 import { toggleModal } from '@r/widgets/modal';
 import includes from 'lodash/includes';
 
+import CommentModel from 'apiClient/models/CommentModel';
 import mobilify from 'lib/mobilify';
 import * as replyActions from 'app/actions/reply';
 import * as commentActions from 'app/actions/comment';
@@ -260,7 +260,7 @@ function renderContinueThread(props) {
 
 Comment.propTypes = {
   // start props passed in via state selector
-  comment: T.instanceOf(models.CommentModel).isRequired,
+  comment: T.instanceOf(CommentModel).isRequired,
   commentReplying: T.bool.isRequired,
   currentPage: T.object.isRequired,
   highlightedComment: T.string,

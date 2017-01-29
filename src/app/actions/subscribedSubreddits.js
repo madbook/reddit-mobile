@@ -1,10 +1,8 @@
-import { collections, models, errors } from '@r/api-client';
+import { SubscribedSubreddits } from 'apiClient/collections/SubredditLists';
+import Subreddit from 'apiClient/models/Subreddit';
+import ResponseError from 'apiClient/errors/ResponseError';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
-
-const { SubscribedSubreddits } = collections;
-const { Subreddit } = models;
-const { ResponseError } = errors;
 
 export const FETCHING_SUBSCRIBED_SUBREDDITS = 'FETCHING_SUBSCRIBED_SUBREDDITS';
 export const fetching = () => ({

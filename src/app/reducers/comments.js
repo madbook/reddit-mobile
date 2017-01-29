@@ -1,6 +1,5 @@
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
-const { COMMENT } = models.ModelTypes;
+import { COMMENT } from 'apiClient/models/thingTypes';
 
 import mergeAPIModels from './helpers/mergeAPIModels';
 import mergeUpdatedModel from './helpers/mergeUpdatedModel';

@@ -1,7 +1,7 @@
 import createTest from '@r/platform/createTest';
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
 
+import Record from 'apiClient/apiBase/Record';
 import postsLists from './postsLists';
 import * as postsListActions from 'app/actions/postsList';
 import * as loginActions from 'app/actions/login';
@@ -78,8 +78,8 @@ createTest({ reducers: { postsLists } }, ({ getStore, expect }) => {
       it('should update the loading state and results of a postsList', () => {
         const POSTS_LIST_ID = '1';
         const RESULTS = [
-          new models.Record('post', 't3_123'),
-          new models.Record('post', 't3_xyx'),
+          new Record('post', 't3_123'),
+          new Record('post', 't3_xyx'),
         ];
 
         const { store } = getStore({

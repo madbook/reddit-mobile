@@ -1,7 +1,7 @@
 import createTest from '@r/platform/createTest';
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
 
+import Record from 'apiClient/apiBase/Record';
 import savedRequests from './savedRequests';
 import * as savedActions from 'app/actions/saved';
 import * as loginActions from 'app/actions/login';
@@ -81,8 +81,8 @@ createTest({ reducers: { savedRequests }}, ({ getStore, expect}) => {
         };
 
         const RESULTS = [
-          new models.Record('comment', 't1_comment'),
-          new models.Record('comment', 't2_comment'),
+          new Record('comment', 't1_comment'),
+          new Record('comment', 't2_comment'),
         ];
 
         const { store } = getStore({

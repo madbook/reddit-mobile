@@ -1,10 +1,8 @@
-import { endpoints, errors } from '@r/api-client';
-
 import * as preferenceActions from 'app/actions/preferences';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import SubredditAutocomplete from 'apiClient/apis/SubredditAutocomplete';
+import ResponseError from 'apiClient/errors/ResponseError';
 
-const { SubredditAutocomplete } = endpoints;
-const { ResponseError } = errors;
 
 export const FETCHING = 'AUTOCOMPLETE__FETCHING';
 export const fetching = query => ({

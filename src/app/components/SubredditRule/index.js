@@ -4,10 +4,10 @@
 import './styles.less';
 
 import React from 'react';
-import { models } from '@r/api-client';
+import SubredditRuleModel from 'apiClient/models/SubredditRule';
 
 const T = React.PropTypes;
-const RULE_TARGET = models.SubredditRule.RULE_TARGET;
+const RULE_TARGET = SubredditRuleModel.RULE_TARGET;
 
 // Mapping of RULE_TARGET values to strings for display
 const KIND_STRINGS = {

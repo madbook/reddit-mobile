@@ -91,9 +91,10 @@ class Login extends React.Component {
       <div className='Login__app-promo'>
         <p className='Login__app-promo__or'>or</p>
         <SquareButton
-            onClick={ this.onAppPromoClick }
-            modifier='orangered'
-            text='Continue in the app'/>
+          onClick={ this.onAppPromoClick }
+          modifier='orangered'
+          text='Continue in the app'
+        />
         <p className='Login__app-promo__subtext'>(no login required)</p>
       </div>
     );
@@ -182,9 +183,10 @@ class Login extends React.Component {
             }
           </LoginInput>
           <LoginInput
-              name='redirectTo'
-              type='hidden'
-              value={ backDest } />
+            name='redirectTo'
+            type='hidden'
+            value={ backDest }
+          />
           <div className='Login__submit'>
             <SquareButton text='LOG IN' type='submit'/>
           </div>

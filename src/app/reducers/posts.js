@@ -1,6 +1,4 @@
-import { models } from '@r/api-client';
-const { POST } = models.ModelTypes;
-
+import { POST } from 'apiClient/models/thingTypes';
 import mergeAPIModels from './helpers/mergeAPIModels';
 import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';

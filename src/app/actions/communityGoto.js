@@ -1,10 +1,8 @@
-import { models } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 
 import * as subredditActions from './subreddits';
-
-const { Subreddit } = models;
+import Subreddit from 'apiClient/models/Subreddit';
 
 const gotoSubredditPage = (subredditName, dispatch) => {
   dispatch(platformActions.navigateToUrl(METHODS.GET, `/r/${subredditName}`, {}));

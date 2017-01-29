@@ -1,7 +1,8 @@
-import { endpoints, errors } from '@r/api-client';
-const { CommentsEndpoint, PostsEndpoint } = endpoints;
-const { ResponseError } = errors;
-import { some } from 'lodash/collection';
+import some from 'lodash/some';
+
+import CommentsEndpoint from 'apiClient/apis/CommentsEndpoint';
+import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import getSubreddit from 'lib/getSubredditFromState';

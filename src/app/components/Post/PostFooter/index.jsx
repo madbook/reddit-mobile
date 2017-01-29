@@ -1,13 +1,11 @@
 import './styles.less';
 import React from 'react';
 import { Anchor } from '@r/platform/components';
-import { models } from '@r/api-client';
 import { ModalTarget } from '@r/widgets/modal';
 
+import PostModel from 'apiClient/models/PostModel';
 import PostDropdown from '../PostDropdown';
 import VotingBox from 'app/components/VotingBox';
-
-const { PostModel } = models;
 
 const T = React.PropTypes;
 
@@ -144,8 +142,8 @@ export default class PostFooter extends React.Component {
           </ModalTarget>
           { isSubredditModerator
             ? (<ModalTarget
-                id={ modModalId }
-              >
+              id={ modModalId }
+               >
                 <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-mod'/>
               </ModalTarget>)
             : null

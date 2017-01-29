@@ -1,7 +1,9 @@
 import { METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
-import { endpoints, errors } from '@r/api-client';
-const { ResponseError, ValidationError } = errors;
+
+import MessagesEndpoint from 'apiClient/apis/MessagesEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
+import ValidationError from 'apiClient/errors/ValidationError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
@@ -43,7 +45,7 @@ export const postMessage = data => async (dispatch, getState) => {
   let message;
 
   try {
-    message = await endpoints.MessagesEndpoint.post(apiOptions, data);
+    message = await MessagesEndpoint.post(apiOptions, data);
   } catch (e) {
     if (e instanceof ValidationError) {
       dispatch(failedMessage(e));
@@ -83,7 +85,7 @@ export const fetchInbox = (mailType, queryParams, threadId) => async (dispatch, 
   data.query = queryParams;
 
   try {
-    const apiResponse = await endpoints.MessagesEndpoint.get(apiOptions, data);
+    const apiResponse = await MessagesEndpoint.get(apiOptions, data);
     dispatch(setInboxSuccess(mailType, apiResponse));
   } catch (e) {
     if (e instanceof ResponseError) {

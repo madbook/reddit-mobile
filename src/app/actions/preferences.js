@@ -1,7 +1,6 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints, errors } from '@r/api-client';
-const { PreferencesEndpoint } = endpoints;
-const { ResponseError } = errors;
+import PreferencesEndpoint from 'apiClient/apis/PreferencesEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const PENDING = 'PENDING_PREFERENCES';
 export const pending = () => ({

@@ -1,6 +1,7 @@
-import APIOptions, { optionsWithAuth } from '@r/api-client';
 import merge from '@r/platform/merge';
+
 import config from 'config';
+import { APIOptions, optionsWithAuth } from 'apiClient';
 
 export const apiOptionsFromState = state => {
   if (!state) { return APIOptions; }

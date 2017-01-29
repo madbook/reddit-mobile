@@ -5,7 +5,6 @@ import React from 'react';
 import Raven from 'raven-js';
 import Client from '@r/platform/Client';
 import * as platformActions from '@r/platform/actions';
-import { models } from '@r/api-client';
 import isEmpty from 'lodash/isEmpty';
 
 import { isLocalStorageAvailable } from '@r/redux-state-archiver';
@@ -21,6 +20,7 @@ import ravenMiddleware from 'app/reduxMiddleware/raven';
 import { sendTimings, onHandlerCompleteTimings } from 'lib/timing';
 import Session from 'app/models/Session';
 import * as xpromoActions from 'app/actions/xpromo';
+import Preferences from 'apiClient/models/Preferences';
 
 Raven
   .config(process.env.SENTRY_CLIENT_PUBLIC_URL, {
@@ -111,7 +111,7 @@ const client = Client({
       window.session = data.session;
     }
 
-    data.preferences = models.Preferences.fromJSON(data.preferences);
+    data.preferences = Preferences.fromJSON(data.preferences);
 
     data.meta.env = 'CLIENT';
 

@@ -1,7 +1,7 @@
 import { setStatus } from '@r/platform/actions';
 import { BaseHandler, METHODS } from '@r/platform/router';
-import { models } from '@r/api-client';
 
+import { POST_TYPE } from 'apiClient/models/thingTypes';
 import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';
 import * as commentsPageActions from 'app/actions/commentsPage';
@@ -25,8 +25,6 @@ const {
   VARIANT_RECOMMENDED_BY_POST_HOT,
 } = flags;
 
-
-const { POST_TYPE } = models.ModelTypes;
 const PostIdRegExp = new RegExp(`^${POST_TYPE}_`);
 
 const ensurePostTypePrefix = postId => {

@@ -1,6 +1,7 @@
 import createTest from '@r/platform/createTest';
-import { models } from '@r/api-client';
-const { PostModel } = models; // adActions.RECEIVED calls model.toRecord
+
+import PostModel from 'apiClient/models/PostModel';
+// adActions.RECEIVED calls model.toRecord
 // so we need to test with a PostModel
 
 import * as loginActions from 'app/actions/login';

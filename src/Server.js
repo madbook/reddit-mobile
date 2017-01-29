@@ -8,8 +8,8 @@ import Raven from 'raven';
 
 import Server from '@r/platform/Server';
 import { dispatchInitialShell } from '@r/platform/plugins';
-import APIOptions from '@r/api-client';
 
+import { APIOptions } from 'apiClient';
 import config from 'config';
 import errorLog from 'lib/errorLog';
 import routes from 'app/router';

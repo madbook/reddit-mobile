@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import omit from 'lodash/omit';
 import url from 'url';
-import { models } from '@r/api-client';
 
+import CommentModel from 'apiClient/models/CommentModel';
+import PostModel from 'apiClient/models/PostModel';
 import config from 'config';
 import { cleanObject } from 'lib/cleanObject';
 import safeStringify from 'lib/safeStringify';
 
 const T = React.PropTypes;
-const { CommentModel, PostModel } = models;
 const { reddit } = config;
 
 const PARSED_REDDIT_URL = url.parse(reddit);

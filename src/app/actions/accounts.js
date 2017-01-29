@@ -1,7 +1,6 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints, errors } from '@r/api-client';
-const { AccountsEndpoint } = endpoints;
-const { ResponseError } = errors;
+import AccountsEndpoint from 'apiClient/apis/AccountsEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_ACCOUNT = 'FETCHING_ACCOUNT';
 // options is for the accounts endpoint, its properties are

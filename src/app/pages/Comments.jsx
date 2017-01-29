@@ -80,11 +80,11 @@ function CommentsPage(props) {
       { !commentsPage || commentsPage.loading
         ? <Loading />
         : <CommentsList
-            commentRecords={ topLevelComments }
-            className='CommentsList__topLevel'
-            op={ op }
-            nestingLevel={ 0 }
-            votingDisabled={ post.archived }
+          commentRecords={ topLevelComments }
+          className='CommentsList__topLevel'
+          op={ op }
+          nestingLevel={ 0 }
+          votingDisabled={ post.archived }
           />
       }
 

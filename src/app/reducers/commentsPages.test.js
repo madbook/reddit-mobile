@@ -1,6 +1,6 @@
 import createTest from '@r/platform/createTest';
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
+import Record from 'apiClient/apiBase/Record';
 
 import commentsPages from './commentsPages';
 import * as commentsPageActions from 'app/actions/commentsPage';
@@ -96,8 +96,8 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
         };
 
         const RESULTS = [
-          new models.Record('comment', 't1_comment'),
-          new models.Record('comment', 't1_comment'),
+          new Record('comment', 't1_comment'),
+          new Record('comment', 't1_comment'),
         ];
 
         const { store } = getStore({
@@ -171,7 +171,7 @@ createTest({ reducers: { commentsPages } }, ({ getStore, expect }) => {
         results: [],
       };
 
-      const COMMENT_RECORD = new models.Record('comment', 't1_comment1');
+      const COMMENT_RECORD = new Record('comment', 't1_comment1');
 
       const COMMENT = {
         parentId: POST_ID,

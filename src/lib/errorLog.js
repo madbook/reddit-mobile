@@ -1,10 +1,7 @@
-import { errors } from '@r/api-client';
 import makeRequest from './makeRequest';
 import config from 'config';
-
+import ResponseError from 'apiClient/errors/ResponseError';
 import logSafeJSONStringify from 'lib/logSafeJSONStringify';
-
-const { ResponseError } = errors;
 
 // TODO fix configs so 'server' comes through on the server. process.env.ENV will
 // be 'client' on the ... client

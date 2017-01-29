@@ -1,7 +1,5 @@
-import { endpoints, errors } from '@r/api-client';
-const { WikisEndpoint } = endpoints;
-const { ResponseError } = errors;
-
+import WikisEndpoint from 'apiClient/apis/WikisEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { makeWikiPath, cleanWikiPath } from 'lib/makeWikiPath';
 

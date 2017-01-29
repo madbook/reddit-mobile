@@ -1,9 +1,7 @@
-import { endpoints, errors } from '@r/api-client';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
-
-const { SubredditEndpoint } = endpoints;
-const { ResponseError } = errors;
+import SubredditEndpoint from 'apiClient/apis/SubredditEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_SUBREDDIT = 'FETCHING_SUBREDDIT';
 export const fetching = name => ({

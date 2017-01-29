@@ -1,7 +1,7 @@
 import { BaseHandler, METHODS } from '@r/platform/router';
 import * as platformActions from '@r/platform/actions';
-import { errors } from '@r/api-client';
 
+import ValidationError from 'apiClient/errors/ValidationError';
 import Session from 'app/models/Session';
 import * as sessionActions from 'app/actions/session';
 import * as loginActions from 'app/actions/login';
@@ -28,7 +28,7 @@ export default class Login extends BaseHandler {
       await dispatch(platformActions.redirect(redirectTo));
     } catch (e) {
       successful = false;
-      if (e instanceof errors.ValidationError && e.errors && e.errors[0]) {
+      if (e instanceof ValidationError && e.errors && e.errors[0]) {
         errorCode = e.errors[0].error;
         dispatch(sessionActions.sessionError(errorCode));
       } else {

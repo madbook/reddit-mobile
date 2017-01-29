@@ -1,15 +1,13 @@
 import url from 'url';
-
-import { endpoints, errors } from '@r/api-client';
 import * as platformActions from '@r/platform/actions';
+
+import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
+import ValidationError from 'apiClient/errors/ValidationError';
+import BadCaptchaError from 'apiClient/errors/BadCaptchaError';
 
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload, buildSubredditData, convertId } from 'lib/eventUtils';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-
-
-const { PostsEndpoint } = endpoints;
-const { ValidationError, BadCaptchaError } = errors;
 
 export const FIELD_UPDATE = 'POSTING__FIELD_UPDATE';
 export const CLOSE_CAPTCHA = 'POSTING__CLOSE_CAPTCHA';

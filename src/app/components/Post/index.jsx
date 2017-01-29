@@ -3,11 +3,10 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { models } from '@r/api-client';
 import { toggleModal } from '@r/widgets/modal';
 import includes from 'lodash/includes';
-const { PostModel } = models;
 
+import PostModel from 'apiClient/models/PostModel';
 import * as postActions from 'app/actions/posts';
 import * as reportingActions from 'app/actions/reporting';
 

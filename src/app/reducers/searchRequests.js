@@ -1,11 +1,9 @@
 import merge from '@r/platform/merge';
-import { models } from '@r/api-client';
 
+import { POST, SUBREDDIT } from 'apiClient/models/thingTypes';
 import * as searchActions from 'app/actions/search';
 import * as loginActions from 'app/actions/login';
 import { newSearchRequest } from 'app/models/SearchRequest';
-
-const { SUBREDDIT, POST } = models.ModelTypes;
 
 const filtered = (records, type) => {
   return records.filter(r => r.type === type);

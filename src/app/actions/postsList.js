@@ -1,9 +1,8 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { endpoints, errors } from '@r/api-client';
 import { paramsToPostsListsId } from 'app/models/PostsList';
 
-const { PostsEndpoint } = endpoints;
-const { ResponseError } = errors;
+import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_POSTS_LIST = 'FETCHING_POSTS_LIST';
 export const fetching = (postsListId, postsParams) => ({

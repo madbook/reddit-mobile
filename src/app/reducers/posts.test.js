@@ -1,9 +1,7 @@
 import createTest from '@r/platform/createTest';
-import { models } from '@r/api-client';
-const { PostModel } = models;
 
 import posts from './posts';
-
+import PostModel from 'apiClient/models/PostModel';
 import * as loginActions from 'app/actions/login';
 import * as activitiesActions from 'app/actions/activities';
 import * as commentsPageActions from 'app/actions/commentsPage';

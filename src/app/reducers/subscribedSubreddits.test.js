@@ -1,6 +1,6 @@
 import createTest from '@r/platform/createTest';
-import { models } from '@r/api-client';
 
+import Record from 'apiClient/apiBase/Record';
 import subscribedSubreddits from './subscribedSubreddits';
 import * as loginActions from 'app/actions/login';
 import * as subscribedSubredditsActions from 'app/actions/subscribedSubreddits';
@@ -41,7 +41,7 @@ createTest({ reducers: { subscribedSubreddits } }, ({ getStore, expect }) => {
 
       describe('RECEIVED_SUBSCRIBED_SUBREDDITS', () => {
         it('should add the subreddits to the store', () => {
-          const SUBREDDIT = new models.Record('subreddit', 'foobar', 't5_12345');
+          const SUBREDDIT = new Record('subreddit', 'foobar', 't5_12345');
 
           const { store } = getStore();
           store.dispatch(subscribedSubredditsActions.received({

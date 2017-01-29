@@ -1,10 +1,7 @@
-import { requestUtils } from '@r/api-client';
-import { errors } from '@r/api-client';
-
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
-const { apiRequest } = requestUtils;
-const { ResponseError } = errors;
+import apiRequest from 'apiClient/apiBase/apiRequest';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 export const REPORT = 'REPORT';
 export const MODAL_TYPE = 'REPORTING';

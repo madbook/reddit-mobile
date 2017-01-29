@@ -1,7 +1,6 @@
-import { endpoints, collections, errors } from '@r/api-client';
-const { Modtools } = endpoints;
-const { ModeratingSubreddits } = collections;
-const { ResponseError } = errors;
+import Modtools from 'apiClient/apis/ModTools';
+import { ModeratingSubreddits } from 'apiClient/collections/SubredditLists';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
@@ -32,12 +31,12 @@ export const MODTOOLS_SET_STICKY_POST_SUCCESS = 'MODTOOLS_SET_STICKY_POST_SUCCES
 
 export const removalPending = spam => ({
   type: MODTOOLS_REMOVAL_PENDING,
-  spam: spam,
+  spam,
 });
 
 export const removalError = spam => ({
   type: MODTOOLS_REMOVAL_ERROR,
-  spam: spam,
+  spam,
 });
 
 export const removalSuccess = (spam, thing, username) => ({
@@ -344,7 +343,7 @@ export const setStickyComment = (id, isSettingSticky) => async (dispatch, getSta
     dispatch(setStickyCommentSuccess(model, isSettingSticky));
 
     // If setting a sticky comment in a comments thread, the new sticky will
-    // replace an existing one. 
+    // replace an existing one.
     if (isSettingSticky) {
       const modelToUnsticky = stickyCommentsFromState(state)[0];
       if (modelToUnsticky) {

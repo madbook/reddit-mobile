@@ -1,6 +1,5 @@
-import { endpoints, errors } from '@r/api-client';
-const { SavedEndpoint } = endpoints;
-const { ResponseError } = errors;
+import SavedEndpoint from 'apiClient/apis/SavedEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToSavedRequestId } from 'app/models/SavedRequest';

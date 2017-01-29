@@ -1,7 +1,6 @@
 import createTest from '@r/platform/createTest';
-import { models } from '@r/api-client';
-const { CommentModel } = models;
 
+import CommentModel from 'apiClient/models/CommentModel';
 import comments from './comments';
 
 import * as loginActions from 'app/actions/login';

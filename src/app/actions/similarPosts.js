@@ -1,12 +1,11 @@
-import { endpoints, errors } from '@r/api-client';
-import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { some } from 'lodash/collection';
+import some from 'lodash/some';
 
+import SimilarPosts from 'apiClient/apis/SimilarPosts';
+import ResponseError from 'apiClient/errors/ResponseError';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { flags } from 'app/constants';
 import features from 'app/featureFlags';
 
-const { SimilarPosts } = endpoints;
-const { ResponseError } = errors;
 
 const {
   VARIANT_RECOMMENDED_SIMILAR_POSTS,

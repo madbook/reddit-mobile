@@ -1,10 +1,8 @@
-import { endpoints, errors } from '@r/api-client';
+import ResponseError from 'apiClient/errors/ResponseError';
+import SubredditRulesEndpoint from 'apiClient/apis/SubredditRulesEndpoint';
 
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
-
-const { SubredditRulesEndpoint } = endpoints;
-const { ResponseError } = errors;
 
 export const FETCHING_SUBREDDIT_RULES = 'FETCHING_SUBREDDIT_RULES';
 export const fetching = subredditName => ({

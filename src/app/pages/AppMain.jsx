@@ -84,9 +84,9 @@ const AppMain = props => {
     return (
       <div className='AppMainPage'>
         <NavFrame
-            showInterstitial={ false }
-            showDualPartInterstitial={ false }
-            showSmartBanner={ false }
+          showInterstitial={ false }
+          showDualPartInterstitial={ false }
+          showSmartBanner={ false }
         >
           <ErrorPage status={ statusCode } url={ url } referrer={ referrer } />
         </NavFrame>
@@ -107,20 +107,20 @@ const AppMain = props => {
         <FramedPage url={ `/:sort(${SORTS})` } component={ PostsFromSubredditPage } />
         <FramedPage url='/r/:subredditName' component={ PostsFromSubredditPage } />
         <FramedPage
-            url={ `/r/:subredditName/:sort(${SORTS})` }
-            component={ PostsFromSubredditPage }
+          url={ `/r/:subredditName/:sort(${SORTS})` }
+          component={ PostsFromSubredditPage }
         />
         <FramedPage
-            url='/r/:subredditName/comments/:postId/comment/:commentId'
-            component={ CommentsPage }
+          url='/r/:subredditName/comments/:postId/comment/:commentId'
+          component={ CommentsPage }
         />
         <FramedPage
-            url='/r/:subredditName/comments/:postId/:postTitle/:commentId'
-            component={ CommentsPage }
+          url='/r/:subredditName/comments/:postId/:postTitle/:commentId'
+          component={ CommentsPage }
         />
         <FramedPage
-            url='/r/:subredditName/comments/:postId/:postTitle?'
-            component={ CommentsPage }
+          url='/r/:subredditName/comments/:postId/:postTitle?'
+          component={ CommentsPage }
         />
         <FramedPage url='/search' component={ SearchPage } />
         <FramedPage url='/r/:subredditName/search' component={ SearchPage } />
@@ -129,8 +129,8 @@ const AppMain = props => {
         <FramedPage url='/r/:subredditName/(w|wiki)/:path(.*)?' component={ WikiPage } />
         <FramedPage url='/(help|w|wiki)/:path(.*)?' component={ WikiPage } />
         <FramedPage
-            url='/comments/:postId/:postTitle/:commentId'
-            component={ CommentsPage }
+          url='/comments/:postId/:postTitle/:commentId'
+          component={ CommentsPage }
         />
         <FramedPage url='/comments/:postId/:postTitle?' component={ CommentsPage } />
         <FramedPage url='/user/:userName/activity' component={ UserActivityPage } />
@@ -138,8 +138,8 @@ const AppMain = props => {
         <FramedPage url='/user/:userName/submitted' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/gild' component={ UserProfilePage } />
         <FramedPage
-            url='/user/:userName/:savedOrHidden(saved|hidden)'
-            component={ SavedAndHiddenPage }
+          url='/user/:userName/:savedOrHidden(saved|hidden)'
+          component={ SavedAndHiddenPage }
         />
         <FramedPage url='/user/:userName/' component={ UserProfilePage } />
         <FramedPage url='/message/compose' component={ DirectMessage } />

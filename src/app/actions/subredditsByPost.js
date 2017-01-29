@@ -1,13 +1,12 @@
-import { endpoints, errors } from '@r/api-client';
-import { apiOptionsFromState } from 'lib/apiOptionsFromState';
-import { some } from 'lodash/collection';
+import some from 'lodash/some';
 
+import SubredditsByPost from 'apiClient/apis/SubredditsByPost';
+import ResponseError from 'apiClient/errors/ResponseError';
+import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { flags } from 'app/constants';
 import features from 'app/featureFlags';
 import { trackExperimentClickEvent } from 'lib/eventUtils';
 
-const { SubredditsByPost } = endpoints;
-const { ResponseError } = errors;
 
 const {
   VARIANT_RECOMMENDED_BY_POST,

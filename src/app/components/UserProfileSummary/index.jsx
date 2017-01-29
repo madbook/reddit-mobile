@@ -1,9 +1,9 @@
 import './styles.less';
 
 import React from 'react';
-import { models } from '@r/api-client';
 import { Anchor } from '@r/platform/components';
 
+import Account from 'apiClient/models/Account';
 import { formatNumber } from 'lib/formatNumber';
 import { short, long } from 'lib/formatDifference';
 
@@ -36,7 +36,7 @@ export const UserProfileSummary = props => {
 };
 
 UserProfileSummary.propTypes = {
-  user: T.instanceOf(models.Account),
+  user: T.instanceOf(Account),
   isMyUser: T.bool,
 };
 

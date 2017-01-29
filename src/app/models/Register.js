@@ -1,8 +1,7 @@
 import superagent from 'superagent';
-import { errors } from '@r/api-client';
 
-const { ValidationError, ResponseError } = errors;
-
+import ResponseError from 'apiClient/errors/ResponseError';
+import ValidationError from 'apiClient/errors/ValidationError';
 
 
 export const registerUser = (username, password, email, newsletter, gRecaptchaResponse) =>

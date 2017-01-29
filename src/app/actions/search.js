@@ -1,12 +1,11 @@
-import { endpoints, errors } from '@r/api-client';
+import SearchEndpoint from 'apiClient/apis/SearchEndpoint';
+import ResponseError from 'apiClient/errors/ResponseError';
 
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload, buildSubredditData } from 'lib/eventUtils';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';
 
-const { SearchEndpoint } = endpoints;
-const { ResponseError } = errors;
 
 export const FETCHING_SEARCH_REQUEST = 'FETCHING_SEARCH_REQUEST';
 export const fetching = (id, params) => ({

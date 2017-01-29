@@ -2,8 +2,7 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { models } from '@r/api-client';
-const { POST, COMMENT } = models.ModelTypes;
+import { POST, COMMENT } from 'apiClient/models/thingTypes';
 
 import PaginationButtons from 'app/components/PaginationButtons';
 import Post from 'app/components/Post';
