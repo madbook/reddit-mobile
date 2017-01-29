@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 import { POST, SUBREDDIT } from 'apiClient/models/thingTypes';
 import * as searchActions from 'app/actions/search';

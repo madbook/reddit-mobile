@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 import * as savedActions from 'app/actions/saved';
 import { newSavedRequest } from 'app/models/SavedRequest';

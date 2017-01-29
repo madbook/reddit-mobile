@@ -1,5 +1,5 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 
 import similarPosts from './similarPosts';
 import * as similarPostsActions from 'app/actions/similarPosts';

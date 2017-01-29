@@ -1,7 +1,7 @@
 import './styles.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 
+import { Anchor } from 'platform/components';
 import { short } from 'lib/formatDifference';
 import mobilify from 'lib/mobilify';
 import { getStatusBy, getApprovalStatus, sumReportsCount } from 'lib/modToolHelpers.js';

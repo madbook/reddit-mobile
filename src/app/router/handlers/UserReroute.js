@@ -1,5 +1,5 @@
-import { setPage, navigateToUrl } from '@r/platform/actions';
-import { BaseHandler, METHODS } from '@r/platform/router';
+import { setPage, navigateToUrl } from 'platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
 
 export default class UserReroute extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {

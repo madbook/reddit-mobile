@@ -1,8 +1,8 @@
 import './styles.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 import { ModalTarget } from '@r/widgets/modal';
 
+import { Anchor } from 'platform/components';
 import PostModel from 'apiClient/models/PostModel';
 import PostDropdown from '../PostDropdown';
 import VotingBox from 'app/components/VotingBox';

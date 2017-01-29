@@ -1,7 +1,7 @@
 import './Composition.less';
 import React from 'react';
-import { JSForm } from '@r/platform/components';
 
+import { JSForm } from 'platform/components';
 const T = React.PropTypes;
 
 export default function DirectMessageComposition(props) {

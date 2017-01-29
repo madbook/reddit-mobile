@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import * as platformActions from '@r/platform/actions';
-
+import createTest from 'platform/createTest';
+import * as platformActions from 'platform/actions';
 import toaster, { GENERIC_ERROR } from './toaster';
 import * as postingActions from 'app/actions/posting';
 import * as toasterActions from 'app/actions/toaster';

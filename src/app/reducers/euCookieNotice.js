@@ -9,8 +9,7 @@
   This is on navigation so that we don't show the notice, update number of times
   shown, and then hide it, which would cause a pop-out or blink of the cookie notice.
 */
-import * as platformActions from '@r/platform/actions';
-
+import * as platformActions from 'platform/actions';
 import { EU_COOKIE_HIDE_AFTER_VIEWS } from 'app/constants';
 import * as euCookieActions from 'app/actions/euCookieNotice';
 

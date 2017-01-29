@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 // given an action, merges the model from it into state
 export default function(state, action, { restrictType }={}) {

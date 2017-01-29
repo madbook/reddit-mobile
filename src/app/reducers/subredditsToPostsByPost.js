@@ -1,5 +1,4 @@
-import merge from '@r/platform/merge';
-
+import merge from 'platform/merge';
 import * as subredditsToPostsByPostActions from 'app/actions/subredditsToPostsByPost';
 
 const DEFAULT = {};

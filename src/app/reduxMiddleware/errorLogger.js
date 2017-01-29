@@ -1,5 +1,5 @@
-import * as platformActions from '@r/platform/actions';
-import { urlFromPage } from '@r/platform/pageUtils';
+import * as platformActions from 'platform/actions';
+import { urlFromPage } from 'platform/pageUtils';
 import config from 'config';
 import errorLog from 'lib/errorLog';
 import logSafeJSONStringify from 'lib/logSafeJSONStringify';

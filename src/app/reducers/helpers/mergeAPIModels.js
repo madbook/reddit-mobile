@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 // given state thats is dictionary of <ModelId -> Model>, merge in a another dictionary
 // of <ModelId -> Model>

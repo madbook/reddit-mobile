@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import Record from 'apiClient/apiBase/Record';
 import subscribedSubreddits from './subscribedSubreddits';
 import * as loginActions from 'app/actions/login';

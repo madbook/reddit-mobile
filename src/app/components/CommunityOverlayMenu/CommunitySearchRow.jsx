@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form } from '@r/platform/components';
+
+import { Form } from 'platform/components';
 
 export default class CommunitySearchRow extends React.Component {
   constructor(props) {

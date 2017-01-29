@@ -1,5 +1,4 @@
-import merge from '@r/platform/merge';
-
+import merge from 'platform/merge';
 import * as loginActions from 'app/actions/login';
 import * as subredditActions from 'app/actions/subreddits';
 import { newSubredditRequest } from 'app/models/SubredditRequests';

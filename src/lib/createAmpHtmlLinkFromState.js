@@ -1,7 +1,5 @@
-import { matchRoute } from '@r/platform/navigationMiddleware';
-
+import { matchRoute } from 'platform/navigationMiddleware';
 import config from 'config';
-
 import { flags } from 'app/constants';
 import features from 'app/featureFlags';
 

@@ -1,9 +1,9 @@
-import { createQuery, extractQuery } from '@r/platform/pageUtils';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import omit from 'lodash/omit';
 
+import { createQuery, extractQuery } from 'platform/pageUtils';
 import { convertId } from 'lib/eventUtils';
 import findNearestLinkElement from 'lib/findNearestLinkElement';
 

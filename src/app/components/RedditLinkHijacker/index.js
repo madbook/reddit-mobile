@@ -1,5 +1,6 @@
 import React from 'react';
-import { LinkHijacker } from '@r/platform/components';
+
+import { LinkHijacker } from 'platform/components';
 
 // A pass-through for node-platform's `LinkHijacker`
 // that has the a regexp for catching all links that look like reddit links.

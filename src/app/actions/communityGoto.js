@@ -1,6 +1,5 @@
-import * as platformActions from '@r/platform/actions';
-import { METHODS } from '@r/platform/router';
-
+import * as platformActions from 'platform/actions';
+import { METHODS } from 'platform/router';
 import * as subredditActions from './subreddits';
 import Subreddit from 'apiClient/models/Subreddit';
 

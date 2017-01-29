@@ -7,8 +7,7 @@
  * modals in mweb are top level components, this is acting as a transport
  * mechanism from lower in the React hierarchy to the top.
 */
-import merge from '@r/platform/merge';
-
+import merge from 'platform/merge';
 import * as modalActions from 'app/actions/modal';
 import * as reportingActions from 'app/actions/reporting';
 

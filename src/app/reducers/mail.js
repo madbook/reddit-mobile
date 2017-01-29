@@ -1,5 +1,4 @@
-import merge from '@r/platform/merge';
-
+import merge from 'platform/merge';
 import * as loginActions from 'app/actions/login';
 import * as mailActions from 'app/actions/mail';
 

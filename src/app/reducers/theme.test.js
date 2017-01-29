@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import theme from './theme';
 import { themes } from 'app/constants';
 import * as themeActions from 'app/actions/theme';

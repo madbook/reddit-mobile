@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 import * as loginActions from 'app/actions/login';
 import * as commentsPageActions from 'app/actions/commentsPage';
 import * as postsListActions from 'app/actions/postsList';

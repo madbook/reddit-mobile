@@ -1,6 +1,6 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
-import * as platformActions from '@r/platform/actions';
+import * as platformActions from 'platform/actions';
 import * as xpromoActions from 'app/actions/xpromo';
 import * as loginActions from 'app/actions/login';
 import { markBannerClosed } from 'lib/smartBannerState';

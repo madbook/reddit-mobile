@@ -1,6 +1,7 @@
 import './Header.less';
 import React from 'react';
-import { BackAnchor } from '@r/platform/components';
+
+import { BackAnchor } from 'platform/components';
 
 export default function DirectMessageHeader() {
   return (

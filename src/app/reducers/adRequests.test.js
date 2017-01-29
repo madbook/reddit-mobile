@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import PostModel from 'apiClient/models/PostModel';
 // adActions.RECEIVED calls model.toRecord
 // so we need to test with a PostModel

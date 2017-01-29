@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import unblurredPosts, { DEFAULT } from './unblurredPosts';
 import * as loginActions from 'app/actions/login';
 import * as postActions from 'app/actions/posts';

@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import postCommentsData from './index';
 import * as commentsPageActions from 'app/actions/commentsPage';

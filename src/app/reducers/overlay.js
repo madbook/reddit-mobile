@@ -5,8 +5,7 @@ menu is open and visible to the user. The actions from
 Anytime the user changes pages, we'll close the current overlay (if any)
 */
 
-import * as platformActions from '@r/platform/actions';
-
+import * as platformActions from 'platform/actions';
 import * as compactActions from 'app/actions/compact';
 import * as overlayActions from 'app/actions/overlay';
 import * as themeActions from 'app/actions/theme';

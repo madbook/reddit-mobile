@@ -7,7 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { Anchor } from '@r/platform/components';
+import { Anchor } from 'platform/components';
 
 import Loading from 'app/components/Loading';
 import SubredditRule from 'app/components/SubredditRule';
@@ -24,7 +24,7 @@ const T = React.PropTypes;
  * @function
  * @param {Object} props
  * @param {string} props.subredditName The name of the subreddit
- * @param {RulesProps[]} rules 
+ * @param {RulesProps[]} rules
  */
 function SubredditRulesList(props) {
   const {

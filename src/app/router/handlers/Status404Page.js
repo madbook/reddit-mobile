@@ -1,5 +1,5 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
-import { setStatus } from '@r/platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
+import { setStatus } from 'platform/actions';
 import { trackPageEvents } from 'lib/eventUtils';
 
 export default class Status404Page extends BaseHandler {

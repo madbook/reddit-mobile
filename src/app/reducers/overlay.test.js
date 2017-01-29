@@ -1,7 +1,6 @@
-import createTest from '@r/platform/createTest';
-import { METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
-
+import createTest from 'platform/createTest';
+import { METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';
 import routes from 'app/router';
 
 import * as compactActions from 'app/actions/compact';

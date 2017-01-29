@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { UrlSwitch, Page } from '@r/platform/url';
-
+import { UrlSwitch, Page } from 'platform/url';
 import CommentsPage from './Comments';
 import { SUPPORTED_SORTS } from 'app/sortValues';
 import { PostsFromSubredditPage } from './PostsFromSubreddit';

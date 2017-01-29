@@ -3,8 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { BackAnchor, JSForm } from '@r/platform/components';
-
+import { BackAnchor, JSForm } from 'platform/components';
 import * as mailActions from 'app/actions/mail';
 import ThreadMessage from './Message';
 

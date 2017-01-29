@@ -3,8 +3,8 @@ import every from 'lodash/every';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor, JSForm } from '@r/platform/components';
 
+import { Anchor, JSForm } from 'platform/components';
 import cx from 'lib/classNames';
 import Modal from '../Modal';
 import ReCaptchaBox from '../ReCaptchaBox';

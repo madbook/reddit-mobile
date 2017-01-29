@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import has from 'lodash/has';
 
-import * as navigationActions from '@r/platform/actions';
-import { METHODS } from '@r/platform/router';
-
+import * as navigationActions from 'platform/actions';
+import { METHODS } from 'platform/router';
 import * as replyActions from 'app/actions/reply';
 import crawlerRequestSelector from 'app/selectors/crawlerRequestSelector';
 

@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
-
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 import Record from 'apiClient/apiBase/Record';
 import hiddenRequests from './hiddenRequests';
 import * as hiddenActions from 'app/actions/hidden';

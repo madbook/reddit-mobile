@@ -3,9 +3,10 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
-import { METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
+
+import { Anchor } from 'platform/components';
+import { METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';
 
 import cx from 'lib/classNames';
 

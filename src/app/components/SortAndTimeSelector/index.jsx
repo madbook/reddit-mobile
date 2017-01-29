@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as navigationActions from '@r/platform/actions';
-import { METHODS } from '@r/platform/router';
 
+import * as navigationActions from 'platform/actions';
+import { METHODS } from 'platform/router';
 import { listingTime } from 'lib/listingTime';
 
 import SortSelector from 'app/components/SortSelector';

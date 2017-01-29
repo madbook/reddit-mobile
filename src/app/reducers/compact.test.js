@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import * as compactActions from 'app/actions/compact';
 import * as loginActions from 'app/actions/login';
 import compact from './compact';

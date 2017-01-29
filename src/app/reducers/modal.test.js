@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import modal from './modal';
 import * as modalActions from 'app/actions/modal';
 import * as reportingActions from 'app/actions/reporting';

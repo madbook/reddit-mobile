@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import scrollPositions, { DEFAULT } from './scrollPositions';
 import * as loginActions from 'app/actions/login';

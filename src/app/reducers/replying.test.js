@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import replying from './replying';
 import * as replyActions from 'app/actions/reply';

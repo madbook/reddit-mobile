@@ -4,8 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { Anchor } from '@r/platform/components';
-
+import { Anchor } from 'platform/components';
 import { urlWith } from 'lib/urlWith';
 import { cleanObject } from 'lib/cleanObject';
 

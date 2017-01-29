@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import preferencesRequest, { DEFAULT } from './preferencesRequest';
 import * as loginActions from 'app/actions/login';

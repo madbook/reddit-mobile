@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import raf from 'raf';
-import { urlFromPage } from '@r/platform/pageUtils';
 
+import { urlFromPage } from 'platform/pageUtils';
 import * as scrollPositionActions from 'app/actions/scrollPosition';
 
 class _ScrollPositionSync extends React.Component {

@@ -1,6 +1,5 @@
-import merge from '@r/platform/merge';
-import * as platformActions from '@r/platform/actions';
-
+import merge from 'platform/merge';
+import * as platformActions from 'platform/actions';
 import * as replyActions from 'app/actions/reply';
 import * as commentActions from 'app/actions/comment';
 import * as modActions from 'app/actions/modTools';

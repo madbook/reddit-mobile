@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import posts from './posts';
 import PostModel from 'apiClient/models/PostModel';
 import * as loginActions from 'app/actions/login';

@@ -1,10 +1,10 @@
 import './styles.less';
 
 import React from 'react';
-import { Anchor, Form } from '@r/platform/components';
-
 import map from 'lodash/map';
 
+
+import { Anchor, Form } from 'platform/components';
 import { themes } from 'app/constants';
 const { NIGHTMODE } = themes;
 

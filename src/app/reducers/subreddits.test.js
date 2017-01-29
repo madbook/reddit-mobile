@@ -1,7 +1,5 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import subreddits from './subreddits';
-
 import * as loginActions from 'app/actions/login';
 import * as searchActions from 'app/actions/search';
 import * as subredditActions from 'app/actions/subreddits';

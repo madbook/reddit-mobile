@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
-
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 import Record from 'apiClient/apiBase/Record';
 import postsLists from './postsLists';
 import * as postsListActions from 'app/actions/postsList';

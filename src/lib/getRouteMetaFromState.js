@@ -1,5 +1,4 @@
-import { matchRoute } from '@r/platform/navigationMiddleware';
-
+import { matchRoute } from 'platform/navigationMiddleware';
 import routes from 'app/router';
 
 export default state => {

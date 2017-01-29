@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 import * as similarPostsActions from 'app/actions/similarPosts';
 

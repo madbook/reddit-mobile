@@ -1,6 +1,5 @@
-import { METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
-
+import { METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';
 import MessagesEndpoint from 'apiClient/apis/MessagesEndpoint';
 import ResponseError from 'apiClient/errors/ResponseError';
 import ValidationError from 'apiClient/errors/ValidationError';

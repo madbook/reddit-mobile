@@ -1,7 +1,8 @@
-import React from 'react';
-import { Anchor } from '@r/platform/components';
-
 import './styles.less';
+import React from 'react';
+
+import { Anchor } from 'platform/components';
+
 
 const T = React.PropTypes;
 

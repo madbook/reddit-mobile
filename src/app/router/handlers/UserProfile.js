@@ -1,7 +1,6 @@
 import find from 'lodash/find';
 
-import { BaseHandler, METHODS } from '@r/platform/router';
-
+import { BaseHandler, METHODS } from 'platform/router';
 import * as accountActions from 'app/actions/accounts';
 import { fetchUserBasedData } from './handlerCommon';
 import { convertId, trackPageEvents } from 'lib/eventUtils';

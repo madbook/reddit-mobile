@@ -1,6 +1,5 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
+import { BaseHandler, METHODS } from 'platform/router';
 import * as subredditActions from 'app/actions/subreddits';
-
 import { fetchUserBasedData } from './handlerCommon';
 
 export default class SubredditAboutPage extends BaseHandler {

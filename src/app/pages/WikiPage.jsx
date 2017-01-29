@@ -1,6 +1,6 @@
 import React from 'react';
-import { BackAnchor } from '@r/platform/components';
 
+import { BackAnchor } from 'platform/components';
 import CommunityHeader from 'app/components/CommunityHeader';
 import Wiki from 'app/components/Wiki';
 

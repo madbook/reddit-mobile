@@ -1,4 +1,4 @@
-import { redirect } from '@r/platform/actions';
+import { redirect } from 'platform/actions';
 import { markBannerClosed, shouldNotShowBanner } from 'lib/smartBannerState';
 import {
   trackPreferenceEvent,

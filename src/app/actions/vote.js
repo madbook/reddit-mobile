@@ -1,5 +1,4 @@
-import * as platformActions from '@r/platform/actions';
-
+import * as platformActions from 'platform/actions';
 import { thingType } from 'apiClient/models/thingTypes';
 import ResponseError from 'apiClient/errors/ResponseError';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';

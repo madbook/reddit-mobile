@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import url from 'url';
 
-import { redirect } from '@r/platform/actions';
-
+import { redirect } from 'platform/actions';
 import * as xpromoActions from 'app/actions/xpromo';
 import { XPROMO_DISMISS, xPromoExtraScreenViewData } from 'lib/eventUtils';
 import getSubreddit from 'lib/getSubredditFromState';

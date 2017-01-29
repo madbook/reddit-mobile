@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import * as loginActions from 'app/actions/login';
 import subredditRequests from './subredditRequests';
 import * as subredditActions from 'app/actions/subreddits';

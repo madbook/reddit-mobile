@@ -1,6 +1,5 @@
-import * as platformActions from '@r/platform/actions';
-import { BaseHandler, METHODS } from '@r/platform/router';
-
+import * as platformActions from 'platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
 import config from 'config';
 
 export default class LiveRedirectHandler extends BaseHandler {

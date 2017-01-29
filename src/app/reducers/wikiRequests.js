@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 import * as wikiActions from 'app/actions/wiki';
 import { newWikiRequest } from 'app/models/WikiRequest';
 import * as loginActions from 'app/actions/login';

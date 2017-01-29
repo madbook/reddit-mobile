@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import * as commentActions from 'app/actions/comment';
 import * as loginActions from 'app/actions/login';
 import * as postActions from 'app/actions/posts';

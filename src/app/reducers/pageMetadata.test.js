@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import * as platformActions from '@r/platform/actions';
-
+import createTest from 'platform/createTest';
+import * as platformActions from 'platform/actions';
 import { SET_TITLE } from 'app/actions/pageMetadata';
 
 import pageMetadata from './pageMetadata';

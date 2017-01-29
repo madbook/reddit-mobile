@@ -1,6 +1,5 @@
-import { setStatus } from '@r/platform/actions';
-import { BaseHandler, METHODS } from '@r/platform/router';
-
+import { setStatus } from 'platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
 import * as adActions from 'app/actions/ads';
 import * as postsListActions from 'app/actions/postsList';
 import * as subredditActions from 'app/actions/subreddits';

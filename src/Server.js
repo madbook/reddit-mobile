@@ -6,9 +6,8 @@ import { cpus } from 'os';
 import urlParser from 'url';
 import Raven from 'raven';
 
-import Server from '@r/platform/Server';
-import { dispatchInitialShell } from '@r/platform/plugins';
-
+import Server from 'platform/Server';
+import { dispatchInitialShell } from 'platform/plugins';
 import { APIOptions } from 'apiClient';
 import config from 'config';
 import errorLog from 'lib/errorLog';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 
+import { Anchor } from 'platform/components';
 import OverlayMenu from 'app/components/OverlayMenu';
 
 import './styles.less';

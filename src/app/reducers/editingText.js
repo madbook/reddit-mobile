@@ -33,9 +33,9 @@ a post who's edit failed
 
 NOTE: if edit succeeds, the object will be removed from state
 */
-import merge from '@r/platform/merge';
 import omit from 'lodash/omit';
 
+import merge from 'platform/merge';
 import * as commentActions from 'app/actions/comment';
 import * as loginActions from 'app/actions/login';
 import * as postActions from 'app/actions/posts';

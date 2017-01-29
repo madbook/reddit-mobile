@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
 
+import { Anchor } from 'platform/components';
 import * as subredditAutocompleteActions from 'app/actions/subredditAutocomplete';
 import Modal from '../Modal';
 import './styles.less';

@@ -3,8 +3,7 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { JSForm } from '@r/platform/components';
-
+import { JSForm } from 'platform/components';
 import cx from 'lib/classNames';
 import * as replyActions from 'app/actions/reply';
 

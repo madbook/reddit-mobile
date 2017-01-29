@@ -1,6 +1,5 @@
-import { setStatus } from '@r/platform/actions';
-import { BaseHandler, METHODS } from '@r/platform/router';
-
+import { setStatus } from 'platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
 import { POST_TYPE } from 'apiClient/models/thingTypes';
 import { cleanObject } from 'lib/cleanObject';
 import { fetchUserBasedData } from './handlerCommon';

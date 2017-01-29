@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import autocompleteSubreddits from './autocompleteSubreddits';
 import * as subredditAutocompleteActions from 'app/actions/subredditAutocomplete';
 

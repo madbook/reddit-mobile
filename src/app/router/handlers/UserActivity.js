@@ -1,5 +1,4 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
-
+import { BaseHandler, METHODS } from 'platform/router';
 import { cleanObject } from 'lib/cleanObject';
 import { SORTS } from 'app/sortValues';
 import { COMMENTS_ACTIVITY, POSTS_ACTIVITY } from 'app/actions/activities';

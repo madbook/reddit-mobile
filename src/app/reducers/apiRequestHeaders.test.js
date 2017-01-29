@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import apiRequestHeaders, { DEFAULT } from './apiRequestHeaders';
 import * as apiRequestHeadersActions from 'app/actions/apiRequestHeaders';
 

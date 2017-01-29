@@ -1,5 +1,4 @@
-import merge from '@r/platform/merge';
-
+import merge from 'platform/merge';
 import config from 'config';
 import { APIOptions, optionsWithAuth } from 'apiClient';
 

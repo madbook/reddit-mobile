@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
-
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 import subredditsByPost from './subredditsByPost';
 import * as subredditsByPostActions from 'app/actions/subredditsByPost';
 

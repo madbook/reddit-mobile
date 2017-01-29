@@ -1,6 +1,6 @@
 import url from 'url';
-import * as platformActions from '@r/platform/actions';
 
+import * as platformActions from 'platform/actions';
 import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
 import ValidationError from 'apiClient/errors/ValidationError';
 import BadCaptchaError from 'apiClient/errors/BadCaptchaError';

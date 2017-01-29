@@ -1,5 +1,5 @@
 import * as postActions from 'app/actions/posts';
-import { SET_PAGE, GOTO_PAGE_INDEX } from '@r/platform/actions';
+import { SET_PAGE, GOTO_PAGE_INDEX } from 'platform/actions';
 import { removePrefix } from 'lib/eventUtils';
 
 export const DEFAULT = {};

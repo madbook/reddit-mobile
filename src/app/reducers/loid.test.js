@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import * as loidActions from 'app/actions/loid';
 import * as accountActions from 'app/actions/accounts';
 

@@ -4,9 +4,9 @@ import 'app/components/LoginRegistrationForm/styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { METHODS } from '@r/platform/router';
-import { Form, Anchor, BackAnchor } from '@r/platform/components';
 
+import { METHODS } from 'platform/router';
+import { Form, Anchor, BackAnchor } from 'platform/components';
 import { loginErrors, genericErrors } from 'app/constants';
 
 import * as sessionActions from 'app/actions/session';

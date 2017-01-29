@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import * as subredditRulesActions from 'app/actions/subredditRules';
 import subredditRulesRequests from 'app/reducers/subredditRulesRequests';

@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import wikiRequests from './wikiRequests';
 import * as wikiActions from 'app/actions/wiki';
 

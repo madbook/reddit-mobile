@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Form } from '@r/platform/components';
+
+import { Form } from 'platform/components';
 
 export const SubredditSubscribeForm = (props) => {
   const { uuid, fullName, isSubscriber, className, renderBody } = props;

@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import mail, { DEFAULT } from './mail';
 
 import * as loginActions from 'app/actions/login';

@@ -1,9 +1,9 @@
 import './styles.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 import { Tooltip } from '@r/widgets/tooltip';
 import { Modal } from '@r/widgets/modal';
 
+import { Anchor } from 'platform/components';
 import cx from 'lib/classNames';
 
 const T = React.PropTypes;

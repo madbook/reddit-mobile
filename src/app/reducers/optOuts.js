@@ -1,6 +1,5 @@
-import merge from '@r/platform/merge';
-import * as platformActions from '@r/platform/actions';
-
+import merge from 'platform/merge';
+import * as platformActions from 'platform/actions';
 import { XPROMO_INTERSTITIAL_OPT_OUT } from 'app/constants';
 
 const DEFAULT = {};

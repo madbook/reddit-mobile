@@ -1,5 +1,5 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 
 import recommendedSubreddits from './recommendedSubreddits';
 import * as recommendedSubredditsActions from 'app/actions/recommendedSubreddits';

@@ -1,6 +1,5 @@
 import range from 'lodash/range';
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import { VISITED_POSTS_COUNT } from 'app/constants';
 
 import visitedPosts from './visitedPosts';

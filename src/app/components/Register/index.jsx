@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { METHODS } from '@r/platform/router';
-import { BackAnchor, Anchor, Form } from '@r/platform/components';
 
+import { METHODS } from 'platform/router';
+import { BackAnchor, Anchor, Form } from 'platform/components';
 import config from 'config';
 import * as sessionActions from 'app/actions/session';
 

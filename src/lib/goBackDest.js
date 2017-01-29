@@ -1,4 +1,4 @@
-import { urlFromPage } from '@r/platform/pageUtils';
+import { urlFromPage } from 'platform/pageUtils';
 
 // Returns the url of the last page the user was on that's not in the
 // excludedUrls. For example, when a user closes a modal while jumping between

@@ -1,6 +1,5 @@
-import { matchRoute } from '@r/platform/navigationMiddleware';
+import { matchRoute } from 'platform/navigationMiddleware';
 import values from 'lodash/values';
-
 import config from 'config';
 
 export const listingCanonical = (currentPage, state) => {

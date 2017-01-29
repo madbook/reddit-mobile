@@ -1,9 +1,8 @@
 import './styles.less';
 import React from 'react';
-
-import { UrlSync } from '@r/platform/components';
 import { TooltipShutter } from '@r/widgets/tooltip';
 
+import { UrlSync } from 'platform/components';
 import AdblockTester from './components/AdblockTester';
 import AppMainPage from './pages/AppMain';
 import AppOverlayMenu from './components/AppOverlayMenu';

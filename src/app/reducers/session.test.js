@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import session from './session';
 import * as sessionActions from 'app/actions/session';

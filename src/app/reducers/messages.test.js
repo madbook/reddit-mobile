@@ -1,7 +1,5 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 import messages from './messages';
-
 import * as loginActions from 'app/actions/login';
 import * as mailActions from 'app/actions/mail';
 

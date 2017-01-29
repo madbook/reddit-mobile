@@ -1,7 +1,5 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
-
-import ValidationError from 'apiClient/errors/ValidationError';
+import { BaseHandler, METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';import ValidationError from 'apiClient/errors/ValidationError';
 import Session from 'app/models/Session';
 import * as sessionActions from 'app/actions/session';
 import * as loginActions from 'app/actions/login';

@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import sessionRefreshing from './sessionRefreshing';
 import * as sessionRefreshingActions from 'app/actions/sessionRefreshing';

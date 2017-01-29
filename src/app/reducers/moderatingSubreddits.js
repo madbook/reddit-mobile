@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 import * as modToolActions from 'app/actions/modTools';
 import * as loginActions from 'app/actions/login';
 

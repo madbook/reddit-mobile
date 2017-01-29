@@ -1,4 +1,4 @@
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 import * as subredditRulesActions from 'app/actions/subredditRules';
 import { newSubredditRulesRequest } from 'app/models/SubredditRulesRequests';

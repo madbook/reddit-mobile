@@ -1,4 +1,4 @@
-import createTest from '@r/platform/createTest';
+import createTest from 'platform/createTest';
 
 import collapsed from './index';
 import * as commentActions from 'app/actions/comment';

@@ -99,7 +99,7 @@ Full example:
 import React from 'react';
 import { Provider } from 'react-redux';
 import { makeCookieArchiver } from '@r/redux-state-archiver';
-import { UrlSync } from '@r/platform/components';
+import { UrlSync } from 'platform/components';
 import App from './src/App';
 
 const themeSelector = (state) => state.theme;

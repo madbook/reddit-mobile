@@ -1,6 +1,5 @@
-import createTest from '@r/platform/createTest';
-import * as platformActions from '@r/platform/actions';
-
+import createTest from 'platform/createTest';
+import * as platformActions from 'platform/actions';
 import routes from 'app/router';
 import posting from './posting';
 import * as loginActions from 'app/actions/login';

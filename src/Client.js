@@ -3,11 +3,13 @@ import './lib/dnt';
 
 import React from 'react';
 import Raven from 'raven-js';
-import Client from '@r/platform/Client';
-import * as platformActions from '@r/platform/actions';
 import isEmpty from 'lodash/isEmpty';
 
 import localStorageAvailable from 'lib/localStorageAvailable';
+
+import Client from 'platform/Client';
+import * as platformActions from 'platform/actions';
+
 import App from 'app';
 import config from 'config';
 import errorLog from 'lib/errorLog';

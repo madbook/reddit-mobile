@@ -3,7 +3,8 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
+
+import { Anchor } from 'platform/components';
 import * as subredditsByPostActions from 'app/actions/subredditsByPost';
 
 const T = React.PropTypes;

@@ -23,7 +23,6 @@
     "@r/build": "~0.14.0",
     "@r/flags": "^1.5.0",
     "@r/middleware": "~0.8.1",
-    "@r/platform": "~0.17.1",
     "@r/private": "0.4.0",
     "@r/widgets": "~0.2.2",
     "Base64": "1.0.0",
@@ -57,10 +56,14 @@
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "chai": "3.5.0",
+    "chai-enzyme": "0.4.2",
+    "enzyme": "2.2.0",
     "eslint": "^3.13.1",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
     "mocha": "2.4.5",
+    "react-addons-test-utils": "15.0.1",
+    "sinon": "1.17.3",
     "sinon-chai": "2.8.0",
     "webpack-bundle-analyzer": "^2.2.1"
   }

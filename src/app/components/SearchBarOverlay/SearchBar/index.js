@@ -1,7 +1,8 @@
 import './styles.less';
 
 import React from 'react';
-import { Form } from '@r/platform/components';
+
+import { Form } from 'platform/components';
 
 const T = React.PropTypes;
 

@@ -1,5 +1,5 @@
 import { SET_TITLE } from 'app/actions/pageMetadata';
-import * as platformActions from '@r/platform/actions';
+import * as platformActions from 'platform/actions';
 
 export const DEFAULT = {
   title: 'reddit: the front page of the internet',

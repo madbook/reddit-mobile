@@ -1,8 +1,7 @@
 import { COMMENT } from 'apiClient/models/thingTypes';
 
-import * as commentActions from 'app/actions/comment';
 import * as commentsPageActions from 'app/actions/commentsPage';
-
+import * as commentActions from 'app/actions/comment';
 import * as replyActions from 'app/actions/reply';
 import * as loginActions from 'app/actions/login';
 import * as voteActions from 'app/actions/vote';
@@ -16,7 +15,7 @@ import * as activitiesActions from 'app/actions/activities';
 
 import mergeAPIModels from 'app/reducers/helpers/mergeAPIModels';
 import mergeUpdatedModel from 'app/reducers/helpers/mergeUpdatedModel';
-import merge from '@r/platform/merge';
+import merge from 'platform/merge';
 
 const DEFAULT = {};
 
@@ -101,7 +100,7 @@ export default (state=DEFAULT, action={}) => {
             model: thing.set({
               approved: false,
               removed: !spam,
-              spam: spam,
+              spam,
               bannedBy: username,
             }),
           },

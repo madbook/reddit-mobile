@@ -1,5 +1,4 @@
-import createTest from '@r/platform/createTest';
-
+import createTest from 'platform/createTest';
 // NOTE: default is an instanceOf a Preferences model from
 // api-client. So for testing we need to call .set instead
 // of using object splats. .set will return a new instance

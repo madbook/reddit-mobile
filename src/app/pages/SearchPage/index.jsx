@@ -4,7 +4,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
+import { Anchor } from 'platform/components';
 
 import SearchPageHandler from 'app/router/handlers/SearchPage';
 import { paramsToSearchRequestId } from 'app/models/SearchRequest';

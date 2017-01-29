@@ -1,6 +1,7 @@
 import './Header.less';
 import React from 'react';
-import { Anchor } from '@r/platform/components';
+
+import { Anchor } from 'platform/components';
 
 export default function MessagesHeader() {
   return (

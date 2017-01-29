@@ -3,9 +3,9 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { navigateToUrl } from '@r/platform/actions';
-import { METHODS } from '@r/platform/router';
 
+import { navigateToUrl } from 'platform/actions';
+import { METHODS } from 'platform/router';
 import filter from 'lodash/fp/filter';
 import first from 'lodash/fp/first';
 import flow from 'lodash/fp/flow';

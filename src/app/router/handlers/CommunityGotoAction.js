@@ -1,4 +1,4 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
+import { BaseHandler, METHODS } from 'platform/router';
 import * as communityGotoActions from 'app/actions/communityGoto';
 
 export default class CommunityGotoAction extends BaseHandler {

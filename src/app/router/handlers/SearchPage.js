@@ -1,7 +1,6 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
+import { BaseHandler, METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';
 import { urlWith } from 'lib/urlWith';
-
 import { cleanObject } from 'lib/cleanObject';
 import * as searchActions from 'app/actions/search';
 import { fetchUserBasedData } from './handlerCommon';

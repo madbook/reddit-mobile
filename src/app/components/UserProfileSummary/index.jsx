@@ -1,8 +1,8 @@
 import './styles.less';
 
 import React from 'react';
-import { Anchor } from '@r/platform/components';
 
+import { Anchor } from 'platform/components';
 import Account from 'apiClient/models/Account';
 import { formatNumber } from 'lib/formatNumber';
 import { short, long } from 'lib/formatDifference';

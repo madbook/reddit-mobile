@@ -1,9 +1,7 @@
-import createTest from '@r/platform/createTest';
-import * as platformActions from '@r/platform/actions';
+import createTest from 'platform/createTest';
+import * as platformActions from 'platform/actions';
 import * as postActions from 'app/actions/posts';
-
 import routes from 'app/router';
-
 import playingPosts, { DEFAULT } from './playingPosts';
 
 createTest({ reducers: { playingPosts }, routes }, ({ getStore, expect }) => {

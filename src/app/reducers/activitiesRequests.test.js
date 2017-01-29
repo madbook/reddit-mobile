@@ -1,7 +1,6 @@
-import createTest from '@r/platform/createTest';
-import merge from '@r/platform/merge';
+import createTest from 'platform/createTest';
+import merge from 'platform/merge';
 import Record from 'apiClient/apiBase/Record';
-
 import activitiesRequests from './activitiesRequests';
 import * as activitiesActions from 'app/actions/activities';
 import * as loginActions from 'app/actions/login';

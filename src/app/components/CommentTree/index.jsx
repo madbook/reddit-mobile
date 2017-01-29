@@ -5,7 +5,7 @@ import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as platformActions from '@r/platform/actions';
+import * as platformActions from 'platform/actions';
 
 import includes from 'lodash/includes';
 

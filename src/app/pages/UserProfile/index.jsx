@@ -3,8 +3,8 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Anchor } from '@r/platform/components';
 
+import { Anchor } from 'platform/components';
 import { UserProfileHeader } from 'app/components/UserProfileHeader';
 import { UserProfileSummary } from 'app/components/UserProfileSummary';
 import Loading from 'app/components/Loading';

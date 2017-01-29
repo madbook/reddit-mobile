@@ -1,6 +1,5 @@
-import { BaseHandler, METHODS } from '@r/platform/router';
-import * as platformActions from '@r/platform/actions';
-
+import { BaseHandler, METHODS } from 'platform/router';
+import * as platformActions from 'platform/actions';
 import { LOGGEDOUT_REDIRECT } from 'app/constants';
 import * as mailActions from 'app/actions/mail';
 import { fetchUserBasedData } from './handlerCommon';
