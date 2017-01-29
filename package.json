@@ -31,6 +31,7 @@
     "autoprefixer": "6.3.6",
     "babel-polyfill": "^6.7.4",
     "cluster": "^0.7.7",
+    "crypto-js": "3.1.8",
     "event-tracker": "git://github.com/reddit/event-tracker.git#28bc2dd9ce3b80540fdf189e1b003f8264cd0d08",
     "js-cookie": "^2.1.1",
     "json-stable-stringify": "^1.0.1",
@@ -49,7 +50,6 @@
     "react-redux": "4.4.5",
     "redux": "3.5.2",
     "reselect": "2.5.1",
-    "sha1": "^1.1.1",
     "source-map-support": "^0.4.0",
     "statsd-client": "^0.2.2",
     "superagent": "1.8.3"

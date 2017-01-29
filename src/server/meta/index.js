@@ -1,5 +1,5 @@
-import crypto from 'crypto';
-
+import { atob } from 'Base64';
+import HmacSha1 from 'crypto-js/hmac-sha1';
 import superagent from 'superagent';
 
 import { formatLogJSON } from 'lib/errorLog';
@@ -196,16 +196,8 @@ export default (router, apiOptions) => {
       return;
     }
 
-    const secret = (new Buffer(apiOptions.actionNameSecret, 'base64')).toString();
-    const algorithm = 'sha1';
-
-    const hmac = crypto.createHmac(algorithm, secret);
-    hmac.setEncoding('hex');
-    hmac.write(timings.actionName);
-    hmac.end();
-
-    const hash = hmac.read();
-
+    const secret = atob(apiOptions.actionNameSecret);
+    const hash = HmacSha1(timings.actionName, secret).toString();
     timings.verification = hash;
 
     superagent

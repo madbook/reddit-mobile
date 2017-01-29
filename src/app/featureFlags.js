@@ -1,9 +1,8 @@
 import Flags from '@r/flags';
 import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
-import sha1 from 'sha1';
+import sha1 from 'crypto-js/sha1';
 import url from 'url';
-
 
 import { flags as flagConstants } from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
@@ -13,6 +12,7 @@ import { extractUser, getExperimentData } from 'lib/experiments';
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload } from 'lib/eventUtils';
 import { getDevice, IPHONE, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
+
 
 const {
   BETA,
@@ -363,7 +363,7 @@ flags.addRule('notOptedOut', function (flag) {
 flags.addRule('pageBucketPercent', function(config) {
   const { seed, percentage } = config;
   const contentId = getContentId(this.state);
-  const hashed = sha1(`${seed}${contentId}`);
+  const hashed = sha1(`${seed}${contentId}`).toString();
 
   // hashed is a 160-bit number expressed as a hex string.
   // We want to find (hashed % 1000), so we can map the hash to bucket sizes

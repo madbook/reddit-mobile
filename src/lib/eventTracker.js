@@ -1,5 +1,6 @@
-import crypto from 'crypto';
 import EventTracker from 'event-tracker';
+import HmacSHA256 from 'crypto-js/hmac-sha256';
+import { atob } from 'Base64';
 
 import config from 'config';
 import makeRequest from 'lib/makeRequest';
@@ -7,12 +8,7 @@ import { objectToHash } from 'lib/objectToHash';
 import { DEFAULT_API_TIMEOUT } from 'app/constants';
 
 function calculateHash(key, string) {
-  const hmac = crypto.createHmac('sha256', key);
-  hmac.setEncoding('hex');
-  hmac.write(string);
-  hmac.end();
-
-  return hmac.read();
+  return HmacSHA256(string, key).toString();
 }
 
 function post({url, data, query, headers, done}) {
@@ -56,7 +52,7 @@ export function getEventTracker() {
 
   if (!tracker) {
     const sendEvent = process.env.NODE_ENV === 'production' ? post : stubbedPost;
-    const base64Secret = new Buffer(trackerClientSecret, 'base64').toString();
+    const base64Secret = atob(trackerClientSecret);
 
     tracker = new EventTracker(
       trackerKey,
