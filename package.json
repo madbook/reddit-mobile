@@ -11,6 +11,7 @@
     "watch": "npm run fonts && NODE_ENV=development blueprints -w",
     "dev-build": "NODE_ENV=development blueprints",
     "dev-server": "NODE_ENV=development nodemon ./bin/Server.js",
+    "analyze": "ANALYZE_BUILD=true npm run build",
     "lint": "eslint src --ext .js,.jsx",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
     "fonts": "webfonts",
@@ -61,6 +62,7 @@
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
     "mocha": "2.4.5",
-    "sinon-chai": "2.8.0"
+    "sinon-chai": "2.8.0",
+    "webpack-bundle-analyzer": "^2.2.1"
   }
 }
