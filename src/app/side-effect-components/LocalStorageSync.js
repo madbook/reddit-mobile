@@ -1,4 +1,4 @@
-import { makeLocalStorageArchiver } from '@r/redux-state-archiver';
+import { makeLocalStorageArchiver } from './StateArchiver';
 
 const collapsedSelector = state => state.collapsedComments;
 const expandedSelector = state => state.expandedPosts;

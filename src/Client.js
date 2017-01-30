@@ -7,8 +7,7 @@ import Client from '@r/platform/Client';
 import * as platformActions from '@r/platform/actions';
 import isEmpty from 'lodash/isEmpty';
 
-import { isLocalStorageAvailable } from '@r/redux-state-archiver';
-
+import localStorageAvailable from 'lib/localStorageAvailable';
 import App from 'app';
 import config from 'config';
 import errorLog from 'lib/errorLog';
@@ -116,7 +115,7 @@ const client = Client({
     data.meta.env = 'CLIENT';
 
     // Pull some defaults from localStorage (if available)
-    if (isLocalStorageAvailable()) {
+    if (localStorageAvailable()) {
       try {
         const collapsedComments = window.localStorage.collapsedComments;
         if (collapsedComments !== undefined) {

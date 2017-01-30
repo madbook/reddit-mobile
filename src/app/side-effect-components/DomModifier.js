@@ -1,4 +1,4 @@
-import { makeStateArchiver } from '@r/redux-state-archiver';
+import { makeStateArchiver } from './StateArchiver';
 import { themeClass } from 'server/templates/themeClass';
 import { themes, OVERLAY_MENU_VISIBLE_CSS_CLASS } from 'app/constants';
 import { stopScroll } from 'lib/stopScroll';

@@ -1,5 +1,6 @@
 import uniq from 'lodash/uniq';
-import { makeCookieArchiver } from '@r/redux-state-archiver';
+
+import { makeCookieArchiver } from './StateArchiver';
 import { RECENT_CLICKS_LENGTH } from 'app/constants';
 
 const recentClicksSelector = state => {

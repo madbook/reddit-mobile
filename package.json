@@ -24,7 +24,6 @@
     "@r/middleware": "~0.8.1",
     "@r/platform": "~0.17.1",
     "@r/private": "0.4.0",
-    "@r/redux-state-archiver": "~0.0.5",
     "@r/widgets": "~0.2.2",
     "Base64": "1.0.0",
     "autoprefixer": "6.3.6",
