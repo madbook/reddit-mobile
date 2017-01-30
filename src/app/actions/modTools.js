@@ -17,7 +17,6 @@ export const FETCHING_MODERATING_SUBREDDITS = 'FETCHING_MODERATING_SUBREDDITS';
 export const RECEIVED_MODERATING_SUBREDDITS = 'RECEIVED_MODERATING_SUBREDDITS';
 export const FETCH_FAILED_MODERATING_SUBREDDITS = 'FETCH_FAILED_MODERATING_SUBREDDITS';
 export const MODTOOLS_SET_STICKY_POST_ERROR = 'MODTOOLS_SET_STICKY_POST_ERROR';
-export const MODTOOLS_SET_STICKY_POST_PENDING = 'MODTOOLS_SET_STICKY_POST_PENDING';
 export const MODTOOLS_SET_STICKY_POST_SUCCESS = 'MODTOOLS_SET_STICKY_POST_SUCCESS';
 
 export const removalPending = spam => ({
@@ -63,10 +62,6 @@ export const receivedSubs = apiResponse => ({
 export const fetchSubsFailed = error => ({
   type: FETCH_FAILED_MODERATING_SUBREDDITS,
   error,
-});
-
-const setStickyPostPending = () => ({
-  type: MODTOOLS_SET_STICKY_POST_PENDING,
 });
 
 const setStickyPostError = (error, isSettingSticky) => ({
@@ -156,8 +151,6 @@ export const setStickyPost = (id, isSettingSticky) => async (dispatch, getState)
   const state = getState();
   const apiOptions = apiOptionsFromState(state);
   const model = modelFromThingId(id, state);
-
-  dispatch(setStickyPostPending());
 
   try {
     await Modtools.setSubredditSticky(apiOptions, id, isSettingSticky);
