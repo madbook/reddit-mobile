@@ -69,8 +69,10 @@ const setStickyPostPending = () => ({
   type: MODTOOLS_SET_STICKY_POST_PENDING,
 });
 
-const setStickyPostError = () => ({
+const setStickyPostError = (error, isSettingSticky) => ({
   type: MODTOOLS_SET_STICKY_POST_ERROR,
+  error,
+  message: `Failed to ${isSettingSticky ? 'pin' : 'unpin'} announcement`,
 });
 
 const setStickyPostSuccess = (thing, isStickied) => ({
@@ -172,7 +174,7 @@ export const setStickyPost = (id, isSettingSticky) => async (dispatch, getState)
     }
   } catch (e) {
     if (e instanceof ResponseError) {
-      dispatch(setStickyPostError(e));
+      dispatch(setStickyPostError(e, isSettingSticky));
     } else {
       throw e;
     }
