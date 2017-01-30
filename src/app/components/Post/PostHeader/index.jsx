@@ -281,7 +281,7 @@ function renderPostDescriptor(
     authorOrNil,
     !hideSubredditLabel && flairOrNil,
   ]);
-  const approvalStatusFlair = renderModStatusFlair(post);
+  const modStatusFlair = renderModStatusFlair(post);
 
   return (
     <div className='PostHeader__metadata-container'>
@@ -297,7 +297,7 @@ function renderPostDescriptor(
         </div>
       </div>
       <div className='PostHeader__metadata'>
-        { approvalStatusFlair }
+        { modStatusFlair }
       </div>
     </div>
   );
