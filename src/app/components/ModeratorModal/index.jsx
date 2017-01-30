@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { endpoints, models } from '@r/api-client';
 import { Modal } from '@r/widgets/modal';
-import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
+import { ModalBanner } from 'app/components/ModalBanner';
 import { DropdownRow } from 'app/components/Dropdown';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
@@ -43,18 +43,24 @@ export class ModeratorModal extends React.Component {
           id={ this.props.modModalId }
           className='DropdownModal ModeratorModal'
         >
-          <ApprovalStatusBanner
-            status={ getApprovalStatus(this.props.isApproved,
-                                       this.props.isRemoved,
-                                       this.props.isSpam,) }
-            statusBy={ getStatusBy(this.props.isApproved,
-                                   this.props.isRemoved,
-                                   this.props.isSpam,
-                                   this.props.removedBy,
-                                   this.props.approvedBy,) }
-            pageName={ 'moderatorModal' }
-          />
+          <div className='DropdownClose'>
+            <DropdownRow
+              icon='x'
+              onClick={ this.props.onClick }
+            />
+          </div>
           <div onClick={ this.props.onClick }>
+            <ModalBanner
+              status={ getApprovalStatus(this.props.isApproved,
+                                         this.props.isRemoved,
+                                         this.props.isSpam,) }
+              statusBy={ getStatusBy(this.props.isApproved,
+                                     this.props.isRemoved,
+                                     this.props.isSpam,
+                                     this.props.removedBy,
+                                     this.props.approvedBy,) }
+              pageName={ 'moderatorModal' }
+            />
             <div className='ModeratorModalRowWrapper'>
               { this.props.targetType === ModelTypes.POST
                 ? [

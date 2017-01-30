@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { models } from '@r/api-client';
-
 import ModeratorModal from 'app/components/ModeratorModal';
 import {
   DropdownModal,
@@ -62,7 +61,7 @@ export default function PostDropdown(props) {
   }
 
   return (
-    <DropdownModal id={ id } onClick={ onToggleModal }>
+    <DropdownModal id={ id } onClick={ onToggleModal } showX={ true }>
       { canModify ?
         <DropdownRow
           icon='post_edit'

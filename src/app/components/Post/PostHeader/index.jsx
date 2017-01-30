@@ -16,7 +16,7 @@ import {
 } from '../postUtils';
 
 import OutboundLink from 'app/components/OutboundLink';
-import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
+import { ModalBanner } from 'app/components/ModalBanner';
 
 const T = React.PropTypes;
 
@@ -447,7 +447,7 @@ export default function PostHeader(props) {
   return (
     <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
       { single && isSubredditModerator
-        ? <ApprovalStatusBanner
+        ? <ModalBanner
             status={ approvalStatus }
             statusBy={ statusBy }
             pageName={ 'postHeader' }

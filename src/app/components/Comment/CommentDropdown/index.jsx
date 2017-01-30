@@ -36,7 +36,7 @@ export default function CommentDropdown(props) {
   const userIsAuthor = commentAuthor === username;
 
   const modalContent = [
-    userIsAuthor 
+    userIsAuthor
     ? <DropdownRow icon='post_edit' text='Edit Comment' onClick={ onEdit }/>
     : null,
     userIsAuthor
@@ -76,7 +76,7 @@ export default function CommentDropdown(props) {
     );
   } else {
     modal = (
-      <DropdownModal id={ id } onClick={ onToggleModal }>
+      <DropdownModal id={ id } onClick={ onToggleModal } showX={ true }>
         { modalContent }
       </DropdownModal>
     );

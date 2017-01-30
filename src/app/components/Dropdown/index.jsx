@@ -34,6 +34,14 @@ export function DropdownModal(props) {
         id={ props.id }
         className='DropdownModal'
       >
+        { props.showX &&
+          <div className='DropdownClose'>
+            <DropdownRow
+              icon='x'
+              onClick={ props.onClick }
+            />
+          </div>
+        }
         <div onClick={ props.onClick }>
           { props.children }
         </div>
@@ -45,6 +53,12 @@ export function DropdownModal(props) {
 DropdownModal.propTypes = {
   id: T.string.isRequired,
   onClick: T.func,
+  showX: T.bool,
+};
+
+DropdownModal.defaultProps = {
+  onClick: () => {},
+  showX: false,
 };
 
 export function DropdownRow(props) {
