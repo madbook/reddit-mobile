@@ -35,6 +35,7 @@ export default function PostDropdown(props) {
     isRemoved,
     isApproved,
     isSpam,
+    isLocked,
     isNSFW,
     isSpoiler,
     approvedBy,
@@ -67,6 +68,7 @@ export default function PostDropdown(props) {
         isRemoved={ isRemoved }
         isApproved={ isApproved }
         isSpam={ isSpam }
+        isLocked={ isLocked }
         isNSFW={ isNSFW }
         isSpoiler={ isSpoiler }
         approvedBy={ approvedBy }
@@ -104,6 +106,7 @@ PostDropdown.propTypes = {
   onToggleModal: T.func,
   isRemoved: T.bool,
   isApproved: T.bool,
+  isLocked: T.bool,
   isNSFW: T.bool,
   isSpam: T.bool,
   isSpoiler: T.bool,

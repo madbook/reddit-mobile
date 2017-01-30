@@ -126,6 +126,17 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_TOGGLE_LOCK_SUCCESS: {
+      const { thing } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          { model: thing.set({ locked: !thing.locked }), },
+        );
+      }
+    }
+
     case modToolActions.MODTOOLS_TOGGLE_NSFW_SUCCESS: {
       const { thing } = action;
 

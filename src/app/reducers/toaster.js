@@ -26,6 +26,7 @@ export default function(state=DEFAULT, action={}) {
     case commentActions.FAILED_UPDATE_BODY:
     case mailActions.FAILED_MESSAGE:
     case modActions.MODTOOLS_DISTINGUISH_ERROR:
+    case modToolsActions.MODTOOLS_TOGGLE_LOCK_FAILURE:
     case modToolsActions.MODTOOLS_TOGGLE_NSFW_FAILURE:
     case modToolsActions.MODTOOLS_TOGGLE_SPOILER_FAILURE:
     case modActions.MODTOOLS_SET_STICKY_POST_ERROR:

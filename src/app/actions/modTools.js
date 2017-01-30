@@ -16,6 +16,8 @@ export const MODTOOLS_APPROVAL_ERROR = 'MODTOOLS_APPROVAL_ERROR';
 export const MODTOOLS_APPROVAL_SUCCESS = 'MODTOOLS_APPROVAL_SUCCESS';
 export const MODTOOLS_DISTINGUISH_SUCCESS = 'MODTOOLS_DISTINGUISH_SUCCESS';
 export const MODTOOLS_DISTINGUISH_ERROR = 'MODTOOLS_DISTINGUISH_ERROR';
+export const MODTOOLS_TOGGLE_LOCK_SUCCESS = 'MODTOOLS_TOGGLE_LOCK_SUCCESS';
+export const MODTOOLS_TOGGLE_LOCK_FAILURE = 'MODTOOLS_TOGGLE_LOCK_FAILURE';
 export const MODTOOLS_TOGGLE_NSFW_SUCCESS = 'MODTOOLS_TOGGLE_NSFW_SUCCESS';
 export const MODTOOLS_TOGGLE_NSFW_FAILURE = 'MODTOOLS_TOGGLE_NSFW_FAILURE';
 export const MODTOOLS_TOGGLE_SPOILER_SUCCESS = 'MODTOOLS_TOGGLE_SPOILER_SUCCESS';
@@ -69,6 +71,17 @@ export const distinguishSuccess = (thing, distinguishType) => ({
   type: MODTOOLS_DISTINGUISH_SUCCESS,
   thing,
   distinguishType,
+});
+
+export const toggleLockSuccess = thing => ({
+  type: MODTOOLS_TOGGLE_LOCK_SUCCESS,
+  thing,
+});
+
+export const toggleLockFailure = error => ({
+  type: MODTOOLS_TOGGLE_LOCK_FAILURE,
+  error,
+  message: 'Sorry, something went wrong when toggling the lock action.',
 });
 
 export const toggleNSFWSuccess = thing => ({
@@ -182,6 +195,27 @@ export const distinguish = (id, distinguishType) => async (dispatch, getState) =
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(distinguishError(e));
+    } else {
+      throw e;
+    }
+  }
+};
+
+export const toggleLock = id => async (dispatch, getState) => {
+  const state = getState();
+  const apiOptions = apiOptionsFromState(state);
+  const model = modelFromThingId(id, state);
+
+  try {
+    if (model.locked) {
+      await Modtools.unlock(apiOptions, id);
+    } else {
+      await Modtools.lock(apiOptions, id);
+    }
+    dispatch(toggleLockSuccess(model));
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(toggleLockFailure(e));
     } else {
       throw e;
     }

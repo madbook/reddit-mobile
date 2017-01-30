@@ -174,6 +174,7 @@ function renderPostFlair(post, single) {
 
   const {
     distinguished,
+    stickied,
     gilded,
     locked,
     promoted,
@@ -182,12 +183,13 @@ function renderPostFlair(post, single) {
 
   const showingGilded = gilded && single;
 
-  if (!(showingGilded || locked || distinguished === 'admin' || isNSFW || promoted || spoiler)) {
+  if (!(stickied || showingGilded || distinguished === 'admin' || locked || isNSFW || promoted || spoiler)) {
     return null;
   }
 
   return (
     <span>
+      { stickied ? STICKY_FLAIR : null }
       { locked ? LOCKED_FLAIR : null }
       { showingGilded ? GILDED_FLAIR : null }
       { showingGilded && gilded !== 1 ? gilded : null }
@@ -204,18 +206,20 @@ function renderModStatusFlair(post) {
     approved,
     removed,
     spam,
-    distinguished,
+	distinguished,
+    locked,
     stickied,
   } = post;
-  
-  if (!(approved || removed || spam || distinguished !== '' || stickied)) {
+
+  if (!(approved || removed || spam || locked || distinguished !== '' || stickied)) {
     return null;
   }
 
   return (
     <span className='PostHeader__approval-status-flair'>
-      { distinguished === 'moderator' ? MOD_FLAIR : null }
       { stickied ? STICKY_FLAIR : null }
+      { distinguished === 'moderator' ? MOD_FLAIR : null }
+      { locked ? LOCKED_FLAIR : null }
       { approved ? APPROVED_FLAIR : null }
       { removed ? REMOVED_FLAIR : null }
       { spam ? SPAM_FLAIR : null }

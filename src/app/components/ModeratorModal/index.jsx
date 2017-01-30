@@ -70,6 +70,12 @@ export class ModeratorModal extends React.Component {
                       onClick={ this.props.toggleSpoiler }
                       isSelected={ this.props.isSpoiler }
                     />,
+                    <DropdownRow
+                      icon='lock'
+                      text={ this.props.isLocked ? 'Unlock' : 'Lock' }
+                      onClick={ this.props.toggleLock }
+                      isSelected={ this.props.isLocked }
+                    />,
                   ]
                 : null
               }
@@ -126,6 +132,7 @@ ModeratorModal.propTypes = {
   onSpam: T.func.isRequired,
   onApprove: T.func.isRequired,
   onRemove: T.func.isRequired,
+  toggleLock: T.func.isRequired,
   toggleNSFW: T.func.isRequired,
   toggleSpoiler: T.func.isRequired,
   isSticky: T.bool.isRequired,
@@ -153,6 +160,7 @@ const mapDispatchToProps = (dispatch, { id, isSticky, targetType }) => ({
   onSpam: () => dispatch(modActions.remove(id, true)),
   onApprove: () => dispatch(modActions.approve(id)),
   onRemove: () => dispatch(modActions.remove(id, false)),
+  toggleLock: () => dispatch(modActions.toggleLock(id)),
   toggleNSFW: () => dispatch(modActions.toggleNSFW(id)),
   toggleSpoiler: () => dispatch(modActions.toggleSpoiler(id)),
   onDistinguish: (distinguishType) => dispatch(modActions.distinguish(id, distinguishType)),
