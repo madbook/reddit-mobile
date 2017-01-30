@@ -147,7 +147,7 @@ export const fetchModeratingSubreddits = () => async (dispatch, getState) => {
 };
 
 /**
- * Sticky or unsticky a post (AKA an "Annoucement Post").
+ * Sticky or unsticky a post (AKA an "Announcement Post").
  * @function
  * @param {string} id The fullname of the post to sticky / unsticky
  * @param {boolean} isSettingSticky true if setting sticky, false if unsetting
