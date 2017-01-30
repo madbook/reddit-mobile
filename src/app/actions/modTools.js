@@ -16,6 +16,8 @@ export const MODTOOLS_APPROVAL_ERROR = 'MODTOOLS_APPROVAL_ERROR';
 export const MODTOOLS_APPROVAL_SUCCESS = 'MODTOOLS_APPROVAL_SUCCESS';
 export const MODTOOLS_DISTINGUISH_SUCCESS = 'MODTOOLS_DISTINGUISH_SUCCESS';
 export const MODTOOLS_DISTINGUISH_ERROR = 'MODTOOLS_DISTINGUISH_ERROR';
+export const MODTOOLS_TOGGLE_NSFW_SUCCESS = 'MODTOOLS_TOGGLE_NSFW_SUCCESS';
+export const MODTOOLS_TOGGLE_NSFW_FAILURE = 'MODTOOLS_TOGGLE_NSFW_FAILURE';
 export const MODTOOLS_SET_STICKY_COMMENT_SUCCESS = 'MODTOOLS_SET_STICKY_COMMENT_SUCCESS';
 export const MODTOOLS_SET_STICKY_COMMENT_ERROR = 'MODTOOLS_SET_STICKY_COMMENT_ERROR';
 export const FETCHING_MODERATING_SUBREDDITS = 'FETCHING_MODERATING_SUBREDDITS';
@@ -65,6 +67,17 @@ export const distinguishSuccess = (thing, distinguishType) => ({
   type: MODTOOLS_DISTINGUISH_SUCCESS,
   thing,
   distinguishType,
+});
+
+export const toggleNSFWSuccess = thing => ({
+  type: MODTOOLS_TOGGLE_NSFW_SUCCESS,
+  thing,
+});
+
+export const toggleNSFWFailure = error => ({
+  type: MODTOOLS_TOGGLE_NSFW_FAILURE,
+  error,
+  message: 'Sorry, something went wrong when marking the post NSFW.',
 });
 
 export const setStickyCommentError = (error, isSettingSticky) => ({
@@ -156,6 +169,28 @@ export const distinguish = (id, distinguishType) => async (dispatch, getState) =
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(distinguishError(e));
+    } else {
+      throw e;
+    }
+  }
+};
+
+export const toggleNSFW = id => async (dispatch, getState) => {
+  const state = getState();
+  const apiOptions = apiOptionsFromState(state);
+  const model = modelFromThingId(id, state);
+
+  try {
+    if (model.over18) {
+      await Modtools.unmarkNSFW(apiOptions, id);
+    } else {
+      await Modtools.markNSFW(apiOptions, id);
+    }
+
+    dispatch(toggleNSFWSuccess(model));
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(toggleNSFWFailure(e));
     } else {
       throw e;
     }

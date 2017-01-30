@@ -126,6 +126,17 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_TOGGLE_NSFW_SUCCESS: {
+      const { thing } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          { model: thing.set({ over18: !thing.over18 }), },
+        );
+      }
+    }
+
     case modToolActions.MODTOOLS_SET_STICKY_POST_SUCCESS: {
       const { thing, isStickied } = action;
 
