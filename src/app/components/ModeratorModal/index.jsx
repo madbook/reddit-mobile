@@ -14,6 +14,8 @@ const T = React.PropTypes;
 
 export class ModeratorModal extends React.Component {
   render() {
+    const isTargetTypePost = this.props.targetType === ModelTypes.POST;
+
     return (
       <div className='ModeratorModalWrapper'>
         <Modal
@@ -33,15 +35,14 @@ export class ModeratorModal extends React.Component {
           />
           <div onClick={ this.props.onClick }>
             <div className='ModeratorModalRowWrapper'>
-              { this.props.targetType === ModelTypes.POST
-                ? <DropdownRow
-                    icon='sticky'
-                    text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
-                    onClick={ this.props.onToggleSticky }
-                    isSelected={ this.props.isSticky }
-                  />
-                : null
-              }
+              { isTargetTypePost && (
+                <DropdownRow
+                  icon='sticky'
+                  text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
+                  onClick={ this.props.onToggleSticky }
+                  isSelected={ this.props.isSticky }
+                />
+              ) }
               <DropdownRow
                 icon='delete_remove'
                 text='Remove'
