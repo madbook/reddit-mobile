@@ -24,6 +24,7 @@ export default function CommentDropdown(props) {
     isRemoved,
     isSpam,
     isApproved,
+    isSticky,
     approvedBy,
     removedBy,
     showModModal,
@@ -68,6 +69,7 @@ export default function CommentDropdown(props) {
         removedBy={ removedBy }
         distinguishType={ distinguishType }
         isMine={ isMine }
+        isSticky={ isSticky }
         targetType={ ModelTypes.COMMENT }
       >
       </ModeratorModal>

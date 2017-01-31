@@ -510,5 +510,61 @@ createTest({ reducers: { comments } }, ({ getStore, expect }) => {
         });
       });
     });
+
+    describe('MODTOOLS_SET_STICKY_COMMENT_SUCCESS', () => {
+      it('should mark a comment as sticky', () => {
+        const COMMENT_UNSTICKIED = CommentModel.fromJSON({
+          link_id: '1',
+          name: 't1_1',
+          stickied: false,
+        });
+
+        const COMMENT_STICKIED = CommentModel.fromJSON({
+          link_id: '1',
+          name: 't1_1',
+          stickied: true,
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT_UNSTICKIED.uuid]: COMMENT_UNSTICKIED,
+          },
+        });
+
+        store.dispatch(modToolActions.setStickyCommentSuccess(COMMENT_UNSTICKIED, true));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT_UNSTICKIED.uuid]: COMMENT_STICKIED,
+        });
+      });
+
+      it('should unmark a comment as sticky', () => {
+        const COMMENT_UNSTICKIED = CommentModel.fromJSON({
+          link_id: '1',
+          name: 't1_1',
+          stickied: false,
+        });
+
+        const COMMENT_STICKIED = CommentModel.fromJSON({
+          link_id: '1',
+          name: 't1_1',
+          stickied: true,
+        });
+
+        const { store } = getStore({
+          comments: {
+            [COMMENT_STICKIED.uuid]: COMMENT_STICKIED,
+          },
+        });
+
+        store.dispatch(modToolActions.setStickyCommentSuccess(COMMENT_STICKIED, false));
+
+        const { comments } = store.getState();
+        expect(comments).to.eql({
+          [COMMENT_STICKIED.uuid]: COMMENT_UNSTICKIED,
+        });
+      });
+    });
   });
 });

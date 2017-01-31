@@ -1,12 +1,13 @@
 import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { endpoints, models } from '@r/api-client';
 import { Modal } from '@r/widgets/modal';
 import { ApprovalStatusBanner } from 'app/components/ApprovalStatusBanner';
 import { DropdownRow } from 'app/components/Dropdown';
+import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
-
 import * as modActions from 'app/actions/modTools';
 
 const { Modtools } = endpoints;
@@ -28,6 +29,14 @@ export class ModeratorModal extends React.Component {
   }
 
   render() {
+    let canSticky = false;
+    if (this.props.targetType === ModelTypes.POST) {
+      canSticky = true;
+    } else if (this.props.targetType === ModelTypes.COMMENT) {
+      const { isMine, target } = this.props;
+      canSticky = isMine && target.parentId === target.linkId;
+    }
+
     return (
       <div className='ModeratorModalWrapper'>
         <Modal
@@ -56,10 +65,10 @@ export class ModeratorModal extends React.Component {
                   />
                 : null
               }
-              { this.props.targetType === ModelTypes.POST
+              { canSticky
                 ? <DropdownRow
                     icon='sticky'
-                    text={ this.props.isSticky ? 'Unpin as announcement' : 'Pin as annoucement' }
+                    text={ `${this.props.isSticky ? 'Unpin' : 'Pin'} as announcement` }
                     onClick={ this.props.onToggleSticky }
                     isSelected={ this.props.isSticky }
                   />
@@ -108,15 +117,31 @@ ModeratorModal.propTypes = {
   approvedBy: T.string,
   distinguishType: T.string,
   isMine: T.bool,
-  targetType: T.oneOf([ModelTypes.COMMENT, ModelTypes.POST]),
+  target: T.object,
+  targetType: T.oneOf([ModelTypes.COMMENT, ModelTypes.POST]).isRequired,
 };
 
-const mapDispatchToProps = (dispatch, { id, isSticky }) => ({
+ModeratorModal.defaultProps = {
+  target: null,
+};
+
+const selector = createSelector(
+  (state, props) => modelFromThingId(props.id, state),
+  target => ({ target })
+);
+
+const mapDispatchToProps = (dispatch, { id, isSticky, targetType }) => ({
   onSpam: () => dispatch(modActions.remove(id, true)),
   onApprove: () => dispatch(modActions.approve(id)),
   onRemove: () => dispatch(modActions.remove(id, false)),
   onDistinguish: (distinguishType) => dispatch(modActions.distinguish(id, distinguishType)),
-  onToggleSticky: () => dispatch(modActions.setStickyPost(id, !isSticky)),
+  onToggleSticky: () => {
+    if (targetType === ModelTypes.POST) {
+      dispatch(modActions.setStickyPost(id, !isSticky));
+    } else {
+      dispatch(modActions.setStickyComment(id, !isSticky));
+    }
+  },
 });
 
-export default connect(null, mapDispatchToProps)(ModeratorModal);
+export default connect(selector, mapDispatchToProps)(ModeratorModal);

@@ -132,6 +132,21 @@ export default function(state=DEFAULT, action={}) {
       return state;
     }
 
+    case modToolActions.MODTOOLS_SET_STICKY_COMMENT_SUCCESS: {
+      const { thing, isStickied } = action;
+
+      if (thing.type !== COMMENT) { return state; }
+      
+      return mergeUpdatedModel(
+        state,
+        {
+          model: thing.set({
+            stickied: isStickied,
+          }),
+        },
+      );
+    }
+
     case commentActions.UPDATED_BODY: {
       let { model } = action;
       const currentComment = state[model.uuid];

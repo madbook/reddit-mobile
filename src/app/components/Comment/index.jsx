@@ -178,6 +178,7 @@ function renderTools(props) {
           removedBy={ comment.bannedBy }
           isMine={ user && user.name === comment.author }
           distinguishType={ comment.distinguished }
+          isSticky={ comment.stickied }
         />
       </div>
     </div>
