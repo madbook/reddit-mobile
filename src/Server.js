@@ -42,7 +42,7 @@ import dispatchInitialCollapsedComments from
 
 Raven
   .config(process.env.SENTRY_SERVER_PRIVATE_URL, {
-    release: __GLOBALS__.SENTRY_RELEASE_VERSION,
+    release: __GLOBALS__.release,
     captureUnhandledRejections: true,
     environment: process.env.NODE_ENV,
   })

@@ -37,8 +37,7 @@ module.exports = function(isProduction) {
   ]);
 
   clientConfig.webpack.plugins = clientConfig.webpack.plugins.concat([
-    {
-      generator: 'set-node-env',
+    new webpack.DefinePlugin({
       'process.env': {
         BRANCH_KEY: JSON.stringify(process.env.BRANCH_KEY),
         GOOGLE_TAG_MANAGER_ID: JSON.stringify(process.env.GOOGLE_TAG_MANAGER_ID),
@@ -50,9 +49,11 @@ module.exports = function(isProduction) {
         TRACKER_ENDPOINT: JSON.stringify(process.env.TRACKER_ENDPOINT),
         TRACKER_KEY: JSON.stringify(process.env.TRACKER_KEY),
         TRACKER_SECRET: JSON.stringify(process.env.TRACKER_SECRET),
-        SENTRY_ERROR_ENDPOINT: JSON.stringify(process.env.SENTRY_ERROR_ENDPOINT),
-      },
-    },
+        SENTRY_CLIENT_PUBLIC_URL: JSON.stringify(process.env.SENTRY_CLIENT_PUBLIC_URL),
+        ENV: JSON.stringify('client'),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      }
+    }),
   ]);
 
   return [ clientConfig, serverConfig ];
