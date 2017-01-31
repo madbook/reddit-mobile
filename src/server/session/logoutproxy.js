@@ -10,6 +10,7 @@ export default (router) => {
     // (and amp, modmail, etc) is now available on the root reddit domain, so
     // we can unify these sessions and only have one cookie to clear.
     ctx.cookies.set('reddit_session', undefined, { domain: config.rootReddit });
+    ctx.cookies.set('token', undefined, { domain: config.rootReddit });
     ctx.cookies.set('reddit_session');
 
     clearSessionCookies(ctx);
