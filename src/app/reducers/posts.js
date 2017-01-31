@@ -75,7 +75,7 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === POST) {
         return mergeUpdatedModel(
           state,
-          { 
+          {
             model: thing.set({
               approved: true,
               removed: false,
@@ -95,7 +95,7 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === POST) {
         return mergeUpdatedModel(
           state,
-          { 
+          {
             model: thing.set({
               approved: false,
               removed: !spam,
@@ -135,6 +135,18 @@ export default function(state=DEFAULT, action={}) {
           { model: thing.set({ over18: !thing.over18 }), },
         );
       }
+    }
+
+    case modToolActions.MODTOOLS_TOGGLE_SPOILER_SUCCESS: {
+      const { thing } = action;
+
+      if (thing.type === POST) {
+        return mergeUpdatedModel(
+          state,
+          { model: thing.set({ spoiler: !thing.spoiler }), },
+        );
+      }
+
     }
 
     case modToolActions.MODTOOLS_SET_STICKY_POST_SUCCESS: {

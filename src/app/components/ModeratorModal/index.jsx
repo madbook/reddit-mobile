@@ -57,12 +57,20 @@ export class ModeratorModal extends React.Component {
           <div onClick={ this.props.onClick }>
             <div className='ModeratorModalRowWrapper'>
               { this.props.targetType === ModelTypes.POST
-                ? <DropdownRow
-                    icon='nsfw'
-                    text={ this.props.isNSFW ? 'Unmark NSFW' : 'Mark NSFW' }
-                    onClick={ this.props.toggleNSFW }
-                    isSelected={ this.props.isNSFW }
-                  />
+                ? [
+                    <DropdownRow
+                      icon='nsfw'
+                      text={ this.props.isNSFW ? 'Unmark NSFW' : 'Mark NSFW' }
+                      onClick={ this.props.toggleNSFW }
+                      isSelected={ this.props.isNSFW }
+                    />,
+                    <DropdownRow
+                      icon='spoiler'
+                      text={ this.props.isSpoiler ? 'Unspoiler' : 'Spoiler' }
+                      onClick={ this.props.toggleSpoiler }
+                      isSelected={ this.props.isSpoiler }
+                    />,
+                  ]
                 : null
               }
               { this.props.isMine
@@ -119,6 +127,7 @@ ModeratorModal.propTypes = {
   onApprove: T.func.isRequired,
   onRemove: T.func.isRequired,
   toggleNSFW: T.func.isRequired,
+  toggleSpoiler: T.func.isRequired,
   isSticky: T.bool.isRequired,
   isApproved: T.bool.isRequired,
   isRemoved: T.bool.isRequired,
@@ -145,6 +154,7 @@ const mapDispatchToProps = (dispatch, { id, isSticky, targetType }) => ({
   onApprove: () => dispatch(modActions.approve(id)),
   onRemove: () => dispatch(modActions.remove(id, false)),
   toggleNSFW: () => dispatch(modActions.toggleNSFW(id)),
+  toggleSpoiler: () => dispatch(modActions.toggleSpoiler(id)),
   onDistinguish: (distinguishType) => dispatch(modActions.distinguish(id, distinguishType)),
   onToggleSticky: () => {
     if (targetType === ModelTypes.POST) {
