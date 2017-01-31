@@ -26,6 +26,7 @@ export default function(state=DEFAULT, action={}) {
     case mailActions.FAILED_MESSAGE:
     case modActions.MODTOOLS_DISTINGUISH_ERROR:
     case modActions.MODTOOLS_SET_STICKY_POST_ERROR:
+    case modActions.MODTOOLS_SET_STICKY_COMMENT_ERROR:
     case postActions.FAILED_UPDATE_SELF_TEXT:
     case postingActions.FAILURE:
     case postingActions.VALIDATION_FAILURE:

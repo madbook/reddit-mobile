@@ -6,6 +6,7 @@ const { ResponseError } = errors;
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 import stickyPostsFromState from 'app/reducers/helpers/stickyPostsFromState';
+import stickyCommentsFromState from 'app/reducers/helpers/stickyCommentsFromState';
 
 export const MODTOOLS_REMOVAL_PENDING = 'MODTOOLS_REMOVAL_PENDING';
 export const MODTOOLS_REMOVAL_ERROR = 'MODTOOLS_REMOVAL_ERROR';
@@ -15,6 +16,8 @@ export const MODTOOLS_APPROVAL_ERROR = 'MODTOOLS_APPROVAL_ERROR';
 export const MODTOOLS_APPROVAL_SUCCESS = 'MODTOOLS_APPROVAL_SUCCESS';
 export const MODTOOLS_DISTINGUISH_SUCCESS = 'MODTOOLS_DISTINGUISH_SUCCESS';
 export const MODTOOLS_DISTINGUISH_ERROR = 'MODTOOLS_DISTINGUISH_ERROR';
+export const MODTOOLS_SET_STICKY_COMMENT_SUCCESS = 'MODTOOLS_SET_STICKY_COMMENT_SUCCESS';
+export const MODTOOLS_SET_STICKY_COMMENT_ERROR = 'MODTOOLS_SET_STICKY_COMMENT_ERROR';
 export const FETCHING_MODERATING_SUBREDDITS = 'FETCHING_MODERATING_SUBREDDITS';
 export const RECEIVED_MODERATING_SUBREDDITS = 'RECEIVED_MODERATING_SUBREDDITS';
 export const FETCH_FAILED_MODERATING_SUBREDDITS = 'FETCH_FAILED_MODERATING_SUBREDDITS';
@@ -62,6 +65,18 @@ export const distinguishSuccess = (thing, distinguishType) => ({
   type: MODTOOLS_DISTINGUISH_SUCCESS,
   thing,
   distinguishType,
+});
+
+export const setStickyCommentError = (error, isSettingSticky) => ({
+  type: MODTOOLS_SET_STICKY_COMMENT_ERROR,
+  error,
+  message: `Failed to ${isSettingSticky ? 'sticky' : 'unsticky'} comment`,
+});
+
+export const setStickyCommentSuccess = (thing, isStickied) => ({
+  type: MODTOOLS_SET_STICKY_COMMENT_SUCCESS,
+  thing,
+  isStickied,
 });
 
 export const fetchingSubs = () => ({
@@ -199,6 +214,38 @@ export const setStickyPost = (id, isSettingSticky) => async (dispatch, getState)
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(setStickyPostError(e, isSettingSticky));
+    } else {
+      throw e;
+    }
+  }
+};
+
+/**
+ * Sticky or unsticky a comment.
+ * @function
+ * @param {string} id The fullname of the comment to sticky / unsticky
+ * @param {boolean} isSettingSticky Whether we are stickying or unstickying
+ */
+export const setStickyComment = (id, isSettingSticky) => async (dispatch, getState) => {
+  const state = getState();
+  const apiOptions = apiOptionsFromState(state);
+  const model = modelFromThingId(id, state);
+
+  try {
+    await Modtools.setStickyComment(apiOptions, id, isSettingSticky);
+    dispatch(setStickyCommentSuccess(model, isSettingSticky));
+
+    // If setting a sticky comment in a comments thread, the new sticky will
+    // replace an existing one. 
+    if (isSettingSticky) {
+      const modelToUnsticky = stickyCommentsFromState(state)[0];
+      if (modelToUnsticky) {
+        dispatch(setStickyCommentSuccess(modelToUnsticky, false));
+      }
+    }
+  } catch (e) {
+    if (e instanceof ResponseError) {
+      dispatch(setStickyCommentError(model, isSettingSticky));
     } else {
       throw e;
     }

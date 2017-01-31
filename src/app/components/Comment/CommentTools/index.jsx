@@ -33,6 +33,7 @@ export default function CommentTools(props) {
     removedBy,
     isMine,
     distinguishType,
+    isSticky,
   } = props;
 
   const modModalId = `mod-${id}`;
@@ -47,11 +48,11 @@ export default function CommentTools(props) {
       { renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
                        isSubredditModerator, isApproved, isSpam, isRemoved,
-                       approvedBy, removedBy, false, null) }
+                       approvedBy, removedBy, false, null, isSticky) }
       { isSubredditModerator ? renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
                        isSubredditModerator, isApproved, isSpam, isRemoved,
-                       approvedBy, removedBy, true, modModalId, isMine, distinguishType) : null }
+                       approvedBy, removedBy, true, modModalId, isMine, distinguishType, isSticky) : null }
     </div>
   );
 }
@@ -154,6 +155,7 @@ const renderDropdown = (
   modModalId,
   isMine,
   distinguishType,
+  isSticky,
 ) => (
   <CommentDropdown
     id={ id }
@@ -170,6 +172,7 @@ const renderDropdown = (
     isApproved={ isApproved }
     isSpam={ isSpam }
     isRemoved={ isRemoved }
+    isSticky={ isSticky }
     approvedBy={ approvedBy }
     removedBy={ removedBy }
     showModModal={ showModModal }
