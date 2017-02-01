@@ -40,6 +40,8 @@ import sessionRefresing from './sessionRefreshing';
 import scrollPositions from './scrollPositions';
 import smartBanner from './smartBanner';
 import subredditRequests from './subredditRequests';
+import subredditRules from './subredditRules';
+import subredditRulesRequests from './subredditRulesRequests';
 import subreddits from './subreddits';
 import similarPosts from './similarPosts';
 import subredditsByPost from './subredditsByPost';
@@ -94,6 +96,8 @@ export default {
   sessionRefresing,
   scrollPositions,
   smartBanner,
+  subredditRules,
+  subredditRulesRequests,
   subreddits,
   similarPosts,
   subredditsByPost,
