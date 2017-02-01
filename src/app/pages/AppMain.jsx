@@ -10,6 +10,7 @@ import { PostsFromSubredditPage } from './PostsFromSubreddit';
 import { SavedAndHiddenPage } from './SavedAndHidden';
 import { SearchPage } from './SearchPage';
 import { SubredditAboutPage } from './SubredditAbout';
+import { SubredditRulesPage } from './SubredditRules';
 import { UserActivityPage } from './UserActivity';
 import { UserProfilePage } from './UserProfile';
 import { WikiPage } from './WikiPage';
@@ -124,6 +125,7 @@ const AppMain = props => {
         <FramedPage url='/search' component={ SearchPage } />
         <FramedPage url='/r/:subredditName/search' component={ SearchPage } />
         <FramedPage url='/r/:subredditName/about' component={ SubredditAboutPage } />
+        <FramedPage url='/r/:subredditName/about/rules' component={ SubredditRulesPage } />
         <FramedPage url='/r/:subredditName/(w|wiki)/:path(.*)?' component={ WikiPage } />
         <FramedPage url='/(help|w|wiki)/:path(.*)?' component={ WikiPage } />
         <FramedPage

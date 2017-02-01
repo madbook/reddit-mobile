@@ -11,6 +11,7 @@ import SavedAndHiddenHandler from './handlers/SavedAndHidden';
 import SearchPageHandler from './handlers/SearchPage';
 import SetOver18Handler from './handlers/SetOver18';
 import SubredditAboutPageHandler from './handlers/SubredditAboutPage';
+import SubredditRulesPageHandler from './handlers/SubredditRulesPage';
 import ToggleSubredditSubscriptionHandler from './handlers/ToggleSubredditSubscription';
 import UserActivityHandler from './handlers/UserActivity';
 import UserActivityRerouteHandler from './handlers/UserActivityReroute';
@@ -36,6 +37,7 @@ export default [
   ['/search', SearchPageHandler],
   ['/r/:subredditName/search', SearchPageHandler],
   ['/r/:subredditName/about', SubredditAboutPageHandler],
+  ['/r/:subredditName/about/rules', SubredditRulesPageHandler],
   [`/r/:subredditName/:sort(${SORTS})`, PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName/(w|wiki)/:path(.*)?', WikiPageHandler],
   ['/(help|w|wiki)/:path(.*)?', WikiPageHandler],

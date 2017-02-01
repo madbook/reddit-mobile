@@ -1,0 +1,21 @@
+@import (reference) '~app/less/variables';
+
+.SubredditRule {
+  padding: @grid-size 0;
+
+  &__title {
+    font-size: @font-size-h4;
+    font-weight: @headings-font-weight;
+  }
+
+  &__meta {
+    color: @grey-text;
+  }
+
+  &__title,
+  &__meta,
+  &__description {
+    margin-bottom: @half-grid-size;
+    margin-top: @half-grid-size;
+  }
+}
