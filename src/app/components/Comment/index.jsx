@@ -147,7 +147,7 @@ function renderTools(props) {
     'm-hidden': commentCollapsed,
   });
 
-  const isSubredditModerator = includes(moderatingSubreddits.names, comment.subreddit);
+  const isSubredditModerator = includes(moderatingSubreddits.names, comment.subreddit.toLowerCase());
 
   return (
     <div className={ className }>

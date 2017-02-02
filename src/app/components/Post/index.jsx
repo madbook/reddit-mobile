@@ -140,7 +140,7 @@ export function Post(props) {
   const hasExpandedCompact = compact && expanded;
   const shouldPlay = !isPlaying && ((compact && !hasExpandedCompact) || !compact);
   const onTogglePlaying = shouldPlay ? onStartPlaying : onStopPlaying;
-  const isSubredditModerator = includes(moderatingSubreddits.names, post.subreddit);
+  const isSubredditModerator = includes(moderatingSubreddits.names, post.subreddit.toLowerCase());
 
   let thumbnailOrNil;
   if (displayCompact) {
