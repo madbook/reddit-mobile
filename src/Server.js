@@ -124,6 +124,7 @@ export function startServer() {
       async (ctx, next) => {
         await next();
         ctx.set('X-Frame-Options', 'SAMEORIGIN');
+        ctx.set('Cache-control', 'private, s-maxage=0, max-age=0, must-revalidate, max-age=0, must-revalidate');
       },
       async (ctx, next) => {
         await next();
