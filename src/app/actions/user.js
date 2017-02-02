@@ -1,4 +1,5 @@
 import * as accountActions from 'app/actions/accounts';
+import * as modToolActions from 'app/actions/modTools';
 
 export const fetchMyUser = () => async (dispatch, getState) => {
   const state = getState();
@@ -7,4 +8,5 @@ export const fetchMyUser = () => async (dispatch, getState) => {
   // we prevent the promise that `fetchMyUser` returns from resolving until
   // the dispatch is complete.
   await dispatch(accountActions.fetch({ name: 'me', loggedOut: !state.session.accessToken }));
+  await dispatch(modToolActions.fetchModeratingSubreddits());
 };
