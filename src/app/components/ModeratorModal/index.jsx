@@ -58,25 +58,25 @@ export class ModeratorModal extends React.Component {
             <div className='ModeratorModalRowWrapper'>
               { this.props.targetType === ModelTypes.POST
                 ? [
-                    <DropdownRow
-                      icon='nsfw'
-                      text={ this.props.isNSFW ? 'Unmark NSFW' : 'Mark NSFW' }
-                      onClick={ this.props.toggleNSFW }
-                      isSelected={ this.props.isNSFW }
-                    />,
-                    <DropdownRow
-                      icon='spoiler'
-                      text={ this.props.isSpoiler ? 'Unspoiler' : 'Spoiler' }
-                      onClick={ this.props.toggleSpoiler }
-                      isSelected={ this.props.isSpoiler }
-                    />,
-                    <DropdownRow
-                      icon='lock'
-                      text={ this.props.isLocked ? 'Unlock' : 'Lock' }
-                      onClick={ this.props.toggleLock }
-                      isSelected={ this.props.isLocked }
-                    />,
-                  ]
+                  <DropdownRow
+                    icon='nsfw'
+                    text={ this.props.isNSFW ? 'Unmark NSFW' : 'Mark NSFW' }
+                    onClick={ this.props.toggleNSFW }
+                    isSelected={ this.props.isNSFW }
+                  />,
+                  <DropdownRow
+                    icon='spoiler'
+                    text={ this.props.isSpoiler ? 'Unspoiler' : 'Spoiler' }
+                    onClick={ this.props.toggleSpoiler }
+                    isSelected={ this.props.isSpoiler }
+                  />,
+                  <DropdownRow
+                    icon='lock'
+                    text={ this.props.isLocked ? 'Unlock' : 'Lock' }
+                    onClick={ this.props.toggleLock }
+                    isSelected={ this.props.isLocked }
+                  />,
+                ]
                 : null
               }
               { this.props.isMine

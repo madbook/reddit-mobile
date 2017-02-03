@@ -132,9 +132,11 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === POST) {
         return mergeUpdatedModel(
           state,
-          { model: thing.set({ locked: !thing.locked }), },
+          { model: thing.set({ locked: !thing.locked }) },
         );
       }
+
+      return state;
     }
 
     case modToolActions.MODTOOLS_TOGGLE_NSFW_SUCCESS: {
@@ -143,9 +145,11 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === POST) {
         return mergeUpdatedModel(
           state,
-          { model: thing.set({ over18: !thing.over18 }), },
+          { model: thing.set({ over18: !thing.over18 }) },
         );
       }
+
+      return state;
     }
 
     case modToolActions.MODTOOLS_TOGGLE_SPOILER_SUCCESS: {
@@ -154,10 +158,11 @@ export default function(state=DEFAULT, action={}) {
       if (thing.type === POST) {
         return mergeUpdatedModel(
           state,
-          { model: thing.set({ spoiler: !thing.spoiler }), },
+          { model: thing.set({ spoiler: !thing.spoiler }) },
         );
       }
 
+      return state;
     }
 
     case modToolActions.MODTOOLS_SET_STICKY_POST_SUCCESS: {
