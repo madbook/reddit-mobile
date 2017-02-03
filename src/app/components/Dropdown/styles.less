@@ -29,12 +29,10 @@
   @buffer: 200px;
   max-width: 95%;
   margin: auto;
-  position: absolute;
-  top: 30%;
-  bottom: auto;
-  left: 0;
-  right: 0;
   overflow: scroll;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 
   // if the viewport is larger than the modal,
   @media(min-width: @max-width) {
