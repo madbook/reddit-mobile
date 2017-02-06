@@ -15,6 +15,7 @@ class ReCaptcha extends React.Component {
   static propTypes = {
     elementId: T.string,
     sitekey: T.string.isRequired,
+    reloadComparisonKey: T.string.isRequired,
     theme: T.oneOf(['light', 'dark']),
     type: T.oneOf(['image', 'audio']),
     size: T.oneOf(['normal', 'compact']),
@@ -67,6 +68,14 @@ class ReCaptcha extends React.Component {
 
   shouldComponentUpdate() {
     return false;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reloadComparisonKey !== this.props.reloadComparisonKey) {
+      if (window.grecaptcha) {
+        window.grecaptcha.reset();
+      }
+    }
   }
 
   render() {

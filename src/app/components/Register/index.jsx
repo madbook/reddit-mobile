@@ -235,6 +235,7 @@ class Register extends React.Component {
             sitekey={ recaptchaSitekey }
             onSuccess={ this.setRecaptchaResponse }
             theme={ captchaTheme }
+            reloadComparisonKey={ JSON.stringify(error) }
           />
           <input
             name='gRecaptchaResponse'
