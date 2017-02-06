@@ -8,6 +8,7 @@ import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import getContentId from 'lib/getContentIdFromState';
 import url from 'url';
+import { extractUser, getExperimentData } from 'lib/experiments';
 import { getEventTracker } from 'lib/eventTracker';
 import { getDevice, IPHONE, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
 
@@ -28,8 +29,14 @@ const {
   VARIANT_SUBREDDIT_HEADER,
   VARIANT_XPROMO_FP_TRANSPARENT,
   VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
-  VARIANT_XPROMO_FP_LOGIN_REQUIRED,
-  VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED,
+  VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS,
+  VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID,
+  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS,
+  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID,
+  VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS_CONTROL,
+  VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID_CONTROL,
+  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS_CONTROL,
+  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID_CONTROL,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -176,46 +183,87 @@ const config = {
       ] },
     ],
   },
-  [VARIANT_XPROMO_FP_LOGIN_REQUIRED]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS]: {
     and: [
       { allowedPages: ['index'] },
+      { allowedDevices: [IPHONE] },
       { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { or: [
-            { url: 'xpromofploginrequired' },
-            { variant: 'mweb_xpromo_require_login_fp_android:login_required' },
-          ] },
-        ] },
-        { and: [
-          { allowedDevices: [IPHONE] },
-          { or: [
-            { url: 'xpromofploginrequired' },
-            { variant: 'mweb_xpromo_require_login_fp_ios:login_required' },
-          ] },
-        ] },
+        { url: 'xpromofploginrequired' },
+        { variant: 'mweb_xpromo_require_login_fp_ios:login_required' },
       ] },
     ],
   },
-  [VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS_CONTROL]: {
+    and: [
+      { allowedPages: ['index'] },
+      { allowedDevices: [IPHONE] },
+      { or: [
+        { variant: 'mweb_xpromo_require_login_fp_ios:control_1' },
+        { variant: 'mweb_xpromo_require_login_fp_ios:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID]: {
+    and: [
+      { allowedPages: ['index'] },
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { url: 'xpromofploginrequired' },
+        { variant: 'mweb_xpromo_require_login_fp_android:login_required' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID_CONTROL]: {
+    and: [
+      { allowedPages: ['index'] },
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { variant: 'mweb_xpromo_require_login_fp_android:control_1' },
+        { variant: 'mweb_xpromo_require_login_fp_android:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS]: {
     and: [
       { allowedPages: ['listing'] },
       { allowNSFW: false },
+      { allowedDevices: [IPHONE] },
       { or: [
-        { and: [
-          { allowedDevices: [ANDROID] },
-          { or: [
-            { url: 'xpromosubredditloginrequired' },
-            { variant: 'mweb_xpromo_require_login_listing_android:login_required' },
-          ] },
-        ] },
-        { and: [
-          { allowedDevices: [IPHONE] },
-          { or: [
-            { url: 'xpromosubredditloginrequired' },
-            { variant: 'mweb_xpromo_require_login_listing_ios:login_required' },
-          ] },
-        ] },
+        { url: 'xpromosubredditloginrequired' },
+        { variant: 'mweb_xpromo_require_login_listing_ios:login_required' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS_CONTROL]: {
+    and: [
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { allowedDevices: [IPHONE] },
+      { or: [
+        { variant: 'mweb_xpromo_require_login_listing_ios:control_1' },
+        { variant: 'mweb_xpromo_require_login_listing_ios:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID]: {
+    and: [
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { url: 'xpromosubredditloginrequired' },
+        { variant: 'mweb_xpromo_require_login_listing_android:login_required' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID_CONTROL]: {
+    and: [
+      { allowedPages: ['listing'] },
+      { allowNSFW: false },
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { variant: 'mweb_xpromo_require_login_listing_android:control_1' },
+        { variant: 'mweb_xpromo_require_login_listing_android:control_2' },
       ] },
     ],
   },
@@ -251,14 +299,6 @@ const SEO_REFERRERS = [
   'google.com',
   'bing.com',
 ];
-
-function extractUser(ctx) {
-  const { state } = ctx;
-  if (!state || !state.user || !state.accounts) {
-    return;
-  }
-  return state.accounts[state.user.name];
-}
 
 flags.addRule('loggedin', function(val) {
   return (!!this.state.user && !this.state.user.loggedOut) === val;
@@ -304,10 +344,10 @@ const firstBuckets = new Set();
 
 flags.addRule('variant', function (name) {
   const [experiment_name, checkedVariant] = name.split(':');
-  const user = extractUser(this);
-
-  if (user && user.features && user.features[experiment_name]) {
-    const { variant, experiment_id, owner } = user.features[experiment_name];
+  const experimentData = getExperimentData(this.state, experiment_name);
+  if (experimentData) {
+    const { variant, experiment_id, owner } = experimentData;
+    const { user } = this.state;
 
     // we only want to bucket the user once per session for any given experiment.
     // to accomplish this, we're going to use the fact that featureFlags is a
@@ -321,10 +361,10 @@ flags.addRule('variant', function (name) {
         experiment_id,
         experiment_name,
         variant,
-        user_id: !this.state.user.loggedOut ? parseInt(user.id, 36) : null,
-        user_name: !this.state.user.loggedOut ? user.name : null,
-        loid: this.state.user.loggedOut ? this.state.loid.loid : null,
-        loidcreated: this.state.user.loggedOut ? this.state.loid.loidCreated : null,
+        user_id: !user.loggedOut ? parseInt(user.id, 36) : null,
+        user_name: !user.loggedOut ? user.name : null,
+        loid: user.loggedOut ? this.state.loid.loid : null,
+        loidcreated: user.loggedOut ? this.state.loid.loidCreated : null,
         owner: owner || null,
       };
 

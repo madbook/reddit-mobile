@@ -44,8 +44,8 @@ export function getBranchLink(state, payload={}) {
 
   const basePayload = {
     channel: 'mweb_branch',
-    feature: 'smartbanner',
-    campaign: 'xpromo_banner',
+    feature: 'xpromo',
+    campaign: 'xpromo',
     // We can use this space to fill "tags" which will populate on the
     // branch dashboard and allow you sort/parse data. Optional/not required.
     // tags: [ 'tag1', 'tag2' ],
@@ -55,9 +55,6 @@ export function getBranchLink(state, payload={}) {
     '$deeplink_path': window.location.href.split(window.location.host)[1],
     mweb_loid: loid,
     mweb_loid_created: loidCreated,
-    utm_source: 'mweb_branch',
-    utm_medium: 'smartbanner',
-    utm_name: 'xpromo_banner',
     mweb_user_id36: userId,
     mweb_user_name: userName,
   };
@@ -91,23 +88,25 @@ export function getDeepLink(state) {
   }
 }
 
-export function shouldShowBanner() {
+export function shouldNotShowBanner() {
   // Most of the decision for showing a cross-promo component will happen in
   // the featureFlags component, but we have a couple of things to consider
   // here.
 
   // Make sure local storage exists
-  if (!localStorageAvailable()) { return false; }
+  if (!localStorageAvailable()) {
+    return 'local_storage_unavailable';
+  }
 
   // Check if it's been dismissed recently
   const lastClosedStr = localStorage.getItem('bannerLastClosed');
   const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : 0;
   const lastClosedLimit = lastClosed + TWO_WEEKS;
   if (lastClosedLimit > Date.now()) {
-    return false;
+    return 'dismissed_previously';
   }
 
-  return true;
+  return false;
 }
 
 export function markBannerClosed() {

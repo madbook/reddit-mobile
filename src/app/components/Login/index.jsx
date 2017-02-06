@@ -4,7 +4,6 @@ import 'app/components/LoginRegistrationForm/styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { redirect } from '@r/platform/actions';
 import { METHODS } from '@r/platform/router';
 import { Form, Anchor, BackAnchor } from '@r/platform/components';
 
@@ -211,8 +210,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(sessionActions.sessionError(null));
   },
   nativeAppNavigator: (url) => {
-    dispatch(xpromoActions.promoClicked());
-    dispatch(redirect(url));
+    dispatch(xpromoActions.navigateToAppStore(url, 'login_screen_button'));
   },
 });
 

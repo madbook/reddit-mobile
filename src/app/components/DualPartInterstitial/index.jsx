@@ -3,13 +3,13 @@ import './styles.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { redirect } from '@r/platform/actions';
 
 import { getDevice } from 'lib/getDeviceFromState';
 import DualPartInterstitialHeader from 'app/components/DualPartInterstitial/Header';
 import DualPartInterstitialFooter from 'app/components/DualPartInterstitial/Footer';
 import XPromoWrapper from 'app/components/XPromoWrapper';
-import { promoClicked } from 'app/actions/xpromo';
+import { navigateToAppStore, promoClicked } from 'app/actions/xpromo';
+
 
 export function DualPartInterstitial(props) {
   return (
@@ -34,7 +34,7 @@ export const selector = createSelector(
 const mapDispatchToProps = dispatch => ({
   navigator: (url) => (() => {
     dispatch(promoClicked());
-    dispatch(redirect(url));
+    dispatch(navigateToAppStore(url, 'interstitial_button'));
   }),
 });
 

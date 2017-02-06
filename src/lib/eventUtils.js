@@ -3,11 +3,23 @@ import values from 'lodash/values';
 import url from 'url';
 
 import { ADBLOCK_TEST_ID } from 'app/constants';
-
+import {
+  interstitialType,
+  isPartOfXPromoExperiment,
+  currentExperimentData as currentXPromoExperimentData,
+  transparentXPromoEnabled as shouldTrackXPromo,
+} from 'app/selectors/xpromo';
 import { isHidden } from 'lib/dom';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { getEventTracker } from 'lib/eventTracker';
 import * as gtm from 'lib/gtm';
+import { shouldNotShowBanner } from 'lib/smartBannerState';
+
+export const XPROMO_VIEW = 'cs.xpromo_view';
+export const XPROMO_INELIGIBLE = 'cs.xpromo_ineligible';
+export const XPROMO_DISMISS = 'cs.xpromo_dismiss';
+export const XPROMO_SCROLLPAST = 'cs.xpromo_scrollpast';
+export const XPROMO_APP_STORE_VISIT = 'cs.xpromo_app_store_visit';
 
 const ID_REGEX = /(?:t\d+_)?(.*)/;
 
@@ -50,7 +62,7 @@ export function getUserInfoOrLoid(state) {
     };
   }
 
-  const loid = state.loid; 
+  const loid = state.loid;
   return {
     'loid': loid.loid,
     'loid_created': loid.loidCreated,
@@ -91,6 +103,30 @@ function trackScreenViewEvent(state, additionalEventData) {
     ...additionalEventData,
   };
   getEventTracker().track('screenview_events', 'cs.screenview_mweb', payload);
+}
+
+export function trackXPromoEvent(state, eventType, additionalEventData) {
+  let experimentPayload = {};
+  if (isPartOfXPromoExperiment(state)) {
+    const { experimentName, variant } = currentXPromoExperimentData(state);
+    experimentPayload = { experiment_name: experimentName, experiment_variant: variant };
+  }
+  const payload = {
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
+    ...experimentPayload,
+    ...additionalEventData,
+  };
+  getEventTracker().track('xpromo_events', eventType, payload);
+}
+
+export function trackXPromoInit(state) {
+  const ineligibilityReason = shouldNotShowBanner();
+  if (ineligibilityReason) {
+    trackXPromoEvent(state, XPROMO_INELIGIBLE, { ineligibility_reason: ineligibilityReason });
+  } else {
+    trackXPromoEvent(state, XPROMO_VIEW, { interstitial_type: interstitialType(state) });
+  }
 }
 
 export function trackExperimentClickEvent(state, experimentName, experimentId, targetThing) {
@@ -157,6 +193,9 @@ export function trackPageEvents(state, additionalEventData={}) {
   if (process.env.ENV === 'client') {
     gtmPageView(state);
     trackScreenViewEvent(state, additionalEventData);
+    if (shouldTrackXPromo(state)) {
+      trackXPromoInit(state);
+    }
   } else if (state.meta.crawler) {
     trackCrawlEvent(state, additionalEventData);
   }

@@ -8,17 +8,15 @@ import url from 'url';
 import { redirect } from '@r/platform/actions';
 
 import * as xpromoActions from 'app/actions/xpromo';
-import { flags as flagConstants } from 'app/constants';
 import features from 'app/featureFlags';
+import { XPROMO_DISMISS } from 'lib/eventUtils';
 import getSubreddit from 'lib/getSubredditFromState';
 import { getBranchLink } from 'lib/smartBannerState';
-
-const {
-  VARIANT_XPROMO_FP_LOGIN_REQUIRED,
-  VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED,
-  VARIANT_XPROMO_FP_TRANSPARENT,
-  VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
-} = flagConstants;
+import {
+  loginRequiredEnabled as requireXPromoLogin,
+  isPartOfXPromoExperiment,
+  currentExperimentData,
+} from 'app/selectors/xpromo';
 
 const List = () => {
   return (
@@ -53,6 +51,7 @@ class DualPartInterstitialFooter extends React.Component {
     if (requireLogin) {
       dispatch(redirect(this.loginLink()));
     } else {
+      dispatch(xpromoActions.trackXPromoEvent(XPROMO_DISMISS, { dismiss_type: 'link' }));
       dispatch(xpromoActions.close());
     }
   }
@@ -115,42 +114,33 @@ class DualPartInterstitialFooter extends React.Component {
   }
 }
 
-function createNativeAppLink(state, campaign, medium) {
-  return getBranchLink(state, {
-    feature: 'interstitial',
-    campaign,
-    utm_name: campaign,
-    utm_medium: medium,
-  });
+function createNativeAppLink(state, linkType) {
+  let payload = { utm_source: 'xpromo', utm_content: linkType };
+  if (isPartOfXPromoExperiment(state)) {
+    const { experimentName, variant } = currentExperimentData(state);
+    payload = {
+      ...payload,
+      utm_medium: 'experiment',
+      utm_name: experimentName,
+      utm_term: variant,
+    };
+  } else {
+    payload = { ...payload, utm_medium: 'interstitial' };
+  }
+
+  return getBranchLink(state, payload);
 }
 
 const selector = createSelector(
   getSubreddit,
-  (state) => { return features.withContext({ state }); },
-  (state) => { return state.user.loggedOut; },
-  (state) => {
-    return (campaign, medium) => {
-      return createNativeAppLink(state, campaign, medium);
-    };
-  },
-  (subredditName, featureContext, loggedOut, createLink) => {
-    const requireLogin = (
-      loggedOut &&
-      (featureContext.enabled(VARIANT_XPROMO_FP_LOGIN_REQUIRED) ||
-       featureContext.enabled(VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED))
-    );
-    let campaign;
-    if (featureContext.enabled(VARIANT_XPROMO_FP_LOGIN_REQUIRED)) {
-      campaign = 'xpromo_fp_login_required';
-    } else if (featureContext.enabled(VARIANT_XPROMO_SUBREDDIT_LOGIN_REQUIRED)) {
-      campaign = 'xpromo_subreddit_login_required';
-    } else if (featureContext.enabled(VARIANT_XPROMO_FP_TRANSPARENT)) {
-      campaign = 'xpromo_fp_transparent';
-    } else if (featureContext.enabled(VARIANT_XPROMO_SUBREDDIT_TRANSPARENT)) {
-      campaign = 'xpromo_subreddit_transparent';
-    }
-    const nativeInterstitialLink = createLink(campaign, 'interstitial');
-    const nativeLoginLink = createLink(campaign, 'login');
+  requireXPromoLogin,
+  state => features.withContext({ state }),
+  state => state.user.loggedOut,
+  state => linkType => createNativeAppLink(state, linkType),
+  (subredditName, requireXPromoLogin, featureContext, loggedOut, createLink) => {
+    const requireLogin = loggedOut && requireXPromoLogin;
+    const nativeInterstitialLink = createLink('interstitial');
+    const nativeLoginLink = createLink('login');
     return { subredditName, requireLogin, nativeInterstitialLink, nativeLoginLink };
   }
 );
