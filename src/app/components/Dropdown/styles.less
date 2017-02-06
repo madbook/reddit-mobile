@@ -34,6 +34,7 @@
   top: 50%;
   transform: translateY(-50%);
   width: 95%;
+  max-height: 90%;
 
   // if the viewport is larger than the modal,
   @media(min-width: @max-width) {
@@ -88,6 +89,10 @@
 
     &.icon-spam.m-selected {
       color: @nsfw-salmon;
+    }
+
+    &.icon-flag.m-selected {
+      color: @warning-yellow;
     }
 
     &.icon-distinguish.m-selected {

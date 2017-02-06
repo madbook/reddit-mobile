@@ -4,20 +4,21 @@ import React from 'react';
 import fill from 'lodash/fill';
 
 import { short } from 'lib/formatDifference';
+import { sumReportsCount } from 'lib/modToolHelpers.js';
 
 const T = React.PropTypes;
 const separator = <div className='CommentHeader__separator'> • </div>;
 
 const APPROVED_FLAIR = (
-  <td className='CommentHeader__approvalStatus icon icon-check-circled green' />
+  <td className='CommentHeader__modStatus icon icon-check-circled green' />
 );
 
 const REMOVED_FLAIR = (
-  <td className='CommentHeader__approvalStatus icon icon-delete_remove ban-red' />
+  <td className='CommentHeader__modStatus icon icon-delete_remove ban-red' />
 );
 
 const SPAM_FLAIR = (
-  <td className='CommentHeader__approvalStatus icon icon-spam nsfw-salmon' />
+  <td className='CommentHeader__modStatus icon icon-spam nsfw-salmon' />
 );
 
 function getAuthorIcon(authorType) {
@@ -126,7 +127,15 @@ export default function CommentHeader(props) {
     isApproved,
     isRemoved,
     isSpam,
+    reports,
   } = props;
+
+  const reportCounts = sumReportsCount(reports);
+
+  const REPORT_FLAIR = ([
+    <td className={ `CommentHeader__modStatus icon icon-flag ${ isApproved ? '' : 'warning-yellow' }` }/>,
+    <td className={ `CommentHeader__modStatus m-report-count ${ isApproved ? '' : 'warning-yellow' }` }>{ reportCounts }</td>,
+  ]);
 
   return (
     <div className='CommentHeader' onClick={ props.onToggleCollapse }>
@@ -139,6 +148,7 @@ export default function CommentHeader(props) {
             { isApproved ? APPROVED_FLAIR : null }
             { isRemoved ? REMOVED_FLAIR : null }
             { isSpam ? SPAM_FLAIR : null }
+            { reportCounts > 0 ? REPORT_FLAIR : null }
           </tr>
         </tbody>
       </table>
@@ -160,6 +170,7 @@ CommentHeader.propTypes = {
   isApproved: T.bool,
   isRemoved: T.bool,
   isSpam: T.bool,
+  reports: T.object,
 };
 
 CommentHeader.defaultProps = {
@@ -172,4 +183,5 @@ CommentHeader.defaultProps = {
   isApproved: false,
   isRemoved: false,
   isSpam: false,
+  reports: null,
 };

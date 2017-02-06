@@ -34,9 +34,11 @@ export default function CommentTools(props) {
     isMine,
     distinguishType,
     isSticky,
+    reports,
   } = props;
 
   const modModalId = `mod-${id}`;
+  const reportModalId = `report-${id}`;
 
   return (
     <div className='CommentTools'>
@@ -48,11 +50,12 @@ export default function CommentTools(props) {
       { renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
                        isSubredditModerator, isApproved, isSpam, isRemoved,
-                       approvedBy, removedBy, false, null, isSticky) }
+                       approvedBy, removedBy, false, null, isSticky, null, null) }
       { isSubredditModerator ? renderDropdown(id, permalinkUrl, commentAuthor, username, saved,
                        onEdit, onDelete, onToggleSave, onReportComment, onToggleModal,
                        isSubredditModerator, isApproved, isSpam, isRemoved,
-                       approvedBy, removedBy, true, modModalId, isMine, distinguishType, isSticky) : null }
+                       approvedBy, removedBy, true, modModalId, isMine, distinguishType,
+                       isSticky, reports, reportModalId) : null }
     </div>
   );
 }
@@ -78,6 +81,7 @@ CommentTools.propTypes = {
   isApproved: T.bool,
   approvedBy: T.string,
   removedBy: T.string,
+  reports: T.object,
 };
 
 CommentTools.defaultProps = {
@@ -91,6 +95,7 @@ CommentTools.defaultProps = {
   onToggleSave: () => {},
   onToggleReply: () => {},
   onToggleModal: () => {},
+  reports: null,
 };
 
 const renderReply = ({ commentReplying, onToggleReply }) => {
@@ -156,6 +161,8 @@ const renderDropdown = (
   isMine,
   distinguishType,
   isSticky,
+  reports,
+  reportModalId,
 ) => (
   <CommentDropdown
     id={ id }
@@ -179,5 +186,7 @@ const renderDropdown = (
     modModalId={ modModalId }
     isMine={ isMine }
     distinguishType={ distinguishType }
+    reports={ reports }
+    reportModalId={ reportModalId }
   />
 );

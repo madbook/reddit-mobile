@@ -29,11 +29,21 @@
     text-align: right;
   }
 
-  &__approvalStatus {
+  &__modStatus {
     width: 20px;
 
     &.icon {
       font-size: @icon-size;
+    }
+
+    &.m-report-count {
+      vertical-align: bottom;
+      color: @neutral;
+      width: 5px;
+
+      &.warning-yellow {
+        color: @warning-yellow;
+      }
     }
   }
 

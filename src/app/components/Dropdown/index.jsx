@@ -86,6 +86,21 @@ DropdownRow.defaultProps = {
   isSelected: false,
 };
 
+export function DropdownClose(props) {
+  return (
+    <div className='DropdownClose'>
+      <DropdownRow
+        icon='x'
+        onClick={ props.onClick }
+      />
+    </div>
+  );
+}
+
+DropdownClose.propTypes = {
+  onClick: T.func.isRequired,
+};
+
 export function DropdownLinkRow(props) {
   return (
     <Anchor href={ props.href } className='DropdownLinkRow'>

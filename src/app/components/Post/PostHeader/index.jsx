@@ -4,7 +4,7 @@ import { Anchor } from '@r/platform/components';
 
 import { short } from 'lib/formatDifference';
 import mobilify from 'lib/mobilify';
-import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
+import { getStatusBy, getApprovalStatus, sumReportsCount } from 'lib/modToolHelpers.js';
 import PostModel from 'apiClient/models/PostModel';
 
 import {
@@ -199,28 +199,36 @@ function renderPostFlair(post, single) {
   );
 }
 
-function renderModStatusFlair(post) {
+function renderModStatusFlair(post, reports) {
   const {
     approved,
     removed,
     spam,
-	distinguished,
+    distinguished,
     locked,
     stickied,
   } = post;
 
-  if (!(approved || removed || spam || locked || distinguished !== '' || stickied)) {
+  const reportCounts = sumReportsCount(reports);
+  const REPORT_FLAIR = ([
+    <span className={ `icon icon-flag ${ approved ? '' : 'warning-yellow' }` }/>,
+    <span className={ `m-report-count ${ approved ? '' : 'warning-yellow' }` }> { reportCounts } </span>,
+  ]);
+
+  if (!(approved || removed || spam || locked || distinguished !== ''
+      || stickied || reportCounts > 0)) {
     return null;
   }
 
   return (
-    <span className='PostHeader__approval-status-flair'>
+    <span className='PostHeader__mod-status-flair'>
       { stickied ? STICKY_FLAIR : null }
       { distinguished === 'moderator' ? MOD_FLAIR : null }
       { locked ? LOCKED_FLAIR : null }
       { approved ? APPROVED_FLAIR : null }
       { removed ? REMOVED_FLAIR : null }
       { spam ? SPAM_FLAIR : null }
+      { reportCounts > 0 ? REPORT_FLAIR : null }
     </span>
   );
 }
@@ -256,6 +264,7 @@ function renderPostDescriptor(
   hideSubredditLabel,
   hideWhen,
   isPromotedUserPost,
+  reports,
 ) {
   const {
     sr_detail,
@@ -282,7 +291,7 @@ function renderPostDescriptor(
     !hideSubredditLabel && flairOrNil,
   ]);
 
-  const modStatusFlair = renderModStatusFlair(post);
+  const modStatusFlair = renderModStatusFlair(post, reports);
 
   return (
     <div className='PostHeader__metadata-container'>
@@ -428,6 +437,7 @@ export default function PostHeader(props) {
     titleOpensExpando,
     onTapExpand,
     isSubredditModerator,
+    reports,
   } = props;
 
   const showSourceLink = showingLink && !renderMediaFullbleed;
@@ -460,6 +470,7 @@ export default function PostHeader(props) {
           hideSubredditLabel,
           hideWhen,
           isPromotedUserPost,
+          reports,
         )
       }
       { renderPostTitleLink(post, showLinksInNewTab, onElementClick,

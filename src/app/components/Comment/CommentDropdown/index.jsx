@@ -2,6 +2,7 @@ import React from 'react';
 
 import { DropdownModal, DropdownRow, DropdownLinkRow } from 'app/components/Dropdown';
 import ModeratorModal from 'app/components/ModeratorModal';
+import { ReportsModal } from 'app/components/ReportsModal';
 
 import { COMMENT } from 'apiClient/models/thingTypes';
 
@@ -30,6 +31,8 @@ export default function CommentDropdown(props) {
     modModalId,
     isMine,
     distinguishType,
+    reportModalId,
+    reports,
   } = props;
 
   const userIsAuthor = commentAuthor === username;
@@ -57,21 +60,34 @@ export default function CommentDropdown(props) {
 
   if (showModModal && isSubredditModerator) {
     modal = (
-      <ModeratorModal
-        id={ id }
-        modModalId={ modModalId }
-        onClick={ onToggleModal }
-        isRemoved={ isRemoved }
-        isApproved={ isApproved }
-        isSpam={ isSpam }
-        approvedBy={ approvedBy }
-        removedBy={ removedBy }
-        distinguishType={ distinguishType }
-        isMine={ isMine }
-        isSticky={ isSticky }
-        targetType={ COMMENT }
-      >
-      </ModeratorModal>
+      <div>
+        <ModeratorModal
+          id={ id }
+          modModalId={ modModalId }
+          onClick={ onToggleModal }
+          isRemoved={ isRemoved }
+          isApproved={ isApproved }
+          isSpam={ isSpam }
+          approvedBy={ approvedBy }
+          removedBy={ removedBy }
+          distinguishType={ distinguishType }
+          isMine={ isMine }
+          isSticky={ isSticky }
+          targetType={ COMMENT }
+          reports={ reports }
+          reportModalId={ reportModalId }
+        />
+        <ReportsModal
+          reportModalId={ reportModalId }
+          isRemoved={ isRemoved }
+          isApproved={ isApproved }
+          isSpam={ isSpam }
+          approvedBy={ approvedBy }
+          removedBy={ removedBy }
+          reports={ reports }
+          onClick={ onToggleModal }
+        />
+      </div>
     );
   } else {
     modal = (
@@ -104,6 +120,8 @@ CommentDropdown.propTypes = {
   modModalId: T.string,
   distinguishType: T.string,
   isMine: T.bool,
+  reportModalId: T.string,
+  reports: T.object,
 };
 
 CommentDropdown.defaultProps = {
@@ -119,7 +137,9 @@ CommentDropdown.defaultProps = {
   approvedBy: null,
   removedBy: null,
   showModModal: false,
-  modModalId: null,
+  modModalId: '',
   isDistinguished: '',
   isMine: false,
+  reports: {},
+  reportModalId: '',
 };

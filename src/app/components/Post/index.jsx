@@ -124,6 +124,7 @@ export function Post(props) {
     z,
     onToggleModal,
     moderatingSubreddits,
+    reports,
   } = props;
 
   const canExpand = post.preview && post.preview.images.length > 0 || !!post.oembed;
@@ -215,6 +216,7 @@ export function Post(props) {
           titleOpensExpando={ inTitleExpandoExp && canExpand }
           onTapExpand={ toggleExpanded }
           isSubredditModerator={ isSubredditModerator }
+          reports={ reports }
         />
       </div>
       { contentOrNil }
@@ -232,6 +234,7 @@ export function Post(props) {
         onElementClick={ () => { onPostClick(post); } }
         onToggleModal={ onToggleModal }
         isSubredditModerator={ isSubredditModerator }
+        reports={ reports }
       />
     </article>
   );
@@ -250,6 +253,7 @@ const selector = createSelector(
   state => features.withContext({ state }).enabled(VARIANT_MIXED_VIEW),
   (state, props) => state.playingPosts[removePrefix(props.postId)],
   state => state.moderatingSubreddits,
+  (state, props) => state.reports[props.postId],
   (
     user,
     postId,
@@ -263,10 +267,10 @@ const selector = createSelector(
     inMixedViewExp,
     isPlaying,
     moderatingSubreddits,
+    reports,
   ) => {
     const editing = !!editingState;
     const editPending = editing && editingState.pending;
-
     return {
       user,
       postId,
@@ -281,6 +285,7 @@ const selector = createSelector(
       inMixedViewExp,
       isPlaying,
       moderatingSubreddits,
+      reports,
     };
   }
 );

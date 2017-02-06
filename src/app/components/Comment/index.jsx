@@ -31,6 +31,7 @@ export default class Comment extends React.Component {
     editing: T.bool.isRequired,
     editPending: T.bool.isRequired,
     votingDisabled: T.bool,
+    reports: T.object,
     // dispatchers
     onDeleteComment: T.func.isRequired,
     onToggleEditForm: T.func.isRequired,
@@ -54,6 +55,7 @@ export default class Comment extends React.Component {
     nestingLevel: 0,
     preview: false,
     votingDisabled: false,
+    reports: {},
   };
 
   shouldComponentUpdate(nextProps) {
@@ -91,6 +93,7 @@ export default class Comment extends React.Component {
       onToggleCollapse,
       editing,
       dotsNum,
+      reports,
     } = props;
 
 
@@ -121,6 +124,7 @@ export default class Comment extends React.Component {
             isApproved={ comment.approved }
             isRemoved={ comment.removed }
             isSpam={ comment.spam }
+            reports={ reports[comment.name] }
           />
         </div>
 
@@ -191,6 +195,7 @@ function renderTools(props) {
     votingDisabled,
     onToggleModal,
     isSubredditModerator,
+    reports,
   } = props;
 
   const className = cx('Comment__toolsContainer', 'clearfix', {
@@ -227,6 +232,7 @@ function renderTools(props) {
           isMine={ user && user.name === comment.author }
           distinguishType={ comment.distinguished }
           isSticky={ comment.stickied }
+          reports={ reports[comment.name] }
         />
       </div>
     </div>

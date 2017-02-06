@@ -31,6 +31,7 @@ import preferencesRequest from './preferencesRequest';
 import recentSubreddits from './recentSubreddits';
 import recommendedSubreddits from './recommendedSubreddits';
 import replying from './replying';
+import reports from './reports';
 import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
 import session from './session';
@@ -86,6 +87,7 @@ export default {
   replying,
   recentSubreddits,
   recommendedSubreddits,
+  reports,
   savedRequests,
   searchRequests,
   session,

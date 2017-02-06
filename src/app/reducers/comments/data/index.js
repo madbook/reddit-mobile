@@ -8,7 +8,6 @@ import * as loginActions from 'app/actions/login';
 import * as voteActions from 'app/actions/vote';
 import * as mailActions from 'app/actions/mail';
 import * as modToolActions from 'app/actions/modTools';
-
 import * as searchActions from 'app/actions/search';
 import * as savedActions from 'app/actions/saved';
 import * as hiddenActions from 'app/actions/hidden';

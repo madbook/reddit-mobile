@@ -5,19 +5,19 @@ import { createSelector } from 'reselect';
 
 import { POST, COMMENT } from 'apiClient/models/thingTypes';
 import Modtools from 'apiClient/apis/ModTools';
-
-import { Modal } from '@r/widgets/modal';
+import { Modal, ModalTarget } from '@r/widgets/modal';
 import { ModalBanner } from 'app/components/ModalBanner';
-import { DropdownRow } from 'app/components/Dropdown';
+import { DropdownRow, DropdownClose } from 'app/components/Dropdown';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 import { getStatusBy, getApprovalStatus } from 'lib/modToolHelpers.js';
 import * as modActions from 'app/actions/modTools';
+import { USER_REPORT_KEY, MODERATOR_REPORT_KEY } from 'app/reducers/reports';
+
 
 const DISTINGUISH_TYPES = Modtools.DISTINGUISH_TYPES;
 const T = React.PropTypes;
 
 export class ModeratorModal extends React.Component {
-
   onDistinguish(distinguishType) {
     const type = (distinguishType === DISTINGUISH_TYPES.NONE
                           ? DISTINGUISH_TYPES.MODERATOR
@@ -27,6 +27,22 @@ export class ModeratorModal extends React.Component {
 
   showDistinguish(distinguishType) {
     return !(distinguishType === DISTINGUISH_TYPES.NONE);
+  }
+
+  preventModalClose(e) {
+    e.stopPropagation();
+  }
+
+  hasReports(reports) {
+    if (!reports) { return false; }
+    if (reports[USER_REPORT_KEY] 
+        && Object.keys(reports[USER_REPORT_KEY]).length > 0) {
+      return true;
+    }
+    if (reports[MODERATOR_REPORT_KEY]
+        && Object.keys(reports[MODERATOR_REPORT_KEY]).length > 0) {
+      return true;
+    }
   }
 
   render() {
@@ -44,12 +60,7 @@ export class ModeratorModal extends React.Component {
           id={ this.props.modModalId }
           className='DropdownModal ModeratorModal'
         >
-          <div className='DropdownClose'>
-            <DropdownRow
-              icon='x'
-              onClick={ this.props.onClick }
-            />
-          </div>
+          <DropdownClose onClick={ this.props.onClick }/>
           <div onClick={ this.props.onClick }>
             <ModalBanner
               status={ getApprovalStatus(this.props.isApproved,
@@ -85,6 +96,19 @@ export class ModeratorModal extends React.Component {
                   />,
                 ]
                 : null
+              }
+              { this.hasReports(this.props.reports) &&
+                <div onClick={ (e) => this.preventModalClose(e) }>
+                  <ModalTarget
+                    id={ this.props.reportModalId }
+                  >
+                    <DropdownRow
+                      icon='flag'
+                      text='Reports'
+                      isSelected={ true }
+                    />
+                  </ModalTarget>
+                </div>
               }
               { this.props.isMine
                 ? <DropdownRow
@@ -150,12 +174,14 @@ ModeratorModal.propTypes = {
   approvedBy: T.string,
   distinguishType: T.string,
   isMine: T.bool,
+  reports: T.object,
   target: T.object,
   targetType: T.oneOf([COMMENT, POST]).isRequired,
 };
 
 ModeratorModal.defaultProps = {
   target: null,
+  reports: null,
 };
 
 const selector = createSelector(

@@ -98,6 +98,7 @@ const renderNode = (props, depth, data, isHidden) => {
     post,
     isSubredditModerator,
     commentDispatchers,
+    reports,
   } = props;
   const uuid = data.name;
   const authorType = determineAuthorType(data, user, post.author || '');
@@ -131,6 +132,7 @@ const renderNode = (props, depth, data, isHidden) => {
             user={ user }
             votingDisabled={ post.archived }
             dotsNum={ dotsNum }
+            reports={ reports }
 
             { ...returnDispatchers(commentDispatchers, uuid) }
           />
@@ -205,6 +207,7 @@ const selector = createSelector(
   state => state.editingText,
   state => state.replying,
   state => state.moderatingSubreddits.names,
+  state => state.reports,
   (
     subreddit,
     user,
@@ -218,6 +221,7 @@ const selector = createSelector(
     thingsBeingEdited,
     replyingList,
     moderatingSubreddits,
+    reports,
   ) => ({
     user,
     thingsBeingEdited,
@@ -232,6 +236,7 @@ const selector = createSelector(
       collapsedComments,
       pendingLoadMore,
     }) : [],
+    reports,
   })
 );
 

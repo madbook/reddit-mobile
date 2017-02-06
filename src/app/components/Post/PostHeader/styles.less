@@ -122,9 +122,19 @@
   &__metadata {
     flex: 0 1 0;
     padding: 5 5 0 0;
+    white-space: nowrap;
   }
 
-  &__approval-status-flair {
+  .m-report-count {
+    vertical-align: bottom;
+    color: @neutral;
+
+    &.warning-yellow {
+      color: @warning-yellow;
+    }
+  }
+
+  &__mod-status-flair {
     .icon-mod {
       font-size: @icon-size-medium // icon sizes are inconsistent
     }
