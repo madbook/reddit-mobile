@@ -1,4 +1,4 @@
-export const newSubredditRulesRequest = (name) => ({
+export const newSubredditRulesRequest = name => ({
   id: name,
   loading: true,
   failed: false,
