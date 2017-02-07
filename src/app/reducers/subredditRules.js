@@ -1,4 +1,3 @@
-import mergeUpdatedModel from './helpers/mergeUpdatedModel';
 import * as loginActions from 'app/actions/login';
 import * as subredditRulesActions from 'app/actions/subredditRules';
 
@@ -15,7 +14,7 @@ export default function(state=DEFAULT, action={}) {
       const { subredditName, rules } = action;
       return {
         [subredditName]: rules,
-        ...state
+        ...state,
       };
     }
 

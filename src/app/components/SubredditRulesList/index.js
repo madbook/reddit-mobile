@@ -39,7 +39,7 @@ function SubredditRulesList(props) {
         ? <div className="SubredditRulesList__content">
             <header>
               <h2 className="SubredditRulesList__title">
-                Rules for r/{subredditName}
+                Rules for r/{ subredditName }
               </h2>
               <p className="SubredditRulesList__description">
                 Rules that visitors must follow to participate. May be used as reasons to report or ban.

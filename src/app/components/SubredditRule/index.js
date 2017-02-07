@@ -40,16 +40,16 @@ export default function SubredditRule(props) {
 
   return (
     <div className="SubredditRule">
-      <div className="SubredditRule__title">{shortName}</div>
-      <div className="SubredditRule__meta">{kindDisplayString}</div>
+      <div className="SubredditRule__title">{ shortName }</div>
+      <div className="SubredditRule__meta">{ kindDisplayString }</div>
       { descriptionHTML && (
         <div className="SubredditRule__description">
-          <div dangerouslySetInnerHTML={{__html: descriptionHTML}} />
+          <div dangerouslySetInnerHTML={ {__html: descriptionHTML} } />
         </div>
       ) }
     </div>
   );
-};
+}
 
 SubredditRule.propTypes = {
   descriptionHTML: T.string,
