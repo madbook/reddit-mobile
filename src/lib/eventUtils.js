@@ -120,12 +120,20 @@ export function trackXPromoEvent(state, eventType, additionalEventData) {
   getEventTracker().track('xpromo_events', eventType, payload);
 }
 
-export function trackXPromoInit(state) {
+export function trackXPromoInit(state, additionalEventData) {
   const ineligibilityReason = shouldNotShowBanner();
   if (ineligibilityReason) {
-    trackXPromoEvent(state, XPROMO_INELIGIBLE, { ineligibility_reason: ineligibilityReason });
+    trackXPromoEvent(
+      state,
+      XPROMO_INELIGIBLE,
+      { ...additionalEventData, ineligibility_reason: ineligibilityReason },
+    );
   } else {
-    trackXPromoEvent(state, XPROMO_VIEW, { interstitial_type: interstitialType(state) });
+    trackXPromoEvent(
+      state,
+      XPROMO_VIEW,
+      { ...additionalEventData, interstitial_type: interstitialType(state) },
+    );
   }
 }
 
@@ -194,7 +202,7 @@ export function trackPageEvents(state, additionalEventData={}) {
     gtmPageView(state);
     trackScreenViewEvent(state, additionalEventData);
     if (shouldTrackXPromo(state)) {
-      trackXPromoInit(state);
+      trackXPromoInit(state, additionalEventData);
     }
   } else if (state.meta.crawler) {
     trackCrawlEvent(state, additionalEventData);
