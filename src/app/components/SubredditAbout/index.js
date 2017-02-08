@@ -28,12 +28,19 @@ function SubredditAbout(props) {
   return (
     <div className='SubredditAbout'>
     { subreddit
-      ? <RedditLinkHijacker>
-          <div
-            className='SubredditAbout__description'
-            dangerouslySetInnerHTML={ { __html: subreddit.descriptionHTML } }
-          />
-        </RedditLinkHijacker>
+      ? <div className="SubredditAbout__content">
+          <div className="SubredditAbout__community-rules-link">
+            <Anchor href={ `/r/${subredditName}/about/rules` }>
+              View this community&rsquo;s rules
+            </Anchor>
+          </div>
+          <RedditLinkHijacker>
+            <div
+              className='SubredditAbout__description'
+              dangerouslySetInnerHTML={ { __html: subreddit.descriptionHTML } }
+            />
+          </RedditLinkHijacker>
+        </div>
       
     : subredditRequest && subredditRequest.failed 
       ? <div className='SubredditAbout__loading-error'>
