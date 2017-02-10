@@ -15,9 +15,7 @@ import {
 const xPromoSelector = createSelector(
   shouldShowXPromo,
   loginRequiredXPromoVariant,
-  (state) => { return state.smartBanner.showBanner; },
-  (showXPromo, loginRequiredVariant) => {
-    const requireLogin = showXPromo && loginRequiredVariant;
+  (showXPromo, requireLogin) => {
     return {
       showXPromo,
       requireLogin,

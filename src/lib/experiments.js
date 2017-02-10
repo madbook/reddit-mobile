@@ -7,13 +7,11 @@ export function extractUser(state) {
 
 export function getExperimentData(state, experimentName) {
   const user = extractUser(state);
-  // TODO(skrisman) there seems to be a race condition when logging in
-  // where our user value isn't quite up to date.
-  if (!user) {
-    return {};
+  if (!user || !user.features[experimentName]) {
+    return null;
   }
-  const variant = user.features[experimentName] ?
-        user.features[experimentName].variant :
-        null; // this could happen if we are forcing the experiment via url.
-  return { experimentName, variant };
+  return {
+    ...user.features[experimentName],
+    experiment_name: experimentName,
+  };
 }

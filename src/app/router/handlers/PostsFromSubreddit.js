@@ -91,7 +91,7 @@ function buildSortOrderData(state) {
 }
 
 
-function buildAdditionalEventData(state) {
+export function buildAdditionalEventData(state) {
   const { subredditName } = state.platform.currentPage.urlParams;
 
   let target_id = null;

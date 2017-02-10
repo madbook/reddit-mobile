@@ -27,16 +27,10 @@ const {
   VARIANT_RECOMMENDED_BY_POST_HOT,
   VARIANT_RECOMMENDED_SIMILAR_POSTS,
   VARIANT_SUBREDDIT_HEADER,
-  VARIANT_XPROMO_FP_TRANSPARENT,
-  VARIANT_XPROMO_SUBREDDIT_TRANSPARENT,
-  VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS,
-  VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID,
-  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS,
-  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID,
-  VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS_CONTROL,
-  VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID_CONTROL,
-  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS_CONTROL,
-  VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID_CONTROL,
+  VARIANT_XPROMO_LOGIN_REQUIRED_IOS,
+  VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
+  VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL,
+  VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -148,122 +142,47 @@ const config = {
       seoReferrer: true,
     }],
   },
-  // As a temporary hack, we are showing the list treatment also to users
-  // bucketed into the control groups. We want to continue to get bucketing
-  // events, so we know when a user has been exposed to this feature, and we
-  // want to show 100% of users the list treatment. We can't eliminate control
-  // groups in the API's bucketing mechanism, so we use this hack instead.
-  [VARIANT_XPROMO_FP_TRANSPARENT]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_IOS]: {
     and: [
-      { allowedDevices: [IPHONE, ANDROID] },
-      { allowedPages: ['index'] },
-      { or: [
-        { url: 'xpromofptransparent' },
-        { variant: 'mweb_xpromo_transparent_fp:transparent' },
-        { variant: 'mweb_xpromo_transparent_fp:control_1' },
-        { variant: 'mweb_xpromo_transparent_fp:control_2' },
-      ] },
-    ],
-  },
-  // As a temporary hack, we are showing the list treatment also to users
-  // bucketed into the control groups. We want to continue to get bucketing
-  // events, so we know when a user has been exposed to this feature, and we
-  // want to show 100% of users the list treatment. We can't eliminate control
-  // groups in the API's bucketing mechanism, so we use this hack instead.
-  [VARIANT_XPROMO_SUBREDDIT_TRANSPARENT]: {
-    and: [
-      { allowedDevices: [IPHONE, ANDROID] },
-      { allowedPages: ['listing'] },
+      { allowedDevices: [IPHONE] },
       { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
       { or: [
-        { url: 'xpromosubreddittransparent' },
-        { variant: 'mweb_xpromo_transparent_listing:transparent' },
-        { variant: 'mweb_xpromo_transparent_listing:control_1' },
-        { variant: 'mweb_xpromo_transparent_listing:control_2' },
+        { url: 'xpromologinrequired' },
+        { variant: 'mweb_xpromo_require_login_ios:login_required' },
       ] },
     ],
   },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL]: {
     and: [
-      { allowedPages: ['index'] },
       { allowedDevices: [IPHONE] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
       { or: [
-        { url: 'xpromofploginrequired' },
-        { variant: 'mweb_xpromo_require_login_fp_ios:login_required' },
+        { variant: 'mweb_xpromo_require_login_ios:control_1' },
+        { variant: 'mweb_xpromo_require_login_ios:control_2' },
       ] },
     ],
   },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_IOS_CONTROL]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID]: {
     and: [
-      { allowedPages: ['index'] },
-      { allowedDevices: [IPHONE] },
+      { allowedDevices: [ANDROID] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
       { or: [
-        { variant: 'mweb_xpromo_require_login_fp_ios:control_1' },
-        { variant: 'mweb_xpromo_require_login_fp_ios:control_2' },
+        { url: 'xpromologinrequired' },
+        { variant: 'mweb_xpromo_require_login_android:login_required' },
       ] },
     ],
   },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID]: {
+  [VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL]: {
     and: [
-      { allowedPages: ['index'] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
       { allowedDevices: [ANDROID] },
       { or: [
-        { url: 'xpromofploginrequired' },
-        { variant: 'mweb_xpromo_require_login_fp_android:login_required' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_FP_ANDROID_CONTROL]: {
-    and: [
-      { allowedPages: ['index'] },
-      { allowedDevices: [ANDROID] },
-      { or: [
-        { variant: 'mweb_xpromo_require_login_fp_android:control_1' },
-        { variant: 'mweb_xpromo_require_login_fp_android:control_2' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS]: {
-    and: [
-      { allowedPages: ['listing'] },
-      { allowNSFW: false },
-      { allowedDevices: [IPHONE] },
-      { or: [
-        { url: 'xpromosubredditloginrequired' },
-        { variant: 'mweb_xpromo_require_login_listing_ios:login_required' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_IOS_CONTROL]: {
-    and: [
-      { allowedPages: ['listing'] },
-      { allowNSFW: false },
-      { allowedDevices: [IPHONE] },
-      { or: [
-        { variant: 'mweb_xpromo_require_login_listing_ios:control_1' },
-        { variant: 'mweb_xpromo_require_login_listing_ios:control_2' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID]: {
-    and: [
-      { allowedPages: ['listing'] },
-      { allowNSFW: false },
-      { allowedDevices: [ANDROID] },
-      { or: [
-        { url: 'xpromosubredditloginrequired' },
-        { variant: 'mweb_xpromo_require_login_listing_android:login_required' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_LOGIN_REQUIRED_SUBREDDIT_ANDROID_CONTROL]: {
-    and: [
-      { allowedPages: ['listing'] },
-      { allowNSFW: false },
-      { allowedDevices: [ANDROID] },
-      { or: [
-        { variant: 'mweb_xpromo_require_login_listing_android:control_1' },
-        { variant: 'mweb_xpromo_require_login_listing_android:control_2' },
+        { variant: 'mweb_xpromo_require_login_android:control_1' },
+        { variant: 'mweb_xpromo_require_login_android:control_2' },
       ] },
     ],
   },
@@ -488,8 +407,8 @@ flags.addRule('allowNSFW', function(allowed) {
     return true;
   }
 
-  if (!subredditName) {
-    return false;
+  if (!subredditName) { // this happens for the front page.
+    return true;
   }
 
   const subredditInfo = subreddits[subredditName.toLowerCase()];

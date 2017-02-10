@@ -8,7 +8,6 @@ import url from 'url';
 import { redirect } from '@r/platform/actions';
 
 import * as xpromoActions from 'app/actions/xpromo';
-import features from 'app/featureFlags';
 import { XPROMO_DISMISS } from 'lib/eventUtils';
 import getSubreddit from 'lib/getSubredditFromState';
 import { getBranchLink } from 'lib/smartBannerState';
@@ -17,6 +16,7 @@ import {
   isPartOfXPromoExperiment,
   currentExperimentData,
 } from 'app/selectors/xpromo';
+import { buildAdditionalEventData } from 'app/router/handlers/PostsFromSubreddit';
 
 const List = () => {
   return (
@@ -117,16 +117,24 @@ class DualPartInterstitialFooter extends React.Component {
 function createNativeAppLink(state, linkType) {
   let payload = { utm_source: 'xpromo', utm_content: linkType };
   if (isPartOfXPromoExperiment(state)) {
-    const { experimentName, variant } = currentExperimentData(state);
+    let experimentData = {};
+    if (currentExperimentData(state)) {
+      const { experiment_name, variant } = currentExperimentData(state);
+      experimentData = {
+        utm_name: experiment_name,
+        utm_term: variant,
+      };
+    }
     payload = {
       ...payload,
+      ...experimentData,
       utm_medium: 'experiment',
-      utm_name: experimentName,
-      utm_term: variant,
     };
   } else {
     payload = { ...payload, utm_medium: 'interstitial' };
   }
+
+  payload= { ...payload, ...buildAdditionalEventData(state) };
 
   return getBranchLink(state, payload);
 }
@@ -134,11 +142,8 @@ function createNativeAppLink(state, linkType) {
 const selector = createSelector(
   getSubreddit,
   requireXPromoLogin,
-  state => features.withContext({ state }),
-  state => state.user.loggedOut,
   state => linkType => createNativeAppLink(state, linkType),
-  (subredditName, requireXPromoLogin, featureContext, loggedOut, createLink) => {
-    const requireLogin = loggedOut && requireXPromoLogin;
+  (subredditName, requireLogin, createLink) => {
     const nativeInterstitialLink = createLink('interstitial');
     const nativeLoginLink = createLink('login');
     return { subredditName, requireLogin, nativeInterstitialLink, nativeLoginLink };

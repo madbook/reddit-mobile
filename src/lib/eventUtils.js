@@ -7,7 +7,8 @@ import {
   interstitialType,
   isPartOfXPromoExperiment,
   currentExperimentData as currentXPromoExperimentData,
-  transparentXPromoEnabled as shouldTrackXPromo,
+  xpromoIsEnabledOnPage,
+  xpromoIsEnabledOnDevice,
 } from 'app/selectors/xpromo';
 import { isHidden } from 'lib/dom';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
@@ -107,9 +108,9 @@ function trackScreenViewEvent(state, additionalEventData) {
 
 export function trackXPromoEvent(state, eventType, additionalEventData) {
   let experimentPayload = {};
-  if (isPartOfXPromoExperiment(state)) {
-    const { experimentName, variant } = currentXPromoExperimentData(state);
-    experimentPayload = { experiment_name: experimentName, experiment_variant: variant };
+  if (isPartOfXPromoExperiment(state) && currentXPromoExperimentData(state)) {
+    const { experiment_name, variant } = currentXPromoExperimentData(state);
+    experimentPayload = { experiment_name, experiment_variant: variant };
   }
   const payload = {
     ...getBasePayload(state),
@@ -201,7 +202,7 @@ export function trackPageEvents(state, additionalEventData={}) {
   if (process.env.ENV === 'client') {
     gtmPageView(state);
     trackScreenViewEvent(state, additionalEventData);
-    if (shouldTrackXPromo(state)) {
+    if (xpromoIsEnabledOnPage(state) && xpromoIsEnabledOnDevice(state)) {
       trackXPromoInit(state, additionalEventData);
     }
   } else if (state.meta.crawler) {

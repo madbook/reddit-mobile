@@ -2,6 +2,7 @@ import url from 'url';
 import cookies from 'js-cookie';
 
 import localStorageAvailable from './localStorageAvailable';
+import { getBasePayload, buildSubredditData } from 'lib/eventUtils';
 import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
 import * as constants from 'app/constants';
 import features from 'app/featureFlags';
@@ -57,6 +58,8 @@ export function getBranchLink(state, payload={}) {
     mweb_loid_created: loidCreated,
     mweb_user_id36: userId,
     mweb_user_name: userName,
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
   };
 
   return url.format({
