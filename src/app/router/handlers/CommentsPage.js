@@ -169,7 +169,9 @@ function buildAdditionalEventData(state) {
 
   return cleanObject({
     target_fullname: fullName,
+    nsfw: post.over18,
     post_fullname: fullName,
+    spoiler: post.spoiler,
     target_id: convertId(post.id),
     target_type: post.isSelf ? 'self' : 'link',
     target_sort: queryParams.sort || 'confidence',
