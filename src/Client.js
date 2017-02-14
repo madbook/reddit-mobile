@@ -13,7 +13,6 @@ import App from 'app';
 import config from 'config';
 import errorLog from 'lib/errorLog';
 import { initGoogleTagManager } from 'lib/gtm';
-import { getUserInfoOrLoid } from 'lib/eventUtils';
 import routes from 'app/router';
 import reducers from 'app/reducers';
 import reduxMiddleware from 'app/reduxMiddleware';
