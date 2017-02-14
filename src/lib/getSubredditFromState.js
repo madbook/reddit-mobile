@@ -1,4 +1,4 @@
-import { has } from 'lodash/object';
+import has from 'lodash/has';
 
 export default function getSubreddit(state) {
   if (state.platform.currentPage.urlParams.subredditName) {

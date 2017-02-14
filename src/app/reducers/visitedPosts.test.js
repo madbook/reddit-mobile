@@ -1,4 +1,4 @@
-import { range } from 'lodash/util';
+import range from 'lodash/range';
 import createTest from '@r/platform/createTest';
 
 import { VISITED_POSTS_COUNT } from 'app/constants';

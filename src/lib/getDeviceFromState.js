@@ -1,4 +1,4 @@
-import { find } from 'lodash/collection';
+import find from 'lodash/find';
 
 export const ANDROID = 'Android';
 export const IPHONE = 'iPhone';

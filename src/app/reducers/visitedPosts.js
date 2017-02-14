@@ -1,7 +1,7 @@
-import { take, uniq } from 'lodash/array';
+import take from 'lodash/take';
+import uniq from 'lodash/uniq';
 
 import * as commentsPageActions from 'app/actions/commentsPage';
-
 import { VISITED_POSTS_COUNT } from 'app/constants';
 
 const DEFAULT = [];
