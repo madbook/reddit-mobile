@@ -5,7 +5,7 @@ export function isPostNSFW(post) {
     return false;
   }
 
-  return !!post.title.match(/nsf[wl]/gi) || post.over18;
+  return post.over18;
 }
 
 export function postShouldRenderMediaFullbleed(post) {
