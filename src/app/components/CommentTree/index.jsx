@@ -22,7 +22,6 @@ import Loading from 'app/components/Loading';
 import { COMMENT_LOAD_MORE } from 'apiClient/models/thingTypes';
 
 import PostModel from 'apiClient/models/PostModel';
-import config from 'config';
 
 const T = React.PropTypes;
 
@@ -247,7 +246,7 @@ const dispatcher = (dispatch, { pageId, post }) => ({
       dispatch(commentActions.loadMore(data.uuid, pageId, post.uuid));
     } else {
       const id = stripTypePrefix(data.parentId);
-      const url = `${config.origin}${post.cleanPermalink}${id}`;
+      const url = `${post.cleanPermalink}${id}`;
       dispatch(platformActions.redirect(url));
     }
   },
