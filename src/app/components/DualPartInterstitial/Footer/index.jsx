@@ -8,7 +8,7 @@ import url from 'url';
 import { redirect } from '@r/platform/actions';
 
 import * as xpromoActions from 'app/actions/xpromo';
-import { XPROMO_DISMISS } from 'lib/eventUtils';
+import { XPROMO_DISMISS, xPromoExtraScreenViewData } from 'lib/eventUtils';
 import getSubreddit from 'lib/getSubredditFromState';
 import { getBranchLink } from 'lib/smartBannerState';
 import {
@@ -16,7 +16,6 @@ import {
   isPartOfXPromoExperiment,
   currentExperimentData,
 } from 'app/selectors/xpromo';
-import { buildAdditionalEventData } from 'app/router/handlers/PostsFromSubreddit';
 
 const List = () => {
   return (
@@ -116,9 +115,14 @@ class DualPartInterstitialFooter extends React.Component {
 }
 
 function createNativeAppLink(state, linkType) {
-  let payload = { utm_source: 'xpromo', utm_content: linkType };
+  let payload = { 
+    utm_source: 'xpromo', 
+    utm_content: linkType, 
+  };
+
   if (isPartOfXPromoExperiment(state)) {
     let experimentData = {};
+
     if (currentExperimentData(state)) {
       const { experiment_name, variant } = currentExperimentData(state);
       experimentData = {
@@ -131,11 +135,15 @@ function createNativeAppLink(state, linkType) {
       ...experimentData,
       utm_medium: 'experiment',
     };
+
   } else {
     payload = { ...payload, utm_medium: 'interstitial' };
   }
 
-  payload= { ...payload, ...buildAdditionalEventData(state) };
+  payload = {
+    ...payload,
+    ...xPromoExtraScreenViewData(state),
+  };
 
   return getBranchLink(state, payload);
 }

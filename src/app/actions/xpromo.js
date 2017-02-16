@@ -15,8 +15,12 @@ export const hide = () => ({ type: HIDE });
 export const PROMO_CLICKED = 'XPROMO__PROMO_CLICKED';
 export const promoClicked = () => ({ type: PROMO_CLICKED });
 
+export const PROMO_SCROLLSTART = 'XPROMO__SCROLLSTART';
+export const promoScrollStart = () => ({ type: PROMO_SCROLLSTART });
 export const PROMO_SCROLLPAST = 'XPROMO__SCROLLPAST';
 export const promoScrollPast = () => ({ type: PROMO_SCROLLPAST });
+export const PROMO_SCROLLUP = 'XPROMO__SCROLLUP';
+export const promoScrollUp = () => ({ type: PROMO_SCROLLUP });
 
 export const RECORD_SHOWN = 'XPROMO__RECORD_SHOWN';
 export const recordShown = url => ({
@@ -59,11 +63,15 @@ export const checkAndSet = () => async (dispatch) => {
   }
 };
 
-export const navigateToAppStore = (url, visitType) => async (dispatch) => {
+export const logAppStoreNavigation = visitType => async (dispatch) => {
   dispatch(trackXPromoEvent(XPROMO_DISMISS, { dismiss_type: 'app_store_visit' }));
   dispatch(trackXPromoEvent(XPROMO_APP_STORE_VISIT, { visit_trigger: visitType }));
-  // TODO (skrisman): There's no guarantee that these events will actually finish
-  // their requests by the time we redirect. For now we put a delay and hope for the best.
-  // We need the event tracker to return a promise if we want to handle this correctly.
+};
+
+export const navigateToAppStore = url => async (dispatch) => {
+  // TODO (skrisman): There's no guarantee that events in `logAppStoreNavigation`
+  // will actually finish their requests by the time we redirect. For now we
+  // put a delay and hope for the best. We need the event tracker to return a
+  // promise if we want to handle this correctly.
   setTimeout(() => dispatch(redirect(url)), 250);
 };

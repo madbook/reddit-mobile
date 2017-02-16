@@ -212,7 +212,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(sessionActions.sessionError(null));
   },
   nativeAppNavigator: (url) => {
-    dispatch(xpromoActions.navigateToAppStore(url, 'login_screen_button'));
+    dispatch(xpromoActions.logAppStoreNavigation('login_screen_button'));
+    dispatch(xpromoActions.navigateToAppStore(url));
   },
 });
 

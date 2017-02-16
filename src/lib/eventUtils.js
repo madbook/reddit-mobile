@@ -9,7 +9,18 @@ import {
   currentExperimentData as currentXPromoExperimentData,
   xpromoIsEnabledOnPage,
   xpromoIsEnabledOnDevice,
+  xpromoIsPastExperiment,
+  isEligibleListingPage,
+  isEligibleCommentsPage,
 } from 'app/selectors/xpromo';
+
+import {
+  buildAdditionalEventData as listingPageEventData,
+} from 'app/router/handlers/PostsFromSubreddit';
+import {
+  buildAdditionalEventData as commentsPageEventData,
+} from 'app/router/handlers/CommentsPage';
+
 import { isHidden } from 'lib/dom';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { getEventTracker } from 'lib/eventTracker';
@@ -19,6 +30,7 @@ import { shouldNotShowBanner } from 'lib/smartBannerState';
 export const XPROMO_VIEW = 'cs.xpromo_view';
 export const XPROMO_INELIGIBLE = 'cs.xpromo_ineligible';
 export const XPROMO_DISMISS = 'cs.xpromo_dismiss';
+export const XPROMO_SCROLLUP = 'cs.xpromo_scrollup';
 export const XPROMO_SCROLLPAST = 'cs.xpromo_scrollpast';
 export const XPROMO_APP_STORE_VISIT = 'cs.xpromo_app_store_visit';
 
@@ -112,35 +124,73 @@ function trackScreenViewEvent(state, additionalEventData) {
   getEventTracker().track('screenview_events', 'cs.screenview_mweb', payload);
 }
 
+export function xPromoExtraScreenViewData(state) {
+  // ensure that we get all of the extra screen view events data that's
+  // present on comments and listings pages
+  let extraPageData = {};
+  if (isEligibleListingPage(state)) {
+    extraPageData = listingPageEventData(state);
+  } else if (isEligibleCommentsPage(state)) {
+    extraPageData = commentsPageEventData(state);
+  }
+
+  return extraPageData;
+}
+
 export function trackXPromoEvent(state, eventType, additionalEventData) {
+  const payload = {
+    ...getBasePayload(state),
+    ...buildSubredditData(state),
+    ...getExperimentPayload(state),
+    ...xPromoExtraScreenViewData(state),
+    ...additionalEventData,
+  };
+
+  getEventTracker().track('xpromo_events', eventType, payload);
+}
+
+function getExperimentPayload(state) {
   let experimentPayload = {};
   if (isPartOfXPromoExperiment(state) && currentXPromoExperimentData(state)) {
     const { experiment_name, variant } = currentXPromoExperimentData(state);
     experimentPayload = { experiment_name, experiment_variant: variant };
   }
-  const payload = {
-    ...getBasePayload(state),
-    ...buildSubredditData(state),
-    ...experimentPayload,
-    ...additionalEventData,
-  };
-  getEventTracker().track('xpromo_events', eventType, payload);
+  return experimentPayload;
 }
 
-export function trackXPromoInit(state, additionalEventData) {
-  const ineligibilityReason = shouldNotShowBanner();
-  if (ineligibilityReason) {
-    trackXPromoEvent(
-      state,
-      XPROMO_INELIGIBLE,
-      { ...additionalEventData, ineligibility_reason: ineligibilityReason },
-    );
-  } else {
-    trackXPromoEvent(
-      state,
-      XPROMO_VIEW,
-      { ...additionalEventData, interstitial_type: interstitialType(state) },
-    );
+
+export function trackXPromoView(state, additionalEventData) {
+  trackXPromoEvent(state, XPROMO_VIEW, {
+    ...additionalEventData,
+    interstitial_type: interstitialType(state),
+  });
+}
+
+export function trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason) {
+  trackXPromoEvent(state, XPROMO_INELIGIBLE, {
+    ...additionalEventData,
+    ineligibility_reason: ineligibilityReason,
+  });
+}
+
+export function trackPagesXPromoEvents(state, additionalEventData) {
+  if (isEligibleListingPage(state)) {
+    const ineligibilityReason = shouldNotShowBanner();
+    if (ineligibilityReason) {
+      trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason);
+    } else if (xpromoIsEnabledOnPage(state) && xpromoIsEnabledOnDevice(state)) {
+      // listing pages always track view events because they'll either see
+      // the normal xpromo, or the login required variant
+      trackXPromoView(state, additionalEventData);
+    }
+  } else if (isEligibleCommentsPage(state)) {
+    // on comments pages, only track the xpromo view if we would show it and
+    // are in the treatement
+    if (xpromoIsEnabledOnPage(state)
+        && xpromoIsEnabledOnDevice(state)
+        && xpromoIsPastExperiment(state)) {
+      trackXPromoView(state, additionalEventData);
+    }
   }
 }
 
@@ -208,9 +258,7 @@ export function trackPageEvents(state, additionalEventData={}) {
   if (process.env.ENV === 'client') {
     gtmPageView(state);
     trackScreenViewEvent(state, additionalEventData);
-    if (xpromoIsEnabledOnPage(state) && xpromoIsEnabledOnDevice(state)) {
-      trackXPromoInit(state, additionalEventData);
-    }
+    trackPagesXPromoEvents(state, additionalEventData);
   } else if (state.meta.crawler) {
     trackCrawlEvent(state, additionalEventData);
   }

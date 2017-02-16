@@ -49,8 +49,8 @@ function RecommendedSubreddits(props) {
             { formatSubredditHref(sr.url) }
           </Anchor>
           <div className='sr-subscriber-count'>
-            { Number(sr.subscribers).toLocaleString('en') +
-              (sr.subscribers > 1 ? ' people' : ' person') + ' subscribed to ' + sr.displayName }
+            { `${Number(sr.subscribers).toLocaleString('en') +
+              (sr.subscribers > 1 ? ' people' : ' person') } subscribed to ${ sr.displayName}` }
           </div>
         </div>
       </div>

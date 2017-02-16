@@ -112,19 +112,19 @@ export class ModeratorModal extends React.Component {
               }
               { this.props.isMine
                 ? <DropdownRow
-                    icon='distinguish'
-                    text={ this.showDistinguish(this.props.distinguishType) ? 'Undistinguish' : 'Distinguish' }
-                    onClick={ () => this.onDistinguish(this.props.distinguishType) }
-                    isSelected={ this.showDistinguish(this.props.distinguishType) }
+                  icon='distinguish'
+                  text={ this.showDistinguish(this.props.distinguishType) ? 'Undistinguish' : 'Distinguish' }
+                  onClick={ () => this.onDistinguish(this.props.distinguishType) }
+                  isSelected={ this.showDistinguish(this.props.distinguishType) }
                   />
                 : null
               }
               { canSticky
                 ? <DropdownRow
-                    icon='sticky'
-                    text={ `${this.props.isSticky ? 'Unpin' : 'Pin'} as announcement` }
-                    onClick={ this.props.onToggleSticky }
-                    isSelected={ this.props.isSticky }
+                  icon='sticky'
+                  text={ `${this.props.isSticky ? 'Unpin' : 'Pin'} as announcement` }
+                  onClick={ this.props.onToggleSticky }
+                  isSelected={ this.props.isSticky }
                   />
                 : null
               }

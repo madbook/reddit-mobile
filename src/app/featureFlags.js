@@ -3,7 +3,6 @@ import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
 import sha1 from 'crypto-js/sha1';
 import url from 'url';
-
 import { flags as flagConstants } from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
@@ -12,7 +11,7 @@ import { extractUser, getExperimentData } from 'lib/experiments';
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload } from 'lib/eventUtils';
 import { getDevice, IPHONE, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
-
+import isFakeSubreddit from 'lib/isFakeSubreddit';
 
 const {
   BETA,
@@ -33,6 +32,11 @@ const {
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL,
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL,
+
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -179,12 +183,58 @@ const config = {
   },
   [VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL]: {
     and: [
+      { allowedDevices: [ANDROID] },
       { allowNSFW: false },
       { allowedPages: ['index', 'listing'] },
-      { allowedDevices: [ANDROID] },
       { or: [
         { variant: 'mweb_xpromo_require_login_android:control_1' },
         { variant: 'mweb_xpromo_require_login_android:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { allowNSFW: false },
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'xpromointerstitialcomments' },
+        { variant: 'mweb_xpromo_interstitial_comments_ios:treatment' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { allowNSFW: false },
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'xpromointerstitialcommentsioscontrol' },
+        { variant: 'mweb_xpromo_interstitial_comments_ios_control:control_1' },
+        { variant: 'mweb_xpromo_interstitial_comments_ios_control:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { allowNSFW: false },
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'xpromointerstitialcomments' },
+        { variant: 'mweb_xpromo_interstitial_comments_android:treatment' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { allowNSFW: false },
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'xpromointerstitialcommentsandroidcontrol' },
+        { variant: 'mweb_xpromo_interstitial_comments_android_control:control_1' },
+        { variant: 'mweb_xpromo_interstitial_comments_android_control:control_2' },
       ] },
     ],
   },
@@ -398,22 +448,77 @@ flags.addRule('pageBucketPercent', function(config) {
 });
 
 flags.addRule('allowNSFW', function(allowed) {
-  const { subreddits } = this.state;
-  const subredditName = getSubreddit(this.state);
-
   if (allowed) {
     return true;
   }
 
-  if (!subredditName) { // this happens for the front page.
-    return true;
+  return !isNSFWPage(this.state);
+});
+
+/**
+ * @param {object} state - redux state of the application
+ * @returns {boolean} isNSFWPage, is true if the current page is NSFW
+ * A page is NSFW when:
+ *  or:
+ *  | The subreddit for this page is NSFW. e.g. if you're on a listing of r/NSFW
+ *  | The post for this page (comments page) is NSFW (i.e. a NSFW post on a SFW subreddit)
+ * NOTE: this function only return true if we have enough data to make this decision
+ * IF this function returns false, without having enough data, we might
+ * trigger a bucketing event that we don't actually want to trigger (i.e.
+ *  - load a NSFW listing page
+ *  - return false by default
+ *  - check the user's experiment variant (fires a bucketing event, because we're bucketed)
+ *  - receive subreddit
+ *  - feature flag recalculates, and says the page is NSFW
+ *    (we now know that we shouldn't even check the user's experiment variant,
+ *    but we've already issued a bucketing event!!)
+ * )
+ */
+export const isNSFWPage = state => {
+  const subredditName = getSubreddit(state);
+  const postId = state.platform.currentPage.urlParams.postId;
+
+  // no-op
+  if (!subredditName && !postId) {
+    return false;
   }
 
-  const subredditInfo = subreddits[subredditName.toLowerCase()];
-  if (subredditInfo) {
-    return !subredditInfo.over18;
+  if (subredditName) {
+    const subreddit = state.subreddits[subredditName];
+    if (subreddit && subreddit.over18) {
+      return true;
+    }
+
+    // IF there wasn't a subreddit (or its fake), and we don't need to lookup
+    // the post (comments pages), we're all set
+    if ((subreddit || isFakeSubreddit(subredditName)) && !postId) {
+      return false;
+    }
   }
-  return false;
-});
+
+  // When there's a postId in the url, check it
+  if (postId) {
+    const post = state.posts[`t3_${postId}`];
+    if (!post) {
+      // We need to check the post before deciding its Safe
+      return true;
+    }
+
+    // The url doesn't always have a subreddit name, so let's check the
+    // posts' subreddit just in case
+    if (post.subredditName) {
+      const postSubreddit = state.posts[post.subredditName];
+      if (postSubreddit && postSubreddit.over18) {
+        return true;
+      }
+    }
+
+    // Otherwise use the post over18 flag
+    return post.over18;
+  }
+
+  // Return true by default to prevent misfiring
+  return true;
+};
 
 export default flags;

@@ -107,7 +107,7 @@ export default class Model {
       }
     }
 
-    for (let propName in PROPERTIES) {
+    for (const propName in PROPERTIES) {
       if (this[propName] === undefined) {
         this[propName] = PROPERTIES[propName]();
       }

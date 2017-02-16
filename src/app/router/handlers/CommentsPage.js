@@ -121,18 +121,18 @@ const fetchRecommendedSubreddits = (state, dispatch, subredditName) => {
 */
 
 const fetchSimilarPosts = (state, dispatch, post) => {
-  let experimentId = 105;
+  const experimentId = 105;
   dispatch(similarPostsActions.fetchSimilarPosts(post, experimentId));
 };
 
 const fetchRecommendedSubredditsByPost = (state, dispatch, post) => {
-  let experimentId = 105;
+  const experimentId = 105;
   dispatch(subredditsByPostActions.fetchSubredditsByPost(post, experimentId));
 };
 
 const fetchRecommendedSubredditsToPostsByPost = (state, dispatch, post) => {
   const feature = features.withContext({ state });
-  let experimentId = 105;
+  const experimentId = 105;
   let time = '';
   let sort = '';
   if (feature.enabled(VARIANT_RECOMMENDED_BY_POST_TOP_ALL)) {
@@ -151,7 +151,7 @@ const fetchRecommendedSubredditsToPostsByPost = (state, dispatch, post) => {
   dispatch(subredditsToPostsByPostActions.fetchSubredditsToPostsByPost(post, sort, time, experimentId));
 };
 
-function buildAdditionalEventData(state) {
+export function buildAdditionalEventData(state) {
   const { currentPage: { queryParams, urlParams } } = state.platform;
   const fullName =`t3_${urlParams.postId}`;
   const post = state.posts[fullName];

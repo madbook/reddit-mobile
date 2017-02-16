@@ -6,29 +6,21 @@ import { createSelector } from 'reselect';
 import DualPartInterstitial from 'app/components/DualPartInterstitial';
 import EUCookieNotice from 'app/components/EUCookieNotice';
 import TopNav from 'app/components/TopNav';
-import {
-  shouldShowXPromo,
+import { 
+  XPromoIsActive,
   loginRequiredEnabled as loginRequiredXPromoVariant,
 } from 'app/selectors/xpromo';
 
-
 const xPromoSelector = createSelector(
-  shouldShowXPromo,
+  XPromoIsActive,
   loginRequiredXPromoVariant,
   (showXPromo, requireLogin) => {
-    return {
-      showXPromo,
-      requireLogin,
-    };
+    return { showXPromo, requireLogin};
   },
 );
 
 const NavFrame = props => {
-  const {
-    children,
-    requireLogin,
-    showXPromo,
-  } = props;
+  const { children, requireLogin, showXPromo } = props;
 
   let belowXPromo = null;
   if (!requireLogin) {
@@ -41,12 +33,11 @@ const NavFrame = props => {
         </div>
       </div>
     );
-  }
+  } 
 
   return (
     <div className='NavFrame'>
-      { showXPromo ?
-        <DualPartInterstitial>{ children }</DualPartInterstitial> : null }
+      { showXPromo ? (<DualPartInterstitial>{ children }</DualPartInterstitial>) : null }
       { belowXPromo }
     </div>
   );

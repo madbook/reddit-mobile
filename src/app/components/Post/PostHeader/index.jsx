@@ -456,9 +456,9 @@ export default function PostHeader(props) {
     <header className={ `PostHeader ${sizeClass} ${thumbnailClass}` }>
       { single && isSubredditModerator
         ? <ModalBanner
-            status={ approvalStatus }
-            statusBy={ statusBy }
-            pageName={ 'postHeader' }
+          status={ approvalStatus }
+          statusBy={ statusBy }
+          pageName={ 'postHeader' }
           />
         : null
       }

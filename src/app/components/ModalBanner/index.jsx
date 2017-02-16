@@ -17,7 +17,7 @@ export function ModalBanner(props) {
     statusBy,
   } = props;
 
-  let bannerText = (
+  const bannerText = (
     status && statusBy
     ? `${statusText[status]} by ${statusBy}`
     : null

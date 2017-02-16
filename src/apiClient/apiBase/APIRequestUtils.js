@@ -76,7 +76,7 @@ export const rawSend = (apiOptions, method, path, data, type, cb) => {
   };
 
   getEmitter(apiOptions).emit(Events.request, fakeReq);
-  let s = superagent[method](url);
+  const s = superagent[method](url);
   s.set(requestHeaders(apiOptions));
 
   if (type === 'query') {

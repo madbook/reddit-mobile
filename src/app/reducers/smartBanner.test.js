@@ -55,6 +55,24 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
       });
     });
 
+    describe('SCROLLPAST', () => {
+      it('should change store status after viewport has been scrolled down', () => {
+        const { store } = getStore({ smartBanner: DEFAULT });
+        store.dispatch(xpromoActions.promoScrollPast());
+        const { smartBanner } = store.getState();
+        expect(smartBanner.scrolledPast).to.eql(true);
+      });
+    });
+
+    describe('SCROLLUP', () => {
+      it('should change the store status after viewport has been scrolled up', () => {
+        const { store } = getStore({ smartBanner: DEFAULT });
+        store.dispatch(xpromoActions.promoScrollUp());
+        const { smartBanner } = store.getState();
+        expect(smartBanner.scrolledPast).to.eql(false);
+      });
+    });
+
     describe('PLATFORM__NAVIGATE_TO_URL', () => {
       it('should remove desire to show xpromo if we have already shown it once', () => {
         const { store } = getStore({ smartBanner: DEFAULT });

@@ -13,6 +13,7 @@
     "dev-server": "NODE_ENV=development nodemon ./bin/Server.js",
     "analyze": "ANALYZE_BUILD=true npm run build",
     "lint": "eslint src --ext .js,.jsx",
+    "lint-errors-only": "eslint src --ext .js,.jsx --quiet",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
     "fonts": "webfonts",
     "test": "blueprints -t",

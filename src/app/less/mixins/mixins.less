@@ -17,6 +17,24 @@
   box-shadow: 0 5px 5px -5px rgba(0,0,0,0.05);
 }
 
+.transition (@properties, @time: 0.3s, @delay: 0) {
+  -webkit-transition-property: @properties;
+  -webkit-transition-duration: @time;
+     -webkit-transition-delay: @delay;
+     -moz-transition-property: @properties;
+     -moz-transition-duration: @time;
+        -moz-transition-delay: @delay;
+       -o-transition-property: @properties;
+       -o-transition-duration: @time;
+          -o-transition-delay: @delay;
+      -ms-transition-property: @properties;
+      -ms-transition-duration: @time;
+         -ms-transition-delay: @delay;
+          transition-property: @properties;
+          transition-duration: @time;
+             transition-delay: @delay;
+}
+
 .transform(@output) {
   -webkit-transform: @output;
       -ms-transform: @output;

@@ -3,7 +3,7 @@ import { ACCOUNT } from './thingTypes';
 
 const T = RedditModel.Types;
 
-export default class Subreddit extends RedditModel {
+export default class Account extends RedditModel {
   static type = ACCOUNT;
 
   static PROPERTIES = {
