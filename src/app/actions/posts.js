@@ -8,7 +8,12 @@ import PostModel from 'apiClient/models/PostModel';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 
 import { getEventTracker } from 'lib/eventTracker';
-import { getBasePayload, buildSubredditData, getListingName, getUserInfoOrLoid } from 'lib/eventUtils';
+import {
+  getBasePayload,
+  buildSubredditData,
+  getListingName,
+  getUserInfoOrLoid,
+} from 'lib/eventUtils';
 
 export const TOGGLE_EXPANDED = 'POSTS__TOGGLE_EXPANDED';
 export const toggleExpanded = postId => ({
@@ -39,6 +44,7 @@ function getPostInfo(state, postId) {
     'target_author_id': post.id,
     'target_created_ts': post.createdUTC,
     'target_id': post.id,
+    'target_fullname': post.name,
     'target_url_domain': post.domain,
     'target_url': post.cleanUrl,
     'target_type': post.isSelf ? 'self' : 'link',
