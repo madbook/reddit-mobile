@@ -64,8 +64,14 @@ export const CommunityOverlayMenu = (props) => {
         icon='icon-snoo-circled icon-xl orangered'
       />
       <LinkRow
-        key='all-link'
+        key='popular-link'
         text='Popular'
+        href='/r/popular'
+        icon='icon-rising mint-circled-xl'
+      />
+      <LinkRow
+        key='all-link'
+        text='All'
         href='/r/all'
         icon='icon-bar-chart orangered-circled-xl'
       />

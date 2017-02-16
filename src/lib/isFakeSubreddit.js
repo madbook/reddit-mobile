@@ -1,5 +1,5 @@
 const RANDOM_SUBS = ['random', 'randnsfw', 'myrandom'];
-const FAKE_SUBS = ['all', 'mod', 'friends'].concat(RANDOM_SUBS);
+const FAKE_SUBS = ['all', 'mod', 'friends', 'popular'].concat(RANDOM_SUBS);
 
 export { FAKE_SUBS, RANDOM_SUBS };
 
