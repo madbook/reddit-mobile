@@ -121,7 +121,7 @@ function buildSelfTextContent(props) {
 
   if (!post.selfTextHTML) { return; }
 
-  const mobileSelfText = mobilify(post.expandedContent);
+  const mobileSelfText = mobilify(post.selfTextHTML);
   return (
     <RedditLinkHijacker>
       <div
