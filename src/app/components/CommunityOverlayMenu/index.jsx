@@ -59,16 +59,19 @@ export const CommunityOverlayMenu = (props) => {
       <CommunitySearchRow />
       <LinkRow
         key='front-page-row'
-        text={ `${user ? 'My ' :''}Front Page` }
+        text='Front Page'
         href='/'
         icon='icon-snoo-circled icon-xl orangered'
       />
-      <LinkRow
-        key='popular-link'
-        text='Popular'
-        href='/r/popular'
-        icon='icon-rising mint-circled-xl'
-      />
+      { !user.loggedOut
+        ? <LinkRow
+            key='popular-link'
+            text='Popular'
+            href='/r/popular'
+            icon='icon-rising mint-circled-xl'
+          />
+        : ''
+      }
       <LinkRow
         key='all-link'
         text='All'
@@ -84,6 +87,7 @@ const subscribedSubredditsSelector = (state) => state.subscribedSubreddits.subre
 const subscriptionsLoadingSelector = (state) => state.subscribedSubreddits.fetching;
 const subredditStoreSelector = (state) => state.subreddits;
 const themeSelector = (state) => state.theme;
+const userSelector = (state) => state.user;
 
 const compareDisplayName = (a, b) => {
   const aName = a.displayName.toUpperCase();
@@ -98,11 +102,11 @@ const compareDisplayName = (a, b) => {
   return 0;
 };
 
-const combineSelectors = (subscriptionRecords, subscriptionsLoading, subredditStore, theme) => {
+const combineSelectors = (subscriptionRecords, subscriptionsLoading, subredditStore, theme, user) => {
   const subscriptions = map(subscriptionRecords, r => subredditStore[r.uuid]);
   subscriptions.sort(compareDisplayName);
 
-  return { subscriptions, subscriptionsLoading, theme };
+  return { subscriptions, subscriptionsLoading, theme, user };
 };
 
 const mapStateToProps = createSelector(
@@ -110,6 +114,7 @@ const mapStateToProps = createSelector(
   subscriptionsLoadingSelector,
   subredditStoreSelector,
   themeSelector,
+  userSelector,
   combineSelectors,
 );
 
