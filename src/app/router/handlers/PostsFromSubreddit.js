@@ -4,11 +4,11 @@ import * as adActions from 'app/actions/ads';
 import * as postsListActions from 'app/actions/postsList';
 import * as subredditActions from 'app/actions/subreddits';
 import { paramsToPostsListsId } from 'app/models/PostsList';
-import { FAKE_SUBS } from 'lib/isFakeSubreddit';
+import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { cleanObject } from 'lib/cleanObject';
 import { listingTime } from 'lib/listingTime';
 import { fetchUserBasedData } from './handlerCommon';
-import { convertId, trackPageEvents } from 'lib/eventUtils';
+import { convertId, getListingName, trackPageEvents } from 'lib/eventUtils';
 
 import { setTitle } from 'app/actions/pageMetadata';
 
@@ -118,20 +118,9 @@ export function buildAdditionalEventData(state) {
 
   let target_id = null;
   let target_fullname = null;
-  let listing_name = null;
+  let listingNameEventData = getListingName(state);
 
-  // There's some unfortunate special handling here. The frontpage doesn't
-  // have a subredditName, multi's are delimited by a '+', filters by a '-',
-  // and some "fake" subreddits have special listing names.
-  if (!subredditName) {
-    listing_name = 'frontpage';
-  } else if (subredditName.indexOf('+') > -1) {
-    listing_name = 'multi';
-  } else if (subredditName.indexOf('-') > -1) {
-    listing_name = 'all (filtered)';
-  } else if (FAKE_SUBS.includes(subredditName)) {
-    listing_name = subredditName;
-  } else {
+  if (!isFakeSubreddit(subredditName)) {
     const subreddit = state.subreddits[subredditName.toLowerCase()];
 
     // for the time being, if the api fetch fails (such as a user not having
@@ -142,14 +131,13 @@ export function buildAdditionalEventData(state) {
 
     target_id = convertId(subreddit.id);
     target_fullname = subreddit.name;
-    listing_name = subreddit.uuid;
   }
 
   return cleanObject({
-    listing_name,
     target_id,
     target_fullname,
     target_type: 'listing',
     ...buildSortOrderData(state),
+    ...listingNameEventData,
   });
 }

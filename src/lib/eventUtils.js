@@ -94,8 +94,23 @@ export function buildProfileData(state, extraPayload) {
 
 export function getListingName(state) {
   const urlName = state.platform.currentPage.urlParams.subredditName;
+  let fakeListingName = 'frontpage';
+
+  // There's some unfortunate special handling here. The frontpage doesn't
+  // have a subredditName, multi's are delimited by a '+', filters by a '-',
+  // and some "fake" subreddits have special listing names.
+  if (!urlName) {
+    fakeListingName = 'frontpage';
+  } else if (urlName.indexOf('+') > -1) {
+    fakeListingName = 'multi';
+  } else if (urlName.indexOf('-') > -1) {
+    fakeListingName = 'all (filtered)';
+  } else {
+    fakeListingName = urlName;
+  }
+
   const subreddit = getSubredditFromState(state);
-  const listingName = subreddit && subreddit.displayName || urlName || 'frontpage';
+  const listingName = subreddit && subreddit.displayName || fakeListingName;
   return { 'listing_name': listingName };
   // we don't support multis yet but we will need to update this when we do.
 }
