@@ -49,7 +49,7 @@ export function buildSubredditData(state) {
 
   return {
     sr_id: convertId(subreddit.name),
-    sr_name: subreddit.uuid,
+    sr_name: subreddit.displayName,
   };
 }
 
