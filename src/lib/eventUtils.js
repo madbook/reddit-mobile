@@ -61,13 +61,15 @@ export function buildSubredditData(state) {
 
   return {
     sr_id: convertId(subreddit.name),
-    sr_name: subreddit.uuid,
+    sr_name: subreddit.displayName,
   };
 }
 
 export function getListingName(state) {
-  const subredditName = state.platform.currentPage.urlParams.subredditName;
-  return { 'listing_name': subredditName ? subredditName : 'frontpage'};
+  const urlName = state.platform.currentPage.urlParams.subredditName;
+  const subreddit = getSubredditFromState(state);
+  const listingName = subreddit && subreddit.displayName || urlName || 'frontpage';
+  return { 'listing_name': listingName };
   // we don't support multis yet but we will need to update this when we do.
 }
 
