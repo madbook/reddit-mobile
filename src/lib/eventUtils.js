@@ -54,8 +54,10 @@ export function buildSubredditData(state) {
 }
 
 export function getListingName(state) {
+  const urlName = state.platform.currentPage.urlParams.subredditName;
   const subreddit = getSubredditFromState(state);
-  return { 'listing_name': subreddit ? subreddit.displayName : 'frontpage'};
+  const listingName = subreddit && subreddit.displayName || urlName || 'frontpage';
+  return { 'listing_name': listingName };
   // we don't support multis yet but we will need to update this when we do.
 }
 
