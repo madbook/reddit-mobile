@@ -11,10 +11,11 @@ export const fetching = subredditName => ({
 });
 
 export const RECEIVED_SUBREDDIT_RULES = 'RECEIVED_SUBREDDIT_RULES';
-export const received = (subredditName, rules) => ({
+export const received = (subredditName, subredditRules, siteRules) => ({
   type: RECEIVED_SUBREDDIT_RULES,
   subredditName,
-  rules,
+  subredditRules,
+  siteRules,
 });
 
 export const FAILED = 'FAILED_SUBREDDIT_RULES';
@@ -44,9 +45,12 @@ export const fetchSubredditRules = subredditName => async (dispatch, getState) =
 
   try {
     const res = await SubredditRulesEndpoint.get(apiOptions, subredditName);
-    const rules = res.results.map(r => res.getModelFromRecord(r));
+    const allRules = res.results.map(r => res.getModelFromRecord(r));
 
-    dispatch(received(subredditName, rules));
+    const subredditRules = allRules.filter(r => !r.isSiteRule());
+    const siteRules = allRules.filter(r => r.isSiteRule());
+
+    dispatch(received(subredditName, subredditRules, siteRules));
   } catch (e) {
     if (e instanceof ResponseError) {
       dispatch(failed(subredditName, e));

@@ -26,17 +26,23 @@ export default {
     };
 
     const apiResponse = await apiRequest(apiOptions, 'GET', path, { query });
-    const { rules } = apiResponse.response.body;
+    const { rules, site_rules } = apiResponse.response.body;
 
-    if (!(rules && rules.length)) { return apiResponse; }
+    if (rules) {
+      rules.forEach(rule => {
+        // The SubredditRule model expects the rule to contain the name of the
+        // subreddit to which the rule belongs in order to make UUIDs. That is
+        // not actually returned from the API, though, so add it now.
+        rule.subredditName = subredditName;
+        apiResponse.addResult(SubredditRule.fromJSON(rule));
+      });
+    }
 
-    rules.forEach(rule => {
-      // The SubredditRule model expects the rule to contain the name of the
-      // subreddit to which the rule belongs in order to make UUIDs. That is
-      // not actually returned from the API, though, so add it now.
-      rule.subredditName = subredditName;
-      apiResponse.addResult(SubredditRule.fromJSON(rule));
-    });
+    if (site_rules) {
+      site_rules.forEach(rule => {
+        apiResponse.addResult(SubredditRule.fromSiteRule(rule));
+      });
+    }
 
     return apiResponse;
   },
