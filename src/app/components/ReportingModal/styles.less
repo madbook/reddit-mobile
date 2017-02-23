@@ -12,7 +12,7 @@
 
 .ReportingModal {
   .Modal();
-  height: @modalHeight;
+  max-height: @modalHeight;
 
   &__title-bar {
     text-align: center;
@@ -28,15 +28,17 @@
 
   &__options {
     overflow: auto;
-    height: @modalHeight - @titleHeight - @submitHeight;
+    max-height: @modalHeight - @titleHeight - @submitHeight;
   }
 
   &__option {
     padding: 0 18px;
-    height: 35px;
-    line-height: 35px;
+    padding-top: @grid-size;
+    padding-bottom: @grid-size;
+    line-height: 35px - (2 * @grid-size);
     vertical-align: middle;
     font-size: 15px;
+    display: flex;
 
     .icon {
       margin-right: 6px;
@@ -44,11 +46,16 @@
       display: inline-block;
       height: 20px;
       width: 20px;
+      flex: 0 0 20px;
     }
 
     .icon-check-circled {
       color: @lime;
     }
+  }
+
+  &__option &__reason-text {
+    flex: 1 1;
   }
 
   &__submit {

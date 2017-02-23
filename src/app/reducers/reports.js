@@ -52,14 +52,14 @@ export default (state=DEFAULT, action={}) => {
     }
 
     case reportingActions.SUCCESS: {
-      const { model, reason, username, moderatesSub } = action;
+      const { model, report, username, moderatesSub } = action;
 
       if (!moderatesSub) { return DEFAULT; }
 
       return merge(state, {
         [model.name]: {
           [MODERATOR_REPORT_KEY]: {
-            [username]: reason,
+            [username]: report.reason,
           },
         },
       });
