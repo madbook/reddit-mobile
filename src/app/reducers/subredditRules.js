@@ -1,3 +1,5 @@
+import SubredditRule from 'apiClient/models/SubredditRule';
+
 import * as loginActions from 'app/actions/login';
 import * as subredditRulesActions from 'app/actions/subredditRules';
 
@@ -11,9 +13,10 @@ export default function(state=DEFAULT, action={}) {
     }
 
     case subredditRulesActions.RECEIVED_SUBREDDIT_RULES: {
-      const { subredditName, rules } = action;
+      const { subredditName, subredditRules, siteRules } = action;
       return {
-        [subredditName]: rules,
+        [subredditName]: subredditRules,
+        [SubredditRule.SITE_RULE_SUBREDDIT_NAME]: siteRules,
         ...state,
       };
     }
