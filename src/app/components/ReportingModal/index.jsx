@@ -4,44 +4,68 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import * as ModelTypes from 'apiClient/models/thingTypes';
+import SubredditRule from 'apiClient/models/SubredditRule';
+
 import * as reportingActions from 'app/actions/reporting';
 import * as modalActions from 'app/actions/modal';
+import Loading from 'app/components/Loading';
+import Report from 'app/models/Report';
 import cx from 'lib/classNames';
 
 const T = React.PropTypes;
 
-const SUBMIT_BUTTON_TEXT = 'REPORT TO MODERATORS';
-const REASONS = {
-  HARASSMENT: 'Threatens, harasses, or bullies',
-  VIOLENCE: 'Encourages or incites violence',
-  DOXING: 'Reveals personal information',
-  IMPERSONATION: 'Impersonation',
-  ILLEGAL_CONTENT: 'Illegal content',
-  SPAM: 'Spam',
-  INVOLUNTARY_PORN: 'Involuntary pornography',
-  VOTE_MANIPULATION: 'Vote manipulation',
-  BREAKS_REDDIT: 'Breaking reddit',
-};
+/**
+ * Get a list of rules that apply to the thing currently being reported.
+ * @function
+ * @param {Object} state
+ * @returns {SubredditRule[]}
+ */
+function rulesFromState(state) {
+  const {subredditName, thingId} = state.modal.props;
+  const thingType = ModelTypes.thingType(thingId);
+  const siteRules = state.subredditRules[SubredditRule.SITE_RULE_SUBREDDIT_NAME];
 
-const REASONS_ORDER = [
-  'HARASSMENT',
-  'VIOLENCE',
-  'DOXING',
-  'IMPERSONATION',
-  'ILLEGAL_CONTENT',
-  'SPAM',
-  'INVOLUNTARY_PORN',
-  'VOTE_MANIPULATION',
-  'BREAKS_REDDIT',
-];
+  // If there is a name, but it isn't in the subredditRules state yet, that
+  // means we haven't pulled down the rules yet and therefore don't know
+  // if any exist.
+  if (subredditName && !(subredditName in state.subredditRules)) {
+    return null;
+  }
 
+  // If there is no subreddit associated with the thing being reported, or
+  // the subreddit has no rules, use the site rules.
+  if (!(subredditName && state.subredditRules[subredditName])) {
+    return siteRules;
+  }
+
+  const allRules = state.subredditRules[subredditName];
+
+  // If there *are* rules, we need to filter down to only those that apply
+  // to the current thing, then append the site rules.
+  return (
+    allRules.filter(rule => rule.doesRuleApplyToThingType(thingType))
+            .concat(siteRules)
+  );
+}
+
+/**
+ * Component for rendering the reporting modal
+ * This is the modal used to *submit* reports, not the modal mods use to
+ * *view* reports.
+ * @class
+ * @extends {React.Component}
+ */
 class ReportingModal extends React.Component {
   state = {
-    reason: REASONS_ORDER[0],
+    selectedRuleIndex: 0,
   }
 
   static propTypes = {
     onSubmit: T.func.isRequired,
+    subredditName: T.string,
+    rules: T.arrayOf(T.object),
+    thingId: T.string,
   };
 
   render() {
@@ -56,16 +80,19 @@ class ReportingModal extends React.Component {
             </div>
           </div>
 
-          <div className='ReportingModal__options'>
-            { REASONS_ORDER.map(reason => this.renderReportRow(reason)) }
-          </div>
+          { this.props.rules
+            ? <div className='ReportingModal__options'>
+                { this.props.rules.map((r, i) => this.renderReportRow(r, i)) }
+              </div>
+            : <Loading />
+          }
 
           <div className='ReportingModal__submit'>
             <div
               className='ReportingModal__submit-button'
-              onClick={ () => this.props.onSubmit(REASONS[this.state.reason]) }
+              onClick={ () => this.handleSubmit() }
             >
-              { SUBMIT_BUTTON_TEXT }
+              REPORT TO MODERATORS
             </div>
           </div>
 
@@ -74,40 +101,60 @@ class ReportingModal extends React.Component {
     );
   }
 
-  renderReportRow(reason) {
+  handleSubmit() {
+    const {
+      onSubmit,
+      rules,
+      thingId,
+    } = this.props;
+
+    const violatedRule = rules[this.state.selectedRuleIndex];
+    const report = Report.fromRule(thingId, violatedRule);
+    onSubmit(report);
+  }
+
+  renderReportRow(rule, selectedRuleIndex) {
     const onClick = e => {
       e.stopPropagation();
-      this.setState({ reason });
+      this.setState({ selectedRuleIndex });
     };
-    const isChecked = this.state.reason === reason;
+    const isChecked = this.state.selectedRuleIndex === selectedRuleIndex;
 
     const className = cx('icon', {
       'icon-check-circled': isChecked,
       'icon-circle': !isChecked,
     });
 
+    let displayText = rule.getReportReason();
+    if (rule.isSiteRule()) {
+      displayText = `Reddit rule: ${displayText}`;
+    }
+
     return (
-      <div onClick={ onClick } className='ReportingModal__option'>
+      <div className='ReportingModal__option' onClick={ onClick } >
         <div className={ className } />
-        { REASONS[reason] }
+        <div className="ReportingModal__reason-text">
+          { displayText }
+        </div>
       </div>
     );
   }
 }
 
 const selector = createSelector(
-  state => state.modal.props,
-  modalProps => ({ thingId: modalProps.thingId }),
+  state => state.modal.props.thingId,
+  state => state.modal.props.subredditName,
+  state => rulesFromState(state),
+  (thingId, subredditName, rules) => ({
+    thingId,
+    subredditName,
+    rules,
+  }),
 );
 
 const dispatcher = dispatch => ({
   onClickOutside: () => dispatch(modalActions.closeModal()),
-  onSubmit: (thingId, reason) => dispatch(reportingActions.submit(thingId, reason)),
+  onSubmit: report => dispatch(reportingActions.submit(report)),
 });
 
-const mergeProps = (stateProps, dispatchProps) => ({
-  ...dispatchProps,
-  onSubmit: reason => dispatchProps.onSubmit(stateProps.thingId, reason),
-});
-
-export default connect(selector, dispatcher, mergeProps)(ReportingModal);
+export default connect(selector, dispatcher)(ReportingModal);
