@@ -86,7 +86,7 @@ export const toggleSave = id => async (dispatch, getState) => {
 
 export const del = id => async (dispatch, getState) => {
   const state = getState();
-  const comment = state.comments[id];
+  const comment = state.comments.data[id];
   const apiOptions = apiOptionsFromState(state);
   await CommentsEndpoint.del(apiOptions, id);
   // the response doesn't have anything in it, so we're going to guess what the
