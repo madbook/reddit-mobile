@@ -35,14 +35,16 @@ class XPromoWrapper extends React.Component {
     // "scrollPast" state is also used for
     // toggling xpromo fade-in/fade-out actions
     if (halfViewport && !alreadyScrolledPast) {
-      dispatch(xpromoActions.trackXPromoEvent(XPROMO_SCROLLPAST, { scroll_note: 'unit_fade_out' }));
+      const additionalData = (xpromoThemeIsUsual ? {} : { scroll_note: 'unit_fade_out' });
+      dispatch(xpromoActions.trackXPromoEvent(XPROMO_SCROLLPAST, additionalData));
       dispatch(xpromoActions.promoScrollPast());
     }
     // should appears only once on scroll up about the half viewport.
     // xpromo fade-in action, if user will scroll
     // window up (only for "minimal" xpromo theme)
     if (!halfViewport && alreadyScrolledPast) {
-      dispatch(xpromoActions.trackXPromoEvent(XPROMO_SCROLLUP, { scroll_note: 'unit_fade_in' }));
+      const additionalData = (xpromoThemeIsUsual ? {} : { scroll_note: 'unit_fade_in' });
+      dispatch(xpromoActions.trackXPromoEvent(XPROMO_SCROLLUP, additionalData));
       dispatch(xpromoActions.promoScrollUp());
     }
     // remove scroll events for usual xpromo theme 
