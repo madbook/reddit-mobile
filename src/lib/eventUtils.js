@@ -2,7 +2,6 @@ import omit from 'lodash/omit';
 import values from 'lodash/values';
 import url from 'url';
 
-import { ADBLOCK_TEST_ID } from 'app/constants';
 import {
   interstitialType,
   isPartOfXPromoExperiment,
@@ -21,10 +20,10 @@ import {
   buildAdditionalEventData as commentsPageEventData,
 } from 'app/router/handlers/CommentsPage';
 
-import { isHidden } from 'lib/dom';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import { getEventTracker } from 'lib/eventTracker';
 import * as gtm from 'lib/gtm';
+import { hasAdblock } from 'lib/adblock';
 import { shouldNotShowBanner } from 'lib/smartBannerState';
 
 export const XPROMO_VIEW = 'cs.xpromo_view';
@@ -284,19 +283,6 @@ const gtmPageView = state => {
     pathname: state.platform.currentPage.url || '/',
     advertiserCategory: subreddit ? subreddit.advertiserCategory : null,
   });
-};
-
-const hasAdblock = () => {
-  const adblockTester = document.getElementById(ADBLOCK_TEST_ID);
-  // If the div has been removed, they have adblock
-  if (!adblockTester) { return true; }
-
-  const rect = adblockTester.getBoundingClientRect();
-  if (!rect || !rect.height || !rect.width) {
-    return true;
-  }
-
-  return isHidden(adblockTester);
 };
 
 // Tracks the active blocking of an ad

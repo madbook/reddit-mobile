@@ -6,6 +6,7 @@ import { rawSend } from 'apiClient/apiBase/APIRequestUtils';
 import ResponseError from 'apiClient/errors/ResponseError';
 
 import config from 'config';
+import { hasAdblock } from 'lib/adblock';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import isFakeSubreddit from 'lib/isFakeSubreddit';
 import adLocationForPostRecords from 'lib/adLocationForPostRecords';
@@ -144,6 +145,7 @@ export const fetchAddBasedOnResults = async (dispatch, state, adId, postsList, p
 
   const data = {
     site,
+    adblock: hasAdblock(),
     dt: dt.join(','),
     platform: 'mobile_web',
     placement: `feed-${placementIndex}`,
