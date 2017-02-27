@@ -5,7 +5,7 @@ import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as platformActions from 'platform/actions';
+import { Anchor } from 'platform/components';
 
 import includes from 'lodash/includes';
 
@@ -92,7 +92,7 @@ CommentTree.defaultProps = {
 
 const renderNode = (props, depth, data, isHidden) => {
   const {
-    onContinueThread,
+    onLoadMore,
     replyingList,
     thingsBeingEdited,
     user,
@@ -100,6 +100,7 @@ const renderNode = (props, depth, data, isHidden) => {
     isSubredditModerator,
     commentDispatchers,
     reports,
+    postPermalink,
   } = props;
   const uuid = data.name;
   const authorType = determineAuthorType(data, user, post.author || '');
@@ -137,7 +138,14 @@ const renderNode = (props, depth, data, isHidden) => {
 
             { ...returnDispatchers(commentDispatchers, uuid) }
           />
-        : renderContinueThread(() => onContinueThread(data), data, depth === 0, dotsNum) }
+        : renderContinueThread(
+            e => onLoadMore(data, e),
+            data,
+            depth === 0,
+            dotsNum,
+            postPermalink,
+          )
+      }
     </div>
   );
 };
@@ -162,15 +170,20 @@ function renderDots(count) {
   return <div className='CommentHeader__dots'>{ content }</div>;
 }
 
-const renderContinueThread = (onContinueThread, data, isTopLevel, dotsNum) => {
+const renderContinueThread = (onContinueThread, data, isTopLevel, dotsNum, postPermalink) => {
   const isPending = data.isPending;
   const isLoadMore = data.type === COMMENT_LOAD_MORE;
   const label = isLoadMore ?
     'More Comments' : 'Continue Thread';
+
+  const id = stripTypePrefix(data.parentId);
+  const url = `${postPermalink}${id}`;
+
   return (
-    <div
+    <Anchor
       className='CommentTree__continueThread'
       onClick={ onContinueThread }
+      href={ url }
     >
       { renderDots(dotsNum) }
       <span className={ `icon icon-caron-circled ${isTopLevel ? 'mint': ''}` } />
@@ -179,7 +192,7 @@ const renderContinueThread = (onContinueThread, data, isTopLevel, dotsNum) => {
       { !isPending
         ? <div className='CommentTree__continueThreadIcon icon icon-arrowforward'/>
         : null }
-    </div>
+    </Anchor>
   );
 };
 
@@ -253,14 +266,9 @@ function stripTypePrefix(id) {
 
 const dispatcher = (dispatch, { pageId, post }) => ({
   // Dispatchers for the commentTree component
-  onContinueThread: (data) => {
-    if (data.type === COMMENT_LOAD_MORE) {
-      dispatch(commentActions.loadMore(data.uuid, pageId, post.uuid));
-    } else {
-      const id = stripTypePrefix(data.parentId);
-      const url = `${post.cleanPermalink}${id}`;
-      dispatch(platformActions.redirect(url));
-    }
+  onLoadMore: (data, e) => {
+    e.preventDefault();
+    dispatch(commentActions.loadMore(data.uuid, pageId, post.uuid));
   },
   // Dispatchers passed to the comment.
   commentDispatchers: commentDispatchers(dispatch),
