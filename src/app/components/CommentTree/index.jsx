@@ -48,9 +48,10 @@ export function CommentTree(props) {
     post,
     pageUrl,
     isCrawlerRequest,
+    commentsPending,
   } = props;
 
-  if (!comments || !comments.length) {
+  if (commentsPending) {
     return <Loading />;
   }
 
@@ -198,6 +199,10 @@ const selector = createSelector(
   (_, props) => props.post.subreddit,
   state => state.user,
   (state, { pageId }) => state.commentsPages.data[pageId] || [],
+  (state, { pageId }) => {
+    const apiData = state.commentsPages.api[pageId];
+    return apiData ? apiData.pending : true;
+  },
   state => state.platform.currentPage.url,
   state => state.comments.data,
   state => state.comments.loadMore,
@@ -212,6 +217,7 @@ const selector = createSelector(
     subreddit,
     user,
     commentsList,
+    commentsPending,
     currentUrl,
     allComments,
     allLoadMoreComments,
@@ -237,6 +243,7 @@ const selector = createSelector(
       pendingLoadMore,
     }) : [],
     reports,
+    commentsPending,
   })
 );
 
