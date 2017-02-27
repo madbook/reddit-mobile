@@ -1,0 +1,70 @@
+@import (reference) '~app/less/variables';
+@import (reference) '~app/less/mixins/importAll';
+@import (reference) '~app/less/themes/themeify';
+
+.XPromoListingClickInterstitial {
+  @mask-color: rgba(0, 0, 0, 0.6);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: @z-index-modal;
+  background-color: @mask-color;
+
+  &__slideupWrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    &.m-hidden {
+      visibility: hidden;
+    }
+  }
+
+  &__preloadImage,
+  &__backgroundPattern {
+    background-image: url('/img/listing-click-pattern.png');
+  }
+
+  // used to pre-fetch the background pattern image. otherwise on slow
+  // connections we won't have the image in time for the animation
+  &__preloadImage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  &__backgroundPattern {
+    background-color: @off-black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -40px; // add some bottom padding to prevent the spring animation:
+    // from uncovering listing content
+    z-index: -1;
+  }
+
+  &__content {
+    color: @white;
+    padding:  3 * @grid-size 2 * @grid-size;
+  }
+
+  &__tagline {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 2 * @grid-size;
+  }
+
+  &__downloadPromotionCopy {
+    font-size: 18px;
+  }
+}

@@ -1,15 +1,27 @@
 import url from 'url';
 import cookies from 'js-cookie';
 
+import config from 'config';
 import localStorageAvailable from './localStorageAvailable';
-import { getBasePayload, buildSubredditData } from 'lib/eventUtils';
-import { getDevice, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
-import * as constants from 'app/constants';
+import {
+  getBasePayload,
+  buildSubredditData,
+  xPromoExtraScreenViewData,
+} from 'lib/eventUtils';
+
+import { LISTING_CLICK_TYPES } from 'app/constants';
+
+import {
+  currentExperimentData,
+  isPartOfXPromoExperiment,
+  interstitialType,
+} from 'app/selectors/xpromo';
+
 import features from 'app/featureFlags';
+import { XPROMO_LAST_LISTING_CLICK_DATE, flags } from 'app/constants';
+const { XPROMO_LISTING_CLICK_EVERY_TIME_COHORT } = flags;
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
-
-const { USE_BRANCH } = constants.flags;
 
 // Get loid values either from the account state or the cookies.
 function getLoidValues(accounts) {
@@ -29,7 +41,95 @@ function getLoidValues(accounts) {
   };
 }
 
-export function getBranchLink(state, payload={}) {
+export function getXPromoLinkforCurrentPage(state, linkType) {
+  const path = window.location.href.split(window.location.host)[1];
+  return getXPromoLink(state, path, linkType);
+}
+
+export function getXPromoListingClickLink(state, postId, listingClickType) {
+  const post = state.posts[postId];
+  if (!post) {
+    throw new Error(`XPromoListingClickLink called with invalid postId: ${postId}`);
+  }
+
+  const path = getXPromoListingClickPath(state, post, listingClickType);
+
+  return getXPromoLink(state, path, 'listing_click', {
+    listing_click_type: listingClickType,
+  });
+}
+
+function getXPromoListingClickPath(state, post, listingClickType) {
+  switch (listingClickType) {
+    case LISTING_CLICK_TYPES.AUTHOR: {
+      const { author } = post;
+      // note: android has problems with /user/, so keep this as /u/
+      return `/u/${author}`;
+    }
+
+    case LISTING_CLICK_TYPES.SUBREDDIT: {
+      const { subreddit } = post;
+      return `/r/${subreddit}`;
+    }
+
+    default: {
+      // promoted posts don't have subreddits.....
+      // and there permalink format isn't supported by the android app
+      // instead of deep linking, we can just send them to the current listing page
+      if (post.promoted) {
+        const { subredditName } = state.platform.currentPage.urlParams;
+        if (subredditName) {
+          return `/r/${subredditName}`;
+        }
+        return '/';
+      }
+
+
+      return post.cleanPermalink;
+    }
+  }
+}
+
+export function getXPromoLink(state, path, linkType, additionalData={}) {
+  let payload = {
+    ...additionalData,
+    utm_source: 'xpromo',
+    utm_content: linkType,
+    interstitial_type: interstitialType(state),
+  };
+
+  if (isPartOfXPromoExperiment(state)) {
+    let experimentData = {};
+
+    if (currentExperimentData(state)) {
+      const { experiment_name, variant } = currentExperimentData(state);
+      experimentData = {
+        utm_name: experiment_name,
+        utm_term: variant,
+      };
+    }
+    payload = {
+      ...payload,
+      ...experimentData,
+      utm_medium: 'experiment',
+    };
+
+  } else {
+    payload = { ...payload, utm_medium: 'interstitial' };
+  }
+
+  payload = {
+    ...payload,
+    ...xPromoExtraScreenViewData(state),
+  };
+
+  return getBranchLink(state, path, {
+    ...payload,
+    ...xPromoExtraScreenViewData(state),
+  });
+}
+
+export function getBranchLink(state, path, payload={}) {
   const { user, accounts } = state;
 
   const { loid, loidCreated } = getLoidValues(accounts);
@@ -43,9 +143,6 @@ export function getBranchLink(state, payload={}) {
     userId = userAccount.id;
   }
 
-
-  const path = window.location.href.split(window.location.host)[1];
-
   const basePayload = {
     channel: 'mweb_branch',
     feature: 'xpromo',
@@ -55,9 +152,9 @@ export function getBranchLink(state, payload={}) {
     // tags: [ 'tag1', 'tag2' ],
     // Pass in data you want to appear and pipe in the app,
     // including user token or anything else!
-    '$og_redirect': window.location.href,
-    '$deeplink_path': path,
     // android deep links expect reddit/ prefixed urls
+    '$og_redirect': `${config.reddit}${path}`,
+    '$deeplink_path': path,
     '$android_deeplink_path': `reddit${path}`,
     mweb_loid: loid,
     mweb_loid_created: loidCreated,
@@ -67,33 +164,13 @@ export function getBranchLink(state, payload={}) {
     ...buildSubredditData(state),
   };
 
+
   return url.format({
     protocol: 'https',
     host: 'reddit.app.link',
     pathname: '/',
     query: {...basePayload, ...payload},
   });
-}
-
-export function getDeepLink(state) {
-  const device = getDevice(state);
-
-  // See if we should use a Branch link
-  const feature = features.withContext({ state });
-  if (feature && feature.enabled(USE_BRANCH)) {
-    // just use the universal Branch link
-    return getBranchLink(state);
-  }
-
-  // Otherwise use a basic deep link
-
-  if (IOS_DEVICES.includes(device)) {
-    return constants.BANNER_URLS_DIRECT.IOS;
-  }
-
-  if (device === ANDROID) {
-    return constants.BANNER_URLS_DIRECT.ANDROID;
-  }
 }
 
 export function shouldNotShowBanner() {
@@ -123,3 +200,30 @@ export function markBannerClosed() {
   // note that we dismissed the banner
   localStorage.setItem('bannerLastClosed', new Date());
 }
+
+export function shouldNotListingClick(state) {
+  // Every time cohort users don't need to record anything in local storage
+  const featureContext = features.withContext({ state });
+  if (featureContext.enabled(XPROMO_LISTING_CLICK_EVERY_TIME_COHORT)) {
+    return false;
+  }
+
+  if (!localStorageAvailable()) {
+    return 'local_storage_unavailable';
+  }
+
+  // Check if there's been a listing click in the last two weeks
+  const lastClickedStr = localStorage.getItem(XPROMO_LAST_LISTING_CLICK_DATE);
+  const lastClicked = lastClickedStr ? new Date(lastClickedStr).getTime() : 0;
+  if (lastClicked + TWO_WEEKS > Date.now()) {
+    return 'dismissed_previously';
+  }
+
+  return false;
+}
+
+export const markListingClickTimestampLocalStorage = () => {
+  if (!localStorageAvailable()) { return; }
+
+  localStorage.setItem(XPROMO_LAST_LISTING_CLICK_DATE, new Date());
+};

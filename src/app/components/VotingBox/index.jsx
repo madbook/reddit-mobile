@@ -9,7 +9,7 @@ const T = React.PropTypes;
 
 
 function VotingBox(props) {
-  const { voteDirection, score, scoreHidden, onVote } = props;
+  const { voteDirection, score, scoreHidden, onVote, interceptVote } = props;
 
   const upvoteClass = cx('VotingBox__upvote icon icon-upvote', {
     'upvoted m-animated': voteDirection === 1,
@@ -29,11 +29,32 @@ function VotingBox(props) {
 
   return (
     <div className='VotingBox'>
-      <div className={ upvoteClass } onClick={ () => onVote(upVote) } />
-      <div className={ scoreClass }>{ scoreHidden ? '●' : score }</div>
+      <div
+        className={ upvoteClass }
+        onClick={ e => {
+          if (interceptVote(e)) {
+            return;
+          }
+          onVote(upVote);
+        } }
+       />
+      <div
+        className={ scoreClass }
+        onClick={ e => interceptVote(e) }
+      >
+        { scoreHidden ? '●' : score }
+      </div>
       { props.hideDownvote
         ? null
-        : <div className={ downvoteClass } onClick={ () => onVote(downVote) } />
+        : <div
+          className={ downvoteClass }
+          onClick={ e => {
+            if (interceptVote(e)) {
+              return;
+            }
+            onVote(downVote);
+          } }
+          />
       }
     </div>
   );
@@ -45,10 +66,12 @@ VotingBox.propTypes = {
   voteDirection: T.number.isRequired,
   hideDownvote: T.bool.isRequired,
   scoreHidden: T.bool,
+  interceptVote: T.func,
 };
 
 VotingBox.defaultProps = {
   scoreHidden: false,
+  interceptVote: () => true,
 };
 
 const mapDispatchToProps = (dispatch, { thingId }) => ({

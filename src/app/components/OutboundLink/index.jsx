@@ -52,9 +52,11 @@ const resetOriginalURL = ($target, href) => {
 };
 
 function OutboundLink(props) {
-  const { outboundLink, userId, href } = props;
+  const { outboundLink, userId, href, onClick } = props;
   // get all of the props we want to pass to standard react components (styles, className, etc)
   const linkProps = omit(props, 'outboundLink');
+
+  const clickHandler = onClick || (() => null);
 
   if (!outboundLink) {
     // we don't have outbound link data, pass through to a normal anchor with no special handlers
@@ -79,6 +81,7 @@ function OutboundLink(props) {
       } }
       onMouseLeave={ e => resetOriginalURL(e.target, href) }
       onTouchStart={ e => setOutboundURL(e.target, outboundLink) }
+      onClick={ clickHandler }
     />
   );
 }
@@ -89,7 +92,7 @@ OutboundLink.propTypes = {
     url: T.string.isRequired,
     expiration: T.number.isRequired,
   }),
-
+  onClick: T.func,
   // expected props from connect
   userId: T.number,
 };

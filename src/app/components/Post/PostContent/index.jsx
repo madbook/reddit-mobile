@@ -10,6 +10,7 @@ import EditForm from 'app/components/EditForm';
 import RedditLinkHijacker from 'app/components/RedditLinkHijacker';
 import OutboundLink from 'app/components/OutboundLink';
 
+import { LISTING_CLICK_TYPES } from 'app/constants';
 
 import {
   isPostNSFW,
@@ -58,6 +59,7 @@ PostContent.propTypes = {
   renderMediaFullbleed: T.bool.isRequired,
   isThumbnail: T.bool.isRequired,
   isPlaying: T.bool,
+  interceptListingClick: T.func.isRequired,
 };
 
 PostContent.defaultProps = {
@@ -67,7 +69,7 @@ PostContent.defaultProps = {
 };
 
 export default function PostContent(props) {
-  const { post, isDomainExternal, compact, isThumbnail,
+  const { post, isDomainExternal, compact, isThumbnail, interceptListingClick,
           renderMediaFullbleed, showLinksInNewTab } = props;
 
   const linkUrl = cleanPostHREF(mobilify(post.cleanUrl));
@@ -85,7 +87,10 @@ export default function PostContent(props) {
   }
 
   return (
-    <div className={ `PostContent ${isThumbnail ? 'size-compact' : 'size-default'}` }>
+    <div
+       className={ `PostContent ${isThumbnail ? 'size-compact' : 'size-default'}` }
+       onClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.CONTENT) }
+    >
       { renderMediaContent(mediaContentNode, isThumbnail, isDomainExternal,
                            cleanPostDomain(post.domain), linkUrl,
                            renderMediaFullbleed, showLinksInNewTab,
@@ -148,7 +153,7 @@ function renderTextEditor(rawMarkdown, props) {
 
 function buildMediaContent(post, linkDescriptor, props) {
   const { isPlaying, isThumbnail, single, width, showNSFW, onTapExpand,
-          togglePlaying, showSpoilers } = props;
+          interceptListingClick, togglePlaying, showSpoilers } = props;
   const oembed = post.media ? post.media.oembed : null;
 
   if (isThumbnail && !(post.preview || oembed)) {
@@ -181,6 +186,10 @@ function buildMediaContent(post, linkDescriptor, props) {
     callOnTapExpand = null;
   } else {
     callOnTapExpand = e => {
+      if (interceptListingClick(e, LISTING_CLICK_TYPES.CONTENT)) {
+        return;
+      }
+
       e.preventDefault();
       const clickTarget = 'thumbnail';
       onTapExpand(clickTarget);
@@ -201,6 +210,10 @@ function buildMediaContent(post, linkDescriptor, props) {
   if (playableType !== PLAYABLE_TYPE.NOT_PLAYABLE && previewImage &&
       useOurOwnPlayingOrPreviewing(oembed, sourceURL, isPlaying)) {
     const togglePlay = e => {
+      if (interceptListingClick(e, LISTING_CLICK_TYPES.CONTENT)) {
+        return;
+      }
+
       e.preventDefault();
       togglePlaying();
     };
@@ -214,6 +227,10 @@ function buildMediaContent(post, linkDescriptor, props) {
 
   if (previewImage) {
     const callback = (isNSFW || isSpoiler) ? e => {
+      if (interceptListingClick(e, LISTING_CLICK_TYPES.CONTENT)) {
+        return;
+      }
+
       e.preventDefault();
       props.toggleShowNSFW();
     } : null;

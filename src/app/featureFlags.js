@@ -17,6 +17,7 @@ const {
   BETA,
   SMARTBANNER,
   USE_BRANCH,
+  // Recommended Content experiments
   VARIANT_NEXTCONTENT_BOTTOM,
   VARIANT_RECOMMENDED_BOTTOM,
   VARIANT_RECOMMENDED_TOP,
@@ -28,15 +29,25 @@ const {
   VARIANT_RECOMMENDED_BY_POST_HOT,
   VARIANT_RECOMMENDED_SIMILAR_POSTS,
   VARIANT_SUBREDDIT_HEADER,
+  VARIANT_TITLE_EXPANDO,
+  VARIANT_MIXED_VIEW,
+  SHOW_AMP_LINK,
+
+  // Xpromo ----------------------------------------------------------------------
+  // Login Required
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
+  // Comments
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
-  VARIANT_TITLE_EXPANDO,
-  VARIANT_MIXED_VIEW,
-  SHOW_AMP_LINK,
+  // Listing Click
+  XPROMO_LISTING_CLICK_EVERY_TIME_COHORT,
+  VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_IOS_ENABLED,
+  VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED,
+  VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED,
+  VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED,
 } = flagConstants;
 
 const config = {
@@ -209,6 +220,61 @@ const config = {
         { url: 'xpromointerstitialcomments' },
         { enabled: 'mweb_xpromo_interstitial_comments_android' },
       ] },
+    ],
+  },
+  [XPROMO_LISTING_CLICK_EVERY_TIME_COHORT]: {
+    enabled: 'mweb_xpromo_listing_click_every_time',
+  },
+  [VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_IOS_ENABLED]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
+      {
+        or: [
+          { url: 'xpromolistingclick' },
+          { variant: 'mweb_xpromo_two_week_listing_click_ios:listing_click' },
+        ],
+      },
+    ],
+  },
+  [VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
+      {
+        or: [
+          { url: 'xpromolistingclick' },
+          { variant: 'mweb_xpromo_two_week_listing_click_android:listing_click' },
+        ],
+      },
+    ],
+  },
+  [VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
+      {
+        or: [
+          { url: 'xpromolistingclick' },
+          { variant: 'mweb_xpromo_every_time_listing_click_ios:listing_click' },
+        ],
+      },
+    ],
+  },
+  [VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { allowNSFW: false },
+      { allowedPages: ['index', 'listing'] },
+      {
+        or: [
+          { url: 'xpromolistingclick' },
+          { variant: 'mweb_xpromo_every_time_listing_click_android:listing_click' },
+        ],
+      },
     ],
   },
   [VARIANT_TITLE_EXPANDO]: {

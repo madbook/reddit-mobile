@@ -66,6 +66,31 @@ export const RECENT_CLICKS_LENGTH = 5;
 
 export const XPROMO_INTERSTITIAL_OPT_OUT = 'no_xpromo_interstitial';
 
+export const XPROMO_LISTING_CLICK_EVENTS_NAME = 'listing_click';
+
+export const XPROMO_LAST_LISTING_CLICK_DATE = 'lastListingClick';
+
+/**
+ * Listing clicks have a target type,
+ * i.e. if you click on the username, the deeplink goes to the user profile,
+ * and the target type is 'user'
+ */
+export const LISTING_CLICK_TYPES = {
+  AUTHOR: 'author',
+  COMMENTS_LINK: 'comments_link',
+  CONTENT: 'content',
+  DOMAIN_LINK: 'domain_link',
+  FOOTER: 'footer',
+  FOOTER_DROPDOWN: 'footer_dropdown',
+  MOD_SHIELD: 'mod_shield', // we should never block mod actions,
+  // if we see this in anayltics it indicates a bug with our implementation
+  OTHER: 'other',
+  SUBREDDIT: 'subreddit',
+  THUMBNAIL: 'thumbnail',
+  TITLE: 'title',
+  VOTE_CONTROLS: 'vote_controls',
+};
+
 // Post content
 
 export const POST_COMPACT_THUMBNAIL_WIDTH = 70;
@@ -76,7 +101,6 @@ export const BANNER_URLS_DIRECT = {
   IOS: 'https://itunes.apple.com/us/app/reddit-the-official-app/id1064216828',
   ANDROID: 'https://play.google.com/store/apps/details?id=com.reddit.frontpage',
 };
-/* eslint-enable */
 
 // feature flags
 export const flags = {
@@ -100,6 +124,11 @@ export const flags = {
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL: 'experimentXPromoLoginRequiredAndroidControl',
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS: 'experimentXPromoInterstitialCommentsIos',
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID: 'experimentXPromoInterstitialCommentsAndroid',
+  XPROMO_LISTING_CLICK_EVERY_TIME_COHORT: 'XPromoListingClickEveryTimeCohort',
+  VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_IOS_ENABLED: 'experimentXPromoListingClickTwoWeekIOSEnabled',
+  VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED: 'experimentXPromoListingClickTwoWeekAndroidEnabled',
+  VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED: 'experimentXPromoListingClickEveryTimeIOSEnabled',
+  VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED: 'experimentXPromoListingClickEveryTimeAndroidEnabled',
   VARIANT_TITLE_EXPANDO: 'experimentTitleExpando',
   VARIANT_MIXED_VIEW: 'experimentMixedView',
   SHOW_AMP_LINK: 'showAmpLink',

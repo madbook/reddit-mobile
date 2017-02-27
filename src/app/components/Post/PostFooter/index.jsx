@@ -1,13 +1,16 @@
 import './styles.less';
 import React from 'react';
-import { ModalTarget } from '@r/widgets/modal';
 
 import { Anchor } from 'platform/components';
 import PostModel from 'apiClient/models/PostModel';
 import PostDropdown from '../PostDropdown';
 import VotingBox from 'app/components/VotingBox';
+import InterceptableModalTarget from 'app/components/InterceptableModalTarget';
+
+import { LISTING_CLICK_TYPES } from 'app/constants';
 
 const T = React.PropTypes;
+
 
 export default class PostFooter extends React.Component {
   static propTypes = {
@@ -26,6 +29,7 @@ export default class PostFooter extends React.Component {
     onElementClick: T.func.isRequired,
     onToggleModal: T.func.isRequired,
     isSubredditModerator: T.bool.isRequired,
+    interceptListingClick: T.bool.isRequired,
   };
 
   constructor(props) {
@@ -43,7 +47,7 @@ export default class PostFooter extends React.Component {
     this.setState({ dropdownTarget: null });
   }
 
-  renderCommentsLink(post) {
+  renderCommentsLink(post, interceptListingClick) {
     if (post.disableComments) {
       return;
     }
@@ -54,7 +58,13 @@ export default class PostFooter extends React.Component {
       <Anchor
         className='PostFooter__hit-area PostFooter__comments-link'
         href={ post.cleanPermalink }
-        onClick = { this.props.onElementClick }
+        onClick={ e => {
+          if (interceptListingClick(e, LISTING_CLICK_TYPES.COMMENTS_LINK)) {
+            return;
+          }
+
+          this.props.onElementClick(e);
+        } }
       >
         <span className='PostFooter__comments-icon icon icon-comment' />
         { this.numCommentsText(numComments) }
@@ -130,26 +140,34 @@ export default class PostFooter extends React.Component {
       compact,
       hideDownvote,
       isSubredditModerator,
+      interceptListingClick,
     } = this.props;
+
 
     const modModalId = `mod-${post.name}`;
     const reportModalId = `report-${post.name}`;
     const scoreHidden = post.hideScore || post.score_hidden; // XXX when does a post have score_hidden?
     return (
-      <footer className={ `PostFooter ${compact ? 'size-compact' : ''}` }>
-        { this.renderCommentsLink(post) }
+      <footer
+        className={ `PostFooter ${compact ? 'size-compact' : ''}` }
+        onClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.FOOTER) }
+      >
+        { this.renderCommentsLink(post, interceptListingClick) }
         <div className='PostFooter__vote-and-tools-wrapper'>
-          <ModalTarget
+          <InterceptableModalTarget
             id={ post.name }
+            interceptClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.FOOTER_DROPDOWN) }
           >
             <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-seashells'/>
-          </ModalTarget>
+          </InterceptableModalTarget>
           { isSubredditModerator
-            ? (<ModalTarget
+            ? (
+            <InterceptableModalTarget
               id={ modModalId }
-               >
-                <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-mod'/>
-              </ModalTarget>)
+              interceptClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.MOD_SHIELD) }
+             >
+              <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-mod'/>
+            </InterceptableModalTarget>)
             : null
           }
           <span className='PostFooter__vertical-divider' />
@@ -159,6 +177,7 @@ export default class PostFooter extends React.Component {
             scoreHidden={ scoreHidden }
             voteDirection={ post.likes }
             hideDownvote={ hideDownvote }
+            interceptVote={ e => interceptListingClick(e, LISTING_CLICK_TYPES.VOTE_CONTROLS) }
           />
         </div>
         { this.renderDropdown(this.props, false, null) }

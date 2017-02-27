@@ -6,6 +6,7 @@ import {
   interstitialType,
   isPartOfXPromoExperiment,
   currentExperimentData as currentXPromoExperimentData,
+  listingClickExperimentData,
   xpromoIsEnabledOnDevice,
   commentsInterstitialEnabled,
   isEligibleListingPage,
@@ -141,7 +142,7 @@ export function trackXPromoEvent(state, eventType, additionalEventData) {
   const payload = {
     ...getBasePayload(state),
     ...buildSubredditData(state),
-    ...getExperimentPayload(state),
+    ...getXPromoExperimentPayload(state),
     ...xPromoExtraScreenViewData(state),
     ...additionalEventData,
   };
@@ -154,9 +155,16 @@ export function trackXPromoEvent(state, eventType, additionalEventData) {
   });
 }
 
-function getExperimentPayload(state) {
+function getXPromoExperimentPayload(state) {
   let experimentPayload = {};
-  if (isPartOfXPromoExperiment(state) && currentXPromoExperimentData(state)) {
+  if (state.smartBanner.showingListingClickInterstitial) {
+    // If we're showing a listing click interstitial, then we should using
+    const experimentData = listingClickExperimentData(state);
+    if (experimentData) {
+      const {experiment_name, variant } = experimentData;
+      experimentPayload = { experiment_name, experiment_variant: variant };
+    }
+  } else if (isPartOfXPromoExperiment(state) && currentXPromoExperimentData(state)) {
     const { experiment_name, variant } = currentXPromoExperimentData(state);
     experimentPayload = { experiment_name, experiment_variant: variant };
   }

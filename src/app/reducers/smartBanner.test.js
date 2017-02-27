@@ -72,6 +72,48 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
       });
     });
 
+    describe('CAN_LISTING_CLICK', () => {
+      it('should change `canListingClick` to be true', () => {
+        const { store } = getStore({ smartBanner: DEFAULT });
+        store.dispatch(xpromoActions.canListingClick());
+        const { smartBanner } = store.getState();
+        expect(smartBanner.canListingClick).to.eql(true);
+      });
+    });
+
+    describe('MARK_LISTING_CLICK_TIMESTAMP', () => {
+      it('should change `canListingClick` to be false', () => {
+        const { store } = getStore({ smartBanner: {
+          ...DEFAULT,
+          canListingClick: true,
+        }});
+        store.dispatch({ type: xpromoActions.MARK_LISTING_CLICK_TIMESTAMP });
+        const { smartBanner } = store.getState();
+        expect(smartBanner.canListingClick).to.eql(false);
+      });
+    });
+
+    describe('XPROMO_LISTING_CLICKED', () => {
+      it('should change `showingListingClickInterstitial` to true', () => {
+        const { store } = getStore({ smartBanner: DEFAULT });
+        store.dispatch(xpromoActions.promoListingClicked());
+        const { smartBanner } = store.getState();
+        expect(smartBanner.showingListingClickInterstitial).to.eql(true);
+      });
+    });
+
+    describe('XPROMO_HIDE_LISTING_CLICK_INTERSTITIAL', () => {
+      it('should change `showingListingClickInterstitial` to be false', () => {
+        const { store } = getStore({ smartBanner: {
+          ...DEFAULT,
+          showingListingClickInterstitial: true,
+        }});
+        store.dispatch({ type: xpromoActions.XPROMO_HIDE_LISTING_CLICK_INTERSTITIAL });
+        const { smartBanner } = store.getState();
+        expect(smartBanner.showingListingClickInterstitial).to.eql(false);
+      });
+    });
+
     describe('PLATFORM__NAVIGATE_TO_URL', () => {
       it('should not remove desire to show xpromo if we have already shown it once and navigate to another app url', () => {
         const { store } = getStore({ smartBanner: DEFAULT });

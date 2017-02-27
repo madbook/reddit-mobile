@@ -9,6 +9,7 @@ import includes from 'lodash/includes';
 import PostModel from 'apiClient/models/PostModel';
 import * as postActions from 'app/actions/posts';
 import * as reportingActions from 'app/actions/reporting';
+import { performListingClick } from 'app/actions/xpromo';
 
 import imageDomains from 'lib/imageDomains';
 
@@ -22,8 +23,12 @@ import PostContent from './PostContent';
 import PostFooter from './PostFooter';
 
 import features from 'app/featureFlags';
-import { flags } from 'app/constants';
+import { flags, LISTING_CLICK_TYPES } from 'app/constants';
 import { removePrefix } from 'lib/eventUtils';
+
+import {
+  listingClickEnabled,
+} from 'app/selectors/xpromo';
 
 const {
   VARIANT_TITLE_EXPANDO,
@@ -78,7 +83,11 @@ Post.defaultProps = {
   onPostClick: () => {},
 };
 
-export function Post(props) {
+Post.contextTypes = {
+  store: T.object,
+};
+
+export function Post(props, context) {
   const userAgent = global.navigator && global.navigator.userAgent
     ? global.navigator.userAgent
     : '';
@@ -106,6 +115,7 @@ export function Post(props) {
     single,
     hideSubredditLabel,
     hideWhen,
+    interceptListingClick: unboundInterceptListingClick,
     inTitleExpandoExp,
     inMixedViewExp,
     isPlaying,
@@ -142,6 +152,24 @@ export function Post(props) {
   const onTogglePlaying = shouldPlay ? onStartPlaying : onStopPlaying;
   const isSubredditModerator = includes(moderatingSubreddits.names, post.subreddit.toLowerCase());
 
+  // Bind a new copy of interceptListingClick that uses `redux.getState` to check eligilibility
+  const interceptListingClick = (e, listingClickType) => {
+    const checkEligibility = postId => {
+      if (single) {
+        return false; // don't listing click on comments pages
+      }
+
+      const { store } = context;
+      if (!store) {
+        return false; // this should never happen :tm:
+      }
+
+      return listingClickEnabled(store.getState(), postId);
+    };
+
+    return unboundInterceptListingClick(checkEligibility, e, listingClickType);
+  };
+
   let thumbnailOrNil;
   if (displayCompact) {
     thumbnailOrNil = (
@@ -162,6 +190,7 @@ export function Post(props) {
         isDomainExternal={ externalDomain }
         renderMediaFullbleed={ renderMediaFullbleed }
         showLinksInNewTab={ showLinksInNewTab }
+        interceptListingClick={ interceptListingClick }
       />
     );
   }
@@ -191,6 +220,7 @@ export function Post(props) {
         isDomainExternal={ externalDomain }
         renderMediaFullbleed={ renderMediaFullbleed }
         showLinksInNewTab={ showLinksInNewTab }
+        interceptListingClick={ interceptListingClick }
       />
     );
   }
@@ -198,7 +228,11 @@ export function Post(props) {
   const postCssClass = `Post ${displayCompact ? 'size-compact' : 'size-default'}`;
 
   return (
-    <article className={ postCssClass } style={ { zIndex: z} }>
+    <article
+      className={ postCssClass }
+      style={ { zIndex: z} }
+      onClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.OTHER) }
+    >
       <div className='Post__header-wrapper'>
         { thumbnailOrNil }
         <PostHeader
@@ -217,6 +251,7 @@ export function Post(props) {
           onTapExpand={ toggleExpanded }
           isSubredditModerator={ isSubredditModerator }
           reports={ reports }
+          interceptListingClick={ interceptListingClick }
         />
       </div>
       { contentOrNil }
@@ -235,6 +270,7 @@ export function Post(props) {
         onToggleModal={ onToggleModal }
         isSubredditModerator={ isSubredditModerator }
         reports={ reports }
+        interceptListingClick={ interceptListingClick }
       />
     </article>
   );
@@ -301,6 +337,31 @@ const mapDispatchToProps = (dispatch, { postId }) => ({
   onStartPlaying: () => dispatch(postActions.startPlaying(postId)),
   onReportPost: () => dispatch(reportingActions.report(postId)),
   onToggleModal: () => dispatch(toggleModal(null)),
+  interceptListingClick: (checkEligibility, e, listingClickType) => {
+    // on any click inside a post, we might need to intercept that click
+    // and turn it into an xpromo Listing Click.
+    // Therefore all click event handlers should be calling this function
+    // to decide if we can continue handling the click
+
+    // To determine if we're eligible for a listing click, we need to access state.
+    // If we were to check this eligiblity in the selector, we could fire bucketing
+    // events before a click. If were to continually pass `state` from selectors,
+    // we would re-render the Post component on every re-render.
+    // As a hacky workaround, this function expects to be passed a `checkEligibility`
+    // function. `Post` can use context props to access `getState` from redux,
+    // and pass in the `checkEnabled` function.
+
+    if (!checkEligibility(postId)) {
+      return false;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    dispatch(performListingClick(postId, listingClickType));
+
+    return true;
+  },
 });
 
 export default connect(selector, mapDispatchToProps)(Post);

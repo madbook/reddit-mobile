@@ -8,6 +8,7 @@ import PostsList from 'app/components/PostsList';
 import NSFWInterstitial from 'app/components/NSFWInterstitial';
 import SortAndTimeSelector from 'app/components/SortAndTimeSelector';
 import SubNav from 'app/components/SubNav';
+import XPromoListingClickInterstitial from 'app/components/XPromoListingClickInterstitial';
 
 import PostsFromSubredditHandler from 'app/router/handlers/PostsFromSubreddit';
 import { paramsToPostsListsId } from 'app/models/PostsList';
@@ -84,12 +85,12 @@ export const PostsFromSubredditPage = connect(mapStateToProps)(props => {
     <div className={ className }>
       { !forFakeSubreddit ? <CommunityHeader subredditName={ subredditName } /> : null }
       { showSubnav ? renderSubNav(subnavLink) : null }
-
       <PostsList
         postsListId={ postsListId }
         subredditIsNSFW={ !!subreddit && subreddit.over18 }
         subredditShowSpoilers={ !!subreddit && subreddit.spoilersEnabled }
       />
+      <XPromoListingClickInterstitial />
     </div>
   );
 });
