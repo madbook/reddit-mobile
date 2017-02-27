@@ -17,21 +17,18 @@
   left: 0;
   right: 0;
   bottom: 0;
+  padding-bottom: @top-nav-height;
+  font-size: @overlay-menu-font-size;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &.m-with-top-nav {
     top: @top-nav-height;
   }
 
-  padding-bottom: @top-nav-height;
-  overflow-y: auto;
-
   .themeify({
     background-color: @theme-overlay-color;
   });
-
-  font-size: @overlay-menu-font-size;
-  overflow-y: scroll;
-  -webkit-overflow-scroll: touch;
 }
 
 .OverlayMenu-ul {
