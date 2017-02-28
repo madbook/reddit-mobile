@@ -10,3 +10,5 @@ build/
 .tox/
 .DS_Store
 reddit-mobile.log
+.envrc
+.env
