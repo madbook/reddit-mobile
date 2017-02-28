@@ -43,6 +43,9 @@ export function getBranchLink(state, payload={}) {
     userId = userAccount.id;
   }
 
+
+  const path = window.location.href.split(window.location.host)[1];
+
   const basePayload = {
     channel: 'mweb_branch',
     feature: 'xpromo',
@@ -53,7 +56,9 @@ export function getBranchLink(state, payload={}) {
     // Pass in data you want to appear and pipe in the app,
     // including user token or anything else!
     '$og_redirect': window.location.href,
-    '$deeplink_path': window.location.href.split(window.location.host)[1],
+    '$deeplink_path': path,
+    // android deep links expect reddit/ prefixed urls
+    '$android_deeplink_path': `reddit${path}`,
     mweb_loid: loid,
     mweb_loid_created: loidCreated,
     mweb_user_id36: userId,
