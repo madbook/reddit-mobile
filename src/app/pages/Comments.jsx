@@ -116,7 +116,10 @@ const stateProps = createSelector(
   },
   state => {
     const subredditName = getSubreddit(state);
-    const subreddit = state.subreddits[subredditName];
+    if (!subredditName) {
+      return false;
+    }
+    const subreddit = state.subreddits[subredditName.toLowerCase()];
     return subreddit ? subreddit.spoilersEnabled : false;
   },
   state => state.platform.currentPage,

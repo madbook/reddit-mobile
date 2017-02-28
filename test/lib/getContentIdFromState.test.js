@@ -30,8 +30,8 @@ describe('lib: getContentIdFromState', () => {
     set(sampleState, 'platform.currentPage.urlParams.subredditName', 'pics');
     set(sampleState, 'platform.currentPage.urlParams.postId', 'foo');
     set(sampleState, 'subreddits.pics.name', 't5_2qh0u');
-    set(sampleState, 'commentsPages.current', 'deadbeef');
-    set(sampleState, 'commentsPages.deadbeef.postId', 't3_foo');
+    set(sampleState, 'commentsPages.data.current', 'deadbeef');
+    set(sampleState, 'commentsPages.data.deadbeef.postId', 't3_foo');
     expect(getContentId(sampleState)).to.equal('t3_foo');
   });
 

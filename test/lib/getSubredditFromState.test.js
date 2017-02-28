@@ -11,7 +11,11 @@ describe('lib: getSubredditFromState', () => {
   it('is a function', () => {
     expect(getSubreddit).to.be.a('function');
   });
-  const sampleState = {};
+  const sampleState = {
+    commentsPages: {
+      data: {},
+    },
+  };
 
   it('null on empty object', () => {
     set(sampleState, 'platform.currentPage.urlParams.subredditName', null);
@@ -25,19 +29,19 @@ describe('lib: getSubredditFromState', () => {
 
   it('null on commentsPages.current.results being null', () => {
     set(sampleState, 'platform.currentPage.urlParams.subredditName', null);
-    set(sampleState, 'commentsPages.current', 'pics');
-    set(sampleState, 'commentsPages.pics.results', []);
+    set(sampleState, 'commentsPages.data.current', 'pics');
+    set(sampleState, 'commentsPages.data.pics', []);
     expect(getSubreddit(sampleState)).to.equal(null);
   });
 
   it('null on commentsPages.current.results being null', () => {
-    set(sampleState, 'commentsPages.pics.results[0].uuid', 't3_foobar');
-    set(sampleState, 'comments.t3_foobar', undefined);
+    set(sampleState, 'commentsPages.data.pics[0].uuid', 't3_foobar');
+    set(sampleState, 'comments.data.t3_foobar', undefined);
     expect(getSubreddit(sampleState)).to.equal(null);
   });
 
   it('null on commentsPages.current.results being null', () => {
-    set(sampleState, 'comments.t3_foobar.subreddit', 'gifs');
+    set(sampleState, 'comments.data.t3_foobar.subreddit', 'gifs');
     expect(getSubreddit(sampleState)).to.equal('gifs');
   });
 

@@ -100,8 +100,8 @@ const renderNode = (props, depth, data, isHidden) => {
     isSubredditModerator,
     commentDispatchers,
     reports,
-    postPermalink,
   } = props;
+  const postPermalink = post.cleanPermalink;
   const uuid = data.name;
   const authorType = determineAuthorType(data, user, post.author || '');
   const editObject = thingsBeingEdited[uuid];
@@ -170,7 +170,7 @@ function renderDots(count) {
   return <div className='CommentHeader__dots'>{ content }</div>;
 }
 
-const renderContinueThread = (onContinueThread, data, isTopLevel, dotsNum, postPermalink) => {
+const renderContinueThread = (onLoadMore, data, isTopLevel, dotsNum, postPermalink) => {
   const isPending = data.isPending;
   const isLoadMore = data.type === COMMENT_LOAD_MORE;
   const label = isLoadMore ?
@@ -182,7 +182,13 @@ const renderContinueThread = (onContinueThread, data, isTopLevel, dotsNum, postP
   return (
     <Anchor
       className='CommentTree__continueThread'
-      onClick={ onContinueThread }
+      onClick={ e => {
+        // If this is a real continue thread link, let the normal page navigation
+        // from Anchor handle this
+        if (isLoadMore) {
+          onLoadMore(e);
+        }
+      } }
       href={ url }
     >
       { renderDots(dotsNum) }

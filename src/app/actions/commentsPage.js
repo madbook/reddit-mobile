@@ -55,7 +55,7 @@ export const visitedCommentsPage = (postId) => ({
 export const fetchCommentsPage = commentsPageParams => async (dispatch, getState) => {
   const state = getState();
   const commentsPageId = paramsToCommentsPageId(commentsPageParams);
-  const commentsPage = state.commentsPages[commentsPageId];
+  const commentsPage = state.commentsPages.api[commentsPageId];
 
   if (commentsPage) { return; }
 

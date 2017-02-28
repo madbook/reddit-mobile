@@ -211,8 +211,8 @@ export default class Model {
         obj[key] = this[key];
       }
     });
-
-    obj.__type = this.type;
+    obj.uuid = this.uuid;
+    obj.type = this.type;
     return obj;
   }
 }

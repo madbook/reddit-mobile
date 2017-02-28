@@ -10,11 +10,11 @@ export default function(state) {
   const { commentsPages } = state;
   if (!commentsPages) { return []; }
 
-  const activePage = commentsPages[commentsPages.current];
-  if (!(activePage && activePage.results.length)) { return []; }
+  const activePage = commentsPages.data[commentsPages.data.current];
+  if (!(activePage && activePage.length)) { return []; }
   
-  const stickiedComments = activePage.results.map(r => modelFromThingId(r.uuid, state))
-                                             .filter(r => r.stickied);
+  const stickiedComments = activePage.map(r => modelFromThingId(r.uuid, state))
+                                     .filter(r => r.stickied);
 
   return stickiedComments;
 }
