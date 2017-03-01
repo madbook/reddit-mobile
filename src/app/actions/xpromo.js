@@ -64,14 +64,12 @@ export const checkAndSet = () => async (dispatch) => {
 };
 
 export const logAppStoreNavigation = visitType => async (dispatch) => {
-  dispatch(trackXPromoEvent(XPROMO_DISMISS, { dismiss_type: 'app_store_visit' }));
-  dispatch(trackXPromoEvent(XPROMO_APP_STORE_VISIT, { visit_trigger: visitType }));
+  return Promise.all([
+    dispatch(trackXPromoEvent(XPROMO_DISMISS, { dismiss_type: 'app_store_visit' })),
+    dispatch(trackXPromoEvent(XPROMO_APP_STORE_VISIT, { visit_trigger: visitType })),
+  ]);
 };
 
 export const navigateToAppStore = url => async (dispatch) => {
-  // TODO (skrisman): There's no guarantee that events in `logAppStoreNavigation`
-  // will actually finish their requests by the time we redirect. For now we
-  // put a delay and hope for the best. We need the event tracker to return a
-  // promise if we want to handle this correctly.
-  setTimeout(() => dispatch(redirect(url)), 250);
+  dispatch(redirect(url));
 };

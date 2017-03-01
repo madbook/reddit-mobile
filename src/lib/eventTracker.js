@@ -18,14 +18,16 @@ function post({url, data, query, headers, done}) {
     .set(headers)
     .timeout(DEFAULT_API_TIMEOUT)
     .send(data)
-    .then(done);
+    .then(done)
+    .catch(done);
 }
 
-function stubbedPost({ data }) {
+function stubbedPost({ data, done }) {
   try {
     const eventData = JSON.parse(data);
     const eventTopics = eventData.map(e => e.event_topic).join(', ');
     console.info(`Tracking ${eventTopics} with data:`, eventData);
+    done();
   } catch (e) {
     return;
   }
@@ -66,9 +68,61 @@ export function getEventTracker() {
         bufferLength: 1,
       }
     );
-
     trackers[hash] = tracker;
-  }
 
+    /* 
+     * (v.artem.tkachenko@reddit.com) 
+     * Method "Send" (from the external "event-tracker" 
+     * lib. https://github.com/reddit/event-tracker) 
+     * is executing without "Done" callback in usual mode, and
+     * there is no way to fire Resolve/Reject for Promise
+     */
+    patchEventTracker(tracker);
+  }
   return tracker;
+}
+
+/*
+ * Patch for EventTracker libery. Add Done callback to 
+ * current 'Send' method of external "event-tracker" lib
+ * (https://github.com/reddit/event-tracker).
+ * 
+ * instance: tracer (new instance of EventTracker)
+ */ 
+function patchEventTracker(instance) {
+  /*
+   * @TODO: we should replace current
+   * external 'Send' method with this one.
+   */
+  const updatedSend = function(done) {
+    if (this.buffer.length) {
+      const data = JSON.stringify(this.buffer);
+      const hash = this.calculateHash(this.clientSecret, data);
+      const headers = {'Content-Type': 'text/plain'};
+
+      this.postData({
+        url: this.eventsUrl,
+        data: data,
+        headers: headers,
+        query: {
+          key: this.clientKey,
+          mac: hash,
+        },
+        done: ((this.done || done) || function() {}), 
+      });
+      this.buffer = [];
+    }
+  };
+
+  instance.replaceToNewSend = function() {
+    if (!this.done) {
+      this.send = updatedSend;
+    }
+    return this;
+  };
+
+  instance.addDoneToNewSend = function(done) {
+    this.done = done;
+    return this;
+  };
 }

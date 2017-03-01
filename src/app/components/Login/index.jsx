@@ -207,14 +207,23 @@ const mapStateToProps = createSelector(
   },
 );
 
-const mapDispatchToProps = (dispatch) => ({
-  resetSessionError: () => {
-    dispatch(sessionActions.sessionError(null));
-  },
-  nativeAppNavigator: (url) => {
-    dispatch(xpromoActions.logAppStoreNavigation('login_screen_button'));
-    dispatch(xpromoActions.navigateToAppStore(url));
-  },
-});
+const mapDispatchToProps = dispatch => {
+  let preventExtraClick = false;
+  return {
+    resetSessionError: () => {
+      dispatch(sessionActions.sessionError(null));
+    },
+    nativeAppNavigator: (async (url) => {
+      // Prevention of additional click events
+      // while the Promise dispatch is awaiting
+      if (!preventExtraClick) {
+        preventExtraClick = true;
+        await dispatch(xpromoActions.logAppStoreNavigation('login_screen_button'));
+        dispatch(xpromoActions.navigateToAppStore(url));
+        preventExtraClick = false;
+      }
+    }),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

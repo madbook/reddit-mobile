@@ -51,13 +51,22 @@ export const selector = createSelector(
   }),
 );
 
-const mapDispatchToProps = dispatch => ({
-  navigator: (visitTrigger, url) => (() => {
-    dispatch(logAppStoreNavigation(visitTrigger));
-    dispatch(promoClicked());
-    dispatch(navigateToAppStore(url));
-  }),
-});
+const mapDispatchToProps = dispatch => {
+  let preventExtraClick = false;
+  return {
+    navigator: (visitTrigger, url) => (async () => {
+      // Prevention of additional click events
+      // while the Promise dispatch is awaiting
+      if (!preventExtraClick) {
+        preventExtraClick = true;
+        await dispatch(logAppStoreNavigation(visitTrigger));
+        dispatch(promoClicked());
+        dispatch(navigateToAppStore(url));
+        preventExtraClick = false;
+      }
+    }),
+  };
+};
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { xpromoThemeIsUsualState } = stateProps;

@@ -146,7 +146,12 @@ export function trackXPromoEvent(state, eventType, additionalEventData) {
     ...additionalEventData,
   };
 
-  getEventTracker().track('xpromo_events', eventType, payload);
+  return new Promise((resolve) => {
+    getEventTracker()
+      .replaceToNewSend()
+      .addDoneToNewSend(() => resolve())
+      .track('xpromo_events', eventType, payload);
+  });
 }
 
 function getExperimentPayload(state) {

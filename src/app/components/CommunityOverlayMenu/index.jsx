@@ -65,10 +65,10 @@ export const CommunityOverlayMenu = (props) => {
       />
       { !user.loggedOut
         ? <LinkRow
-            key='popular-link'
-            text='Popular'
-            href='/r/popular'
-            icon='icon-rising mint-circled-xl'
+          key='popular-link'
+          text='Popular'
+          href='/r/popular'
+          icon='icon-rising mint-circled-xl'
           />
         : ''
       }

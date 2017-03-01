@@ -11,7 +11,7 @@ const DEFAULT = {};
 // This function arranges modReports and userReports into an object
 // instead of arrays
 const formatReports = (modelList) => {
-  let reports = {};
+  const reports = {};
 
   for (var key in modelList) {
     modelList[key].userReports.forEach(function(report) {
