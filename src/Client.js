@@ -61,6 +61,9 @@ const getUserAgentAndURL = () => ({
   requestUrl: fullPathName(),
 });
 
+// We hang on to this so we can call it after we add our own onerror callback.
+const sentryOnError = window.onerror;
+
 // register `window.onerror` and `window.onunhandledrejection` handlers
 // asap to start logging any errors that come through.
 // We pass ERROR_ENDPOINTS to configure the endpoints we log to,
@@ -70,7 +73,8 @@ const getUserAgentAndURL = () => ({
 // do its default error formatting and stack traces. We don't want to re-throw
 // these top-level errors and rejections, because they'd show up in the console
 // twice.
-window.onerror = (message, url, line, column, error) => {
+window.onerror = (...args) => {
+  const [message, url, line, column, error] = args;
   errorLog({
     ...getUserAgentAndURL(),
     error,
@@ -80,7 +84,7 @@ window.onerror = (message, url, line, column, error) => {
     column,
   }, ERROR_ENDPOINTS, ERROR_LOG_OPTIONS);
 
-  Raven.captureException(error);
+  sentryOnError(...args);
 };
 
 // This isn't supported in most mobile browsers right now but it is in chrome.
