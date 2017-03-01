@@ -1,4 +1,5 @@
 import some from 'lodash/some';
+import has from 'lodash/has';
 
 import apiRequest from '../apiBase/apiRequest';
 import BadCaptchaError from '../errors/BadCaptchaError';
@@ -66,16 +67,17 @@ const formatPostData = (data)=> {
 };
 
 const handleGet = apiResponse => {
-  const { body: { data } } = apiResponse.response;
+  if (has(apiResponse, 'response.body.data')) {
+    const { body: { data } } = apiResponse.response;
 
-  if (data && data.children && data.children[0]) {
-    if (data.children.length === 1) {
-      apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
-    } else {
-      data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
+    if (has(data, 'children.0')) {
+      if (data.children.length === 1) {
+        apiResponse.addResult(PostModel.fromJSON(data.children[0].data));
+      } else {
+        data.children.forEach(c => apiResponse.addResult(PostModel.fromJSON(c.data)));
+      }
     }
   }
-
   return apiResponse;
 };
 
