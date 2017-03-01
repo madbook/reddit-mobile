@@ -31,13 +31,13 @@ const PASS_ERRORS = {
 
 const USER_ERRORS = {
   USERNAME_TAKEN: 'Sorry, that username is taken',
-  USERNAME_INVALID_CHARACTERS: 'Sorry your username contains invalid characters',
+  USERNAME_INVALID_CHARACTERS: 'Sorry, your username contains invalid characters',
   USERNAME_TOO_SHORT: 'Sorry, your username must be between 3 and 20 characters',
-  USERNAME_TAKEN_DEL: 'Sorry the account associated with that username is deleted',
+  USERNAME_TAKEN_DEL: 'Sorry, the account associated with that username is deleted',
 };
 
 const DEFAULT_ERRORS = {
-  'UNKNOWN_ERROR': 'Sorry something went wrong. Please try again later',
+  'UNKNOWN_ERROR': 'Sorry, something went wrong. Please try again later',
 };
 
 const renderErrorMsg = (errorMsg) => {
