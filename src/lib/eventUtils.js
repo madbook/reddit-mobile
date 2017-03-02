@@ -6,9 +6,8 @@ import {
   interstitialType,
   isPartOfXPromoExperiment,
   currentExperimentData as currentXPromoExperimentData,
-  xpromoIsEnabledOnPage,
   xpromoIsEnabledOnDevice,
-  xpromoIsPastExperiment,
+  commentsInterstitialEnabled,
   isEligibleListingPage,
   isEligibleCommentsPage,
 } from 'app/selectors/xpromo';
@@ -179,17 +178,18 @@ export function trackPagesXPromoEvents(state, additionalEventData) {
     const ineligibilityReason = shouldNotShowBanner();
     if (ineligibilityReason) {
       trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason);
-    } else if (xpromoIsEnabledOnPage(state) && xpromoIsEnabledOnDevice(state)) {
+    } else if (xpromoIsEnabledOnDevice(state)) {
       // listing pages always track view events because they'll either see
       // the normal xpromo, or the login required variant
       trackXPromoView(state, additionalEventData);
     }
   } else if (isEligibleCommentsPage(state)) {
-    // on comments pages, only track the xpromo view if we would show it and
-    // are in the treatement
-    if (xpromoIsEnabledOnPage(state)
-        && xpromoIsEnabledOnDevice(state)
-        && xpromoIsPastExperiment(state)) {
+    const ineligibilityReason = shouldNotShowBanner();
+    if (ineligibilityReason) {
+      trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason);
+      // otherwise check if this is a valid page, and the comments page
+      // xpromo is enabled.
+    } else if (xpromoIsEnabledOnDevice(state) && commentsInterstitialEnabled(state)) {
       trackXPromoView(state, additionalEventData);
     }
   }

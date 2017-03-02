@@ -7,7 +7,7 @@ import { flags as flagConstants } from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import getContentId from 'lib/getContentIdFromState';
-import { extractUser, getExperimentData } from 'lib/experiments';
+import { featureEnabled, extractUser, getExperimentData } from 'lib/experiments';
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload } from 'lib/eventUtils';
 import { getDevice, IPHONE, IOS_DEVICES, ANDROID } from 'lib/getDeviceFromState';
@@ -34,9 +34,6 @@ const {
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL,
-
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
@@ -199,19 +196,7 @@ const config = {
       { allowedPages: ['comments'] },
       { or: [
         { url: 'xpromointerstitialcomments' },
-        { variant: 'mweb_xpromo_interstitial_comments_ios:treatment' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL]: {
-    and: [
-      { allowedDevices: [IPHONE] },
-      { allowNSFW: false },
-      { allowedPages: ['comments'] },
-      { or: [
-        { url: 'xpromointerstitialcommentsioscontrol' },
-        { variant: 'mweb_xpromo_interstitial_comments_ios_control:control_1' },
-        { variant: 'mweb_xpromo_interstitial_comments_ios_control:control_2' },
+        { enabled: 'mweb_xpromo_interstitial_comments_ios' },
       ] },
     ],
   },
@@ -222,19 +207,7 @@ const config = {
       { allowedPages: ['comments'] },
       { or: [
         { url: 'xpromointerstitialcomments' },
-        { variant: 'mweb_xpromo_interstitial_comments_android:treatment' },
-      ] },
-    ],
-  },
-  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL]: {
-    and: [
-      { allowedDevices: [ANDROID] },
-      { allowNSFW: false },
-      { allowedPages: ['comments'] },
-      { or: [
-        { url: 'xpromointerstitialcommentsandroidcontrol' },
-        { variant: 'mweb_xpromo_interstitial_comments_android_control:control_1' },
-        { variant: 'mweb_xpromo_interstitial_comments_android_control:control_2' },
+        { enabled: 'mweb_xpromo_interstitial_comments_android' },
       ] },
     ],
   },
@@ -341,6 +314,10 @@ flags.addRule('variant', function (name) {
     return variant === checkedVariant;
   }
   return false;
+});
+
+flags.addRule('enabled', function(featureName) {
+  return featureEnabled(this.state, featureName);
 });
 
 // need to keep this function format (not arrow format) to protect

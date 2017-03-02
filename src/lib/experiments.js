@@ -15,3 +15,15 @@ export function getExperimentData(state, experimentName) {
     experiment_name: experimentName,
   };
 }
+
+export function featureEnabled(state, featureName) {
+  // some feature flags are just true/false and don't have experiment
+  // variants and their associated bucketing events. They're useful
+  // for ramping up / down, and quicky enabling / disabling certain features
+  const user = extractUser(state);
+  if (!user) {
+    return false;
+  }
+
+  return !!user.features[featureName];
+}

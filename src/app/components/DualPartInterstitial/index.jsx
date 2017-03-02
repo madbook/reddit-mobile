@@ -44,7 +44,7 @@ export const selector = createSelector(
   getDevice,
   scrollPastState,
   (state => xpromoThemeIsUsual(state)),
-  (device, scrollPast, xpromoThemeIsUsualState) => ({ 
+  (device, scrollPast, xpromoThemeIsUsualState) => ({
     device, 
     scrollPast, 
     xpromoThemeIsUsualState,
@@ -52,11 +52,24 @@ export const selector = createSelector(
 );
 
 const mapDispatchToProps = dispatch => ({
-  navigator: url => (() => {
-    dispatch(logAppStoreNavigation('interstitial_button'));
+  navigator: (visitTrigger, url) => (() => {
+    dispatch(logAppStoreNavigation(visitTrigger));
     dispatch(promoClicked());
     dispatch(navigateToAppStore(url));
   }),
 });
 
-export default connect(selector, mapDispatchToProps)(DualPartInterstitial);
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { xpromoThemeIsUsualState } = stateProps;
+  const { navigator: dispatchNavigator } = dispatchProps;
+  const visitTrigger = xpromoThemeIsUsualState ? 'interstitial_button' : 'banner_button';
+
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    navigator: url => dispatchNavigator(visitTrigger, url),
+  };
+};
+
+export default connect(selector, mapDispatchToProps, mergeProps)(DualPartInterstitial);

@@ -16,9 +16,6 @@ const {
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
   VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL,
-
 } = flagConstants;
 
 const EXPERIMENT_FULL = [
@@ -26,15 +23,16 @@ const EXPERIMENT_FULL = [
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL,
-  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL,
 ];
 
-const EXPERIMENT_MOBILE = [
+const LOGIN_REQUIRED_FLAGS = [
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
+];
+
+const COMMENTS_PAGE_BANNER_FLAGS = [
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID,
 ];
 
 const EXPERIMENT_NAMES = {
@@ -44,8 +42,6 @@ const EXPERIMENT_NAMES = {
   [VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL]: 'mweb_xpromo_require_login_android',
   [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS]: 'mweb_xpromo_interstitial_comments_ios',
   [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID]: 'mweb_xpromo_interstitial_comments_android',
-  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_IOS_CONTROL]: 'mweb_xpromo_interstitial_comments_ios',
-  [VARIANT_XPROMO_INTERSTITIAL_COMMENTS_ANDROID_CONTROL]: 'mweb_xpromo_interstitial_comments_android',
 };
 
 export function getRouteActionName(state) {
@@ -55,17 +51,10 @@ export function getRouteActionName(state) {
 }
 
 function isDayMode(state) {
-  return (DAYMODE === state.theme);
+  return DAYMODE === state.theme;
 }
 
-function loginExperimentName(state) {
-  if (!shouldShowXPromo(state)) {
-    return null;
-  }
-  return xpromoIsPartOfExperiment(state);
-}
-
-function xpromoIsPartOfExperiment(state) {
+function activeXPromoExperimentName(state) {
   const featureContext = features.withContext({ state });
   const featureFlag = find(EXPERIMENT_FULL, feature => {
     return featureContext.enabled(feature);
@@ -86,13 +75,15 @@ export function xpromoThemeIsUsual(state) {
   return xpromoTheme(state) === USUAL;
 }
 
-export function xpromoIsPastExperiment(state) {
-  switch (xpromoTheme(state)) {
-    case MINIMAL:
-      return isPartOfXPromoExperiment(state);
-    default: 
-      return true;
+export function xpromoIsConfiguredOnPage(state) {
+  const actionName = getRouteActionName(state);
+  if (actionName === 'index' || actionName === 'listing') {
+    return true;
+  } else if (actionName === 'comments') {
+    return commentsInterstitialEnabled(state);
   }
+
+  return false;
 }
 
 // @TODO: this should be controlled
@@ -120,14 +111,26 @@ export function xpromoIsEnabledOnDevice(state) {
   return (!!device) && [ANDROID, IPHONE].includes(device);
 }
 
+function anyFlagEnabled(state, flags) {
+  const featureContext = features.withContext({ state });
+  return some(flags, feature => {
+    return featureContext.enabled(feature);
+  });
+}
+
 export function loginRequiredEnabled(state) {
   if (!(shouldShowXPromo(state) && state.user.loggedOut)) {
     return false;
   }
-  const featureContext = features.withContext({ state });
-  return some(EXPERIMENT_MOBILE, feature => {
-    return featureContext.enabled(feature);
-  });
+  return anyFlagEnabled(state, LOGIN_REQUIRED_FLAGS);
+}
+
+export function commentsInterstitialEnabled(state) {
+  if (!shouldShowXPromo(state)) {
+    return false;
+  }
+
+  return anyFlagEnabled(state, COMMENTS_PAGE_BANNER_FLAGS);
 }
 
 export function scrollPastState(state) {
@@ -154,14 +157,14 @@ export function interstitialType(state) {
 }
 
 export function isPartOfXPromoExperiment(state) {
-  return !!loginExperimentName(state);
+  return shouldShowXPromo(state) && !!activeXPromoExperimentName(state);
 }
 
 export function currentExperimentData(state) {
-  const experimentName = loginExperimentName(state);
+  const experimentName = activeXPromoExperimentName(state);
   return getExperimentData(state, experimentName);
 }
 
 export function XPromoIsActive(state) {
-  return shouldShowXPromo(state) && xpromoIsPastExperiment(state);
+  return shouldShowXPromo(state) && xpromoIsConfiguredOnPage(state);
 }
