@@ -50,10 +50,12 @@ export default (state=DEFAULT, action={}) => {
       const currentPostsList = state[postsListId];
       if (!currentPostsList) { return state; }
 
+      const responseCode = error && error.status ? error.status : 500;
+
       return merge(state, {
         [postsListId]: {
+          responseCode,
           loading: false,
-          responseCode: error.status,
         },
       });
     }

@@ -31,17 +31,21 @@ export default (state=DEFAULT, action={}) => {
         },
       };
     }
+
     case commentsPageActions.FAILED: {
       const { commentsPageId, error } = action.payload;
+      const responseCode = error && error.status ? error.status : 500;
+
       return {
         ...state,
         [commentsPageId]: {
+          responseCode,
           errors: error,
           pending: false,
-          responseCode: error.status,
         },
       };
     }
+
     case commentsPageActions.FETCHING_COMMENTS_PAGE: {
       const { commentsPageId } = action.payload;
       return {

@@ -118,6 +118,10 @@ const checkForSpecificErrors = action => {
       if (error) {
         return error;
       }
+
+      if (action.payload && action.payload.error) {
+        return action.payload.error;
+      }
     }
   }
 };

@@ -2,7 +2,6 @@ import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import { paramsToPostsListsId } from 'app/models/PostsList';
 
 import PostsEndpoint from 'apiClient/apis/PostsEndpoint';
-import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_POSTS_LIST = 'FETCHING_POSTS_LIST';
 export const fetching = (postsListId, postsParams) => ({
@@ -39,10 +38,6 @@ export const fetchPostsFromSubreddit = postsParams => async (dispatch, getState)
     const apiResponse = await PostsEndpoint.get(apiOptions, postsParams);
     dispatch(received(postsListId, apiResponse));
   } catch (e) {
-    if (e instanceof ResponseError) {
-      dispatch(failed(postsListId, e));
-    } else {
-      throw e;
-    }
+    dispatch(failed(postsListId, e));
   }
 };

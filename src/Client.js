@@ -62,7 +62,8 @@ const getUserAgentAndURL = () => ({
 });
 
 // We hang on to this so we can call it after we add our own onerror callback.
-const sentryOnError = window.onerror;
+const noOp = () => {}; // no-op for debug-mode when sentry isn't enabled
+const sentryOnError = window.onerror || noOp;
 
 // register `window.onerror` and `window.onunhandledrejection` handlers
 // asap to start logging any errors that come through.

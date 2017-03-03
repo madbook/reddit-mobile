@@ -64,7 +64,12 @@ export default class PostsFromSubreddit extends BaseHandler {
       queryParams: this.queryParams,
     }));
 
-    dispatch(setStatus(getState().postsLists[postsListId].responseCode));
+    const apiRequest = getState().postsLists[postsListId];
+    const statusCode = apiRequest && apiRequest.responseCode
+      ? apiRequest.responseCode
+      : 500;
+
+    dispatch(setStatus(statusCode));
     dispatch(setTitle(this.buildTitle(getState(), subredditName)));
 
     const latestState = getState();

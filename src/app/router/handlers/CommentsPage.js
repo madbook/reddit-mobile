@@ -91,11 +91,15 @@ export default class CommentsPage extends BaseHandler {
       fetchSimilarPosts(state, dispatch, post);
       fetchRecommendedSubredditsByPost(state, dispatch, post);
       fetchRecommendedSubredditsToPostsByPost(state, dispatch, post);
+      dispatch(setTitle(this.buildTitle(post)));
     }
 
-    dispatch(setStatus(getState().commentsPages.api[commentsPageId].responseCode));
+    const apiRequest = getState().commentsPages.api[commentsPageId];
+    const statusCode = apiRequest && apiRequest.responseCode
+      ? apiRequest.responseCode
+      : 500;
 
-    dispatch(setTitle(this.buildTitle(post)));
+    dispatch(setStatus(statusCode));
 
     const latestState = getState();
     trackPageEvents(latestState, buildAdditionalEventData(latestState));
