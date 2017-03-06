@@ -63,9 +63,6 @@ export const FAILURE = 'REPORT_FAILURE';
 export const submit = report => async (dispatch, getState) => {
   dispatch({ type: SUBMIT });
 
-
-  debugger;
-
   const state = getState();
   const apiOptions = apiOptionsFromState(state);
   const username = state.user.name;
