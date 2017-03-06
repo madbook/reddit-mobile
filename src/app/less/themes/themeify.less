@@ -29,3 +29,15 @@
     @inNightMode();
   }
 }
+
+.themeifyXpromo(@rules: {}, @minimal: {}) {
+  // apply default styles
+  & { @rules(); }
+  // apply custom theme styles (root rule will
+  // be ignored if current class is not exist)
+  &.xpromoMinimal,  
+   .xpromoMinimal & { 
+    @rules();
+    @minimal();
+  }
+}

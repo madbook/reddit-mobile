@@ -10,6 +10,21 @@
   @wordmark-size: 36px;
   @rating-logo-size: 64px;
 
+  .themeifyXpromo(
+    { /* default theme */ },
+    { /* minimal theme */
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: @z-index-menu;
+      opacity: 1;
+      .transition(all, 0.5s);
+
+      &.fadeOut { opacity: 0; }
+      &__content{ height: 0vh; }
+    }
+  );
+
   &__content {
     width: 100%;
     height: 100vh;
@@ -75,34 +90,4 @@
 .DualPartInterstitial + .TopNav + .BelowTopNav {
   margin-top: 0;
   position: relative;
-}
-
-// minimal theme 
-.DualPartInterstitial.m-minimal {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: @z-index-menu;
-  opacity: 1;
-  .transition(all, 0.5s);
-
-  &.fadeOut { opacity: 0; }
-
-  .DualPartInterstitial {
-    &__content{
-      height: 0vh;
-    }
-    &Header{
-      display: none;
-    }
-    &Footer{
-      background-color: #222;
-      &__subtitle{
-        color: #fff;
-      }
-      &__bulletList{
-        display: none;
-      }
-    }
-  }
 }

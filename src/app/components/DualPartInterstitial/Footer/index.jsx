@@ -99,7 +99,7 @@ class DualPartInterstitialFooter extends React.Component {
             { subtitleText }
           </div>
           <List />
-          <div className='DualPartInterstitialFooter__button'
+          <div className='DualPartInterstitialFooter__button' 
             onClick={ navigator(nativeInterstitialLink) }
           >
             Continue

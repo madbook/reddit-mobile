@@ -2,16 +2,25 @@
 @import (reference) '~app/less/mixins/importAll';
 @import (reference) '~app/less/themes/themeify';
 
-
 .DualPartInterstitialFooter {
-  position: absolute;
-  padding-bottom: 16px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: @z-index-navbar + 2;
-  background-color: @white;
-  text-align: center;
+  .themeifyXpromo(
+    { /* default theme */
+      position: absolute;
+      padding-bottom: 16px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: @z-index-navbar + 2;
+      color: @semi-black-text;
+      background-color: @white;
+      text-align: center;
+    },
+    { /* minimal theme */
+      background-color: @semi-black-text;
+      &__subtitle{ color: @white; }
+      &__bulletList{ display: none; }
+    }
+  );
 
   &__subtitle {
     font-weight: bold;

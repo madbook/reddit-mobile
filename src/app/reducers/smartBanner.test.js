@@ -73,7 +73,7 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
     });
 
     describe('PLATFORM__NAVIGATE_TO_URL', () => {
-      it('should remove desire to show xpromo if we have already shown it once', () => {
+      it('should not remove desire to show xpromo if we have already shown it once and navigate to another app url', () => {
         const { store } = getStore({ smartBanner: DEFAULT });
 
         // Indicate desire to show, record that we showed, navigate.
@@ -82,7 +82,7 @@ createTest({ reducers: { smartBanner }, routes }, ({ getStore, expect }) => {
         store.dispatch(platformActions.navigateToUrl(METHODS.GET, '/user/foobar'));
         const { smartBanner } = store.getState();
         const { showBanner } = smartBanner;
-        expect(showBanner).to.eql(false);
+        expect(showBanner).to.eql(true);
       });
 
       it('should not remove desire to show xpromo if we have not shown it yet', () => {

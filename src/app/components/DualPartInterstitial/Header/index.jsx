@@ -1,7 +1,6 @@
 import './styles.less';
 
 import React from 'react';
-
 import TopNav from 'app/components/TopNav';
 
 const TransparentOverlay = props => {
@@ -16,8 +15,7 @@ const TransparentOverlay = props => {
 };
 
 export default function DualPartInterstitialHeader(props) {
-  const { children } = props;
-
+  const { children} = props;
   return (
     <div className='DualPartInterstitialHeader plain'>
       <TransparentOverlay>

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import cx from 'lib/classNames';
 import { getDevice } from 'lib/getDeviceFromState';
 import DualPartInterstitialHeader from 'app/components/DualPartInterstitial/Header';
 import DualPartInterstitialFooter from 'app/components/DualPartInterstitial/Footer';
@@ -17,20 +18,17 @@ import { xpromoThemeIsUsual, scrollPastState } from 'app/selectors/xpromo';
 
 export function DualPartInterstitial(props) {
   const { scrollPast, xpromoThemeIsUsualState} = props;
-  const classesName = ['DualPartInterstitial'];
-
-  if (scrollPast) {
-    classesName.push('fadeOut');
-  }
-  if (!xpromoThemeIsUsualState) {
-    classesName.push('m-minimal');
-  }
+  const componentClass = 'DualPartInterstitial';
+  const displayClasses = cx(componentClass, {
+    'xpromoMinimal': !xpromoThemeIsUsualState,
+    'fadeOut' : !xpromoThemeIsUsualState && scrollPast,
+  });
 
   return (
     <XPromoWrapper>
-      <div className={ classesName.join(' ') }>
-        <div className={ `${classesName[0]}__content` }>
-          <div className={ `${classesName[0]}__common` }>
+      <div className={ displayClasses }>
+        <div className={ `${componentClass}__content` }>
+          <div className={ `${componentClass}__common` }>
             <DualPartInterstitialHeader { ...props } />
             <DualPartInterstitialFooter { ...props } />
           </div>
