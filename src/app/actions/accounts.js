@@ -1,6 +1,5 @@
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
 import AccountsEndpoint from 'apiClient/apis/AccountsEndpoint';
-import ResponseError from 'apiClient/errors/ResponseError';
 
 export const FETCHING_ACCOUNT = 'FETCHING_ACCOUNT';
 // options is for the accounts endpoint, its properties are
@@ -38,10 +37,6 @@ export const fetch = options => async (dispatch, getState) => {
     const apiResponse = await AccountsEndpoint.get(apiOptionsFromState(state), query);
     dispatch(received(options, apiResponse));
   } catch (e) {
-    if (e instanceof ResponseError) {
-      dispatch(failed(options, e));
-    } else {
-      throw e;
-    }
+    dispatch(failed(options, e));
   }
 };

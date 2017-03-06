@@ -1,6 +1,7 @@
 import * as userActions from 'app/actions/user';
 import * as loidActions from 'app/actions/loid';
 import { permanentRootCookieOptions } from './permanentRootCookieOptions';
+import { logServerError } from 'lib/errorLog';
 
 export const dispatchInitialUser = async (ctx, dispatch, getState) => {
   // the lack of camel casing on the 'loidcreated' cookie name is intentional.
@@ -14,7 +15,23 @@ export const dispatchInitialUser = async (ctx, dispatch, getState) => {
 
   // fetchMyUser pulls in the loid and loidCreated fields
   await dispatch(userActions.fetchMyUser());
-  const { loid: { loid, loidCreated } } = getState();
+
+  const state = getState();
+
+  // First, ensure that the account request succeeded.
+  // If the request didn't succeed, we don't have any new information
+  // to update loid and loidCreated cookies.
+  // Fastly adds loidCreated values in milliseconds to our cookies,
+  // if the account request fails, we'll be calling `new Date` on whatever
+  // was in the cookies. Milliseconds timestamp strings throw an exception
+  // if they're not converted to an int, which we don't do for other reasons.
+  // There is a very near future where our loid* cookies are unified, so this
+  // will go away soon.
+  if (!state.accountRequests.me || state.accountRequests.me.failed) {
+    return;
+  }
+
+  const { loid: { loid, loidCreated } } = state;
 
   // there is a future in which the two of these are combined into one field,
   // just called loid. so, we should check for the existence of loid and
@@ -29,7 +46,14 @@ export const dispatchInitialUser = async (ctx, dispatch, getState) => {
   // cookie. loidCreated, however, is in ms since that's how we get it back from
   // the api. so, to compare the two, we need to convert loidCreated to an
   // ISO string.
-  if (loidCreated && ((new Date(loidCreated)).toISOString() !== oldLoidCreated)) {
-    ctx.cookies.set('loidcreated', new Date(loidCreated).toISOString(), options);
+  if (loidCreated) {
+    try { // `toISOString` can throw if we get an invalid timestamp back from the server
+      const loidCreatedISO = (new Date(loidCreated)).toISOString();
+      if (loidCreatedISO !== oldLoidCreated) {
+        ctx.cookies.set('loidcreated', loidCreatedISO, options);
+      }
+    } catch (error) {
+      logServerError(error, ctx);
+    }
   }
 };

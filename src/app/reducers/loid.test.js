@@ -18,7 +18,7 @@ createTest({ reducers: { loid } }, ({ getStore, expect }) => {
         expect(loidCreated).to.equal(CREATED);
       });
 
-      it('should set loids when a new user account is fetched', () => {
+      it('should set loids when the current user account is fetched', () => {
         const LOID = 'EbxVm9pOhRDdk0Ck7S';
         const CREATED = '2016-05-27T05:05:49.012Z';
         const API_RESPONSE = {
@@ -28,6 +28,24 @@ createTest({ reducers: { loid } }, ({ getStore, expect }) => {
         };
 
         const { store } = getStore();
+        store.dispatch(accountActions.received({}, API_RESPONSE));
+
+        const { loid: { loid, loidCreated } } = store.getState();
+        expect(loid).to.equal(LOID);
+        expect(loidCreated).to.equal(CREATED);
+      });
+
+      it('should not set loids when a different user account is received', () => {
+        const LOID = 'EbxVm9pOhRDdk0Ck7S';
+        const CREATED = '2016-05-27T05:05:49.012Z';
+        const API_RESPONSE = {
+          accounts: {
+            some_other_account: { loid: 'foobar', loidCreated: '12341234000' },
+          },
+        };
+
+        const { store } = getStore();
+        store.dispatch(loidActions.setLOID(LOID, CREATED));
         store.dispatch(accountActions.received({}, API_RESPONSE));
 
         const { loid: { loid, loidCreated } } = store.getState();

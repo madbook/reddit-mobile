@@ -74,7 +74,7 @@ export function getListingName(state) {
 export function getUserInfoOrLoid(state) {
   const user = state.user;
   const userInfo = state.accounts[user.name];
-  if (!user.loggedOut) {
+  if (userInfo && !user.loggedOut) {
     return {
       'user_id': convertId(userInfo.id),
       'user_name': user.name,
