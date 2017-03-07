@@ -154,7 +154,7 @@ const selector = createSelector(
 
 const dispatcher = dispatch => ({
   onClickOutside: () => dispatch(modalActions.closeModal()),
-  onSubmit: (report) => dispatch(reportingActions.submit(report)),
+  onSubmit: report => dispatch(reportingActions.submit(report)),
 });
 
 export default connect(selector, dispatcher)(ReportingModal);
