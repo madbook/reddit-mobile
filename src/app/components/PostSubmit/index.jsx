@@ -6,18 +6,18 @@ import { createSelector } from 'reselect';
 
 import { Anchor, JSForm } from 'platform/components';
 import cx from 'lib/classNames';
-import Modal from '../Modal';
+import DismissiblePage from 'app/components/DismissiblePage';
 import ReCaptchaBox from '../ReCaptchaBox';
 import * as postingActions from 'app/actions/posting';
 import './styles.less';
 
 const T = React.PropTypes;
 
-const MODAL_TITLE_TEXT = { self: 'Text', link: 'Link' };
+const PAGE_TITLE_TEXT = { self: 'Text', link: 'Link' };
 const SELECT_COMMUNITY = 'Select a community';
 const TITLE_PLACEHOLDER = 'Add an interesting title';
 
-class PostSubmitModal extends React.Component {
+class PostSubmit extends React.Component {
   static propTypes = {
     readyToPost: T.bool.isRequired,
     subreddit: T.object.isRequired,
@@ -43,20 +43,20 @@ class PostSubmitModal extends React.Component {
       title: postTitle,
     } = this.props;
 
-    const modalTitle = MODAL_TITLE_TEXT[submissionType];
-    const buttonClass = cx('PostSubmitModal__submit-button', { ready: readyToPost });
+    const pageTitle = PAGE_TITLE_TEXT[submissionType];
+    const buttonClass = cx('PostSubmit__submit-button', { ready: readyToPost });
 
     return (
-      <Modal exitTo='/' titleText={ modalTitle }>
-        <JSForm onSubmit={ onSubmit } className='PostSubmitModal'>
+      <DismissiblePage exitTo='/' titleText={ pageTitle }>
+        <JSForm onSubmit={ onSubmit } className='PostSubmit'>
 
-          <div className='PostSubmitModal__submit'>
+          <div className='PostSubmit__submit'>
             <button type='submit' className={ buttonClass }>POST</button>
           </div>
 
           { this.renderSubredditButton() }
 
-          <div className='PostSubmitModal__title'>
+          <div className='PostSubmit__title'>
             <input
               value={ postTitle }
               placeholder={ TITLE_PLACEHOLDER }
@@ -64,7 +64,7 @@ class PostSubmitModal extends React.Component {
             />
           </div>
 
-          <div className='PostSubmitModal__content'>
+          <div className='PostSubmit__content'>
             { this.chooseContentInput(submissionType) }
           </div>
         </JSForm>
@@ -76,7 +76,7 @@ class PostSubmitModal extends React.Component {
             onSubmit={ onSubmit }
           /> :
           null }
-      </Modal>
+      </DismissiblePage>
     );
   }
 
@@ -93,7 +93,7 @@ class PostSubmitModal extends React.Component {
 
   renderTextInput() {
     return (
-      <div className='PostSubmitModal__content-text'>
+      <div className='PostSubmit__content-text'>
         <textarea
           rows='5'
           value={ this.props.meta }
@@ -106,7 +106,7 @@ class PostSubmitModal extends React.Component {
 
   renderLinkInput() {
     return (
-      <div className='PostSubmitModal__content-link'>
+      <div className='PostSubmit__content-link'>
         <input
           value={ this.props.meta }
           placeholder='Paste your link here...'
@@ -121,12 +121,12 @@ class PostSubmitModal extends React.Component {
 
     const style = iconUrl ? { backgroundImage: `url(${iconUrl})` } : null;
     const text = name ? name : SELECT_COMMUNITY;
-    const commClasses = cx('PostSubmitModal__community-text', { 'greyed': !name });
+    const commClasses = cx('PostSubmit__community-text', { 'greyed': !name });
 
     return (
-      <div className='PostSubmitModal__community'>
-        <div className='PostSubmitModal__community-snoo-icon'>
-          <div className='PostSubmitModal__community-snoo' style={ style }></div>
+      <div className='PostSubmit__community'>
+        <div className='PostSubmit__community-snoo-icon'>
+          <div className='PostSubmit__community-snoo' style={ style }></div>
         </div>
         <Anchor href={ `/submit/to_community?type=${submissionType}` }>
           <div className={ commClasses }>
@@ -210,4 +210,4 @@ const mergeProps = (stateProps, dispatchProps) => {
 };
 
 
-export default connect(mapStateToProps, dispatcher, mergeProps)(PostSubmitModal);
+export default connect(mapStateToProps, dispatcher, mergeProps)(PostSubmit);

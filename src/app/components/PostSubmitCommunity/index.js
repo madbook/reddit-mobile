@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { Anchor } from 'platform/components';
 import * as subredditAutocompleteActions from 'app/actions/subredditAutocomplete';
-import Modal from '../Modal';
+import DismissiblePage from 'app/components/DismissiblePage';
 import './styles.less';
 
 const T = React.PropTypes;
@@ -14,13 +14,13 @@ const AUTOCOMPLETE_TITLE = 'Communities';
 const RECENT_COMMUNITY_TITLE = 'Recently visited';
 const SUBREDDIT_LIMIT = 10;
 
-class PostSubmitCommunityModal extends React.Component {
+class PostSubmitCommunity extends React.Component {
   static propTypes = {
     title: T.string.isRequired,
     submissionType: T.string.isRequired,
     subreddits: T.array.isRequired,
     onSubredditInput: T.func.isRequired,
-    onExitModal: T.func.isRequired,
+    onExit: T.func.isRequired,
   }
 
   constructor(props) {
@@ -30,12 +30,12 @@ class PostSubmitCommunityModal extends React.Component {
   }
 
   render() {
-    const { onExitModal, title, subreddits, submissionType } = this.props;
+    const { onExit, title, subreddits, submissionType } = this.props;
 
     return (
-      <Modal
+      <DismissiblePage
         exitTo={ `/submit?type=${submissionType}` }
-        onExit={ onExitModal }
+        onExit={ onExit }
         titleText='Post to a community'
       >
         <div className='PostSubmitCommunity'>
@@ -58,7 +58,7 @@ class PostSubmitCommunityModal extends React.Component {
             </div>
           </div>
         </div>
-      </Modal>
+      </DismissiblePage>
     );
   }
 
@@ -116,7 +116,7 @@ const mapStateToProps = createSelector(
 
 const dispatcher = dispatch => ({
   onSubredditInput: val => dispatch(subredditAutocompleteActions.fetch(val)),
-  onExitModal: () => dispatch(subredditAutocompleteActions.reset()),
+  onExit: () => dispatch(subredditAutocompleteActions.reset()),
 });
 
-export default connect(mapStateToProps, dispatcher)(PostSubmitCommunityModal);
+export default connect(mapStateToProps, dispatcher)(PostSubmitCommunity);

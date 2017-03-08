@@ -21,8 +21,8 @@ import Login from 'app/components/Login';
 import Messages from 'app/components/Messages';
 import MessageThread from 'app/components/MessageThread';
 import ModalSwitch from 'app/components/ModalSwitch';
-import PostSubmitCommunityModal from 'app/components/PostSubmitCommunityModal';
-import PostSubmitModal from 'app/components/PostSubmitModal';
+import PostSubmitCommunity from 'app/components/PostSubmitCommunity';
+import PostSubmit from 'app/components/PostSubmit';
 import Register from 'app/components/Register';
 import Toaster from 'app/components/Toaster';
 import NavFrame from 'app/components/NavFrame';
@@ -99,9 +99,9 @@ const AppMain = props => {
         <Page url='/login' component={ Login } />
         <Page url='/register' component={ Register } />
         <Page url='/message/messages/:threadId' component={ MessageThread } />
-        <Page url='/r/:subredditName/submit' component={ PostSubmitModal } />
-        <Page url='/submit' component={ PostSubmitModal } />
-        <Page url='/submit/to_community' component={ PostSubmitCommunityModal } />
+        <Page url='/r/:subredditName/submit' component={ PostSubmit } />
+        <Page url='/submit' component={ PostSubmit } />
+        <Page url='/submit/to_community' component={ PostSubmitCommunity } />
         <FramedPage url='/' component={ PostsFromSubredditPage } />
         <FramedPage url={ `/:sort(${SORTS})` } component={ PostsFromSubredditPage } />
         <FramedPage url='/r/:subredditName' component={ PostsFromSubredditPage } />
