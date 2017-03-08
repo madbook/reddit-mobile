@@ -47,8 +47,19 @@ export const dispatchInitialUser = async (ctx, dispatch, getState) => {
   // the api. so, to compare the two, we need to convert loidCreated to an
   // ISO string.
   if (loidCreated) {
-    try { // `toISOString` can throw if we get an invalid timestamp back from the server
-      const loidCreatedISO = (new Date(loidCreated)).toISOString();
+    try {
+      // `toISOString` can throw if we get an invalid timestamp back from the server
+
+      const loidCreatedDate = typeof loidCreated === 'string' && /^\d+$/.test(loidCreated)
+        // If the loidCreated is a string of only digits, than its an
+        // epoch milliseonds string, we need to call parseInt before conversion
+        // or else `toISOString` will throw.
+        // Some users will have loidCreated's from fastly, that have stuck around.
+        // in the near-future of unified loid's this will go away entirely
+        ? new Date(parseInt(loidCreated, 10))
+        : new Date(loidCreated);
+
+      const loidCreatedISO = loidCreatedDate.toISOString();
       if (loidCreatedISO !== oldLoidCreated) {
         ctx.cookies.set('loidcreated', loidCreatedISO, options);
       }
