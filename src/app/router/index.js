@@ -49,6 +49,8 @@ export default [
   ['/user/:userName/:savedOrHidden(saved|hidden)', SavedAndHiddenHandler],
   ['/user/:userName/:commentsOrSubmitted(comments|submitted)', UserActivityHandler],
   ['/user/:userName', UserProfilerHandler, { name: 'user' }],
+  ['/user/:userName/comments/:postId/:postTitle/:commentId', CommentsPageHandler, { name: 'comments' }],
+  ['/user/:userName/comments/:postId/:postTitle?', CommentsPageHandler, { name: 'comments' }],
   ['/live/*', LiveRedirectHandler ],
   ['/login', Login],
   ['/register', Register],

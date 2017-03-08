@@ -141,6 +141,14 @@ const AppMain = props => {
           component={ SavedAndHiddenPage }
         />
         <FramedPage url='/user/:userName/' component={ UserProfilePage } />
+        <FramedPage
+          url='/user/:userName/comments/:postId/:postTitle/:commentId'
+          component={ CommentsPage }
+        />
+        <FramedPage
+          url='/user/:userName/comments/:postId/:postTitle?'
+          component={ CommentsPage }
+        />
         <FramedPage url='/message/compose' component={ DirectMessage } />
         <FramedPage url='/message/:mailType' component={ Messages } />
       </UrlSwitch>

@@ -136,9 +136,14 @@ export default class Subreddit extends RedditModel {
   // a permalink url with the subredddit name or someone types in a subreddit name
   // in the goto field we can look-up the subreddit in our cache without converting
   // the name to a thing_id.
+  // We use a special type of subreddit to handle profile posts, and as an
+  // interim measure, we want to handle permalinks that include the display
+  // name for those subreddits (u_profilename). We can safely use the
+  // display_name field for that mapping of URL -> state ID for vanilla
+  // subreddits and for profile post subreddits.
   makeUUID(data) {
-    const { url } = data;
-    return Subreddit.cleanName(url);
+    const { display_name } = data;
+    return Subreddit.cleanName(display_name);
   }
 
   makePaginationId(data) {
