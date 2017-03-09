@@ -129,6 +129,10 @@ export const flags = {
   VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED: 'experimentXPromoListingClickTwoWeekAndroidEnabled',
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED: 'experimentXPromoListingClickEveryTimeIOSEnabled',
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED: 'experimentXPromoListingClickEveryTimeAndroidEnabled',
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS: 'experimentXPromoInterstitialFrequencyIos',
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID: 'experimentXPromoInterstitialFrequencyAndroid',
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS_CONTROL: 'experimentXPromoInterstitialFrequencyIosControl',
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID_CONTROL: 'experimentXPromoInterstitialFrequencyAndroidControl',
   VARIANT_TITLE_EXPANDO: 'experimentTitleExpando',
   VARIANT_MIXED_VIEW: 'experimentMixedView',
   SHOW_AMP_LINK: 'showAmpLink',
@@ -154,4 +158,19 @@ export const loginErrors = {
 
 export const genericErrors = {
   UNKNOWN_ERROR: 'UNKNOWN_ERROR',
+};
+
+export const EVERY_DAY = 'every_day';
+export const EVERY_THREE_DAYS = 'every_three_days';
+export const EVERY_WEEK = 'every_week';
+export const EVERY_TWO_WEEKS = 'every_two_weeks';
+
+export const experimentFrequencyVariants = {};
+experimentFrequencyVariants[EVERY_DAY] = 24 * 60 * 60 * 1000;
+experimentFrequencyVariants[EVERY_THREE_DAYS] = 3 * 24 * 60 * 60 * 1000;
+experimentFrequencyVariants[EVERY_WEEK] = 1 * 7 * 24 * 60 * 60 * 1000;
+experimentFrequencyVariants[EVERY_TWO_WEEKS] = 2 * 7 * 24 * 60 * 60 * 1000;
+
+export const localstorage = {
+  BANNER_LAST_CLOSED : 'bannerLastClosed',
 };

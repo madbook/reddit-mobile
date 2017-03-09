@@ -37,7 +37,7 @@ function VotingBox(props) {
           }
           onVote(upVote);
         } }
-       />
+      />
       <div
         className={ scoreClass }
         onClick={ e => interceptVote(e) }

@@ -126,7 +126,7 @@ export const close = () => async (dispatch, getState) => {
 };
 
 export const checkAndSet = () => async (dispatch, getState) => {
-  if (!shouldNotShowBanner()) {
+  if (!shouldNotShowBanner(getState())) {
     dispatch(show());
   }
 

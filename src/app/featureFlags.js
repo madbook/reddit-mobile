@@ -48,6 +48,11 @@ const {
   VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED,
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED,
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED,
+  // Interstitial frequency
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS_CONTROL,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID_CONTROL,
 } = flagConstants;
 
 const config = {
@@ -197,6 +202,46 @@ const config = {
       { or: [
         { variant: 'mweb_xpromo_require_login_android:control_1' },
         { variant: 'mweb_xpromo_require_login_android:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { or: [
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:every_day' },
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:every_three_days' },
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:every_week' },
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:every_two_weeks' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { variant: 'mweb_xpromo_interstitial_frequency_android:every_day' },
+        { variant: 'mweb_xpromo_interstitial_frequency_android:every_three_days' },
+        { variant: 'mweb_xpromo_interstitial_frequency_android:every_week' },
+        { variant: 'mweb_xpromo_interstitial_frequency_android:every_two_weeks' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS_CONTROL]: {
+    and: [
+      { allowedDevices: [IPHONE] },
+      { or: [
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:control_1' },
+        { variant: 'mweb_xpromo_interstitial_frequency_ios:control_2' },
+      ] },
+    ],
+  },
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID_CONTROL]: {
+    and: [
+      { allowedDevices: [ANDROID] },
+      { or: [
+        { variant: 'mweb_xpromo_interstitial_frequency_android:control_1' },
+        { variant: 'mweb_xpromo_interstitial_frequency_android:control_2' },
       ] },
     ],
   },

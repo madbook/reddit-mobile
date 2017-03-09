@@ -30,6 +30,8 @@ const {
   VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED,
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED,
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID,
 } = flagConstants;
 
 const EXPERIMENT_FULL = [
@@ -37,6 +39,8 @@ const EXPERIMENT_FULL = [
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID,
   VARIANT_XPROMO_LOGIN_REQUIRED_IOS_CONTROL,
   VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID_CONTROL,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID,
 ];
 
 const LOGIN_REQUIRED_FLAGS = [
@@ -59,6 +63,11 @@ const EVERY_TIME_LISTING_CLICK_FLAGS = [
   VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED,
 ];
 
+const INTERSTITIAL_FREQUENCY_FLAGS = [
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS,
+  VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID,
+];
+
 const EXPERIMENT_NAMES = {
   [VARIANT_XPROMO_LOGIN_REQUIRED_IOS]: 'mweb_xpromo_require_login_ios',
   [VARIANT_XPROMO_LOGIN_REQUIRED_ANDROID]: 'mweb_xpromo_require_login_android',
@@ -70,6 +79,8 @@ const EXPERIMENT_NAMES = {
   [VARIANT_XPROMO_LISTING_CLICK_TWO_WEEK_ANDROID_ENABLED]: 'mweb_xpromo_two_week_listing_click_android',
   [VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_IOS_ENABLED]: 'mweb_xpromo_every_time_listing_click_ios',
   [VARIANT_XPROMO_LISTING_CLICK_EVERY_TIME_ANDROID_ENABLED]: 'mweb_xpromo_every_time_listing_click_android',
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_IOS]: 'mweb_xpromo_interstitial_frequency_ios',
+  [VARIANT_XPROMO_INTERSTITIAL_FREQUENCY_ANDROID]: 'mweb_xpromo_interstitial_frequency_android',
 };
 
 export function getRouteActionName(state) {
@@ -203,7 +214,6 @@ export function listingClickEnabled(state, postId) {
   return anyFlagEnabled(state, TWO_WEEK_LISTING_CLICK_FLAGS);
 }
 
-
 /**
  * This should only be called when we know the user is eligible and buckted
  * for a listing click experiment group. Used to let `getXPromoExperimentPayload`
@@ -221,6 +231,22 @@ export function listingClickExperimentData(state) {
   if (experimentName) {
     return getExperimentData(state, experimentName);
   }
+}
+
+/**
+ * @TODO: These functions should refactored:
+ * - listingClickExperimentData
+ * - getFrequencyExperimentData
+ * - currentExperimentData
+ */
+export function getFrequencyExperimentData(state) {
+  const experimentName = activeXPromoExperimentName(state, INTERSTITIAL_FREQUENCY_FLAGS);
+  return getExperimentData(state, experimentName);
+}
+
+export function currentExperimentData(state) {
+  const experimentName = activeXPromoExperimentName(state);
+  return getExperimentData(state, experimentName);
 }
 
 export function scrollPastState(state) {
@@ -255,11 +281,6 @@ export function interstitialType(state) {
 
 export function isPartOfXPromoExperiment(state) {
   return shouldShowXPromo(state) && !!activeXPromoExperimentName(state);
-}
-
-export function currentExperimentData(state) {
-  const experimentName = activeXPromoExperimentName(state);
-  return getExperimentData(state, experimentName);
 }
 
 export function XPromoIsActive(state) {

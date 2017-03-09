@@ -188,7 +188,7 @@ export function trackXPromoIneligibleEvent(state, additionalEventData, ineligibi
 
 export function trackPagesXPromoEvents(state, additionalEventData) {
   if (isEligibleListingPage(state)) {
-    const ineligibilityReason = shouldNotShowBanner();
+    const ineligibilityReason = shouldNotShowBanner(state);
     if (ineligibilityReason) {
       trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason);
     } else if (xpromoIsEnabledOnDevice(state)) {
@@ -197,7 +197,7 @@ export function trackPagesXPromoEvents(state, additionalEventData) {
       trackXPromoView(state, additionalEventData);
     }
   } else if (isEligibleCommentsPage(state)) {
-    const ineligibilityReason = shouldNotShowBanner();
+    const ineligibilityReason = shouldNotShowBanner(state);
     if (ineligibilityReason) {
       trackXPromoIneligibleEvent(state, additionalEventData, ineligibilityReason);
       // otherwise check if this is a valid page, and the comments page

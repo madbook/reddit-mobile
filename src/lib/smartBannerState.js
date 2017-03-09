@@ -13,15 +13,16 @@ import { LISTING_CLICK_TYPES } from 'app/constants';
 
 import {
   currentExperimentData,
+  getFrequencyExperimentData,
   isPartOfXPromoExperiment,
   interstitialType,
 } from 'app/selectors/xpromo';
 
 import features from 'app/featureFlags';
+import { experimentFrequencyVariants as frequency, localstorage, EVERY_TWO_WEEKS } from 'app/constants';
 import { XPROMO_LAST_LISTING_CLICK_DATE, flags } from 'app/constants';
 const { XPROMO_LISTING_CLICK_EVERY_TIME_COHORT } = flags;
-
-const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000;
+const { BANNER_LAST_CLOSED } = localstorage;
 
 // Get loid values either from the account state or the cookies.
 function getLoidValues(accounts) {
@@ -129,6 +130,21 @@ export function getXPromoLink(state, path, linkType, additionalData={}) {
   });
 }
 
+function getClosingTimeRange(state) {
+  const defaultRange = frequency[EVERY_TWO_WEEKS];
+  const experimentData = getFrequencyExperimentData(state);
+  if (experimentData) {
+    return (frequency[experimentData.variant] || defaultRange);
+  }
+  return defaultRange;
+}
+ 
+function getLastClosedLimitUTS(state) {
+  const lastClosedStr = localStorage.getItem(BANNER_LAST_CLOSED);
+  const lastClosedDate = (lastClosedStr ? new Date(lastClosedStr).getTime() : 0);
+  return lastClosedDate + getClosingTimeRange(state);
+}
+
 export function getBranchLink(state, path, payload={}) {
   const { user, accounts } = state;
 
@@ -173,32 +189,24 @@ export function getBranchLink(state, path, payload={}) {
   });
 }
 
-export function shouldNotShowBanner() {
-  // Most of the decision for showing a cross-promo component will happen in
-  // the featureFlags component, but we have a couple of things to consider
-  // here.
-
-  // Make sure local storage exists
+/**
+ * @TODO: These functions should refactored:
+ * - shouldNotShowBanner
+ * - shouldNotListingClick
+ */
+export function shouldNotShowBanner(state) {
+  // Do not show the banner:
+  // If localStorage is not available
   if (!localStorageAvailable()) {
     return 'local_storage_unavailable';
   }
-
-  // Check if it's been dismissed recently
-  const lastClosedStr = localStorage.getItem('bannerLastClosed');
-  const lastClosed = lastClosedStr ? new Date(lastClosedStr).getTime() : 0;
-  const lastClosedLimit = lastClosed + TWO_WEEKS;
-  if (lastClosedLimit > Date.now()) {
+  // Do not show the banner:
+  // If closing date is in limit range still
+  if (getLastClosedLimitUTS(state) > Date.now()) {
     return 'dismissed_previously';
   }
-
+  // Show the banner
   return false;
-}
-
-export function markBannerClosed() {
-  if (!localStorageAvailable()) { return false; }
-
-  // note that we dismissed the banner
-  localStorage.setItem('bannerLastClosed', new Date());
 }
 
 export function shouldNotListingClick(state) {
@@ -215,11 +223,18 @@ export function shouldNotListingClick(state) {
   // Check if there's been a listing click in the last two weeks
   const lastClickedStr = localStorage.getItem(XPROMO_LAST_LISTING_CLICK_DATE);
   const lastClicked = lastClickedStr ? new Date(lastClickedStr).getTime() : 0;
-  if (lastClicked + TWO_WEEKS > Date.now()) {
+  if (lastClicked + EVERY_TWO_WEEKS > Date.now()) {
     return 'dismissed_previously';
   }
 
   return false;
+}
+
+export function markBannerClosed() {
+  if (!localStorageAvailable()) { return false; }
+
+  // note that we dismissed the banner
+  localStorage.setItem(BANNER_LAST_CLOSED, new Date());
 }
 
 export const markListingClickTimestampLocalStorage = () => {

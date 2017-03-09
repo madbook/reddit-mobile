@@ -165,7 +165,7 @@ export default class PostFooter extends React.Component {
             <InterceptableModalTarget
               id={ modModalId }
               interceptClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.MOD_SHIELD) }
-             >
+            >
               <div className='PostFooter__dropdown-button PostFooter__hit-area icon icon-mod'/>
             </InterceptableModalTarget>)
             : null
