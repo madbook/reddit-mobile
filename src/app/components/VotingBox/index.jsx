@@ -71,7 +71,7 @@ VotingBox.propTypes = {
 
 VotingBox.defaultProps = {
   scoreHidden: false,
-  interceptVote: () => true,
+  interceptVote: () => false,
 };
 
 const mapDispatchToProps = (dispatch, { thingId }) => ({
