@@ -3,7 +3,7 @@ import accountRequests from './accountRequests';
 import * as accountActions from 'app/actions/accounts';
 import * as loginActions from 'app/actions/login';
 
-const REQUIRED_KEYS = ['id', 'loading', 'failed', 'error'];
+const REQUIRED_KEYS = ['id', 'loading', 'failed', 'error', 'meta'];
 
 createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
   describe('accountRequests', () => {
@@ -39,6 +39,7 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
           loading: true,
           failed: false,
           error: null,
+          meta: null,
         };
 
         const { store } = getStore();
@@ -59,15 +60,32 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
           loading: false,
           failed: false,
           error: null,
+          meta: null,
         };
 
         const { store } = getStore();
+        store.dispatch(accountActions.fetching({ name: 'foobar' }));
         store.dispatch(accountActions.received({ name: 'foobar' }, RESULT));
 
         const { accountRequests } = store.getState();
         expect(accountRequests).to.have.keys('foobar');
         expect(accountRequests.foobar).to.have.all.keys(REQUIRED_KEYS);
         expect(accountRequests.foobar).to.eql(ACCOUNT);
+      });
+
+      it('should update the response meta information when a request is finished', () => {
+        const META = {
+          'set-cookie': [ 'loid', 'loidCreated' ],
+        };
+
+        const { store } = getStore();
+        store.dispatch(accountActions.fetching({ name: 'foobar' }));
+        store.dispatch(accountActions.received({ name: 'foobar'}, { meta: META }));
+
+        const { accountRequests } = store.getState();
+        expect(accountRequests).to.have.keys('foobar');
+        expect(accountRequests.foobar).to.have.all.keys(REQUIRED_KEYS);
+        expect(accountRequests.foobar.meta).to.equal(META);
       });
     });
 
@@ -79,6 +97,7 @@ createTest({ reducers: { accountRequests } }, ({ getStore, expect }) => {
           loading: false,
           failed: true,
           error: ERROR,
+          meta: null,
         };
 
         const { store } = getStore();

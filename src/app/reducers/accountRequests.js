@@ -9,6 +9,7 @@ const newAccountRequest = name => ({
   loading: true,
   failed: false,
   error: null,
+  meta: null,
 });
 
 export default function (state=DEFAULT, action={}) {
@@ -29,19 +30,12 @@ export default function (state=DEFAULT, action={}) {
     }
 
     case accountActions.RECEIVED_ACCOUNT: {
-      const { name } = action;
-      const request = state[name];
-      if (!request) {
-        return merge(state, {
-          [name]: {
-            ...newAccountRequest(name),
-            loading: false,
-          },
-        });
-      }
-
+      const { name, apiResponse: { meta } } = action;
       return merge(state, {
-        [name]: { loading: false },
+        [name]: {
+          meta: meta || null,
+          loading: false,
+        },
       });
     }
 

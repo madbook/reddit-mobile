@@ -40,7 +40,7 @@ export default (apiOptions, method, path, options={}) => {
   return new Promise((resolve, reject) => {
     request.end((err, res) => {
       if (!err) {
-        resolve(new APIResponse(res));
+        resolve(new APIResponse(res, res.headers));
       } else {
         if (err && err.timeout) {
           err.status = 504;
