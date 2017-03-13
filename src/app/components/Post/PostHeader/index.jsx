@@ -98,8 +98,7 @@ function isValidKeyColorForRendering(keyColor) {
   return keyColor !== '#efefed' && keyColor !== '#222222';
 }
 
-function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel,
-    interceptListingClick) {
+function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel, interceptListingClick) {
   if (hideSubredditLabel || !subreddit) { return; }
 
   const keyColorStyle = {};
@@ -110,14 +109,17 @@ function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel,
     }
   }
 
+  const url = sr_detail ? sr_detail.url : `/r/${subreddit}`;
+  const displayLabel = sr_detail ? sr_detail.display_name_prefixed : `r/${subreddit}`;
+
   return (
     <Anchor
       className='PostHeader__subreddit-link'
-      href={ sr_detail.url }
+      href={ url }
       style={ keyColorStyle }
       onClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.SUBREDDIT) }
     >
-      { sr_detail.display_name_prefixed }
+      { displayLabel }
     </Anchor>
   );
 }

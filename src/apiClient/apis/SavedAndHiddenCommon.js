@@ -24,7 +24,10 @@ const parseBody = (res, apiResponse) => {
 };
 
 const formatQuery = (query) => {
-  return omit(query, 'user');
+  return omit({
+    ...query,
+    sr_detail: 'true',
+  }, 'user');
 };
 
 const validator = (data) => {

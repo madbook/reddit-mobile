@@ -19,6 +19,8 @@ const formatQuery = (query) => {
     delete query.subreddit;
   }
 
+  query.sr_detail = 'true';
+
   return query;
 };
 
