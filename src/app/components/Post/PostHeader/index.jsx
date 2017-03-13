@@ -110,16 +110,14 @@ function subredditLabelIfNeeded(sr_detail, subreddit, hideSubredditLabel,
     }
   }
 
-  const rSubreddit = `r/${subreddit}`;
-
   return (
     <Anchor
       className='PostHeader__subreddit-link'
-      href={ `/${rSubreddit}` }
+      href={ sr_detail.url }
       style={ keyColorStyle }
       onClick={ e => interceptListingClick(e, LISTING_CLICK_TYPES.SUBREDDIT) }
     >
-      { rSubreddit }
+      { sr_detail.display_name_prefixed }
     </Anchor>
   );
 }
@@ -281,12 +279,12 @@ function renderPostDescriptor(
   reports,
 ) {
   const {
-    sr_detail,
+    subredditDetail,
     subreddit,
   } = post;
 
   const postFlairOrNil = renderPostFlair(post, single);
-  const subredditLabelOrNil = subredditLabelIfNeeded(sr_detail, subreddit,
+  const subredditLabelOrNil = subredditLabelIfNeeded(subredditDetail, subreddit,
     hideSubredditLabel, interceptListingClick);
 
   let authorOrNil;
