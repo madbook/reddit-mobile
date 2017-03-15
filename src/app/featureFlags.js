@@ -32,6 +32,10 @@ const {
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
+  RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE,
+  RULES_MODAL_ON_SUBMIT_CLICK_BUTTON,
+  RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE,
+  RULES_MODAL_ON_COMMENT_CLICK_BUTTON,
 
   // Xpromo ----------------------------------------------------------------------
   // Login Required
@@ -346,6 +350,42 @@ const config = {
       seed: 'showamplink',
       percentage: 2,
     },
+  },
+  [RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE]: {
+    and: [
+      { allowedPages: ['submit'] },
+      { or: [
+        { url: 'rulesmodalonsubmitclickanywhere' },
+        { variant: 'mweb_rules_modal_on_submit:click_anywhere' }
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_SUBMIT_CLICK_BUTTON]: {
+    and: [
+      { allowedPages: ['submit'] },
+      { or: [
+        { url: 'rulesmodalonsubmitclickbutton' },
+        { variant: 'mweb_rules_modal_on_submit:click_button' }
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE]: {
+    and: [
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'rulesmodaloncommentclickanywhere' },
+        { variant: 'mweb_rules_modal_on_comment:click_anywhere' }
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_COMMENT_CLICK_BUTTON]: {
+    and: [
+      { allowedPages: ['comments'] },
+      { or: [
+        { url: 'rulesmodaloncommentclickbutton' },
+        { variant: 'mweb_rules_modal_on_comment:click_button' }
+      ] },
+    ],
   },
 };
 

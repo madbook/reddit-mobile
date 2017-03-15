@@ -136,6 +136,10 @@ export const flags = {
   VARIANT_TITLE_EXPANDO: 'experimentTitleExpando',
   VARIANT_MIXED_VIEW: 'experimentMixedView',
   SHOW_AMP_LINK: 'showAmpLink',
+  RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE: 'rulesModalOnCommentClickAnywhere',
+  RULES_MODAL_ON_COMMENT_CLICK_BUTTON: 'rulesModalOnCommentClickButton',
+  RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE: 'rulesModalOnSubmitClickAnywhere',
+  RULES_MODAL_ON_SUBMIT_CLICK_BUTTON: 'rulesModalOnSubmitClickButton',
 };
 
 export const xpromoDisplayTheme = {

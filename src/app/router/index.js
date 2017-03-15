@@ -57,7 +57,7 @@ export default [
   ['/message/compose', DirectMessage],
   ['/message/:mailType', Messages],
   ['/message/messages/:threadId', Messages],
-  ['/r/:subredditName/submit', PostSubmitHandler],
+  ['/r/:subredditName/submit', PostSubmitHandler, { name: 'submit' }],
   ['/submit', PostSubmitHandler],
   ['/submit/to_community', PostSubmitCommunityHandler],
 
