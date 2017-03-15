@@ -1,9 +1,7 @@
-import find from 'lodash/find';
-
 import { BaseHandler, METHODS } from 'platform/router';
 import * as accountActions from 'app/actions/accounts';
 import { fetchUserBasedData } from './handlerCommon';
-import { convertId, trackPageEvents } from 'lib/eventUtils';
+import { trackPageEvents, buildProfileData } from 'lib/eventUtils';
 
 export default class UserProfilerHandler extends BaseHandler {
   async [METHODS.GET](dispatch, getState) {
@@ -18,30 +16,8 @@ export default class UserProfilerHandler extends BaseHandler {
     ]);
 
     const latestState = getState();
-    trackPageEvents(latestState, buildAdditionalEventData(latestState));
+    trackPageEvents(latestState, buildProfileData(latestState, {
+      screen_name: 'profile_about',
+    }));
   }
-}
-
-function buildAdditionalEventData(state) {
-  const { userName: name } = state.platform.currentPage.urlParams;
-
-  // if a user doesn't exist, this check will catch it. We may want to track
-  // this in the future.
-  if (!name) {
-    return null;
-  }
-
-  const user = find(state.accounts, (_, k) => k.toLowerCase() === name.toLowerCase());
-
-  // another thing to track in the future -- if the user somehow isn't in our state
-  if (!user) {
-    return null;
-  }
-
-  return {
-    target_name: user.name,
-    target_fullname: user.id,
-    target_type: 'account',
-    target_id: convertId(user.id),
-  };
 }

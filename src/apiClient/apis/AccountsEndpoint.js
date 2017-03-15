@@ -1,5 +1,6 @@
 import apiRequest from '../apiBase/apiRequest';
 import Account from '../models/Account';
+import Subreddit from '../models/Subreddit';
 
 const getPath = (query) => {
   if (query.loggedOut) {
@@ -15,14 +16,21 @@ const parseGetBody = apiResponse => {
   const { body } = apiResponse.response;
 
   if (body) {
-    const data = {
+    const account = {
       name: 'me', // me is reserved, this should only stay me in the logged out case
       loid: body.loid,
       loid_created: body.loid_created,
       ...(body.data || body),
     };
 
-    apiResponse.addResult(Account.fromJSON(data));
+    apiResponse.addResult(Account.fromJSON(account));
+
+    // Contributor profiles will have a profile subreddit in the account data
+    const subreddit = body.data ? body.data.subreddit : undefined;
+
+    if (subreddit) {
+      apiResponse.addResult(Subreddit.fromJSON(subreddit));
+    }
   }
 
   return apiResponse;

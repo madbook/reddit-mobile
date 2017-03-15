@@ -1,5 +1,6 @@
 import createTest from 'platform/createTest';
 import subreddits from './subreddits';
+import * as accountActions from 'app/actions/accounts';
 import * as loginActions from 'app/actions/login';
 import * as searchActions from 'app/actions/search';
 import * as subredditActions from 'app/actions/subreddits';
@@ -136,6 +137,38 @@ createTest({ reducers: { subreddits }}, ({ getStore, expect }) => {
           POST_ID,
           { subreddits: {[SUBREDDIT.uuid]: SUBREDDIT}, response: { status: 200 } },
         ));
+
+        const { subreddits } = store.getState();
+        expect(subreddits).to.eql({
+          [SUBREDDIT.uuid]: SUBREDDIT,
+        });
+      });
+    });
+
+
+    describe('RECEIVED_ACCOUNT', () => {
+      it('should consume subreddits from contributor accounts', () => {
+        const ACCOUNT = {
+          uuid: 't2_0001',
+          name: 'FooBar',
+        };
+        const SUBREDDIT = {
+          uuid: 'u_foobar',
+          name: 't5_1',
+        };
+
+        const { store } = getStore();
+        store.dispatch(accountActions.received({
+          name: ACCOUNT.name,
+          loggedOut: true,
+        }, {
+          accounts: {
+            [ACCOUNT.name]: ACCOUNT,
+          },
+          subreddits: {
+            [SUBREDDIT.uuid]: SUBREDDIT,
+          },
+        }));
 
         const { subreddits } = store.getState();
         expect(subreddits).to.eql({

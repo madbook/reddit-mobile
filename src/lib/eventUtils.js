@@ -1,3 +1,4 @@
+import find from 'lodash/find';
 import omit from 'lodash/omit';
 import values from 'lodash/values';
 import url from 'url';
@@ -61,6 +62,33 @@ export function buildSubredditData(state) {
   return {
     sr_id: convertId(subreddit.name),
     sr_name: subreddit.displayName,
+  };
+}
+
+export function buildProfileData(state, extraPayload) {
+  const { userName: name } = state.platform.currentPage.urlParams;
+
+  // if a user doesn't exist, this check will catch it. We may want to track
+  // this in the future.
+  if (!name) {
+    return null;
+  }
+
+  const user = find(state.accounts, (_, k) => k.toLowerCase() === name.toLowerCase());
+
+  // another thing to track in the future -- if the user somehow isn't in our state
+  if (!user) {
+    return null;
+  }
+
+
+  return {
+    target_name: user.name,
+    target_fullname: `t2_${user.id}`,
+    target_type: 'account',
+    target_id: convertId(user.id),
+    is_contributor: !!state.subreddits[`u_${user.name.toLowerCase()}`],
+    ...extraPayload,
   };
 }
 

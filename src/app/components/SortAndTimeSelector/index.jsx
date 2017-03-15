@@ -92,13 +92,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const sort = urlParams.sort || queryParams.sort || SORTS.HOT;
   const time = ownProps.time || listingTime(queryParams, sort);
   const { navigateToUrl } = dispatchProps;
-  const { userName } = urlParams;
+  const { userName, commentsOrSubmitted } = urlParams;
 
   let onSortChange;
 
   if (userName) {
     onSortChange = sort =>
-      navigateToUrl(`/user/${userName}/submitted`, {
+      navigateToUrl(`/user/${userName}/${commentsOrSubmitted}`, {
         queryParams: { ...queryParams, sort },
       });
   } else {
