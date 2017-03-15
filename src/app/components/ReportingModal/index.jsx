@@ -5,12 +5,16 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import * as ModelTypes from 'apiClient/models/thingTypes';
-import SubredditRule from 'apiClient/models/SubredditRule';
 
-import * as reportingActions from 'app/actions/reporting';
 import * as modalActions from 'app/actions/modal';
+import * as reportingActions from 'app/actions/reporting';
 import Loading from 'app/components/Loading';
 import Report from 'app/models/Report';
+import {
+  getSiteRulesFromState,
+  getSubredditRulesFromState,
+} from 'lib/subredditRules';
+
 import cx from 'lib/classNames';
 
 const T = React.PropTypes;
@@ -24,29 +28,15 @@ const T = React.PropTypes;
 function rulesFromState(state) {
   const {subredditName, thingId} = state.modal.props;
   const thingType = ModelTypes.thingType(thingId);
-  const siteRules = state.subredditRules[SubredditRule.SITE_RULE_SUBREDDIT_NAME];
 
-  // If there is a name, but it isn't in the subredditRules state yet, that
-  // means we haven't pulled down the rules yet and therefore don't know
-  // if any exist.
-  if (subredditName && !(subredditName in state.subredditRules)) {
-    return null;
-  }
-
-  // If there is no subreddit associated with the thing being reported, or
-  // the subreddit has no rules, use the site rules.
-  if (!(subredditName && state.subredditRules[subredditName])) {
+  const siteRules = getSiteRulesFromState(state);
+  const subredditRules = getSubredditRulesFromState(state, subredditName, thingType);
+  
+  if (!subredditRules) {
     return siteRules;
   }
 
-  const allRules = state.subredditRules[subredditName];
-
-  // If there *are* rules, we need to filter down to only those that apply
-  // to the current thing, then append the site rules.
-  return (
-    allRules.filter(rule => rule.doesRuleApplyToThingType(thingType))
-            .concat(siteRules)
-  );
+  return subredditRules.concat(siteRules);
 }
 
 /**
