@@ -3,7 +3,10 @@ import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
 import sha1 from 'crypto-js/sha1';
 import url from 'url';
-import { flags as flagConstants } from 'app/constants';
+import {
+  flags as flagConstants,
+  rulesModalExperimentSubreddits,
+} from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import getContentId from 'lib/getContentIdFromState';
@@ -32,6 +35,10 @@ const {
   VARIANT_TITLE_EXPANDO,
   VARIANT_MIXED_VIEW,
   SHOW_AMP_LINK,
+  RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE,
+  RULES_MODAL_ON_SUBMIT_CLICK_BUTTON,
+  RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE,
+  RULES_MODAL_ON_COMMENT_CLICK_BUTTON,
 
   // Xpromo ----------------------------------------------------------------------
   // Login Required
@@ -346,6 +353,54 @@ const config = {
       seed: 'showamplink',
       percentage: 2,
     },
+  },
+  [RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE]: {
+    and: [
+      { allowedPages: ['submit'] },
+      { subreddits: rulesModalExperimentSubreddits },
+      { loggedin: true },
+      { isMod: false },
+      { or: [
+        { url: 'rulesmodalonsubmitclickanywhere' },
+        { variant: 'mweb_rules_modal_on_submit:click_anywhere' },
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_SUBMIT_CLICK_BUTTON]: {
+    and: [
+      { allowedPages: ['submit'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
+      { or: [
+        { url: 'rulesmodalonsubmitclickbutton' },
+        { variant: 'mweb_rules_modal_on_submit:click_button' },
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE]: {
+    and: [
+      { allowedPages: ['comments'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
+      { or: [
+        { url: 'rulesmodaloncommentclickanywhere' },
+        { variant: 'mweb_rules_modal_on_comment:click_anywhere' },
+      ] },
+    ],
+  },
+  [RULES_MODAL_ON_COMMENT_CLICK_BUTTON]: {
+    and: [
+      { allowedPages: ['comments'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
+      { or: [
+        { url: 'rulesmodaloncommentclickbutton' },
+        { variant: 'mweb_rules_modal_on_comment:click_button' },
+      ] },
+    ],
   },
 };
 

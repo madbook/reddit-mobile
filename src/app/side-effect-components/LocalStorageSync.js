@@ -5,10 +5,12 @@ export default makeLocalStorageArchiver(
   state => state.expandedPosts,
   state => JSON.stringify(state.visitedPosts),
   state => state.optOuts,
-  (collapsedComments, expandedPosts, visitedPosts, optOuts) => ({
+  state => state.rulesModal,
+  (collapsedComments, expandedPosts, visitedPosts, optOuts, rulesModal) => ({
     collapsedComments,
     expandedPosts,
     visitedPosts,
     optOuts,
+    rulesModal,
   }),
 );

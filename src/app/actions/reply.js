@@ -2,9 +2,14 @@
 // Thus all actions related to replying, opening the form, and making the reply
 // are kept in this file.
 
+import { COMMENT } from 'apiClient/models/thingTypes';
+
 import { getEventTracker } from 'lib/eventTracker';
 import { getBasePayload, buildSubredditData, convertId } from 'lib/eventUtils';
 import { apiOptionsFromState } from 'lib/apiOptionsFromState';
+import * as rulesModalActions from 'app/actions/rulesModal';
+import { flags } from 'app/constants';
+import features from 'app/featureFlags';
 import modelFromThingId from 'app/reducers/helpers/modelFromThingId';
 
 
@@ -12,7 +17,42 @@ export const TOGGLE = 'REPLY__TOGGLE';
 export const SUCCESS = 'REPLY__SUCCESS';
 export const FAILURE = 'REPLY__FAILURE';
 
-export const toggle = parentId => ({ type: TOGGLE, parentId });
+export const toggle = parentId => async (dispatch, getState) => {
+  dispatch({ type: TOGGLE, parentId });
+  
+  // Experiment to show subreddit rules at comment time.
+  const state = getState();
+  const { subredditName } = state.platform.currentPage.urlParams;
+  const featureName = 'rules_modal_on_comment';
+  const key = rulesModalActions.getLocalStorageKey(featureName, subredditName);
+
+  // Disable during shell rendering, necessary to ensure that the modal hasn't
+  // been marked as "seen" in localStorage before showing
+  if (state.platform.shell) { return; }
+  // Disable if we aren't in a subreddit context
+  if (!subredditName) { return; }
+  // Disable if modal has been marked as "seen" in localStorage
+  if (state.rulesModal[key]) { return; }
+  
+  const feature = features.withContext({ state });
+  const clickAnywhereEnabled = feature.enabled(flags.RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE);
+  const clickButtonEnabled = feature.enabled(flags.RULES_MODAL_ON_COMMENT_CLICK_BUTTON);
+
+  // Disable if none of the relevant features are enabled
+  if (!(clickAnywhereEnabled || clickButtonEnabled)) { return; }
+
+  const isRequired = clickButtonEnabled;
+  const thingType = COMMENT;
+  const onDecline = dispatch => dispatch({ type: TOGGLE, parentId });
+  dispatch(rulesModalActions.display(
+    featureName,
+    subredditName,
+    thingType,
+    isRequired,
+    onDecline,
+  ));
+};
+
 export const success = (parentId, reply) => ({
   parentId,
   type: SUCCESS,
