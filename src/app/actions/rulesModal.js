@@ -30,7 +30,7 @@ export function display(featureName, subredditName, thingType, isRequired, onDec
       const fetchRules = subredditRulesActions.fetchSubredditRules(subredditName);
       await fetchRules(dispatch, getState);
     }
-  }
+  };
 }
 
 export const accept = (featureName, subredditName) => ({

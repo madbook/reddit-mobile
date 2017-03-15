@@ -19,7 +19,6 @@ const T = React.PropTypes;
  */
 function RulesModal(props) {
   const {
-    featureName,
     onClickAccept,
     onClickDecline,
     onClickInside,
@@ -107,8 +106,9 @@ const selector = createSelector(
 function dispatcher(dispatch, ownProps) {
   const {
     featureName,
-    subredditName,
+    isRequired,
     onDecline,
+    subredditName,
   } = ownProps;
 
   return {

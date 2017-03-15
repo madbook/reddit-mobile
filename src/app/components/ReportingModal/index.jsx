@@ -34,9 +34,9 @@ function rulesFromState(state) {
   
   if (!subredditRules) {
     return siteRules;
-  } else {
-    return subredditRules.concat(siteRules);
   }
+
+  return subredditRules.concat(siteRules);
 }
 
 /**

@@ -28,18 +28,18 @@ export const toggle = parentId => async (dispatch, getState) => {
 
   // Disable during shell rendering, necessary to ensure that the modal hasn't
   // been marked as "seen" in localStorage before showing
-  if (state.platform.shell) { return }
+  if (state.platform.shell) { return; }
   // Disable if we aren't in a subreddit context
-  if (!subredditName) { return }
+  if (!subredditName) { return; }
   // Disable if modal has been marked as "seen" in localStorage
-  if (state.rulesModal[key]) { return }
+  if (state.rulesModal[key]) { return; }
   
   const feature = features.withContext({ state });
   const clickAnywhereEnabled = feature.enabled(flags.RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE);
   const clickButtonEnabled = feature.enabled(flags.RULES_MODAL_ON_COMMENT_CLICK_BUTTON);
 
   // Disable if none of the relevant features are enabled
-  if (!(clickAnywhereEnabled || clickButtonEnabled)) { return }
+  if (!(clickAnywhereEnabled || clickButtonEnabled)) { return; }
 
   const isRequired = clickButtonEnabled;
   const thingType = COMMENT;
@@ -49,9 +49,9 @@ export const toggle = parentId => async (dispatch, getState) => {
     subredditName,
     thingType,
     isRequired,
-    onDeclines
+    onDecline,
   ));
-}
+};
 
 export const success = (parentId, reply) => ({
   parentId,

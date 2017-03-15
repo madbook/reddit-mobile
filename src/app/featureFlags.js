@@ -356,7 +356,7 @@ const config = {
       { allowedPages: ['submit'] },
       { or: [
         { url: 'rulesmodalonsubmitclickanywhere' },
-        { variant: 'mweb_rules_modal_on_submit:click_anywhere' }
+        { variant: 'mweb_rules_modal_on_submit:click_anywhere' },
       ] },
     ],
   },
@@ -365,7 +365,7 @@ const config = {
       { allowedPages: ['submit'] },
       { or: [
         { url: 'rulesmodalonsubmitclickbutton' },
-        { variant: 'mweb_rules_modal_on_submit:click_button' }
+        { variant: 'mweb_rules_modal_on_submit:click_button' },
       ] },
     ],
   },
@@ -374,7 +374,7 @@ const config = {
       { allowedPages: ['comments'] },
       { or: [
         { url: 'rulesmodaloncommentclickanywhere' },
-        { variant: 'mweb_rules_modal_on_comment:click_anywhere' }
+        { variant: 'mweb_rules_modal_on_comment:click_anywhere' },
       ] },
     ],
   },
@@ -383,7 +383,7 @@ const config = {
       { allowedPages: ['comments'] },
       { or: [
         { url: 'rulesmodaloncommentclickbutton' },
-        { variant: 'mweb_rules_modal_on_comment:click_button' }
+        { variant: 'mweb_rules_modal_on_comment:click_button' },
       ] },
     ],
   },

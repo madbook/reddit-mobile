@@ -9,7 +9,7 @@ export default function (state=DEFAULT, action={}) {
       const key = rulesModalActions.getLocalStorageKey(featureName, subredditName);
       return {
         [key]: true,
-        ...state
+        ...state,
       };
     }
 
