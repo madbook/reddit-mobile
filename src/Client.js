@@ -156,6 +156,13 @@ const client = Client({
           data.optOuts = JSON.parse(optOuts);
         }
       } catch (e) { console.warn(e); }
+
+      try {
+        const rulesModal = window.localStorage.rulesModal;
+        if (rulesModal !== undefined) {
+          data.rulesModal = JSON.parse(rulesModal);
+        }
+      } catch (e) { console.warn(e); }
     }
 
     return data;
