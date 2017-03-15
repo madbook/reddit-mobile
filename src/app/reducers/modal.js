@@ -10,6 +10,7 @@
 import merge from 'platform/merge';
 import * as modalActions from 'app/actions/modal';
 import * as reportingActions from 'app/actions/reporting';
+import * as rulesModalActions from 'app/actions/rulesModal';
 
 
 export const DEFAULT = {
@@ -20,6 +21,7 @@ export const DEFAULT = {
 export default (state=DEFAULT, action={}) => {
   switch (action.type) {
     case reportingActions.REPORT:
+    case rulesModalActions.RULES_MODAL_DISPLAYED:
       return merge(state, { type: action.modalType, props: action.modalProps });
 
     case modalActions.CLOSE:
