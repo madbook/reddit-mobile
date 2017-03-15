@@ -1,0 +1,64 @@
+@import (reference) '~app/less/mixins/modal';
+@import (reference) '~app/less/variables';
+
+.RulesModal {
+  .ModalWrapper();
+  
+  &__title {
+    font-size: 16px;
+    font-weight: 300;
+    margin-top: @grid-size;
+  }
+
+  &__modal {
+    .Modal();
+    padding: @grid-size;
+  }
+  
+  &__footerButtonRow {
+    display: flex;
+  }
+
+  &__button {
+    flex: 1 1 50%;
+    padding: @grid-size;
+    background-color: @pale-grey;
+    color: @dark-grey;
+    margin: @grid-size / 2;
+  }
+
+  &__acceptButton {
+    background-color: @blue;
+    color: @white;
+  }
+
+  &__rulesLink {
+    padding: @grid-size / 2;
+    display: block;
+  }
+
+  &__rules {
+    padding: @grid-size / 2;
+    border: 1px solid @pale-grey;
+    max-height: 50vh;
+    overflow: scroll;
+  }
+
+  .SubredditRule {
+    padding: 4px 0;
+
+    &__title {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    &__meta {
+      display: none;
+    }
+
+    &__description {
+      font-size: 12px;
+      margin-left: @grid-size / 2;
+    }
+  }
+}
