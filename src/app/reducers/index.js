@@ -32,6 +32,7 @@ import recentSubreddits from './recentSubreddits';
 import recommendedSubreddits from './recommendedSubreddits';
 import replying from './replying';
 import reports from './reports';
+import rulesModal from './rulesModal';
 import savedRequests from './savedRequests';
 import searchRequests from './searchRequests';
 import session from './session';
@@ -88,6 +89,7 @@ export default {
   recentSubreddits,
   recommendedSubreddits,
   reports,
+  rulesModal,
   savedRequests,
   searchRequests,
   session,
