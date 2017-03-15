@@ -71,7 +71,7 @@ export const submit = report => async (dispatch, getState) => {
     const body = {
       // 'reason' is either the shortname of a rule, or a special keyword
       // The naming in the api is... it could be better.
-      reason: report.rule,
+      reason: report.ruleName,
       thing_id: report.thingId,
       api_type: 'json',
     };
@@ -79,7 +79,7 @@ export const submit = report => async (dispatch, getState) => {
     // The actual report text is sent as a different key depending on the type
     // of report.  If we add "other" as an option, it would be sent as
     // `other_reason`.
-    if (report.rule === SubredditRule.SITE_RULE_KEYWORD) {
+    if (report.ruleName === SubredditRule.SITE_RULE_KEYWORD) {
       body.site_reason = report.reason;
     } else {
       body.rule_reason = report.reason;

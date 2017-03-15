@@ -8,12 +8,12 @@ export default class Report {
   /**
    * @constructor
    * @param {string} thingId The id of the thing this report applies to.
-   * @param {string} reason The name of the rule violated
-   * @param {string} displayText The report text displayed to the user.
+   * @param {string} ruleName The name of the rule violated
+   * @param {string} reason The report text displayed to the user.
    */
-  constructor(thingId, rule, reason) {
+  constructor(thingId, ruleName, reason) {
     this.thingId = thingId;
-    this.rule = rule;
+    this.ruleName = ruleName;
     this.reason = reason;
   }
 
