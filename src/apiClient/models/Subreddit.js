@@ -142,6 +142,12 @@ export default class Subreddit extends RedditModel {
   // display_name field for that mapping of URL -> state ID for vanilla
   // subreddits and for profile post subreddits.
   makeUUID(data) {
+    // We may pass this an already formed model which will have "displayName"
+    // instead of "display_name". So if we already have a uuid, just use that.
+    if (data.uuid) {
+      return data.uuid;
+    }
+
     const { display_name } = data;
     return Subreddit.cleanName(display_name);
   }
