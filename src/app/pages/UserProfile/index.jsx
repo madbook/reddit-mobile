@@ -14,13 +14,21 @@ const GILD_URL_RE = /u\/.*\/gild$/;
 
 const mapStateToProps = createSelector(
   userAccountSelector,
-  (state, props) => state.accounts[props.urlParams.userName],
+  (state, props) => state.accounts[props.urlParams.userName.toLowerCase()],
   (state, props) => state.accountRequests[props.urlParams.userName],
-  (myUser, queriedUser, queriedUserRequest) => ({ myUser, queriedUser, queriedUserRequest }),
+  (myUser, queriedUser, queriedUserRequest) => {
+    const isVerified = queriedUser && queriedUser.verified;
+    return {
+      myUser,
+      queriedUser,
+      queriedUserRequest,
+      isVerified,
+    };
+  },
 );
 
 export const UserProfilePage = connect(mapStateToProps)(props => {
-  const { myUser, queriedUser, queriedUserRequest, urlParams, url } = props;
+  const { myUser, queriedUser, queriedUserRequest, urlParams, url, isVerified } = props;
   const isGildPage = GILD_URL_RE.test(url);
   const { userName: queriedUserName } = urlParams;
   const isMyUser = !!myUser && myUser.name === queriedUserName;
@@ -34,6 +42,7 @@ export const UserProfilePage = connect(mapStateToProps)(props => {
             userName={ queriedUserName }
             userSubreddit={ queriedUserSubreddit }
             isMyUser={ isMyUser }
+            isVerified={ isVerified }
           />
         }
       </Section>

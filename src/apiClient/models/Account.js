@@ -32,6 +32,7 @@ export default class Account extends RedditModel {
     subredditId: T.string,
     subredditName: T.string,
     suspensionExpirationUTC: T.number,
+    verified: T.bool,
   }
 
   static API_ALIASES = {
@@ -56,7 +57,7 @@ export default class Account extends RedditModel {
   }
 
   makeUUID(data) {
-    return data.name;
+    return data.name.toLowerCase();
   }
 
   static DERIVED_PROPERTIES = {

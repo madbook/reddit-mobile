@@ -14,13 +14,14 @@ import { paramsToActiviesRequestId } from 'app/models/ActivitiesRequest';
 
 const mapStateToProps = createSelector(
   userAccountSelector,
-  (state, props) => state.accounts[props.urlParams.userName],
+  (state, props) => state.accounts[props.urlParams.userName.toLowerCase()],
   (state, props) => state.accountRequests[props.urlParams.userName],
   state => state.activitiesRequests,
   (_, props) => props, // props is the page props splatted,
   (myUser, queriedUser, queriedUserRequest, activities, pageProps) => {
     const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(pageProps);
     const activitiesId = paramsToActiviesRequestId(activitiesParams);
+    const isVerified = queriedUser && queriedUser.verified;
 
     return {
       myUser,
@@ -29,6 +30,7 @@ const mapStateToProps = createSelector(
       queriedUserRequest,
       activitiesId,
       currentActivity: pageProps.queryParams.activity,
+      isVerified,
     };
   },
 );
@@ -41,6 +43,7 @@ export const UserActivityPage = connect(mapStateToProps)(props => {
     queriedUserRequest,
     activitiesId,
     currentActivity,
+    isVerified,
   } = props;
   const isMyUser = !!myUser && myUser.name === queriedUserName;
   const queriedUserSubreddit = queriedUser ? queriedUser.subredditName : '';
@@ -54,6 +57,7 @@ export const UserActivityPage = connect(mapStateToProps)(props => {
             userSubreddit={ queriedUserSubreddit }
             isMyUser={ isMyUser }
             currentActivity={ currentActivity }
+            isVerified={ isVerified }
           />
         }
       </Section>

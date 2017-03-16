@@ -10,6 +10,9 @@
   }
 
   &__banner-user-name {
+    display: inline-block;
+    padding-left: @grid-size;
+    padding-right: @grid-size;
     font-weight: lighter;
     vertical-align: middle;
     margin: 0; // have to override the text reset here. Those are everywhere by default, probably mostly for ugc, maybe we should just wrap those in class
@@ -81,5 +84,15 @@
       position: relative;
       top: -3px;
     }
+  }
+
+  &__verified {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+  }
+
+  .CommunityHeader-subscribe-form {
+    display: block;
   }
 }

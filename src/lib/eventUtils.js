@@ -87,7 +87,7 @@ export function buildProfileData(state, extraPayload) {
     target_fullname: `t2_${user.id}`,
     target_type: 'account',
     target_id: convertId(user.id),
-    is_contributor: !!state.subreddits[`u_${user.name.toLowerCase()}`],
+    is_contributor: !!state.subreddits[`u_${user.uuid}`],
     ...extraPayload,
   };
 }
@@ -106,7 +106,7 @@ export function getUserInfoOrLoid(state) {
   if (userInfo && !user.loggedOut) {
     return {
       'user_id': convertId(userInfo.id),
-      'user_name': user.name,
+      'user_name': userInfo.name,
     };
   }
 

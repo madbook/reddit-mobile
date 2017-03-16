@@ -38,14 +38,16 @@ UserProfileHeader.propTypes = {
   userSubreddit: T.string.isRequired,
   currentActivity: T.string,
   isMyUser: T.bool,
+  isVerified: T.bool,
   loading: T.bool,
 };
 
 const UserProfileBanner = props => {
-  const { isMyUser, userName, userSubreddit } = props;
+  const { isMyUser, isVerified, userName, userSubreddit } = props;
   return (
     <div className='UserProfileHeader__banner'>
       <h3 className='UserProfileHeader__banner-user-name'>{ userName }</h3>
+      { isVerified && <div className='UserProfileHeader__verified icon icon-verified lime' /> }
       { userSubreddit && !isMyUser && <SubredditSubscribeForm
           subredditName={ userSubreddit }
           className='CommunityHeader-subscribe-form CommunityHeader-no-outline'
