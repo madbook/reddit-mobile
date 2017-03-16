@@ -59,7 +59,7 @@ export const CommunityOverlayMenu = (props) => {
       <CommunitySearchRow />
       <LinkRow
         key='front-page-row'
-        text='Front Page'
+        text='Home'
         href='/'
         icon='icon-snoo-circled icon-xl orangered'
       />
