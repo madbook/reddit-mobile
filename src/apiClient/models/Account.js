@@ -29,6 +29,8 @@ export default class Account extends RedditModel {
     name: T.string,
     oauthClientId: T.string,
     over18: T.bool,
+    subredditId: T.string,
+    subredditName: T.string,
     suspensionExpirationUTC: T.number,
   }
 
@@ -56,4 +58,13 @@ export default class Account extends RedditModel {
   makeUUID(data) {
     return data.name;
   }
+
+  static DERIVED_PROPERTIES = {
+    subredditId(data) {
+      return data.subreddit ? data.subreddit.name : '';
+    },
+    subredditName(data) {
+      return data.subreddit ? data.subreddit.display_name : '';
+    },
+  };
 }

@@ -13,7 +13,7 @@ import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';
 const { NIGHTMODE } = themes;
 const UTF8Circle = '●';
 
-const renderErrorMessage = (error) => {
+const renderErrorMessage = error => {
   if (!error) {
     return false;
   }
@@ -67,11 +67,11 @@ const renderBannerRow = (subreddit, theme) => {
   );
 };
 
-const followIconClass = (subscriber) => {
+const followIconClass = subscriber => {
   return subscriber ? 'icon-check-circled lime' : 'icon-follow blue';
 };
 
-const renderSubscribeButton = (subscriber) => (
+const renderSubscribeButton = subscriber => (
   <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
     { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
     <span className='CommunityHeader-subscribe-button' >
@@ -82,7 +82,7 @@ const renderSubscribeButton = (subscriber) => (
   </button>
 );
 
-const CommunityHeader = (props) => {
+const CommunityHeader = props => {
   const {
     subreddit,
     subredditRequest,
@@ -90,12 +90,11 @@ const CommunityHeader = (props) => {
     theme,
   } = props;
 
-
   if (!subreddit) {
     if (subredditRequest && subredditRequest.failed) {
       return null;
     }
-    
+
     return <Loading />;
   }
 

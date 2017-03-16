@@ -1,6 +1,8 @@
 @import (reference) '~app/less/variables';
 @import (reference) '~app/less/themes/themeify';
 
+@user-profile-header-follow-button-size: 19px;
+
 .UserProfileHeader {
   &__banner {
     padding: 2 * @grid-size @grid-size;
@@ -55,6 +57,29 @@
 
     &.selected {
       color: @dark-teal;
+    }
+  }
+
+  &__text-row-blue {
+    color: @blue;
+  }
+
+  &__no-outline {
+    outline: none;
+  }
+
+  &__subscribe-button {
+    // size prevents cropping in safari
+    width: @user-profile-header-follow-button-size;
+    height: @user-profile-header-follow-button-size;
+    line-height: 0;
+    vertical-align: middle;
+
+    .icon {
+      font-size: @user-profile-header-follow-button-size;
+      line-height: 0;
+      position: relative;
+      top: -3px;
     }
   }
 }

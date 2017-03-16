@@ -7,7 +7,24 @@ import { Anchor } from 'platform/components';
 import UserActivityHandler from 'app/router/handlers/UserActivity';
 import { POSTS_ACTIVITY, COMMENTS_ACTIVITY } from 'app/actions/activities';
 
+import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';
+
 const T = React.PropTypes;
+
+const followIconClass = follower => {
+  return follower ? 'icon-check-circled lime' : 'icon-follow blue';
+};
+
+const renderFollowButton = follower => (
+  <button type='submit' className='UserProfileHeader__text-row-blue UserProfileHeader__no-outline'>
+    { ` ${follower ? 'Following' : 'Follow'} ` }
+    <span className='UserProfileHeader__follow-button' >
+      <span
+        className={ `UserProfileHeader__follow-icon icon ${followIconClass(follower)}` }
+      />
+    </span>
+  </button>
+);
 
 export const UserProfileHeader = props => (
   <header className='UserProfileHeader'>
@@ -18,15 +35,23 @@ export const UserProfileHeader = props => (
 
 UserProfileHeader.propTypes = {
   userName: T.string.isRequired,
+  userSubreddit: T.string.isRequired,
   currentActivity: T.string,
   isMyUser: T.bool,
+  loading: T.bool,
 };
 
 const UserProfileBanner = props => {
-  const { userName } = props;
+  const { isMyUser, userName, userSubreddit } = props;
   return (
     <div className='UserProfileHeader__banner'>
       <h3 className='UserProfileHeader__banner-user-name'>{ userName }</h3>
+      { userSubreddit && !isMyUser && <SubredditSubscribeForm
+          subredditName={ userSubreddit }
+          className='CommunityHeader-subscribe-form CommunityHeader-no-outline'
+          renderBody={ renderFollowButton }
+        />
+      }
     </div>
   );
 };

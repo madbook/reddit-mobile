@@ -24,15 +24,21 @@ export const UserProfilePage = connect(mapStateToProps)(props => {
   const isGildPage = GILD_URL_RE.test(url);
   const { userName: queriedUserName } = urlParams;
   const isMyUser = !!myUser && myUser.name === queriedUserName;
+  const queriedUserSubreddit = queriedUser ? queriedUser.subredditName : '';
+  const loaded = !!queriedUserRequest && !queriedUserRequest.loading;
 
   return (
     <div className='UserProfilePage'>
       <Section>
-        <UserProfileHeader userName={ queriedUserName } isMyUser={ isMyUser } />
+        { loaded && <UserProfileHeader
+            userName={ queriedUserName }
+            userSubreddit={ queriedUserSubreddit }
+            isMyUser={ isMyUser }
+          />
+        }
       </Section>
       { isGildPage ? <GildPageContent />
-        : queriedUser ? <UserProfileContent user={ queriedUser } isMyUser={ isMyUser } />
-        : !queriedUserRequest || queriedUserRequest.loading ? <Loading />
+        : queriedUser && loaded ? <UserProfileContent user={ queriedUser } isMyUser={ isMyUser } />
         : <Loading /> /* do an error state here? */ }
     </div>
   );

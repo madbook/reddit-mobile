@@ -14,15 +14,19 @@ import { paramsToActiviesRequestId } from 'app/models/ActivitiesRequest';
 
 const mapStateToProps = createSelector(
   userAccountSelector,
+  (state, props) => state.accounts[props.urlParams.userName],
+  (state, props) => state.accountRequests[props.urlParams.userName],
   state => state.activitiesRequests,
   (_, props) => props, // props is the page props splatted,
-  (myUser, activities, pageProps) => {
+  (myUser, queriedUser, queriedUserRequest, activities, pageProps) => {
     const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(pageProps);
     const activitiesId = paramsToActiviesRequestId(activitiesParams);
 
     return {
       myUser,
+      queriedUser,
       queriedUserName: pageProps.urlParams.userName,
+      queriedUserRequest,
       activitiesId,
       currentActivity: pageProps.queryParams.activity,
     };
@@ -30,19 +34,30 @@ const mapStateToProps = createSelector(
 );
 
 export const UserActivityPage = connect(mapStateToProps)(props => {
-  const { myUser, queriedUserName, activitiesId, currentActivity } = props;
+  const {
+    myUser,
+    queriedUser,
+    queriedUserName,
+    queriedUserRequest,
+    activitiesId,
+    currentActivity,
+  } = props;
   const isMyUser = !!myUser && myUser.name === queriedUserName;
+  const queriedUserSubreddit = queriedUser ? queriedUser.subredditName : '';
+  const loaded = !!queriedUserRequest && !queriedUserRequest.loading;
 
   return (
     <div className='UserProfilePage'>
       <Section>
-        <UserProfileHeader
-          userName={ queriedUserName }
-          isMyUser={ isMyUser }
-          currentActivity={ currentActivity }
-        />
+        { loaded && <UserProfileHeader
+            userName={ queriedUserName }
+            userSubreddit={ queriedUserSubreddit }
+            isMyUser={ isMyUser }
+            currentActivity={ currentActivity }
+          />
+        }
       </Section>
-      <SortAndTimeSelector className='UserProfilePage__sorts' />
+      { loaded && <SortAndTimeSelector className='UserProfilePage__sorts' /> }
       <PostAndCommentList
         requestLocation='activitiesRequests'
         requestId={ activitiesId }
