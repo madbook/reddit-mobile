@@ -35,7 +35,7 @@ export default function CommentDropdown(props) {
     reports,
   } = props;
 
-  const userIsAuthor = commentAuthor === username;
+  const userIsAuthor = commentAuthor.toLowerCase() === username;
 
   const modalContent = [
     userIsAuthor

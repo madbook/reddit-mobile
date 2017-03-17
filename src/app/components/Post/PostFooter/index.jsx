@@ -97,7 +97,7 @@ export default class PostFooter extends React.Component {
     } = props;
 
     const isLoggedIn = user && !user.loggedOut;
-    const canModify = single && isLoggedIn && user.name === post.author;
+    const canModify = single && isLoggedIn && user.name === post.author.toLowerCase();
 
     return (
       <PostDropdown
@@ -127,7 +127,7 @@ export default class PostFooter extends React.Component {
         showModModal={ showModModal }
         modModalId={ modModalId }
         distinguishType={ post.distinguished }
-        isMine={ user && user.name === post.author }
+        isMine={ user && user.name === post.author.toLowerCase() }
         reports={ reports }
         reportModalId={ reportModalId }
       />

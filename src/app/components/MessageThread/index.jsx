@@ -160,7 +160,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   // Find the most recent reply that's not from the user.
   // If one isn't found, they can't reply, plain and simple.
-  const replyMessageId = recentMessageIds.find(id => messages[id].author !== user.name);
+  const replyMessageId = recentMessageIds.find(id => {
+    return messages[id].author.toLowerCase() !== user.name;
+  });
 
   return {
     ...stateProps,
