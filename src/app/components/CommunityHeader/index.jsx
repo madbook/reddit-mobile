@@ -67,20 +67,17 @@ const renderBannerRow = (subreddit, theme) => {
   );
 };
 
-const followIconClass = subscriber => {
-  return subscriber ? 'icon-check-circled lime' : 'icon-follow blue';
+const renderSubscribeButton = subscriber => {
+  const subscribeClass = subscriber ? 'subscriber' : 'subscribe';
+  return (
+    <button
+      type='submit'
+      className={ `CommunityHeader-${subscribeClass}-button` }
+    >
+      { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
+    </button>
+  );
 };
-
-const renderSubscribeButton = subscriber => (
-  <button type='submit' className='CommunityHeader-text-row-blue CommunityHeader-no-outline'>
-    { ` ${subscriber ? 'Subscribed' : 'Subscribe'} ` }
-    <span className='CommunityHeader-subscribe-button' >
-      <span
-        className={ `CommunityHeader-subscribe-icon icon ${followIconClass(subscriber)}` }
-      />
-    </span>
-  </button>
-);
 
 const CommunityHeader = props => {
   const {
@@ -111,13 +108,12 @@ const CommunityHeader = props => {
       { banner }
       <div className='CommunityHeader-text-row'>
         <h4 className='CommunityHeader-community-title'>
-          { subreddit.displayName }
+          { subreddit.displayNamePrefixed }
         </h4>
       </div>
       <div className='CommunityHeader-text-row'>
         <span>{ `${formatNumber(subreddit.subscribers)} subscribers` }</span>
-      { onlineCount }
-        { ` ${UTF8Circle}` }
+        { onlineCount }
         <SubredditSubscribeForm
           subredditName={ subreddit.uuid }
           className='CommunityHeader-subscribe-form CommunityHeader-no-outline'

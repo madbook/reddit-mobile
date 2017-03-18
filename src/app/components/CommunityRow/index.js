@@ -29,14 +29,21 @@ const renderIcon = (iconUrl, url, color, theme) => {
   );
 };
 
-const renderDetails = (subreddit) => {
-  const { displayName, subscribers, accountsActive, url, over18 } = subreddit;
+const renderDetails = subreddit => {
+  const {
+    accountsActive,
+    displayNamePrefixed,
+    over18,
+    subscribers,
+    url,
+  } = subreddit;
+  const [ subType, subName ] = displayNamePrefixed.split('/');
 
   return (
     <Anchor className='CommunityRow__details' href={ url }>
       <div className='CommunityRow__name'>
-        <span className='CommunityRow__rSlash'>r/</span>
-        { displayName }
+        <span className='CommunityRow__rSlash'>{ subType }/</span>
+        { subName }
         { over18 ? NSFWFlair : null }
       </div>
       <div className='CommunityRow__counts'>
@@ -50,13 +57,13 @@ const renderDetails = (subreddit) => {
   );
 };
 
-const renderAddButton = (subscriber) => {
+const renderAddButton = subscriber => {
   return subscriber
     ? <button className='CommunityRow__subscriptionButton icon icon-check-circled lime'/>
     : <button className='CommunityRow__subscriptionButton icon icon-follow blue'/>;
 };
 
-const renderAdd = (subredditName) => (
+const renderAdd = subredditName => (
   <SubredditSubscribeForm
     subredditName={ subredditName }
     className='CommunityRow__add'
@@ -64,7 +71,7 @@ const renderAdd = (subredditName) => (
   />
 );
 
-const CommunityRow = (props) => {
+const CommunityRow = props => {
   const { subreddit, theme } = props;
 
   return (

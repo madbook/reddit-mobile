@@ -89,31 +89,41 @@
   });
 }
 
-.CommunityHeader-text-row-blue {
-  color: @blue;
-}
-
 .CommunityHeader-no-outline {
   outline: none;
 }
 
 .CommunityHeader-subscribe-form {
-  display: inline-block;
+  display: block;
+}
+
+.CommunityHeader-subscribe-button,
+.CommunityHeader-subscriber-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 120px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 1px solid @blue;
+  border-radius: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 15px;
+  letter-spacing: 1px;
 }
 
 .CommunityHeader-subscribe-button {
-  // size prevents cropping in safari
-  width: @community-subscribe-button-size;
-  height: @community-subscribe-button-size;
-  line-height: 0;
-  vertical-align: middle;
+  border-color: @blue;
+  background: @blue;
+  color: @white;
+}
 
-  .icon {
-    font-size: @community-subscribe-button-size;
-    line-height: 0;
-    position: relative;
-    top: -3px;
-  }
+.CommunityHeader-subscriber-button {
+  border-color: @teal;
+  color: @teal;
 }
 
 .CommunityHeader-error {

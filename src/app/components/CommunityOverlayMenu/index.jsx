@@ -31,15 +31,17 @@ const renderSubscriptions = (subscriptions, loading, theme) => (
     text='Subscribed'
     subtext={ numCommunitiesText(subscriptions, loading) }
   >
-    { map(subscriptions, subreddit => (
+    { map(subscriptions, subreddit => {
+      const [ subType, subName ] = subreddit.displayNamePrefixed.split('/');
+      return (
         <LinkRow
           key={ `OverlayMenu-row-subscription-${subreddit.url}` }
           href={ subreddit.url }
           icon='OverlayMenu-icon-following-snoo'
           text={ (
             <span>
-              <span className='CommunityRow__rSlash'>r/</span>
-              { subreddit.displayName }
+              <span className='CommunityRow__rSlash'>{ subType }/</span>
+              { subName }
               { subreddit.over18 ? NSFWFlair : null }
             </span>
           ) }
@@ -47,7 +49,8 @@ const renderSubscriptions = (subscriptions, loading, theme) => (
           iconBackgroundColor={ subreddit.keyColor || '' }
           theme={ theme }
         />
-      )) }
+      );
+    }) }
   </ExpandoRow>
 );
 

@@ -11,20 +11,14 @@ import SubredditSubscribeForm from 'app/components/SubredditSubscribeForm';
 
 const T = React.PropTypes;
 
-const followIconClass = follower => {
-  return follower ? 'icon-check-circled lime' : 'icon-follow blue';
+const renderFollowButton = follower => {
+  const followClass = follower ? 'follower' : 'follow';
+  return (
+    <button type='submit' className={ `UserProfileHeader__${followClass}` }>
+      { ` ${follower ? 'Following' : 'Follow'} ` }
+    </button>
+  );
 };
-
-const renderFollowButton = follower => (
-  <button type='submit' className='UserProfileHeader__text-row-blue UserProfileHeader__no-outline'>
-    { ` ${follower ? 'Following' : 'Follow'} ` }
-    <span className='UserProfileHeader__follow-button' >
-      <span
-        className={ `UserProfileHeader__follow-icon icon ${followIconClass(follower)}` }
-      />
-    </span>
-  </button>
-);
 
 export const UserProfileHeader = props => (
   <header className='UserProfileHeader'>
@@ -46,7 +40,7 @@ const UserProfileBanner = props => {
   const { isMyUser, isVerified, userName, userSubreddit } = props;
   return (
     <div className='UserProfileHeader__banner'>
-      <h3 className='UserProfileHeader__banner-user-name'>{ userName }</h3>
+      <h3 className='UserProfileHeader__banner-user-name'>u/{ userName }</h3>
       { isVerified && <div className='UserProfileHeader__verified icon icon-verified lime' /> }
       { userSubreddit && !isMyUser && <SubredditSubscribeForm
           subredditName={ userSubreddit.toLowerCase() }

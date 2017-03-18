@@ -20,7 +20,7 @@ const mapStateToProps = createSelector(
     const isVerified = queriedUser && queriedUser.verified;
     return {
       myUser,
-      queriedUser,
+      queriedUser: queriedUser || {},
       queriedUserRequest,
       isVerified,
     };
@@ -28,19 +28,18 @@ const mapStateToProps = createSelector(
 );
 
 export const UserProfilePage = connect(mapStateToProps)(props => {
-  const { myUser, queriedUser, queriedUserRequest, urlParams, url, isVerified } = props;
+  const { myUser, queriedUser, queriedUserRequest, url, isVerified } = props;
+  const { name: userName, subredditName } = queriedUser;
   const isGildPage = GILD_URL_RE.test(url);
-  const { userName: queriedUserName } = urlParams;
-  const isMyUser = !!myUser && myUser.name === queriedUserName;
-  const queriedUserSubreddit = queriedUser ? queriedUser.subredditName : '';
+  const isMyUser = !!myUser && myUser.name === userName;
   const loaded = !!queriedUserRequest && !queriedUserRequest.loading;
 
   return (
     <div className='UserProfilePage'>
       <Section>
         { loaded && <UserProfileHeader
-            userName={ queriedUserName }
-            userSubreddit={ queriedUserSubreddit }
+            userName={ userName }
+            userSubreddit={ subredditName }
             isMyUser={ isMyUser }
             isVerified={ isVerified }
           />
