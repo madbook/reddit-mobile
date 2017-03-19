@@ -15,6 +15,8 @@
     "lint": "eslint src --ext .js,.jsx",
     "lint-errors-only": "eslint src --ext .js,.jsx --quiet",
     "lint-fixup": "eslint src --ext .js,.jsx --fix",
+    "lint-unstaged": "LIST=`git diff-index --name-only HEAD | grep -f *.js | grep -v json;`; if [ \"$LIST\" ]; then eslint $LIST; fi",
+    "lint-diff": "LIST=`git diff-index --name-only 2X | grep -f *.js | grep -v json;`; if [ \"$LIST\" ]; then eslint $LIST; fi",
     "fonts": "webfonts",
     "test": "blueprints -t",
     "test:watch": "npm run test -- -w"
