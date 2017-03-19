@@ -1,4 +1,4 @@
-import { setStatus } from 'platform/actions';
+import { setStatus, redirect } from 'platform/actions';
 import { BaseHandler, METHODS } from 'platform/router';
 import * as adActions from 'app/actions/ads';
 import * as postsListActions from 'app/actions/postsList';
@@ -53,11 +53,29 @@ export default class PostsFromSubreddit extends BaseHandler {
     const postsListId = paramsToPostsListsId(subredditPostsParams);
     const { subredditName } = subredditPostsParams;
 
-    await Promise.all([
+    // It should be rare that we need to redirect away from this page, so we
+    // should dispatch all of the fetches up front. We wait on fetchSubreddit
+    // separately, so that as soon as it completes, we can determine if we need
+    // to redirect to a user profile page. If we do not need to redirect, then
+    // we contain to wait on the remaining fetches.
+    const userAndListingFetches = Promise.all([
       fetchUserBasedData(dispatch),
       dispatch(postsListActions.fetchPostsFromSubreddit(subredditPostsParams)),
-      dispatch(subredditActions.fetchSubreddit(subredditName)),
     ]);
+
+    await dispatch(subredditActions.fetchSubreddit(subredditName));
+
+    const subreddit = getState().subreddits[subredditName];
+
+    // We don't want to render subreddit listings pages for "user profile-post
+    // subreddits", which are an internal implementation aspect of profiles,
+    // not first class subreddits.
+    if (subreddit && subreddit.subredditType === 'user') {
+      dispatch(redirect(subreddit.url));
+      return;
+    }
+
+    await userAndListingFetches;
 
     dispatch(adActions.fetchNewAdForPostsList(postsListId, {
       urlParams: this.urlParams,
