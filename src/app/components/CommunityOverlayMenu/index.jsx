@@ -60,27 +60,43 @@ export const CommunityOverlayMenu = (props) => {
   return (
     <OverlayMenu>
       <CommunitySearchRow />
-      <LinkRow
-        key='front-page-row'
-        text='Home'
-        href='/'
-        icon='icon-snoo-circled icon-xl orangered'
-      />
       { !user.loggedOut
-        ? <LinkRow
-          key='popular-link'
-          text='Popular'
-          href='/r/popular'
-          icon='icon-rising mint-circled-xl'
+        ? React.Children.toArray([
+          <LinkRow
+            key='front-page-row'
+            text='Home'
+            href='/'
+            icon='icon-snoo-circled icon-xl orangered'
+          />,
+          <LinkRow
+            key='popular-link'
+            text='Popular'
+            href='/r/popular'
+            icon='icon-rising mint-circled-xl'
+          />,
+          <LinkRow
+            key='all-link'
+            text='All'
+            href='/r/all'
+            icon='icon-bar-chart orangered-circled-xl'
           />
-        : ''
+        ])
+        : React.Children.toArray([
+          <LinkRow
+            key='popular-link'
+            text='Popular'
+            href='/'
+            icon='icon-rising mint-circled-xl'
+            />,
+          <LinkRow
+            key='all-link'
+            text='All'
+            href='/r/all'
+            icon='icon-bar-chart orangered-circled-xl'
+          />
+        ])
       }
-      <LinkRow
-        key='all-link'
-        text='All'
-        href='/r/all'
-        icon='icon-bar-chart orangered-circled-xl'
-      />
+
       { renderSubscriptions(subscriptions, subscriptionsLoading, theme) }
     </OverlayMenu>
   );
