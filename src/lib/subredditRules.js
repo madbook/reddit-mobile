@@ -26,9 +26,9 @@ export function getSubredditRulesFromState(state, subredditName, thingType) {
 
   if (!thingType) {
     return rules;
-  } else {
-    return rules.filter(rule => rule.doesRuleApplyToThingType(thingType));
   }
+
+  return rules.filter(rule => rule.doesRuleApplyToThingType(thingType));
 }
 
 /**
