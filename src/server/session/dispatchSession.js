@@ -31,50 +31,62 @@ export default async (ctx, dispatch, apiOptions) => {
   let session;
   let sessionData;
 
+  const clearAndLogSessionCookies = error => {
+    session = undefined;
+    sessionData = undefined;
+    clearSessionCookies(ctx);
+    logError(error);
+  };
+
   try {
     sessionData = sessionDataFromCookies(ctx);
     if (sessionData) {
       session = new Session(sessionData);
     }
   } catch (e) {
-    // Most likely an error in parsing the encoded json,
-    // log the error, clear the bad cookies, and continue to
-    // see if the session conversion works.
-    session = undefined;
-    sessionData = undefined;
-    clearSessionCookies(ctx);
-    logError(e);
+    // Most likely an error in parsing the encoded json.
+    clearAndLogSessionCookies(e);
   }
 
   if (!session && redditSession) {
-    const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
-    sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(
-      proxiedApiOptions(ctx, apiOptions), cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
-    ));
-    session = new Session(sessionData);
+    try {
+      const cookies = ctx.headers.cookie.replace('__cf_mob_redir=1', '__cf_mob_redir=0').split(';');
+      sessionData = makeSessionFromData(await PrivateAPI.convertCookiesToAuthToken(
+        proxiedApiOptions(ctx, apiOptions), cookies, ctx.orderedHeaders, ctx.headers['user-agent'],
+      ));
+      session = new Session(sessionData);
 
-    // since we converted a legacy session into a 2X token, we want to make sure
-    // we forward the new cookies for the token
-    setSessionCookies(ctx, session);
+      // since we converted a legacy session into a 2X token, we want to make sure
+      // we forward the new cookies for the token
+      setSessionCookies(ctx, session);
+    } catch (e) {
+      // This is likely caused by an invalid our outdated reddit_session cookie
+      clearAndLogSessionCookies(e);
+    }
   }
 
   // if the session is invalid, try to use the refresh token to grab a new
   // session.
   if (session && sessionData && !session.isValid) {
-    const data = await PrivateAPI.refreshToken(
-      proxiedApiOptions(ctx, apiOptions), sessionData.refreshToken,
-      ctx.orderedHeaders, ctx.headers['user-agent']
-    );
+    try {
+      const data = await PrivateAPI.refreshToken(
+        proxiedApiOptions(ctx, apiOptions), sessionData.refreshToken,
+        ctx.orderedHeaders, ctx.headers['user-agent']
+      );
 
-    session = makeSessionFromData({
-      ...data,
-      // use the newest refresh token we have available,
-      refresh_token: data.refresh_token || sessionData.refreshToken,
-    });
+      session = makeSessionFromData({
+        ...data,
+        // use the newest refresh token we have available,
+        refresh_token: data.refresh_token || sessionData.refreshToken,
+      });
 
-    // don't forget to set the cookies with the new session, or the session
-    // will remain invalid the next time the page is fetched
-    setSessionCookies(ctx, session);
+      // don't forget to set the cookies with the new session, or the session
+      // will remain invalid the next time the page is fetched
+      setSessionCookies(ctx, session);
+    } catch (e) {
+      // This is usually caused by an invalid our outdated refresh token.
+      clearAndLogSessionCookies(e);
+    }
   }
 
   if (session && session.isValid) {
