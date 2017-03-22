@@ -42,7 +42,8 @@ export class PostSubmitHandler extends BaseHandler {
 
     const isRequired = clickButtonEnabled;
     const thingType = POST;
-    const onDecline = platformActions.navigateToUrl('get', `/r/${subredditName}`);
+    const onDecline =
+      dispatch => dispatch(platformActions.navigateToUrl('get', `/r/${subredditName}`));
 
     dispatch(rulesModalActions.display(
       featureName,

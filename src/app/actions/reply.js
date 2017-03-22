@@ -43,7 +43,7 @@ export const toggle = parentId => async (dispatch, getState) => {
 
   const isRequired = clickButtonEnabled;
   const thingType = COMMENT;
-  const onDecline = { type: TOGGLE, parentId };
+  const onDecline = dispatch => dispatch({ type: TOGGLE, parentId });
   dispatch(rulesModalActions.display(
     featureName,
     subredditName,

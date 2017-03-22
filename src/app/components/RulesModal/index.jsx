@@ -83,7 +83,7 @@ RulesModal.propTypes = {
   onClickDecline: T.func,
   onClickInside: T.func,
   onClickOutside: T.func.isRequired,
-  onDecline: T.object,
+  onDecline: T.func,
   rules: T.arrayOf(T.shape(SubredditRule.propTypes)),
   subredditName: T.string.isRequired,
 };
@@ -92,8 +92,8 @@ RulesModal.defaultProps = {
   onClickAccept: () => {},
   onClickDecline: () => {},
   onClickInside: () => {},
+  onDecline: () => {},
   rules: null,
-  onDecline: null,
 };
 
 const selector = createSelector(
@@ -124,7 +124,7 @@ function dispatcher(dispatch, ownProps) {
     onClickDecline: () => {
       dispatch(modalActions.closeModal());
       if (onDecline) {
-        dispatch(onDecline);
+        onDecline(dispatch);
       }
     },
   };
