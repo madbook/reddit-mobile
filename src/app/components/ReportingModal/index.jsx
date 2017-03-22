@@ -11,8 +11,8 @@ import * as reportingActions from 'app/actions/reporting';
 import Loading from 'app/components/Loading';
 import Report from 'app/models/Report';
 import {
-  getSubredditRulesFromState,
   getSiteRulesFromState,
+  getSubredditRulesFromState,
 } from 'lib/subredditRules';
 
 import cx from 'lib/classNames';
