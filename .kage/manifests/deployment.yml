@@ -126,6 +126,8 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: port
+            - name: REDDIT
+              value: https://BRANCH_NAME.mobile.staging.snooguts.net
             - name: SECRET_OAUTH_CLIENT_ID
               valueFrom:
                 configMapKeyRef:
