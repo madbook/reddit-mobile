@@ -113,7 +113,7 @@ function dispatcher(dispatch, ownProps) {
 
   return {
     onClickOutside: () => {
-      if (!isRequired) { return; }
+      if (isRequired) { return; }
       dispatch(rulesModalActions.accept(featureName, subredditName));
       dispatch(modalActions.closeModal());
     },
