@@ -79,7 +79,7 @@ export const CommunityOverlayMenu = (props) => {
             text='All'
             href='/r/all'
             icon='icon-bar-chart orangered-circled-xl'
-          />
+          />,
         ])
         : React.Children.toArray([
           <LinkRow
@@ -93,7 +93,7 @@ export const CommunityOverlayMenu = (props) => {
             text='All'
             href='/r/all'
             icon='icon-bar-chart orangered-circled-xl'
-          />
+          />,
         ])
       }
 
