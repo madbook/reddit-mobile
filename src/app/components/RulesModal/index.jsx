@@ -46,7 +46,7 @@ function RulesModal(props) {
               <footer className="RulesModal__footer">
                 <a 
                     className="RulesModal__rulesLink"
-                    href="/r/{ subredditName }/about/rules"
+                    href={ `/r/${ subredditName }/about/rules` }
                     target="_blank"
                     >
                   View the full list of rules.
