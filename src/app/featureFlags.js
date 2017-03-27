@@ -395,6 +395,26 @@ flags.addRule('subreddit', function (name) {
   return subreddit.toLowerCase() === name.toLowerCase();
 });
 
+flags.addRule('subreddits', function (subredditNames) {
+  const subreddit = getSubreddit(this.state);
+  if (!subreddit) {
+    return false;
+  }
+
+  return subredditNames.map(n => n.toLowerCase()).includes(subreddit.toLowerCase());
+});
+
+flags.addRule('isMod', function(val) {
+  let userIsMod = false;
+  const subreddit = getSubreddit(this.state);
+  const moderatingSubreddits = this.state.moderatingSubreddits;
+  if (subreddit && moderatingSubreddits && moderatingSubreddits.names) {
+    const names = moderatingSubreddits.names.map(n => n.toLowerCase());
+    userIsMod = names.includes(subreddit.toLowerCase());
+  }
+  return userIsMod === val;
+});
+
 const firstBuckets = new Set();
 
 flags.addRule('variant', function (name) {
