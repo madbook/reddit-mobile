@@ -36,6 +36,7 @@ const {
   RULES_MODAL_ON_SUBMIT_CLICK_BUTTON,
   RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE,
   RULES_MODAL_ON_COMMENT_CLICK_BUTTON,
+  rulesModalExperimentSubreddits,
 
   // Xpromo ----------------------------------------------------------------------
   // Login Required
@@ -354,6 +355,9 @@ const config = {
   [RULES_MODAL_ON_SUBMIT_CLICK_ANYWHERE]: {
     and: [
       { allowedPages: ['submit'] },
+      { subreddits: rulesModalExperimentSubreddits },
+      { loggedin: true },
+      { isMod: false },
       { or: [
         { url: 'rulesmodalonsubmitclickanywhere' },
         { variant: 'mweb_rules_modal_on_submit:click_anywhere' },
@@ -363,6 +367,9 @@ const config = {
   [RULES_MODAL_ON_SUBMIT_CLICK_BUTTON]: {
     and: [
       { allowedPages: ['submit'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
       { or: [
         { url: 'rulesmodalonsubmitclickbutton' },
         { variant: 'mweb_rules_modal_on_submit:click_button' },
@@ -372,6 +379,9 @@ const config = {
   [RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE]: {
     and: [
       { allowedPages: ['comments'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
       { or: [
         { url: 'rulesmodaloncommentclickanywhere' },
         { variant: 'mweb_rules_modal_on_comment:click_anywhere' },
@@ -381,6 +391,9 @@ const config = {
   [RULES_MODAL_ON_COMMENT_CLICK_BUTTON]: {
     and: [
       { allowedPages: ['comments'] },
+      { loggedin: true },
+      { isMod: false },
+      { subreddits: rulesModalExperimentSubreddits },
       { or: [
         { url: 'rulesmodaloncommentclickbutton' },
         { variant: 'mweb_rules_modal_on_comment:click_button' },
