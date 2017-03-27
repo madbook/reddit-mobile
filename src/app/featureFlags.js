@@ -3,7 +3,10 @@ import omitBy from 'lodash/omitBy';
 import isNull from 'lodash/isNull';
 import sha1 from 'crypto-js/sha1';
 import url from 'url';
-import { flags as flagConstants } from 'app/constants';
+import {
+  flags as flagConstants,
+  rulesModalExperimentSubreddits,
+} from 'app/constants';
 import getSubreddit from 'lib/getSubredditFromState';
 import getRouteMetaFromState from 'lib/getRouteMetaFromState';
 import getContentId from 'lib/getContentIdFromState';
@@ -36,7 +39,6 @@ const {
   RULES_MODAL_ON_SUBMIT_CLICK_BUTTON,
   RULES_MODAL_ON_COMMENT_CLICK_ANYWHERE,
   RULES_MODAL_ON_COMMENT_CLICK_BUTTON,
-  rulesModalExperimentSubreddits,
 
   // Xpromo ----------------------------------------------------------------------
   // Login Required
