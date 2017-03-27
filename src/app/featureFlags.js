@@ -572,7 +572,7 @@ export const isNSFWPage = state => {
   }
 
   if (subredditName) {
-    const subreddit = state.subreddits[subredditName];
+    const subreddit = state.subreddits[subredditName.toLowerCase()];
     if (subreddit && subreddit.over18) {
       return true;
     }
