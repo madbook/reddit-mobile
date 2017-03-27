@@ -82,6 +82,7 @@ module.exports = function(isProduction) {
         SENTRY_CLIENT_PUBLIC_URL: JSON.stringify(process.env.SENTRY_CLIENT_PUBLIC_URL),
         ENV: JSON.stringify('client'),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        PLACE_DOMAIN: JSON.stringify(process.env.PLACE_DOMAIN),
       },
     }),
   ]);

@@ -1,6 +1,7 @@
 import { SUPPORTED_SORTS } from 'app/sortValues';
 import CommentsPageHandler from './handlers/CommentsPage';
 import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
+import PlacePageHandler from './handlers/PlacePage';
 import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import LiveRedirectHandler from './handlers/LiveRedirect';
 import Login from './handlers/Login';
@@ -28,6 +29,9 @@ const SORTS = SUPPORTED_SORTS.join('|');
 /* eslint-disable max-len */
 export default [
   ['/', PostsFromSubredditHandler, { name: 'index' }],
+  ['/place', PostsFromSubredditHandler, { name: 'place' }],
+  ['/r/:subredditName(place)', PostsFromSubredditHandler, { name: 'place' }],
+  [`/r/:subredditName(place)/:sort(${SORTS})`, PostsFromSubredditHandler, { name: 'place' }],
   [`/:sort(${SORTS})`, PostsFromSubredditHandler, { name: 'listing' }],
   ['/r/:subredditName', PostsFromSubredditHandler, { name: 'listing' }],
   ['/user/:user/m/:multi', PostsFromSubredditHandler, { name: 'listing' }],

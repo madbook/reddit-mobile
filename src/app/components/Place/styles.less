@@ -1,0 +1,40 @@
+@import (reference) '~app/less/variables';
+
+.Place {
+    &__container {
+        position: absolute;
+        top: 0;
+        padding-top: @top-nav-height;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__click {
+        position: absolute;
+        top: @top-nav-height;
+        width: 100%;
+        height: 30%;
+        z-index: 10;
+    }
+
+    &__container > iframe {
+        display: block;
+        width: 100%;
+        z-index: 0;
+    }
+
+    &__iframe.large {
+        height: 100%;
+    }
+
+    &__iframe.small {
+        height: 30%;
+    }
+
+    &__loadingWrapper {
+        position: absolute;
+        top: @top-nav-height;
+        left: 0;
+        right: 0;
+    }
+}
