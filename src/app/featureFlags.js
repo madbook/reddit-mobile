@@ -441,7 +441,7 @@ flags.addRule('subreddits', function (subredditNames) {
     return false;
   }
 
-  return subredditNames.includes(subreddit);
+  return subredditNames.map(n => n.toLowerCase()).includes(subreddit.toLowerCase());
 });
 
 flags.addRule('isMod', function(val) {
@@ -449,7 +449,8 @@ flags.addRule('isMod', function(val) {
   const subreddit = getSubreddit(this.state);
   const moderatingSubreddits = this.state.moderatingSubreddits;
   if (subreddit && moderatingSubreddits && moderatingSubreddits.names) {
-    userIsMod = moderatingSubreddits.names.includes(subreddit);
+    const names = moderatingSubreddits.names.map(n => n.toLowerCase());
+    userIsMod = names.includes(subreddit.toLowerCase());
   }
   return userIsMod === val;
 });
