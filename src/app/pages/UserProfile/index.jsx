@@ -29,7 +29,7 @@ const mapStateToProps = createSelector(
 
 export const UserProfilePage = connect(mapStateToProps)(props => {
   const { myUser, queriedUser, queriedUserRequest, url, isVerified } = props;
-  const { name: userName, subredditName } = queriedUser;
+  const { name: userName, karma, subredditName } = queriedUser;
   const isGildPage = GILD_URL_RE.test(url);
   const isMyUser = !!myUser && myUser.name === userName;
   const loaded = !!queriedUserRequest && !queriedUserRequest.loading;
@@ -40,6 +40,7 @@ export const UserProfilePage = connect(mapStateToProps)(props => {
         { loaded && <UserProfileHeader
             userName={ userName }
             userSubreddit={ subredditName }
+            karma={ karma }
             isMyUser={ isMyUser }
             isVerified={ isVerified }
           />

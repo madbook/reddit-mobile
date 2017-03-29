@@ -13,16 +13,21 @@ export default class UserActivityHandler extends BaseHandler {
     if (activity === COMMENTS_ACTIVITY) {
       return `/user/${userName}/comments`;
     } else if (activity === POSTS_ACTIVITY) {
-      return `/user/${userName}/submitted`;
+      return `/user/${userName}`;
     }
 
-    return `/user/${userName}`;
+    return `/user/${userName}/about`;
+  }
+
+  static getPageActivity(urlParams) {
+    return urlParams.commentsOrSubmitted || POSTS_ACTIVITY;
   }
 
   static pageParamsToActivitiesParams({ urlParams, queryParams }) {
     const { userName } = urlParams;
-    const { sort=SORTS.CONFIDENCE, activity=POSTS_ACTIVITY, before, after } = queryParams;
+    const { sort=SORTS.CONFIDENCE, before, after } = queryParams;
     const t = listingTime(queryParams, sort);
+    const activity = UserActivityHandler.getPageActivity(urlParams);
 
     return cleanObject({
       user: userName,
@@ -39,9 +44,6 @@ export default class UserActivityHandler extends BaseHandler {
       return;
     }
 
-    const { platform: { currentPage }} = getState();
-    const { urlParams } = currentPage;
-    this.queryParams.activity = urlParams.commentsOrSubmitted;
     const activitiesParams = UserActivityHandler.pageParamsToActivitiesParams(this);
 
     await Promise.all([

@@ -16,7 +16,7 @@ export const UserProfileSummary = props => {
     <div className='UserProfileSummary'>
       <UserProfileRow>
         <UserProfileBadge
-          text={ formatNumber(user.linkKarma) }
+          text={ formatNumber(user.karma) }
           subtext='KARMA'
           half={ true }
         >

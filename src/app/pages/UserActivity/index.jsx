@@ -28,7 +28,7 @@ const mapStateToProps = createSelector(
       queriedUser: queriedUser || {},
       queriedUserRequest,
       activitiesId,
-      currentActivity: pageProps.queryParams.activity,
+      currentActivity: activitiesParams.activity,
       isVerified,
     };
   },
@@ -43,7 +43,7 @@ export const UserActivityPage = connect(mapStateToProps)(props => {
     currentActivity,
     isVerified,
   } = props;
-  const { name: userName, subredditName } = queriedUser;
+  const { name: userName, karma, subredditName } = queriedUser;
   const isMyUser = !!myUser && myUser.name === userName;
   const loaded = !!queriedUserRequest && !queriedUserRequest.loading;
 
@@ -53,6 +53,7 @@ export const UserActivityPage = connect(mapStateToProps)(props => {
         { loaded && <UserProfileHeader
             userName={ userName }
             userSubreddit={ subredditName }
+            karma={ karma }
             isMyUser={ isMyUser }
             currentActivity={ currentActivity }
             isVerified={ isVerified }

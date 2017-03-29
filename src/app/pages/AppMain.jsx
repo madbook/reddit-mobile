@@ -135,12 +135,13 @@ const AppMain = props => {
         <FramedPage url='/user/:userName/activity' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/comments' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/submitted' component={ UserActivityPage } />
+        <FramedPage url='/user/:userName' component={ UserActivityPage } />
         <FramedPage url='/user/:userName/gild' component={ UserProfilePage } />
         <FramedPage
           url='/user/:userName/:savedOrHidden(saved|hidden)'
           component={ SavedAndHiddenPage }
         />
-        <FramedPage url='/user/:userName/' component={ UserProfilePage } />
+        <FramedPage url='/user/:userName/about' component={ UserProfilePage } />
         <FramedPage
           url='/user/:userName/comments/:postId/:postTitle/:commentId'
           component={ CommentsPage }

@@ -23,6 +23,7 @@ export default class Account extends RedditModel {
     isGold: T.bool,
     isMod: T.bool,
     isSuspended: T.bool,
+    karma: T.number,
     linkKarma: T.number,
     loid: T.string,
     loidCreated: T.number,
@@ -36,7 +37,7 @@ export default class Account extends RedditModel {
   }
 
   static API_ALIASES = {
-    comment_karm: 'commentKarma',
+    comment_karma: 'commentKarma',
     created_utc: 'createdUTC',
     gold_creddits: 'goldCreddits',
     gold_expiration: 'goldExpiration',
@@ -61,6 +62,12 @@ export default class Account extends RedditModel {
   }
 
   static DERIVED_PROPERTIES = {
+    karma(data) {
+      if (data.karma) {
+        return data.karma;
+      }
+      return data.link_karma + data.comment_karma;
+    },
     subredditId(data) {
       return data.subreddit ? data.subreddit.name : '';
     },

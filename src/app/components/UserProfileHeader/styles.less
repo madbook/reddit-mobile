@@ -5,12 +5,22 @@
 
 .UserProfileHeader {
   &__banner {
-    padding: 2 * @grid-size @grid-size;
+    padding: @grid-size;
     text-align: center;
   }
 
   &__banner-user-name {
     display: inline-block;
+    padding-left: @grid-size;
+    padding-right: @grid-size;
+    font-weight: lighter;
+    vertical-align: middle;
+    margin: 0; // have to override the text reset here. Those are everywhere by default, probably mostly for ugc, maybe we should just wrap those in class
+  }
+
+  &__banner-karma {
+    display: block;
+    padding-top: @grid-size / 2;
     padding-left: @grid-size;
     padding-right: @grid-size;
     font-weight: lighter;
@@ -39,19 +49,8 @@
     }
   }
 
-  &__tab-icon {
-    // this is just a little bit smaller than icon-large
-    font-size: 20px;
-    line-height: 20px;
-    margin-bottom: @half-grid-size;
-
-    &.selected {
-      color: @mint;
-    }
-  }
-
   &__tab-text {
-    font-size: @font-size-small;
+    font-size: @font-size-base;
     font-weight: bold;
 
     .themeify({
