@@ -6,7 +6,6 @@ import includes from 'lodash/includes';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { redirect } from 'platform/actions';
-import superagent from 'superagent';
 
 import Loading from 'app/components/Loading';
 
@@ -19,7 +18,7 @@ const selector = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  placeRedirect: () => dispatch(redirect('/place'))
+  placeRedirect: () => dispatch(redirect('/place')),
 });
 
 export default connect(selector, mapDispatchToProps)(
@@ -43,16 +42,16 @@ export default connect(selector, mapDispatchToProps)(
             JSON.stringify({
               name: 'PLACE_MESSAGE',
               payload: {
-                Authorization: 'bearer ' + this.props.token
-              }
+                Authorization: 'bearer ' + this.props.token,
+              },
             }),
             config.placeDomain
           );
-        }
+        };
       } else {
         this.ifr.onload = () => {
           this.setState({ loading: false });
-        }
+        };
       }
     }
 
@@ -63,15 +62,19 @@ export default connect(selector, mapDispatchToProps)(
       const { placeRedirect } = this.props;
 
       return (
-          <div className={ `Place__container` }>
+          <div className="Place__container">
             { this.state.loading ?
                 (<div className="Place__loadingWrapper">
                   <Loading />
-                </div>) : null}
+                </div>) : null }
             { this.renderPlaceIframeRedirect(isSubredditPage, placeRedirect) }
             <iframe
               className={ `Place__iframe ${isSubredditPage ? 'small' : 'large'}` }
-              ref={ (f) => this.ifr = f }
+              ref={
+                (f) => {
+                  this.ifr = f;
+                }
+              }
               src={ `${placeUrl}${ isSubredditPage ? '&hide_palette=true' : '' }` }
               frameBorder="0"
             />
@@ -82,7 +85,7 @@ export default connect(selector, mapDispatchToProps)(
 
     renderSubreddit = isSubredditPage => {
       if (isSubredditPage) {
-        return <PostsFromSubredditPage {...this.props} />
+        return <PostsFromSubredditPage { ...this.props } />;
       }
     }
 
@@ -92,4 +95,4 @@ export default connect(selector, mapDispatchToProps)(
       }
     }
   }
-)
+);

@@ -1,7 +1,6 @@
 import { SUPPORTED_SORTS } from 'app/sortValues';
 import CommentsPageHandler from './handlers/CommentsPage';
 import CommunityGotoActionHandler from './handlers/CommunityGotoAction';
-import PlacePageHandler from './handlers/PlacePage';
 import PostsFromSubredditHandler from './handlers/PostsFromSubreddit';
 import LiveRedirectHandler from './handlers/LiveRedirect';
 import Login from './handlers/Login';
