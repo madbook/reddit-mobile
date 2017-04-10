@@ -29,7 +29,9 @@ const handleClick = currentPath => e => {
     if (path === currentPath && hash) {
       e.preventDefault();
       const el = document.getElementById(hash.slice(1));
-      document.body.scrollTop = el.offsetTop - TOPNAV_HEIGHT;
+      if (el) {
+        document.body.scrollTop = el.offsetTop - TOPNAV_HEIGHT;
+      }
     }
   }
 
